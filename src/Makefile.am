@@ -28,7 +28,17 @@ AM_CXXFLAGS = -g -O2 -Wall
 
 LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
 
-sog_its_SOURCES = main.cpp 
+MYHEADER =sogstate.hh \
+	sogsucciter.hh \
+	sogtgba.hh \
+	sogtgbautils.hh
+
+MYSRC = main.cpp \
+	sogstate.cpp \
+	sogsucciter.cpp \
+	sogtgba.cpp
+
+sog_its_SOURCES = $(MYSRC) $(MYHEADER)
 
 
 sog_its_LDADD = $(LDADDFLAGS)  
