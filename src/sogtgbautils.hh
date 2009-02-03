@@ -1,0 +1,62 @@
+#ifndef SOG_TGBA_UTILS_HH
+#define SOG_TGBA_UTILS_HH
+
+#include <set>
+#include <list>
+#include <string>
+
+#include "ltlast/formula.hh"
+#include "ltlast/atomic_prop.hh"
+#include "ltlvisit/apcollect.hh"
+
+#include "petrinet.hh"
+
+/// \brief Display some statistics concerning the symbolic observation 
+/// graph constructed for \a n when considering the observable 
+/// transitions \a obs_tr.
+///
+/// \dontinclude countmarkings.cpp
+/// \skipline void count_markings
+/// \until } //
+void count_markings(const petri_net* n, int b, const spot::ltl::formula* f);
+
+/// \brief Display the symbolic observation graph constructed for \a n 
+/// when considering the observable transitions \a obs_tr.
+///
+/// \dontinclude printrg.cpp
+/// \skipline void print_reachability_graph
+/// \until } //
+void print_reachability_graph(const petri_net* n, int b, const spot::ltl::formula* f);
+
+/// \brief Check if the atomic propositions in \a f are transitions of the Petri
+/// net \a p. Return a pointer on the first atomic proposition which is not
+/// a transition name if any and 0 otherwise.
+///
+/// \dontinclude modelcheck.cpp
+/// \skipline const std::string* check_at_prop
+/// \until } //
+std::string* check_at_prop(const petri_net* p, 
+                           const spot::ltl::formula* f, 
+                           spot::ltl::atomic_prop_set*& sap, 
+                           std::set<int>& obs_tr_num);
+
+/// \brief Check if the Petri net \a n can produce at least one infinite
+/// sequence accepted by the formula \a f.
+/// 
+/// If this is the case and \a ce_expected is true, such a sequence is displayed.
+/// In other case, a message indicating if the test is satisfied or not is 
+/// printed. The four last parameters specify options for the translation
+/// of the formula \a f in a TGBA as indicated for the function 
+/// spot::ltl_to_tgba_fm.
+/// \dontinclude modelcheck.cpp
+/// \skipline void model_check
+/// \until } //
+void model_check(const petri_net* n, int b, 
+                 const spot::ltl::formula* f, const std::string& echeck_algo,
+                 bool ce_expected, 
+                 bool fm_exprop_opt=false, 
+                 bool fm_symb_merge_opt=true, 
+                 bool post_branching=false, 
+                 bool fair_loop_approx=false);
+
+#endif
