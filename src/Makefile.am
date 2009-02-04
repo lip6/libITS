@@ -1,4 +1,4 @@
-noinst_PROGRAMS = sog-its
+noinst_PROGRAMS = sog-its testite
 
 
 if WITH_LIBDDD_PATH
@@ -10,7 +10,7 @@ endif
 
 if WITH_LIBITS_PATH
 LIBITS_CPP=-I$(LIBITS_ROOT)
-LIBITS_PATH=$(LIBITS_ROOT)/libITS.a
+LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a
 else
 LIBITS_LINK=-lITS
 endif
@@ -18,7 +18,7 @@ endif
 
 if WITH_LIBSPOT_PATH
 LIBSPOT_CPP=-I$(LIBSPOT_ROOT)
-LIBSPOT_PATH=$(LIBSPOT_ROOT)/libspot.a
+LIBSPOT_PATH=$(LIBSPOT_ROOT)/../../lib/libspot.a $(LIBSPOT_ROOT)/../../lib/libbdd.a
 else
 LIBSPOT_LINK=-lspot
 endif
@@ -28,20 +28,25 @@ AM_CXXFLAGS = -g -O2 -Wall
 
 LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
 
-MYHEADER =sogstate.hh \
+MYHEADER =apiterator.hh \
+	sogstate.hh \
 	sogsucciter.hh \
 	sogtgba.hh \
 	sogtgbautils.hh
 
-MYSRC = main.cpp \
+MYSRC = apiterator.cpp \
+	main.cpp \
 	sogstate.cpp \
 	sogsucciter.cpp \
-	sogtgba.cpp
+	sogtgba.cpp \
+	sogtgbautils.cpp
 
 sog_its_SOURCES = $(MYSRC) $(MYHEADER)
 
-
 sog_its_LDADD = $(LDADDFLAGS)  
 
+testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp 
+testite_LDADD =  $(LIBDDD_PATH)  
+ 
 
 
