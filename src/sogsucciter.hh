@@ -9,6 +9,7 @@
 #include "tgba/state.hh"
 
 #include "bdd.h"
+#include "apiterator.hh"
 
 #include "ITSModel.hh"
 #include "sogstate.hh"
@@ -20,6 +21,8 @@ namespace sogits {
 class sog_succ_iterator : public spot::tgba_succ_iterator {
   public:
   sog_succ_iterator(const its::ITSModel & m, const sog_state& s);
+  virtual ~sog_succ_iterator();
+
     void first();
     void next();
     bool done() const;
@@ -34,8 +37,10 @@ private:
   const its::ITSModel& model; ///< The petri net.
   const sog_state & from; ///< The source state.
 
-  std::set<int>::const_iterator it;
+  APIterator it;
   bool div_has_been_visited;
+  its::State succstates;
+  sog_state * current_succ;
 };
 
 class sog_div_succ_iterator : public spot::tgba_succ_iterator {
