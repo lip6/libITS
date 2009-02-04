@@ -9,7 +9,9 @@
 #include "ltlast/atomic_prop.hh"
 #include "ltlvisit/apcollect.hh"
 
-#include "petrinet.hh"
+#include "ITSModel.hh"
+
+namespace sogits {
 
 /// \brief Display some statistics concerning the symbolic observation 
 /// graph constructed for \a n when considering the observable 
@@ -18,7 +20,7 @@
 /// \dontinclude countmarkings.cpp
 /// \skipline void count_markings
 /// \until } //
-void count_markings(const petri_net* n, int b, const spot::ltl::formula* f);
+  void count_markings(const its::ITSModel & m,  const spot::ltl::formula* f);
 
 /// \brief Display the symbolic observation graph constructed for \a n 
 /// when considering the observable transitions \a obs_tr.
@@ -26,7 +28,7 @@ void count_markings(const petri_net* n, int b, const spot::ltl::formula* f);
 /// \dontinclude printrg.cpp
 /// \skipline void print_reachability_graph
 /// \until } //
-void print_reachability_graph(const petri_net* n, int b, const spot::ltl::formula* f);
+  void print_reachability_graph(const its::ITSModel & m, const spot::ltl::formula* f);
 
 /// \brief Check if the atomic propositions in \a f are transitions of the Petri
 /// net \a p. Return a pointer on the first atomic proposition which is not
@@ -35,10 +37,9 @@ void print_reachability_graph(const petri_net* n, int b, const spot::ltl::formul
 /// \dontinclude modelcheck.cpp
 /// \skipline const std::string* check_at_prop
 /// \until } //
-std::string* check_at_prop(const petri_net* p, 
+  std::string* check_at_prop(its::ITSModel & m, 
                            const spot::ltl::formula* f, 
-                           spot::ltl::atomic_prop_set*& sap, 
-                           std::set<int>& obs_tr_num);
+                           spot::ltl::atomic_prop_set*& sap);
 
 /// \brief Check if the Petri net \a n can produce at least one infinite
 /// sequence accepted by the formula \a f.
@@ -51,12 +52,15 @@ std::string* check_at_prop(const petri_net* p,
 /// \dontinclude modelcheck.cpp
 /// \skipline void model_check
 /// \until } //
-void model_check(const petri_net* n, int b, 
+  void model_check(its::ITSModel & m,  
                  const spot::ltl::formula* f, const std::string& echeck_algo,
                  bool ce_expected, 
                  bool fm_exprop_opt=false, 
                  bool fm_symb_merge_opt=true, 
                  bool post_branching=false, 
                  bool fair_loop_approx=false);
+
+
+} // namespace
 
 #endif
