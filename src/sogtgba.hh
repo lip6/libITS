@@ -1,6 +1,5 @@
 // Copyright (C) 2004  Laboratoire d'Informatique de Paris 6 (LIP6),
-// d�artement Syst�es R�artis Coop�atifs (SRC), Universit�Pierre
-// et Marie Curie.
+// (MoVe), Universite Pierre et Marie Curie.
 //
 // This file is part of the Spot tutorial. Spot is a model checking 
 // library.
@@ -37,6 +36,9 @@
 
 #include "ITSModel.hh"
 
+
+namespace sogits {
+
 /// \brief Encapsulation of an ITS model in a
 /// \a spot::tgba.
 class sog_tgba : public spot::tgba {
@@ -52,8 +54,7 @@ public:
   /// \dontinclude sogtgba.cpp
   /// \skipline sog_tgba::sog_tgba
   /// \until } //
-  sog_tgba(const ITSModel & m, 
-          const spot::ltl::atomic_prop_set* sap,
+  sog_tgba(const its::ITSModel & m, 
           spot::bdd_dict* dict);
 
   /// \brief Unregister all the used propositions.
@@ -140,7 +141,7 @@ private:
   
 
   /// the encapsulated Petri net. 
-  const ITSmodel & model;
+  const its::ITSModel & model;
   
   /// Point to the associated dictionnary.
   spot::bdd_dict* dict;
@@ -166,6 +167,9 @@ private:
   };
   mutable bdd_statistics  bdd_stat;
 };
+
+
+} // namespace
 
 #endif
 
