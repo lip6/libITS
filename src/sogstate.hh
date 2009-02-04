@@ -3,6 +3,7 @@
 
 #include "tgba/state.hh"
 #include "bdd.h"
+#include "SDD.h"
 #include "ITSModel.hh"
 
 namespace sogits {
@@ -10,7 +11,7 @@ namespace sogits {
 /// \brief Implementation of a \a spot::state.
 class sog_state : public spot::state {
 public:
-  sog_state(const its::ITSmodel & model, const GSDD & m, bdd ap);
+  sog_state(const its::ITSModel & model, const GSDD & m, bdd ap);
   int compare(const state* other) const;
   size_t hash() const;
   state* clone() const;
@@ -22,11 +23,11 @@ public:
   // return any successor of a state in get_states such that AP is not true
   GSDD get_succ() const;
   // return the formula over AP used to create this agregate
-  bdd get_ap() const { return ap;}
+  bdd get_condition() const { return condition;}
 
   private:
   SDD states; ///< the frontier markings.
-  bdd ap;
+  bdd condition;
   bool div; ///< the attribut div.
 };
 
