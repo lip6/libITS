@@ -37,6 +37,7 @@
 #include "sogsucciter.hh"
 #include "sogstate.hh"
 
+#include "apiterator.hh"
 
 #include  "ITSModel.hh"
 
@@ -45,21 +46,23 @@ using namespace its;
 namespace sogits {
 
 sog_succ_iterator::sog_succ_iterator(const its::ITSModel& m, const sog_state& s)
-  : model(m), from(s), div_has_been_visited(true) {
-  // => done() == true
-  // succstates =  from.get_succ();
+  : model(m), from(s), it(APIteratorFactory::create()), div_has_been_visited(true),succstates(from.get_succ()) {
+  // set status of iterator to done() initially
+
+  // succstates : initialize Ext = states that serve as seed for successors
 }
 
+  sog_succ_iterator::~sog_succ_iterator() {
+    delete current_succ;
+  }
 
 void sog_succ_iterator::first() {
   /// position "it" at first of ap bdd set
-  // it = pnbdd.get_obtr().begin();
-
   // iterate until a non empty succ is found (or end reached)
-  for (it = XXX.begin()  ; it != XXX.end() ; ++it ) {
-    sog_state s (model, succstates, bdd(*it) );
+  for (it.first()  ; ! it.done() ; it.next() ) {
+    sog_state s (model, succstates, it.current() );
     if ( s.get_states() != SDD::null ) {
-      current_succ = s;
+      current_succ = new sog_state(s);
       break;
     }
   }
@@ -70,12 +73,12 @@ void sog_succ_iterator::first() {
 
 void sog_succ_iterator::next() {
   assert(!done());
-  if ( it != XXX.end()) {
-    for (++it  ; it != XXX.end() ; ++it)
+  if ( ! it.done() ) {
+    for (it.next()  ; ! it.done() ; it.next() )
       {
-	sog_state s (model, succstates, bdd(*it) );
+	sog_state s (model, succstates, it.current() );
 	if ( s.get_states() != SDD::null ) {
-	  current_succ = s;
+	  current_succ = new sog_state(s);
 	  break;
 	}
       }
@@ -85,49 +88,31 @@ void sog_succ_iterator::next() {
 } //
 
 bool sog_succ_iterator::done() const {
-  return (it == XXX.end()) && div_has_been_visited;
+  return  it.done() && div_has_been_visited;
 } //
 
 spot::state* sog_succ_iterator::current_state() const {
   assert(!done());
 //  trace << "FIRING : " << format_transition() << std::endl;
 //  trace << "FROM " << pnbdd.format_marking(from) << std::endl;
-  if (it != XXX.end()) {
-    
-    bool current_dead, current_div;
-    bdd m = pnbdd.successor(from, *it, current_dead, current_div);
-    assert((m != bddfalse) || current_dead); // (m == bddfalse) => current_dead
-    trace << "REACHED " << pnbdd.format_marking(m) << std::endl << std::endl;
-    return new sog_state(m, current_div | current_dead);
+  if (! it.done() ) {
+    return current_succ;
   }
   else {
     trace << "REACHED DIV STATE" << std::endl << std::endl;
-    return new sog_div_state(cond);
+    return new sog_div_state(from.get_condition());
   }
 } //
 
 bdd sog_succ_iterator::current_condition() const {
   assert(!done());
-  return cond;
-} //
+  return from.get_condition();
+} // 
 
-int sog_succ_iterator::current_transition() const {
-  assert(!done());
-  if (it != pnbdd.get_obtr().end())
-    return *it;
-  return -1; // div
-}
 
 bdd sog_succ_iterator::current_acceptance_conditions() const {
   assert(!done());
   return bddfalse;
-} //
-
-std::string sog_succ_iterator::format_transition() const {
-  assert(!done());
-  if (it != pnbdd.get_obtr().end())
-    return pnbdd.get_pn().get_transition_name(*it);
-  return "div";
 } //
 
 sog_div_succ_iterator::sog_div_succ_iterator(const spot::bdd_dict* d, const bdd& c)
@@ -135,8 +120,6 @@ sog_div_succ_iterator::sog_div_succ_iterator(const spot::bdd_dict* d, const bdd&
   // => done()
 }
 
-sog_div_succ_iterator::~sog_div_succ_iterator() {
-}
 
 void sog_div_succ_iterator::first() {
   div_has_been_visited = false;
