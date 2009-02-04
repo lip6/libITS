@@ -15,32 +15,11 @@
 
 #include "sogtgba.hh"
 #include "sogtgbautils.hh"
-
+#include "apiterator.hh"
 
 namespace sogits {
 
-std::string* check_at_prop(ITSModel & m, 
-                           const spot::ltl::formula* f, 
-                           spot::ltl::atomic_prop_set*& sap) {
-  sap = spot::ltl::atomic_prop_collect(f);
-
-  if (sap) {
-    spot::ltl::atomic_prop_set::iterator it;
-    for(it = sap->begin(); it != sap->end(); ++it) {
-      // 
-      // Load into model m !  + check existence 
-      if(false /* ! model.existsAnAP( ((*it)->name() )) ) */  ) {
-        std::string* s = new std::string((*it)->name());
-        delete sap;
-        sap = 0;
-        return s;
-      } 
-    }
-  }
-  return 0;
-} //
-
-void model_check(ITSModel & m,  
+  void model_check(its::ITSModel & model,  
                  const spot::ltl::formula* f, const std::string& echeck_algo,
                  bool ce_expected, 
                  bool fm_exprop_opt, 
@@ -48,19 +27,37 @@ void model_check(ITSModel & m,
                  bool post_branching, 
                  bool fair_loop_approx) {
   
-  spot::ltl::atomic_prop_set *sap;
-  const std::string* s;
-  
-  if ((s = check_at_prop(m, f, sap))) {
-    std::cout << "the atomic proposition '" << *s
-        << "' does not correspond to any known proposition" << std::endl;
-    delete s;
-    return;
-  }
-  
+  // find all AP in the formula
+  spot::ltl::atomic_prop_set *sap = spot::ltl::atomic_prop_collect(f);
+
+  // For bdd varnum to AP name in Spot
   spot::bdd_dict dict;
 
-  sog_tgba p(m, sap, &dict);
+  sog_tgba systgba(model, &dict);
+  
+  if (sap) {   
+    APIterator::varset_t vars ;
+    
+    for(spot::ltl::atomic_prop_set::iterator  it = sap->begin(); it != sap->end(); ++it) {
+       // declare them in a spot dictionary
+      int varnum = dict.register_proposition(*it, &systgba);
+      
+      vars.push_back(varnum);
+      // Load into model m !  + check existence 
+      // varnum will be used in subsequent interactions with the ITS model
+      bool ret =  model.setObservedAP ( (*it)->name() , varnum );
+
+      if ( ! ret  ) {
+        delete sap;
+        sap = 0;
+	std::cout << "the atomic proposition '" <<  (*it)->name() 
+        << "' does not correspond to any known proposition" << std::endl;
+	return;
+      }
+    }
+    APIteratorFactory::setAPVarSet(vars);
+  }
+  
 
   spot::timer_map timers;
   timers.start("construction");
@@ -89,7 +86,7 @@ void model_check(ITSModel & m,
       exit(1);
   }
 
-  spot::tgba_product prod(a, &p);
+  spot::tgba_product prod(a, &systgba);
 
   spot::emptiness_check *ec =  echeck_inst->instantiate(&prod);
   timers.stop("construction");
