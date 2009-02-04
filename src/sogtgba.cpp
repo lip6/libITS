@@ -1,6 +1,5 @@
-// Copyright (C) 2004  Laboratoire d'Informatique de Paris 6 (LIP6),
-// d�artement Syst�es R�artis Coop�atifs (SRC), Universit�Pierre
-// et Marie Curie.
+// Copyright (C) 2009  Laboratoire d'Informatique de Paris 6 (LIP6),
+// Equipe MoVe , Universite Pierre et Marie Curie.
 //
 // This file is part of the Spot tutorial. Spot is a model checking 
 // library.
@@ -32,78 +31,46 @@
 #include "sogsucciter.hh"
 #include "sogstate.hh"
 
-sog_tgba::sog_tgba(const petri_net* p, int b, const std::set<int>& obtr, 
-        const spot::ltl::atomic_prop_set* sap, spot::bdd_dict* dic) {
-  assert(sap && dic);
+using its::ITSModel;
 
-  pnbdd = new RdPBDD(*p, obtr, b>=1?b:1);
+namespace sogits {
 
-  dict = dic;
-  spot::ltl::atomic_prop_set::iterator it;
-  for(it = sap->begin(); it != sap->end(); ++it) {
-    int num = pnbdd->get_pn().get_place_num((*it)->name());
-    mplace_at_prop[num] = dict->register_proposition(*it, this);
-  }
-} //
 
-void sog_tgba::clear_stat() {
-  pnbdd->reset_visited_bdd();
-}
-
-const spot::unsigned_statistics* sog_tgba::get_stat() const {
-  int res = 0;
-  bdd* tab;
-  int nb = pnbdd->get_visited_bdd(&tab);
-  if (nb) {
-    res = bdd_anodecount(tab, nb);
-    delete [] tab;
-  }
-  bdd_stat.set_bdd_nodes(res);
-  return &bdd_stat;
-}
-
-void sog_tgba::set_stat(bool b) {
-  pnbdd->set_collect(b);
-}
-
-sog_tgba::sog_tgba(const sog_tgba& p) {
-  assert(false);
-} //
-
-sog_tgba& sog_tgba::operator=(const sog_tgba& p) {
-  assert(false);
-  return *this;
+sog_tgba::sog_tgba(const ITSModel & m, 
+		   spot::bdd_dict* dict): model(m),dict(dict) {
 } //
 
 sog_tgba::~sog_tgba() {
   if (dict)
     dict->unregister_all_my_variables(this);
-  delete pnbdd;
 } //
 
 spot::state* sog_tgba::get_init_state() const {
-  bool dead, div;
-  bdd m0 = pnbdd->get_initial_marking(dead, div);
-  assert(m0 != bddfalse);
-  return new sog_state(m0, div | dead);
-} //
-
-bdd sog_tgba::condition(const bdd& m) const {
-  bdd res = bddtrue;
-  std::map<int, int>::const_iterator it;
-  for (it = mplace_at_prop.begin(); it != mplace_at_prop.end(); ++it)
-    if (pnbdd->is_marked(it->first, m))
-      res &= bdd_ithvar(it->second);
-    else
-      res &= bdd_nithvar(it->second);
-  return res;
+  its::State m0 = model.getInitialState() ;
+  assert(m0 != SDD::null);
+  // now determine which AP are true in m0
+  APIterator it = APIteratorFactory::create();
+  for (it.first() ; ! it.done() ; it.next() ) {
+    its::Transition selector = model.getSelector( it.current() );
+    its::State msel = selector(m0);
+    if (msel != SDD::null) {
+      return new sog_state( model, m0, it.current() );
+    }
+  }
+ 
+ // no conjunction of AP is verified by m0 ???
+  assert (false);
+  // for compiler happiness
+  return NULL;
 }
 
 spot::tgba_succ_iterator* sog_tgba::succ_iter (const spot::state* local_state,
                                                const spot::state*, const spot::tgba*) const {
   const sog_state* s = dynamic_cast<const sog_state*>(local_state);
   if (s) {
-    return new sog_succ_iterator(*pnbdd, *s, condition(s->get_marking()));
+    // build a new succ iter :
+    //   agregate is built by saturating : 
+    return new sog_succ_iterator(model , *s);
   }
   else {
     const sog_div_state* s = dynamic_cast<const sog_div_state*>(local_state);
@@ -117,9 +84,11 @@ spot::bdd_dict* sog_tgba::get_dict() const {
 } //
 
 std::string sog_tgba::format_state(const spot::state* state) const {
+
+  
   const sog_state* s = dynamic_cast<const sog_state*>(state);
   if (s) {
-    std::string res = pnbdd->format_marking(s->get_marking());
+    std::string res = "Yet another state !"; // TODO !!!
     if (s->get_div())
       res += " (div att.)";
     return res;
@@ -160,3 +129,8 @@ bdd sog_tgba::compute_support_conditions(const spot::state* state) const {
 bdd sog_tgba::compute_support_variables(const spot::state* state) const {
   return bddtrue;
 } //
+
+
+} // namespace
+
+
