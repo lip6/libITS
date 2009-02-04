@@ -36,56 +36,64 @@
 
 #include "sogsucciter.hh"
 #include "sogstate.hh"
-#include "petrinet.hh"
 
-#include "RdPBDD.h"
 
-sog_succ_iterator::sog_succ_iterator(const RdPBDD& pn, const sog_state& s, const bdd& c)
-  : pnbdd(pn), from(s.get_marking()), div(s.get_div()), cond(c), 
-    it(pnbdd.get_obtr().end()), div_has_been_visited(true) {
-  // => done()
+#include  "ITSModel.hh"
+
+using namespace its;
+
+namespace sogits {
+
+sog_succ_iterator::sog_succ_iterator(const its::ITSModel& m, const sog_state& s)
+  : model(m), from(s), div_has_been_visited(true) {
+  // => done() == true
+  // succstates =  from.get_succ();
 }
 
-sog_succ_iterator::sog_succ_iterator(const sog_succ_iterator& s): pnbdd(s.pnbdd), from(s.from) {
-  assert(false);
-} //
-
-sog_succ_iterator& sog_succ_iterator::operator=(const sog_succ_iterator& s) {
-  assert(false);
-  return *this;
-} //
-
-sog_succ_iterator::~sog_succ_iterator() {
-} //
 
 void sog_succ_iterator::first() {
-  it = pnbdd.get_obtr().begin();
-  while (it != pnbdd.get_obtr().end() && !pnbdd.firable(from, *it))
-    ++it;
-  if (div)
+  /// position "it" at first of ap bdd set
+  // it = pnbdd.get_obtr().begin();
+
+  // iterate until a non empty succ is found (or end reached)
+  for (it = XXX.begin()  ; it != XXX.end() ; ++it ) {
+    sog_state s (model, succstates, bdd(*it) );
+    if ( s.get_states() != SDD::null ) {
+      current_succ = s;
+      break;
+    }
+  }
+  if (from.get_div())
     div_has_been_visited = false;
-} //
+}
+
 
 void sog_succ_iterator::next() {
   assert(!done());
-  if (it != pnbdd.get_obtr().end()) {
-    ++it;
-    while (it != pnbdd.get_obtr().end() && !pnbdd.firable(from, *it))
-      ++it;
+  if ( it != XXX.end()) {
+    for (++it  ; it != XXX.end() ; ++it)
+      {
+	sog_state s (model, succstates, bdd(*it) );
+	if ( s.get_states() != SDD::null ) {
+	  current_succ = s;
+	  break;
+	}
+      }
   }
   else
     div_has_been_visited = true;
 } //
 
 bool sog_succ_iterator::done() const {
-  return (it == pnbdd.get_obtr().end()) && div_has_been_visited;
+  return (it == XXX.end()) && div_has_been_visited;
 } //
 
 spot::state* sog_succ_iterator::current_state() const {
   assert(!done());
-  trace << "FIRING : " << format_transition() << std::endl;
-  trace << "FROM " << pnbdd.format_marking(from) << std::endl;
-  if (it != pnbdd.get_obtr().end()) {
+//  trace << "FIRING : " << format_transition() << std::endl;
+//  trace << "FROM " << pnbdd.format_marking(from) << std::endl;
+  if (it != XXX.end()) {
+    
     bool current_dead, current_div;
     bdd m = pnbdd.successor(from, *it, current_dead, current_div);
     assert((m != bddfalse) || current_dead); // (m == bddfalse) => current_dead
@@ -180,3 +188,6 @@ sog_div_succ_iterator& sog_div_succ_iterator::operator=(const sog_div_succ_itera
   assert(false);
   return *this;
 }
+
+
+} // namespace 

@@ -3,18 +3,30 @@
 
 #include "tgba/state.hh"
 #include "bdd.h"
+#include "ITSModel.hh"
+
+namespace sogits {
 
 /// \brief Implementation of a \a spot::state.
 class sog_state : public spot::state {
 public:
-  sog_state(const bdd& m, bool di);
+  sog_state(const its::ITSmodel & model, const GSDD & m, bdd ap);
   int compare(const state* other) const;
   size_t hash() const;
   state* clone() const;
-  const bdd& get_marking() const;
+
+  // return states contained in this agregate : that verify AP
+  const GSDD & get_states() const;
+  // return true if div or dead is true in this agregate 
   bool get_div() const;
+  // return any successor of a state in get_states such that AP is not true
+  GSDD get_succ() const;
+  // return the formula over AP used to create this agregate
+  bdd get_ap() const { return ap;}
+
   private:
-  bdd ma; ///< the frontier markings.
+  SDD states; ///< the frontier markings.
+  bdd ap;
   bool div; ///< the attribut div.
 };
 
@@ -28,5 +40,8 @@ class sog_div_state : public spot::state {
   private:
     bdd cond; ///< the condition.
 };
+
+
+}
 
 #endif

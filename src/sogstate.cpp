@@ -4,8 +4,13 @@
 
 #include "sogstate.hh"
 
-sog_state::sog_state(const bdd& m, bool di) 
-  : spot::state(), ma(m), div(di) {
+
+namespace sogits {
+
+  sog_state::sog_state(const its::ITSModel & model, const GSDD& entryStates, bdd bddAP) 
+  : spot::state() {
+    // states =  model.saturate(entryStates, bddAP);
+    // div = model.detectDiv(states, bddAP);
 } //
 
 int sog_state::compare(const state* other) const {
@@ -56,3 +61,7 @@ spot::state* sog_div_state::clone() const {
 const bdd& sog_div_state::get_condition() const {
   return cond;
 }
+
+
+
+} // namespace

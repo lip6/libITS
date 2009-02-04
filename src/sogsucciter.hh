@@ -10,14 +10,16 @@
 
 #include "bdd.h"
 
-#include "RdPBDD.h"
+#include "ITSModel.hh"
 #include "sogstate.hh"
+
+
+namespace sogits {
 
 /// \brief Implementation of a \a spot::tgba_succ_iterator for a \a ::marking.
 class sog_succ_iterator : public spot::tgba_succ_iterator {
   public:
-    sog_succ_iterator(const RdPBDD& pn, const sog_state& s, const bdd& c);
-    virtual ~sog_succ_iterator();
+  sog_succ_iterator(const its::ITSModel & m, const sog_state& s);
     void first();
     void next();
     bool done() const;
@@ -26,25 +28,20 @@ class sog_succ_iterator : public spot::tgba_succ_iterator {
     int current_transition() const;
     bdd current_acceptance_conditions() const;
     std::string format_transition() const;
+  
+private:
 
-  private:
-    sog_succ_iterator(const sog_succ_iterator& s);
-    sog_succ_iterator& operator=(const sog_succ_iterator& s);
+  const its::ITSModel& model; ///< The petri net.
+  const sog_state & from; ///< The source state.
 
-    const RdPBDD& pnbdd; ///< The petri net.
-    bdd from; ///< The source state.
-    bool dead; ///< The source div attribut.
-    bool div; ///< The source div attribut.
-    bdd cond; ///< The condition which must label all successors.
-
-    std::set<int>::const_iterator it;
-    bool div_has_been_visited;
+  std::set<int>::const_iterator it;
+  bool div_has_been_visited;
 };
 
 class sog_div_succ_iterator : public spot::tgba_succ_iterator {
   public:
     sog_div_succ_iterator(const spot::bdd_dict* d, const bdd& c);
-    virtual ~sog_div_succ_iterator();
+
     void first();
     void next();
     bool done() const;
@@ -62,5 +59,8 @@ class sog_div_succ_iterator : public spot::tgba_succ_iterator {
     bdd cond; ///< The condition which must label the unique successor.
     bool div_has_been_visited;
 };
+
+
+} // namespace sogits 
 
 #endif

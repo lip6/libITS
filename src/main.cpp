@@ -32,6 +32,10 @@
 
 #include "sogtgbautils.hh"
 
+
+using namespace its;
+using namespace sogits;
+
 void syntax(const char* prog) {
   std::cerr << "Usage: "<< prog << " [OPTIONS...] petri_net_file place_marking_bound" << std::endl
             << "where OPTIONS are" << std::endl
@@ -87,8 +91,6 @@ int main(int argc, const char *argv[]) {
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
   
-  int place_marking_bound;
-
   int pn_index = 0;
   for (;;) {
     if (argc < pn_index + 3)
@@ -145,13 +147,12 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  petri_net* n = petri_net::parse(argv[pn_index]);
-  if (!n)
-    return 1;
+  ITSModel model;
+  
+  // Parse and build the model !!!
 
-  if (sscanf(argv[pn_index+1], "%d", &place_marking_bound) != 1)
-    return 1;
 
+  // Initialize spot
   spot::ltl::parse_error_list pel;
 
   spot::ltl::formula* f = spot::ltl::parse(ltl_string, pel);
@@ -160,24 +161,56 @@ int main(int argc, const char *argv[]) {
     return 1;
   }
 
-  if (print_pn)
-    std::cout << *n;
+  // Given the list of AP in the formula
+  // Parse them one by one into model + error control if they don't exist
+  // see example :
+/*
+std::string* check_at_prop(const petri_net* p,
+                           const spot::ltl::formula* f, 
+                           spot::ltl::atomic_prop_set*& sap,
+                           std::set<int>& ob_tr) {
+  ob_tr.clear();
+  sap = spot::ltl::atomic_prop_collect(f);
 
+  if (sap) {
+    spot::ltl::atomic_prop_set::iterator it;
+    for(it = sap->begin(); it != sap->end(); ++it) {
+      if(!p->place_exists( (*it)->name() )) {
+        std::string* s = new std::string((*it)->name());
+        delete sap;
+        sap = 0;
+        return s;
+      }
+      int pl = p->get_place_num((*it)->name());
+      for (int t = 0; t < p->t_size(); ++t)
+        if (p->get_incidence()[t].get(pl) != 0)
+          ob_tr.insert(t);
+    }
+  }
+  return 0;
+} 
+*/
+  
+  if (print_pn)
+    std::cout << model;
+
+
+  /* 
   if (print_rg)
     print_reachability_graph(n, place_marking_bound, f);
-
+  
   if (count)
     count_markings(n, place_marking_bound, f);
-
+  */
 
   if (check)
-    model_check(n, place_marking_bound, f, 
+    model_check(model, f, 
                 algo_string, ce_expected, 
                 fm_exprop_opt, fm_symb_merge_opt,
                 post_branching, fair_loop_approx);
 
   spot::ltl::destroy(f);
-  delete n;
+
   return 0;
 }
 

@@ -35,10 +35,9 @@
 //#include "ltlast/atomic_prop.hh"
 #include "bdd.h"
 
-#include "petrinet.hh"
-#include "RdPBDD.h"
+#include "ITSModel.hh"
 
-/// \brief Encapsulation of a \a petri_net in a
+/// \brief Encapsulation of an ITS model in a
 /// \a spot::tgba.
 class sog_tgba : public spot::tgba {
 public:
@@ -53,7 +52,7 @@ public:
   /// \dontinclude sogtgba.cpp
   /// \skipline sog_tgba::sog_tgba
   /// \until } //
-  sog_tgba(const petri_net* pn, int b, const std::set<int>& obtr, 
+  sog_tgba(const ITSModel & m, 
           const spot::ltl::atomic_prop_set* sap,
           spot::bdd_dict* dict);
 
@@ -141,12 +140,12 @@ private:
   
 
   /// the encapsulated Petri net. 
-  RdPBDD* pnbdd;
+  const ITSmodel & model;
   
   /// Point to the associated dictionnary.
   spot::bdd_dict* dict;
   
-  /// Map the indexes of transitions used as atomic propositions to the 
+  /// Map the indexes of atomic propositions to the 
   /// corresponding indexes of bdd variables. 
   std::map<int, int> mplace_at_prop;
   
