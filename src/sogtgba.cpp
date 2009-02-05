@@ -106,7 +106,7 @@ std::string sog_tgba::transition_annotation(const spot::tgba_succ_iterator* t) c
   assert(!t->done());
   const sog_succ_iterator* it = dynamic_cast<const sog_succ_iterator*>(t);
   if (it)
-    return it->format_transition();
+    return "A transition" ; //it->format_transition();
   else {
     const sog_div_succ_iterator* it = dynamic_cast<const sog_div_succ_iterator*>(t);
     assert(it);
