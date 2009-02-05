@@ -46,7 +46,8 @@ sog_its_SOURCES = $(MYSRC) $(MYHEADER)
 sog_its_LDADD = $(LDADDFLAGS)  
 
 testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp 
-testite_LDADD =  $(LIBDDD_PATH)  
- 
+testite_LDADD =  $(LDADDFLAGS)  
+
+
 
 
