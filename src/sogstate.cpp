@@ -9,13 +9,13 @@ namespace sogits {
 
   sog_state::sog_state(const its::ITSModel & model, const GSDD& entryStates, bdd bddAP) 
     : spot::state() {
-    // states =  model.saturate(entryStates, bddAP);
-    // div = model.detectDiv(states, bddAP);
+    states =  model.leastFixpoint ( entryStates, bddAP);
+    div = ( model.getDivergent ( states, bddAP ) != its::State::null );
+    succ = ( (! model.getSelector(bddAP)) & model.getNextRel() ) (states);
   } 
   
   GSDD sog_state::get_succ() const {
-    // compute one step of succs compose with ! selector
-    return GSDD::null;
+    return  succ;
   }
   
 
