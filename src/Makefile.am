@@ -32,14 +32,17 @@ MYHEADER =apiterator.hh \
 	sogstate.hh \
 	sogsucciter.hh \
 	sogtgba.hh \
-	sogtgbautils.hh
+	sogtgbautils.hh \
+	train.hh
+
 
 MYSRC = apiterator.cpp \
 	main.cpp \
 	sogstate.cpp \
 	sogsucciter.cpp \
 	sogtgba.cpp \
-	sogtgbautils.cpp
+	sogtgbautils.cpp \
+	train.cpp
 
 sog_its_SOURCES = $(MYSRC) $(MYHEADER)
 
