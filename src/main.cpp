@@ -31,7 +31,7 @@
 #include "ltlvisit/destroy.hh"
 
 #include "sogtgbautils.hh"
-
+#include "train.hh"
 
 using namespace its;
 using namespace sogits;
@@ -150,7 +150,12 @@ int main(int argc, const char *argv[]) {
   ITSModel model;
   
   // Parse and build the model !!!
-
+  loadTrains(5,model);
+  // Update the model to point at this model type as main instance
+  model.setInstance("Trains","main");
+  // The only state defined in the type "trains" is "init"
+  // This sets the initial state of the main instance
+  model.setInstanceState("init");  
 
   // Initialize spot
   spot::ltl::parse_error_list pel;
