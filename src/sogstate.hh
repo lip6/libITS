@@ -27,6 +27,7 @@ public:
 
   private:
   SDD states; ///< the frontier markings.
+  SDD succ;
   bdd condition;
   bool div; ///< the attribut div.
 };
