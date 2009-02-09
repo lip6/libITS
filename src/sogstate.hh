@@ -25,6 +25,9 @@ public:
   // return the formula over AP used to create this agregate
   bdd get_condition() const { return condition;}
 
+  // pretty print
+  std::ostream & print (std::ostream &) const ;
+
   private:
   SDD states; ///< the frontier markings.
   SDD succ;
@@ -39,11 +42,19 @@ class sog_div_state : public spot::state {
     size_t hash() const;
     state* clone() const;
     const bdd& get_condition() const;
+
+  // pretty print
+  std::ostream & print (std::ostream &) const ;
+
   private:
     bdd cond; ///< the condition.
 };
 
 
 }
+
+std::ostream & operator << (std::ostream & , const sogits::sog_state &);
+std::ostream & operator << (std::ostream & , const sogits::sog_div_state &);
+
 
 #endif

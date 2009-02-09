@@ -30,8 +30,9 @@ class sog_succ_iterator : public spot::tgba_succ_iterator {
     bdd current_condition() const;
     int current_transition() const;
     bdd current_acceptance_conditions() const;
-    std::string format_transition() const;
   
+  // pretty print
+  std::ostream & print (std::ostream &) const ;
 private:
 
   const its::ITSModel& model; ///< The petri net.
@@ -67,5 +68,9 @@ class sog_div_succ_iterator : public spot::tgba_succ_iterator {
 
 
 } // namespace sogits 
+
+
+std::ostream & operator << (std::ostream & , const sogits::sog_succ_iterator &);
+
 
 #endif
