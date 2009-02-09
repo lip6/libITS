@@ -12,6 +12,12 @@ namespace sogits {
     states =  model.leastFixpoint ( entryStates, bddAP);
     div = ( model.getDivergent ( states, bddAP ) != its::State::null );
     succ = ( (! model.getSelector(bddAP)) & model.getNextRel() ) (states);
+
+    std::cerr << "------\nBuilt sogstate from " << entryStates.nbStates() << " initial states ;" << std::endl ;
+    std::cerr << "With AP =" << bddAP << std::endl;
+    std::cerr << "Obtained :" << states.nbStates() << " states. Succ size is " << succ.nbStates() << " and div ="<< div <<std::endl;
+    std::cerr << "(succ == states) =" << (succ == states) << std::endl;
+    std::cerr << "------\n";
   } 
   
   GSDD sog_state::get_succ() const {
@@ -45,6 +51,11 @@ namespace sogits {
     return div;
   }
 
+  std::ostream & sog_state::print (std::ostream & os) const {
+    return (os << "SogState : size =" << get_states().nbStates() << " div=" << get_div () << " succ.size = " << get_succ().nbStates() << std::endl);
+  }
+
+
   sog_div_state::sog_div_state(const bdd& c) : cond(c) {
   }
 
@@ -69,5 +80,18 @@ namespace sogits {
   }
 
 
+  std::ostream & sog_div_state::print (std::ostream & os) const {
+    return (os << "SogDivState " << std::endl);
+  }
+
 
 } // namespace
+
+
+std::ostream & operator << (std::ostream & os, const sogits::sog_state &s) {
+  return s.print(os);
+}
+
+std::ostream & operator << (std::ostream & os, const sogits::sog_div_state &s) {
+ return s.print(os);
+}

@@ -20,15 +20,10 @@
 // Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 // 02111-1307, USA.
 
-//#define TRACE
+#define TRACE
 
 #include <iostream>
 #include <sstream>
-#ifdef TRACE
-#define trace std::cerr
-#else
-#define trace while (0) std::cerr
-#endif
 
 #include <cassert>
 
@@ -41,6 +36,13 @@
 
 #include  "ITSModel.hh"
 
+#ifdef TRACE
+#define trace std::cerr
+#else
+#define trace while (0) std::cerr
+#endif
+
+
 using namespace its;
 
 namespace sogits {
@@ -50,6 +52,7 @@ sog_succ_iterator::sog_succ_iterator(const its::ITSModel& m, const sog_state& s)
   // set status of iterator to done() initially
 
   // succstates : initialize Ext = states that serve as seed for successors
+  trace << "Built sog_succ_iterator : " << *this << std::endl;
 }
 
   sog_succ_iterator::~sog_succ_iterator() {
@@ -93,9 +96,9 @@ bool sog_succ_iterator::done() const {
 
 spot::state* sog_succ_iterator::current_state() const {
   assert(!done());
-//  trace << "FIRING : " << format_transition() << std::endl;
-//  trace << "FROM " << pnbdd.format_marking(from) << std::endl;
   if (! it.done() ) {
+    trace << "FIRING : " << it.current() << std::endl;
+    trace << "FROM " << from << std::endl;
     return current_succ;
   }
   else {
@@ -114,6 +117,13 @@ bdd sog_succ_iterator::current_acceptance_conditions() const {
   assert(!done());
   return bddfalse;
 } //
+
+ std::ostream & sog_succ_iterator::print (std::ostream & os) const {
+    return (os << "SogSuccIter : from =" << from << std::endl);
+  }
+
+
+
 
 sog_div_succ_iterator::sog_div_succ_iterator(const spot::bdd_dict* d, const bdd& c)
   : dict(d), cond(c), div_has_been_visited(true) {
@@ -174,3 +184,9 @@ sog_div_succ_iterator& sog_div_succ_iterator::operator=(const sog_div_succ_itera
 
 
 } // namespace 
+
+std::ostream & operator << (std::ostream & os, const sogits::sog_succ_iterator &s) {
+  return s.print(os);
+}
+
+
