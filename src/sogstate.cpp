@@ -8,14 +8,14 @@
 namespace sogits {
 
   sog_state::sog_state(const its::ITSModel & model, const GSDD& entryStates, bdd bddAP) 
-    : spot::state() {
+    : spot::state(),condition(bddAP) {
     states =  model.leastFixpoint ( entryStates, bddAP);
     div = ( model.getDivergent ( states, bddAP ) != its::State::null );
     succ = ( (! model.getSelector(bddAP)) & model.getNextRel() ) (states);
-
+    
     std::cerr << "------\nBuilt sogstate from " << entryStates.nbStates() << " initial states ;" << std::endl ;
     std::cerr << "With AP =" << bddAP << std::endl;
-    std::cerr << "Obtained :" << states.nbStates() << " states. Succ size is " << succ.nbStates() << " and div ="<< div <<std::endl;
+    std::cerr << "Obtained :" << *this ;
     std::cerr << "(succ == states) =" << (succ == states) << std::endl;
     std::cerr << "------\n";
   } 
@@ -52,7 +52,7 @@ namespace sogits {
   }
 
   std::ostream & sog_state::print (std::ostream & os) const {
-    return (os << "SogState : size =" << get_states().nbStates() << " div=" << get_div () << " succ.size = " << get_succ().nbStates() << std::endl);
+    return (os << "(SogState : size =" << get_states().nbStates() << " div=" << get_div () << " succ.size = " << get_succ().nbStates() << ")" << std::endl);
   }
 
 
