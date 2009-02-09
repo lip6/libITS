@@ -32,6 +32,8 @@
 
 #include "sogtgbautils.hh"
 #include "train.hh"
+#include "MemoryManager.h"
+
 
 using namespace its;
 using namespace sogits;
@@ -77,6 +79,10 @@ void syntax(const char* prog) {
 }
 
 int main(int argc, const char *argv[]) {
+
+  // external block for full garbage
+  { 
+
   bool check = false;
   bool print_rg = false;
   bool print_pn = false;
@@ -150,7 +156,7 @@ int main(int argc, const char *argv[]) {
   ITSModel model;
   
   // Parse and build the model !!!
-  loadTrains(5,model);
+  loadTrains(2,model);
   // Update the model to point at this model type as main instance
   model.setInstance("Trains","main");
   // The only state defined in the type "trains" is "init"
@@ -216,7 +222,14 @@ std::string* check_at_prop(const petri_net* p,
 
   spot::ltl::destroy(f);
 
+
+  // external block for full garbage
+  } 
+  MemoryManager::garbage();
+  MemoryManager::garbage();
+
   return 0;
+
 }
 
 
