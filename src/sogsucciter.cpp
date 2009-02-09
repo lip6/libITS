@@ -48,14 +48,14 @@ using namespace its;
 namespace sogits {
 
 sog_succ_iterator::sog_succ_iterator(const its::ITSModel& m, const sog_state& s)
-  : model(m), from(s), it(APIteratorFactory::create()), div_has_been_visited(true),succstates(from.get_succ()) {
+  : model(m), from(s), it(APIteratorFactory::create()), div_has_been_visited(true),succstates(from.get_succ()), current_succ(NULL) {
   // set status of iterator to done() initially
 
   // succstates : initialize Ext = states that serve as seed for successors
   trace << "Built sog_succ_iterator : " << *this << std::endl;
 }
 
-  sog_succ_iterator::~sog_succ_iterator() {
+  sog_succ_iterator::~sog_succ_iterator () {
     delete current_succ;
   }
 
@@ -99,16 +99,17 @@ spot::state* sog_succ_iterator::current_state() const {
   if (! it.done() ) {
     trace << "FIRING : " << it.current() << std::endl;
     trace << "FROM " << from << std::endl;
-    return current_succ;
+    return new sog_state(*current_succ);
   }
   else {
-    trace << "REACHED DIV STATE" << std::endl << std::endl;
+    trace << "REACHED DIV STATE"  << std::endl;
     return new sog_div_state(from.get_condition());
   }
 } //
 
 bdd sog_succ_iterator::current_condition() const {
   assert(!done());
+  trace << "Succ iter" << *this << " asked for current cond= " << from.get_condition() << std::endl;
   return from.get_condition();
 } // 
 
