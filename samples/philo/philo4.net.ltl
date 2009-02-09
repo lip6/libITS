@@ -1,0 +1,10 @@
+G(!"Fork3" & !WaitRight1) & !HasRight3
+(Idle2 & (HasRight2 U !HasLeft3)) | (!Idle2 & (!HasRight2 R HasLeft3)) | HasRight2
+((!HasLeft2 & GIsEating1) | (F!IsEating1 & HasLeft2)) U Idle3
+(!WaitRight1 R Idle2) R F!IsEating2
+(FIdle3 & G((!WaitLeft3 | HasRight1) & (!HasRight1 | WaitLeft3))) | (F((!WaitLeft3 & HasRight1) | (!HasRight1 & WaitLeft3)) & G!Idle3)
+(((!"Fork3" U HasLeft0) | WaitLeft0) & !IsEating2 & (("Fork3" R !HasLeft0) | !WaitLeft0)) | (((("Fork3" R !HasLeft0) & !WaitLeft0) | ((!"Fork3" U HasLeft0) & WaitLeft0)) & IsEating2)
+(G!IsEating1 | !WaitLeft1) & GIsEating1
+F((((GIsEating3 & G!WaitRight1) | (F!IsEating3 & FWaitRight1)) & HasLeft2) | (!HasLeft2 & (GIsEating3 | G!WaitRight1) & (F!IsEating3 | FWaitRight1)))
+(!IsEating0 & ((!HasRight2 & (!HasRight0 | !"Fork2")) | ("Fork2" & HasRight0 & HasRight2))) | ((("Fork2" & HasRight0) | HasRight2) & IsEating0 & (!HasRight0 | !HasRight2 | !"Fork2"))
+FHasRight0 & (FWaitLeft0 | FHasLeft2)

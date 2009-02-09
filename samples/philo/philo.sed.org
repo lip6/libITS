@@ -1,0 +1,22 @@
+s/^/LTLSPEC !(/g
+s/$/)/g
+
+s/Idle0/(Idle0>=1)/g
+s/WaitLeft0/(WaitLeft0>=1)/g
+s/HasLeft0/(HasLeft0>=1)/g
+s/WaitRight0/(WaitRight0>=1)/g
+s/HasRight0/(HasRight0>=1)/g
+s/Fork0/(Fork0>=1)/g
+s/IsEating0/(IsEating0>=1)/g
+s/Idle1/(Idle1>=1)/g
+s/WaitLeft1/(WaitLeft1>=1)/g
+s/HasLeft1/(HasLeft1>=1)/g
+s/WaitRight1/(WaitRight1>=1)/g
+s/HasRight1/(HasRight1>=1)/g
+s/Fork1/(Fork1>=1)/g
+s/IsEating1/(IsEating1>=1)/g
+
+s/ R / V /g
+s/FG/F G/g
+s/GF/G F/g
+s/"//g
