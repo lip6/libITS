@@ -54,7 +54,9 @@ spot::state* sog_tgba::get_init_state() const {
     its::Transition selector = model.getSelector( it.current() );
     its::State msel = selector(m0);
     if (msel != SDD::null) {
-      return new sog_state( model, m0, it.current() );
+      sog_state * init = new sog_state( model, m0, it.current() );
+      std::cerr << "Initial state of tgba :" << *init << "verifies :"<< it.current()<< std::endl; 
+      return init;
     }
   }
  
@@ -88,10 +90,9 @@ std::string sog_tgba::format_state(const spot::state* state) const {
   
   const sog_state* s = dynamic_cast<const sog_state*>(state);
   if (s) {
-    std::string res = "Yet another state !"; // TODO !!!
-    if (s->get_div())
-      res += " (div att.)";
-    return res;
+    std::stringstream  ss;
+    ss  << *s ;    
+    return ss.str();
   }
   else {
     const sog_div_state* s = dynamic_cast<const sog_div_state*>(state);
