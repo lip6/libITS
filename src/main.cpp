@@ -34,12 +34,14 @@
 #include "train.hh"
 #include "MemoryManager.h"
 
+#include "prod/ProdLoader.hh"
+#include "PNet.hh"
 
 using namespace its;
 using namespace sogits;
 
 void syntax(const char* prog) {
-  std::cerr << "Usage: "<< prog << " [OPTIONS...] petri_net_file place_marking_bound" << std::endl
+  std::cerr << "Usage: "<< prog << " [OPTIONS...] petri_net_file " << std::endl
             << "where OPTIONS are" << std::endl
             << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
@@ -97,9 +99,11 @@ int main(int argc, const char *argv[]) {
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
   
+  std::string pathprodff = argv[argc-1];
+
   int pn_index = 0;
   for (;;) {
-    if (argc < pn_index + 3)
+    if (argc < pn_index + 2)
       syntax(argv[0]);
 
     ++pn_index;
@@ -154,14 +158,20 @@ int main(int argc, const char *argv[]) {
   }
 
   ITSModel model;
+
+  PNet * pnet = ProdLoader::loadProd(pathprodff);
+   model.declareType(*pnet);
+//   modelName += pathprodff ;
+   model.setInstance(pnet->getName(),"main");
+   model.setInstanceState("init");
   
-  // Parse and build the model !!!
-  loadTrains(2,model);
-  // Update the model to point at this model type as main instance
-  model.setInstance("Trains","main");
-  // The only state defined in the type "trains" is "init"
-  // This sets the initial state of the main instance
-  model.setInstanceState("init");  
+//   // Parse and build the model !!!
+//   loadTrains(2,model);
+//   // Update the model to point at this model type as main instance
+//   model.setInstance("Trains","main");
+//   // The only state defined in the type "trains" is "init"
+//   // This sets the initial state of the main instance
+//   model.setInstanceState("init");  
 
   // Initialize spot
   spot::ltl::parse_error_list pel;
