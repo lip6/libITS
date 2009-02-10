@@ -46,34 +46,95 @@ my $timeout = defined $opt_t ? $opt_t :  $DEFAULT_TIMEOUT ;
 
 use strict 'vars';   # After obtaining $opt_xxx, which is not a local variable
 
+my $checksogstate = $cwd."/check-sog" ;
 
 sub workonfile {
   my $ff = $_ ;
   #  Work on all .net source files
   if ( -f $ff && $ff =~/\.net$/  ) {
     print "work on file $ff\n";
+
+    my $totalticks = 0;
+    my $totalticks2 = 0;
+    my $totalstates = 0;
+    my $totalstates2 = 0;
+    my $totaltrans = 0;
+    my $totaltrans2 = 0;
+
     my @formulas ;
     my $formff = dirname($ff)."/formula.ltl";
-      print "using formula file : $formff";
     if ( -r $formff ) {
-
       push @formulas, $formff;
     }
     $formff = "$ff.ltl";
     if ( -r $formff ) {
       push @formulas, $formff;
     }
+    my $nbformula = 0;
     foreach  my $formulaff (@formulas) {
       open IN,$formulaff or die "Bad formula file name";
+#      print "Working on formula file : $formulaff \n";
       while (my $line = <IN>) {
 	chomp $line;
+	$line =~ s/"/\\"/g ;
+	$nbformula ++;
+#	print "Working on formula : $line \n";
 	# ../check-sog -Fformula -c -e invoice.cami.net 1
-	my $call = "$checksog_exe -f\"$line\" -c  $ff";
+	my $call = "$checksog_exe -f\"$line\" -c  $ff|";
 	
-	print STDERR $call."\n";
-	system($call);
+#	print STDERR $call."\n";
+	open MYTOOL,$call;
+	my $verdict = 0;
+	my $nbstates =0;
+	my $nbtrans =0;
+	my $ticks = 0;
+	while (my $outline = <MYTOOL>) {
+	  if ($outline =~ /(\d+) unique states visited/) {
+	    $nbstates = $1;
+	  } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
+	    $ticks = $1;
+	  } elsif ($outline =~ /(\d+) transitions explored/) {
+	    $nbtrans = $1;
+	  } elsif ($outline =~ /accepting run exists/ ) {
+#	    print $outline;
+	    $verdict = 1;
+	    last;
+	  }
+	}
+
+	my $call2 = "$checksogstate -f\"$line\" -c  $ff 5 |";
+#	print STDERR $call2."\n";
+	open MYTOOL2,$call2;
+	my $nbstates2 =0;
+	my $nbtrans2 =0;
+	my $ticks2 = 0;
+	my $verdict2 = 0;
+	while (my $outline = <MYTOOL2>) {
+	  if ($outline =~ /(\d+) unique states visited/) {
+	    $nbstates2 = $1;
+	  } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
+	    $ticks2 = $1;
+	  } elsif ($outline =~ /(\d+) transitions explored/) {
+	    $nbtrans2 = $1;
+	  } elsif ($outline =~ /accepting run exists/ ) {
+#	    print $outline;
+	    $verdict2 = 1;
+	    last;
+	  }
+	}
+	if ($verdict != $verdict2) {
+	  print "HOUSTON, we have a problem !!";
+	} else {
+	  $totaltrans2 += $nbtrans2;
+	  $totalticks2 += $ticks2 ;
+	  $totalstates2 += $nbstates2;
+	  $totaltrans += $nbtrans;
+	  $totalticks += $ticks ;
+	  $totalstates += $nbstates;
+	}
       }
     }
+    print "Totals (SDD/BDD) for $nbformula formula : ticks : $totalticks/$totalticks2 ; States : $totalstates/$totalstates2 ; Trans : $totaltrans/$totaltrans2 \n";
   }
 }
 
