@@ -164,7 +164,9 @@ int main(int argc, const char *argv[]) {
 //   modelName += pathprodff ;
    model.setInstance(pnet->getName(),"main");
    model.setInstanceState("init");
-  
+   
+   
+
 //   // Parse and build the model !!!
 //   loadTrains(2,model);
 //   // Update the model to point at this model type as main instance

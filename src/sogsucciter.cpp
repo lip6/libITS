@@ -20,7 +20,7 @@
 // Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 // 02111-1307, USA.
 
-#define TRACE
+
 
 #include <iostream>
 #include <sstream>
@@ -35,6 +35,9 @@
 #include "apiterator.hh"
 
 #include  "ITSModel.hh"
+
+
+//#define TRACE
 
 #ifdef TRACE
 #define trace std::cerr

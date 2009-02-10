@@ -4,6 +4,14 @@
 
 #include "sogstate.hh"
 
+//#define TRACE
+
+#ifdef TRACE
+#define trace std::cerr
+#else
+#define trace while (0) std::cerr
+#endif
+
 
 namespace sogits {
 
@@ -13,11 +21,11 @@ namespace sogits {
     div = ( model.getDivergent ( states, bddAP ) != its::State::null );
     succ = ( (! model.getSelector(bddAP)) & model.getNextRel() ) (states);
     
-    std::cerr << "------\nBuilt sogstate from " << entryStates.nbStates() << " initial states ;" << std::endl ;
-    std::cerr << "With AP =" << bddAP << std::endl;
-    std::cerr << "Obtained :" << *this ;
-    std::cerr << "(succ == states) =" << (succ == states) << std::endl;
-    std::cerr << "------\n";
+    trace << "------\nBuilt sogstate from " << entryStates.nbStates() << " initial states ;" << std::endl ;
+    trace << "With AP =" << bddAP << std::endl;
+    trace << "Obtained :" << *this ;
+    trace << "(succ == states) =" << (succ == states) << std::endl;
+    trace << "------\n";
   } 
   
   GSDD sog_state::get_succ() const {

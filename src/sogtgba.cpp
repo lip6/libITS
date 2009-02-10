@@ -33,6 +33,15 @@
 
 using its::ITSModel;
 
+//#define TRACE
+
+#ifdef TRACE
+#define trace std::cerr
+#else
+#define trace while (0) std::cerr
+#endif
+
+
 namespace sogits {
 
 
@@ -55,7 +64,7 @@ spot::state* sog_tgba::get_init_state() const {
     its::State msel = selector(m0);
     if (msel != SDD::null) {
       sog_state * init = new sog_state( model, m0, it.current() );
-      std::cerr << "Initial state of tgba :" << *init << "verifies :"<< it.current()<< std::endl; 
+      trace << "Initial state of tgba :" << *init << "verifies :"<< it.current()<< std::endl; 
       return init;
     }
   }
