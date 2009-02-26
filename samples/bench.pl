@@ -10,7 +10,7 @@ my $nusmv= "~/NuSMV/NuSMV-2.4.3-x86_64-linux-gnu/bin/NuSMV";
 my $default_checksog="../src/sog-its";
 #############
 
-getopt ('mdetba');
+getopt ('mdetbaq');
 
 #parsing the file list description
 my $dir = $opt_d or die "Specify target directory -d please! \n$usage" if (!defined $opt_a);
@@ -24,7 +24,8 @@ my $DEFAULT_TIMEOUT = 120;
 my $usage="Usage:\n bench.pl -d [directory base] \n"
   . "\n other options : \n"
   . " -e pathTochecksogexe (default : currentDir/$default_checksog \n"
-  . " -t timeout (default $DEFAULT_TIMEOUT seconds)";
+  . " -t timeout (default $DEFAULT_TIMEOUT seconds)\n"
+  . " -q disable check-sog comparison, simply compute stats for SDD sog-its implem";
 
 my $checksog_exe;
 if (defined $opt_e) {
@@ -43,6 +44,11 @@ if (! -x $checksog_exe  && !defined $opt_a) {
 }
 
 my $timeout = defined $opt_t ? $opt_t :  $DEFAULT_TIMEOUT ;
+
+my $doComparison = 1;
+if (defined $opt_q) {
+  $doComparison = 0;
+}
 
 use strict 'vars';   # After obtaining $opt_xxx, which is not a local variable
 
@@ -89,6 +95,7 @@ sub workonfile {
 	my $nbtrans =0;
 	my $ticks = 0;
 	while (my $outline = <MYTOOL>) {
+	  print $outline;
 	  if ($outline =~ /(\d+) unique states visited/) {
 	    $nbstates = $1;
 	  } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
@@ -101,37 +108,46 @@ sub workonfile {
 	    last;
 	  }
 	}
+	close MYTOOL;
 
-	my $call2 = "$checksogstate -f\"$line\" -c  $ff 5 |";
-#	print STDERR $call2."\n";
-	open MYTOOL2,$call2;
 	my $nbstates2 =0;
 	my $nbtrans2 =0;
 	my $ticks2 = 0;
 	my $verdict2 = 0;
-	while (my $outline = <MYTOOL2>) {
-	  if ($outline =~ /(\d+) unique states visited/) {
-	    $nbstates2 = $1;
-	  } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
-	    $ticks2 = $1;
-	  } elsif ($outline =~ /(\d+) transitions explored/) {
-	    $nbtrans2 = $1;
-	  } elsif ($outline =~ /accepting run exists/ ) {
-#	    print $outline;
-	    $verdict2 = 1;
-	    last;
+
+	if ($doComparison == 1) {
+	  my $call2 = "$checksogstate -f\"$line\" -c  $ff 5 |";
+	  #	print STDERR $call2."\n";
+	  open MYTOOL2,$call2;
+
+	  while (my $outline = <MYTOOL2>) {
+	    if ($outline =~ /(\d+) unique states visited/) {
+	      $nbstates2 = $1;
+	    } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
+	      $ticks2 = $1;
+	    } elsif ($outline =~ /(\d+) transitions explored/) {
+	      $nbtrans2 = $1;
+	    } elsif ($outline =~ /accepting run exists/ ) {
+	      #	    print $outline;
+	      $verdict2 = 1;
+	      last;
+	    }
+	  }
+	  close MYTOOL2;
+
+	  if ($verdict != $verdict2) {
+	    print "HOUSTON, we have a problem !!";
 	  }
 	}
-	if ($verdict != $verdict2) {
-	  print "HOUSTON, we have a problem !!";
-	} else {
-	  $totaltrans2 += $nbtrans2;
-	  $totalticks2 += $ticks2 ;
-	  $totalstates2 += $nbstates2;
-	  $totaltrans += $nbtrans;
-	  $totalticks += $ticks ;
-	  $totalstates += $nbstates;
-	}
+
+	
+	$totaltrans2 += $nbtrans2;
+	$totalticks2 += $ticks2 ;
+	$totalstates2 += $nbstates2;
+	$totaltrans += $nbtrans;
+	$totalticks += $ticks ;
+	$totalstates += $nbstates;
+	
       }
     }
     print "Totals (SDD/BDD) for $nbformula formula : ticks : $totalticks/$totalticks2 ; States : $totalstates/$totalstates2 ; Trans : $totaltrans/$totaltrans2 \n";
