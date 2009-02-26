@@ -54,6 +54,9 @@ use strict 'vars';   # After obtaining $opt_xxx, which is not a local variable
 
 my $checksogstate = $cwd."/check-sog" ;
 
+my @aggregatestats ;
+
+
 sub workonfile {
   my $ff = $_ ;
   #  Work on all .net source files
@@ -94,16 +97,28 @@ sub workonfile {
 	my $nbstates =0;
 	my $nbtrans =0;
 	my $ticks = 0;
+
 	while (my $outline = <MYTOOL>) {
-	  print $outline;
+#	  print $outline;
 	  if ($outline =~ /(\d+) unique states visited/) {
 	    $nbstates = $1;
 	  } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
 	    $ticks = $1;
 	  } elsif ($outline =~ /(\d+) transitions explored/) {
 	    $nbtrans = $1;
+	  } elsif ($outline =~ /STATS/) {
+	    chomp $outline;
+	    my @stats = split (/\,/,$outline);
+	    if (not defined @aggregatestats) {
+	      @aggregatestats = @stats;
+	    } else {
+	      for (my $i = 1 ; $i <= $#stats ; $i++) {
+#		print "read stat : @stats[$i] \n";
+		@aggregatestats[$i] += @stats[$i];
+	      }
+	    }
 	  } elsif ($outline =~ /accepting run exists/ ) {
-#	    print $outline;
+	    #	    print $outline;
 	    $verdict = 1;
 	    last;
 	  }
@@ -159,3 +174,8 @@ sub workonfile {
 #main block
 
 find(\&workonfile,$dir);
+
+for (my $i = 1 ; $i <= $#aggregatestats ; $i++) {
+  print "@aggregatestats[$i],";
+}
+print "\n";
