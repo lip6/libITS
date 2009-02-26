@@ -217,7 +217,6 @@ std::string* check_at_prop(const petri_net* p,
   if (print_pn)
     std::cout << model;
 
-
   /* 
   if (print_rg)
     print_reachability_graph(n, place_marking_bound, f);
@@ -230,10 +229,9 @@ std::string* check_at_prop(const petri_net* p,
     model_check(model, f, 
                 algo_string, ce_expected, 
                 fm_exprop_opt, fm_symb_merge_opt,
-                post_branching, fair_loop_approx);
+                post_branching, fair_loop_approx, ltl_string);
 
   spot::ltl::destroy(f);
-
 
   // external block for full garbage
   } 
