@@ -17,6 +17,9 @@
 #include "sogtgbautils.hh"
 #include "apiterator.hh"
 
+#include "statistic.hpp"
+
+
 namespace sogits {
 
   void model_check(its::ITSModel & model,  
@@ -25,7 +28,7 @@ namespace sogits {
                  bool fm_exprop_opt, 
                  bool fm_symb_merge_opt, 
                  bool post_branching, 
-                 bool fair_loop_approx) {
+		   bool fair_loop_approx, const std::string & ltl_string) {
   
   // find all AP in the formula
   spot::ltl::atomic_prop_set *sap = spot::ltl::atomic_prop_collect(f);
@@ -100,6 +103,10 @@ namespace sogits {
   const spot::timer& tec = timers.timer("emptiness check");
   clock_t total = tec.utime() + tec.stime();
   std::cout << total << " ticks for the emptiness check" << std::endl;
+
+  SDD d;
+  Statistic S = Statistic(d, ltl_string , CSV); // can also use LATEX instead of CSV
+  S.print_table(std::cout);
   
   if (res) {
     if (ce_expected) {
