@@ -22,7 +22,7 @@
 
 namespace sogits {
 
-  void model_check(its::ITSModel & model,  
+  void model_check(its::ITSModel & model_,  
                  const spot::ltl::formula* f, const std::string& echeck_algo,
                  bool ce_expected, 
                  bool fm_exprop_opt, 
@@ -36,6 +36,7 @@ namespace sogits {
   // For bdd varnum to AP name in Spot
   spot::bdd_dict dict;
 
+  bddITSModelAdapter model = model_;
   sog_tgba systgba(model, &dict);
   
   if (sap) {   

@@ -34,7 +34,7 @@
 //#include "ltlast/atomic_prop.hh"
 #include "bdd.h"
 
-#include "ITSModel.hh"
+#include "buildHom.hh"
 
 
 namespace sogits {
@@ -54,7 +54,7 @@ public:
   /// \dontinclude sogtgba.cpp
   /// \skipline sog_tgba::sog_tgba
   /// \until } //
-  sog_tgba(const its::ITSModel & m, 
+  sog_tgba(const bddITSModelAdapter & m, 
           spot::bdd_dict* dict);
 
   /// \brief Unregister all the used propositions.
@@ -141,7 +141,7 @@ private:
   
 
   /// the encapsulated Petri net. 
-  const its::ITSModel & model;
+  const bddITSModelAdapter & model;
   
   /// Point to the associated dictionnary.
   spot::bdd_dict* dict;

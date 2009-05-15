@@ -45,7 +45,7 @@ using its::ITSModel;
 namespace sogits {
 
 
-sog_tgba::sog_tgba(const ITSModel & m, 
+sog_tgba::sog_tgba(const bddITSModelAdapter & m, 
 		   spot::bdd_dict* dict): model(m),dict(dict) {
 } //
 
@@ -55,7 +55,7 @@ sog_tgba::~sog_tgba() {
 } //
 
 spot::state* sog_tgba::get_init_state() const {
-  its::State m0 = model.getInitialState() ;
+  its::State m0 = model.getModel().getInitialState() ;
   assert(m0 != SDD::null);
   // now determine which AP are true in m0
   APIterator it = APIteratorFactory::create();

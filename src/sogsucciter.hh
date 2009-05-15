@@ -11,7 +11,7 @@
 #include "bdd.h"
 #include "apiterator.hh"
 
-#include "ITSModel.hh"
+#include "buildHom.hh"
 #include "sogstate.hh"
 
 
@@ -20,7 +20,7 @@ namespace sogits {
 /// \brief Implementation of a \a spot::tgba_succ_iterator for a \a ::marking.
 class sog_succ_iterator : public spot::tgba_succ_iterator {
   public:
-  sog_succ_iterator(const its::ITSModel & m, const sog_state& s);
+  sog_succ_iterator(const bddITSModelAdapter & m, const sog_state& s);
   virtual ~sog_succ_iterator();
 
     void first();
@@ -35,7 +35,7 @@ class sog_succ_iterator : public spot::tgba_succ_iterator {
   std::ostream & print (std::ostream &) const ;
 private:
 
-  const its::ITSModel& model; ///< The petri net.
+  const bddITSModelAdapter& model; ///< The petri net.
   const sog_state & from; ///< The source state.
 
   APIterator it;
