@@ -29,7 +29,7 @@ AM_CXXFLAGS = -g -O2 -Wall
 LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
 
 MYHEADER =apiterator.hh \
-	buildHom.hh \
+	sogIts.hh \
 	sogstate.hh \
 	sogsucciter.hh \
 	sogtgba.hh \
@@ -38,8 +38,8 @@ MYHEADER =apiterator.hh \
 
 
 MYSRC = apiterator.cpp \
-	buildHom.cpp \
 	main.cpp \
+	sogIts.cpp \
 	sogstate.cpp \
 	sogsucciter.cpp \
 	sogtgba.cpp \

@@ -4,7 +4,7 @@
 #include "tgba/state.hh"
 #include "bdd.h"
 #include "SDD.h"
-#include "buildHom.hh"
+#include "sogIts.hh"
 
 namespace sogits {
 

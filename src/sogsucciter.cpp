@@ -34,7 +34,7 @@
 
 #include "apiterator.hh"
 
-#include  "ITSModel.hh"
+#include  "sogIts.hh"
 
 
 //#define TRACE

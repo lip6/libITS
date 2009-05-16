@@ -34,7 +34,7 @@
 //#include "ltlast/atomic_prop.hh"
 #include "bdd.h"
 
-#include "buildHom.hh"
+#include "sogIts.hh"
 
 
 namespace sogits {

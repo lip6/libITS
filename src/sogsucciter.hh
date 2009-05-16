@@ -11,7 +11,7 @@
 #include "bdd.h"
 #include "apiterator.hh"
 
-#include "buildHom.hh"
+#include "sogIts.hh"
 #include "sogstate.hh"
 
 
