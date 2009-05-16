@@ -36,7 +36,7 @@ namespace sogits {
   // For bdd varnum to AP name in Spot
   spot::bdd_dict dict;
 
-  bddITSModelAdapter model = model_;
+  sogIts model = model_;
   sog_tgba systgba(model, &dict);
   
   if (sap) {   

@@ -9,7 +9,7 @@
 
 
 
-class bddITSModelAdapter {
+class sogIts {
   
   const its::ITSModel & model;
 
@@ -23,7 +23,7 @@ class bddITSModelAdapter {
   its::VarOrder apOrder_;    
  
 public :
-  bddITSModelAdapter (const its::ITSModel & m) : model(m) {};
+  sogIts (const its::ITSModel & m) : model(m) {};
   
   // Atomic properties handling primitives
   // return a selector corresponding to the boolean formula over AP encoded as a bdd.
@@ -39,7 +39,7 @@ public :
   // Return the set of divergent states in a set, using  (hcond & next) as transition relation
   its::State getDivergent (its::State init, bdd cond) const;
 
-  const its::ITSModel & getModel() const { return model ; }
+  its::State getInitialState () const { return model.getInitialState() ; }
 
   its::Transition getNextRel () const {
     return model.getNextRel();

@@ -15,7 +15,7 @@
 
 namespace sogits {
 
-  sog_state::sog_state(const bddITSModelAdapter & model, const GSDD& entryStates, bdd bddAP) 
+  sog_state::sog_state(const sogIts & model, const GSDD& entryStates, bdd bddAP) 
     : spot::state(),condition(bddAP) {
     states =  model.leastFixpoint ( entryStates, bddAP);
     div = ( model.getDivergent ( states, bddAP ) != its::State::null );

@@ -54,7 +54,7 @@ public:
   /// \dontinclude sogtgba.cpp
   /// \skipline sog_tgba::sog_tgba
   /// \until } //
-  sog_tgba(const bddITSModelAdapter & m, 
+  sog_tgba(const sogIts & m, 
           spot::bdd_dict* dict);
 
   /// \brief Unregister all the used propositions.
@@ -141,7 +141,7 @@ private:
   
 
   /// the encapsulated Petri net. 
-  const bddITSModelAdapter & model;
+  const sogIts & model;
   
   /// Point to the associated dictionnary.
   spot::bdd_dict* dict;

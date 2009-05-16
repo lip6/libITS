@@ -50,7 +50,7 @@ using namespace its;
 
 namespace sogits {
 
-sog_succ_iterator::sog_succ_iterator(const bddITSModelAdapter& m, const sog_state& s)
+sog_succ_iterator::sog_succ_iterator(const sogIts& m, const sog_state& s)
   : model(m), from(s), it(APIteratorFactory::create()), div_has_been_visited(true),succstates(from.get_succ()), current_succ(NULL) {
   // set status of iterator to done() initially
 

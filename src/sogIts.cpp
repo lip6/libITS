@@ -8,7 +8,7 @@ using namespace its;
 
 // Atomic properties handling primitives
 // return a selector corresponding to the boolean formula over AP encoded as a bdd.
-Transition bddITSModelAdapter::getSelector(bdd aps) const {
+Transition sogIts::getSelector(bdd aps) const {
   formCache_it it ;
   if ( formulaCache.find(it,aps.id()) ) 
     // cache hit
@@ -45,7 +45,7 @@ Transition bddITSModelAdapter::getSelector(bdd aps) const {
 // The truth value of cond need not be homogeneous in the provided states.
 // fixpoint ( hcond & locals() + id ) ( hcond(s) )
 // Where hcond represents getSelector(cond)
-State bddITSModelAdapter::leastFixpoint ( State init, bdd cond ) const {
+State sogIts::leastFixpoint ( State init, bdd cond ) const {
   Transition hcond = getSelector(cond);
   Transition hnext = model.getNextRel();
   
@@ -55,7 +55,7 @@ State bddITSModelAdapter::leastFixpoint ( State init, bdd cond ) const {
 }
 
 // Return the set of divergent states in a set, using  (hcond & next) as transition relation
-State bddITSModelAdapter::getDivergent (State init, bdd cond) const {
+State sogIts::getDivergent (State init, bdd cond) const {
   return fixpoint ( (getSelector(cond) & model.getNextRel()) * Transition::id ) (init);
 }
 
