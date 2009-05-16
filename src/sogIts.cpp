@@ -30,7 +30,14 @@ Transition sogIts::getSelector(bdd aps) const {
     //      std::cerr << "Type = " << * (getInstance()->getType())  << std::endl;
     trace << "prop = " << prop << std::endl ;
     trace << "hcond = "  << hcond << std::endl ;
-    Transition ret = ITE(hcond, getSelector(bdd_high(aps)),  getSelector(bdd_low(aps)) ); 
+    
+    Transition ret ;
+    if ( bdd_high(aps) == bdd_low(aps) ) {
+      // This AP is a don't care in this part of the boolean formula
+      ret = getSelector(bdd_high(aps));
+    } else {
+      ret = ITE(hcond, getSelector(bdd_high(aps)),  getSelector(bdd_low(aps)) ); 
+    }
     formulaCache.insert(it, aps.id());
     it->second = ret;
     
