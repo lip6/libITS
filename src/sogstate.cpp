@@ -15,6 +15,8 @@
 
 namespace sogits {
 
+  // build the agregate inductively defined by
+  //  (ap&Trans + id)^*  & ap (m)
   sog_state::sog_state(const sogIts & model, const GSDD& entryStates, bdd bddAP) 
     : spot::state(),condition(bddAP) {
     states =  model.leastFixpoint ( entryStates, bddAP);

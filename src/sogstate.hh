@@ -11,6 +11,8 @@ namespace sogits {
 /// \brief Implementation of a \a spot::state.
 class sog_state : public spot::state {
 public:
+  // build the agregate inductively defined by
+  //  (ap&Trans + id)^*  & ap (m)
   sog_state(const sogIts & model, const GSDD & m, bdd ap);
   int compare(const state* other) const;
   size_t hash() const;
