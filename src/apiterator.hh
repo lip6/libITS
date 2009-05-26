@@ -8,21 +8,29 @@
 namespace sogits {
 
 
-
+  /** This class is designed to iterate over 2^AP : provide the AP
+   *  this class provides the bdd representing each of the 2^AP
+   *  possible combinations */
 class APIterator {
 public:
+  /// the set of variables
   typedef std::vector<int> varset_t;
   
-
+  /** initialize from a set of vars */
   APIterator(const varset_t & vars)
-    : cur(bvec_true(vars.size())), size(vars.size()), last(true) {
+    : cur(bvec_true(vars.size())), // initialze all vars to true
+      size(vars.size()),  // size
+      last(true)  // initially at end
+  { 
     int tabvar [size];
     std::copy(vars.begin() , vars.end() , tabvar );
+    // the bit vector true
     var = bvec_varvec(vars.size(), tabvar);
   }
 
   void first() {
     last = false;
+    // cue = 0,0....0
     cur = bvec_false(size);
   }
 
@@ -31,6 +39,7 @@ public:
     if (bvec_val(cur) == bvec_val(bvec_true(size)))
       last = true;
     else
+      // add 1 to cur
       cur = cur + bvec_con(size, 1);
   }
   bool done() const {
@@ -38,11 +47,15 @@ public:
   }
   bdd current() const {
     assert(!done());
+    // the bdd representing the current element in 2^AP
     return var == cur;
   }
 private:
+  // bit vectors : the vars, the current bdd
   bvec var, cur;
+  // the bit vector size
   int size;
+  // true iff. done
   bool last;
 };
 
