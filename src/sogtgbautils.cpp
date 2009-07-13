@@ -16,6 +16,7 @@
 #include "sogtgba.hh"
 #include "sogtgbautils.hh"
 #include "apiterator.hh"
+#include "slog.hh"
 
 #include "statistic.hpp"
 
@@ -23,11 +24,13 @@
 namespace sogits {
 
   void model_check(its::ITSModel & model_,  
-                 const spot::ltl::formula* f, const std::string& echeck_algo,
-                 bool ce_expected, 
-                 bool fm_exprop_opt, 
-                 bool fm_symb_merge_opt, 
-                 bool post_branching, 
+		   const spot::ltl::formula* f, 
+		   sog_product_type sogtype,
+		   const std::string& echeck_algo,
+		   bool ce_expected, 
+		   bool fm_exprop_opt, 
+		   bool fm_symb_merge_opt, 
+		   bool post_branching, 
 		   bool fair_loop_approx, const std::string & ltl_string) {
   
   // find all AP in the formula
@@ -90,9 +93,18 @@ namespace sogits {
       exit(1);
   }
 
-  spot::tgba_product prod(a, &systgba);
+  
+  spot::tgba * prod = NULL;
+  switch (sogtype) {
+  case PLAIN_SOG :
+    prod = new spot::tgba_product(a, &systgba);
+    break;
+  case SLOG :
+    prod = new slog::slog_tgba(a, model);
+    break;
+  }
 
-  spot::emptiness_check *ec =  echeck_inst->instantiate(&prod);
+  spot::emptiness_check *ec =  echeck_inst->instantiate(prod);
   timers.stop("construction");
 
   timers.start("emptiness check");
@@ -115,7 +127,7 @@ namespace sogits {
       spot::tgba_run* run = res->accepting_run();
       if (run)
         {
-          spot::print_tgba_run(std::cout, &prod, run);
+          spot::print_tgba_run(std::cout, prod, run);
           delete run;
         }
     }
@@ -130,6 +142,7 @@ namespace sogits {
   }
 
   delete ec;
+  delete prod;
   delete echeck_inst;
   delete a;
   if (tba)
