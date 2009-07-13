@@ -3,8 +3,8 @@
 using namespace its;
 
 
-#define trace std::cerr
-// #define trace if (0) std::cerr
+//#define trace std::cerr
+#define trace if (0) std::cerr
 
 // Atomic properties handling primitives
 // return a selector corresponding to the boolean formula over AP encoded as a bdd.
@@ -52,13 +52,33 @@ Transition sogIts::getSelector(bdd aps) const {
 // The truth value of cond need not be homogeneous in the provided states.
 // fixpoint ( hcond & locals() + id ) ( hcond(s) )
 // Where hcond represents getSelector(cond)
-State sogIts::leastFixpoint ( State init, bdd cond ) const {
+its::State sogIts::leastPostTestFixpoint ( State init, bdd cond ) const {
   Transition hcond = getSelector(cond);
-  Transition hnext = model.getNextRel();
+  Transition hnext = getNextRel();
   
   Transition sat = fixpoint ( (hcond &  hnext) + Transition::id ) & hcond;
-  trace << "Saturate least fixpoint under conditions : " << sat << std::endl;
+  trace << "Saturate (post) least fixpoint under conditions : " << sat << std::endl;
   return sat(init);
+}
+
+// Saturate the provided states, while ensuring that only states with
+// "cond" or their successors are kept
+// fixpoint ( locals() & hcond + id ) (s)
+its::State sogIts::leastPreTestFixpoint ( its::State init, bdd cond ) const {
+  Transition hcond = getSelector(cond);
+  Transition hnext = getNextRel();
+  
+  Transition sat = fixpoint ( ( hnext & hcond ) + Transition::id );
+  
+  trace << "Saturate (pre) least fixpoint under conditions : " << sat << std::endl;
+  return sat(init);
+
+}
+
+
+// Find successors of states satisfying "cond" in the provided aggregate "init"
+State  sogIts::succSatisfying ( its::State init, bdd cond) const {
+  return (getNextRel()  & getSelector(cond)) (init);
 }
 
 // Return the set of divergent states in a set, using  (hcond & next) as transition relation

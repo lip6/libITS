@@ -34,7 +34,15 @@ public :
   // The truth value of cond need not be homogeneous in the provided states.
   // fixpoint ( hcond & locals() + id ) ( hcond(s) )
   // Where hcond represents getSelector(cond)
-  its::State leastFixpoint ( its::State init, bdd cond ) const ;
+  its::State leastPostTestFixpoint ( its::State init, bdd cond ) const ;
+
+  // Saturate the provided states, while ensuring that only states with
+  // "cond" or their successors are kept
+  // fixpoint ( locals() & hcond + id ) (s)
+  its::State leastPreTestFixpoint ( its::State init, bdd cond ) const ;
+
+  // Find successors of states satisfying "cond" in the provided aggregate "init"
+  its::State succSatisfying ( its::State init, bdd cond) const;
   
   // Return the set of divergent states in a set, using  (hcond & next) as transition relation
   its::State getDivergent (its::State init, bdd cond) const;
