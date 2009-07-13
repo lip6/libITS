@@ -5,7 +5,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
-            [AC_HELP_STRING([--with-libdd=/root/of/libddd],
+            [AC_HELP_STRING([--with-libddd=/root/of/libddd],
                             [specify the path of libddd])])
 
 
@@ -18,7 +18,7 @@ fi
 # option to indicate libspot folder
 AC_ARG_WITH([libspot],
             [AC_HELP_STRING([--with-libspot=/root/of/libspot],
-                            [specify the path of libddd])])
+                            [specify the path of Spot])])
 
 
 AM_CONDITIONAL([WITH_LIBSPOT_PATH], [test "x${with_libspot}" != x])
@@ -28,8 +28,8 @@ fi
 
 # option to indicate libspot folder
 AC_ARG_WITH([libits],
-            [AC_HELP_STRING([--with-libspot=/root/of/libits],
-                            [specify the path of libddd])])
+            [AC_HELP_STRING([--with-libits=/root/of/libits],
+                            [specify the path of libits])])
 
 
 AM_CONDITIONAL([WITH_LIBITS_PATH], [test "x${with_libits}" != x])
