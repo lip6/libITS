@@ -47,6 +47,8 @@ void syntax(const char* prog) {
             << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
+            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLOG} (SLOG by default)"
+            << std::endl
             << "  -C              display the number of states and edges of the SOG"
             << std::endl
             << "  -c              check the formula"
@@ -99,7 +101,9 @@ int main(int argc, const char *argv[]) {
   
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
-  
+
+  sog_product_type sogtype = SLOG;
+
   std::string pathprodff = argv[argc-1];
 
   int pn_index = 0;
@@ -146,6 +150,12 @@ int main(int argc, const char *argv[]) {
     }
     else if (!strcmp(argv[pn_index], "-p")) {
       print_pn = true;
+    }
+    else if (!strcmp(argv[pn_index], "-SSOG")) {
+      sogtype = PLAIN_SOG;
+    }
+    else if (!strcmp(argv[pn_index], "-SSLOG")) {
+      sogtype = SLOG;
     }
     else if (!strcmp(argv[pn_index], "-x")) {
       fm_exprop_opt = true;
@@ -226,11 +236,14 @@ std::string* check_at_prop(const petri_net* p,
     count_markings(n, place_marking_bound, f);
   */
 
+ 
+
   if (check)
-    model_check(model, f, 
+    model_check(model, f, sogtype,
                 algo_string, ce_expected, 
                 fm_exprop_opt, fm_symb_merge_opt,
                 post_branching, fair_loop_approx, "STATS");
+  
 
   spot::ltl::destroy(f);
 
