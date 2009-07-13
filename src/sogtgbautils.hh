@@ -41,6 +41,13 @@ namespace sogits {
                            const spot::ltl::formula* f, 
                            spot::ltl::atomic_prop_set*& sap);
 
+
+
+  enum sog_product_type {
+    PLAIN_SOG, // < The basic algorithm with static parameters.
+    SLOG // < The local Obs Graph algorithm
+  } ;
+
 /// \brief Check if the Petri net \a n can produce at least one infinite
 /// sequence accepted by the formula \a f.
 /// 
@@ -53,11 +60,13 @@ namespace sogits {
 /// \skipline void model_check
 /// \until } //
   void model_check(its::ITSModel & m,  
-                 const spot::ltl::formula* f, const std::string& echeck_algo,
-                 bool ce_expected, 
-                 bool fm_exprop_opt=false, 
-                 bool fm_symb_merge_opt=true, 
-                 bool post_branching=false, 
+		   const spot::ltl::formula* f, 
+		   sog_product_type sogtype,
+		   const std::string& echeck_algo,
+		   bool ce_expected, 
+		   bool fm_exprop_opt=false, 
+		   bool fm_symb_merge_opt=true, 
+		   bool post_branching=false, 
 		   bool fair_loop_approx=false,
 		   const std::string & ltl_string ="formula");
 
