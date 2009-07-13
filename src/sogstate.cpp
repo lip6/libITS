@@ -19,7 +19,7 @@ namespace sogits {
   //  (ap&Trans + id)^*  & ap (m)
   sog_state::sog_state(const sogIts & model, const GSDD& entryStates, bdd bddAP) 
     : spot::state(),condition(bddAP) {
-    states =  model.leastFixpoint ( entryStates, bddAP);
+    states =  model.leastPostTestFixpoint ( entryStates, bddAP);
     div = ( model.getDivergent ( states, bddAP ) != its::State::null );
     succ = ( (! model.getSelector(bddAP)) & model.getNextRel() ) (states);
     
