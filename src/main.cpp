@@ -35,6 +35,8 @@
 #include "train.hh"
 #include "MemoryManager.h"
 
+// prod parser
+#include "Modular2ITS.hh"
 #include "prod/ProdLoader.hh"
 #include "PNet.hh"
 
@@ -170,10 +172,11 @@ int main(int argc, const char *argv[]) {
 
   ITSModel model;
 
-  PNet * pnet = ProdLoader::loadProd(pathprodff);
-   model.declareType(*pnet);
+  vLabel nname = RdPELoader::loadModularProd(model,pathprodff);
+//  PNet * pnet = ProdLoader::loadProd(pathprodff);
+//   model.declareType(*pnet);
 //   modelName += pathprodff ;
-   model.setInstance(pnet->getName(),"main");
+   model.setInstance(nname,"main");
    model.setInstanceState("init");
    
    
