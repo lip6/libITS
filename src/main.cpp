@@ -40,6 +40,9 @@
 #include "prod/ProdLoader.hh"
 #include "PNet.hh"
 
+// fair CTL bricks
+#include "tgbaIts.hh"
+
 using namespace its;
 using namespace sogits;
 
