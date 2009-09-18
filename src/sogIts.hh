@@ -1,5 +1,5 @@
-#ifndef ___BUILD__HOM__HH__
-#define ___BUILD__HOM__HH__
+#ifndef ___SOGITS__HH__
+#define ___SOGITS__HH__
 
 #include "Ordering.hh"
 
