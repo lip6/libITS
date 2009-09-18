@@ -4,6 +4,9 @@
 
 #include "ITSModel.hh"
 #include "tgba/tgba.hh"
+#include "tgbaIts.hh"
+#include "sogIts.hh"
+
 
 namespace its {
 
@@ -11,8 +14,14 @@ namespace its {
   /** This class handles the construction of a synchronized product of an ITSModel with an ITS representation of a TGBA.
    *  It builds a composite adapted to the problem and contains the SCC search algorithm. */
   class fsltlModel : public ITSModel {
-
+    // Because we need more knowledge when interrogating the tgba
+    const class TgbaType * tgba_;
+    // To handle all the atomic proposition interaction with bdd and spot
+    sogIts sogIts_;
   public :
+    // ctor
+    fsltlModel() : tgba_(NULL), sogIts_(*this) {};
+
     // Play factory role for building ITS types from other formalisms
     // Returns false and aborts if type name already exists.
     // Create a type to hold a spot TGBA
