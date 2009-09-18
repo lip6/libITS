@@ -14,7 +14,7 @@ namespace its {
  *  Using delegation to build a type from a TGBA */
   class TgbaType : public TypeBasics {
     // the concrete storage class
-    spot::tgba * tgba_;
+    const spot::tgba * tgba_;
     // used to label SDD node of PNet.
     static const int DEFAULT_VAR = 0;
     // used to name this type
@@ -24,6 +24,8 @@ namespace its {
       return labels_t (1,"state");
     }
   public :
+    TgbaType (const spot::tgba * tgba_) : tgba_(tgba_) {}
+
     /** the set InitStates of designated initial states */
     labels_t getInitStates () const {
       return labels_t(1,"init");
@@ -35,6 +37,20 @@ namespace its {
       // put it into a hash table : <bdd apcond, bdd acc> -> set< pair<state *, state *> >  (or perhaps using int instead of state*)
       return labels_t();
     }
+
+    /** help setup a correspondance from label to pair<bdd apcond, set<acc> > */
+    typedef std::pair<bdd, labels_t> arcLabel_t;
+    
+    arcLabel_t getTransLabelDescription (Label trans) const {
+      // example : trans = "a . !b x {}" => bdd of : a.!b,  empty set of acc
+      // example : trans = "a  x {black,white}" => bdd of : a,  set of acc {black,white}
+      if (trans < "toto") 
+	return arcLabel_t(bddtrue, labels_t());
+      else {
+	return arcLabel_t(bddtrue, labels_t(1,"black"));
+      }
+    }
+
 
     /** state and transitions representation functions */
     /** Local transitions : none, all transitions are synchronizable */
