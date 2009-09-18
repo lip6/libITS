@@ -15,13 +15,13 @@ class APIterator {
 public:
   /// the set of variables
   typedef std::vector<int> varset_t;
-  
+
   /** initialize from a set of vars */
   APIterator(const varset_t & vars)
     : cur(bvec_true(vars.size())), // initialze all vars to true
       size(vars.size()),  // size
       last(true)  // initially at end
-  { 
+  {
     int tabvar [size];
     std::copy(vars.begin() , vars.end() , tabvar );
     // the bit vector true
@@ -66,9 +66,13 @@ public :
   static void setAPVarSet (const APIterator::varset_t & vars) {
     vars_ = vars;
   }
-  
+
   static APIterator create () {
     return APIterator(vars_);
+  }
+
+  static APIterator* create_new (const APIterator::varset_t & vars) {
+    return new APIterator(vars);
   }
 
 private :

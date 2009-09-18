@@ -17,22 +17,23 @@
 #include "sogtgbautils.hh"
 #include "apiterator.hh"
 #include "slog.hh"
+#include "dsog.hh"
 
 #include "statistic.hpp"
 
 
 namespace sogits {
 
-  void model_check(its::ITSModel & model_,  
-		   const spot::ltl::formula* f, 
+  void model_check(its::ITSModel & model_,
+		   const spot::ltl::formula* f,
 		   sog_product_type sogtype,
 		   const std::string& echeck_algo,
-		   bool ce_expected, 
-		   bool fm_exprop_opt, 
-		   bool fm_symb_merge_opt, 
-		   bool post_branching, 
+		   bool ce_expected,
+		   bool fm_exprop_opt,
+		   bool fm_symb_merge_opt,
+		   bool post_branching,
 		   bool fair_loop_approx, const std::string & ltl_string) {
-  
+
   // find all AP in the formula
   spot::ltl::atomic_prop_set *sap = spot::ltl::atomic_prop_collect(f);
 
@@ -41,30 +42,30 @@ namespace sogits {
 
   sogIts model = model_;
   sog_tgba systgba(model, &dict);
-  
-  if (sap) {   
+
+  if (sap) {
     APIterator::varset_t vars ;
-    
+
     for(spot::ltl::atomic_prop_set::iterator  it = sap->begin(); it != sap->end(); ++it) {
        // declare them in a spot dictionary
       int varnum = dict.register_proposition(*it, &systgba);
-      
+
       vars.push_back(varnum);
-      // Load into model m !  + check existence 
+      // Load into model m !  + check existence
       // varnum will be used in subsequent interactions with the ITS model
       bool ret =  model.setObservedAP ( (*it)->name() , varnum );
 
       if ( ! ret  ) {
         delete sap;
         sap = 0;
-	std::cout << "the atomic proposition '" <<  (*it)->name() 
+	std::cout << "the atomic proposition '" <<  (*it)->name()
         << "' does not correspond to any known proposition" << std::endl;
 	return;
       }
     }
     APIteratorFactory::setAPVarSet(vars);
   }
-  
+
 
   spot::timer_map timers;
   timers.start("construction");
@@ -93,7 +94,7 @@ namespace sogits {
       exit(1);
   }
 
-  
+
   spot::tgba * prod = NULL;
   switch (sogtype) {
   case PLAIN_SOG :
@@ -101,6 +102,9 @@ namespace sogits {
     break;
   case SLOG :
     prod = new slog::slog_tgba(a, model);
+    break;
+  case DSOG :
+    prod = new dsog::dsog_tgba(a, model);
     break;
   }
 
@@ -120,7 +124,7 @@ namespace sogits {
   SDD d;
   Statistic S = Statistic(d, ltl_string , CSV); // can also use LATEX instead of CSV
   S.print_table(std::cout);
-  
+
   if (res) {
     if (ce_expected) {
       std::cout << "an accepting run exists" << std::endl;
@@ -154,4 +158,3 @@ namespace sogits {
 
 
 } // namespace
-

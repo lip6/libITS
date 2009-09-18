@@ -10,7 +10,7 @@ endif
 
 if WITH_LIBITS_PATH
 LIBITS_CPP=-I$(LIBITS_ROOT)
-LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a $(LIBITS_ROOT)/../lib/libprod.a $(LIBITS_ROOT)/../lib/libRdP.a 
+LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a $(LIBITS_ROOT)/../lib/libprod.a $(LIBITS_ROOT)/../lib/libRdP.a
 else
 LIBITS_LINK=-lITS
 endif
@@ -29,6 +29,7 @@ AM_CXXFLAGS = -g -O2 -Wall
 LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
 
 MYHEADER =apiterator.hh \
+	dsog.hh \
 	fsltl.hh \
 	slog.hh \
 	sogIts.hh \
@@ -40,6 +41,7 @@ MYHEADER =apiterator.hh \
 
 
 MYSRC = apiterator.cpp \
+	dsog.cpp \
 	fsltl.cpp \
 	main.cpp \
 	slog.cpp \
@@ -52,11 +54,7 @@ MYSRC = apiterator.cpp \
 
 sog_its_SOURCES = $(MYSRC) $(MYHEADER)
 
-sog_its_LDADD = $(LDADDFLAGS)  
+sog_its_LDADD = $(LDADDFLAGS)
 
-testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp 
-testite_LDADD =  $(LDADDFLAGS)  
-
-
-
-
+testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
+testite_LDADD =  $(LDADDFLAGS)

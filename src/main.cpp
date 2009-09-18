@@ -1,4 +1,4 @@
-// Copyright (C) 2004  Laboratoire d'Informatique de Paris 6 (LIP6),
+// Copyright (C) 2004, 2009  Laboratoire d'Informatique de Paris 6 (LIP6),
 // d�artement Syst�es R�artis Coop�atifs (SRC), Universit�Pierre
 // et Marie Curie.
 //
@@ -52,7 +52,7 @@ void syntax(const char* prog) {
             << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
-            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLOG} (SLOG by default)"
+            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLOG,DSOG} (SLOG by default)"
             << std::endl
             << "  -C              display the number of states and edges of the SOG"
             << std::endl
@@ -91,19 +91,19 @@ void syntax(const char* prog) {
 int main(int argc, const char *argv[]) {
 
   // external block for full garbage
-  { 
+  {
 
   bool check = false;
   bool print_rg = false;
   bool print_pn = false;
   bool count = false;
-  
+
   bool ce_expected = false;
   bool fm_exprop_opt = false;
   bool fm_symb_merge_opt = true;
   bool post_branching = false;
   bool fair_loop_approx = false;
-  
+
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
 
@@ -162,6 +162,9 @@ int main(int argc, const char *argv[]) {
     else if (!strcmp(argv[pn_index], "-SSLOG")) {
       sogtype = SLOG;
     }
+    else if (!strcmp(argv[pn_index], "-SDSOG")) {
+      sogtype = DSOG;
+    }
     else if (!strcmp(argv[pn_index], "-x")) {
       fm_exprop_opt = true;
     }
@@ -181,8 +184,8 @@ int main(int argc, const char *argv[]) {
 //   modelName += pathprodff ;
    model.setInstance(nname,"main");
    model.setInstanceState("init");
-   
-   
+
+
 
 //   // Parse and build the model !!!
 //   loadTrains(2,model);
@@ -190,7 +193,7 @@ int main(int argc, const char *argv[]) {
 //   model.setInstance("Trains","main");
 //   // The only state defined in the type "trains" is "init"
 //   // This sets the initial state of the main instance
-//   model.setInstanceState("init");  
+//   model.setInstanceState("init");
 
   // Initialize spot
   spot::ltl::parse_error_list pel;
@@ -206,7 +209,7 @@ int main(int argc, const char *argv[]) {
   // see example :
 /*
 std::string* check_at_prop(const petri_net* p,
-                           const spot::ltl::formula* f, 
+                           const spot::ltl::formula* f,
                            spot::ltl::atomic_prop_set*& sap,
                            std::set<int>& ob_tr) {
   ob_tr.clear();
@@ -228,38 +231,36 @@ std::string* check_at_prop(const petri_net* p,
     }
   }
   return 0;
-} 
+}
 */
-  
+
   if (print_pn)
     std::cout << model;
 
-  /* 
+  /*
   if (print_rg)
     print_reachability_graph(n, place_marking_bound, f);
-  
+
   if (count)
     count_markings(n, place_marking_bound, f);
   */
 
- 
+
 
   if (check)
     model_check(model, f, sogtype,
-                algo_string, ce_expected, 
+                algo_string, ce_expected,
                 fm_exprop_opt, fm_symb_merge_opt,
                 post_branching, fair_loop_approx, "STATS");
-  
+
 
   spot::ltl::destroy(f);
 
   // external block for full garbage
-  } 
+  }
   MemoryManager::garbage();
   MemoryManager::garbage();
 
   return 0;
 
 }
-
-

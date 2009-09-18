@@ -80,8 +80,8 @@ namespace slog
      * right : the source aggregate */
   slog_succ_iterator::slog_succ_iterator(const tgba * aut, tgba_succ_iterator* left, const sogIts & model, const its::State& right)
     : aut_(aut),
-      left_(left), 
-      model_(model), 
+      left_(left),
+      model_(model),
       right_(right)
   {
   }
@@ -92,7 +92,7 @@ namespace slog
   }
 
   bdd
-  slog_succ_iterator::compute_weaker_selfloop_ap() 
+  slog_succ_iterator::compute_weaker_selfloop_ap()
   {
     // The acceptance condition labeling the arc of the tgba
     bdd ac = left_->current_acceptance_conditions();
@@ -107,11 +107,11 @@ namespace slog
       const state * dest = it->current_state();
 
       // Test self loop
-      if ( dest->compare(q2) == 0 ) {	
+      if ( dest->compare(q2) == 0 ) {
 	// Test ac=>ac' (subsume the arc)
-	bdd acprime = it->current_acceptance_conditions(); 
-	if ( (ac & acprime) == acprime) 
-	  F |= it->current_condition();	
+	bdd acprime = it->current_acceptance_conditions();
+	if ( (ac & acprime) == acprime)
+	  F |= it->current_condition();
       }
       delete dest;
     }
@@ -126,14 +126,14 @@ namespace slog
     // progress to "entry" states of succ in ITS model
     bdd curcond = left_->current_condition();
     dest_ = model_.succSatisfying ( right_, curcond );
-    
+
     // test if we have empty initial states => we can avoid computing subsumed arcs etc...
     if (dest_.empty())
       return;
 
     // grab the current subsumed arc conditions
     bdd F = compute_weaker_selfloop_ap();
-    
+
     // costly saturate the aggregate
     dest_ = model_.leastPreTestFixpoint (dest_, F);
 
@@ -145,7 +145,7 @@ namespace slog
     while (!left_->done())
       {
 	step_();
-	
+
 	if (! dest_.empty() ) {
 	  // reached an appropriate non empty successor
 	  return ;
@@ -160,7 +160,7 @@ namespace slog
   slog_succ_iterator::first()
   {
     left_->first();
-    
+
     next_non_false_();
   }
 
@@ -211,15 +211,17 @@ namespace slog
     // these vars are unregistered in dtor
     dict_->register_all_variables_of(&left_, this);
   }
-  
+
   slog_tgba::~slog_tgba()
   {
     dict_->unregister_all_my_variables(this);
   }
-  
+
   state*
   slog_tgba::get_init_state() const
   {
+
+    // FIXME: saturer sur l'état initial ?
     return new slog_state(left_->get_init_state(),
 			  model_.getInitialState() );
   }
@@ -234,9 +236,9 @@ namespace slog
     assert(s);
 
     tgba_succ_iterator* li = left_->succ_iter(s->left(),
-					      global_state, 
+					      global_state,
 					      global_automaton);
-  
+
     return new slog_succ_iterator(left_, li, model_, s->right());
   }
 
@@ -283,7 +285,7 @@ namespace slog
     if (res)
       return res;
 
-    // TODO : to allow right projection, we need to encapsulate 
+    // TODO : to allow right projection, we need to encapsulate
     // an aggregate of the ITS states inside a (dedicated?) spot::state
     return 0;
   }
@@ -310,4 +312,3 @@ namespace slog
   }
 
 }
-
