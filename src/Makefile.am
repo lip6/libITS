@@ -29,6 +29,7 @@ AM_CXXFLAGS = -g -O2 -Wall
 LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
 
 MYHEADER =apiterator.hh \
+	fsltl.hh \
 	slog.hh \
 	sogIts.hh \
 	sogstate.hh \
@@ -39,6 +40,7 @@ MYHEADER =apiterator.hh \
 
 
 MYSRC = apiterator.cpp \
+	fsltl.cpp \
 	main.cpp \
 	slog.cpp \
 	sogIts.cpp \
