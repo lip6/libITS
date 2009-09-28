@@ -11,6 +11,7 @@
 #include "tgbaalgos/magic.hh"
 #include "tgbaalgos/stats.hh"
 #include "tgbaalgos/emptiness.hh"
+#include "tgbaalgos/dotty.hh"
 #include "tgba/tgbatba.hh"
 
 #include "sogtgba.hh"
@@ -32,7 +33,8 @@ namespace sogits {
 		   bool fm_exprop_opt,
 		   bool fm_symb_merge_opt,
 		   bool post_branching,
-		   bool fair_loop_approx, const std::string & ltl_string) {
+		   bool fair_loop_approx, const std::string & ltl_string,
+		   bool display) {
 
   // find all AP in the formula
   spot::ltl::atomic_prop_set *sap = spot::ltl::atomic_prop_collect(f);
@@ -107,6 +109,12 @@ namespace sogits {
     prod = new dsog::dsog_tgba(a, model);
     break;
   }
+
+  if (display)
+    {
+      spot::dotty_reachable(std::cout, prod);
+      exit(0);
+    }
 
   spot::emptiness_check *ec =  echeck_inst->instantiate(prod);
   timers.stop("construction");

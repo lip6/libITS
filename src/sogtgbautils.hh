@@ -69,7 +69,8 @@ namespace sogits {
 		   bool fm_symb_merge_opt=true,
 		   bool post_branching=false,
 		   bool fair_loop_approx=false,
-		   const std::string & ltl_string ="formula");
+		   const std::string & ltl_string ="formula",
+		   bool dotdump = false);
 
 
 } // namespace

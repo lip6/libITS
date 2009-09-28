@@ -25,7 +25,7 @@
 #include "misc/hashfunc.hh"
 #include "tgba/bddprint.hh"
 
-#define TRACE
+//#define TRACE
 
 #ifdef TRACE
 #define trace std::cerr
@@ -44,8 +44,9 @@ namespace dsog
 
   int dsog_div_state::compare(const state* other) const {
     const dsog_div_state* m = dynamic_cast<const dsog_div_state*>(other);
-    if (!m)
+    if (dynamic_cast<const dsog_state*>(other))
       return -1;
+    assert(m);
     return cond.id() - m->cond.id();
   }
 
@@ -75,6 +76,15 @@ namespace dsog
   {
   }
 
+  dsog_state::dsog_state(const spot::state* left,
+			 const sogIts & model, its::State right, bdd bddAP)
+    :	left_(left), cond_(bddAP)
+  {
+    right_ = model.leastPostTestFixpoint(right, bddAP);
+    div_ = (model.getDivergent(right_, bddAP) != its::State::null);
+    succ_ = ((!model.getSelector(bddAP)) & model.getNextRel()) (right_);
+  }
+
   dsog_state::~dsog_state()
   {
     delete left_;
@@ -84,6 +94,8 @@ namespace dsog
   dsog_state::compare(const state* other) const
   {
     const dsog_state* o = dynamic_cast<const dsog_state*>(other);
+    if (dynamic_cast<const dsog_div_state*>(other))
+      return 1;
     assert(o);
     int res = left_->compare(o->left());
     if (res != 0)
@@ -156,12 +168,15 @@ namespace dsog
 	      }
 	    delete dest;
 	  }
+	trace << "has div? " << has_div << std::endl;
       }
     if (!has_div)
       {
 	has_div = true;
 	next();
       }
+
+    trace << "first is done? " << done() << std::endl;
   }
 
   void
@@ -170,6 +185,8 @@ namespace dsog
 
     if (has_div)
       {
+	trace << "next() has div" << has_div << std::endl;
+
 	left_iter_->first();
 	has_div = false;
 
@@ -183,6 +200,8 @@ namespace dsog
 	    return;
 	  }
       }
+
+    trace << "next() has div done" << std::endl;
 
     do
       {
@@ -227,6 +246,18 @@ namespace dsog
 
 	    /// position "it" at first of ap bdd set
 	    itap->first();
+
+	    // Nothing to split.
+	    if (vars.empty())
+	      {
+		assert(itap->done());
+
+		delete dest_;
+		dest_ = new dsog_state(left_iter_->current_state(), model_,
+				       succstates_, bddtrue);
+		assert(dest_->right() != its::State::null);
+		return;
+	      }
 	  }
 
 	// iterate until a non empty succ is found (or end reached)
@@ -271,7 +302,11 @@ namespace dsog
 
   bdd dsog_succ_iterator::current_acceptance_conditions() const
   {
-    return left_iter_->current_acceptance_conditions();
+    assert(!done());
+    if (has_div)
+      return aut_->all_acceptance_conditions();
+    else
+      return left_iter_->current_acceptance_conditions();
   }
 
 
@@ -373,6 +408,8 @@ namespace dsog
     unsigned sccn = scc_.scc_of_state(lis);
     bdd ap =        scc_.aprec_set_of(sccn);
 
+    trace << ap << std::endl;
+
     sogits::APIterator::varset_t vars;
 
     // Convert ap into a vector of variable numbers.
@@ -396,6 +433,7 @@ namespace dsog
 	trace << "Initial state of tgba :" << format_state(init)
 	      << "verifies :"<< it->current() << std::endl;
 	delete it;
+
 	return init;
       }
     }
@@ -455,10 +493,19 @@ namespace dsog
   dsog_tgba::format_state(const state* state) const
   {
     const dsog_state* s = dynamic_cast<const dsog_state*>(state);
-    assert(s);
-    return (left_->format_state(s->left())
-	    + " * "
-	    + " SDD size: " + to_string(s->right().nbStates()) + " hash:" + to_string(s->right().hash()));
+    if (s)
+      {
+	return (left_->format_state(s->left())
+		+ " * "
+		+ " SDD size: " + to_string(s->right().nbStates()) + " hash:" + to_string(s->right().hash())
+		+ (s->get_div() ? " (div)" : ""));
+      }
+    else
+      {
+	const dsog_div_state* d = dynamic_cast<const dsog_div_state*>(state);
+	assert(d);
+	return "DIV STATE";
+      }
   }
 
   state*

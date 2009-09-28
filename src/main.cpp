@@ -251,8 +251,7 @@ std::string* check_at_prop(const petri_net* p,
     model_check(model, f, sogtype,
                 algo_string, ce_expected,
                 fm_exprop_opt, fm_symb_merge_opt,
-                post_branching, fair_loop_approx, "STATS");
-
+                post_branching, fair_loop_approx, "STATS", print_rg);
 
   spot::ltl::destroy(f);
 

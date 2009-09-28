@@ -60,13 +60,7 @@ namespace dsog
     /// These states are acquired by spot::state_product, and will
     /// be deleted on destruction.
     dsog_state(const spot::state* left,
-	       const sogIts & model, its::State right, bdd bddAP)
-      :	left_(left), cond_(bddAP)
-    {
-      right_ = model.leastPostTestFixpoint(right, bddAP);
-      div_ = (model.getDivergent(right_, bddAP) != its::State::null);
-      succ_ = ((!model.getSelector(bddAP)) & model.getNextRel()) (right_);
-    }
+	       const sogIts & model, its::State right, bdd bddAP);
 
     /// Copy constructor
     dsog_state(const dsog_state& o);

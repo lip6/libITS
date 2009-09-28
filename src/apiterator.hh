@@ -29,7 +29,7 @@ public:
   }
 
   void first() {
-    last = false;
+    last = !size;
     // cue = 0,0....0
     cur = bvec_false(size);
   }
