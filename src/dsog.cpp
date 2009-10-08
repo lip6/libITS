@@ -162,10 +162,12 @@ namespace dsog
 	// state has a self-loop labeled by all acceptance conditions.
 	for (left_iter_->first() ; !left_iter_->done() ; left_iter_->next())
 	  {
+	    bdd cond = cur->get_cond();
 	    const state *dest = left_iter_->current_state();
 	    if ((dest->compare(left_) == 0)
 		&& (left_iter_->current_acceptance_conditions()
-		    == aut_->all_acceptance_conditions()))
+		    == aut_->all_acceptance_conditions())
+		&& (left_iter_->current_condition() & cond) == cond)
 	      {
 		has_div = true;
 	      }
