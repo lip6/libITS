@@ -72,7 +72,10 @@ namespace dsog
   dsog_state::dsog_state(const dsog_state& o)
     : state(),
       left_(o.left()->clone()),
-      right_(o.right())
+      right_(o.right()),
+      div_(o.div_),
+      succ_(o.succ_),
+      cond_(o.cond_)
   {
   }
 
