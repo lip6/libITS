@@ -24,12 +24,43 @@ namespace its {
       return labels_t (1,"state");
     }
   public :
-    TgbaType (const spot::tgba * tgba_) : tgba_(tgba_) {}
+    TgbaType (const spot::tgba * tgba_) ;
 
     /** the set InitStates of designated initial states */
     labels_t getInitStates () const {
       return labels_t(1,"init");
     }
+
+    /** the type that designates a TGBA arc label : <apcond , acc> as a pair of bdd */
+    typedef std::pair<bdd, bdd> tgba_arc_label_t;
+    /** the type that designates a physical arc description : <source, target> as a pair of integer */
+    typedef std::pair<int,int> tgba_arc_t;
+
+
+    /** a data structure to store a set of physical arc descriptions */
+    typedef std::vector<tgba_arc_t> tgba_arcs_t;
+    typedef tgba_arcs_t::const_iterator tgba_arcs_it;
+
+
+    struct less_than {
+      bool operator()(const its::TgbaType::tgba_arc_label_t &g1, const its::TgbaType::tgba_arc_label_t &g2) const{
+	return g1.first.id() < g2.first.id()
+	  || ( (! (g1.first.id() > g2.first.id() )) && g1.second.id() < g2.second.id());
+      }
+    };
+
+    
+    /** a data structure to store mappings of TGBA arc label to physical arcs that bear this label */
+    typedef std::map<tgba_arc_label_t,tgba_arcs_t,less_than> arcs_t;
+    typedef arcs_t::iterator arcs_it;
+
+  private :
+    /** the data structure instance used to store the appropriate tgba representation */
+    arcs_t arcs_;
+
+    /** The index of the initial state */
+    int init_state_index_;
+  public :
 
     /** the set T of public transition labels : one for each distinct AP formula x acceptance set labeling the tgba arcs*/
     labels_t getTransLabels () const {
@@ -90,5 +121,11 @@ namespace its {
   };
 
 } // namespace its
+
+/** Administrative trivia */
+
+namespace std {
+}
+
 
 #endif
