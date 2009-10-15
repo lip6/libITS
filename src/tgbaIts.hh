@@ -60,26 +60,51 @@ namespace its {
 
     /** The index of the initial state */
     int init_state_index_;
+
+    /** A helper function to print the acceptance conditions bdd */
+    void print_acc(bdd acc, std::ostream & os) const;
+    /** A helper function to print the atomic prop condition formula bdd */
+    void print_cond(bdd cond, std::ostream & os) const;
+    /** A pretty print for tgba arc labels, wrapper that relies on print_acc and print_cond */
+    vLabel get_arc_label (const tgba_arc_label_t & lab);
+
+    /** A map to store string label to tgba_arc_label correspondance */
+    typedef std::map<vLabel, tgba_arc_label_t> labmap_t;
+    typedef labmap_t::iterator labmap_it;
+    labmap_t labmap_;
+
+    /** build the string labels and fill labmap */
+    void build_labels();
+
+    /** Build the transition for a structural arc */
+    GHom buildTransition (const tgba_arc_t & arc) const;
+    /** Build the Hom for a set of structural arcs */
+    GHom buildTransitionSet (const tgba_arcs_t & arcs) const;
+    /** Build the its::Transition for a given string label */
+    Transition buildTransitionFromLabel (Label label) const;
   public :
 
     /** the set T of public transition labels : one for each distinct AP formula x acceptance set labeling the tgba arcs*/
     labels_t getTransLabels () const {
-      // TODO : navigate through the automaton and grab the required info
-      // put it into a hash table : <bdd apcond, bdd acc> -> set< pair<state *, state *> >  (or perhaps using int instead of state*)
-      return labels_t();
+      labels_t ret;
+      for (labmap_t::const_iterator it = labmap_.begin() ; it != labmap_.end() ; ++it) {
+	ret.push_back(it->first);
+      }
+      return ret;
     }
 
-    /** help setup a correspondance from label to pair<bdd apcond, set<acc> > */
-    typedef std::pair<bdd, labels_t> arcLabel_t;
     
-    arcLabel_t getTransLabelDescription (Label trans) const {
+    tgba_arc_label_t getTransLabelDescription (Label trans) const {
       // example : trans = "a . !b x {}" => bdd of : a.!b,  empty set of acc
       // example : trans = "a  x {black,white}" => bdd of : a,  set of acc {black,white}
-      if (trans < "toto") 
-	return arcLabel_t(bddtrue, labels_t());
-      else {
-	return arcLabel_t(bddtrue, labels_t(1,"black"));
+
+      labmap_t::const_iterator it = labmap_.find(trans);
+      if (it == labmap_.end()) {
+	std::cerr << "asked for unknown label : "<< trans << " in a TgbaIts Type" << std::endl;
+	std::cerr << "fatal error, aborting sorry."<< std::endl;
+	assert(false);
       }
+      return it->second;
     }
 
 
@@ -94,10 +119,12 @@ namespace its {
      * of transition labels of this type (as obtained through getTransLabels()).
      * Otherwise, an assertion violation will be raised !!
      * */
-    virtual Transition getSuccs (const labels_t & tau) const {
-      // TODO : use the hash table filled up during getTransLabels
-      // and union each hom produced by values in the map
-      return GShom::id;
+    Transition getSuccs (const labels_t & tau) const {
+      Transition toret = GShom::id;
+      for (labels_it it = tau.begin() ; it != tau.end() ; ++it ) {
+	toret = buildTransitionFromLabel(*it)  & toret;
+      }
+      return toret;
     }
 
     /** To obtain a representation of a labeled state */
