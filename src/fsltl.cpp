@@ -54,7 +54,7 @@ namespace its {
     labels_t tgbalabs = tgba->getTransLabels();
 
     for (labels_it it = tgbalabs.begin() ; it != tgbalabs.end() ; ++it ) {
-      TgbaType::arcLabel_t arcLab = tgba_->getTransLabelDescription(*it);
+      TgbaType::tgba_arc_label_t arcLab = tgba_->getTransLabelDescription(*it);
       
       Transition apcond = sogIts_.getSelector(arcLab.first);
       
