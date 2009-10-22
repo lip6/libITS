@@ -2,6 +2,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[leqno]{amsmath}
+\usepackage[figure,vlined,linesnumbered,inoutnumbered,commentsnumbered]{algorithm2e}
 \usepackage{url}
 \usepackage{hyperref}
 
@@ -94,6 +95,79 @@ Geldenhuys et Hansen~\cite{GH06} ont comparé, dans un cadre explicite, la techni
 Les testers peuvent aussi être employés dans un cadre purement symbolique. Cela n'a jamais été essayé à ma connaissance. Les graphes d'observation sont sans doute une approche hybride. Les DSOG peuvent être vus comme une amélioration des testers dans laquelle les propositions observées sont peu à peu filtrées. Il est possible que les SLOG soit à lier à l'algorithme de traduction de LTL privée de $\X$ en tester ?
 
 Je pense que la comparaison avec cette approche peut être repoussée à des travaux postérieurs. L'étude présentée dans~\cite{GH06} semble nous inviter à de nouvelles campagnes de mesures concernant les TGBA. Il va tout de même falloir du courage pour nous y remettre...
+
+\section{Algorithmes symboliques}
+
+La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapport à celui présenté dans~\cite{FFKV01}. Les parcours ont été inversé pour être en avant. Ceci a pour conséquence que les fonctions \texttt{Post} et \texttt{Sat} ne peuvent pas sortir de l'ensemble $B$ et cela nous permet de supprimer quelques intersection. Enfin, la première boucle (ligne 5 et 6) a été ajoutée.
+
+\begin{algorithm}[h]
+\dontprintsemicolon
+\SetKwInput{Input}{Input}
+\SetKwFunction{post}{Post}
+\SetKwFunction{sat}{Sat}
+
+\Input{Un TGBA $A = \langle \Sigma, \mathcal{Q}, \mathcal{Q}^0, \mathcal{F}, \delta \rangle$}
+\KwData{$B \in 2^\mathcal{Q}$}
+
+\Begin{
+  $B \leftarrow$ \sat{$\mathcal{Q}^0$}\;
+  \While{$B$ changes}{
+    $B \leftarrow$ \post{$B$, true}\;
+  }
+  \While{$B$ changes}{
+    \For{$F_i$ in $F$}{
+      $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
+    }
+    \While{$B$ changes}{
+      $B \leftarrow$ \post{$B$, true}\;
+    }
+  }
+  \Return{$B = \emptyset$}\;
+} 
+\caption{Algorithme OWCTY en parcours avant.\label{fig:owcty}}
+\end{algorithm}
+
+L'algorithme EL (lui aussi transformé en parcours avant) est présenté dans la figure~\ref{fig:el}. Notons que cet algorithme fait l'hypothèse que $\mathcal{F} \neq \emptyset$. Cette hypothèse est sans perte de généralité car il est alors équivalent de considérer toute transition comme étant acceptante. Toutefois, cela risque de rendre l'algorithme très peu efficace (au contraire de OWCTY). 
+
+\begin{algorithm}[h]
+\dontprintsemicolon
+\SetKwInput{Input}{Input}
+\SetKwFunction{post}{Post}
+\SetKwFunction{sat}{Sat}
+
+\Input{Un TGBA $A = \langle \Sigma, \mathcal{Q}, \mathcal{Q}^0, \mathcal{F}, \delta \rangle$}
+\KwData{$B \in 2^\mathcal{Q}$}
+
+\Begin{
+  $B \leftarrow$ \sat{$\mathcal{Q}^0$}\;
+  \While{$B$ changes}{
+    \For{$F_i$ in $F$}{
+      $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
+    }
+  }
+  \Return{$B = \emptyset$}\;
+}
+\caption{Algorithme EL en parcours avant.\label{fig:el}}
+\end{algorithm}
+
+Enfin, l'algorithme réalisant un test de divergence au sein d'un ensemble d'état $B$ est présenté dans la figure~\ref{fig:div}. On peut remarquer que cet algorithme correspond exactement à OWCTY lorsque $\mathcal{F} = \emptyset$ à la seule différence près que l'on doit s'assurer que la fonction \texttt{Post} reste dans $B$ car $B$ est initialement un agrégat et non pas l'ensemble des états accessibles.
+
+\begin{algorithm}[h]
+\dontprintsemicolon
+\SetKwInput{Input}{Input}
+\SetKwFunction{post}{Post}
+\SetKwFunction{sat}{Sat}
+
+\Input{Un TGBA $A = \langle \Sigma, \mathcal{Q}, \mathcal{Q}^0, \mathcal{F}, \delta \rangle$ et un ensemble $B \subseteq \mathcal{Q}$}
+
+\Begin{
+  \While{$B$ changes}{
+    $B \leftarrow B \cap \mbox{\post{$B$, true}}$\;
+  }
+  \Return{$B = \emptyset$}\;
+}
+\caption{Algorithme de détection de divergence.\label{fig:div}}
+\end{algorithm}
 
 \renewcommand{\refname}{Références triées par catégorie}
 \bibliographystyle{alpha}
