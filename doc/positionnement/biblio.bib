@@ -1,0 +1,583 @@
+@inproceedings{EL86,
+  author    = {E. Allen Emerson and
+               Chin-Laung Lei},
+  title     = {Efficient Model Checking in Fragments of the Propositional
+               $\mu$-Calculus (Extended Abstract)},
+  year      = {1986},
+  pages     = {267--278},
+  booktitle = {Symposium on Logic in Computer Science (LICS'86)},
+  address   = {Cambridge, Massachusetts, USA},
+  publisher = {IEEE Computer Society},
+  annote    = {
+  Le papier de base de la vérification symbolique de propriétés à temps linéaire. Celui qui trouve la version électronique ou papier, gagne le cocotier.
+ }
+}
+
+@article{BCM92,
+ author = {J. R. Burch and E. M. Clarke and K. L. McMillan and D. L. Dill and L. J. Hwang},
+ title = {Symbolic model checking: $10^{20}$ states and beyond},
+ journal = {Information and Computation},
+ volume = {98},
+ number = {2},
+ year = {1992},
+ pages = {142--170},
+ publisher = {Academic Press, Inc.},
+ address = {Duluth, MN, USA},
+  annote    = {
+  Le papier de base de la vérification symbolique.
+ }
+ }
+
+@inproceedings{HTKB92,
+  author    = {Ramin Hojati and
+               Herv{\'e} J. Touati and
+               Robert P. Kurshan and
+               Robert K. Brayton},
+  title     = {Efficient $\omega$-Regular Language Containment},
+  booktitle = {Fourth International Workshop on Computer Aided Verification (CAV'92)},
+  editor    = {Gregor von Bochmann and
+               David K. Probst},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {663},
+  year      = {1992},
+  month = jun,
+  address = {Montreal, Canada},
+  pages     = {396--409},
+}
+
+@inproceedings{V93,
+  author    = {Antti Valmari},
+  title     = {On-the-Fly Verification with Stubborn Sets},
+  booktitle = {5th International Conference on Computer Aided Verification (CAV'93)},
+  editor    = {Costas Courcoubetis},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {697},
+  pages     = {397--408},
+  month     = jun,
+  year      = {1993},
+  address   = {Elounda, Greece},
+}
+
+@article{SB95,
+ author = {Carl-Johan H. Seger and Randal E. Bryant},
+ title = {Formal verification by symbolic evaluation of partially-ordered trajectories},
+ journal = {Formal Methods in System Design},
+ volume = {6},
+ number = {2},
+ year = {1995},
+ pages = {147--189},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+  annote    = {
+ Papier de base sur les ``Symbolic Evaluation Trajectories'' et l'application à la vérification de propriétés de sûreté. Utile pour comprendre \cite{SSTV07}.
+ }
+ }
+
+@inproceedings{INH96,
+ author = {Hiroaki Iwashita and Tsuneo Nakata and Fumiyasu Hirose},
+ title = {{CTL} model checking based on forward state traversal},
+ booktitle = {IEEE/ACM international conference on Computer-aided design (ICCAD'96)},
+ year = {1996},
+ pages = {82--87},
+ location = {San Jose, California, United States},
+ publisher = {IEEE Computer Society},
+ address = {Washington, DC, USA},
+ }
+
+@article{BCJLM97,
+ author = {A. Browne and E. M. Clarke and S. Jha and D. E. Long and W. Marrero},
+ title = {An improved algorithm for the evaluation of fixpoint expressions},
+ journal = {Theoretical Computer Science},
+ volume = {178},
+ number = {1-2},
+ year = {1997},
+ pages = {237--255},
+ publisher = {Elsevier},
+  annote    = {
+  Je ne l'ai pas lu...
+ }
+ }
+
+@article{CGH97,
+ author = {Edmund M. Clarke and Orna Grumberg and Kiyoharu Hamaguchi},
+ title = {Another Look at {LTL} Model Checking},
+ journal = {Formal Methods in System Design},
+ volume = {10},
+ number = {1},
+ year = {1997},
+ pages = {47--71},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+  annote    = {
+ Article de base montrant comment vérifier des formules LTL avec un model checker symbolique CTL fair.
+ }
+ }
+
+@inproceedings{KPR98,
+  author    = {Yonit Kesten and Amir Pnueli and Li-on Raviv},
+  title     = {Algorithmic Verification of Linear Temporal Logic
+               Specifications},
+  booktitle = {25th International Colloquium on Automata, Languages and
+               Programming (ICALP'98)},
+  editor    = {Kim Gulstrand Larsen and Sven Skyum and Glynn Winskel},
+  pages     = {1--16},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1443},
+  month     = jul,
+  year      = {1998},
+  annote    = {
+ Le papier présente une approche symbolique complète pour la vérification de formule LTL.
+ Cette approche comprend :
+ \begin{itemize}
+   \item La définition d'une structure de Kripke équitable (faible et forte) pour la modélisation du système.
+         Cette structure correspond à des GBA mariés à des automates de Street.
+   \item La définition de deux opérateurs de composition de telles structures (synchrone ou asynchrone).
+   \item Un algorithme de traduction de formule LTL en structure de Kripke équitable (à la Wolper/Vardi mais avec
+         des conditions d'acceptation généralisées)
+   \item Un algorithme d'emptines check généralisé prenant aussi en compte les conditions d'équités fortes.
+   \item Un algorithme symbolique d'extraction d'un contre-exemple.
+   \item Quelques mesures de performances comparant le cas où les conditions d'équités fortes sont dans le modèle
+         à celui où elles sont dans la formule LTL.
+ \end{itemize}
+ Même si l'algorithme symbolique d'emptiness check n'utilise que la fonction $\mathit{Post}$, il n'est pas
+ celui que nous envisageons. Le papier est très lisible (15 pages). En particulier, les notations sont très bien choisies.
+ }
+}
+
+@inproceedings{BCZ99,
+ author = {Armin Biere and Edmund M. Clarke and Yunshan Zhu},
+ title = {Multiple State and Single State Tableaux for Combining Local and Global Model Checking},
+ booktitle = {Correct System Design, Recent Insight and Advances, (to Hans Langmaack on the occasion of his retirement from his professorship at the University of Kiel)},
+ year = {1999},
+ pages = {163--179},
+ publisher = {Springer-Verlag},
+ address = {London, UK},
+  annote    = {
+ Les n{\oe}uds des graphes construits dans cet article sont composés d'un ensemble d'états du système associé à un état de l'automate de Büchi.
+ Pour construire les successeurs d'un tel n{\oe}ud, les successeurs des états composant l'ensemble sont partitionnés selon les valeurs de vérité et
+ chaque partie est associée à l'état de l'automate de Büchi qui lui correspond. Cette construction permet la vérification de formule LTL. Les
+ points suppémentaires abordés dans l'article sont :
+ \begin{itemize}
+ \item Un emptiness check sur GBA (un Tarjan modifié). Je rappelle que le papier date de 1999.
+ \item Des heuristiques pour traiter en priorité certains arcs de l'automate de Büchi de la formule.
+ \item D'autres heuristiques pour prendre en compte l'inclusion.
+ \end{itemize}
+ }
+ }
+
+@inproceedings{BRS99,
+ author = {Roderick Bloem and Kavita Ravi and Fabio Somenzi},
+ title = {Efficient Decision Procedures for Model Checking of Linear Time Logic Properties},
+ booktitle = {11th International Conference on Computer Aided Verification (CAV'99)},
+ year = {1999},
+ pages = {222--235},
+ publisher = {Springer-Verlag},
+ address = {London, UK},
+  annote    = {
+ Optimisation de l'algorithme classique (\cite{CGH97}) de vérification symbolique de formules LTL. Classification (générale, faible, terminale) et recherche guidée.
+ }
+ }
+
+@inproceedings{C99,
+ author = {Jean-Michel Couvreur},
+ title = {On-the-fly verification of temporal logic},
+ editor    = {Jeannette M. Wing, Jim Woodcock, and Jim Davies},
+ booktitle = {World Congress on Formal Methods in the Development of Computing Systems (FM'99)},
+ volume    = {1708},
+ publisher = {Springer},
+ series    = {Lecture Notes in Computer Science},
+ pages  = {253--271},
+ address = {Toulouse, France},
+ month = sep,
+ year      = {1999},
+}
+
+@inproceedings{RBS00,
+  author    = {Kavita Ravi and Roderick Bloem and Fabio Somenzi},
+  title     = {A Comparative Study of Symbolic Algorithms for the Computation
+               of Fair Cycles},
+  booktitle = {3rd International Conference on Formal Methods in Computer-Aided Design (FMCAD'00)},
+  editor    = {Warren A. Hunt Jr. and Steven D. Johnson},
+  year      = {2000},
+  pages     = {143--160},
+ address = {Austin, Texas, USA},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {1954},
+  year      = {2000},
+}
+
+@inproceedings{CRB01,
+ author = {Alessandro Cimatti and Marco Roveri and Piergiorgio Bertoli},
+ title = {Searching Powerset Automata by Combining Explicit-State and Symbolic Model Checking},
+ booktitle = {7th International Conference on Tools and Algorithms for the Construction and Analysis of Systems (TACAS'01)},
+ year = {2001},
+ pages = {313--327},
+ publisher = {Springer-Verlag},
+ address = {London, UK},
+  annote    = {
+  Vérification de formule d'accessibilité d'un ensemble d'états à partir d'un autre ensemble. Construction par strate. Sans grand intérêt.
+ }
+ }
+
+@inproceedings{FFKV01,
+  author    = {Kathi Fisler and Ranan Fraer and Gila Kamhi and
+               Moshe Y. Vardi and Zijiang Yang},
+  title     = {Is There a Best Symbolic Cycle-Detection Algorithm?},
+  booktitle = {7th International Conference on Tools and Algorithms for
+               the Construction and Analysis of Systems (TACAS'01)},
+  editor    = {G. Goos and J. Hartmanis and J. van Leeuwen},
+  year      = {2001},
+  pages     = {420--434},
+  serie     = {Lecture Notes in Computer Science},
+  publisher = {Springer},
+  vol       = 2031,
+  address = {London, UK},
+  annote    = {
+  A lire pour les emptiness-checks symboliques.
+ }
+}
+
+@article{HKSV01,
+  author    = {R. H. Hardin and
+               Robert P. Kurshan and
+               Sandeep K. Shukla and
+               Moshe Y. Vardi},
+  title     = {A New Heuristic for Bad Cycle Detection Using BDDs},
+  journal   = {Formal Methods in System Design},
+  volume    = {18},
+  number    = {2},
+  year      = {2001},
+  pages     = {131--140},
+ publisher = {Kluwer Academic Publishers},
+}
+
+@inproceedings{WBH01,
+  author    = {Chao Wang and
+               Roderick Bloem and
+               Gary D. Hachtel and
+               Kavita Ravi and
+               Fabio Somenzi},
+  title     = {Divide and Compose: {SCC} Refinement for Language Emptiness},
+  booktitle = {12th International Conference on Concurrency Theory (CONCUR'01)},
+  editor    = {Kim Guldstrand Larsen and
+               Mogens Nielsen},
+  year      = {2001},
+  address   = {Aalborg, Denmark},
+  pages     = {456-471},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {2154},
+  annote    = {
+ Une amélioration du calcul symbolique des SCC acceptantes (qui est nécessaire pour CTL fair).
+ }
+}
+
+@article{BAS02,
+  author    = {Armin Biere and Cyrille Artho and Viktor Schuppan},
+  title     = {Liveness Checking as Safety Checking},
+  journal   = {Electronic Notes in Theoretical Computer Science},
+  volume    = {66},
+  number    = {2},
+  year      = {2002},
+  note      = {7th International ERCIM Workshop in Formal Methods for Industrial Critical Systems (FMICS'02)},
+}
+
+@article{HPV02,
+author = {Henri Hansen and Wojciech Penczek and Antti Valmari},
+title = {Stuttering-Insensitive Automata for On-the-fly Detection of Livelock Properties},
+journal = {Electronic Notes in Theoretical Computer Science},
+volume = {66},
+number = {2},
+pages = {178--193},
+year = {2002},
+note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal Methods for Industrial Critical Systems (ICALP'02 Satellite Workshop)},
+  annote    = {
+ Le papier montre comment les testers peuvent être employés, en remplacement des automates de Büchi, pour la vérification de formules LTL privé de
+ l'opérateur X. Les algorithmes permettant de construire un tester équivalent à une automate de Büchi (et réciproquement) est présenté. Dans un produit, le tester
+ ne change d'état que si la valeur de vérité des propositions atomiques est modifiée. L'algorithme d'emptiness check est explicite.
+ }
+}
+
+@inproceedings{SRKB02,
+ author = {Fabio Somenzi and Kavita Ravi and Roderick Bloem},
+ title = {Analysis of Symbolic {SCC} Hull Algorithms},
+ booktitle = {4th International Conference on Formal Methods in Computer-Aided Design (FMCAD'02)},
+ editor    = {Mark Aagaard and John W. O'Leary},
+ volume    = {2517},
+ year = {2002},
+ pages = {88--105},
+ series    = {Lecture Notes in Computer Science},
+ publisher = {Springer},
+ address = {London, UK},
+ }
+
+@inproceedings{WH02,
+ author = {Chao Wang and Gary D. Hachtel},
+ title = {Sharp Disjunctive Decomposition for Language Emptiness Checking},
+ booktitle = {4th International Conference on Formal Methods in Computer-Aided Design (FMCAD'02)},
+ year = {2002},
+ pages = {106--122},
+ publisher = {Springer-Verlag},
+ address = {London, UK},
+  annote    = {
+ Un calcul symbolique des SCC acceptantes par décomposition (d'après le résumé).
+ }
+ }
+
+@InProceedings{CP03,
+ author    = {Ivana {\v{C}}ern\'a and Radek Pel\'anek},
+ title     = {Relating Hierarchy of Temporal Properties to Model Checking},
+ editor    = {Branislav Rovan and Peter Vojt{\'a}s},
+ booktitle = {28th International Symposium on Mathematical Foundations of Computer Science (MFCS'03)},
+ pages     = {318-327},
+ volume    = {2747},
+ series    = {Lecture Notes in Computer Science},
+ publisher = {Springer},
+ month     = aug,
+ year      = {2003},
+ address   = {Bratislava, Slovakia},
+ annote    = {
+ Cet article décrit une hiérarchie des propriétés logiques à temps linéaire et propose
+ des algorithmes adaptés à chaque classe de propriétés. On y trouvera en particulier :
+ \begin{itemize}
+ \item Une caractérisation des formules pour lesquelles des conditions d'acceptation
+ faibles ou terminales peuvent être employées.
+ \item Les algorithmes ``emptiness-check'' explicites et symboliques (basés uniquement sur des parcours avant) adaptés à ces classes.
+ \end{itemize}
+ L'algorithme d'emptiness check pour les formules générales est tiré de \cite{KPR98}.
+ D'autres algorithmes symboliques pour le même type de formule sont étudiés dans \cite{FFKV01}.
+ },
+ url = {file://C:/Documents\%20and\%20Settings/denis/Bureau/symbEmptinessCheck/Symbolique/2003-MFCS-CernaPelanek.pdf}
+}
+
+@inproceedings{GPP03,
+ author = {Raffaella Gentilini and Carla Piazza and Alberto Policriti},
+ title = {Computing strongly connected components in a linear number of symbolic steps},
+ booktitle = {40th annual ACM-SIAM symposium on Discrete algorithms (SODA'03)},
+ year = {2003},
+ pages = {573--582},
+ location = {Baltimore, Maryland},
+ publisher = {Society for Industrial and Applied Mathematics},
+ address = {Philadelphia, PA, USA},
+ annote    = {
+   Le meilleur algorithme symbolique connu (en 2003) pour le calcul de SCC (nécessaire pour CTL fair). Les complexités obtenues sont
+   celles de l'algorithme de Tarjan.
+ }
+ }
+
+@article{HKQ03,
+ author = {Thomas A. Henzinger and Orna Kupferman and Shaz Qadeer},
+ title = {From $\mathit{Pre}$-Historic to $\mathit{Post}$-Modern Symbolic Model Checking},
+ journal = {Formal Methods in System Design},
+ volume = {23},
+ number = {3},
+ year = {2003},
+ pages = {303--327},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+  annote    = {
+ L'article montre que tout la partie du $\mu$-calcul correspondant aux $\omega$-automates peut être évaluée dans des outils symbolique
+ en employant uniquement le parcours avant. Voir aussi \cite{CP03}.
+ }
+ }
+
+@inproceedings{WT03,
+ author = {Fang Wang and Sofi\`{e}ne Tahar},
+ title = {Language emptiness checking using {MDGs}},
+ booktitle = {13th ACM Great Lakes symposium on VLSI (GLSVLSI'03)},
+ year = {2003},
+ pages = {88--91},
+ address = {Washington, D. C., USA},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+  annote    = {
+ Ce papier présente un algorithme symbolique pour la vérification de formules CTL fair (SCC based). Cet algorithme prend en compte
+ des ``Multiway Decision Graph'', structure bien adaptée pour représenter des circuits ayant des chemin de données de taille importante.
+ }
+ }
+
+@inproceedings{HIK04,
+  author    = {Serge Haddad and Jean-Michel Ili{\'e} and Kais Klai},
+  title     = {Design and Evaluation of a Symbolic and Abstraction-Based
+               Model Checker},
+  booktitle = {2nd International Conference on Automated Technology for Verification and Analysis (ATVA'04)},
+  editor    = {Farn Wang},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {3299},
+  year      = {2004},
+  month = oct,
+  pages     = {196--210},
+  address = {Taipei, Taiwan, ROC},
+  ee        = {http://springerlink.metapress.com/openurl.asp?genre=article{\&}issn=0302-9743{\&}volume=3299{\&}spage=196},
+  crossref  = {DBLP:conf/atva/2004},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}
+
+@inproceedings{CDP05,
+  author = {Jean-Michel Couvreur and Alexandre Duret-Lutz and Denis
+		  Poitrenaud},
+  title = {On-the-Fly Emptiness Checks for Generalized {B\"u}chi
+		  Automata},
+  booktitle = {12th International SPIN Workshop on Model Checking of Software (SPIN'05)},
+  pages = {143--158},
+  year = {2005},
+  editor = {Patrice Godefroid},
+  volume = {3639},
+  series = {Lecture Notes in Computer Science},
+  month = aug,
+  publisher = {Springer},
+}
+
+@inproceedings{STV05,
+  author    = {Roberto Sebastiani and
+               Stefano Tonetta and
+               Moshe Y. Vardi},
+  title     = {Symbolic Systems, Explicit Properties: On Hybrid Approaches
+               for {LTL} Symbolic Model Checking},
+  editor    = {Kousha Etessami and
+               Sriram K. Rajamani},
+  booktitle = {17th International Conference on Computer Aided Verification (CAV'05)},
+  address   = {Edinburgh, Scotland, UK},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {3576},
+  year      = {2005},
+  pages     = {350-363},
+  annote    = {
+ Ce papier reprend les résultats de \cite{SSTV07} et compare l'efficacité de la vérification symbolique par partitionnement à l'approche clasique et
+ à l'approche par encodage binaire des états de l'automates de Büchi.
+ },
+ url = {STE/2005-CAV-SebastianiTonettaVardi.pdf}
+}
+
+@article{BGS06,
+ author = {Roderick Bloem and Harold N. Gabow and Fabio Somenzi},
+ title = {An Algorithm for Strongly Connected Component Analysis in $n \log n$ Symbolic Steps},
+ journal = {Formal Methods in System Design},
+ volume = {28},
+ number = {1},
+ year = {2006},
+ pages = {37--56},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+  annote    = {
+ Un calcul symbolique des SCC acceptantes et de contre exemples.
+ },
+ }
+
+@inproceedings{GH06,
+  author    = {Jaco Geldenhuys and
+               Henri Hansen},
+  title     = {Larger Automata and Less Work for {LTL} Model Checking},
+  editor    = {Antti Valmari},
+  booktitle = {13th International SPIN Workshop on Model Checking Software (SPIN'06)},
+  pages     = {53-70},
+  volume    = {3925},
+  series    = {Lecture Notes in Computer Science},
+  publisher = {Springer},
+  month     = mar,
+  year      = {2006},
+  address   = {Vienna, Austria},
+  annote    = {
+ Cet article fait suite à celui de Valmari (\cite{HPV02}). Il compare la vérification (explicite)
+ de formule LTL employant des automates de Büchi de deux types avec la vérification basée sur
+ les testers de Valmari. Les automates de Büchi ne sont pas généralisés et la condition d'acceptation
+ y est définie par un ensemble d'états. Les deux types présentés sont ceux, nommés SLBA, où les états sont étiquetés par
+ une ensemble d'ensembles de propositions atomiques (une formule propositionnelle) et ceux, nommés TLBA, où les arcs sont étiquetés
+ par un ensemble de propositions atomiques.\\
+
+ Le papier montre comment traduire un TLBA en SLBA et comment traduire un SLBA en un tester. Il propose ensuite des emptiness checks
+ pour chacune de ces structures. L'algorithme classique pour les testers est en deux passes -- une pour les circuits acceptants et
+ une autre pour les séquences divergentes. L'article propose un nouvel algorithme dans lequel certaines séquences divergentes (mais pas
+ toutes) sont détectées durant la première passe. Si aucune n'est trouvée, il faut alors faire la deuxième passe.\\
+
+ La conclusion est que les TLBA sont les moins efficaces même s'ils sont généralement plus petits que les SLBA. Les SLBA et les testers sont
+ bien plus difficilement comparables -- chacun gagne pour une partie des exemples traités.
+ }
+}
+
+@article{WBH06,
+ author = {Chao Wang and Roderick Bloem and Gary D. Hachtel and Kavita Ravi and Fabio Somenzi},
+ title = {Compositional {SCC} Analysis for Language Emptiness},
+ journal = {Formal Methods in System Design},
+ volume = {28},
+ number = {1},
+ year = {2006},
+ pages = {5--36},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+  annote    = {
+ Un autre calcul symbolique des SCC acceptantes.
+ }
+ }
+
+@phdthesis{D07,
+  author = {Alexandre Duret-Lutz},
+  title = {Contributions {\`a} l'approche automate pour la
+		  v{\'e}rification de propri{\'e}t{\'e}s de syst{\`e}mes
+		  concurrents},
+  school = {Universit{\'e} Pierre et Marie Curie (Paris 6)},
+  year = {2007},
+  month = jul,
+}
+
+@inproceedings{RV07,
+  author    = {Kristin Y. Rozier and
+               Moshe Y. Vardi},
+  title     = {{LTL} Satisfiability Checking},
+  booktitle = {14th International SPIN Workshop on Model Checking Software (SPIN'07)},
+  editor    = {Dragan Bosnacki and
+               Stefan Edelkamp},
+  address = {Berlin, Germany},
+  mont = jul,
+  year      = {2007},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {4595},
+  pages     = {149--167},
+}
+
+@article{SSTV07,
+ author = {Roberto Sebastiani and Eli Singerman and Stefano Tonetta and Moshe Y. Vardi},
+ title = {{GSTE} is partitioned model checking},
+ journal = {Formal Methods in System Design},
+ volume = {31},
+ number = {2},
+ year = {2007},
+ pages = {177--196},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+ note = {also published at CAV'04},
+  annote    = {
+ Ce papier montre que les algorithmes employés pour la vérification de formule LTL avec les ``Generalized Symbolic Trajectory Evaluation'' sont
+ les mêmes que pour la vérification avec des BDD. Il y est proposé un algorithme symbolique comportant un bdd par état de l'automate de Büchi.
+ }
+ }
+
+@inproceedings{KP08,
+  author    = {Kais Klai and Denis Poitrenaud},
+  title     = {{MC-SOG}: An {LTL} Model Checker Based on Symbolic Observation Graphs},
+  booktitle = {29th International Conference on Applications and Theory of Petri Nets, (ICATPN'08)},
+  editor    = {Kees M. van Hee and R{\"u}diger Valk},
+  year      = {2008},
+  month = jun,
+  address = {Xi'an, China},
+  pages     = {288--306},
+  publisher = {Springer},
+  series    = {Lecture Notes in Computer Science},
+  volume    = {5062},
+}
+
+@proceedings{DBLP:conf/apn/2008,
+  title     = {, , June 23-27, 2008.
+               Proceedings},
+  booktitle = {Petri Nets},
+  year      = {2008},
+  isbn      = {978-3-540-68745-0},
+  bibsource = {DBLP, http://dblp.uni-trier.de}
+}

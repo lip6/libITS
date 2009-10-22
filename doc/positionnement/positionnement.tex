@@ -1,0 +1,102 @@
+\documentclass[10pt,oneside]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[leqno]{amsmath}
+\usepackage{url}
+\usepackage{hyperref}
+
+\usepackage{splitbib}
+
+\begin{category}[A]{Approches purement symboliques}
+    \SBentries{BCM92,BCJLM97,CGH97,KPR98,BRS99,RBS00,FFKV01,HKSV01,WBH01,SRKB02,WH02,CP03,HKQ03,GPP03,WT03,BGS06,WBH06}
+\end{category}
+
+\begin{category}[A]{Approches hybrides}
+    \SBentries{SB95,BCZ99,CRB01,HIK04,STV05,SSTV07,KP08}
+\end{category}
+
+\begin{category}[B]{Approches exploitant le bégaiement}
+    \SBentries{V93,HPV02,GH06}
+\end{category}
+
+
+\evensidemargin=0cm
+\oddsidemargin=0cm
+\topmargin=-2cm
+\textheight=24cm
+\leftmargin=0cm
+\textwidth=18cm
+\sloppy
+\flushbottom
+\parindent 1em
+\hoffset -0.5in
+\oddsidemargin  0pt
+\evensidemargin 0pt
+\marginparsep   10pt
+
+\DeclareMathOperator{\X}{X}
+\DeclareMathOperator{\EG}{EG}
+\DeclareMathOperator{\EU}{EU}
+
+% ne marche que pour un chemin ne comprenant aucun espace...
+\hyperbaseurl{file://C:/Users/Denis/Desktop/ApprochesHybridesLTL/}
+
+\begin{document}
+
+\title{Positionnement des SOG, SLOG et autres DSOG par rapport aux autres approches de la vérification de formules LTL}
+\author{}
+\date{}
+
+\maketitle
+
+Ce document a pour objectif de faire un état de l'art (partiel) sur la vérification de formule de logique temporelle à temps linéaire. De plus, elle tente de justifier notre future campagne de mesures concernant les graphes d'observation.
+
+\section{Approches purement explicites}
+
+Les algorithmes explicites de vérification de formules LTL sont tous basés sur le même principe : (1) la négation de la formule est traduite en un automate de Büchi ; (2) le système et l'automate de Büchi sont synchronisés ; (3) la recherche d'une séquence acceptante permet de décider si la formule est vérifiée. De nombreuses variantes concernant tout autant le type d'automate de Büchi pris en compte, l'algorithme de traduction et le test de vacuité ont été proposées (lire~\cite{D07} pour un état de l'art complet). Un point fort de cette approche est qu'elle peut être appliquée à la volée, c'est à dire, que seule la part du produit synchronisé utile pour la vérification est effectivement visitée et que l'algorithme stoppe dès qu'une décision peut être prise.
+
+Si nous devons nous comparer à une approche purement explicite, il est clair que nous nous limiterons aux TGBA produits par Spot en appliquant l'algorithme de traduction présenté dans~\cite{C99} (des pré et post réductions sont aussi appliquées) et à l'algorithme de test de vacuité basé sur le calcul de SCC qui a été évalué dans~\cite{CDP05}.
+
+\section{Approches purement symboliques}
+
+La vérification symbolique de formule CTL~\cite{BCM92} est basée sur le calcul d'un plus petit point fixe arrière (pour les formules $\EU(f, g)$) et d'un plus grand point arrière (pour les formules $\EG(f)$). La prise en compte de conditions d'équités faibles nécessite le calcul des états satisfaisant la formule $\EG_C(\mathit{true})$ sous condition d'équité $C$, c'est à dire, de l'ensemble des états à partir desquels est exécutable une séquence infinie équitable. Ces états correspondent à ceux appartenant à une composante fortement connexe respectant $C$ ainsi que ceux à partir desquels une telle composante est accessible. Les algorithmes permettant ce type de calcul sont dits être des ``SCC-hull algorithms''. Le plus connu et le plus employé est celui d'Emmerson et Lei~\cite{EL86}. Il est basé sur un double plus petit point fixe arrière à partir des états acceptant du produit. Beaucoup d'autres algorithmes ont été proposés~\cite{RBS00,FFKV01,SRKB02}. Dans tous les cas, la vérification d'une formule CTL $f$ sous une condition d'équité faible $C$ correspond à l'évaluation de l'expression $S_0 \subseteq f \cap \EG_C(\mathit{true})$ où $S_0$ désigne l'ensemble des états initiaux du système.
+
+La vérification symbolique de formules LTL peut être réduite à l'évaluation d'une expression $\EG_C(\mathit{true}) \cap S_0 \neq \emptyset$ lorsque l'on considère le système synchronisé avec l'automate de Büchi de la négation de la formule et que $S_0$ représente les états initiaux de ce produit~\cite{CGH97}. La condition d'équité $C$ correspond alors aux conditions d'acceptation de l'automate. Il a été remarqué que pour évaluer cette expression, il n'était pas nécessaire de faire des parcours arrières. En effet, plutôt que de calculer  l'ensemble $\EG_C(\mathit{true})$, il est possible de calculer l'ensemble des états appartenant à une composante fortement connexe respectant $C$ étant accessible à partir de $S_0$ ainsi que ceux accessibles à partir d'une telle composante. Cela peut être fait par un double plus petit point fixe avant à partir de $S_0$ et cet algorithme correspond exactement à celui d'Emmerson et Lei en inversant la relation de transition. Les autres algorithmes existant peuvent aussi être inversés.
+
+Il existe aussi un algorithme original proposé par Biere et al~\cite{BAS02}. En effet, il ne requiert qu'un simple plus petit point fixe avant (la satisfaction est réduite à un problème d'accessibilité) mais nécessite de doubler le nombre de variables. Une classification des automates de Büchi dégénéralisés~\cite{BRS99,CP03} a aussi permis le développement d'algorithmes simplifiées spécifiques à certaines sous-classes (les automates faibles et terminaux).
+
+Plusieurs articles comparent les ``SCC-hull algorithms'' symboliques existants~\cite{RBS00,FFKV01,SRKB02}. En particulier, Fisler et al~\cite{FFKV01} ont montré que l'algorithme d'Emmerson et Lei~\cite{EL86} (EL) et celui présenté par Hojati et al~\cite{HTKB92} (OWCTY pour \emph{One-Way-Catch-Them-Young}) sont les deux meilleurs tout en étant incomparables. Ils ont aussi montré expérimentalement que le second domine généralement le premier. Leur étude ne considère que les parcours arrières pour ces deux algorithmes (un troisième algorithme issu de~\cite{HKSV01} et mettant en {\oe}uvre des parcours avant et des parcours arrière y est aussi comparé). On peut noter que l'algorithme OWCTY a aussi été présenté par Kesten et al~\cite{KPR98} en prenant en compte des conditions d'équité faibles et forte.
+
+Il a aussi été montré que l'efficacité de l'approche symbolique dépend beaucoup de l'algorithme employé pour traduire la formule LTL en un automate de Büchi~\cite{STV05}. Dans le contexte des tests de satisfaisabilité de formule LTL par un algorithme explicite, il a été montré par Rozier et Vardi~\cite{RV07} que Spot implémente l'un des meilleurs algorithmes de traduction. Il produit des TGBA. Il est basé sur l'algorithme de traduction de Couvreur (cité FM99) et propose des pré et post réductions. Il est important de noter qu'aucune évaluation de Spot n'a été faites dans le cadre de la vérification symbolique et que l'étude de~\cite{STV05} est basé sur des automates dégénéralisés et que l'algorithme de test de vacuité employé n'est pas des plus performants (\emph{nested DFS}).
+
+Nous devons comparer les graphes d'observation aux approches purement symbolique. Il est connu que les parcours arrières sont plus coûteux que les parcours avants (voir~\cite{INH96} dans le contexte de CTL) et en conséquence nous devons implémenter au moins un des deux algorithmes en parcours avant (EL ou OWCTY). Même si cela sort du cadre du notre travail sur les graphes d'observation, il serait souhaitable de disposer des mêmes algorithmes en parcours arrière pour la vérification de formules CTL sous hypothèse d'équité faible.
+
+On peut noter que le test de divergence au sein d'un agrégat $A$ correspond à l'évaluation de l'expression $\EG_\emptyset(\mathit{true}) \cap A \neq \emptyset$. Ce test peut être réalisé en appliquant EL ou OWCTY. Lorsqu'il n'y a pas de condition d'acceptation, EL considère tous les états (ou transition) comme étant acceptants. Dans ce contexte, il est évident que EL est bien moins performant que OWCTY. Notre implémentation mais en {\oe}uvre une version d'OWCTY spécialisée à ce cas particulier.
+
+\section{Approches hybrides symboliques/explicites}
+
+L'un des premiers articles combinant les approches symbolique et explicite est~\cite{BCZ99}. L'approche proposée par les auteurs est très proche des graphes d'observations. Elle vise à construire un graphe d'agrégats qui soit compatible avec les algorithmes explicites de test de vacuité. Comme les auteurs veulent pouvoir couvrir tout LTL (et en particulier l'opérateur $\X$) le calcul des agrégats successeurs d'un agrégat $a$ est réalisé en partitionnant l'ensemble des états successeurs directs de ceux présents dans $a$. Le partitionnement est réalisé de manière à ce que deux états au sein d'une même partie satisfassent le même ensemble de propositions atomiques. Chaque partie forme alors un nouvel agrégat. Le fait de se limiter à LTL privé de $\X$ nous autorise à ne pas nous limiter aux successeurs directs.
+
+Sebastiani et al~\cite{SSTV07} proposent une approche assez différente de la nôtre. Dans l'approche symbolique classique, chaque ensemble d'état est représenté par un unique diagramme de décision. Les états du produit synchronisé sont des paires $(s, a)$ où $s$ représente l'état du système et $a$ l'état de l'automate. Les auteurs proposent que chaque ensemble d'états (du produit synchronisé) soit représenté par un diagramme de décision par état de l'automate (i.e. un ensemble d'état $Q$ sera représenté par l'ensemble d'ensembles $\{Q_b\}_{b \in B}$ avec $B$ l'ensemble des états de l'automate et $Q_b = \{s \mid (s, b) \in Q\}$). Les opérations de base (union, intersection, complément, pré et post-image) sont réécrites selon cet encodage. \cite{STV05} compare cette approche avec l'approche purement symbolique et montre que, quelque soit l'automate choisi (les deux testés sont la construction de SMV et celle de Modella -- les deux sont dégénéralisés), le partitionnement est toujours meilleur. Il est important de noter que la technique du partitionnement est orthogonale au choix de l'algorithme de test de vacuité (EL ou OWCTY voire les versions spécifiques à la sous-classe de l'automate considéré).
+
+Dans cette approche, un nombre fixe de diagrammes de décision est toujours présent en mémoire alors que les graphes d'observation fait une partition bien plus fine. Il semble être essentiel de se comparer à cette approche.
+
+Dans~\cite{CRB01}, les auteurs proposent aussi une technique basé sur des ensembles d'états. L'approche est limité à des propriétés de sûreté et fonctionne par strate. On peut penser que son extension à des propriétés de vivacité conduirait à la méthode présentée dans~\cite{BCZ99}.
+
+Les graphes d'observation ont aussi été précédemment présentés dans \cite{HIK04} (LTL basé sur les transitions) et dans \cite{KP08} (LTL basé sur les états).
+
+\section{Approches basées sur le bégaiement}
+
+La technique présenté par Hansen et al~\cite{HPV02} est purement explicite. Elle consiste à employer des testers~\cite{V93} à la place des automates de Büchi. Les testers ne permettent d'exprimer que des formules invariantes face au bégaiement (c'est notre cadre). Leur originalité vient du mode de synchronisation entre le système et le tester.  Le tester ne change d'état que lorsque la valeur de vérité des propositions atomiques change dans le système. Même si les testers sont plus expressifs que LTL privée de l'opérateur $\X$ (comme les automates de Büchi par rapport à LTL), une traduction des formules LTL privée de l'opérateur $\X$ est proposée.
+
+Geldenhuys et Hansen~\cite{GH06} ont comparé, dans un cadre explicite, la technique des testers avec celle basée sur des automates de Büchi (avec les propositions atomiques sur les états ou sur les transitions et les conditions d'acceptation sur les états). Dans tous les cas, le test de vacuité est basé sur la recherche de composantes fortement connexes et les automates et les testers sont dégénéralisés. Ils montrent par quelques mesures l'avantage des testers. Ils montrent aussi l'avantage des automates étiquetés sur les états par rapport à ceux étiquetés sur les transitions -- même si les automates sont plus grands, les produits synchronisés seraient plus petits.
+
+Les testers peuvent aussi être employés dans un cadre purement symbolique. Cela n'a jamais été essayé à ma connaissance. Les graphes d'observation sont sans doute une approche hybride. Les DSOG peuvent être vus comme une amélioration des testers dans laquelle les propositions observées sont peu à peu filtrées. Il est possible que les SLOG soit à lier à l'algorithme de traduction de LTL privée de $\X$ en tester ?
+
+Je pense que la comparaison avec cette approche peut être repoussée à des travaux postérieurs. L'étude présentée dans~\cite{GH06} semble nous inviter à de nouvelles campagnes de mesures concernant les TGBA. Il va tout de même falloir du courage pour nous y remettre...
+
+\renewcommand{\refname}{Références triées par catégorie}
+\bibliographystyle{alpha}
+\bibliography{biblio}
+
+\end{document} 
