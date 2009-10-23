@@ -1,163 +1,163 @@
-#place C0 mk(<..>)
-#place E0
-#place A0 mk(<..>)
-#place B0
-#place D0
-#place F0
-#place G0
-#place H0
-#place C1 mk(<..>)
-#place E1
-#place A1 mk(<..>)
-#place B1
-#place D1
-#place F1
-#place G1
-#place H1
-#place C2 mk(<..>)
-#place E2
-#place A2 mk(<..>)
-#place B2
-#place D2
-#place F2
-#place G2
-#place H2
-#place C3 mk(<..>)
-#place E3
-#place A3 mk(<..>)
-#place B3
-#place D3
-#place F3
-#place G3
-#place H3
-#place C4 mk(<..>)
-#place E4
-#place A4 mk(<..>)
-#place B4
-#place D4
-#place F4
-#place G4
-#place H4
-#place C5 mk(<..>)
-#place E5
-#place A5 mk(<..>)
-#place B5
-#place D5
-#place F5
-#place G5
-#place H5
-#place C6 mk(<..>)
-#place E6
-#place A6 mk(<..>)
-#place B6
-#place D6
-#place F6
-#place G6
-#place H6
-#place C7 mk(<..>)
-#place E7
-#place A7 mk(<..>)
-#place B7
-#place D7
-#place F7
-#place G7
-#place H7
-#place C8 mk(<..>)
-#place E8
-#place A8 mk(<..>)
-#place B8
-#place D8
-#place F8
-#place G8
-#place H8
-#place C9 mk(<..>)
-#place E9
-#place A9 mk(<..>)
-#place B9
-#place D9
-#place F9
-#place G9
-#place H9
-#place C10 mk(<..>)
-#place E10
-#place A10 mk(<..>)
-#place B10
-#place D10
-#place F10
-#place G10
-#place H10
-#place C11 mk(<..>)
-#place E11
-#place A11 mk(<..>)
-#place B11
-#place D11
-#place F11
-#place G11
-#place H11
-#place C12 mk(<..>)
-#place E12
-#place A12 mk(<..>)
-#place B12
-#place D12
-#place F12
-#place G12
-#place H12
-#place C13 mk(<..>)
-#place E13
-#place A13 mk(<..>)
-#place B13
-#place D13
-#place F13
-#place G13
-#place H13
-#place C14 mk(<..>)
-#place E14
-#place A14 mk(<..>)
-#place B14
-#place D14
-#place F14
-#place G14
-#place H14
-#place C15 mk(<..>)
-#place E15
-#place A15 mk(<..>)
-#place B15
-#place D15
-#place F15
-#place G15
-#place H15
-#place C16 mk(<..>)
-#place E16
-#place A16 mk(<..>)
-#place B16
-#place D16
-#place F16
-#place G16
-#place H16
-#place C17 mk(<..>)
-#place E17
-#place A17 mk(<..>)
-#place B17
-#place D17
-#place F17
-#place G17
-#place H17
-#place C18 mk(<..>)
-#place E18
-#place A18 mk(<..>)
-#place B18
-#place D18
-#place F18
-#place G18
-#place H18
-#place C19 mk(<..>)
-#place E19
-#place A19 mk(<..>)
-#place B19
-#place D19
-#place F19
-#place G19
-#place H19
+#place (0) C0 mk(<..>)
+#place (0) E0
+#place (0) A0 mk(<..>)
+#place (0) B0
+#place (0) D0
+#place (0) F0
+#place (0) G0
+#place (0) H0
+#place (1) C1 mk(<..>)
+#place (1) E1
+#place (1) A1 mk(<..>)
+#place (1) B1
+#place (1) D1
+#place (1) F1
+#place (1) G1
+#place (1) H1
+#place (2) C2 mk(<..>)
+#place (2) E2
+#place (2) A2 mk(<..>)
+#place (2) B2
+#place (2) D2
+#place (2) F2
+#place (2) G2
+#place (2) H2
+#place (3) C3 mk(<..>)
+#place (3) E3
+#place (3) A3 mk(<..>)
+#place (3) B3
+#place (3) D3
+#place (3) F3
+#place (3) G3
+#place (3) H3
+#place (4) C4 mk(<..>)
+#place (4) E4
+#place (4) A4 mk(<..>)
+#place (4) B4
+#place (4) D4
+#place (4) F4
+#place (4) G4
+#place (4) H4
+#place (5) C5 mk(<..>)
+#place (5) E5
+#place (5) A5 mk(<..>)
+#place (5) B5
+#place (5) D5
+#place (5) F5
+#place (5) G5
+#place (5) H5
+#place (6) C6 mk(<..>)
+#place (6) E6
+#place (6) A6 mk(<..>)
+#place (6) B6
+#place (6) D6
+#place (6) F6
+#place (6) G6
+#place (6) H6
+#place (7) C7 mk(<..>)
+#place (7) E7
+#place (7) A7 mk(<..>)
+#place (7) B7
+#place (7) D7
+#place (7) F7
+#place (7) G7
+#place (7) H7
+#place (8) C8 mk(<..>)
+#place (8) E8
+#place (8) A8 mk(<..>)
+#place (8) B8
+#place (8) D8
+#place (8) F8
+#place (8) G8
+#place (8) H8
+#place (9) C9 mk(<..>)
+#place (9) E9
+#place (9) A9 mk(<..>)
+#place (9) B9
+#place (9) D9
+#place (9) F9
+#place (9) G9
+#place (9) H9
+#place (10) C10 mk(<..>)
+#place (10) E10
+#place (10) A10 mk(<..>)
+#place (10) B10
+#place (10) D10
+#place (10) F10
+#place (10) G10
+#place (10) H10
+#place (11) C11 mk(<..>)
+#place (11) E11
+#place (11) A11 mk(<..>)
+#place (11) B11
+#place (11) D11
+#place (11) F11
+#place (11) G11
+#place (11) H11
+#place (12) C12 mk(<..>)
+#place (12) E12
+#place (12) A12 mk(<..>)
+#place (12) B12
+#place (12) D12
+#place (12) F12
+#place (12) G12
+#place (12) H12
+#place (13) C13 mk(<..>)
+#place (13) E13
+#place (13) A13 mk(<..>)
+#place (13) B13
+#place (13) D13
+#place (13) F13
+#place (13) G13
+#place (13) H13
+#place (14) C14 mk(<..>)
+#place (14) E14
+#place (14) A14 mk(<..>)
+#place (14) B14
+#place (14) D14
+#place (14) F14
+#place (14) G14
+#place (14) H14
+#place (15) C15 mk(<..>)
+#place (15) E15
+#place (15) A15 mk(<..>)
+#place (15) B15
+#place (15) D15
+#place (15) F15
+#place (15) G15
+#place (15) H15
+#place (16) C16 mk(<..>)
+#place (16) E16
+#place (16) A16 mk(<..>)
+#place (16) B16
+#place (16) D16
+#place (16) F16
+#place (16) G16
+#place (16) H16
+#place (17) C17 mk(<..>)
+#place (17) E17
+#place (17) A17 mk(<..>)
+#place (17) B17
+#place (17) D17
+#place (17) F17
+#place (17) G17
+#place (17) H17
+#place (18) C18 mk(<..>)
+#place (18) E18
+#place (18) A18 mk(<..>)
+#place (18) B18
+#place (18) D18
+#place (18) F18
+#place (18) G18
+#place (18) H18
+#place (19) C19 mk(<..>)
+#place (19) E19
+#place (19) A19 mk(<..>)
+#place (19) B19
+#place (19) D19
+#place (19) F19
+#place (19) G19
+#place (19) H19
 #trans Free0
 in {A0:<..>;C19:<..>;}
 out {B0:<..>;E19:<..>;}
