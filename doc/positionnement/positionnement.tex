@@ -88,7 +88,7 @@ Les graphes d'observation ont aussi été précédemment présentés dans \cite{HIK04}
 
 \section{Approches basées sur le bégaiement}
 
-La technique présenté par Hansen et al~\cite{HPV02} est purement explicite. Elle consiste à employer des testers~\cite{V93} à la place des automates de Büchi. Les testers ne permettent d'exprimer que des formules invariantes face au bégaiement (c'est notre cadre). Leur originalité vient du mode de synchronisation entre le système et le tester.  Le tester ne change d'état que lorsque la valeur de vérité des propositions atomiques change dans le système. Même si les testers sont plus expressifs que LTL privée de l'opérateur $\X$ (comme les automates de Büchi par rapport à LTL), une traduction des formules LTL privée de l'opérateur $\X$ est proposée.
+La technique présenté par Hansen et al~\cite{HPV02} est purement explicite. Elle consiste à employer des testers~\cite{V93} à la place des automates de Büchi. Les testers ne permettent d'exprimer que des formules invariantes face au bégaiement (c'est notre cadre). Leur originalité vient du mode de synchronisation entre le système et le tester.  Le tester ne change d'état que lorsque la valeur de vérité des propositions atomiques change dans le système. Même si les testers sont plus expressifs que LTL privée de l'opérateur $\X$ (comme les automates de Büchi par rapport à LTL), une traduction des formules LTL privée de l'opérateur $\X$ est proposée. Pour ne pas se limiter à LTL privée de l'opérateur $\X$, Dallien et MacCaull~\cite{DM06} propose une caractérisation plus fine des formules LTL invariantes face au bégaiement.
 
 Geldenhuys et Hansen~\cite{GH06} ont comparé, dans un cadre explicite, la technique des testers avec celle basée sur des automates de Büchi (avec les propositions atomiques sur les états ou sur les transitions et les conditions d'acceptation sur les états). Dans tous les cas, le test de vacuité est basé sur la recherche de composantes fortement connexes et les automates et les testers sont dégénéralisés. Ils montrent par quelques mesures l'avantage des testers. Ils montrent aussi l'avantage des automates étiquetés sur les états par rapport à ceux étiquetés sur les transitions -- même si les automates sont plus grands, les produits synchronisés seraient plus petits.
 
@@ -98,7 +98,7 @@ Je pense que la comparaison avec cette approche peut être repoussée à des travau
 
 \section{Algorithmes symboliques}
 
-La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapport à celui présenté dans~\cite{FFKV01}. Les parcours ont été inversés pour être en avant. Ceci a pour conséquence que les fonctions \texttt{Post} et \texttt{Sat} ne peuvent pas sortir de l'ensemble $B$ et cela nous permet de supprimer quelques intersection. Enfin, la première boucle (ligne 5 et 6) a été ajoutée.
+La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapport à celui présenté dans~\cite{FFKV01}. Les parcours ont été inversés pour être en avant. Ceci a pour conséquence que les ensembles d'états manipulés sont toujours clos vers le bas (i.e. si un état appartient à l'ensemble alors ses successeurs y appartiennent aussi). Les fonctions \texttt{Post} et \texttt{Sat} ne peuvent donc pas sortir de l'ensemble $B$ et cela nous permet de supprimer quelques intersections. Enfin, l'ordre des deux boucles internes a été inversé.
 
 \begin{algorithm}[h]
 \dontprintsemicolon
@@ -112,14 +112,11 @@ La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapp
 \Begin{
   $B \leftarrow$ \sat{$\mathcal{Q}^0$}\;
   \While{$B$ changes}{
-    $B \leftarrow$ \post{$B$, true}\;
-  }
-  \While{$B$ changes}{
-    \For{$F_i$ in $F$}{
-      $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
-    }
     \While{$B$ changes}{
       $B \leftarrow$ \post{$B$, true}\;
+    }
+    \For{$F_i$ in $F$}{
+      $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
     }
   }
   \Return{$B = \emptyset$}\;
