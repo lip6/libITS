@@ -80,7 +80,7 @@ L'un des premiers articles combinant les approches symbolique et explicite est~\
 
 Sebastiani et al~\cite{SSTV07} proposent une approche assez différente de la nôtre. Dans l'approche symbolique classique, chaque ensemble d'état est représenté par un unique diagramme de décision. Les états du produit synchronisé sont des paires $(s, a)$ où $s$ représente l'état du système et $a$ l'état de l'automate. Les auteurs proposent que chaque ensemble d'états (du produit synchronisé) soit représenté par un diagramme de décision par état de l'automate (i.e. un ensemble d'état $Q$ sera représenté par l'ensemble d'ensembles $\{Q_b\}_{b \in B}$ avec $B$ l'ensemble des états de l'automate et $Q_b = \{s \mid (s, b) \in Q\}$). Les opérations de base (union, intersection, complément, pré et post-image) sont réécrites selon cet encodage. \cite{STV05} compare cette approche avec l'approche purement symbolique et montre que, quelque soit l'automate choisi (les deux testés sont la construction de SMV et celle de Modella -- les deux sont dégénéralisés), le partitionnement est toujours meilleur. Il est important de noter que la technique du partitionnement est orthogonale au choix de l'algorithme de test de vacuité (EL ou OWCTY voire les versions spécifiques à la sous-classe de l'automate considéré).
 
-Dans cette approche, un nombre fixe de diagrammes de décision est toujours présent en mémoire alors que les graphes d'observation fait une partition bien plus fine. Il semble être essentiel de se comparer à cette approche.
+Dans cette approche, un nombre fixe de diagrammes de décision est toujours présent en mémoire alors que les graphes d'observation font une partition bien plus fine. Il semble essentiel de se comparer à cette approche.
 
 Dans~\cite{CRB01}, les auteurs proposent aussi une technique basé sur des ensembles d'états. L'approche est limité à des propriétés de sûreté et fonctionne par strate. On peut penser que son extension à des propriétés de vivacité conduirait à la méthode présentée dans~\cite{BCZ99}.
 
@@ -184,4 +184,4 @@ Enfin, l'algorithme réalisant un test de divergence au sein d'un ensemble d'état
 \bibliographystyle{alpha}
 \bibliography{biblio}
 
-\end{document} 
+\end{document}
