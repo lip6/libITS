@@ -72,7 +72,7 @@ Il a aussi été montré que l'efficacité de l'approche symbolique dépend beaucoup 
 
 Nous devons comparer les graphes d'observation aux approches purement symbolique. Il est connu que les parcours arrières sont plus coûteux que les parcours avants (voir~\cite{INH96} dans le contexte de CTL) et en conséquence nous devons implémenter au moins un des deux algorithmes en parcours avant (EL ou OWCTY). Même si cela sort du cadre du notre travail sur les graphes d'observation, il serait souhaitable de disposer des mêmes algorithmes en parcours arrière pour la vérification de formules CTL sous hypothèse d'équité faible.
 
-On peut noter que le test de divergence au sein d'un agrégat $A$ correspond à l'évaluation de l'expression $\EG_\emptyset(\mathit{true}) \cap A \neq \emptyset$. Ce test peut être réalisé en appliquant EL ou OWCTY. Lorsqu'il n'y a pas de condition d'acceptation, EL considère tous les états (ou transition) comme étant acceptants. Dans ce contexte, il est évident que EL est bien moins performant que OWCTY. Notre implémentation mais en {\oe}uvre une version d'OWCTY spécialisée à ce cas particulier.
+On peut noter que le test de divergence au sein d'un agrégat $A$ correspond à l'évaluation de l'expression $\EG_\emptyset(\mathit{true}) \cap A \neq \emptyset$. Ce test peut être réalisé en appliquant EL ou OWCTY. Lorsqu'il n'y a pas de condition d'acceptation, EL considère tous les états (ou transition) comme étant acceptants. Dans ce contexte, il est évident que EL est bien moins performant que OWCTY. Notre implémentation met en {\oe}uvre une version d'OWCTY spécialisée à ce cas particulier.
 
 \section{Approches hybrides symboliques/explicites}
 
@@ -98,7 +98,7 @@ Je pense que la comparaison avec cette approche peut être repoussée à des travau
 
 \section{Algorithmes symboliques}
 
-La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapport à celui présenté dans~\cite{FFKV01}. Les parcours ont été inversé pour être en avant. Ceci a pour conséquence que les fonctions \texttt{Post} et \texttt{Sat} ne peuvent pas sortir de l'ensemble $B$ et cela nous permet de supprimer quelques intersection. Enfin, la première boucle (ligne 5 et 6) a été ajoutée.
+La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapport à celui présenté dans~\cite{FFKV01}. Les parcours ont été inversés pour être en avant. Ceci a pour conséquence que les fonctions \texttt{Post} et \texttt{Sat} ne peuvent pas sortir de l'ensemble $B$ et cela nous permet de supprimer quelques intersection. Enfin, la première boucle (ligne 5 et 6) a été ajoutée.
 
 \begin{algorithm}[h]
 \dontprintsemicolon
@@ -123,11 +123,11 @@ La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapp
     }
   }
   \Return{$B = \emptyset$}\;
-} 
+}
 \caption{Algorithme OWCTY en parcours avant.\label{fig:owcty}}
 \end{algorithm}
 
-L'algorithme EL (lui aussi transformé en parcours avant) est présenté dans la figure~\ref{fig:el}. Notons que cet algorithme fait l'hypothèse que $\mathcal{F} \neq \emptyset$. Cette hypothèse est sans perte de généralité car il est alors équivalent de considérer toute transition comme étant acceptante. Toutefois, cela risque de rendre l'algorithme très peu efficace (au contraire de OWCTY). 
+L'algorithme EL (lui aussi transformé en parcours avant) est présenté dans la figure~\ref{fig:el}. Notons que cet algorithme fait l'hypothèse que $\mathcal{F} \neq \emptyset$. Cette hypothèse est sans perte de généralité car il est alors équivalent de considérer toute transition comme étant acceptante. Toutefois, cela risque de rendre l'algorithme très peu efficace (au contraire de OWCTY).
 
 \begin{algorithm}[h]
 \dontprintsemicolon
@@ -168,6 +168,17 @@ Enfin, l'algorithme réalisant un test de divergence au sein d'un ensemble d'état
 }
 \caption{Algorithme de détection de divergence.\label{fig:div}}
 \end{algorithm}
+
+\section{Perspectives}
+
+\begin{itemize}
+\item Comment réagissent les graphes d'observation quand les automates de Büchi sont faibles ou terminaux (Classification de~\cite{BRS99}) ?
+\item Quels sont les algorithmes symboliques pour les testers de Valmari~\cite{V93} ?
+\item Comment positionner les conditions d'acceptation dans un TGBA (correspondant à une formule LTL) de façon la plus favorable pour les algorithmes symboliques ?
+\item Comment prendre en compte l'inclusion entre aggrégats (voir l'heuristique présentée dans~\cite{BCZ99} et l'article d'Alexandre et Soheib à ACSD) ?
+\item Comment extraire un contre-exemple d'un graphe d'observation ?
+\item Comment prendre en compte les résultats de~\cite{GH06} dans Spot ?
+\end{itemize}
 
 \renewcommand{\refname}{Références triées par catégorie}
 \bibliographystyle{alpha}
