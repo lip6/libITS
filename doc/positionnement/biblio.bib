@@ -8,9 +8,6 @@
   booktitle = {Symposium on Logic in Computer Science (LICS'86)},
   address   = {Cambridge, Massachusetts, USA},
   publisher = {IEEE Computer Society},
-  annote    = {
-  Le papier de base de la vérification symbolique de propriétés à temps linéaire. Celui qui trouve la version électronique ou papier, gagne le cocotier.
- }
 }
 
 @article{BCM92,
@@ -23,9 +20,7 @@
  pages = {142--170},
  publisher = {Academic Press, Inc.},
  address = {Duluth, MN, USA},
-  annote    = {
-  Le papier de base de la vérification symbolique.
- }
+ pdf = "articles/1992-IC-BurchClarkeMcmillanDillHwang.pdf"
  }
 
 @inproceedings{HTKB92,
@@ -44,6 +39,7 @@
   month = jun,
   address = {Montreal, Canada},
   pages     = {396--409},
+  pdf = "articles/efficient.pdf"
 }
 
 @inproceedings{V93,
@@ -58,6 +54,7 @@
   month     = jun,
   year      = {1993},
   address   = {Elounda, Greece},
+  pdf = "articles/93-3.pdf",
 }
 
 @article{SB95,
@@ -70,9 +67,7 @@
  pages = {147--189},
  publisher = {Kluwer Academic Publishers},
  address = {Hingham, MA, USA},
-  annote    = {
- Papier de base sur les ``Symbolic Evaluation Trajectories'' et l'application à la vérification de propriétés de sûreté. Utile pour comprendre \cite{SSTV07}.
- }
+ pdf = "articles/1995-FMSD-SegerBryant.pdf",
  }
 
 @inproceedings{INH96,
@@ -84,6 +79,7 @@
  location = {San Jose, California, United States},
  publisher = {IEEE Computer Society},
  address = {Washington, DC, USA},
+ pdf = "articles/p82-iwashita.pdf"
  }
 
 @article{BCJLM97,
@@ -95,9 +91,7 @@
  year = {1997},
  pages = {237--255},
  publisher = {Elsevier},
-  annote    = {
-  Je ne l'ai pas lu...
- }
+ pdf = "articles/10.1.1.33.6159.pdf"
  }
 
 @article{CGH97,
@@ -110,9 +104,7 @@
  pages = {47--71},
  publisher = {Kluwer Academic Publishers},
  address = {Hingham, MA, USA},
-  annote    = {
- Article de base montrant comment vérifier des formules LTL avec un model checker symbolique CTL fair.
- }
+ pdf = "articles/1997-FMSD-ClarkeGrumbergHamaguchi.pdf"
  }
 
 @inproceedings{KPR98,
@@ -128,23 +120,7 @@
   volume    = {1443},
   month     = jul,
   year      = {1998},
-  annote    = {
- Le papier présente une approche symbolique complète pour la vérification de formule LTL.
- Cette approche comprend :
- \begin{itemize}
-   \item La définition d'une structure de Kripke équitable (faible et forte) pour la modélisation du système.
-         Cette structure correspond à des GBA mariés à des automates de Street.
-   \item La définition de deux opérateurs de composition de telles structures (synchrone ou asynchrone).
-   \item Un algorithme de traduction de formule LTL en structure de Kripke équitable (à la Wolper/Vardi mais avec
-         des conditions d'acceptation généralisées)
-   \item Un algorithme d'emptines check généralisé prenant aussi en compte les conditions d'équités fortes.
-   \item Un algorithme symbolique d'extraction d'un contre-exemple.
-   \item Quelques mesures de performances comparant le cas où les conditions d'équités fortes sont dans le modèle
-         à celui où elles sont dans la formule LTL.
- \end{itemize}
- Même si l'algorithme symbolique d'emptiness check n'utilise que la fonction $\mathit{Post}$, il n'est pas
- celui que nous envisageons. Le papier est très lisible (15 pages). En particulier, les notations sont très bien choisies.
- }
+  pdf = "articles/1998-ICALP.pdf"
 }
 
 @inproceedings{BCZ99,
@@ -155,17 +131,7 @@
  pages = {163--179},
  publisher = {Springer-Verlag},
  address = {London, UK},
-  annote    = {
- Les n{\oe}uds des graphes construits dans cet article sont composés d'un ensemble d'états du système associé à un état de l'automate de Büchi.
- Pour construire les successeurs d'un tel n{\oe}ud, les successeurs des états composant l'ensemble sont partitionnés selon les valeurs de vérité et
- chaque partie est associée à l'état de l'automate de Büchi qui lui correspond. Cette construction permet la vérification de formule LTL. Les
- points suppémentaires abordés dans l'article sont :
- \begin{itemize}
- \item Un emptiness check sur GBA (un Tarjan modifié). Je rappelle que le papier date de 1999.
- \item Des heuristiques pour traiter en priorité certains arcs de l'automate de Büchi de la formule.
- \item D'autres heuristiques pour prendre en compte l'inclusion.
- \end{itemize}
- }
+  pdf = "articles/1999-CSD-BiereClarkeZhu.pdf"
  }
 
 @inproceedings{BRS99,
@@ -176,15 +142,13 @@
  pages = {222--235},
  publisher = {Springer-Verlag},
  address = {London, UK},
-  annote    = {
- Optimisation de l'algorithme classique (\cite{CGH97}) de vérification symbolique de formules LTL. Classification (générale, faible, terminale) et recherche guidée.
- }
+ pdf = "articles/1999-CAV-BloemRaviSomenzi.pdf"
  }
 
 @inproceedings{C99,
  author = {Jean-Michel Couvreur},
- title = {On-the-fly verification of temporal logic},
- editor    = {Jeannette M. Wing, Jim Woodcock, and Jim Davies},
+ title = {On-the-Fly Verification of Linear Temporal Logic},
+ editor    = {Jeannette M. Wing and Jim Woodcock and Jim Davies},
  booktitle = {World Congress on Formal Methods in the Development of Computing Systems (FM'99)},
  volume    = {1708},
  publisher = {Springer},
@@ -193,6 +157,7 @@
  address = {Toulouse, France},
  month = sep,
  year      = {1999},
+ pdf = "articles/FM99.pdf"
 }
 
 @inproceedings{RBS00,
@@ -201,13 +166,13 @@
                of Fair Cycles},
   booktitle = {3rd International Conference on Formal Methods in Computer-Aided Design (FMCAD'00)},
   editor    = {Warren A. Hunt Jr. and Steven D. Johnson},
-  year      = {2000},
   pages     = {143--160},
  address = {Austin, Texas, USA},
   publisher = {Springer},
   series    = {Lecture Notes in Computer Science},
   volume    = {1954},
   year      = {2000},
+ pdf = "articles/10.1.1.34.6083.pdf"
 }
 
 @inproceedings{CRB01,
@@ -218,9 +183,7 @@
  pages = {313--327},
  publisher = {Springer-Verlag},
  address = {London, UK},
-  annote    = {
-  Vérification de formule d'accessibilité d'un ensemble d'états à partir d'un autre ensemble. Construction par strate. Sans grand intérêt.
- }
+  pdf = "articles/2001-TACAS-CimattiRoveriBertoli.pdf"
  }
 
 @inproceedings{FFKV01,
@@ -236,9 +199,7 @@
   publisher = {Springer},
   vol       = 2031,
   address = {London, UK},
-  annote    = {
-  A lire pour les emptiness-checks symboliques.
- }
+ pdf = "articles/2001-TACAS.pdf"
 }
 
 @article{HKSV01,
@@ -253,6 +214,7 @@
   year      = {2001},
   pages     = {131--140},
  publisher = {Kluwer Academic Publishers},
+ pdf = "articles/2001-FMSD.pdf"
 }
 
 @inproceedings{WBH01,
@@ -271,9 +233,7 @@
   publisher = {Springer},
   series    = {Lecture Notes in Computer Science},
   volume    = {2154},
-  annote    = {
- Une amélioration du calcul symbolique des SCC acceptantes (qui est nécessaire pour CTL fair).
- }
+ pdf = "articles/10.1.1.24.4789.pdf"
 }
 
 @article{BAS02,
@@ -284,6 +244,7 @@
   number    = {2},
   year      = {2002},
   note      = {7th International ERCIM Workshop in Formal Methods for Industrial Critical Systems (FMICS'02)},
+  pdf = "articles/BiereArthoSchuppan-FMICS02.pdf"
 }
 
 @article{HPV02,
@@ -295,11 +256,7 @@ number = {2},
 pages = {178--193},
 year = {2002},
 note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal Methods for Industrial Critical Systems (ICALP'02 Satellite Workshop)},
-  annote    = {
- Le papier montre comment les testers peuvent être employés, en remplacement des automates de Büchi, pour la vérification de formules LTL privé de
- l'opérateur X. Les algorithmes permettant de construire un tester équivalent à une automate de Büchi (et réciproquement) est présenté. Dans un produit, le tester
- ne change d'état que si la valeur de vérité des propositions atomiques est modifiée. L'algorithme d'emptiness check est explicite.
- }
+ pdf = "articles/2002-FMICS-HansenPenczekValmari.pdf"
 }
 
 @inproceedings{SRKB02,
@@ -313,6 +270,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  series    = {Lecture Notes in Computer Science},
  publisher = {Springer},
  address = {London, UK},
+ pdf = "articles/FMCAD2002.pdf"
  }
 
 @inproceedings{WH02,
@@ -323,9 +281,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  pages = {106--122},
  publisher = {Springer-Verlag},
  address = {London, UK},
-  annote    = {
- Un calcul symbolique des SCC acceptantes par décomposition (d'après le résumé).
- }
+ pdf = "articles/2002-FMCAD-WangHachtel.pdf"
  }
 
 @InProceedings{CP03,
@@ -340,18 +296,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  month     = aug,
  year      = {2003},
  address   = {Bratislava, Slovakia},
- annote    = {
- Cet article décrit une hiérarchie des propriétés logiques à temps linéaire et propose
- des algorithmes adaptés à chaque classe de propriétés. On y trouvera en particulier :
- \begin{itemize}
- \item Une caractérisation des formules pour lesquelles des conditions d'acceptation
- faibles ou terminales peuvent être employées.
- \item Les algorithmes ``emptiness-check'' explicites et symboliques (basés uniquement sur des parcours avant) adaptés à ces classes.
- \end{itemize}
- L'algorithme d'emptiness check pour les formules générales est tiré de \cite{KPR98}.
- D'autres algorithmes symboliques pour le même type de formule sont étudiés dans \cite{FFKV01}.
- },
- url = {file://C:/Documents\%20and\%20Settings/denis/Bureau/symbEmptinessCheck/Symbolique/2003-MFCS-CernaPelanek.pdf}
+ pdf = {articles/2003-MFCS-CernaPelanek.pdf}
 }
 
 @inproceedings{GPP03,
@@ -363,10 +308,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  location = {Baltimore, Maryland},
  publisher = {Society for Industrial and Applied Mathematics},
  address = {Philadelphia, PA, USA},
- annote    = {
-   Le meilleur algorithme symbolique connu (en 2003) pour le calcul de SCC (nécessaire pour CTL fair). Les complexités obtenues sont
-   celles de l'algorithme de Tarjan.
- }
+ pdf = "articles/2003-SODA-GentiliniPiazzaPolicriti.pdf"
  }
 
 @article{HKQ03,
@@ -379,10 +321,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  pages = {303--327},
  publisher = {Kluwer Academic Publishers},
  address = {Hingham, MA, USA},
-  annote    = {
- L'article montre que tout la partie du $\mu$-calcul correspondant aux $\omega$-automates peut être évaluée dans des outils symbolique
- en employant uniquement le parcours avant. Voir aussi \cite{CP03}.
- }
+ pdf = "articles/1998-CAV-HenzingerKupfermanQadeer.pdf"
  }
 
 @inproceedings{WT03,
@@ -393,11 +332,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  pages = {88--91},
  address = {Washington, D. C., USA},
  publisher = {ACM},
- address = {New York, NY, USA},
-  annote    = {
- Ce papier présente un algorithme symbolique pour la vérification de formules CTL fair (SCC based). Cet algorithme prend en compte
- des ``Multiway Decision Graph'', structure bien adaptée pour représenter des circuits ayant des chemin de données de taille importante.
- }
+ pdf = "articles/2003-GLSVLSI-WangTahar.pdf"
  }
 
 @inproceedings{HIK04,
@@ -413,9 +348,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
   month = oct,
   pages     = {196--210},
   address = {Taipei, Taiwan, ROC},
-  ee        = {http://springerlink.metapress.com/openurl.asp?genre=article{\&}issn=0302-9743{\&}volume=3299{\&}spage=196},
-  crossref  = {DBLP:conf/atva/2004},
-  bibsource = {DBLP, http://dblp.uni-trier.de}
+ pdf = "articles/HIK-atva04.pdf"
 }
 
 @inproceedings{CDP05,
@@ -431,6 +364,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
   series = {Lecture Notes in Computer Science},
   month = aug,
   publisher = {Springer},
+ pdf = "articles/spin05-CDLP.pdf"
 }
 
 @inproceedings{STV05,
@@ -448,11 +382,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
   volume    = {3576},
   year      = {2005},
   pages     = {350-363},
-  annote    = {
- Ce papier reprend les résultats de \cite{SSTV07} et compare l'efficacité de la vérification symbolique par partitionnement à l'approche clasique et
- à l'approche par encodage binaire des états de l'automates de Büchi.
- },
- url = {STE/2005-CAV-SebastianiTonettaVardi.pdf}
+ pdf = {articles/2005-CAV-SebastianiTonettaVardi.pdf}
 }
 
 @article{BGS06,
@@ -465,9 +395,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  pages = {37--56},
  publisher = {Kluwer Academic Publishers},
  address = {Hingham, MA, USA},
-  annote    = {
- Un calcul symbolique des SCC acceptantes et de contre exemples.
- },
+ pdf = "articles/2006-FMSD-BloemGabowSomenzi.pdf"
  }
 
 @inproceedings{GH06,
@@ -483,22 +411,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
   month     = mar,
   year      = {2006},
   address   = {Vienna, Austria},
-  annote    = {
- Cet article fait suite à celui de Valmari (\cite{HPV02}). Il compare la vérification (explicite)
- de formule LTL employant des automates de Büchi de deux types avec la vérification basée sur
- les testers de Valmari. Les automates de Büchi ne sont pas généralisés et la condition d'acceptation
- y est définie par un ensemble d'états. Les deux types présentés sont ceux, nommés SLBA, où les états sont étiquetés par
- une ensemble d'ensembles de propositions atomiques (une formule propositionnelle) et ceux, nommés TLBA, où les arcs sont étiquetés
- par un ensemble de propositions atomiques.\\
-
- Le papier montre comment traduire un TLBA en SLBA et comment traduire un SLBA en un tester. Il propose ensuite des emptiness checks
- pour chacune de ces structures. L'algorithme classique pour les testers est en deux passes -- une pour les circuits acceptants et
- une autre pour les séquences divergentes. L'article propose un nouvel algorithme dans lequel certaines séquences divergentes (mais pas
- toutes) sont détectées durant la première passe. Si aucune n'est trouvée, il faut alors faire la deuxième passe.\\
-
- La conclusion est que les TLBA sont les moins efficaces même s'ils sont généralement plus petits que les SLBA. Les SLBA et les testers sont
- bien plus difficilement comparables -- chacun gagne pour une partie des exemples traités.
- }
+ pdf = "articles/2006-SPIN.pdf"
 }
 
 @article{WBH06,
@@ -511,9 +424,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  pages = {5--36},
  publisher = {Kluwer Academic Publishers},
  address = {Hingham, MA, USA},
-  annote    = {
- Un autre calcul symbolique des SCC acceptantes.
- }
+ pdf = "articles/10.1.1.136.7108.pdf"
  }
 
 @phdthesis{D07,
@@ -524,6 +435,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
   school = {Universit{\'e} Pierre et Marie Curie (Paris 6)},
   year = {2007},
   month = jul,
+ pdf = "articles/duret.07.phd.pdf"
 }
 
 @inproceedings{RV07,
@@ -540,6 +452,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
   series    = {Lecture Notes in Computer Science},
   volume    = {4595},
   pages     = {149--167},
+ pdf = "articles/RV07.pdf"
 }
 
 @article{SSTV07,
@@ -553,10 +466,7 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
  publisher = {Kluwer Academic Publishers},
  address = {Hingham, MA, USA},
  note = {also published at CAV'04},
-  annote    = {
- Ce papier montre que les algorithmes employés pour la vérification de formule LTL avec les ``Generalized Symbolic Trajectory Evaluation'' sont
- les mêmes que pour la vérification avec des BDD. Il y est proposé un algorithme symbolique comportant un bdd par état de l'automate de Büchi.
- }
+ pdf = "articles/2004-CAV-SebastianiSingermanTonettaVardi.pdf"
  }
 
 @inproceedings{KP08,
@@ -571,13 +481,5 @@ note = {also published in FMICS'02, 7th International ERCIM Workshop in Formal M
   publisher = {Springer},
   series    = {Lecture Notes in Computer Science},
   volume    = {5062},
-}
-
-@proceedings{DBLP:conf/apn/2008,
-  title     = {, , June 23-27, 2008.
-               Proceedings},
-  booktitle = {Petri Nets},
-  year      = {2008},
-  isbn      = {978-3-540-68745-0},
-  bibsource = {DBLP, http://dblp.uni-trier.de}
+ pdf = "articles/icatpn08.pdf"
 }
