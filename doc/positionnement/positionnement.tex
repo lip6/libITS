@@ -147,7 +147,7 @@ L'algorithme EL (lui aussi transformé en parcours avant) est présenté dans la fi
 \caption{Algorithme EL en parcours avant.\label{fig:el}}
 \end{algorithm}
 
-Enfin, l'algorithme réalisant un test de divergence au sein d'un ensemble d'état $B$ est présenté dans la figure~\ref{fig:div}. On peut remarquer que cet algorithme correspond exactement à OWCTY lorsque $\mathcal{F} = \emptyset$ à la seule différence près que l'on doit s'assurer que la fonction \texttt{Post} reste dans $B$ car $B$ est initialement un agrégat et non pas l'ensemble des états accessibles.
+Enfin, l'algorithme réalisant un test de divergence au sein d'un ensemble d'état $B$ est présenté dans la figure~\ref{fig:div}. On peut remarquer que cet algorithme correspond exactement à OWCTY lorsque $\mathcal{F} = \emptyset$ à la seule différence près que l'on doit s'assurer que la fonction \texttt{Post} reste dans $B$ car $B$ est initialement un agrégat et non pas l'ensemble des états accessibles. Toutefois, il serait plus efficace de remplacer la fonction \texttt{Post} par la relation de transition employée pour la construction de l'agrégat. Notons $\mathtt{Post'}$ cette fonction. Si, lors de l'appel, l'ensemble $B$ satisfait $\mathtt{Post'}(B) \subseteq B$ alors le corps de la boucle peut être réduit à $B \leftarrow \mathtt{Post'}(B, \mathit{true})$.
 
 \begin{algorithm}[h]
 \dontprintsemicolon
