@@ -2,7 +2,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[leqno]{amsmath}
-\usepackage[figure,vlined,linesnumbered,inoutnumbered,commentsnumbered]{algorithm2e}
+\usepackage[french,vlined,linesnumbered,inoutnumbered,commentsnumbered]{algorithm2e}
 \usepackage{url}
 \usepackage{hyperref}
 
@@ -54,25 +54,29 @@ Ce document a pour objectif de faire un état de l'art (partiel) sur la vérificat
 
 \section{Approches purement explicites}
 
-Les algorithmes explicites de vérification de formules LTL sont tous basés sur le même principe : (1) la négation de la formule est traduite en un automate de Büchi ; (2) le système et l'automate de Büchi sont synchronisés ; (3) la recherche d'une séquence acceptante permet de décider si la formule est vérifiée. De nombreuses variantes concernant tout autant le type d'automate de Büchi pris en compte, l'algorithme de traduction et le test de vacuité ont été proposées (lire~\cite{D07} pour un état de l'art complet). Un point fort de cette approche est qu'elle peut être appliquée à la volée, c'est à dire, que seule la part du produit synchronisé utile pour la vérification est effectivement visitée et que l'algorithme stoppe dès qu'une décision peut être prise.
+Les algorithmes explicites de vérification de formules LTL sont tous basés sur le même principe~\cite{V96} : (1) la négation de la formule est traduite en un automate de Büchi ; (2) le système et l'automate de Büchi sont synchronisés ; (3) la recherche d'une séquence acceptante permet de décider si la formule est vérifiée. De nombreuses variantes concernant tout autant le type d'automate de Büchi pris en compte, l'algorithme de traduction et le test de vacuité ont été proposées (lire~\cite{D07} pour un état de l'art complet). Un point fort de cette approche est qu'elle peut être appliquée à la volée, c'est à dire, que seule la part du produit synchronisé utile pour la vérification est effectivement visitée et que l'algorithme stoppe dès qu'une décision peut être prise.
 
 Si nous devons nous comparer à une approche purement explicite, il est clair que nous nous limiterons aux TGBA produits par Spot en appliquant l'algorithme de traduction présenté dans~\cite{C99} (des pré et post réductions sont aussi appliquées) et à l'algorithme de test de vacuité basé sur le calcul de SCC qui a été évalué dans~\cite{CDP05}.
 
 \section{Approches purement symboliques}
 
-La vérification symbolique de formule CTL~\cite{BCM92} est basée sur le calcul d'un plus petit point fixe arrière (pour les formules $\EU(f, g)$) et d'un plus grand point arrière (pour les formules $\EG(f)$). La prise en compte de conditions d'équités faibles nécessite le calcul des états satisfaisant la formule $\EG_C(\mathit{true})$ sous condition d'équité $C$, c'est à dire, de l'ensemble des états à partir desquels est exécutable une séquence infinie équitable. Ces états correspondent à ceux appartenant à une composante fortement connexe respectant $C$ ainsi que ceux à partir desquels une telle composante est accessible. Les algorithmes permettant ce type de calcul sont dits être des ``SCC-hull algorithms''. Le plus connu et le plus employé est celui d'Emmerson et Lei~\cite{EL86}. Il est basé sur un double plus petit point fixe arrière à partir des états acceptant du produit. Beaucoup d'autres algorithmes ont été proposés~\cite{RBS00,FFKV01,SRKB02}. Dans tous les cas, la vérification d'une formule CTL $f$ sous une condition d'équité faible $C$ correspond à l'évaluation de l'expression $S_0 \subseteq f \cap \EG_C(\mathit{true})$ où $S_0$ désigne l'ensemble des états initiaux du système.
+La vérification symbolique de formule CTL~\cite{BCM92} est basée sur le calcul d'un plus petit point fixe arrière (pour les formules $\EU(f, g)$) et d'un plus grand point arrière (pour les formules $\EG(f)$). La prise en compte de conditions d'équités faibles nécessite le calcul des états satisfaisant la formule $\EG_C(\mathit{true})$ sous condition d'équité $C$, c'est à dire, de l'ensemble des états à partir desquels est exécutable une séquence infinie équitable. Ces états correspondent à ceux appartenant à une composante fortement connexe respectant $C$ ainsi que ceux à partir desquels une telle composante est accessible. Les algorithmes permettant ce type de calcul sont dits être des ``SCC-hull algorithms''. Le plus connu et le plus employé est celui d'Emmerson et Lei~\cite{EL86}. Il est basé sur un double point fixe arrière à partir des états acceptant du produit. Beaucoup d'autres algorithmes ont été proposés~\cite{RBS00,FFKV01,SRKB02}. Dans tous les cas, la vérification d'une formule CTL $f$ sous une condition d'équité faible $C$ correspond à l'évaluation de l'expression $S_0 \subseteq f \cap \EG_C(\mathit{true})$ où $S_0$ désigne l'ensemble des états initiaux du système.
 
-La vérification symbolique de formules LTL peut être réduite à l'évaluation d'une expression $\EG_C(\mathit{true}) \cap S_0 \neq \emptyset$ lorsque l'on considère le système synchronisé avec l'automate de Büchi de la négation de la formule et que $S_0$ représente les états initiaux de ce produit~\cite{CGH97}. La condition d'équité $C$ correspond alors aux conditions d'acceptation de l'automate. Il a été remarqué que pour évaluer cette expression, il n'était pas nécessaire de faire des parcours arrières. En effet, plutôt que de calculer  l'ensemble $\EG_C(\mathit{true})$, il est possible de calculer l'ensemble des états appartenant à une composante fortement connexe respectant $C$ étant accessible à partir de $S_0$ ainsi que ceux accessibles à partir d'une telle composante. Cela peut être fait par un double plus petit point fixe avant à partir de $S_0$ et cet algorithme correspond exactement à celui d'Emmerson et Lei en inversant la relation de transition. Les autres algorithmes existant peuvent aussi être inversés.
+La vérification symbolique de formules LTL peut être réduite à l'évaluation d'une expression $\EG_C(\mathit{true}) \cap S_0 \neq \emptyset$ lorsque l'on considère le système synchronisé avec l'automate de Büchi de la négation de la formule et que $S_0$ représente les états initiaux de ce produit~\cite{CGH97}. La condition d'équité $C$ correspond alors aux conditions d'acceptation de l'automate. Il a été remarqué que pour évaluer cette expression, il n'était pas nécessaire de faire des parcours arrières. En effet, plutôt que de calculer  l'ensemble $\EG_C(\mathit{true})$, il est possible de calculer l'ensemble des états appartenant à une composante fortement connexe respectant $C$ étant accessible à partir de $S_0$ ainsi que ceux accessibles à partir d'une telle composante. Cela peut être fait par un double point fixe avant à partir de $S_0$ et cet algorithme correspond exactement à celui d'Emmerson et Lei en inversant la relation de transition. Les autres algorithmes existant peuvent aussi être inversés.
 
 Il existe aussi un algorithme original proposé par Biere et al~\cite{BAS02}. En effet, il ne requiert qu'un simple plus petit point fixe avant (la satisfaction est réduite à un problème d'accessibilité) mais nécessite de doubler le nombre de variables. Une classification des automates de Büchi dégénéralisés~\cite{BRS99,CP03} a aussi permis le développement d'algorithmes simplifiées spécifiques à certaines sous-classes (les automates faibles et terminaux).
 
 Plusieurs articles comparent les ``SCC-hull algorithms'' symboliques existants~\cite{RBS00,FFKV01,SRKB02}. En particulier, Fisler et al~\cite{FFKV01} ont montré que l'algorithme d'Emmerson et Lei~\cite{EL86} (EL) et celui présenté par Hojati et al~\cite{HTKB92} (OWCTY pour \emph{One-Way-Catch-Them-Young}) sont les deux meilleurs tout en étant incomparables. Ils ont aussi montré expérimentalement que le second domine généralement le premier. Leur étude ne considère que les parcours arrières pour ces deux algorithmes (un troisième algorithme issu de~\cite{HKSV01} et mettant en {\oe}uvre des parcours avant et des parcours arrière y est aussi comparé). On peut noter que l'algorithme OWCTY a aussi été présenté par Kesten et al~\cite{KPR98} en prenant en compte des conditions d'équité faibles et forte.
 
-Il a aussi été montré que l'efficacité de l'approche symbolique dépend beaucoup de l'algorithme employé pour traduire la formule LTL en un automate de Büchi~\cite{STV05}. Dans le contexte des tests de satisfaisabilité de formule LTL par un algorithme explicite, il a été montré par Rozier et Vardi~\cite{RV07} que Spot implémente l'un des meilleurs algorithmes de traduction. Il produit des TGBA. Il est basé sur l'algorithme de traduction de Couvreur (cité FM99) et propose des pré et post réductions. Il est important de noter qu'aucune évaluation de Spot n'a été faites dans le cadre de la vérification symbolique et que l'étude de~\cite{STV05} est basé sur des automates dégénéralisés et que l'algorithme de test de vacuité employé n'est pas des plus performants (\emph{nested DFS}).
-
 Nous devons comparer les graphes d'observation aux approches purement symbolique. Il est connu que les parcours arrières sont plus coûteux que les parcours avants (voir~\cite{INH96,HKQ03} dans le contexte de CTL et du $\mu$-calcul) et en conséquence nous devons implémenter au moins un des deux algorithmes en parcours avant (EL ou OWCTY). Même si cela sort du cadre du notre travail sur les graphes d'observation, il serait souhaitable de disposer des mêmes algorithmes en parcours arrière pour la vérification de formules CTL sous hypothèse d'équité faible.
 
-On peut noter que le test de divergence au sein d'un agrégat $A$ correspond à l'évaluation de l'expression $\EG_\emptyset(\mathit{true}) \cap A \neq \emptyset$. Ce test peut être réalisé en appliquant EL ou OWCTY. Lorsqu'il n'y a pas de condition d'acceptation, EL considère tous les états (ou transition) comme étant acceptants. Dans ce contexte, il est évident que EL est bien moins performant que OWCTY. Notre implémentation met en {\oe}uvre une version d'OWCTY spécialisée à ce cas particulier.
+On peut noter que le test de divergence au sein d'un agrégat $A$ correspond à l'évaluation de l'expression $\EG_\emptyset(\mathit{true}) \cap A \neq \emptyset$. Ce test peut être réalisé en appliquant EL ou OWCTY. Lorsqu'il n'y a pas de condition d'acceptation, EL considère tous les états (ou transition) comme étant acceptants. Dans ce contexte, il est évident que EL est bien moins performant que OWCTY. Notre implémentation met en {\oe}uvre une version d'OWCTY spécialisée à ce cas particulier. Les algorithmes EL et OWCTY ainsi que le test de divergence au sein d'un agrégat sont présentés dans la section~\ref{sec:algo:symb}.
+
+Il a aussi été montré que l'efficacité de l'approche symbolique dépend beaucoup de l'algorithme employé pour traduire la formule LTL en un automate de Büchi représenté symboliquement~\cite{STV05}. De nombreux articles ont proposés des traduction sous cette forme~\cite{V96,CGH97,KPR98,C00,S01,BCPRS06}. Dans~\cite{MS08} (et~\cite{MSL08}), Morgenstern et Schneider prèsente un algorithme de traduction visant à la construction d'automates plus déterministes. Leur algorithme est bien adapté à la représentation symbolique et vise à réduire les conditions d'acceptation pour favoriser le test de vacuité. Un lien important est aussi fait avec la classification des automates de Büchi~\cite{BRS99,CP03} (voir~\cite{S01}).
+
+Une des approches possibles est l'encodage logarithmique d'un automate explicite. Dans le contexte des tests de satisfaisabilité de formule LTL par un algorithme explicite, il a été montré par Rozier et Vardi~\cite{RV07} que Spot implémente l'un des meilleurs algorithmes de traduction vers des automates explicites. Il produit des TGBA. Il est basé sur l'algorithme de traduction de Couvreur~\cite{C99} et propose des pré et post réductions. Il est important de noter qu'aucune évaluation de Spot n'a été faites dans le cadre de la vérification symbolique et que l'étude de~\cite{RV07} est basé sur des automates dégénéralisés et que l'algorithme de test de vacuité employé n'est pas des plus performants (\emph{nested DFS}).
+
+Pour l'instant, nous nous dirigeons vers un encodage logarithmique des automates de Büchi explicites produit par Spot. Il serait sans doute souhaitable de comparer cela avec ceux produits par l'algorithme symbolique présenté dans~\cite{C00} qui est déjà proposé par Spot. \`{A} plus longue échéance, nous pourrons aussi envisager d'enrichir Spot avec les travaux de Morgenstern et Schneider (\cite{S01} référence~\cite{C99}).
 
 \section{Approches hybrides symboliques/explicites}
 
@@ -96,56 +100,65 @@ Les testers peuvent aussi être employés dans un cadre purement symbolique. Cela 
 
 Je pense que la comparaison avec cette approche peut être repoussée à des travaux postérieurs. L'étude présentée dans~\cite{GH06} semble nous inviter à de nouvelles campagnes de mesures concernant les TGBA. Il va tout de même falloir du courage pour nous y remettre...
 
-\section{Algorithmes symboliques}
+\section{\label{sec:algo:symb}Algorithmes symboliques}
 
-La figure~\ref{fig:owcty} présente l'algorithme OWCTY. Il a été modifié par rapport à celui présenté dans~\cite{FFKV01}. Les parcours ont été inversés pour être en avant. Ceci a pour conséquence que les ensembles d'états manipulés sont toujours clos vers le bas (i.e. si un état appartient à l'ensemble alors ses successeurs y appartiennent aussi). Les fonctions \texttt{Post} et \texttt{Sat} ne peuvent donc pas sortir de l'ensemble $B$ et cela nous permet de supprimer quelques intersections. Enfin, l'ordre des deux boucles internes a été inversé.
+ L'algorithme OWCTY est présenté à gauche de la figure~\ref{fig:symbolic:emptiness}. La fonction \texttt{Sat} calcul l'ensemble des états accessibles à partir d'un ensemble d'états. La fonction \texttt{Post} retourne l'ensemble des états successeurs immédiats d'un ensemble d'états. Le second paramètre de cette fonction permet d'imposer une contrainte sur les transitions à considérer. L'algorithme de la figure~\ref{fig:owcty} a été modifié par rapport à celui présenté dans~\cite{FFKV01}. Les parcours ont été inversés pour être en avant. Ceci a pour conséquence que les ensembles d'états manipulés sont toujours clos vers le bas (i.e. si un état appartient à l'ensemble alors ses successeurs y appartiennent aussi). Les fonctions \texttt{Post} et \texttt{Sat} ne peuvent donc pas sortir de l'ensemble $B$ et cela nous permet de supprimer quelques intersections. Enfin, l'ordre des deux boucles internes a été inversé.
 
-\begin{algorithm}[h]
-\dontprintsemicolon
-\SetKwInput{Input}{Input}
-\SetKwFunction{post}{Post}
-\SetKwFunction{sat}{Sat}
+\begin{figure}[h]
+\begin{center}
+  \begin{minipage}[b]{.45\textwidth}%
+    \begin{algorithm}[H]
+    \dontprintsemicolon
+    \SetKwInput{Input}{Input}
+    \SetKwFunction{post}{Post}
+    \SetKwFunction{sat}{Sat}
 
-\Input{Un TGBA $A = \langle \Sigma, \mathcal{Q}, \mathcal{Q}^0, \mathcal{F}, \delta \rangle$}
-\KwData{$B \in 2^\mathcal{Q}$}
+    \Input{Un TGBA $A = \langle \Sigma, \mathcal{Q}, \mathcal{Q}^0, \mathcal{F}, \delta \rangle$}
+    \KwData{$B \in 2^\mathcal{Q}$}
 
-\Begin{
-  $B \leftarrow$ \sat{$\mathcal{Q}^0$}\;
-  \While{$B$ changes}{
-    \While{$B$ changes}{
-      $B \leftarrow$ \post{$B$, true}\;
+    \Begin{
+      $B \leftarrow$ \sat{$\mathcal{Q}^0$}\;
+      \While{$B$ changes}{
+        \While{$B$ changes}{
+          $B \leftarrow$ \post{$B$, true}\;
+        }
+        \For{$F_i$ in $F$}{
+          $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
+        }
+      }
+      \Return{$B = \emptyset$}\;
     }
-    \For{$F_i$ in $F$}{
-      $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
+    \caption{OWCTY}
+    \end{algorithm}
+  \end{minipage}%
+  \begin{minipage}[b]{.45\textwidth}%
+    \begin{algorithm}[H]
+    \dontprintsemicolon
+    \SetKwInput{Input}{Input}
+    \SetKwFunction{post}{Post}
+    \SetKwFunction{sat}{Sat}
+
+    \Input{Un TGBA $A = \langle \Sigma, \mathcal{Q}, \mathcal{Q}^0, \mathcal{F}, \delta \rangle$}
+    \KwData{$B \in 2^\mathcal{Q}$}
+
+    \Begin{
+      $B \leftarrow$ \sat{$\mathcal{Q}^0$}\;
+      \While{$B$ changes}{
+        \For{$F_i$ in $F$}{
+          $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
+        }
+      }
+      \Return{$B = \emptyset$}\;
     }
-  }
-  \Return{$B = \emptyset$}\;
-}
-\caption{Algorithme OWCTY en parcours avant.\label{fig:owcty}}
-\end{algorithm}
+    \caption{EL}
+    \end{algorithm}
+  \end{minipage}%
+\end{center}
+\caption{Algorithmes symboliques OWCTY et EL adapté au test de vacuité en parcours avant}
+\label{fig:symbolic:emptiness}
+\end{figure}
 
-L'algorithme EL (lui aussi transformé en parcours avant) est présenté dans la figure~\ref{fig:el}. Notons que cet algorithme fait l'hypothèse que $\mathcal{F} \neq \emptyset$. Cette hypothèse est sans perte de généralité car il est alors équivalent de considérer toute transition comme étant acceptante. Toutefois, cela risque de rendre l'algorithme très peu efficace (au contraire de OWCTY).
-
-\begin{algorithm}[h]
-\dontprintsemicolon
-\SetKwInput{Input}{Input}
-\SetKwFunction{post}{Post}
-\SetKwFunction{sat}{Sat}
-
-\Input{Un TGBA $A = \langle \Sigma, \mathcal{Q}, \mathcal{Q}^0, \mathcal{F}, \delta \rangle$}
-\KwData{$B \in 2^\mathcal{Q}$}
-
-\Begin{
-  $B \leftarrow$ \sat{$\mathcal{Q}^0$}\;
-  \While{$B$ changes}{
-    \For{$F_i$ in $F$}{
-      $B \leftarrow$ \sat{\post{$B$, $F_i$}}\;
-    }
-  }
-  \Return{$B = \emptyset$}\;
-}
-\caption{Algorithme EL en parcours avant.\label{fig:el}}
-\end{algorithm}
+L'algorithme EL (lui aussi transformé en parcours avant) est présenté à droite de la figure~\ref{fig:symbolic:emptiness}. Notons que cet algorithme fait l'hypothèse que $\mathcal{F} \neq \emptyset$. Cette hypothèse est sans perte de généralité car il est alors équivalent de considérer toute transition comme étant acceptante. Toutefois, cela risque de rendre l'algorithme très peu efficace (au contraire de OWCTY).
 
 Enfin, l'algorithme réalisant un test de divergence au sein d'un ensemble d'état $B$ est présenté dans la figure~\ref{fig:div}. On peut remarquer que cet algorithme correspond exactement à OWCTY lorsque $\mathcal{F} = \emptyset$ à la seule différence près que l'on doit s'assurer que la fonction \texttt{Post} reste dans $B$ car $B$ est initialement un agrégat et non pas l'ensemble des états accessibles. Toutefois, il serait plus efficace de remplacer la fonction \texttt{Post} par la relation de transition employée pour la construction de l'agrégat. Notons $\mathtt{Post'}$ cette fonction. Si, lors de l'appel, l'ensemble $B$ satisfait $\mathtt{Post'}(B) \subseteq B$ alors le corps de la boucle peut être réduit à $B \leftarrow \mathtt{Post'}(B, \mathit{true})$.
 
@@ -174,7 +187,7 @@ Enfin, l'algorithme réalisant un test de divergence au sein d'un ensemble d'état
 \item Comment positionner les conditions d'acceptation dans un TGBA (correspondant à une formule LTL) de façon la plus favorable pour les algorithmes symboliques ?
 \item Comment prendre en compte l'inclusion entre aggrégats (voir l'heuristique présentée dans~\cite{BCZ99} et l'article d'Alexandre et Soheib à ACSD) ?
 \item Comment extraire un contre-exemple d'un graphe d'observation ?
-\item Comment prendre en compte les résultats de~\cite{GH06} dans Spot ?
+\item Comment prendre en compte les résultats de~\cite{GH06} et aussi ceux de~\cite{S01,MS08,MSL08} dans Spot ?
 \item Comment se positionne les graphes d'observation face aux antichains~\cite{DR07,WDMR08,WDMR08a} ?
 \end{itemize}
 
