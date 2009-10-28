@@ -1,25 +1,25 @@
-#place P1 mk(2*<..>)
-#place P1wM1
-#place P1M1
-#place M1 mk(3*<..>)
-#place P1d
-#place P1s
-#place P1wP2
-#place P12
-#place P12wM3
-#place P12M3
-#place M3 mk(2*<..>)
-#place P12s
-#place P2 mk(2*<..>)
-#place P2wM2
-#place P2M2
-#place M2 mk(<..>)
-#place P2d
-#place P2wP1
-#place P2s
-#place P3 mk(2*<..>)
-#place P3M2
-#place P3s
+#place (0)  P1 mk(2*<..>)
+#place (0)  P1wM1
+#place (0)  P1M1
+#place (0)  M1 mk(3*<..>)
+#place (0)  P1d
+#place (0)  P1s
+#place (0)  P1wP2
+#place (2)  P12
+#place (2)  P12wM3
+#place (2)  P12M3
+#place (2)  M3 mk(2*<..>)
+#place (2)  P12s
+#place (1)  P2 mk(2*<..>)
+#place (1)  P2wM2
+#place (1)  P2M2
+#place (1)  M2 mk(<..>)
+#place (1)  P2d
+#place (1)  P2s
+#place (1)  P2wP1
+#place (3)  P3 mk(2*<..>)
+#place (3)  P3M2
+#place (3)  P3s
 #trans tP1
 in {P1:<..>;}
 out {P1wM1:<..>;}

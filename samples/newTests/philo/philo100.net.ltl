@@ -1,0 +1,10 @@
+G(!"Fork57" & !WaitRight16) & !HasRight68
+((!HasRight46 R HasLeft5) & !Idle18) | (Idle18 & (HasRight46 U !HasLeft5)) | HasRight27
+((F!HasRight99 & HasRight5) | (!HasRight5 & GHasRight99)) U Idle56
+(!Idle99 R Idle27) R F!WaitLeft28
+(F!"Fork88" & (WaitRight87 U ((!HasLeft56 & HasRight11) | (!HasRight11 & HasLeft56)))) | (G"Fork88" & (!WaitRight87 R ((!HasLeft56 | HasRight11) & (!HasRight11 | HasLeft56))))
+(((WaitLeft89 & (!"Fork57" U HasLeft75)) | (!WaitLeft89 & ("Fork57" R !HasLeft75))) & WaitLeft38) | ((!WaitLeft89 | ("Fork57" R !HasLeft75)) & !WaitLeft38 & (WaitLeft89 | (!"Fork57" U HasLeft75)))
+GWaitLeft16 & (!WaitRight8 | G!WaitLeft13)
+F((!HasRight5 & (F!WaitLeft57 | FWaitRight13) & (GWaitLeft57 | G!WaitRight13)) | (HasRight5 & ((F!WaitLeft57 & FWaitRight13) | (GWaitLeft57 & G!WaitRight13))))
+F(("Fork6" & !HasRight96) | (!"Fork6" & HasRight96)) | (!Idle4 U !WaitRight45)
+FWaitRight95 & (FWaitLeft88 | FWaitLeft4)

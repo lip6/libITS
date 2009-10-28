@@ -91,7 +91,7 @@ sub workonfile {
 	# ../check-sog -Fformula -c -e invoice.cami.net 1
 	my $call = "$checksog_exe -SSLOG -f\"$line\" -c  $ff|";
 	
-#	print STDERR $call."\n";
+	print STDERR $call."\n";
 	open MYTOOL,$call;
 	my $verdict = 0;
 	my $nbstates =0;
@@ -133,7 +133,7 @@ sub workonfile {
 	if ($doComparison == 1) {
 	  my $call2 = "$checksog_exe -SSOG -f\"$line\" -c  $ff|";
 #	  my $call2 = "$checksogstate -f\"$line\" -c  $ff 5 |";
-	  #	print STDERR $call2."\n";
+	  	print STDERR $call2."\n";
 	  open MYTOOL2,$call2;
 
 	  while (my $outline = <MYTOOL2>) {

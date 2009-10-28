@@ -1,0 +1,44 @@
+#place Idle0 mk(<..>)
+#place WaitLeft0
+#place HasLeft0
+#place WaitRight0
+#place HasRight0
+#place Fork0 mk(<..>)
+#place Idle1 mk(<..>)
+#place WaitLeft1
+#place HasLeft1
+#place WaitRight1
+#place HasRight1
+#place Fork1 mk(<..>)
+#trans GoEat0
+in {Idle0:<..>;}
+out {WaitLeft0:<..>;WaitRight0:<..>;}
+#endtr
+#trans GoLeft0
+in {Fork1:<..>;WaitLeft0:<..>;}
+out {HasLeft0:<..>;}
+#endtr
+#trans GoRight0
+in {Fork0:<..>;WaitRight0:<..>;}
+out {HasRight0:<..>;}
+#endtr
+#trans Release0
+in {HasLeft0:<..>;HasRight0:<..>;}
+out {Idle0:<..>;Fork1:<..>;Fork0:<..>;}
+#endtr
+#trans GoEat1
+in {Idle1:<..>;}
+out {WaitLeft1:<..>;WaitRight1:<..>;}
+#endtr
+#trans GoLeft1
+in {Fork0:<..>;WaitLeft1:<..>;}
+out {HasLeft1:<..>;}
+#endtr
+#trans GoRight1
+in {Fork1:<..>;WaitRight1:<..>;}
+out {HasRight1:<..>;}
+#endtr
+#trans Release1
+in {HasLeft1:<..>;HasRight1:<..>;}
+out {Idle1:<..>;Fork0:<..>;Fork1:<..>;}
+#endtr
