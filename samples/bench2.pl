@@ -105,43 +105,56 @@ sub workonfile {
 	$nbformula ++;
 #	print "Working on formula : $line \n";
 	# ../check-sog -Fformula -c -e invoice.cami.net 1
-	my $call = "$checksog_exe -S$method -f\"$line\" -c  $ff|";
-	
-#	print STDERR $call."\n";
-	open MYTOOL,$call;
-	my $verdict = 0;
-	my $nbstates =0;
-	my $nbtrans =0;
-	my $ticks = 0;
-	my @stats;
+	my $prevverdict;
+	foreach my $m (@methods) {
+	  $method = $m;
 
-	while (my $outline = <MYTOOL>) {
-#	  print $outline;
-	  if ($outline =~ /(\d+) unique states visited/) {
-	    $nbstates = $1;
-	  } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
-	    $ticks = $1;
-	  } elsif ($outline =~ /(\d+) transitions explored/) {
-	    $nbtrans = $1;
-	  } elsif ($outline =~ /STATS/) {
-	    chomp $outline;
-	    @stats = split (/\,/,$outline);
-	    # drop the first field = "STATS"
-	    shift @stats;
-	    # remove useless fields in output
-	    # the final nbstates
-	    shift @stats;
-	    # the final SDD sizes
-	    splice (@stats,2,2);
-	  } elsif ($outline =~ /accepting run exists/ ) {
-	    #	    print $outline;
-	    $verdict = 1;
-	    last;
+	
+	  my $call = "$checksog_exe -S$method -f\"$line\" -c  $ff|";
+	
+	  #	print STDERR $call."\n";
+	  open MYTOOL,$call;
+	  my $verdict = 0;
+	  my $nbstates =0;
+	  my $nbtrans =0;
+	  my $ticks = 0;
+	  my @stats;
+	  
+	  while (my $outline = <MYTOOL>) {
+	    #	  print $outline;
+	    if ($outline =~ /(\d+) unique states visited/) {
+	      $nbstates = $1;
+	    } elsif ($outline =~ /(\d+) ticks for the emptiness/) {
+	      $ticks = $1;
+	    } elsif ($outline =~ /(\d+) transitions explored/) {
+	      $nbtrans = $1;
+	    } elsif ($outline =~ /STATS/) {
+	      chomp $outline;
+	      @stats = split (/\,/,$outline);
+	      # drop the first field = "STATS"
+	      shift @stats;
+	      # remove useless fields in output
+	      # the final nbstates
+	      shift @stats;
+	      # the final SDD sizes
+	      splice (@stats,2,2);
+	    } elsif ($outline =~ /accepting run exists/ ) {
+	      #	    print $outline;
+	      $verdict = 1;
+	      last;
+	    }
+	  }
+	  close MYTOOL;
+
+	  print "$method, $ff,\"$line\", $nbstates, $ticks, $nbtrans, $verdict, ".(join " , ",@stats)."\n";
+	  if (defined $prevverdict) {
+	    if ($prevverdict != $verdict) {
+	      print "HOUSTON, we have a problem !!";
+	    }
+	  } else {
+	    $prevverdict = $verdict ;
 	  }
 	}
-	close MYTOOL;
-
-	print "$method, $ff,\"$line\", $nbstates, $ticks, $nbtrans, $verdict, ".(join " , ",@stats)."\n";
       }
     }
     # load result into global results table
@@ -159,11 +172,9 @@ sub workonfile {
 sub compute_results {
   $globTab = shift;
   # Call sub workonfile for every file and method specified in arguments (loads %table)
-  foreach my $m (@methods) {
-    $method = $m;
-    print STDERR "Running with method : $method\n";
+#    print STDERR "Running with method : $method\n";
     find(\&workonfile,$dir);
-  }
+
 }
 
 sub print_results {
@@ -185,7 +196,7 @@ sub print_results {
 
     foreach my $model (sort(keys %$methPerf)) {
       my $perf = $$methPerf{$model};
-      print "$model , ".(join " , ",@$perf). "  \n"; 
+      print "$model , ".(join " , ",@$perf). "  \n";
     }
   }
 #  tex_trailer;
