@@ -6,9 +6,19 @@ using namespace its;
 //#define trace std::cerr
 #define trace if (0) std::cerr
 
+
+
 // Atomic properties handling primitives
 // return a selector corresponding to the boolean formula over AP encoded as a bdd.
 Transition sogIts::getSelector(bdd aps) const {
+  pType type = model.getInstance()->getType();
+  return getSelector(aps,type);
+}
+
+
+// Other version to act on any given type, instead of the main instance of the Model object
+// return a selector corresponding to the boolean formula over AP encoded as a bdd.
+its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
   formCache_it it ;
   if ( formulaCache.find(it,aps.id()) ) 
     // cache hit
@@ -17,7 +27,7 @@ Transition sogIts::getSelector(bdd aps) const {
   if ( aps == bddtrue ) {
     return Transition::id ;
   } else if (aps == bddfalse ) {
-    return State::null;
+    return Transition::null;
   } else {
     // a "real" node
     int bvar = bdd_var(aps);
@@ -25,7 +35,7 @@ Transition sogIts::getSelector(bdd aps) const {
     
     labels_t tau;
     tau.push_back(prop);
-    Transition hcond = model.getInstance()->getType()->getSuccs(tau);
+    Transition hcond = type->getSuccs(tau);
     trace << "aps = " << aps  << std::endl;
     //      std::cerr << "Type = " << * (getInstance()->getType())  << std::endl;
     trace << "prop = " << prop << std::endl ;
@@ -42,8 +52,7 @@ Transition sogIts::getSelector(bdd aps) const {
     it->second = ret;
     
     trace << "Produced transition :" << ret << std::endl;
-    return ret;
-    
+    return ret;    
   }
 }
 

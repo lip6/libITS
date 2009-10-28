@@ -29,6 +29,10 @@ public :
   // return a selector corresponding to the boolean formula over AP encoded as a bdd.
   its::Transition getSelector(bdd aps) const;
 
+  // Other version to act on any given type, instead of the main instance of the Model object
+  // return a selector corresponding to the boolean formula over AP encoded as a bdd.
+  its::Transition getSelector(bdd aps, its::pType type) const;
+
 
   // Saturate the provided states, while preserving the truth value of "cond".
   // The truth value of cond need not be homogeneous in the provided states.
