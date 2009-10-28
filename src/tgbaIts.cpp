@@ -71,11 +71,14 @@ namespace its {
     build_labels();
   }
 
-  /** A helper function to print the acceptance conditions bdd 
-   * Code copy paste direct from spot::save.cc file */
-  void TgbaType::print_acc(bdd acc, std::ostream & os) const {
-    const spot::bdd_dict* d = tgba_->get_dict();
-    while (acc != bddfalse)
+  /** compute a vector of strings representing a bdd of an acceptance set */
+  labels_t TgbaType::getAcceptanceSet (bdd acc) const {
+    map_cond_set_it it = map_cond_set_.find(acc);
+    if ( it == map_cond_set_.end() ) {
+      labels_t ret;
+      
+      const spot::bdd_dict* d = tgba_->get_dict();
+      while (acc != bddfalse)
       {
 	bdd cube = bdd_satone(acc);
 	acc -= cube;
@@ -87,8 +90,7 @@ namespace its {
 	    if (bdd_high(cube) != bddfalse)
 	      {
 		int v = bdd_var(cube);
-		spot::bdd_dict::vf_map::const_iterator vi =
-		  d->acc_formula_map.find(v);
+		spot::bdd_dict::vf_map::const_iterator vi = d->acc_formula_map.find(v);
 		assert(vi != d->acc_formula_map.end());
 		std::string s = spot::ltl::to_string(vi->second);
 		if (dynamic_cast<const spot::ltl::atomic_prop*>(vi->second)
@@ -98,13 +100,38 @@ namespace its {
 		    s.erase(s.begin());
 		    s.resize(s.size() - 1);
 		  }
-		os << " \"";
-		spot::escape_str(os, s) << "\"";
+		
+		ret.push_back(spot::escape_str(s));
 		break;
 	      }
 	    cube = bdd_low(cube);
 	  }
       }
+      
+      std::sort(ret.begin(), ret.end());
+      map_cond_set_.insert(map_cond_set_t::value_type(acc,ret));
+      return ret;
+    }
+    return it->second;
+  }
+
+  /** A helper function to print the acceptance conditions bdd 
+   * Code copy paste direct from spot::save.cc file */
+  void TgbaType::print_acc(bdd acc, std::ostream & os) const {
+    labels_t acc_set = getAcceptanceSet(acc);
+    
+    os << "<";
+    labels_it it = acc_set.begin();
+
+    if (it != acc_set.end()) {
+      os << "\"" << *it << "\"";
+    
+      for (++it ; it != acc_set.end();  ++it ) {
+	os << "," << "\"" << *it << "\"";
+      }
+    }
+    os << ">";
+
   }
 
   /** A helper function to print the atomic prop condition formula bdd */
@@ -121,7 +148,7 @@ namespace its {
     print_cond(lab.first, os);
     os << " , " ;
     print_acc(lab.second, os);
-    os << "<";
+    os << ">";
     return os.str();
   }
 
@@ -139,9 +166,9 @@ namespace its {
     // test for self loop : optimizes away the write operation
     if (arc.first == arc.second) {
       // 0 is the DEFAULT_VAR
-      return varEqState(0 ,arc.first);
+      return varEqState(0, arc.first);
     } else {
-      return setVarConst(0, arc.second) & varEqState(0 ,arc.first);
+      return setVarConst(0, arc.second) & varEqState(0, arc.first);
     }
   }
 
@@ -159,7 +186,7 @@ namespace its {
     // grab the appropriate arc set
     tgba_arc_label_t tgbalab = getTransLabelDescription(label);
     arcs_t::const_iterator it = arcs_.find(tgbalab);
-    return localApply( buildTransitionSet(it->second), 0);
+    return localApply(buildTransitionSet(it->second), 0);
   }
 
 }

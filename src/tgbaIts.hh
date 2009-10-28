@@ -4,6 +4,8 @@
 #include "TypeBasics.hh"
 #include "PNet.hh"
 #include "tgba/tgba.hh"
+#include "misc/bddlt.hh"
+
 #include <iosfwd>
 #include <map>
 
@@ -54,7 +56,15 @@ namespace its {
     typedef std::map<tgba_arc_label_t,tgba_arcs_t,less_than> arcs_t;
     typedef arcs_t::iterator arcs_it;
 
+    /** A type to represent a mapping from a bdd representing a set of acceptance conditions to a set of labels */
+    typedef std::map<bdd,labels_t,spot::bdd_less_than> map_cond_set_t;    
+    typedef map_cond_set_t::const_iterator map_cond_set_it;
+
+
   private :
+    /** A map storing the link from bdd of an acceptance set to set of strings */
+    mutable map_cond_set_t map_cond_set_;
+
     /** the data structure instance used to store the appropriate tgba representation */
     arcs_t arcs_;
 
@@ -67,6 +77,7 @@ namespace its {
     void print_cond(bdd cond, std::ostream & os) const;
     /** A pretty print for tgba arc labels, wrapper that relies on print_acc and print_cond */
     vLabel get_arc_label (const tgba_arc_label_t & lab);
+
 
     /** A map to store string label to tgba_arc_label correspondance */
     typedef std::map<vLabel, tgba_arc_label_t> labmap_t;
@@ -93,6 +104,8 @@ namespace its {
       return ret;
     }
 
+    /** compute a vector of strings representing a bdd of an acceptance set */
+    labels_t getAcceptanceSet (bdd acc) const ;
     
     tgba_arc_label_t getTransLabelDescription (Label trans) const {
       // example : trans = "a . !b x {}" => bdd of : a.!b,  empty set of acc
@@ -149,10 +162,6 @@ namespace its {
 
 } // namespace its
 
-/** Administrative trivia */
-
-namespace std {
-}
 
 
 #endif
