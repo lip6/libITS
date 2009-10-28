@@ -1,0 +1,30 @@
+To run the benchmarks on all the models in newTests/.
+
+
+1.  Generate a newTests.mk Makefile with
+
+    ./genmk.sh newTests
+
+
+2.  Build log files for all models with
+
+    make -f newTests.mk
+
+    (Use make -j2 newTests.mk if you have a dualcore with a lot of memory.)
+
+
+3.  Calculate statistics with
+
+    ./sum.pl newTests/**/*.log
+
+    If you want to filter on a method, use
+
+      ./sum.pl -f '^SLOG' newTests/**/*.log
+
+    to filter on a model, use
+
+      ./sum.pl -f 'ring' newTests/**/*.log
+
+    to filter on a method and a model, use
+
+      ./sum.pl -f '^SOG.*ring' newTests/**/*.log
