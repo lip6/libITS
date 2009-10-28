@@ -10,10 +10,11 @@ my $nusmv= "~/NuSMV/NuSMV-2.4.3-x86_64-linux-gnu/bin/NuSMV";
 my $default_checksog="../src/sog-its";
 #############
 
-getopt ('mdetbaq');
+our $opt_f;
+getopt ('mdeftq');
 
 #parsing the file list description
-my $dir = $opt_d or die "Specify target directory -d please! \n$usage" if (!defined $opt_a);
+my $dir = $opt_d or die "Specify target directory -d please! \n$usage" if (!defined $opt_f);
 
 # command line for tool pnddd
 my $cwd =  getcwd or die "Can't get cwd, used to decide where to do output.\n";
@@ -23,10 +24,12 @@ my @genType = ("SOG","DSOG","SLOG");
 
 my $DEFAULT_TIMEOUT = 120;
 # howto use this tool
-my $usage="Usage:\n bench.pl -m [generation method list = @genType all] -d [directory base] \n"
-  . "example : ./bench.pl -m SOG,DSOG -d test/ \n"
-  . "\n other options : \n"
-  . " -e pathTochecksogexe (default : currentDir/$default_checksog \n"
+my $usage =
+    "Usage:\n bench.pl -m [generation method list = @genType all] -d [directory base]\n"
+  . " bench.pl -m [generation method list = @genType all] -f [file.net]\n"
+  . "example : ./bench.pl -m SOG,DSOG -d test/\n"
+  . "\n other options :\n"
+  . " -e pathTochecksogexe (default : currentDir/$default_checksog\n"
   . " -t timeout (default $DEFAULT_TIMEOUT seconds)\n"
   . " -q disable check-sog comparison, simply compute stats for SDD sog-its implem";
 
@@ -42,7 +45,7 @@ if (defined $opt_e) {
   $checksog_exe = $cwd."/".$default_checksog ;
 }
 
-if (! -x $checksog_exe  && !defined $opt_a) {
+if (! -x $checksog_exe) {
   die "File \'$checksog_exe\' does not seem to refer to the expected checksog executable. Use option -e.\n$usage";
 }
 
@@ -54,7 +57,7 @@ if (defined $opt_q) {
 }
 
 # parsing the methods
-my @methods = split /,/,$opt_m or  die "Specify a target method -m please ! \n$usage" if (!defined $opt_a);
+my @methods = split /,/,$opt_m or  die "Specify a target method -m please ! \n$usage";
 my $gens = (join ' ',@genType)."all" ;
 foreach my $m (@methods) {
   unless ($gens =~ /$m/) { die "Unknown method $m !\n $usage";}
@@ -71,16 +74,14 @@ my $checksogstate = $cwd."/check-sog" ;
 # have to pass context through globs because of File::find syntax restriction
 # a glob holding current generation method
 my $method ;
-# a glob for passing the table under construction
-my $globTab ;
 ## A procedure called on each file of the argument list, fills %table
 
 sub workonfile {
   my $ff = $_ ;
-  my @aggregatestats;
+
   #  Work on all .net source files
   if ( -f $ff && $ff =~/\.net$/  ) {
-    print STDERR "work on file $ff\n";
+    print STDERR "work on file $ff\n" unless $opt_f;
 
     my $totalticks = 0;
     my $totalstates = 0;
@@ -109,17 +110,17 @@ sub workonfile {
 	foreach my $m (@methods) {
 	  $method = $m;
 
-	
-	  my $call = "$checksog_exe -S$method -f\"$line\" -c  $ff|";
-	
+
+	  my $call = "$checksog_exe -S$method -f'$line' -c $ff";
+
 	  #	print STDERR $call."\n";
-	  open MYTOOL,$call;
+	  open MYTOOL,"$call|";
 	  my $verdict = 0;
 	  my $nbstates =0;
 	  my $nbtrans =0;
 	  my $ticks = 0;
 	  my @stats;
-	  
+
 	  while (my $outline = <MYTOOL>) {
 	    #	  print $outline;
 	    if ($outline =~ /(\d+) unique states visited/) {
@@ -149,7 +150,8 @@ sub workonfile {
 	  print "$method, $ff,\"$line\", $nbstates, $ticks, $nbtrans, $verdict, ".(join " , ",@stats)."\n";
 	  if (defined $prevverdict) {
 	    if ($prevverdict != $verdict) {
-	      print "HOUSTON, we have a problem !!";
+	      print STDERR "HOUSTON, we have a problem !!  ($method, $ff, '$line')\n";
+	      print STDERR "Reproduce with $call\n";
 	    }
 	  } else {
 	    $prevverdict = $verdict ;
@@ -157,23 +159,27 @@ sub workonfile {
 	}
       }
     }
-    # load result into global results table
-#    push @aggregatestats,$totaltrans;
-#    push @aggregatestats,$totalticks;
-#    push @aggregatestats,$totalstates;
-#    $$globTab{$method}{$ff} = \@aggregatestats;
-
 #    print "Totals (SDD/BDD) for $nbformula formula : ticks : $totalticks/$totalticks2 ; States : $totalstates/$totalstates2 ; Trans : $totaltrans/$totaltrans2 \n";
+  }
+  else
+  {
+      die "$ff missing or not a .net file" if (defined $opt_f);
   }
 }
 
 
 
 sub compute_results {
-  $globTab = shift;
-  # Call sub workonfile for every file and method specified in arguments (loads %table)
-#    print STDERR "Running with method : $method\n";
-    find(\&workonfile,$dir);
+  if (defined $opt_f)
+  {
+      $_ = $opt_f;
+      workonfile;
+  }
+  else
+  {
+      # Call sub workonfile for every file and method specified in arguments (loads %table)
+      find(\&workonfile, $dir);
+  }
 
 }
 
