@@ -25,7 +25,7 @@
 #include "misc/hashfunc.hh"
 #include "tgba/bddprint.hh"
 
-//#define TRACE
+// #define TRACE
 
 #ifdef TRACE
 #define trace std::cerr
@@ -39,14 +39,37 @@ using namespace spot;
 namespace dsog
 {
 
-  dsog_div_state::dsog_div_state(const bdd& c) : cond(c) {
+  dsog_div_state::dsog_div_state(const state* left_state, const bdd& c) :
+    left_state_(left_state),
+    cond(c)
+  {
+  }
+
+  dsog_div_state::~dsog_div_state()
+  {
+    delete left_state_;
+  }
+
+  dsog_div_state::dsog_div_state(const dsog_div_state& c)
+  {
+    assert(0);
+  }
+
+  dsog_div_state&
+  dsog_div_state::operator=(const dsog_div_state& c)
+  {
+    assert(0);
+    return *this;
   }
 
   int dsog_div_state::compare(const state* other) const {
     const dsog_div_state* m = dynamic_cast<const dsog_div_state*>(other);
-    if (dynamic_cast<const dsog_state*>(other))
+    if (!dynamic_cast<const dsog_div_state*>(other))
       return -1;
     assert(m);
+    int n = m->get_left_state()->compare(left_state_);
+    if (n != 0)
+      return n;
     return cond.id() - m->cond.id();
   }
 
@@ -56,7 +79,7 @@ namespace dsog
   }
 
   spot::state* dsog_div_state::clone() const {
-    return new dsog_div_state(*this);
+    return new dsog_div_state(left_state_, cond);
   }
 
   const bdd& dsog_div_state::get_condition() const {
@@ -134,9 +157,9 @@ namespace dsog
 					 spot::tgba_succ_iterator* left_iter,
 					 const sogIts & model)
     : has_div(s->get_div()),
-      cur(s),
+      cur(s),			// ITS state
       aut_(aut),
-      left_(s->left()),
+      left_(s->left()),		// TGBA state
       left_iter_(left_iter),
       model_(model),
       right_(s->right()),
@@ -153,61 +176,36 @@ namespace dsog
   }
 
   void
-  dsog_succ_iterator::first()
+  dsog_succ_iterator::step()
   {
-    if (has_div)
+    if (has_div) // divergence
       {
-	has_div = false;
-	// If the ITS state is divergent, check whether the left
-	// state has a self-loop labeled by all acceptance conditions.
-	for (left_iter_->first() ; !left_iter_->done() ; left_iter_->next())
-	  {
-	    bdd cond = cur->get_cond();
-	    const state *dest = left_iter_->current_state();
-	    if ((dest->compare(left_) == 0)
-		&& (left_iter_->current_acceptance_conditions()
-		    == aut_->all_acceptance_conditions())
-		&& (left_iter_->current_condition() & cond) == cond)
-	      {
-		has_div = true;
-	      }
-	    delete dest;
-	  }
-	trace << "has div? " << has_div << std::endl;
-      }
-    if (!has_div)
-      {
-	has_div = true;
-	next();
-      }
+	trace << "finding next diverging transition" << std::endl;
 
-    trace << "first is done? " << done() << std::endl;
-  }
+	bdd cond = cur->get_cond();
+	while ((!left_iter_->done()) &&
+	       ((left_iter_->current_condition() & cond) != cond))
+	  left_iter_->next();
 
-  void
-  dsog_succ_iterator::next()
-  {
-
-    if (has_div)
-      {
-	trace << "next() has div" << has_div << std::endl;
-
-	left_iter_->first();
-	has_div = false;
-
-	if (left_iter_->done())
+	if (!left_iter_->done())
 	  return;
+
+	trace << "divergence done" << std::endl;
+
+	has_div = false;
 
 	if (succstates_ == its::State::null)
 	  {
-	    while (!left_iter_->done())
-	      left_iter_->next();
+	    // left_iter_ is already done().
 	    return;
 	  }
+
+	left_iter_->first();
       }
 
-    trace << "next() has div done" << std::endl;
+    trace << "find next regular transition" << std::endl;
 
+    // regular transitions
     do
       {
 	if (itap != 0)
@@ -279,14 +277,38 @@ namespace dsog
   }
 
 
+  void
+  dsog_succ_iterator::first()
+  {
+    left_iter_->first();
+    if (left_iter_->done())
+      return;
+
+    if ((!has_div) &&
+	(succstates_ == its::State::null))
+      {
+	while (!left_iter_->done())
+	  left_iter_->next();
+	return;
+      }
+
+    step();
+  }
+
+  void
+  dsog_succ_iterator::next()
+  {
+    if (has_div)
+      left_iter_->next();
+    // otherwise we must advance itap, and step() always does it.
+    step();
+  }
+
 
   bool
   dsog_succ_iterator::done() const
   {
-    if (has_div)
-      return false;
-    else
-      return left_iter_->done();
+    return left_iter_->done();
   }
 
 
@@ -294,7 +316,7 @@ namespace dsog
   dsog_succ_iterator::current_state() const
   {
     if (has_div)
-      return new dsog_div_state(bddtrue);
+      return new dsog_div_state(left_iter_->current_state(), cur->get_cond());
     else
       return dest_->clone();
   }
@@ -302,45 +324,51 @@ namespace dsog
   bdd
   dsog_succ_iterator::current_condition() const
   {
-    return bddtrue;
+    assert(!done());
+    return left_iter_->current_condition() & cur->get_cond();
   }
 
   bdd dsog_succ_iterator::current_acceptance_conditions() const
   {
     assert(!done());
-    if (has_div)
-      return aut_->all_acceptance_conditions();
-    else
-      return left_iter_->current_acceptance_conditions();
+    return left_iter_->current_acceptance_conditions();
   }
 
 
   dsog_div_succ_iterator::dsog_div_succ_iterator(const spot::bdd_dict* d,
 						 const bdd& c,
-						 const bdd& acc)
-    : dict(d), cond(c), acc(acc), div_has_been_visited(true) {
-    // => done()
+						 tgba_succ_iterator* li)
+    : dict(d), cond(c), left_iter_(li)
+  {
   }
 
 
+  void dsog_div_succ_iterator::step()
+  {
+    while ((!left_iter_->done()) &&
+	   ((left_iter_->current_condition() & cond) != cond))
+      left_iter_->next();
+  }
+
   void dsog_div_succ_iterator::first() {
-    div_has_been_visited = false;
+    left_iter_->first();
+    step();
   }
 
   void dsog_div_succ_iterator::next() {
-    assert(!done());
-    div_has_been_visited = true;
+    left_iter_->next();
+    step();
   }
 
   bool dsog_div_succ_iterator::done() const {
-    return  div_has_been_visited;
+    return  left_iter_->done();
   }
 
   spot::state* dsog_div_succ_iterator::current_state() const {
     assert(!done());
     trace << "FIRING : " << format_transition() << std::endl;
     trace << "FROM a div state" << std::endl << std::endl;
-    return new dsog_div_state(cond);
+    return new dsog_div_state(left_iter_->current_state(), cond);
   }
 
   bdd dsog_div_succ_iterator::current_condition() const {
@@ -348,14 +376,9 @@ namespace dsog
     return cond;
   }
 
-  int dsog_div_succ_iterator::current_transition() const {
-    assert(!done());
-    return -1; // div
-  }
-
   bdd dsog_div_succ_iterator::current_acceptance_conditions() const {
     assert(!done());
-    return acc;
+    return left_iter_->current_acceptance_conditions();
   }
 
   std::string dsog_div_succ_iterator::format_transition() const {
@@ -456,9 +479,11 @@ namespace dsog
     const dsog_div_state* d = dynamic_cast<const dsog_div_state*>(local_state);
     if (d)
       {
-	return new dsog_div_succ_iterator(get_dict(), bddtrue,
-					  all_acceptance_conditions());
+	tgba_succ_iterator* li = left_->succ_iter(d->get_left_state(),
+						  global_state,
+						  global_automaton);
 
+	return new dsog_div_succ_iterator(get_dict(), d->get_condition(), li);
       }
 
     const dsog_state* s =
@@ -509,7 +534,12 @@ namespace dsog
       {
 	const dsog_div_state* d = dynamic_cast<const dsog_div_state*>(state);
 	assert(d);
-	return "DIV STATE";
+
+	std::ostringstream os;
+	os << left_->format_state(d->get_left_state()) << " * div_state(";
+	spot::bdd_print_formula(os, dict_, d->get_condition()) << ")";
+
+	return os.str();
       }
   }
 

@@ -32,18 +32,24 @@ namespace dsog
   class dsog_tgba;
 
   class dsog_div_state : public spot::state {
-    public:
-      dsog_div_state(const bdd& c);
-      int compare(const state* other) const;
-      size_t hash() const;
-      state* clone() const;
-      const bdd& get_condition() const;
+  public:
+    dsog_div_state(const state* s, const bdd& c);
+    ~dsog_div_state();
+    int compare(const state* other) const;
+    size_t hash() const;
+    state* clone() const;
+    const bdd& get_condition() const;
+    const state* get_left_state() const { return left_state_; }
 
     // pretty print
     std::ostream & print (std::ostream &) const ;
 
-    private:
-      bdd cond; ///< the condition.
+  private:
+    dsog_div_state(const dsog_div_state& c);
+    dsog_div_state& operator=(const dsog_div_state& c);
+
+    const state* left_state_;
+    bdd cond; ///< the condition.
   };
 
   /// \brief A state for spot::tgba_product.
@@ -126,6 +132,7 @@ namespace dsog
     virtual ~dsog_succ_iterator();
 
     // iteration
+    void step();
     void first();
     void next();
     bool done() const;
@@ -158,14 +165,14 @@ namespace dsog
   public:
     dsog_div_succ_iterator(const spot::bdd_dict* d,
 			   const bdd& c,
-			   const bdd& acc);
+			   tgba_succ_iterator* li);
 
+    void step();
     void first();
     void next();
     bool done() const;
     spot::state* current_state() const;
     bdd current_condition() const;
-    int current_transition() const;
     bdd current_acceptance_conditions() const;
     std::string format_transition() const;
 
@@ -175,8 +182,7 @@ namespace dsog
 
     const spot::bdd_dict* dict;
     bdd cond; ///< The condition which must label the unique successor.
-    bdd acc; ///< The acceptance condition of the self-loop.
-    bool div_has_been_visited;
+    spot::tgba_succ_iterator* left_iter_;
   };
 
 
