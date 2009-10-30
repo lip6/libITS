@@ -25,7 +25,7 @@
 #include "misc/hashfunc.hh"
 #include "tgba/bddprint.hh"
 
-// #define TRACE
+//#define TRACE
 
 #ifdef TRACE
 #define trace std::cerr
@@ -465,6 +465,15 @@ namespace dsog
 	return init;
       }
     }
+
+    // No AP expected.
+    if (vars.empty())
+      {
+	dsog_state *init = new dsog_state(lis, model_, m0, bddtrue);
+	assert(init->right() != its::State::null);
+	return init;
+      }
+
     assert(!"no conjunction of AP is verified by m0 ???");
     // for compiler happiness
     delete it;
