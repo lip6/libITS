@@ -67,6 +67,10 @@ public :
     vars_ = vars;
   }
 
+  static bool empty() {
+    return vars_.empty();
+  }
+
   static APIterator create () {
     return APIterator(vars_);
   }

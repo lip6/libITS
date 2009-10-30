@@ -1,7 +1,7 @@
 // Copyright (C) 2009  Laboratoire d'Informatique de Paris 6 (LIP6),
 // Equipe MoVe , Universite Pierre et Marie Curie.
 //
-// This file is part of the Spot tutorial. Spot is a model checking 
+// This file is part of the Spot tutorial. Spot is a model checking
 // library.
 //
 // Spot is free software; you can redistribute it and/or modify it
@@ -45,7 +45,7 @@ using its::ITSModel;
 namespace sogits {
 
 
-sog_tgba::sog_tgba(const sogIts & m, 
+sog_tgba::sog_tgba(const sogIts & m,
 		   spot::bdd_dict* dict): model(m),dict(dict) {
 } //
 
@@ -64,11 +64,14 @@ spot::state* sog_tgba::get_init_state() const {
     its::State msel = selector(m0);
     if (msel != SDD::null) {
       sog_state * init = new sog_state( model, m0, it.current() );
-      trace << "Initial state of tgba :" << *init << "verifies :"<< it.current()<< std::endl; 
+      trace << "Initial state of tgba :" << *init << "verifies :"<< it.current()<< std::endl;
       return init;
     }
   }
- 
+
+  if (APIteratorFactory::empty())
+    return new sog_state(model, m0, bddtrue);
+
  // no conjunction of AP is verified by m0 ???
   assert (false);
   // for compiler happiness
@@ -80,7 +83,7 @@ spot::tgba_succ_iterator* sog_tgba::succ_iter (const spot::state* local_state,
   const sog_state* s = dynamic_cast<const sog_state*>(local_state);
   if (s) {
     // build a new succ iter :
-    //   agregate is built by saturating : 
+    //   agregate is built by saturating :
     return new sog_succ_iterator(model , *s);
   }
   else {
@@ -96,11 +99,11 @@ spot::bdd_dict* sog_tgba::get_dict() const {
 
 std::string sog_tgba::format_state(const spot::state* state) const {
 
-  
+
   const sog_state* s = dynamic_cast<const sog_state*>(state);
   if (s) {
     std::stringstream  ss;
-    ss  << *s ;    
+    ss  << *s ;
     return ss.str();
   }
   else {
@@ -142,5 +145,3 @@ bdd sog_tgba::compute_support_variables(const spot::state* state) const {
 
 
 } // namespace
-
-
