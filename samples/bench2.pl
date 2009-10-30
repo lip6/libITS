@@ -111,6 +111,7 @@ sub workonfile {
 	  $method = $m;
 
 
+	  $line =~ s/\\"/"/g;
 	  my $call = "$checksog_exe -S$method -f'$line' -c $ff";
 
 	  #	print STDERR $call."\n";
