@@ -14,6 +14,8 @@
 #include "tgbaalgos/dotty.hh"
 #include "tgba/tgbatba.hh"
 
+#include "tgba/tgbareduc.hh"
+
 #include "sogtgba.hh"
 #include "sogtgbautils.hh"
 #include "apiterator.hh"
@@ -34,7 +36,8 @@ namespace sogits {
 		   bool fm_symb_merge_opt,
 		   bool post_branching,
 		   bool fair_loop_approx, const std::string & ltl_string,
-		   bool display) {
+		   bool display,
+		   bool scc_optim) {
 
   // find all AP in the formula
   spot::ltl::atomic_prop_set *sap = spot::ltl::atomic_prop_collect(f);
@@ -73,6 +76,14 @@ namespace sogits {
   timers.start("construction");
   spot::tgba* a = spot::ltl_to_tgba_fm(f, &dict, fm_exprop_opt,
                          fm_symb_merge_opt, post_branching, fair_loop_approx);
+
+  if (scc_optim)
+    {
+      spot::tgba_reduc* n = new spot::tgba_reduc(a);
+      delete a;
+      n->prune_scc();
+      a = n;
+    }
 
   const char* err;
   spot::emptiness_check_instantiator* echeck_inst =

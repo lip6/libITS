@@ -70,7 +70,8 @@ namespace sogits {
 		   bool post_branching=false,
 		   bool fair_loop_approx=false,
 		   const std::string & ltl_string ="formula",
-		   bool dotdump = false);
+		   bool dotdump = false,
+		   bool scc_optim = true);
 
 
 } // namespace

@@ -104,6 +104,8 @@ int main(int argc, const char *argv[]) {
   bool post_branching = false;
   bool fair_loop_approx = false;
 
+  bool scc_optim = true;
+
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
 
@@ -135,6 +137,9 @@ int main(int argc, const char *argv[]) {
     }
     else if (!strncmp(argv[pn_index], "-f", 2)) {
       ltl_string = argv[pn_index]+2;
+    }
+    else if (!strncmp(argv[pn_index], "-dR3", 4)) {
+      scc_optim = false;
     }
     else if (!strncmp(argv[pn_index], "-F", 2)) {
       std::ifstream fin(argv[pn_index]+2);
@@ -251,7 +256,8 @@ std::string* check_at_prop(const petri_net* p,
     model_check(model, f, sogtype,
                 algo_string, ce_expected,
                 fm_exprop_opt, fm_symb_merge_opt,
-                post_branching, fair_loop_approx, "STATS", print_rg);
+                post_branching, fair_loop_approx, "STATS", print_rg,
+		scc_optim);
 
   spot::ltl::destroy(f);
 
