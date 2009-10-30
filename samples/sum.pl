@@ -21,6 +21,8 @@ while (<>)
 
     next if (defined $opt_f) and ($_ !~ $opt_f);
 
+    chomp;
+
     my @res = split(',',$_);
     shift @res;
     shift @res;
@@ -29,7 +31,7 @@ while (<>)
     if ($count)
     {
 	my $i;
-	for ($i = 0; $i < $#sum; ++$i)
+	for ($i = 0; $i <= $#sum; ++$i)
 	{
 	    $sum[$i] += $res[$i];
 	    $max[$i] = $res[$i] if $max[$i] < $res[$i];
@@ -45,7 +47,7 @@ while (<>)
     ++$count;
 }
 
-for ($i = 0; $i < $#sum; ++$i)
+for ($i = 0; $i <= $#sum; ++$i)
 {
     $sum[$i] /= $count;
     $sum[$i] = int($sum[$i] * 100) / 100;
@@ -53,6 +55,6 @@ for ($i = 0; $i < $#sum; ++$i)
 
 
 print "\t@{[join(', ',@head)]}";
-print "MOY:\t@{[join(', ',@sum)]}";
-print "MIN:\t@{[join(', ',@min)]}";
-print "MAX:\t@{[join(', ',@max)]}";
+print "MOY:\t@{[join(', ',@sum)]}\n";
+print "MIN:\t@{[join(', ',@min)]}\n";
+print "MAX:\t@{[join(', ',@max)]}\n";
