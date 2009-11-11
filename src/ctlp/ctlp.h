@@ -43,7 +43,8 @@
 #define _CTLP
 
 //#include "vm.h"
-#include "mdd.h"
+#include "array.h"
+#include <stdio.h>
 
 /*---------------------------------------------------------------------------*/
 /* Structure declarations                                                    */
@@ -190,15 +191,10 @@ EXTERN char * Ctlp_FormulaReadVariableName(Ctlp_Formula_t * formula);
 EXTERN char * Ctlp_FormulaReadValueName(Ctlp_Formula_t * formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaReadLeftChild(Ctlp_Formula_t * formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaReadRightChild(Ctlp_Formula_t * formula);
-EXTERN mdd_t * Ctlp_FormulaObtainStates(Ctlp_Formula_t * formula);
-EXTERN mdd_t * Ctlp_FormulaObtainLatestApprox(Ctlp_Formula_t *formula);
-EXTERN mdd_t * Ctlp_FormulaObtainApproxStates(Ctlp_Formula_t *formula, Ctlp_Approx_t approx);
-EXTERN void Ctlp_FormulaSetStates(Ctlp_Formula_t * formula, mdd_t * states);
-EXTERN void Ctlp_FormulaSetApproxStates(Ctlp_Formula_t * formula, mdd_t * states, Ctlp_Approx_t approx);
 EXTERN void Ctlp_FormulaSetDbgInfo(Ctlp_Formula_t * formula, void *data, Ctlp_DbgInfoFreeFn freeFn);
 EXTERN void * Ctlp_FormulaReadDebugData(Ctlp_Formula_t * formula);
-EXTERN boolean Ctlp_FormulaTestIsConverted(Ctlp_Formula_t * formula);
-EXTERN boolean Ctlp_FormulaTestIsQuantifierFree(Ctlp_Formula_t *formula);
+EXTERN int Ctlp_FormulaTestIsConverted(Ctlp_Formula_t * formula);
+EXTERN int Ctlp_FormulaTestIsQuantifierFree(Ctlp_Formula_t *formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaReadOriginalFormula(Ctlp_Formula_t * formula);
 EXTERN void Ctlp_FormulaFree(Ctlp_Formula_t *formula);
 EXTERN void Ctlp_FlushStates(Ctlp_Formula_t * formula);
@@ -225,11 +221,11 @@ EXTERN Ctlp_Formula_t * Ctlp_FormulaCreateEquiv(char *left, char *right);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaCreateVectorEquiv(char *left, char *right);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaCreateAXMult(char *string, Ctlp_Formula_t *formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaCreateEXMult(char *string, Ctlp_Formula_t *formula);
-EXTERN array_t * Ctlp_FormulaArrayConvertToForward(array_t *formulaArray, int singleInitial, boolean doNotShareFlag);
+EXTERN array_t * Ctlp_FormulaArrayConvertToForward(array_t *formulaArray, int singleInitial, int doNotShareFlag);
 EXTERN char * Ctlp_FormulaGetTypeString(Ctlp_Formula_t *formula);
 EXTERN Ctlp_FormulaClass Ctlp_CheckClassOfExistentialFormula(Ctlp_Formula_t *formula);
 EXTERN Ctlp_FormulaClass Ctlp_CheckClassOfExistentialFormulaArray(array_t *formulaArray);
-EXTERN boolean Ctlp_FormulaIdentical(Ctlp_Formula_t *formula1, Ctlp_Formula_t *formula2);
+EXTERN int Ctlp_FormulaIdentical(Ctlp_Formula_t *formula1, Ctlp_Formula_t *formula2);
 EXTERN void Ctlp_FormulaMakeMonotonic(Ctlp_Formula_t *formula);
 EXTERN void Ctlp_FormulaArrayMakeMonotonic(array_t *formulaArray);
 EXTERN void Ctlp_FormulaNegations(Ctlp_Formula_t *formula, Ctlp_Parity_t parity);
