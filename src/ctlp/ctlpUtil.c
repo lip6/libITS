@@ -477,226 +477,6 @@ Ctlp_FormulaReadRightChild(
 }
 
 
-/**Function********************************************************************
-
-  Synopsis [Gets a copy of the set of states for which this formula is
-  true.]
-
-  Description [Gets a copy of the MDD representing the set of states for which
-  this formula is true.  It is the user's responsibility to free this MDD. If
-  the set of states has not yet been computed, then a NULL mdd_t is
-  returned. It is an error to call this function on a NULL formula.]
-
-  SideEffects []
-
-  SeeAlso     [Ctlp_FormulaSetStates]
-
-******************************************************************************/
-mdd_t *
-Ctlp_FormulaObtainStates(
-  Ctlp_Formula_t * formula)
-{
-  assert(formula != NIL(Ctlp_Formula_t));
-  if (formula->states == NIL(mdd_t) ||
-      formula->latest == Ctlp_Incomparable_c) {
-    return NIL(mdd_t);
-  }
-  else {
-    return mdd_dup(formula->states);
-  }
-}
-
-
-/**Function********************************************************************
-
-  Synopsis    [Stores the set of states with the formula.]
-
-  Description [Stores the MDD with the formula (a copy is not made,
-  and hence, the caller should not later free this MDD). This MDD is
-  intended to represent the set of states for which the formula is
-  true. It is an error to call this function on a NULL formula.]
-
-  SideEffects []
-
-  SeeAlso     [Ctlp_FormulaObtainStates]
-
-******************************************************************************/
-void
-Ctlp_FormulaSetStates(
-  Ctlp_Formula_t * formula,
-  mdd_t * states)
-{
-  assert(formula != NIL(Ctlp_Formula_t));
-  /* RB: added the next two lines.  Given the Description, this was a
-     bug */
-  if(formula->states != NIL(mdd_t))
-    mdd_free(formula->states);
-  formula->states = states;
-  formula->latest = Ctlp_Exact_c;
-}
-
-
-/**Function********************************************************************
-
-  Synopsis [Gets (a copy of) the latest approximation of the satisfying set]
-
-  Description [Gets the satisfying set or an approximation of it.  The most
-  recently computed approximation is returned.  If the
-  exact set is available, it will return that, because it is never superseded.
-  If neither exact nor approximate satisfying set is available, or
-  approx is Ctlp_Incomparable_c, it fails.]
-
-  SideEffects []
-
-  SeeAlso     [Ctlp_FormulaSetApproxStates]
-
-******************************************************************************/
-mdd_t *
-Ctlp_FormulaObtainLatestApprox(
-  Ctlp_Formula_t *formula)
-{
-  if (formula->latest == Ctlp_Exact_c)
-    return mdd_dup(formula->states);
-
-  if (formula->latest == Ctlp_Overapprox_c)
-    return mdd_dup(formula->overapprox);
-
-  if (formula->latest == Ctlp_Underapprox_c)
-    return mdd_dup(formula->underapprox);
-
-  if (formula->latest == Ctlp_Incomparable_c)
-    return mdd_dup(formula->states);
-
-  assert(0);  /* we should never get here */
-  return NIL(mdd_t);
-}
-
-
-/**Function********************************************************************
-
-  Synopsis [Gets (a copy of) an approximation of the satisfying set]
-
-  Description [Gets the required approximation of the satisfying set.  If the
-  exact set is available, it will return that.  If neither is available, or
-  approx is Ctlp_Incomparable_c, it will return NULL.]
-
-  SideEffects []
-
-  SeeAlso     [Ctlp_FormulaSetApproxStates]
-
-******************************************************************************/
-mdd_t *
-Ctlp_FormulaObtainApproxStates(
-  Ctlp_Formula_t *formula,
-  Ctlp_Approx_t approx)
-{
-  if(approx == Ctlp_Incomparable_c)
-    return NIL(mdd_t);
-
-  if (formula->states != NIL(mdd_t))
-    return mdd_dup(formula->states);
-
-  if(approx == Ctlp_Exact_c)
-    return NIL(mdd_t);
-
-  if(approx == Ctlp_Overapprox_c){
-    if(formula->overapprox == NIL(mdd_t))
-      return NIL(mdd_t);
-    else
-      return mdd_dup(formula->overapprox);
-  }
-
-  if(approx == Ctlp_Underapprox_c){
-    if(formula->underapprox == NIL(mdd_t))
-      return NIL(mdd_t);
-    else
-      return mdd_dup(formula->underapprox);
-  }
-
-  assert(0);  /* we should never get here */
-  return NIL(mdd_t);
-}
-
-
-/**Function********************************************************************
-
-  Synopsis [Stores (an approximation of) the set of states with the
-  formula.]
-
-  Description [Sets the set of states or an under or overapproximation
-  thereof, depending on the approx flag.  If there is already an under
-  or overapproximation, it is overwritten.  If the exact set is given,
-  the approx fields are cleared.  Setting an incomparable
-  approximation results in no action being taken.  An approximation
-  does not replace the exact set.  A copy of the mdd is not made, so
-  the caller should not free it.]
-
-  SideEffects []
-
-  SeeAlso     [Ctlp_FormulaObtainApproxStates Ctlp_FormulaObtainLatestApprox]
-
-******************************************************************************/
-void
-Ctlp_FormulaSetApproxStates(
-  Ctlp_Formula_t * formula,
-  mdd_t * states,
-  Ctlp_Approx_t approx)
-{
-  if (formula->latest == Ctlp_Exact_c) {
-    mdd_free(states);
-    return;
-  }
-
-  formula->latest = approx;
-
-  if (approx == Ctlp_Exact_c) {
-    if (formula->states != NIL(mdd_t))
-      mdd_free(formula->states);
-    formula->states = states;
-
-    if (formula->underapprox != NIL(mdd_t)) {
-      mdd_free(formula->underapprox);
-      formula->underapprox = NIL(mdd_t);
-    }
-
-    if (formula->overapprox != NIL(mdd_t)) {
-      mdd_free(formula->overapprox);
-      formula->overapprox = NIL(mdd_t);
-    }
-
-    return;
-  }
-
-  if (approx == Ctlp_Underapprox_c) {
-    /* you could perform a union instead, but typical use will
-       have monotonically increasing underapproximations */
-    if(formula->underapprox != NIL(mdd_t))
-      mdd_free(formula->underapprox);
-    formula->underapprox = states;
-  }
-
-  if (approx == Ctlp_Overapprox_c) {
-    /* you could perform an intersection instead */
-    if (formula->overapprox != NIL(mdd_t))
-      mdd_free(formula->overapprox);
-    formula->overapprox = states;
-  }
-
-  /* This case is possible; for instance when both children of an implication
-   * with (All, S) condition are underapproximated.  We may lose some states
-   * from the left if they are not in S.  These cause an overapproximation.
-   * We may also lose some states from the right.  These cause an
-   * underapproximation.  When the two effects are combined, we get something
-   * incomparable, yet sufficient to produce the exact result, because it is
-   * accurate over S. */
-  if (approx == Ctlp_Incomparable_c) {
-    if (formula->states != NIL(mdd_t))
-      mdd_free(formula->states);
-    formula->states = states;
-  }
-
-  return;
-}
 
 
 /**Function********************************************************************
@@ -763,7 +543,7 @@ Ctlp_FormulaReadDebugData(
   SideEffects []
 
 ******************************************************************************/
-boolean
+int
 Ctlp_FormulaTestIsConverted(
   Ctlp_Formula_t * formula)
 {
@@ -782,12 +562,12 @@ Ctlp_FormulaTestIsConverted(
   SideEffects []
 
 ******************************************************************************/
-boolean
+int
 Ctlp_FormulaTestIsQuantifierFree(
   Ctlp_Formula_t *formula)
 {
-  boolean lCheck;
-  boolean rCheck;
+  int lCheck;
+  int rCheck;
   Ctlp_Formula_t *leftChild;
   Ctlp_Formula_t *rightChild;
   Ctlp_FormulaType type;
@@ -1043,8 +823,7 @@ Ctlp_FormulaFree(
 
 /**Function********************************************************************
 
-  Synopsis [Recursively frees states, underapprox and overapprox fields of
-  Ctlp_Formula_t, and the debug data]
+  Synopsis [Recursively frees  the debug data]
 
   Description []
 
@@ -1066,19 +845,6 @@ Ctlp_FlushStates(
       if (formula->right != NIL(Ctlp_Formula_t)) {
 	Ctlp_FlushStates(formula->right);
       }
-    }
-
-    if (formula->states != NIL(mdd_t)){
-      mdd_free(formula->states);
-      formula->states = NIL(mdd_t);
-    }
-    if (formula->underapprox != NIL(mdd_t)){
-      mdd_free(formula->underapprox);
-      formula->underapprox = NIL(mdd_t);
-    }
-    if (formula->overapprox != NIL(mdd_t)){
-      mdd_free(formula->overapprox);
-      formula->overapprox = NIL(mdd_t);
     }
 
     if (formula->dbgInfo.data != NIL(void)){
@@ -1117,12 +883,7 @@ Ctlp_FormulaDup(
   result = ALLOC(Ctlp_Formula_t, 1);
 
   result->type                    = formula->type;
-  result->states                  = NIL(mdd_t);
-  result->underapprox             = NIL(mdd_t);
-  result->overapprox              = NIL(mdd_t);
-  result->latest                  = Ctlp_Incomparable_c;
-  result->Bottomstates            = NIL(array_t);
-  result->Topstates               = NIL(array_t);
+  result->forward                 = NIL(Ctlp_Formula_t);
   result->negation_parity         = Ctlp_NoParity_c;
   result->leaves                  = formula->leaves == NIL(array_t) ?
     NIL(array_t) : array_dup(formula->leaves);
@@ -1518,7 +1279,7 @@ Ctlp_FormulaArrayFree(
 
   Description [Converts a CTL formula to existential form.  That is, all
   universal path quantifiers are replaced with the appropriate combination of
-  existential quantifiers and Boolean negation.  Also converts "finally"
+  existential quantifiers and Int negation.  Also converts "finally"
   operators to "until" operators.<p>
 
   <p>Returns a new formula that shares absolutely nothing with the original
@@ -1662,12 +1423,12 @@ Ctlp_FormulaConvertToExistentialForm(
 
   Description [Converts a CTL formula to simple existential form.
   That is, all universal path quantifiers are replaced with the
-  appropriate combination of existential quantifiers and Boolean
-  negation. Only `NOT' and `AND' Boolean operators are allowed.  Also
+  appropriate combination of existential quantifiers and Int
+  negation. Only `NOT' and `AND' Int operators are allowed.  Also
   converts "finally" operators to "until" operators.
 
   The converted bit is set in the converted formula only when temporal
-  operators are converted, not when boolean operators are converted.
+  operators are converted, not when int operators are converted.
 
   A  new formula is created that needs to be freed seperately.]
 
@@ -2062,11 +1823,7 @@ Ctlp_FormulaCreate(
   formula->left                    = (Ctlp_Formula_t *)left;
   formula->right                   = (Ctlp_Formula_t *)right;
   formula->refCount                = 1;
-  formula->states                  = NIL(mdd_t);
-  formula->underapprox             = NIL(mdd_t);
-  formula->overapprox              = NIL(mdd_t);
-  formula->Topstates		   = NIL(array_t);
-  formula->Bottomstates		   = NIL(array_t);
+  formula->forward                 = NIL(Ctlp_Formula_t);
   formula->leaves		   = NIL(array_t);
   formula->matchfound_top          = NIL(array_t);
   formula->matchelement_top        = NIL(array_t);
@@ -2407,7 +2164,7 @@ Ctlp_FormulaCreateEXMult(
 ******************************************************************************/
 array_t *
 Ctlp_FormulaArrayConvertToForward(array_t *formulaArray, int singleInitial,
-				  boolean doNotShareFlag)
+				  int doNotShareFlag)
 {
   int i;
   Ctlp_Formula_t *formula, *existentialFormula, *forwardFormula;
@@ -2436,7 +2193,7 @@ Ctlp_FormulaArrayConvertToForward(array_t *formulaArray, int singleInitial,
       forwardFormula->right->left = existentialFormula;
     } else
       forwardFormula->right = existentialFormula;
-    forwardFormula->right->states = (mdd_t *)forwardFormula;
+    forwardFormula->right->forward = forwardFormula;
     /* if formula was converted before, keep that reference */
     if(existentialFormula->dbgInfo.originalFormula != NIL(Ctlp_Formula_t))
       forwardFormula->dbgInfo.originalFormula =
@@ -2706,7 +2463,7 @@ Ctlp_CheckClassOfExistentialFormulaArray(
   SeeAlso     [FormulaCompare]
 
 ******************************************************************************/
-boolean
+int
 Ctlp_FormulaIdentical(
   Ctlp_Formula_t *formula1,
   Ctlp_Formula_t *formula2)
@@ -2756,9 +2513,7 @@ Ctlp_FormulaMakeMonotonic(
    * state.  Specifically, that the parse graph is a tree.
    */
   assert(formula->refCount == 1 &&
-	 formula->states == NIL(mdd_t) &&
-	 formula->underapprox == NIL(mdd_t) &&
-	 formula->overapprox == NIL(mdd_t) &&
+	 formula->forward == NIL(Ctlp_Formula_t) &&
 	 formula->latest == Ctlp_Incomparable_c &&
 	 formula->dbgInfo.data == NIL(void) &&
 	 formula->dbgInfo.freeFn == (Ctlp_DbgInfoFreeFn) NULL &&
@@ -2968,16 +2723,6 @@ CtlpFormulaFree(
 	CtlpFormulaDecrementRefCount(formula->right);
       }
     }
-    if (formula->states != NIL(mdd_t))
-      mdd_free(formula->states);
-    if (formula->underapprox != NIL(mdd_t))
-      mdd_free(formula->underapprox);
-    if (formula->overapprox != NIL(mdd_t))
-      mdd_free(formula->overapprox);
-    if (formula->Bottomstates != NIL(array_t))
-      mdd_array_free(formula->Bottomstates);
-    if (formula->Topstates != NIL(array_t))
-      mdd_array_free(formula->Topstates);
     if (formula->matchfound_top != NIL(array_t))
       array_free(formula->matchfound_top);
     if (formula->matchelement_top != NIL(array_t))
@@ -3576,8 +3321,8 @@ FormulaConvertToExistentialDAG(
   if(formula==NIL(Ctlp_Formula_t))
     return NIL(Ctlp_Formula_t);
 
-  if(formula->states!=NIL(mdd_t)) {
-    Ctlp_Formula_t *temp = (Ctlp_Formula_t *) (formula->states);
+  if(formula->forward!=NIL(Ctlp_Formula_t)) {
+    Ctlp_Formula_t *temp = formula->forward;
 
     ++(temp->refCount);
     return temp;
@@ -3673,7 +3418,7 @@ FormulaConvertToExistentialDAG(
       fail("Unexpected type");
   }
 
-  formula->states = (mdd_t *) new_; /*using states as pointer to the converted
+  formula->forward =  new_; /*using states as pointer to the converted
 				     formula */
   new_->dbgInfo.originalFormula = formula;
   return new_;
@@ -3707,7 +3452,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
   if (formula == NIL(Ctlp_Formula_t))
     return;
 
-  parent = (Ctlp_Formula_t *)formula->states;
+  parent = formula->forward;
   r = parent->left; /* already converted */
 
   /*
@@ -3734,7 +3479,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
       parent->top = 1;
       parent->compareValue = compareValue;
-      parent->right->states = (mdd_t *)parent;
+      parent->right->forward = parent;
 
       FormulaConvertToForward(parent->right, compareValue);
       break;
@@ -3760,7 +3505,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
       parent->top = 1;
       parent->compareValue = compareValue;
-      parent->right->states = (mdd_t *)parent;
+      parent->right->forward = parent;
 
 
       FormulaConvertToForward(parent->right, compareValue);
@@ -3786,7 +3531,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
       parent->top = 1;
       parent->compareValue = compareValue;
-      parent->right->states = (mdd_t *)parent;
+      parent->right->forward = parent;
 
       FormulaConvertToForward(parent->right, compareValue);
       break;
@@ -3806,7 +3551,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
       parent->right = formula->left;
 
       formula->left = NIL(Ctlp_Formula_t);
-      formula->states = NIL(mdd_t);
+      formula->forward = NIL(Ctlp_Formula_t);
       Ctlp_FormulaFree(formula);
 
       parent->top = 1;
@@ -3827,15 +3572,15 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
 	parent->right = formula->left->left;
 	formula->left->left = NIL(Ctlp_Formula_t);
-	formula->left->states = NIL(mdd_t);
+	formula->left->forward = NIL(Ctlp_Formula_t);
 	Ctlp_FormulaFree(formula->left);
 	formula->left = NIL(Ctlp_Formula_t);
-	formula->states = NIL(mdd_t);
+	formula->forward = NIL(Ctlp_Formula_t);
 	Ctlp_FormulaFree(formula);
 
 	parent->top = 1;
 	parent->compareValue = compareValue;
-	parent->right->states = (mdd_t *)parent;
+	parent->right->forward = parent;
 
 	FormulaConvertToForward(parent->right, compareValue);
       } else if (formula->left->type == Ctlp_THEN_c) {
@@ -3879,7 +3624,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
 	  parent->top = 1;
 	  parent->compareValue = compareValue;
-	  parent->right->states = (mdd_t *)parent;
+	  parent->right->forward = parent;
 
 	  FormulaConvertToForward(parent->right, compareValue);
 	} else {
@@ -3905,7 +3650,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
 	  parent->top = 1;
 	  parent->compareValue = compareValue;
-	  p->states = (mdd_t *)parent;
+	  p->forward = parent;
 
 	  FormulaConvertToForward(p, compareValue);
 	}
@@ -3956,7 +3701,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
 	parent->top = 1;
 	parent->compareValue = compareValue;
-	parent->right->states = (mdd_t *)parent;
+	parent->right->forward = parent;
 
 	FormulaConvertToForward(parent->right, compareValue);
       } else if (formula->left->type == Ctlp_AND_c) {
@@ -3997,8 +3742,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 	parent->right->top = 1;
 	parent->left->compareValue = compareValue;
 	parent->right->compareValue = compareValue;
-	parent->left->right->states = (mdd_t *)parent->left;
-	parent->right->right->states = (mdd_t *)parent->right;
+	parent->left->right->forward = parent->left;
+	parent->right->right->forward = parent->right;
 
 	FormulaConvertToForward(parent->left->right, compareValue);
 	FormulaConvertToForward(parent->right->right, compareValue);
@@ -4102,8 +3847,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 	parent->right->top = 1;
 	parent->left->compareValue = compareValue;
 	parent->right->compareValue = compareValue;
-	parent->left->right->states = (mdd_t *)parent->left;
-	parent->right->right->states = (mdd_t *)parent->right;
+	parent->left->right->forward = parent->left;
+	parent->right->right->forward = parent->right;
 
 	FormulaConvertToForward(parent->left->right, compareValue);
 	FormulaConvertToForward(parent->right->right, compareValue);
@@ -4173,8 +3918,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 	    parent->right->top = 1;
 	    parent->left->compareValue = compareValue;
 	    parent->right->compareValue = compareValue;
-	    parent->left->right->states = (mdd_t *)parent->left;
-	    parent->right->right->states = (mdd_t *)parent->right;
+	    parent->left->right->forward = parent->left;
+	    parent->right->right->forward = parent->right;
 
 	    FormulaConvertToForward(parent->left->right, compareValue);
 	    FormulaConvertToForward(parent->right->right, compareValue);
@@ -4216,8 +3961,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 	    parent->right->top = 1;
 	    parent->left->compareValue = compareValue;
 	    parent->right->compareValue = compareValue;
-	    parent->left->right->states = (mdd_t *)parent->left;
-	    parent->right->right->states = (mdd_t *)parent->right;
+	    parent->left->right->forward = parent->left;
+	    parent->right->right->forward = parent->right;
 
 	    FormulaConvertToForward(parent->left->right, compareValue);
 	    FormulaConvertToForward(parent->right->right, compareValue);
@@ -4250,8 +3995,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 	parent->right->top = 1;
 	parent->left->compareValue = compareValue;
 	parent->right->compareValue = compareValue;
-	parent->left->right->states = (mdd_t *)parent->left;
-	parent->right->right->states = (mdd_t *)parent->right;
+	parent->left->right->forward = parent->left;
+	parent->right->right->forward = parent->right;
 
 	FormulaConvertToForward(parent->left->right, compareValue);
 	FormulaConvertToForward(parent->right->right, compareValue);
@@ -4296,8 +4041,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
       parent->right->top = 1;
       parent->left->compareValue = compareValue;
       parent->right->compareValue = compareValue;
-      parent->left->right->states = (mdd_t *)parent->left;
-      parent->right->right->states = (mdd_t *)parent->right;
+      parent->left->right->forward = parent->left;
+      parent->right->right->forward = parent->right;
 
       FormulaConvertToForward(parent->left->right, compareValue);
       FormulaConvertToForward(parent->right->right, compareValue);
@@ -4336,8 +4081,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
       parent->right->top = 1;
       parent->left->compareValue = compareValue;
       parent->right->compareValue = compareValue;
-      parent->left->right->states = (mdd_t *)parent->left;
-      parent->right->right->states = (mdd_t *)parent->right;
+      parent->left->right->forward = parent->left;
+      parent->right->right->forward = parent->right;
 
       FormulaConvertToForward(parent->left->right, compareValue);
       FormulaConvertToForward(parent->right->right, compareValue);
@@ -4374,7 +4119,7 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 
       parent->top = 1;
       parent->compareValue = compareValue;
-      g->states = (mdd_t *)parent;
+      g->forward = parent;
 
       FormulaConvertToForward(g, compareValue);
       break;
@@ -4441,8 +4186,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 	  parent->right->top = 1;
 	  parent->left->compareValue = compareValue;
 	  parent->right->compareValue = compareValue;
-	  parent->left->right->states = (mdd_t *)parent->left;
-	  parent->right->right->states = (mdd_t *)parent->right;
+	  parent->left->right->forward = parent->left;
+	  parent->right->right->forward = parent->right;
 
 	  FormulaConvertToForward(parent->left->right, compareValue);
 	  FormulaConvertToForward(parent->right->right, compareValue);
@@ -4482,8 +4227,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
 	  parent->right->top = 1;
 	  parent->left->compareValue = compareValue;
 	  parent->right->compareValue = compareValue;
-	  parent->left->right->states = (mdd_t *)parent->left;
-	  parent->right->right->states = (mdd_t *)parent->right;
+	  parent->left->right->forward = parent->left;
+	  parent->right->right->forward = parent->right;
 
 	  FormulaConvertToForward(parent->left->right, compareValue);
 	  FormulaConvertToForward(parent->right->right, compareValue);
@@ -4516,8 +4261,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
       parent->right->top = 1;
       parent->left->compareValue = compareValue;
       parent->right->compareValue = compareValue;
-      parent->left->right->states = (mdd_t *)parent->left;
-      parent->right->right->states = (mdd_t *)parent->right;
+      parent->left->right->forward = parent->left;
+      parent->right->right->forward = parent->right;
 
       FormulaConvertToForward(parent->left->right, compareValue);
       FormulaConvertToForward(parent->right->right, compareValue);
@@ -4617,8 +4362,8 @@ FormulaConvertToForward(Ctlp_Formula_t *formula, int compareValue)
       parent->right->top = 1;
       parent->left->compareValue = compareValue;
       parent->right->compareValue = compareValue;
-      parent->left->right->states = (mdd_t *)parent->left;
-      parent->right->right->states = (mdd_t *)parent->right;
+      parent->left->right->forward = parent->left;
+      parent->right->right->forward = parent->right;
 
       FormulaConvertToForward(parent->left->right, compareValue);
       FormulaConvertToForward(parent->right->right, compareValue);
