@@ -1,4 +1,4 @@
-AC_INIT([ROMEOSDD],[0.1],[Yann.Thierry-mieg@lip6.fr])
+AC_INIT([ITSSDD],[0.1],[Yann.Thierry-mieg@lip6.fr])
 # We use automake to build makefiles
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -37,14 +37,11 @@ AC_PROG_YACC
 AC_CONFIG_FILES([
   Makefile
   src/Makefile
-  src/romeo-sdd/Makefile
-  src/its/Makefile
-  src/its/lib/Makefile
-  src/its/src/Makefile
-  src/its/src/expression/Makefile
-  src/its/src/parser_RdPE/Makefile
-  src/its/src/parser_CAMI/Makefile
-  src/its/demo/Makefile
+  lib/Makefile
+  src/expression/Makefile
+  src/parser_RdPE/Makefile
+  src/parser_CAMI/Makefile
+  demo/Makefile
 ])
 
 # Do it !! (mandatory)
