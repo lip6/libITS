@@ -39,6 +39,7 @@
 
 #include <string.h>
 #include "ctlp.h"
+#include "st.h"
 
 
 /*---------------------------------------------------------------------------*/
@@ -82,11 +83,7 @@ struct CtlpFormulaStruct {
   Ctlp_Formula_t *right;  /* right child, or null if not used */
   int refCount;           /* number of formulas referring to this
 			     formula as a left or right child */
-  mdd_t	*states;          /* set of states satifying formula */
-  mdd_t *underapprox;     /* Underapproximation of states (for hints) */
-  mdd_t *overapprox;      /* overapprox for hints */
-  array_t *Bottomstates;
-  array_t *Topstates;
+  Ctlp_Formula_t *forward;  /* store the forward version in translation */
   array_t *leaves;
   array_t *matchfound_top;    /*array of booleans*/
   array_t *matchelement_top;  /* array of match numbers*/
@@ -97,7 +94,7 @@ struct CtlpFormulaStruct {
   struct {
     void *data;           /* used  to store information used by debugger */
     Ctlp_DbgInfoFreeFn freeFn;         /* free function for data */
-    boolean convertedFlag;  /* was converted to existential form
+    int convertedFlag;  /* was converted to existential form
                                            by non-trivial transformation */
     Ctlp_Formula_t *originalFormula; /* pointer to formula from which this
                                            was converted */
