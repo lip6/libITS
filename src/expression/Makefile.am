@@ -8,7 +8,7 @@ if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
 endif
 
-libEXPRESS_a_CPPFLAGS = -I$(top_srcdir)/src/its/src/parser_RdPE \
+libEXPRESS_a_CPPFLAGS = -I$(top_srcdir)/src/parser_RdPE \
                         $(LIBDDD_CPP) 
 
 BUILT_SOURCES = expression_yacc.h

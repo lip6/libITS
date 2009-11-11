@@ -1,7 +1,7 @@
 AM_YFLAGS = -d 
 AM_LFLAGS = -olex.yy.c
 
-AM_CPPFLAGS =   -I$(top_srcdir)/src/its/src/parser_RdPE
+AM_CPPFLAGS =   -I$(top_srcdir)/src/parser_RdPE
 
 BUILT_SOURCES = Cami_yacc.h
 
