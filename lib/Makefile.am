@@ -33,9 +33,9 @@ JSONSOURCES = $(JSONSPIRITSOURCES) \
 		$(MYJSONSRCDIR)/parse_json.cpp   \
 		$(MYJSONSRCDIR)/parse_json.hh
 
-XMLLOADERSOURCES =  CompositeXMLLoader.hh CompositeXMLLoader.cpp \
-	ITSModelXMLLoader.hh ITSModelXMLLoader.cpp \
-	XMLLoader.hh XMLLoader.cpp
+XMLLOADERSOURCES =  $(MYSRCDIR)/CompositeXMLLoader.hh $(MYSRCDIR)/CompositeXMLLoader.cpp \
+	$(MYSRCDIR)/ITSModelXMLLoader.hh $(MYSRCDIR)/ITSModelXMLLoader.cpp \
+	$(MYSRCDIR)/XMLLoader.hh $(MYSRCDIR)/XMLLoader.cpp
 
 
 ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
