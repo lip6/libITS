@@ -26,7 +26,7 @@ if test "x${with_libspot}" != x; then
     AC_SUBST([LIBSPOT_ROOT],[${with_libspot}])
 fi
 
-# option to indicate libspot folder
+# option to indicate libits folder
 AC_ARG_WITH([libits],
             [AC_HELP_STRING([--with-libits=/root/of/libits],
                             [specify the path of libits])])
