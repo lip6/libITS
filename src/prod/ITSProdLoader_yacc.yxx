@@ -1,0 +1,232 @@
+/****************************************************************************/
+/*								            */
+/* This file is part of the PNDDD, Petri Net Data Decision Diagram  package.*/
+/*     						                            */
+/*     Copyright (C) 2004 Denis Poitrenaud and Yann Thierry-Mieg            */
+/*     						                            */
+/*     This program is free software; you can redistribute it and/or modify */
+/*     it under the terms of the GNU General Public License as published by */
+/*     the Free Software Foundation; either version 2 of the License, or    */
+/*     (at your option) any later version.                                  */
+/*     This program is distributed in the hope that it will be useful,      */
+/*     but WITHOUT ANY WARRANTY; without even the implied warranty of       */
+/*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        */
+/*     GNU General Public License for more details.                         */
+/*     						                            */
+/*     You should have received a copy of the GNU General Public License    */
+/*     along with this program; if not, write to the Free Software          */
+/*Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
+/*     						                            */
+/****************************************************************************/
+ 
+
+
+%{
+
+/* .......... Declarations C ........*/
+
+#include <string>
+#include <cstdio>
+#include "PNet.hh"
+#include "ProdLoader.hh"
+
+using namespace std;
+using namespace its;
+
+
+static	PNet *R;
+static  string t;
+
+extern int yylex();
+extern int RdPMlineno;
+extern	FILE *RdPMin;
+extern char rdptext[];
+
+extern void RdPMerror (const char *s) {
+	cerr << "Parse error :" << s ;
+	cerr << "While parsing .net model file at line :" << RdPMlineno <<endl;
+	cerr << "Please be aware this may have unknowable effects on your analysis." << endl;
+	cerr << "attempting error ignore"; 
+}
+
+/*........... Code C additionnel ....*/
+/*   // ************* ?????? WTF ?? yann 
+extern "C" {
+  int yylex();
+  int yyerror(const char* s){
+    if (s)
+      printf("Error : %s\n", s);
+    else
+      printf("Parsing error\n");
+    return (1);
+  }
+  
+  int yywrap(){
+    return (1);
+  }
+}
+*/
+
+%}
+
+/*........... Declarations Yacc .....*/
+%union { 	
+  int i;
+  char *s;
+}
+
+%token UGLYPREFIX_IN UGLYPREFIX_OUT MK CP PLACE TRANS ENDTR TOKEN UGLYPREFIX_RESET UGLYPREFIX_INHIBITOR
+%token <i> ENTIER
+%token <s> VARIABLE
+
+%type <i> marquage
+%type <i> placelevel
+
+%name-prefix="RdPM"
+
+%start reseau
+
+%%
+/*........... Regles de grammaire ...*/
+
+	/*********************/
+	/* lecture du reseau */
+	/*********************/
+
+reseau	        : noeud | reseau noeud
+		;
+
+noeud		: place | transition 
+		;
+
+ 	/***********************/
+	/* lecture d'une place */
+	/***********************/
+
+placelevel      : PLACE '(' ENTIER ')'
+                {
+		  $$ = $3;
+		}
+                | PLACE
+                {
+		  $$ = 0;
+		}
+                ;
+place		: placelevel VARIABLE
+		{	
+		  if(!R->addPlace($2))
+		  { 	
+		    yyerror("creation de place");return(1);
+		  }
+		  free($2);
+		}
+                | placelevel VARIABLE MK '(' marquage ')'
+		{	
+		  if(!R->addPlace($2))
+		  { 	
+		    yyerror("creation de place marquee");return(1);
+		  }
+	          R->setMarking("init",$2,$5);
+                  free($2);
+		}
+		;
+
+ 	/***********************/
+	/* lecture d'une queue */
+	/***********************/
+
+	/***********************/
+	/* lecture d'une trans */
+	/***********************/
+
+nomtransition   : TRANS VARIABLE
+                {
+		  if(!R->addTransition($2,PRIVATE))
+		  { 	
+		    yyerror("creation d'une transition");return(1);
+		  }
+		  t=$2;
+		  free($2);
+
+		}
+                ;
+
+transition	: nomtransition entree sortie ENDTR
+		;
+	/***************************************/
+	/* lecture des entrees d'une transition*/
+	/***************************************/
+
+entree		: UGLYPREFIX_IN '{' listearcin '}'
+		|
+		;
+	/***************************************/
+	/* lecture des sorties d'une transition*/
+	/***************************************/
+
+sortie		: UGLYPREFIX_OUT '{' listearcout '}'
+		|
+		;
+
+	/***************************************/
+	/* lecture d'un arc			*/
+	/***************************************/
+
+listearcin	: listearcin VARIABLE ':' marquage ';'
+		{
+		  if(!R->addArc(PNet::ArcVal($2,$4),t,INPUT))
+		  {
+		    yyerror("creation d'un arc (place) d'entree");return(1);
+		   }
+		  free($2);
+
+		}
+		| listearcin VARIABLE ':' UGLYPREFIX_RESET ';'
+		{
+		  if(!R->addArc(PNet::ArcVal($2,0),t,RESET))		  
+		  {
+		    yyerror("creation d'un arc reset");return(1);
+		   }
+		  free($2);
+
+		}
+		| listearcin VARIABLE UGLYPREFIX_INHIBITOR ENTIER ';'
+		{
+		   if(!R->addArc(PNet::ArcVal($2,$4),t,INHIBITOR))	
+		  {
+		    yyerror("creation d'un arc inhibiteur");return(1);
+		   }
+		  free($2);
+
+		}
+		|
+		;
+
+listearcout	: listearcout VARIABLE ':' marquage ';'
+		{
+		  if(!R->addArc(PNet::ArcVal($2,$4),t,OUTPUT))
+		  {
+		    yyerror("creation d'un arc (place) de sortie");return(1);
+		  }
+		  free($2);
+
+		}
+		|
+		;
+
+marquage	: TOKEN {$$=1;}
+		|
+		ENTIER TOKEN {$$=$1;}
+		;
+%%
+
+its::PNet * ProdLoader::loadProd(const std::string & filename){
+  int i;
+  if ((RdPMin=fopen(filename.c_str(),"r"))==NULL)
+    return false;
+  R= new PNet(filename);
+  i=(int) yyparse();
+  fclose(RdPMin);
+  return R;
+}
+

@@ -1,0 +1,93 @@
+\mysubsubsection{Composite ITS.}  We now recall from
+\cite{tacas09tmphk} the definition of a composite ITS type, designed
+to offer support for the hierarchical composition of ITS instances.
+
+\textbf{Notations:} Given a cartesian product $Z=Z_1\times\cdots\times Z_n$ of
+sets $Z_1,\cdots, Z_n$, we denote by $\pi_i$ the projection operator $Z
+\mapsto Z_i$. For a set $I=\{i_1,\ldots,i_n\}$ of ITS instances, $S_I$ is the
+set $type(i_1).S \times \ldots \times type(i_n).S$ and $A_I$ is the set
+$\lang{type(i_1).A} \times \ldots \times \lang{type(i_n).A}$. Cardinality of
+$I$ is denoted by $|I|$.
+
+\begin{definition}[Composite]
+\label{def:composite}
+A \textbf{composite} is a tuple $C=\tuple{I, s_0, \Ts, A, \lab}$ where:
+\begin{itemize}
+\item $I$ is a finite set of ITS instances, said to be
+  \emph{contained} by $C$. We further require that the type of each
+  ITS instance preexists when defining I, in order to prevent circular
+  or recursive type definitions.
+\item $s_0 \in S_I$ is the initial state;
+$\Ts \subset A_I$ is the finite set of synchronizations;
+$A$ is a set of action labels, which contains the label \labloc{} and
+$\lab : \Ts \mapsto A$ is the labeling function
+\end{itemize}
+\end{definition}
+
+
+\textbf{Notations:} The next state function $\nexti : S_I \times A_I
+\mapsto 2^{S_I}$ is used in definition~\ref{def:composite-its}. It is defined
+for $s, s' \in S_I$ and $\sigma \in A_I$ by:
+
+$s' \in \nexti(s,\sigma) \ \mathit{iff} \ \forall i \in I, \pi_i (s') \in
+type(i).\succs{}(\pi_i(s), \pi_i (\sigma))$
+
+\begin{definition}[ITS Semantics of a Composite]
+\label{def:composite-its}
+The ITS type
+$\tau = \tuple{S,A,\locals{},\succs{}}$
+corresponding to a composite $C=\tuple{I, s_0, \Ts, A', \lambda}$, is defined by:
+\begin{itemize}
+\item $S = S_I$ ;
+%$\istate{} = S_0$; 
+$A = A' \setminus \{ \labloc \}$;
+\item $\locals: S \mapsto 2^S$ is defined for $s,s' \in S$ by: $s' \in \mathit{Locals}(s)$ iff
+$$
+\left\{
+\begin{array}{cl}
+ & \exists i \in I, \pi_i (s') \in \mathit{type}(i).\mathit{Locals}( \pi_i(s)) \land \forall j \in I, j \neq i, \pi_j(s') = \pi_j(s)  \\
+or & \exists \sigma \in \Ts, \lab(\sigma) = \labloc, s' \in \nexti(s,\sigma)
+\end{array}
+\right.
+$$
+
+\item $\succs{}: S \times \lang{A} \mapsto 2^S$ is defined for $s,s'
+  \in S, \ w=a_1\cdots a_n \in \lang{A}$ by:
+  $s' \in \succs{}(s,w)$ iff \\
+  $\exists \sigma_1,\ldots,\sigma_n \in \Ts, \exists s_0,\ldots,s_n
+  \in S, \ \forall j \in [1..n], \ \lab(\sigma_j) = a_j \land s_j
+  \in \nexti(s_{j-1},\sigma_j) \land s_0=s \land s_n=s'$.
+
+\end{itemize}
+\end{definition}
+
+Definition \ref{def:composite-its} describes an implementation of the
+generic ITS type contract. It contains either elementary instances
+(such as LTS, or as we will use later in this paper, a discrete timed
+transition system), or recursively other instances of composite
+nature.
+
+$\locals{}(s)$ is defined as states reachable from $s$ through the
+occurrence of any synchronization associated to the local label
+\labloc, or states due to the action of \locals{} in any nested
+instance (without affecting the other instances).
+
+$\succs{}(s,w)$ is obtained by composing the effects of each label $a$
+in the word $w$ using the cartesian product. Labels associated with a
+set composed of a single synchronization are simply concatenated. For
+labels that associated with a larger set of synchronizations, only one
+of the synchronizations is required to occur when the label occurs.
+
+For instance, let us consider in figure~\ref{fig:sync:tab1} (section~\ref{sec:tpn}) a representation of a composite ITS type. It contains
+two instances $t_0$ and $t_1$ of an ITS type ``Train'', and defines $5$
+synchronizations (lines in the table) and three labels \textbf{App},
+\textbf{Exit} and $\elapse$. A state $s$ of this composite is thus defined as
+a cartesian product of the state of instance $t_0$ (noted $\pi_{t_0}(s)$) and
+$t_1$. The successors obtained by $\succs{}(s,$ \textbf{App}$)$ are the states
+in which either $t_0$ or $t_1$ have fired \textbf{App} and the state of the
+other instance is unchanged (e.g. $s'$ such that $\pi_{t_0}(s') \in
+Train.\succs{}(\pi_{t_0}(s))$ and $\pi_{t_1}(s') = \pi_{t_1}(s)$ or vice
+versa). There is no local ($\labloc$ labeled) synchronization in this
+example, thus successors by $\locals{}$ is defined as states in which either 
+$t_0$ or $t_1$ have progressed by $\mathit{Train}.\locals$.
+

@@ -1,0 +1,154 @@
+\documentclass{llncs}
+
+%% packages
+%\usepackage[T1]{fontenc}
+\usepackage{url}
+\usepackage[latin1]{inputenc}
+\usepackage{PNota}
+\usepackage{dsfont}
+\usepackage{multirow}
+\usepackage{amsfonts}
+% for \sslash
+\usepackage{stmaryrd}
+%euro sign
+\usepackage{eurosym}
+\usepackage{color}
+
+\usepackage{epsfig}
+
+% I am the magic touch ! 10% size reduction
+\usepackage{pslatex}
+%\usepackage{caption}
+
+\usepackage{listings}
+
+\lstdefinelanguage{IPN}[]{Java}{morekeywords={in,out,subnet,UnitaryNet,CompositeNet,transition,synchronization,place,state},basicstyle=\small}
+%basicstyle=\footnotesize
+
+%\captionsetup{font=small}
+
+\lstloadlanguages{Java}
+
+%% all figures in ./figures/
+%\graphicspath{{figures/}}
+
+%\captionsetup{font=small}
+
+\newcommand{\fixme}{\textbf}
+\newcommand{\id}{\mathit{Id}}
+
+\newcommand{\compat}{\approx}
+
+%Ensemble des entiers naturels
+\newcommand{\nat}%
+{\ensuremath{\mathds{N}}}
+%Ensemble des entiers relatifs
+\newcommand{\zrel}%
+{\ensuremath{\mathds{Z}}}
+%Ensemble des reels
+\newcommand{\rea}%
+{\ensuremath{\mathds{R}}}
+%Ensemble des entiers naturels
+\newcommand{\bool}%
+{\ensuremath{\mathds{B}}}
+
+
+% Definitions
+
+\newcommand{\tran}[3]{#1 \xrightarrow{\, #2 \,} #3}
+
+
+\newcommand{\rel}{\bowtie}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\Rp}{\ensuremath{\mathbb{R}_{\geq 0}}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\T}{\mathcal{T}}
+%
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\Rl}{\mathcal{R}}
+%
+\newcommand{\Pa}{\mathcal{P}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\tr}{\xrightarrow}
+\newcommand{\fee}{\varphi}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\de}{\delta}
+\newcommand{\comp}{\div}
+%
+% personal macros
+%\newcommand{\DDD}{\varmathbb{D}}
+%\newcommand{\SDD}{\varmathbb{S}}
+\newcommand{\DDD}{\mathds{D}}
+\newcommand{\SDD}{\mathds{S}}
+\newcommand{\Dom}{\mathrm{Dom}}
+
+\newcommand{\bag}{\acr{Bag}}
+
+\newcommand{\smi}{\ensuremath{\mathit{Syncs}_I}}
+\newcommand{\succs}{\ensuremath{\mathit{Succ}}}
+
+\newcommand{\detz}{\ensuremath{\mathit{Det}}}
+
+\newcommand{\istate}{\ensuremath{\mathit{InitStates}}}
+\newcommand{\nexti}{\ensuremath{\mathit{Next}_I}}
+\newcommand{\nextci}{\ensuremath{\mathit{Next}_{C.I}}}
+
+\newcommand{\pre}[1]{\ifmmode^{\bullet}\mspace{-2mu}#1\else$^{\bullet}\!\!#1$\fi}
+\newcommand{\post}[1]{\ifmmode#1^{\bullet}\else$#1^{\bullet}$\fi}
+\newcommand{\setN}{\ensuremath{\mathbb{N}}}
+\newcommand{\setT}{\ensuremath{\mathbb{T}}}
+\newcommand{\setR}{\ensuremath{\mathbb{R}}}
+
+\newcommand{\terminalOne}{\ensuremath{\mathbf{\scriptsize{1}}}}
+\newcommand{\terminalZero}{\ensuremath{\mathbf{\scriptsize{0}}}}
+
+% arcs in an sdd node
+\newcommand{\arc}{\ensuremath{\mathit{arc}}}
+
+% labeling function in PT nets
+\newcommand{\lab}{\ensuremath{\lambda}}
+\newcommand{\lam}{\ensuremath{\ell}}
+% places
+\newcommand{\Pl}{\ensuremath{\mathit{Pl}}}
+% transitions
+\newcommand{\Tr}{\ensuremath{\mathit{Tr}}}
+% markings
+\newcommand{\Marks}{\ensuremath{\nat^\Pl}}
+\newcommand{\Clocks}{\ensuremath{\nat^\Tr}}
+
+\newcommand{\enab}{\ensuremath{\mathit{enabled}}}
+\newcommand{\fire}{\ensuremath{\mathit{fire}}}
+
+% Locals successor function in ITS defs
+\newcommand{\locals}{\ensuremath{\mathit{Locals}}}
+% local designated label used in ITS
+\newcommand{\labloc}{\ensuremath{\top}}
+% public synchronizations
+\newcommand{\tpub}{\ensuremath{\mathit{ST}^+}}
+% private synchronizations
+\newcommand{\tpriv}{\ensuremath{\mathit{ST}^-}}
+% synchronizations
+\newcommand{\Ts}{\ensuremath{\mathit{Sync}}}
+% language over an alphabet
+\newcommand{\lang}[1]{\ensuremath{#1^\star}}        
+% \newcommand{\lang}{\ensuremath{\mathfrak{L}}}
+
+\newcommand{\elapse}{\ensuremath{\mathds{1}}}
+
+%% the local homomorphism construction
+\newcommand{\hloc}{\ensuremath{\mathcal{L}}}
+%% the increment over nats hom
+\newcommand{\hincr}{\ensuremath{\mathit{add}}}
+%% set or reset a variable
+\newcommand{\hset}{\ensuremath{\mathit{set}}}
+%% the test hom
+\newcommand{\htest}{\ensuremath{\mathit{cp}}}
+
+\newcommand{\hreset}{\ensuremath{\mathit{reset}}}
+
+\newcommand{\mysubsubsection}[1]{\smallskip\noindent\textbf{#1}}

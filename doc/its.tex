@@ -1,0 +1,72 @@
+\section{Instantiable Transition Systems}
+
+% \subsection{ITS Concepts}
+% \label{sec:ipn-def}
+
+This section summarizes the definition of Instantiable Transition Systems
+(ITS)~\cite{tacas09tmphk}. They allow to take advantage of SDD characteristics
+for the description of component based systems. ITS describe a minimal Labeled
+Transition System (LTS) style formalism using notions of $type$ and $instance$
+to emphasize locality of actions and to exploit the similarity of instances of
+a given type.
+
+These definitions are adapted from \cite{tacas09tmphk}, with minor
+restructuration and simplification. In particular, \emph{multisets} over an
+alphabet of action labels are replaced by \emph{words} to simplify notations.
+
+\subsection{ITS definition}
+
+\textbf{ITS Type.}
+The generic definition of an Instantiable Transition System (ITS) builds upon
+the notion of model type and instance. It uses a composition mechanism based
+solely on transition \emph{synchronization} (no explicit shared memory or
+channel). Definition \ref{def:ipntype} sets an abstract contract or interface
+that must be implemented by concrete ITS types.
+
+\textbf{Notations:} The set of finite words over a set A (called
+alphabet) is denoted by $\lang{A}$, with $\varepsilon$ for the empty
+word and $\cdot$ for the concatenation operation.  We denote by $z.X,
+z.Y \ldots$ the element $X$ (resp. $Y$\ldots) of a tuple $z =
+\tuple{X,Y,\cdots}$.
+
+\begin{definition}[ITS Semantics]
+\label{def:ipntype}
+An \textbf{ITS type} defines its semantics by a tuple\\
+$\tau = \tuple{S,A,\locals{},\succs{}}$ where:
+\begin{itemize}
+\item $S$ is a set of states;
+%$\istate{} \subseteq S$ is a finite set of initial states;
+$A$ is a finite set of public action labels;
+\item $\locals{}: S \mapsto 2^S$ is the local successors function;
+\item $\succs{}: S \times \lang{A} \mapsto 2^S$ is the transition function
+satisfying $\forall s \in S, \succs{}(s,\varepsilon)=\{s\}$.
+\end{itemize}
+Let $T$ be a set of ITS types. An \textbf{ITS instance} $i$ is defined
+by its ITS type, denoted by $\mathit{type}(i) \in T$. An ITS instance
+$i$ may be \emph{assigned} a state $s \in \mathit{type}(i).S$.
+
+\textbf{Reachability}: A state $s'$ is reachable by an instance $i$
+from the state $s_0$ iff $\exists s_1,\ldots s_n \in
+\mathit{type(i)}.S$ such that $s' = s_n$  and $\forall 1 \leq i \leq n, s_i
+\in \mathit{type(i)}.Locals(s_{i-1})$.
+
+\end{definition}
+
+%The set $\istate{}$ allows assigning of different initial states to different
+%instances of a given type and 
+$\locals{}$ typically returns states reachable
+through occurrences of local events. $\locals{}$ represents actions that may
+occur within an instance autonomously or independently from the rest of the
+system.
+
+The function $\succs{}$ produces successors by explicitly synchronizing
+actions via a word over the alphabet of action labels. Synchronizing on an
+empty word leaves the state of the instance locally unchanged. Note that
+$\succs{}$ is the only way to control the behavior of a (sub)system from
+outside.
+
+Thus the transition relation of a full system can only be defined in terms of
+synchronizations using $\succs{}$ and of independent local behaviors. A full
+system is defined by an instance of a particular type in a specific initial
+state: the system is self-contained and reachability only depends on the
+definition of $\locals{}$.

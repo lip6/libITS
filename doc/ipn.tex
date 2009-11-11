@@ -1,0 +1,127 @@
+\section{Instantiable Transition Systems} \label{its-def}
+
+ In this section we formally define Instantiable Petri Nets (IPN).
+While simple, we will show in the next sections that IPN allow on
+one hand to adequately capture important concepts of high level
+modeling languages such as UML, and on the other hand to enable
+powerful model-checking techniques.
+
+\subsection{IPN Definition}
+\label{ss:ipndef}
+
+Instantiable Petri Nets are built upon the standard Petri net
+formalism semantics. However IPN introduce the notion of net type
+ and net instance as well as a composition mechanism based solely on
+transition \emph{synchronization} (no place or transition fusions).
+
+An \textbf{IPN type} is a tuple
+$type=\tuple{S,\textit{LabeledStates},T,V,\mathit{Enable},\mathit{Fire}}$:
+\begin{itemize}
+\item $S$ is a set of states;
+\item $\textit{LabeledStates} \subseteq S$ is a finite subset of states which bear a label;
+\item $T$ is a finite set of \emph{transitions};
+\item $V: T \rightarrow \{$public,private$\}$ is a function assigning a \emph{visibility} to each transition;
+\item $\mathit{Enable} : S \times \bag(T) \setminus \emptyset \rightarrow \mathds{B}$ is the enabling function. The notation $\bag(A)$ denotes a multiset over a set $A$. For a multiset $\tau \in \bag(T)$ and a transition $t$, we denote by $\tau(t)$ the number of occurrences of $t$ in $\tau$. A non-empty multiset of transitions $\tau \in \bag(T)$ is said to be \emph{simultaneously enabled} in state $s$ if $\mathit{Enable}(s,\tau) = \mathit{true}$;
+\item $\mathit{Fire} : S \times T \rightarrow S$ is the transition function.
+\end{itemize}
+
+In the following we note $tuple.X, tuple.Y \ldots$ the element $X$
+(resp. $Y$\ldots) of a tuple $tuple$. Let $\mathit{Types}$ denote a
+set of IPN types. An \textbf{IPN instance} $i$ is defined by its IPN
+type, noted $\mathit{type}(i) \in \mathit{Types}$.
+%We further denote
+%$\mathit{events}(i)$ the set of \emph{public} transitions of
+%$\mathit{type}(i)$, i.e. $\mathit{events}(i) = \{t \in
+%\mathit{type}(i).T \mid \mathit{type}(i).V(t) = \mathit{public}\}$.
+ An IPN instance $i$ may be associated to a state $s \in
+\mathit{type}(i).S$. We will use in the following the terminology:
+``assign a state $s$ to instance $i$''.
+
+The IPN definition is extensible by providing new sorts of types that
+respect the definition of IPN types given above.  In practice, two
+sorts of types are defined:
+
+A \textbf{unitary IPN type} is a tuple
+$\tuple{P,T,\mathit{Pre},\mathit{Post},M,\textit{LabeledStates},V,\mathit{Enable},\mathit{Fire}}$:
+
+\begin{itemize}
+\item $P$ is a finite set of places;
+\item $T$ is a finite set of \emph{elementary transitions};
+\item $\mathit{Pre}$ and $\mathit{Post}$ : $P \times T \rightarrow
+\bbbn$ are the pre and post functions labeling the arcs;
+\item $M \equiv S$ is a set of states called markings, such that each marking $m$ of $M$ is of the form $m : P \rightarrow \nat$;
+\item $\textit{LabeledStates} \subseteq M$ is a finite subset of markings which bear a label;
+\item $V: T \rightarrow \{$public,private$\}$ is a function assigning a visibility to each transition;
+\item $\mathit{Enable}$: a multiset of transitions $\tau$ is simultaneously enabled in a marking $m$
+ if for each place $p$, the condition $\sum_{t \in T} \tau(t)\cdot \mathit{Pre}(p,t) \leq m(p)$ holds;
+\item $\mathit{Fire}$:  the firing of a transition $t$ in a marking $m$ leads to a marking $m'=\mathit{Fire}(t,m)$ defined
+ by $\forall p \in P, m'(p) = m(p) - \mathit{Pre}(p,t) + \mathit{Post}(p,t)$.
+\end{itemize}
+
+A \textbf{composite IPN type} is a tuple  $C=\tuple{I,
+\mathit{Sync}, S,\textit{LabeledStates},
+V,\mathit{Enable},\mathit{Fire}}$:
+\begin{itemize}
+\item $I$ is a finite set of IPN instances, said to \emph{be contained} by $C$. We further require that the type of each IPN instance $i \in I$ preexists when defining these instances, in order to prevent circular or recursive type definitions.
+\item $\mathit{Sync} \equiv T$ is a finite set of transitions called synchronizations.
+Let $\mathit{Part}$ be the set of pairs $\{\tuple{i,e}\mid i \in I
+\wedge e \in \{t \in \mathit{type}(i).T \mid \mathit{type}(i).V(t) =
+\mathit{public}\}$. A synchronization $s$ is defined as a multiset
+over $\mathit{Part}$.
+ For a given instance $i \in I$, we say that the parts of $s$ of the form $\tuple{i,e_j}$ \emph{belong to} instance $i$.
+{\color{red} La notation $s$ a deja ete utilise pour state. D'ou
+vient j ?}
+\item $CS \equiv S$ is a set of composite states, such that a state $cs \in CS$ assigns to each instance $i \in I$ a state $cs(i) \in type(i).S$
+\item $\textit{LabeledStates} \subseteq CS$ is a finite subset of states which bear a label, where $cs \in \textit{LabeledStates} \implies \forall i \in I, cs(i) \in type(i).\textit{LabeledStates}$
+\item $V : \mathit{Sync} \rightarrow \{$public,private$\}$ is a function assigning a visibility to each synchronization
+\item $\mathit{Enable}$: A non-empty multiset of synchronizations $\sigma \subseteq \mathit{Sync}$ is simultaneously enabled in a composite state $cs$ if  $\forall i \in I$, the submultiset of parts $\tuple{i.e_j}$ of $\sigma$ that belong to instance $i$ are simultaneously enabled in state $cs(i)$
+\item $\mathit{Fire}$: the firing of a synchronization $s \in \mathit{Sync}$ on a state $cs$ yields a state $cs'=\mathit{Fire}(cs,s)$ such that $\forall i \in I$, $cs'(i)$ is obtained by firing in sequence on $cs(i)$ all the parts of $s$ that belong to $i$.
+\end{itemize}
+
+An \textbf{\textit{IPN model}} is a tuple $\tuple{ \mathit{Types},
+\mathit{main}, s_0}$:
+\begin{itemize}
+\item $\mathit{Types}$ is a set of IPN type definitions,
+\item $\mathit{main}$ is an \textit{IPN instance} such that $\mathit{type(main)} \in \mathit{Types}$, that defines the container of the model,
+\item $s_0 \in \mathit{type(main).LabeledStates}$ is the initial state assigned to the ``main'' instance.
+\end{itemize}
+
+
+\textbf{IPN Semantics.}
+Enabling conditions are defined to take into account the notion of
+transition visibility: for an IPN instance $i$ in state $s$ a private
+transition $t \in \mathit{type}(i).T$ is enabled if $Enabled(s,\{t\})$ holds. Firing such an enabled transition $t$ from a state $s$ yields a new
+state $s'=\mathit{type(i).Fire}(s,t)$.  If the type of
+$i$ is a composite type, private transitions of contained instances
+$\mathit{type}(i).I$ of $i$ are themselves potentially enabled and may be fired according to the
+same schema.  Public transitions are thus only fireable through an external
+synchronization, and not in isolation (i.e. locally to an instance).
+
+IPN thus have simple semantics, strongly based on the notion of transition
+synchronization.  Limiting the composition semantics in this way is
+favorable to using various verification algorithms that exploit
+compositional verification \cite{}.
+
+\textbf{IPN Expressiveness.} In terms of expressiveness, IPN are
+equivalent to standard Petri nets. Indeed, IPN can be ``flattened''
+to an equivalent Petri net using a simple algorithm.  The algorithm
+simply consists in creating places in the flattened net using a
+fully qualified naming scheme : e.g. $\mathit{main}.i1.i2.p1$ for
+the place $p1$ of the IPN instance $i1$ of the composite IPN
+instance $i2$ which is contained by the $\mathit{main}$ instance.
+Similarly, a transition is created for each private transition of
+the ``main'' instance, by fusing the definition of its parts.
+Additional transitions are added for each private transition of
+instances contained in the ``main'' instance. This algorithm is
+applied recursively to contained instances until unitary net types
+are reached.
+
+\textbf{IPN Conciseness.} However, we can note that IPN are potentially
+\emph{exponentially} more concise than Petri nets. Indeed, the flattening
+procedure duplicates transitions for each instance of a net type.  Consider
+an IPN instance of $M_n$, where the type $M_n$ is recursively
+built as a composition of two instances of a net type $M_{n-1}$. For
+each place (resp. transition) of the unitary IPN $M_0$, $2^n$ places
+(resp. transitions) will be produced in the flattened
+representation. However, the IPN representation of the model stays
+linear in size with respect to $n$.

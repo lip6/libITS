@@ -1,0 +1,772 @@
+/****************************************************************************/
+/*								            */
+/* This file is part of the PNDDD, Petri Net Data Decision Diagram  package.*/
+/*     						                            */
+/*     Copyright (C) 2004 Denis Poitrenaud and Yann Thierry-Mieg            */
+/*     						                            */
+/*     This program is free software; you can redistribute it and/or modify */
+/*     it under the terms of the GNU General Public License as published by */
+/*     the Free Software Foundation; either version 2 of the License, or    */
+/*     (at your option) any later version.                                  */
+/*     This program is distributed in the hope that it will be useful,      */
+/*     but WITHOUT ANY WARRANTY; without even the implied warranty of       */
+/*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        */
+/*     GNU General Public License for more details.                         */
+/*     						                            */
+/*     You should have received a copy of the GNU General Public License    */
+/*     along with this program; if not, write to the Free Software          */
+/*Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
+/*     						                            */
+/****************************************************************************/
+ 
+
+
+/****************************************************************************************
+*  created by   : Mr Denis POITRENAUD and Cherif Reda HASSAINE
+*  created date : 19/05/2003
+*  subject      : parser of CAMI syntaxe
+*  version      : 0.1
+****************************************************************************************/
+
+%{
+/*..................................... include C......................................*/
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <stdlib.h>
+using namespace std;
+
+
+#include "Cami.hpp"
+using namespace cami;
+
+
+ string value;
+ static CAMI *R;
+ static vector<int> Net;
+ static vector<int> Immediate;
+ map<int,int> RESET;
+/*.................................variable environment................................. */
+
+ extern int Camilex();
+ extern int Camilineno;
+ extern FILE *Camiin;              
+ extern ostream& yyerror(const char* s){
+	  if (s) {
+        string value=string(" (incorrect Modèl) ");
+        string err=string(s);
+        if(value != err)
+          cout<<"error line "<<Camilineno<<" : ";
+        cout<<s;
+        err.erase();
+	  }
+	  else {
+		    cout<<"parsing error:"<<endl;
+	  }
+	  fclose(Camiin);
+    Net.clear();
+    Immediate.clear();
+    RESET.clear();
+    value.erase();
+    return cout;
+  }
+%}
+/*.................................Bison Declarations ................................ */
+
+%union {
+   int  j;
+  char *s;
+  struct cami::LossCty LC;  //pour les attributs Loss et capacity
+}
+
+/*......................................token ........................................*/
+
+%token <s> IDENT DENT 
+%token <j> ENTIER
+%token ESPACE  DB  FB  CA  CT  CN  CM CP LOSS COMMENTAIRE PO PT
+%token NET PLACE QUEUE TRANSITION IMMEDIATE  NAME DECLARATION AUTHORS CAMIVERSION TITLE PROJECT DATE CODE DOMAINE
+%token COMPONENT GUARD PRIORITY DELAY ACTION WEIGHT CAPACITY VALUATION MARKING ARC INHIBITOR
+/*......................................type..........................................*/
+%type <LC> loss_capacity
+%type <s>  ensemblexpression
+%left ':' ',' '.'
+%left '('  ')'
+
+%name-prefix="Cami"
+
+/*.................................begin of parse ....................................*/
+%start begin
+%%
+begin : ESPACE  debut
+      |
+       debut
+;
+debut:  DB  creation  {for(map<int,int>::const_iterator it=RESET.begin(); it !=RESET.end(); it++){
+                                 if(!R->setValuationRESET(it->first)){
+				                              yyerror("input transition ARC RESET at ")<<it->second<<"  was Output Arc"<<endl;return 1;
+			                            }
+                      }
+        }FB
+		  |
+      erreur {yyerror(" (incorrect Modèl) ")<<endl;exit(1);}
+      |
+      debut ESPACE
+      |
+      '\n'
+;
+creation :  commande |
+            creation commande|
+	          creation COMMENTAIRE IDENT |
+	          '\n'
+;
+commande :
+	PO '(' ENTIER ',' ENTIER ',' ENTIER ')'
+    	{  /* IGNORE GRAPHICAL POSITION INFO */ } 
+	|	PT '(' ENTIER ',' ENTIER ':' tagident ',' ENTIER ',' ENTIER ')'
+	{  /* IGNORE GRAPHICAL POSITION INFO */ }
+	|    CN   '(' ENTIER  ':'   NET   ','  ENTIER  ')'
+		{
+		       if($3!= 3 ) {
+			        yyerror("Incorrect length of the word 'net'")<<endl;return 1;
+		       }
+		       Net.push_back($7);
+		}
+		|
+		CN   '(' ENTIER  ':'   PLACE   ','  ENTIER  ')'
+		{
+			if( $3!=5 ) {
+			        yyerror("Incorrect length of the word 'place'")<<endl;return 1;
+			}
+			if( ! R->addPlace( $7) ) {
+			        yyerror("create the place")<<endl;return 1;
+			}
+		}
+		|
+		CN   '(' ENTIER  ':'   QUEUE   ','  ENTIER  ')'
+		{
+			if( $3!=5 ){
+				yyerror("Incorrect length of the word 'queue'")<<endl;return 1;
+			}
+			if( ! R->addQueue( $7) ) {
+				yyerror("create the queue")<<endl;return 1;
+			}
+		}
+		|
+		CN   '(' ENTIER  ':'   TRANSITION   ','  ENTIER  ')'
+		{
+			if( $3!=10 ){
+			     yyerror("Incorrect length of the word 'transition'")<<endl;return 1;
+			}
+			if(! R->addTrans( $7 )){
+			     yyerror("create the transition")<<endl;return 1;
+			}
+		}
+		|
+		CN   '(' ENTIER  ':'   IMMEDIATE   ','  ENTIER  ')'
+		{
+			if( $3!=20 ){
+				yyerror("Incorrect length of the word 'immediate transition'")<<endl;return 1;
+			}
+			Immediate.push_back($7);
+		}
+		|
+    CT   '(' ENTIER  ':'  NAME    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+	 {
+      value= string($11);
+      if( $3!=4) {
+        yyerror("Incorrect length of the word 'name'")<<endl;return 1;
+      }
+      if($9!=(int)value.size() ||  value.find(" ")!=string::npos) {
+        yyerror("Incorrect length of the identifier transition or place")<<endl;return 1;
+      }
+     	if( !R->nameNode($7, value) ){
+		    if( binary_search(Immediate.begin(),Immediate.end(),$7) ) {
+				  yyerror("because Immediate transition ")<<endl;return 1;
+  		  }
+				yyerror("Create the Transition or Place")<<endl;return 1;
+	    }
+	 }
+   |
+   CT   '(' ENTIER  ':'  DECLARATION    ','  ENTIER  ','  ENTIER   ':' IDENT ')'
+   {
+      if( $3!=11){
+				yyerror("Incorrect length of the word 'declaration'")<<endl;return 1;
+			}
+			if( !(binary_search(Net.begin(),Net.end(),$7) )){
+				yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+
+	  }
+    |
+    CT   '(' ENTIER  ':'  DECLARATION    ','  ENTIER  ','  ENTIER   ':' ensemblexpression ')'
+    {
+      if( $3!=11){
+				yyerror("Incorrect length of the word 'declaration'")<<endl;return 1;
+			}
+			if( !(binary_search(Net.begin(),Net.end(),$7) )){
+				yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+
+	  }
+		|
+		CT   '(' ENTIER  ':'  AUTHORS    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=9){
+			  yyerror("Incorrect length of the word 'authors'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut authors")<<endl;return 1;
+      }
+			if(!(binary_search(Net.begin(),Net.end(),$7) )){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  CAMIVERSION    ','  ENTIER  ','  ENTIER   ':'  ENTIER '.'ENTIER  ')'
+		{
+			if($3!=7 ){
+			  yyerror("Incorrect length of the word 'version'")<<endl;return 1;
+			}
+	    if(!(binary_search(Net.begin(),Net.end(),$7) )){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  TITLE    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=5 ){
+			        yyerror("Incorrect length of the word 'title'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut title")<<endl;return 1;
+      }
+      if(!(binary_search(Net.begin(),Net.end(),$7) )){
+			        yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  PROJECT    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=7){
+				yyerror("Incorrect length of the word 'project'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut project")<<endl;return 1;
+      }
+			if(!(binary_search(Net.begin(),Net.end(),$7))){
+				yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+		}
+		|
+		CT   '(' ENTIER  ':'  DATE    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=4){
+				yyerror("Incorrect length of the word 'date'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut date")<<endl;return 1;
+      }
+			if(!(binary_search(Net.begin(),Net.end(),$7))){
+				yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+
+		}
+
+		|
+		CT   '(' ENTIER  ':'  CODE    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+    {
+      value= string($11);
+      if( $3!=4 ){
+				yyerror("Incorrect length of the word 'code'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut code")<<endl;return 1;
+      }
+			if(!(binary_search(Net.begin(),Net.end(),$7)) ){
+				yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  DOMAINE    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=6 ){
+				yyerror("Incorrect length of the word 'domain'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut domain")<<endl;return 1;
+      }
+			if(! R->belongs_PLACE($7) ) {   /*&&  !R->get_place($7).isQueue()*/
+				yyerror("Create the Place")<<endl;return 1;
+			}
+
+		}
+    |
+		CT   '(' ENTIER  ':'  DOMAINE    ','  ENTIER  ','  ENTIER   ':'  loss_capacity ')'
+		{
+      if( $3!=6 ){
+				yyerror("Incorrect length of the word 'domain'")<<endl;return 1;
+			}
+      if( R->belongs_PLACE($7) ){
+        if(R->get_place($7).isQueue()) {
+      			    if($11.loss) {
+                   if(!R->addPlace( $7 ,R->get_place($7).name,-2,$11.capacity) ){
+                       yyerror("Create the Loss Queue")<<endl;return 1;
+                   }
+                }
+                else {
+                  if(!R->addPlace( $7 ,R->get_place($7).name,R->get_place($7).marking,$11.capacity) ){
+                       yyerror("Create the Queue")<<endl;return 1;
+                   }
+                }
+				}
+        else {
+                if(! $11.loss) {
+                   if(!R->addPlace( $7 ,R->get_place($7).name, R->get_place($7).marking,$11.capacity) ){
+                       yyerror("Create the Place")<<endl;return 1;
+                   }
+                }
+                else {
+                       yyerror("'Loss' is not Place's attribut ")<<endl;return 1;
+                }
+
+        }
+      }
+      else {
+        yyerror("Create the Place")<<endl;return 1;
+      }
+
+		}
+		|
+		CT   '(' ENTIER  ':'  COMPONENT   ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=9 ){
+				yyerror("Incorrect length of the word 'component'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut component")<<endl;return 1;
+      }
+			if (! (R->belongs_PLACE($7) && !R->get_place($7).isQueue()) ){
+			  yyerror("Create the Place")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  GUARD    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=5 ){
+				yyerror("Incorrect length of the word 'guard'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut guard")<<endl;return 1;
+      }
+			if(! R->belongs_TRANS($7)){
+			  if(binary_search(Immediate.begin(),Immediate.end(),$7)) {
+			  	yyerror("Immediate Transition")<<endl;return 1;
+			  }
+			  yyerror("create the transition")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  PRIORITY    ','  ENTIER  ','  ENTIER   ':'  ENTIER  ')'
+		{
+		  if($3!=8 ) {
+				yyerror("Incorrect length of the word 'priority'")<<endl;return 1;
+			}
+
+			if(! R->belongs_TRANS($7)){
+			  if(binary_search(Immediate.begin(),Immediate.end(),$7)) {
+			  	yyerror("Immediate Transition")<<endl;return 1;
+			  }
+			  yyerror("create the transition")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  DELAY    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+      value= string($11);
+      if( $3!=5 ){
+				yyerror("Incorrect length of the word 'delay'")<<endl;return 1;;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut delay")<<endl;return 1;
+      }
+			if( !  R->belongs_TRANS($7) ){
+			       	yyerror("Transition doesn't existe")<<endl;return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  ACTION    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+			value= string($11);
+      if( $3!=6 ){
+				yyerror("Incorrect length of the word 'action'")<<endl;return 1;;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut action")<<endl;return 1;
+      }
+			if( !  R->belongs_TRANS($7) ){
+			  yyerror("Create the Transition ");
+				return 1;
+			}
+
+		}
+		|
+		CT   '(' ENTIER  ':'  WEIGHT    ','  ENTIER  ','  ENTIER   ':'  IDENT  ')'
+		{
+			value= string($11);
+      if( $3!=4 ){
+				yyerror("Incorrect length of the word 'weight'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut weight")<<endl;return 1;
+      }
+			if(  binary_search(Immediate.begin(),Immediate.end(),$7)  ){
+				yyerror("because Immediate transition")<<endl;return 1;
+			}
+
+		}
+		|
+    CT   '(' ENTIER  ':'  CAPACITY     ','  ENTIER  ','  ENTIER   ':'  ENTIER    ')'
+		{
+      if($3!=8 ) {
+				 yyerror("Incorrect length of the word 'capacity'")<<endl;return 1;
+			}
+			if(! R->addPlace( $7 ,R->get_place($7).name,R->get_place($7).marking,$11 ) ){
+				 yyerror(" create place's capacity ")<<endl;return 1;
+			}
+
+		}
+		|
+    CT   '(' ENTIER  ':'  VALUATION     ','  ENTIER  ','  ENTIER   ':'  ENTIER    ')'
+    {
+		  if($3!=9 ) {
+				 yyerror("Incorrect length of the word 'valuation'")<<endl;return 1;
+			}
+			if(! ( R->belongs_Arc($7) && R->setValuation($7 ,$11) ) ){
+				 yyerror("arc's valuation ")<<endl;return 1;
+			}
+
+		}
+    |
+    CT   '(' ENTIER  ':'  VALUATION     ','  ENTIER  ','  ENTIER   ':'  IDENT    ')'
+    {
+      value= string($11);
+		  if($3!=9 ) {
+				 yyerror("Incorrect length of the word 'valuation'")<<endl;return 1;
+			}
+      if($9!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut valuation")<<endl;return 1;
+      }
+			if(! ( R->belongs_Arc($7) && R->setValuation($7 ,value) ) ){
+				 yyerror("arc's valuation ")<<endl;return 1;
+			}
+
+		}
+    |
+    CT   '(' ENTIER  ':'  VALUATION     ','  ENTIER  ','  ENTIER   ':'  '#'    ')'
+    {
+		  if($3!=9 && $9!=1) {
+				 yyerror("Incorrect length of the word 'valuation'")<<endl;return 1;
+			}
+      RESET[$7]=Camilineno;
+		}
+		|
+    CT   '(' ENTIER  ':'  MARKING     ','  ENTIER  ','  ENTIER   ':'  ENTIER    ')'
+		{
+		  if($3!=7 ) {
+			  yyerror("Incorrect length of the word 'marking'")<<endl;return 1;
+			}
+			if(!( ($11 >= 0) && R->addPlace( $7,R->get_place($7).name,$11,R->get_place($7).capacity)
+			 && !R->get_place($7).isQueue() ) ){
+			  yyerror("place's marking")<<endl;return 1;
+			}
+
+	  }
+		|
+    CA   '(' ENTIER  ':'   ARC   ','  ENTIER  ','  ENTIER   ','  ENTIER   ')'
+		{
+		 if($3!=3 ) {
+			  yyerror("Incorrect length of the word 'arc'")<<endl;return 1;
+		 }
+		 if(!R->belongs_Arc($7)){
+			if( R->belongs_PLACE($9) && R->belongs_TRANS($11))
+			  R->addPre($7,$9,$11);
+			else {
+			  if(R->belongs_PLACE($11) && R->belongs_TRANS($9))
+			    R->addPost($7,$11,$9);
+			  else {
+			    yyerror("create the Arc")<<endl;return 1;
+		    }
+		  }
+		 }
+		 else {
+			yyerror("Arc exist")<<endl;return 1;
+		 }
+		}
+		|
+    CA   '(' ENTIER  ':'   INHIBITOR   ','  ENTIER  ','  ENTIER   ','  ENTIER   ')'
+		{
+		      if($3!=13 ) {
+			      yyerror("Incorrect length of the word 'inhibitor arc'")<<endl;return 1;
+		      }
+		      if( ! (!R->belongs_Arc($7)&& R->addInhibitor($7,$9,$11))){
+			      yyerror("create the Inhibitor Arc")<<endl;return 1;
+		      }
+		}
+    |
+   	CM  '(' ENTIER ':'  NAME  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+		{
+      value =string($15);
+		  if( $3!= 4 ){
+			  yyerror("Incorrect length of the word 'name'")<<endl;return 1;
+		  }
+      if($13!=(int)value.size() ||  value.find(" ")!=string::npos) {
+        yyerror("Incorrect length of the Identifier attribut name")<<endl;return 1;
+      }
+		  if( !R->belongs_PLACE($7)&& !R->belongs_TRANS($7)) {
+		    yyerror("place or transition doesn't existe")<<endl;return 1;   //
+		  }
+		  if( R->belongs_PLACE($7))
+			   R->get_place($7).name +=$15;
+		  else
+			   R->get_transition($7).name +=$15;
+	  }
+	  |
+		CM  '(' ENTIER ':'  DECLARATION  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':' IDENT ')'
+	  { 
+	    if( $3!= 11 ) {                                                     
+			   yyerror("Incorrect length of the word 'declaration'")<<endl;return 1;
+			}
+	    if( !(binary_search(Net.begin(),Net.end(),$7)) ){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+		}
+    |
+		CM  '(' ENTIER ':'  AUTHORS  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+      value=string($15);
+	    if( $3!= 9 ) {
+			   yyerror("Incorrect length of the word 'authors'")<<endl;return 1;
+			}
+      if($13!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut authors")<<endl;return 1;
+      }
+	    if( !(binary_search(Net.begin(),Net.end(),$7))) {
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+		}
+    |
+		CM  '(' ENTIER ':'  CAMIVERSION  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  ENTIER '.'ENTIER  ')'
+	  {  
+	    if($3!=7 ) {
+			   yyerror("Incorrect length of the word 'version'")<<endl;return 1;
+			}
+			if( !(binary_search(Net.begin(),Net.end(),$7) )){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+		}
+		|
+		CM  '(' ENTIER ':'  TITLE  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+      value=string($15);
+	    if( $3!= 5 ) {
+			  yyerror("Incorrect length of the word 'title'")<<endl;return 1;
+			}
+      if($13!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut title")<<endl;return 1;
+      }
+		  if( !(binary_search(Net.begin(),Net.end(),$7)) ){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+			}
+		}
+		|
+	  CM  '(' ENTIER ':'  PROJECT  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {
+	    value=string($15);
+	    if( $3!= 7 ) {
+			  yyerror("Incorrect length of the word 'project'")<<endl;return 1;
+	    }
+      if($13!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut project")<<endl;return 1;
+      }
+	    if( !(binary_search(Net.begin(),Net.end(),$7)) ){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+	    }
+	  }
+		|
+	  CM  '(' ENTIER ':'  DATE  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+	    value=string($15);
+	    if( $3!= 4  ) {
+			 yyerror("Incorrect length of the word 'date'")<<endl;return 1;
+			}
+      if($13!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut date")<<endl;return 1;
+      }
+	    if( !(binary_search(Net.begin(),Net.end(),$7)) ){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+	    }
+		}
+	  |
+	  CM  '(' ENTIER ':'  CODE  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+		  value=string($15);
+	    if( $3!= 4 ) {
+			 yyerror("Incorrect length of the word 'code'")<<endl;return 1;
+			}
+      if($13!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut code")<<endl;return 1;
+      }
+	    if( !(binary_search(Net.begin(),Net.end(),$7)) ){
+			  yyerror("Net dosn't Existe")<<endl;return 1;
+	    }
+		}
+		|
+		CM  '(' ENTIER ':'  DOMAINE  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {
+		  value=string($15);
+	    if( $3!= 6 ) {
+			  yyerror("Incorrect length of the word 'domain'")<<endl;return 1;
+			}
+      if($13!=(int)value.size()) {
+        yyerror("Incorrect length of the Identifier attribut domain")<<endl;return 1;
+      }
+		  if(!R->belongs_PLACE($7) ){  //&&!R->belongs_TRANS($7) 
+			     yyerror(" place or Transition doesn't existe");
+			     return 1;
+	    }
+		}
+		|
+	  CM  '(' ENTIER ':'  GUARD  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+		  value=string($15);
+	    if( $3!= 5  || $13!=(int)value.size()) {
+			  yyerror("Incorrect Value")<<endl;return 1;
+      }
+			 if(!R->belongs_TRANS($7)){
+		      if( binary_search(Immediate.begin(),Immediate.end(),$7) ) {
+				    yyerror("because Immediate transition ")<<endl;return 1;
+				  }
+			    yyerror("Transition doesn't existe");
+			    return 1;
+	    }
+		}
+		|
+	  CM  '(' ENTIER ':'  COMPONENT  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+	    value=string($15);
+	    if( $3!= 9  || $13!=(int)value.size()) {
+			  yyerror("Incorrect Value")<<endl;return 1;
+	    }
+      if( !(R->belongs_PLACE($7) &&  !R->get_place($7).isQueue() ) ){
+			  yyerror("Place doesn't existe")<<endl;return 1;
+			}
+		}
+		|
+	  CM  '(' ENTIER ':'  DELAY  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+	    value=string($15);
+	    if( $3!= 5  || $13!=(int)value.size()) {
+			  yyerror("Incorrect Value")<<endl;return 1;
+			}
+		  if( ! R->belongs_TRANS($7) ){
+			  yyerror("Transition doesn't existe")<<endl;return 1;
+			}
+	  }
+		|
+	  CM  '(' ENTIER ':'  ACTION  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+	    value=string($15);
+	    if( $3!= 6  || $13!=(int)value.size()) {
+			  yyerror("Incorrect Value")<<endl;return 1;
+		  }
+			if( ! R->belongs_TRANS($7) ){
+			  yyerror("Transition doesn't existe")<<endl;return 1;
+			}
+	  }
+		|
+	  CM  '(' ENTIER ':'  WEIGHT  ','  ENTIER  ',' ENTIER  ',' ENTIER  ','  ENTIER ':'  IDENT  ')'
+	  {  
+	    value=string($15);
+	    if( $3!= 6  || $13!=(int)value.size()) {
+			  yyerror("Incorrect Value")<<endl;return 1;
+	    }
+			if( binary_search(Immediate.begin(),Immediate.end(),$7)){
+			  yyerror("decause Immediate transition ")<<endl;return 1;
+			}
+			else {
+			  yyerror("incorrect operation")<<endl;return 1;
+			}
+	  }
+		|
+		ESPACE
+;
+ensemblexpression : ensemblexpression DENT
+                  |
+                   DENT
+;
+erreur : error
+;
+
+tagident : NAME | MARKING | IDENT ;
+
+loss_capacity :   CP '(' ENTIER ')'
+                  {
+                    $$.capacity=$3;
+                    $$.loss=0;
+                  }
+               |
+                 LOSS
+                 {
+                    $$.capacity=0;
+                    $$.loss=1;
+                  }
+               |
+                  CP '(' ENTIER ')'  ',' LOSS
+                  {
+                    $$.capacity=$3;
+                    $$.loss=1;
+                  }
+               |
+                   LOSS ',' CP '(' ENTIER ')'
+                  {
+                    $$.capacity=$5;
+                    $$.loss=1;
+                  }
+;
+%%
+/*......................................................................................... */
+bool CamiMonteur::create(const char *f){
+  int i;
+  if((Camiin=fopen(f,"r"))==NULL)
+    return false;                                                
+  R=(CAMI *)this;
+  i=(int) yyparse();
+  fclose(Camiin);
+  Net.clear();
+  Immediate.clear();
+  RESET.clear();
+  value.erase();
+  return (i==0); // return i
+}
+
+
+
+
+

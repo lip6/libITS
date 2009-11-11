@@ -1,0 +1,43 @@
+
+
+
+affectation : expression  ';' 
+		    ESPACE (\n)
+expression :
+                 expression '&&'  expression
+		 expression '||'  expression
+		 '('  expression ')'
+		 '!' expression 
+		|
+              	 expression_mixt 
+             	|
+            	 expression_fifo
+
+expression_mixt :     expression_const  '= =' expression_const	//operations communes entre les queue et les variables
+			 	 expression_const '>' expression_const
+				 expression_const '<' expression_const
+
+expression_fifo : 	 fifo  '$'  '>'   fifo  				//les operations dans les queue
+				fifo '$' '<'  fifo  
+				 fifo '$' '@'  fifo  
+expression_const : '(' expression_const ')'
+				IDENT '.' SIZE					 	// variable
+				IDENT					 			// queue
+				ENTIER								// un nombre constant
+				expression_const '+' expression_const		//operation numerique
+				expression_const '-' expression_const
+				expression_const '*' expression_const
+
+fifo                    : 	 fifo_const 
+
+fifo_const	: fifo_const  '.'	 fifo_const					//concatenation de deux word
+			  IDENT
+			  word	      
+
+word                :
+				ENTIER                                    			//le mot entier
+				EMPTY								//mot vide
+
+
+
+

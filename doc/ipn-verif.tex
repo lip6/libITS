@@ -1,0 +1,387 @@
+\section{Model-checking of IPN}
+\label{ipn-verif}
+
+%The previous section has shown how IPN are a formalism well adapted to
+%capturing some important concepts of high level specification
+%languages. 
+We show in this section how the compositional definition of
+the specification and the identification of similarities through
+multiple instantiations of a given type can be exploited to within
+model-checking algorithms to fight the combinatorial state-space
+explosion problem.
+
+\subsection{Set Decision Diagrams}
+\label{sub:set_decision_diagrams}
+
+In this subsection we recall the salient points of Hierarchical Set
+Decision Diagrams, a data structure based on the principles of
+decision diagram technology (node uniqueness thanks to a canonical
+representation, transition relation acting on a \emph{set} of states,
+dynamic programming, ordering issues \ldots). They feature two main original
+aspects: $a)$ the support of hierarchy in the
+representation and $b)$ the definition of user operations through a
+mechanism called \emph{inductive homomorphisms} (instead of more
+decision diagrams) which gives unprecedented freedom and flexibility
+to the user.
+
+Hierarchical Set Decision Diagrams (SDD) defined in \cite{CT05a}, are
+shared decision diagrams in which arcs of the structure are labeled by
+a \emph{set} of values, instead of a single valuation.  This set may
+itself be represented by an SDD, thus when labels are SDD, we think of
+them as hierarchical decision diagrams. This definition is taken
+practically verbatim from \cite{atpn08saturation} where it was adapted
+for more clarity from \cite{CT05a}.
+
+SDD are data structures for representing sequences of assignments of
+the form $\omega_1 \in s_1 ;\omega_2 \in s_2; \cdots \omega_n \in s_n$
+where $\omega_i$ are variables and $s_i$ are sets of values.
+
+We assume no variable ordering, and the same variable can occur
+several times in an assignment sequence. We define the usual
+terminal $1$ to represent accepting sequences. The terminal $0$ is
+also introduced and represents the empty set of assignment
+sequences. In the following, $Var$ denotes a set of variables, and
+for any $\omega$ in $Var$, $\Dom(\omega)$ represents the domain of
+$\omega$ \emph{which may be infinite}.
+
+\begin{definition}[Set Decision Diagram]\label{SDD_Def}
+The set $\SDD$ of SDD is inductively defined by $\de\in \SDD$ if:
+\begin{itemize}
+\item $\de \in \{0,1\}$ or
+\item $\de=\tuple{\omega,\pi,\alpha}$ with:
+ \begin{itemize}
+    \item $\omega \in Var$.
+    \item $\pi = s_0 \uplus \cdots \uplus s_n$ is a finite  partition of $\Dom(\omega)$,
+    i.e. $\forall i\neq j, s_i\cap s_j=\emptyset, s_i\neq\emptyset, n$ finite.
+    \item $\alpha : \pi \rightarrow \SDD$, such that $\forall i \neq j, \alpha(s_i) \neq \alpha(s_j)$.
+\end{itemize}
+\end{itemize}
+% We will simply note $d=(\omega,\alpha)$ the node $(\omega,\pi,\alpha)$ as $\alpha$ implicitly defines $\pi$.
+%We denote by $\omega \fireseq{s} \de$, the SDD $(\omega,\pi,\alpha)$
+%with $\pi= s \uplus (\Dom(\omega) \setminus s)$,
+%$\alpha(s)=\de,\alpha(\Dom(\omega) \setminus s) = 0$. 
+By convention,
+when it exists, the element of the partition $\pi$ that maps to the
+SDD $0$ is not represented.
+\end{definition}
+
+Despite its apparent simplicity, this definition supports rich and
+complex data:
+\begin{itemize}
+\item the definition supports domains of infinite size (e.g. $\Dom(e)
+= \mathds{R}$), provided that the partition size remains finite
+(e.g. $]0..3],]3..+\infty]$). This feature could be used to model
+clocks for instance (as in \cite{WangIEEE04}). It also places the
+expressive power of SDD above most variants of DD.
+\item $\SDD$ or other variants of decision diagrams can be used as
+ the domain of variables, introducing hierarchy in the data structure. 
+\item SDD can handle paths of variable lengths, if care is taken when
+writing operations to avoid creating so-called incompatible
+sequences (see \cite{CT05a}). This feature is useful when
+representing dynamic structures such as queues.
+\end{itemize}
+
+SDD support standard set theoretic operations (union, intersection,
+set difference). They also offer a concatenation operation $\de_1
+\cdot \de_2$ which replaces $1$ terminals of $\de_1$ by $\de_2$. It
+corresponds to a cartesian product. In addition, inductive homomorphisms are
+defined as a powerful and flexible mechanism to define application
+specific operations. Unfortunately, due to size constraints,
+homomorphisms are not presented here; an interested reader should read
+\cite{atpn08saturation} where much more detail is available.
+
+An important recent result is that we have defined a set of rewriting
+rules for homomorphisms \cite{atpn08saturation}, allowing to
+automatically make use of the decision diagram saturation algorithms
+originally due to Ciardo \cite{ciardo03saturation}; when computing the
+fixpoint of a transition relation over a set of states which is
+central to the model-checking problem, this algorithm offer gains of
+one to three orders of magnitude over classical BFS fixpoint
+algorithms.
+
+Hierarchical Set Decision Diagrams are available within
+\texttt{libddd} a C++ library freely available under the terms of
+GNU LGPL, at \url{http://ddd.lip6.fr}.
+
+\subsection{Exploiting IPN Structure}
+\label{sub:perfs}
+
+We compare in this section the performance of our SDD based
+model-checking engine when producing the full state-space of a system on
+the flattened representation of an IPN to a version that uses a state
+encoding that follows the hierarchical structure of the IPN
+specification. All the performance runs exploit a saturation algorithm,
+which accounts for the extremely good overall performance.
+
+\begin{table}[t]
+%@{\,\vrule width 5pt\,}
+	% \renewcommand{\arraystretch}{0.9}
+	
+	\begin{center}
+	\begin{tabular}{|c|c|>{\columncolor[gray]{.9}}c|
+		>{\columncolor[gray]{.9}}c||c|c|c||c|c|>{\footnotesize}c|}
+	
+	\cline{3-10}
+	\multicolumn{2}{c|}{} &
+	\multicolumn{2}{>{\columncolor[gray]{.9}}c||}{Final} &
+%	\multicolumn{3}{c||}{Hierarchical} &
+	\multicolumn{3}{c||}{Flat} &
+	\multicolumn{3}{c|}{IPN} \\	
+	
+%	\multicolumn{2}{c|}{} &
+%	\multicolumn{2}{>{\columncolor[gray]{.9}}c||}{\#} &
+%	\multicolumn{3}{c||}{\emph{Chaining Loop}} &
+%	\multicolumn{3}{c||}{\emph{Automatic Sat.}} &
+%	\multicolumn{3}{c|}{\emph{Automatic Sat.}} \\	
+
+	\hline
+	Model & States
+		& Flat & IPN 					% Nb. Final nodes
+%		& T. & Mem. & Peak		% Hierarchical Chaining Loop
+		& T. & Mem. & Peak		% Flat Automatic Saturation
+		& T. & Mem. & Peak \\		% Hierarchical Automatic Saturation
+
+	Size & \#
+		& \#  & \#
+%		& (s) & (MB) & \#
+		& (s) & (MB) & \#
+		& (s) & (MB) & \#  \\
+		
+	\hline
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\hline
+	\hline
+	\multicolumn{10}{|c|}{LOTOS Specification}\\
+
+	\hline
+		& 9.8e+21
+		& -- & 1085
+%		& -- & -- & --
+		& -- & -- & --
+		& 1.47 & 74.0 & 110e+3 \\
+	
+	\hline
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\hline
+	\hline
+	\multicolumn{10}{|c|}{Dining Philosophers}\\
+
+	\hline
+	100 & 4.9e+62
+		& 2792 & 419 					% Nb. Final nodes
+%		&  1.9 & 112 & 276e+3		% Hierarchical Chaining Loop
+		&  0.2 & 20 & 18040		% Flat Automatic Saturation
+		&  0.07 & 5.2 & 4614 \\		% Hierarchical Automatic Saturation
+
+	\hline
+	200 & 2.5e+125
+		& 5589 & 819 					% Nb. Final nodes
+%		& 7.9 & 446 & 1.1e+6		% Hierarchical Chaining Loop
+		& 0.7 & 58.1 & 36241		% Flat Automatic Saturation
+		& 0.2 & 10.6 & 9216 \\		% Hierarchical Automatic Saturation
+	
+	\hline
+	1000 & 9.2e+626
+		& 27989 & 4019 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& 14 & 1108 & 182e+3		% Flat Automatic Saturation
+		& 4.3 & 115 & 46015 \\		% Hierarchical Automatic Saturation
+	
+ 	\hline
+ 	4000 & 7e+2507
+		& -- & 16019				% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& -- & -- & --		% Flat Automatic Saturation
+		& 77 & 1488 & 184e+3 \\		% Hierarchical Automatic Saturation
+	
+		
+	\hline
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\hline
+	\hline
+	\multicolumn{10}{|c|}{Slotted Ring Protocol}\\
+
+	\hline
+	10 & 8.3e+09
+		& 1283 & 105 					% Nb. Final nodes
+%		& 1.1 & 48 & 90043		% Hierarchical Chaining Loop
+		& 0.2 & 16 & 31501		% Flat Automatic Saturation
+		& 0.03 & 3.5 & 3743 \\		% Hierarchical Automatic Saturation
+
+	\hline
+	50 & 1.7e+52
+		& 29403 & 1345 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& 22 & 1054 & 2.4e+6  		% Flat Automatic Saturation
+		& 5.1 & 209 & 461e+3 \\		% Hierarchical Automatic Saturation
+	
+	\hline
+	100 & 2.6e+105
+		& -- & 5145 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& -- & -- & --		% Flat Automatic Saturation
+		& 22 & 816 & 1.7e+6 \\		% Hierarchical Automatic Saturation
+	
+	\hline
+	150 & 4.5e+158
+		& -- & 11445 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& -- & -- & --		% Flat Automatic Saturation
+		& 60 & 2466 & 5.6e+6 \\		% Hierarchical Automatic Saturation
+	
+
+	\hline
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\hline
+	\hline
+	\multicolumn{10}{|c|}{Kanban}\\
+
+	\hline
+	100 & 1.7e+19
+		& 11419 & 511 					% Nb. Final nodes
+%		& 12 & 145 & 264e+3		% Hierarchical Chaining Loop
+		& 2.9 & 132 & 309e+3		% Flat Automatic Saturation
+		& 0.4 & 11 & 14817 \\		% Hierarchical Automatic Saturation
+	
+	\hline
+	200 & 3.2e+22
+		& 42819 & 1011 					% Nb. Final nodes
+%		& 96 & 563 & 1e+6		% Hierarchical Chaining Loop
+		& 19 & 809 & 1.9e+6		% Flat Automatic Saturation
+		& 2.2 & 37 & 46617 \\		% Hierarchical Automatic Saturation
+	
+	
+ 	\hline
+ 	300 & 2.6e+24
+ 		& 94219 & 1511 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+ 		& 60 & 2482 & 5.7e+6		% Flat Automatic Saturation
+ 		& 7 & 78 & 104e+3 \\		% Hierarchical Automatic Saturation
+
+	\hline
+	700 & 2.8+28
+		& -- & 3511 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& -- & -- & --		% Flat Automatic Saturation
+		& 95 & 397 & 523e+3 \\		% Hierarchical Automatic Saturation
+
+
+	\hline
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\hline
+	\hline
+	\multicolumn{10}{|c|}{Flexible Manufacturing System}\\
+
+	\hline
+	50 & 4.2e+17
+		& 8822 & 917 					% Nb. Final nodes
+%		& 13 & 430 & 530e+3		% Hierarchical Chaining Loop
+		& 2.7 & 105 & 222e+3		% Flat Automatic Saturation
+		& 0.4 & 16 & 23287 \\		% Hierarchical Automatic Saturation
+	
+	\hline
+	100 & 2.7e+21
+		& 32622 & 1817 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& 19 & 627 & 1.3e+6		% Flat Automatic Saturation
+		& 1.9 & 50 & 76587 \\		% Hierarchical Automatic Saturation
+
+	\hline
+	150 & 4.8e+23
+		& 71422 & 2717 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& 62 & 1875 & 3.8e+6		% Flat Automatic Saturation
+		& 5.3 & 105 & 160e+3 \\		% Hierarchical Automatic Saturation
+	
+	% \hline
+	% 200 & States
+	% 	& -- & 3617 					% Nb. Final nodes
+	% 	& -- & -- & --		% Hierarchical Chaining Loop
+	% 	& -- & -- & --		% Flat Automatic Saturation
+	% 	& Time & Mem. & Peak \\		% Hierarchical Automatic Saturation
+	
+	\hline
+	300 & 3.6e+27
+		& -- & 5417 					% Nb. Final nodes
+%		& -- & -- & --		% Hierarchical Chaining Loop
+		& -- & -- & --		% Flat Automatic Saturation
+		& 33 & 386 & 590e+3     \\		% Hierarchical Automatic Saturation
+	
+
+	\hline
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+	
+	\end{tabular}
+	\end{center}
+	\caption{Compared performance of IPN against a flat representation}
+	\label{tab:performances_automatic_saturation}
+\end{table}
+
+The examples chosen here are classical examples from
+model-checking benchmark literature (mostly taken from \cite{ciardo03saturation}),
+ which are parametric in the number of repeated instances of a subsystem.
+ The benchmark includes 4 parameterized models: the
+well-known Dining Philosophers and Kanban models, a model of the slotted ring
+protocol and a model of a flexible manufacturing system. We have also used as benchmark
+a LOTOS specification obtained from a true industrial case-study (it was
+generated automatically from a LOTOS specification -- 8,500 lines of LOTOS
+code + 3,000 lines of C code -- by Hubert Garavel from INRIA).
+
+``--'' entries indicate that the state space's generation did not
+finish because of the exhaustion of the computer's main memory.
+
+The \emph{``Final''} columns show the final number of decision diagram
+nodes needed to encode the state spaces for hierarchical IPN and a
+flattened representation of the same model.  Clearly, the flattened
+version needs at least an order of magnitude more nodes to store a
+state space. 
+
+The gains we observe are attributed to the fact that subsystems that
+are instances of the same net type share the transition relation cache
+and are liable to share the state representation of subcomponents,
+when the model exhibits some regularity. This experiment shows that
+using a structured specification can help detect similarity of
+behavior in parts of a model, thus enabling more compact representations.
+
+\subsection{Impact of IPN depth}
+\label{sub:perfs}
+
+We have run experiments to measure the impact of using several levels of depth in the encoding.
+
+We define the two following strategies, when encoding a circular model of size $n$:
+\begin{itemize}
+\item Recursive($\mathit{grain}$): in this setting, we build a representation with $\mathit{grain}$ variables per level. For instance, with 
+$n=100$ elements and $\mathit{grain}=5$, we encode 5 components containing 20 instances, each of them encoded using 5 components containing 4 instances, yielding a depth of 3. So we have 5 variables at level 3, 5 variables at level 2, 4 variables at level 1 and $|places|$ variables representing places at level $0$.
+\item Depth2($\mathit{grain}$): in this setting, we build a representation with $n / \mathit{grain}$ variables, and a fixed depth of 2. For instance, with 
+$n=100$ elements and $\mathit{grain}=5$, we encode 5 components containing 20 instances. So we have 5 variables at level 2, 20 variables at level 1, $|places|$ variables representing places at level $0$. 
+\end{itemize}
+
+The case \emph{Recursive($2$)} yields a binary encoding as presented
+in the philosopher example (section~\ref{ss:philo}).  The case
+\emph{Depth2($1$)} yields an encoding very similar to Ciardo's MDD
+\cite{tacas03saturation}, with $n$ variables each representing the
+state of a unitary net. \emph{Depth2($1$)} is equivalent to the measures reported 
+in the $IPN$ column of table~\ref{tab:performances_automatic_saturation}.
+
+Table~\ref{tab:depth1} presents the evolution of the \emph{Depth2} strategy on the ring model
+for n varying from $1$ to $100$ for a sampling of values of the \emph{grain} parameter. We present 
+ the time, memory and final representation size in number of SDD nodes. 
+Note that the value given for memory is the peak memory size, and includes the size of caches, so it may not match
+ the final node size.
+
+
+Table~\ref{tab:depthrec} presents the evolution of the \emph{Recusrive} strategy on the ring model
+for a sampling of values of the \emph{grain} parameter.  We also present 
+ the time, memory and final representation size in number of SDD nodes. 

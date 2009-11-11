@@ -1,0 +1,115 @@
+\section{Introduction}\label{sec:introduction}
+
+%\textbf{Problem :} Behavioral verification of complex systems.
+Industrial systems and software applications are gaining in
+behavioral complexity. This is caused by some key characteristics: 
+\begin{itemize}
+	\item their increasing distributed nature whereby high-density interleaving executions emerge;
+	\item their large-scale specification, where numerous processes 
+	are involved;
+	\item their deployment across heterogeneous hardware and middleware environments;
+	\item their spatiotemporal constraints.
+\end{itemize}
+
+This situation raises crucial issues in their conception
+and maintenance. Accurate specifications grabbing full comprehension
+of their behavior and dynamic, thus leading to more confidence in their models
+and less fatal failures in the final product, are becoming hard to achieve. Following this, we are on the brink of maintaining
+complex and ill-designed applications that we do not understand.
+
+To tackle these issues, basically two paths exists.
+One of them consists in adding more expressivity in the models.
+Designer-friendly high-level languages such UML~\cite{uml212super} 
+fulfill this approach.
+The second one consists in harnessing more verification power in 
+the design and analysis activities. Formal methods relying on 
+formal languages such as Petri nets~\cite{Girault:2003fk} and on automatic model checking
+fulfill this goal. 
+
+\textbf{Expressivity vs. verification power}.\\
+However, a dilemma emerges in the use of these two paths,
+that is about expressivity versus verification power. 
+On one hand, high level specification languages have good scale up
+properties and their expressivity is acknowledged by industry.
+Nevertheless, they are vague, lack formal semantics and are
+mostly undecidable. 
+On the other hand, formal languages are supported by powerful
+tools and techniques for efficient formal verification.
+However, their only enable low level specifications, which are
+not usable in practice due to scaling problems, inefficient and
+inaccurate data representation. 
+
+%\textbf{Dilemma :} expressivity vs. verification power
+%
+%Low level specifications : e.g. Petri nets. Powerful tools and
+%techniques exist. Not usable in practice due to scaling problems
+%(the spaghetti issue).
+%
+%High level specs : e.g. UML, DSL... Mostly undecidable in general,
+%vague and complex semantics. However, good scale up properties.
+%Expressivity recognized as appropriate by industry.
+
+We propose in this article an MDE-based approach, by which we
+benefit from both ways, bringing a high level model specification to a
+low level, analysable formal model. We translate the former, considered
+in an MDE approach as a platform independent model, into a Petri net,
+considered a the target platform specific model. The analysis results
+are then traced back to the high level specification.
+
+The cornerstone of this approach consists of compositional definition,
+assembling and instantiation of the model specification.
+
+%\textbf{Our solution :}
+%
+%MDE based : translation approach, Petri nets as a target PSM for
+%verification goals. Trace results back to spec.
+%
+%Requires some concepts in the target PN so the translation can be
+%handled reasonably. Most important : compositional definition,
+%notion of instantiation.
+%\textbf{Problem 2:}
+%\textbf{Our solution :}
+
+\textbf{Model-checking and the state-space explosion problem}.\\
+Model-checking~\cite{mc-cmu-01} is an acknowledged automatic 
+verification technique to establish formal verification of 
+systems' models properties. However it is also well known to face
+the famous state-space explosion problem. This is a hard issue
+when dealing with the complete system's state-space in the first place.
+
+In this approach, we propose to exploit the structure of 
+the specifications to enable compositional verification algorithms~\cite{Voorhoeve:99kx}
+
+
+\textbf{SOTA - Related work : dialects of PN}
+
+Extensions of PN are abundant in literature. They fall into two categories :
+
+Extensions of PN : e.g. CPN, Nets-within-Nets, COOPN ...
+Decidability problems emerge.
+Applicability to industrial modeling is not well established anyway.
+
+Abbreviations of PN : e.g. WN
+We fall into this category.
+
+IPN offer notion of type and instance : 
+allows model type reuse (import directive), divide and conquer to fight modeling complexity.
+
+IPN offer transition based synchronization exclusively :
+A wide corpus of theoretical results available (from CSP to LTS + applicability to probabilistic systems)
+Favorable to better separation/reuse patterns than shared memory.
+
+\textbf{Contributions}
+We show the IPN allow to answer all these concerns.
+
+Furthermore, IPN are supported by a toolset.
+
+\textbf{Outline}
+
+Definition of the IPN formalism (section 2: IPN def) which allows :\\
+$1)$ to adequately capture the concepts of high level specifications such as UML. (section 3: transfo to UML)\\
+$2)$ to enable efficient model-checking algorithms exploiting symmetry and structure of the specification. (section 4: SDD for IPN)
+
+Section 5 shows how all these concerns have been integrated within the BCC tool project, which offers verification of UML diagrams.
+
+Section 6 concludes. 

@@ -1,0 +1,682 @@
+/****************************************************************************/
+/*								            */
+/* This file is part of the PNDDD, Petri Net Data Decision Diagram  package.*/
+/*     						                            */
+/*     Copyright (C) 2004 Denis Poitrenaud and Yann Thierry-Mieg            */
+/*     						                            */
+/*     This program is free software; you can redistribute it and/or modify */
+/*     it under the terms of the GNU General Public License as published by */
+/*     the Free Software Foundation; either version 2 of the License, or    */
+/*     (at your option) any later version.                                  */
+/*     This program is distributed in the hope that it will be useful,      */
+/*     but WITHOUT ANY WARRANTY; without even the implied warranty of       */
+/*     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        */
+/*     GNU General Public License for more details.                         */
+/*     						                            */
+/*     You should have received a copy of the GNU General Public License    */
+/*     along with this program; if not, write to the Free Software          */
+/*Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
+/*     						                            */
+/****************************************************************************/
+ 
+
+
+/*********************************************************************************************
+*  created by   : Mr Denis POITRENAUD and Cherif Reda HASSAINE
+*  created date : 04/2003
+*  subject      : parser of Expression DDD
+*  version      : 0.1
+*********************************************************************************************/
+
+%{
+
+/*......................................... Include C .........................................*/
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <stdlib.h>
+using namespace std;
+
+#include "Moteur_expression.hpp"
+  string nom;
+  static const RdPE *RP;
+  Expression_Monteur  *expression;
+  const char* get_type(int i);
+//-------------------------------
+  extern FILE *expressionin;
+  extern int expressionlex();
+  extern int expressionlineno;
+  extern ostream& yyerror(const char* s){
+	  if (s) {
+      string nom=string(" (incorrect expression) ");
+      string err=string(s);
+		  if(nom != err)
+          cout<<"error line "<<expressionlineno<<" : ";
+      cout<<s;
+      err.erase();
+	  }
+	  else {
+		  cout<<"parsing error"<<endl;
+	  }
+    fclose(expressionin);
+    nom.erase();
+    return cout;
+  }
+
+%}
+/*......................................Declarations Bison ................................... */
+%union { 
+  int  j; 	
+  char *s;
+  Expression *e;
+  struct Terme c;
+}
+/*...........................................token............................................ */
+
+%token <s> IDENT  
+%token <j> ENTIER
+%token ESPACE EMPTY SIZ EGAL DIFF ESUP EINF  ET  OU  TETE QUE COMMENTAIRE
+
+/*...........................................type............................................. */
+%type <c> terme 
+%type <e> expression exp_elementaire
+
+%left '+'  '-'  '*'  '/'  '%' '.'
+%left  ET  OU
+%left '('  ')'
+%left '!'
+
+%name-prefix="expression"
+
+/*........................................parse begin......................................... */
+%start liste
+%%
+/*.....................................rule grammatical ......................................... */
+
+liste : expression';' {
+                      expression->Container.push_back( *$1);
+                      delete $1;
+                      }
+        liste
+		|
+      COMMENTAIRE commentaire  liste
+		|
+		  erreur {yyerror(" (incorrect expression) ")<<endl; return 1;}
+    |
+		  ESPACE  liste
+		|
+
+;
+commentaire: IDENT {} commentaire
+            |
+             ESPACE
+;
+expression :
+              expression  ET   expression
+              {
+			          $$=new Expression( *$1 &&  *$3 );
+			          delete $1;
+			          delete $3;
+              }
+              |
+              expression  OU   expression
+              {
+			          $$=new Expression( *$1 ||  *$3 );
+			          delete $1; 
+			          delete $3;
+              }
+              |
+              '('  expression  ')'
+              {
+            		$$=new Expression(  *$2 );
+			          delete $2;
+              }
+              |
+              '!' expression 
+              {
+			          $$=new Expression(!  *$2 );
+			          delete $2;
+              }
+	            |
+	            exp_elementaire
+	            {
+			          $$=new Expression( *$1);
+			          delete $1;
+	            }
+;
+exp_elementaire :
+		  terme   EGAL  terme 
+      {
+				if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary ) ) {
+					if( $3.type==ordinary  && $1.type==ordinary ) {
+						$$=new Expression( (*$1.expression ==  *$3.expression ));
+					}
+					else {
+						if($1.type==number && $3.type==number ) {
+							$$=new Expression( ( Expression($1.nb,CONST)  ==  Expression($3.nb,CONST)) );
+						}
+						else {
+							if($1.type==number && $3.type==ordinary) {
+								$$=new Expression( (Expression($1.nb,CONST) ==  *$3.expression ) );
+							}
+							else {
+								$$=new Expression( ( *$1.expression ==  Expression($3.nb,CONST) ) );
+							}
+						}
+					}
+				delete $1.expression;
+				delete $3.expression;	
+				}
+				else {
+          if( ( $1.type==number || $1.type==word ) && ($3.type==number || $3.type==word )  ) {
+				    if(( $3.type==word && $1.type==word)) {
+					          $$=new Expression( *$1.expression == *$3.expression );
+				    }
+				    else {
+					        if($3.type==number && $1.type==number)
+						            $$=new Expression(   Expression( Word($1.nb)) == Expression( Word($3.nb)) );
+					        else {
+						          if( $1.type==number && $3.type==word)
+							              $$=new Expression(  Expression( Word($1.nb) ) == *$3.expression  );
+						          else
+							              $$=new Expression(  *$1.expression == Expression( Word($3.nb)) );
+					  }
+				  }
+			    delete $1.expression;
+			    delete $3.expression;
+			  }
+          else {
+					  yyerror("this expression cannot be evaluated,")<<endl
+					  <<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					  return 1;
+          }
+				}
+                   }
+		   |
+		   terme  '>'  terme 
+		   {
+				
+				if (  ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary )  ) {
+					if( $3.type==ordinary  && $1.type==ordinary ) {
+						$$=new Expression( (*$1.expression >  *$3.expression) );
+					}
+					else {
+						if($1.type==number && $3.type==number ) {
+							$$=new Expression( ( Expression($1.nb,CONST)  >  Expression($3.nb,CONST)) );
+						}
+						else {
+							if($1.type==number && $3.type==ordinary) {
+								$$=new Expression( ( Expression($1.nb,CONST)  >  *$3.expression) );
+							}
+							else  {
+								$$=new Expression(  ( *$1.expression > Expression($3.nb,CONST) ) );
+							}
+						}
+					}
+				delete $1.expression;
+				delete $3.expression;	
+				}
+				else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+				}
+		     }
+		     |
+		     terme  '<'  terme 
+		     {
+				if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary )  ) {
+					if( $3.type==ordinary  && $1.type==ordinary ) {
+						$$=new Expression( (*$1.expression <  *$3.expression) );
+					}
+					else {
+						if($1.type==number && $3.type==number ) {
+							$$=new Expression( ( Expression($1.nb,CONST)  <  Expression($3.nb,CONST)) );
+						}
+						else {
+							if($1.type==number&& $3.type==ordinary) {
+								$$=new Expression( ( Expression($1.nb,CONST)  <  *$3.expression) );
+							}
+							else {
+								$$=new Expression(  ( *$1.expression < Expression($3.nb,CONST) ) );
+							}
+						}
+					}
+				delete $1.expression;
+				delete $3.expression;	
+				}
+				else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+				}
+		      }
+		      |
+		      terme  EINF  terme
+		      {
+				if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary ) ) {
+					if( $3.type==ordinary  && $1.type==ordinary ) {
+						$$=new Expression( (*$1.expression ==  *$3.expression )|| (*$1.expression <  *$3.expression) );
+					}
+					else {
+						if($3.type==number && $1.type==number) {
+							Expression job=Expression($1.nb,CONST);Expression job1=Expression($3.nb,CONST);
+							$$=new Expression( ( job  ==  job1)|| ( job < job1 ) );
+						}
+						else {
+							if($1.type==number && $3.type==ordinary) {
+								Expression job=Expression($1.nb,CONST);
+								$$=new Expression( ( job ==  *$3.expression )|| ( job  <  *$3.expression) );
+							}
+							else {
+								Expression job=Expression($3.nb,CONST);
+								$$=new Expression( ( *$1.expression ==  job )|| ( *$1.expression < job  ) );
+							}
+						}
+					}
+				delete $1.expression;
+				delete $3.expression;
+				}
+				else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+				}
+			}
+			|
+			terme  ESUP   terme
+			{
+				if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary )  ) {
+					if( $3.type==ordinary  && $1.type==ordinary ) {
+						$$=new Expression( (*$1.expression >  *$3.expression )|| (*$1.expression ==  *$3.expression) );
+					}
+					else {
+						if($3.type==number && $1.type==number) {
+							Expression job=Expression($1.nb,CONST);Expression job1=Expression($3.nb,CONST);
+							$$=new Expression( ( job > job1 )|| ( job  ==  job1) );
+						}
+						else {
+							if($1.type==number && $3.type==ordinary) {
+								Expression job=Expression($1.nb,CONST);
+								$$=new Expression( ( job >  *$3.expression )|| ( job  ==  *$3.expression) );
+							}
+							else {
+								Expression job=Expression($3.nb,CONST);
+								$$=new Expression( ( *$1.expression >  job )|| ( *$1.expression == job  ) );
+							}
+						}
+					}
+				delete $1.expression;
+				delete $3.expression;	
+				}
+				else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+				}
+			}
+			|
+			terme   DIFF   terme
+			{
+				if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary )  ) {
+					if( $3.type==ordinary  && $1.type==ordinary ) {
+						$$=new Expression( (*$1.expression >  *$3.expression )|| (*$1.expression <  *$3.expression) );
+					}
+					else {
+						if($3.type==number && $1.type==number) {
+							Expression job=Expression($1.nb,CONST);Expression job1=Expression($3.nb,CONST);
+							$$=new Expression( ( job > job1 )|| ( job  <  job1) );
+						}
+						else {
+							if($1.type==number && $3.type==ordinary) {
+								Expression job=Expression($1.nb,CONST);
+								$$=new Expression( ( job >  *$3.expression )|| ( job  <  *$3.expression) );
+							}
+							else {
+								Expression job=Expression($3.nb,CONST);
+								$$=new Expression( ( *$1.expression >  job )|| ( *$1.expression < job  ) );
+							}
+						}
+					}
+				delete $1.expression;
+				delete $3.expression;	
+				}
+				else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+				}
+			}
+			|
+			terme   TETE   terme 
+			{
+			  if( ( $1.type==number || $1.type==word ) && ($3.type==number || $3.type==word )  ) { 
+				if(( $3.type==word && $1.type==word)) {
+					$$=new Expression( head(  *$1.expression , *$3.expression ) );
+				}
+				else {
+					if($3.type==number && $1.type==number)
+						$$=new Expression(  head(  Expression( Word($1.nb) ) , Expression( Word($3.nb) ) ) );
+					else {
+						if( $1.type==number && $3.type==word)
+							$$=new Expression(  head(  Expression( Word($1.nb) ) , *$3.expression ) );
+						else
+							$$=new Expression(  head(  *$1.expression , Expression( Word($3.nb) ) ) );
+					}
+				}
+			  delete $1.expression;
+			  delete $3.expression;
+			  }
+			  else {
+				yyerror("this expression cannot be evaluated,")<<endl
+				<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+				return 1;
+			  }
+			}
+			|
+			terme   QUE   terme
+			{
+			  if( ( $1.type==number || $1.type==word ) && ($3.type==number || $3.type==word )  ) { 
+				if(( $3.type==word && $1.type==word)) {
+					$$=new Expression( queue(  *$1.expression , *$3.expression ) );
+				}
+				else {
+					if($3.type==number && $1.type==number)
+						$$=new Expression(  queue(  Expression( Word($1.nb) ) , Expression( Word($3.nb) ) ) );
+					else {
+						if( $1.type==number &&  $3.type==word )
+							$$=new Expression(  queue(  Expression( Word($1.nb) ) , *$3.expression ) );
+						else
+							$$=new Expression(  queue(  *$1.expression , Expression( Word($3.nb) ) ) );
+					}
+				}
+			  delete $1.expression;
+			  delete $3.expression;
+			  }
+			  else {
+				yyerror("this expression cannot be evaluated,")<<endl
+				<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+				return 1;
+			  }
+			}
+			|
+			terme   '@'  terme
+			{
+			        if( ( $1.type==number || $1.type==word ) && ($3.type==number || $3.type==word ) ) { 
+				        if(( $3.type==word && $1.type==word)) {
+					         $$=new Expression( belongs(  *$1.expression , *$3.expression ) );
+				        }
+				        else {
+					         if($3.type==number && $1.type==number)
+						          $$=new Expression(  belongs(  Expression( Word($1.nb) ) , Expression( Word($3.nb) ) ) );
+					         else {
+						          if( $1.type==number && $3.type==word)
+							       $$=new Expression(  belongs(  Expression( Word($1.nb) ) , *$3.expression ) );
+						          else
+							       $$=new Expression(  belongs(  *$1.expression , Expression( Word($3.nb) ) ) );
+					         }
+				              }
+				delete $1.expression;
+				delete $3.expression;
+				}
+				else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+				}
+			}
+;
+
+
+terme :
+		'('  terme  ')'
+		{
+			$$.expression = $2.expression;
+			$$.type = $2.type ;
+			$$.nb=$2.nb;
+		}
+		|
+		terme  '+'  terme  
+		{
+			if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary) ) {
+				if( $3.type==ordinary && $1.type==ordinary ) {
+					$$.expression=new Expression( *$1.expression + (*$3.expression) );
+				}
+				else {
+					if( $1.type==number && $3.type==number)
+						$$.expression=new Expression( Expression($1.nb,CONST) + (Expression($3.nb,CONST)) );
+					else {
+						if( $3.type==number && $1.type==ordinary )
+							$$.expression=new Expression(  *$1.expression + Expression($3.nb,CONST) );
+						else
+							$$.expression=new Expression(  Expression($1.nb,CONST) + *$3.expression );
+					}
+				}	
+				$$.type=ordinary;
+				delete $1.expression;
+				delete $3.expression;
+			}
+			else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+			}
+		}
+		|
+		terme  '-'  terme
+		{
+			if (  ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary) ) {
+				if( $3.type==ordinary && $1.type==ordinary ) {
+					$$.expression=new Expression( *$1.expression - (*$3.expression) );
+				}
+				else {
+					if( $1.type==number && $3.type==number)
+						$$.expression=new Expression( Expression($1.nb,CONST) - (Expression($3.nb,CONST)) );
+					else {
+						if( $3.type==number && $1.type==ordinary )
+							$$.expression=new Expression(  *$1.expression - Expression($3.nb,CONST) );
+						else
+							$$.expression=new Expression(  Expression($1.nb,CONST) - *$3.expression );
+					}
+				}	
+				$$.type=ordinary;
+				delete $1.expression;
+				delete $3.expression;
+			}
+			else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+			}
+		}
+		|
+		terme  '*'  terme
+		{	if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary) ) {
+				if( $3.type==ordinary && $1.type==ordinary ) {
+					$$.expression=new Expression( *$1.expression * (*$3.expression) );
+				}
+				else {
+					if( $1.type==number && $3.type==number)
+						$$.expression=new Expression( Expression($1.nb,CONST) * (Expression($3.nb,CONST)) );
+					else {
+						if( $3.type==number && $1.type==ordinary )
+							$$.expression=new Expression(  *$1.expression * (Expression($3.nb,CONST) ) );
+						else
+							$$.expression=new Expression(  Expression($1.nb,CONST) * ( *$3.expression) );
+					}
+				}	
+				$$.type=ordinary;
+				delete $1.expression;
+				delete $3.expression;
+			}
+			else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+			}
+		}
+		|
+		terme  '/'  terme
+		{	if ( ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary) ) {
+				if( $3.type==ordinary && $1.type==ordinary ) {
+					$$.expression=new Expression( *$1.expression / (*$3.expression) );
+				}
+				else {
+					if( $1.type==number && $3.type==number)
+						$$.expression=new Expression( Expression($1.nb,CONST) / (Expression($3.nb,CONST)) );
+					else {
+						if( $3.type==number && $1.type==ordinary )
+							$$.expression=new Expression(  *$1.expression / Expression($3.nb,CONST) );
+						else
+							$$.expression=new Expression(  Expression($1.nb,CONST) / *$3.expression );
+					}
+				}	
+				$$.type=ordinary;
+				delete $1.expression;
+				delete $3.expression;
+			}
+			else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+			}
+		}
+		|
+		terme  '%'  terme
+		{	if (  ( $1.type==number || $1.type==ordinary ) && ($3.type==number || $3.type==ordinary) ) {
+				if( $3.type==ordinary && $1.type==ordinary ) {
+					$$.expression=new Expression( *$1.expression % (*$3.expression) );
+				}
+				else {
+					if( $1.type==number && $3.type==number)
+						$$.expression=new Expression( Expression($1.nb,CONST) % (Expression($3.nb,CONST)) );
+					else {
+						if( $3.type==number && $1.type==ordinary)
+							$$.expression=new Expression(  *$1.expression % Expression($3.nb,CONST) );
+						else
+							$$.expression=new Expression(  Expression($1.nb,CONST) % *$3.expression );
+					}
+				}				
+				$$.type=ordinary;
+				delete $1.expression;
+				delete $3.expression;
+			}
+			else {
+					yyerror("this expression cannot be evaluated,")<<endl
+					<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+					return 1;
+			}
+		}
+		|
+	 	IDENT 
+		{
+				nom=string($1);	
+				map<string,int>::const_iterator it=RP->placeName.find(nom);
+				vector<class Place>::const_iterator at;
+				for(at =RP->places.begin();at != RP->places.end() && at->name!=nom;at++) { }
+				if(it != RP->placeName.end() && at->name==nom) {
+          if(! at->isQueue()) {
+					  $$.expression=new Expression(it->second,VAR);
+					  $$.type=ordinary;
+          }
+          else{
+				    $$.expression=new Expression(it->second,FIFO);
+				    $$.type=word;
+          }  
+				}
+				else { 
+				  yyerror("the variable ")<< $1<<" is neither place nor queue "<<endl;
+				  return 1;
+        }
+		}
+		|
+		ENTIER   
+		{
+				$$.nb =$1;
+				$$.type=number;
+		}
+		|
+		IDENT  SIZ
+		 {
+              nom=string($1);
+		          map<string,int>::const_iterator it=RP->placeName.find(nom);
+			        vector<class Place>::const_iterator at;
+			        for(at =RP->places.begin();at != RP->places.end() && ! (at->isQueue()&&at->name==nom);at++) { }
+			        if(it !=RP->placeName.end()&& at->isQueue() && at->name==nom) {
+				       $$.expression=new Expression(it->second,SIZE);
+				       $$.type=ordinary;
+			        }
+			        else {
+				       if(it != RP->placeName.end() &&! (at->isQueue() && at->name==nom)) 
+					        yyerror("the variable ")<< $1<<" (a place) is used where a queue is expected "<<endl;
+				       else
+					        yyerror("the variable ")<< $1<<" is not a queue"<<""<<endl;
+			 	          return 1;
+			        }
+
+		}
+		|
+		terme  '.'  terme
+		{
+			if (( $1.type==number || $1.type==word ) && ($3.type==number || $3.type==word) ) {
+				if(( $3.type==word && $1.type==word)) {
+					$$.expression=new Expression( *$1.expression &  *$3.expression );
+				}
+				else {
+					if($1.type==number && $3.type==number) {
+						$$.expression=new Expression( Expression( Word($1.nb) ) & Expression( Word($3.nb) ) );
+					}
+					else {
+						if($3.type==number && $1.type==word)
+							$$.expression=new Expression(  *$1.expression  & Expression( Word($3.nb) ) );
+						else
+							$$.expression=new Expression(  Expression( Word($1.nb) ) &*$3.expression  );
+					}
+				}
+				$$.type=word;
+				delete $1.expression;
+				delete $3.expression;
+			}
+			else {
+				yyerror("this word cannot be evaluated,")<<endl
+				<<"      type mismatch between "<<get_type($1.type)<<" and "<<get_type($3.type) <<endl;
+				return 1;
+			}
+		}
+		|
+		EMPTY
+		{
+			$$.expression=new Expression(Word( ));
+			$$.type=word;
+		}
+;
+
+erreur : error
+;
+%%
+const char* get_type(int i) {
+    const char *s;
+    if(i==0)
+       s=" 'ordinary' ";
+    else
+       if(i==1)
+	  s=" 'word' ";
+       else
+	  s=" 'number' ";
+    return s;
+}
+bool Expression_Monteur::create (const char *f,const RdPE& R){
+  int i;
+  if ((expressionin=fopen(f,"r"))==NULL)
+    return false;
+  expression = this;
+  RP = &R;
+  if( ! (i=(int) yyparse() ) )
+	;
+	//  	cout<<"OK "<<endl;
+  else
+    cout<<"ERROR in expression"<<endl;
+  fclose(expressionin);
+  nom.erase();
+return (i);
+}

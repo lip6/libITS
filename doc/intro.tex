@@ -1,0 +1,81 @@
+\section{Introduction}\label{sec:introduction}
+
+Instantiable Transition Systems are intended as a low level
+description of complex systems semantics. Their semantics is defined
+in the simplest manner possible, using labeled states and
+transitions. However, through hierarchical composition and the use
+of partial synchronization functions to compose behaviors, the
+framework is rich enough to capture the complex semantics of modern
+behavioral modeling formalisms (e.g. UML,AADL\ldots).
+
+Preserving the structure of the specification down to the semantic
+level, instead of defining the semantics through a flattening,
+allows to use this information in the solution algorithms and
+data-structures.
+
+In particular, the definition of ITS is partly driven by the concern
+of preserving optimal conditions to use SDD as a powerful support
+for symbolic model-checking.
+
+Several ITS types are available in the library, and the design
+allows to easily add new types.
+
+We first present the formal definition of ITS and we briefly
+introduce SDD and their homomorphisms, that are manipulated to
+implement the semantics of a given formalism.
+
+From the ITS modeler perspective, the sections on SDD can be safely
+skipped, they are relevant as a reference and a comparison when
+implementing new ITS types.
+
+We then present the various ITS types or formalisms currently
+supported by the library. For each formalism we give the syntax, the
+semantics through an ITS definition, at least one example, and the
+SDD encoding.
+
+We first introduce the Composite type offered as a general
+structuring mechanism. It is a basis to defined a generalized
+synchronized product of subsystems.
+
+Then we present Labeled Transition Systems, as a very simple example
+of an elementary type.
+
+We then present the variations on the Composite type used to
+represent regular models: the ScalarSet and CircularSet. Regular
+models designates models exhibiting a form of structural behavioral
+symmetry. This allows a more compact and parametric model
+definition. The solution engine is also able to exploit these
+symmetries.
+
+The variant of Petri nets supported by the library is then
+presented. Based on the nets used in the tool Romeo, they support
+many powerful structural features such as inhibitor arcs, test arcs,
+reset arcs and hyper-arcs. They also support discrete time, through
+time bounds on transition "à la" Tina.
+
+Still in the timed model category, we present the Timed Composite as
+a variation on the Composite definition to model composite timed
+systems. Using this definition, one can compose timed Petri nets
+with other timed formalisms that use discrete semantics.
+
+For instance with Timed Automata, a popular formalism used in Uppaal
+or Kronos. The TA that are supported in the library offer discrete
+variables with arithmetic as well as clocks and locations. Time
+constraints can use non-strict inequalities with integer constants.
+
+To allow fully symbolic LTL model-checking, the encoding of a
+Transition-based Generalized Büchi Automata (TGBA) is presented
+next. This formalism is the central one used in the model-checking
+library Spot (A. Duret-Lutz and D. Poitrenaud). By definition of an
+appropriate synchronization through a composite, this enables LTL
+model-checking.
+
+ITS offer support for LTL (using components from Spot) and CTL
+(using components from VIS). The usage of these tools is described
+next.
+
+Finally an annex is provided describing the various ways to input
+ITS. In particular the Coloane ITS plugin, and the various file
+formats supported are described. A user-oriented API can also be
+used to create ITS definitions programmatically, but this is
+described in the technical doxygen generated pages.

@@ -1,0 +1,164 @@
+\subsection{IPN : an example}
+\label{ss:philo}
+This subsection illustrates the IPN formalism through a simple and
+well-known academic example, the dining philosophers.  Figure
+\ref{fig:philo} shows how this problem can be modeled using IPN.
+\lstset{language=IPN}
+%\begin{center}
+\begin{figure}
+\begin{tabular}{l|l}
+\begin{lstlisting}
+// file : PhiloFork.ipn
+UnitaryNet PhiloFork2pow0{
+ // places definition
+ place Idle; place Fork;
+ place WaitL; place WaitR;
+ place HasL; place HasR;
+ // states definition
+ // define a default state
+ state default{Idle = 1;Fork =1;}
+ // transitions definition
+ private transition hungry{
+  // pre-arc place value
+  in Idle 1;
+  // post-arc place value
+  out WaitL 1; out WaitR 1;}
+ private transition getLeft{
+  in WaitL 1; in Fork 1;
+  out HasL 1;}
+ public transition getRight{
+  in WaitR 1;
+  out HasR 1;}
+ public transition putRight{
+  in HasL 1; in HasR 1;
+  out Fork 1; out Idle 1;}
+ public transition getFork{
+  in Fork 1;}
+ public transition putFork{
+  out Fork 1;}
+}
+\end{lstlisting}
+%}
+&
+%\parbox[l]{0.5\textwidth}{
+\begin{lstlisting}
+// file : PhiloFork1.ipn
+import "PhiloFork.ipn";
+CompositeNet PhiloFork2pow1{
+ // subnets: 
+ // type instance-name
+ subnet PhiloFork2pow0 p1;
+ subnet PhiloFork2pow0 p2;
+ // states definition
+ state default{p1 = default;
+           p2 = default;}
+ // synchronizations
+ private synchronization getLeft{
+  //<i,e>: instance.transition	
+  p1.getRight; p2.getFork; }
+ private synchronization putLeft{
+  p1.putRight; p2.putFork;}
+ // the following declarations
+ // render visible the nested
+ // transitions
+ public synchronization getRight{
+  p2.getRight;}
+ public synchronization putRight{
+  p2.putRight;}
+ public synchronization getFork{
+  p1.getFork;}
+ public synchronization putFork{
+  p1.putFork;}
+}
+\end{lstlisting}
+\\
+\hline
+\begin{lstlisting}
+// file : PhiloFork2.ipn
+import "PhiloFork1.ipn";
+CompositeNet PhiloFork2pow2{
+ // subnets
+ subnet PhiloFork2pow1 p1;
+ subnet PhiloFork2pow1 p2;
+ // the rest of the definition is
+ // identical to PhiloFork1
+ ...
+}
+\end{lstlisting}
+&
+\begin{lstlisting}
+// file : TableFor4.ipn
+import "PhiloFork2.ipn";
+CompositeNet Table{
+ // subnets
+ subnet PhiloFork2pow2 phils;
+ // states definition
+ state default{phils = default;}
+ // synchronizations
+ private synchronization get{
+  phils.getFork; phils.getRight;}
+ private synchronization put{
+  phils.putFork;  phils.putRight;}
+}
+// target model :
+Table philo2pow2(default);
+\end{lstlisting}
+\\
+\hline
+\end{tabular}
+\caption{$2^2$ dining philosophers modeled inductively using IPN. The syntax used is the one supported by our tools for model serialization. Note that it features \emph{import} directives to allow definition of a model in several separate files. The syntax is directly adaptated from the formal definitions of section~\ref{ss:ipndef}.\label{fig:philo}
+For simple examples, this file format is adequate, but mostly we expect users to
+create IPN from higher level modeling languages through a translation
+approach. To this end, an easily manipulable API has been defined and
+implemented both in Java (for Eclipse and EMF support) and C++ (for efficiency). }
+\end{figure}
+%\end{center}
+
+We first define a philosopher unitary net type, called
+\emph{PhiloFork2pow0} (i.e. $2^0 =1$) to be used as basic building
+block. It represents a philosopher and the fork to his left, as a
+unitary IPN type.  It contains two private transitions, which
+correspond to the philosopher getting hungry and thus going from the
+state \emph{Idle} to a state where he is waiting to acquire both of
+his forks \emph{WaitL and WaitR}.  The other private transition
+corresponds to the philosopher acquiring the fork to his left
+\emph{getLeft}.  It also contains 4 public transitions which
+correspond to making the fork available to other philosophers
+(\emph{getFork} and \emph{putFork}) and acquiring and releasing the
+fork to the right (\emph{getRight} and \emph{putRight}). Note that
+both forks are released simultaneously in
+ this model hence the definition of \emph{putRight} also releases the
+ left fork.
+
+An alternate model could have represented the philosopher and his fork
+separately as unitary IPN, and compose them to obtain an effect identical to the
+definition of \emph{PhiloFork2pow0}.
+
+Two PhiloFork instances $p1$ and $p2$ can then be connected together
+as shown by the definition of \emph{PhiloFork2pow1}. The structure
+of this component allows to connect two IPN instances to construct
+an object that encapsulates them and offers the same public
+interface. We define here two private transitions which correspond
+to the philosopher $p1$ acquiring and releasing the fork of $p2$. We
+also define 4 public transitions which allow to connect instances of
+this component to other philosophers.  Note the name reuse which
+allows to use an instance of \emph{PhiloFork2pow1} within a
+composite structure.
+
+ We can then inductively define a system
+containing $2^n$ philosophers by declaring additional IPN types that
+follow the schema of \emph{PhiloFork2pow1}.
+
+Finally we define a \emph{Table} net type that contains a single instance of
+a PhiloFork net type and closes the loop by synchronizing the
+\emph{GetRight} transition with the \emph{GetFork} transition and
+similarly for the release transitions.  We finally set the \emph{main}
+model instance and its initial state using a \emph{Table} instance and
+the \emph{default} initial state.
+
+As mentioned in the previous section, this specification is able to
+scale to an exponential number of philosophers with a linear increase
+of the specification size.  A perhaps more natural modeling of the
+example using a Table defined as containing $n$ instances of the
+PhiloFork2pow0 IPN type connected with $2 n$ synchronizations is of
+course also possible, with size thus linear to the number of philosophers.

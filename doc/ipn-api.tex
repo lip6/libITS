@@ -1,0 +1,71 @@
+\section{Technical considerations}
+
+\textbf{Building IPN:}
+IPN are meant to be used as a powerful back-end verification engine
+rather than a front-end modeling language. The semantics are simple
+and complex data types (arrays, lists...) are not directly supported.
+For simple examples, the file format presented in
+section~\ref{ss:philo} has been defined, but mostly we expect users to
+create IPN from higher level modeling languages through a translation
+approach. To this end, an easily manipulable API has been defined and
+implemented both in Java and C++.
+
+The main alternative would have been to offer programming language
+constructs (loops, if/then/else, arrays, string operations to build
+labels based on patterns etc\ldots) directly within the IPN file
+format. While viable in theory, we think this approach is difficult to follow
+because $a)$ users have to learn a (new) complex language $b)$ we
+would have to implement a complex parser, which to be usable needs to
+offer good support for syntax errors and is liable to introduce bugs
+and needless complexity in the supporting tools. So, we chose instead 
+to offer a simple API, and let the user profit from all the facilities
+ of his favorite language, among which the convenience of object-oriented
+ features would have been out of scope for a dedicated language anyway.
+
+The Java language is supported because of its widespread use, and the
+support for model-driven use case scenarios that is provided by the
+Eclipse Modeling Framework (EMF) \cite{}. 
+%EMF allows to easily define
+% and manipulate metamodels, which is a prerequisite when defining 
+%model-to-model transformations using modern technologies. In particular,
+In particular, it offers good support for the manipulation of OMG standard compliant 
+ UML2 models, which was a design goal when constructing this tool set.
+
+The actual verification engine relies on \texttt{libddd} which is a
+C++ library built for memory efficiency and execution speed. It is
+thus natural for us to also offer a similar IPN construction API in
+C++, as it is the implementation language of choice for the
+computation heavy procedures of model-checking. 
+
+Because direct sharing of code and memory between C++ and Java is
+difficult, interaction between the two languages is handled through
+files written (or parsed) in the IPN file format. We use a common
+ANTLR \cite{} grammar to parse these files in both languages.  This
+file format is meant to be readable by humans; an alternative would
+have been to use XML/XMI file formats as generated from the IPN metamodel
+by EMF, but their large size and the fact that human users cannot
+read them without great difficulty made us discard this option.
+
+
+\fixme{Parler du metamodele EMF des IPN defini par Lom ? De la compatibilité par aplatissement de la hierarchie sur le format CAMI ? A travers ce biais de la possibilité d'exporter sur PNML ?}
+
+
+\textbf{Model transformation technology:} We have opted for
+direct manipulation of the UML2 API and of the IPN API (in Java) to construct
+the target models.  The alternatives we considered were $a)$ using an
+implementation of QVT standard \cite{} but we did not find one which
+matched our needs, so we discarded this option quite rapidly $b)$
+using the ATL \cite{} transformation language and engine ATLAS.
+This option we actually prototyped, but
+we had non-trivial issues with being able to trace the transformation
+rules applied, which we need to interpret the verification results in
+terms of the original UML specification. Furthermore, in ATL the user
+has no control over application of transformation rules, and the
+technology is not yet quite up to industrial strength. Lastly it requires
+learning a new and quite complex language.
+
+The option we selected of directly using Java to implement the
+transformation allows us to fully master both the transformation
+process and the construction of trace information, and our existing
+expertise with Java made this direction the easiest to follow in our
+setting.
