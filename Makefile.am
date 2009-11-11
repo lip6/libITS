@@ -1,1 +1,2 @@
-SUBDIRS = ctl test
+SUBDIRS = src
+
