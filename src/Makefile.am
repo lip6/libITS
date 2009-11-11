@@ -23,7 +23,7 @@ else
 LIBSPOT_LINK=-lspot
 endif
 
-AM_CPPFLAGS = $(LIBSPOT_CPP) $(LIBITS_CPP) $(LIBDDD_CPP) -I $(top_srcdir)/src/its/src/  -g -O2 -Wall
+AM_CPPFLAGS = $(LIBSPOT_CPP) $(LIBITS_CPP) $(LIBDDD_CPP)  -g -O2 -Wall
 AM_CXXFLAGS = -g -O2 -Wall
 
 LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
