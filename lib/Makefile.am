@@ -33,6 +33,10 @@ JSONSOURCES = $(JSONSPIRITSOURCES) \
 		$(MYJSONSRCDIR)/parse_json.cpp   \
 		$(MYJSONSRCDIR)/parse_json.hh
 
+XMLLOADERSOURCES =  CompositeXMLLoader.hh CompositeXMLLoader.cpp \
+	ITSModelXMLLoader.hh ITSModelXMLLoader.cpp \
+	XMLLoader.hh XMLLoader.cpp
+
 
 ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
 	$(MYSRCDIR)/CircularSet.hh \
@@ -87,7 +91,8 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/TPNet.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
 	$(MYSRCDIR)/TypeCacher.cpp \
-	$(JSONSOURCES)
+	$(JSONSOURCES) \
+	$(XMLLOADERSOURCES)
 
 
 if WITH_LIBDDD_PATH
