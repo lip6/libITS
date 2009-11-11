@@ -1,12 +1,30 @@
 lib_LIBRARIES =  libctlits.a # libmcctl.a
 noinst_PROGRAMS = test_ctl
 
-ITSPATH = /data/thierry/DDD/libddd/romeo/trunk/src/its
-LIBDDDPATH = /data/thierry/DDD/libddd/libddd/trunk/src
-GLULIBPATH = /home/ythierry/local/lib
+if WITH_LIBDDD_PATH
+LIBDDD_CPP=-I$(LIBDDD_ROOT)
+LIBDDD_PATH=$(LIBDDD_ROOT)/libDDD.a
+else
+LIBDDD_LINK=-lddd
+endif
+
+if WITH_LIBEXPAT_PATH
+LIBEXPAT_CPP=-I$(LIBEXPAT_ROOT)/include
+LIBEXPAT_PATH=$(LIBEXPAT_ROOT)/lib/libexpat.a
+else
+LIBEXPAT_LINK=-lexpat
+endif
 
 
-AM_CPPFLAGS = -DBDDcu -Wall -g -O2 -I $(top_srcdir)/vis/ctlp/ -I  $(LIBDDDPATH) -I /home/ythierry/local/include -I $(ITSPATH)/src
+if WITH_LIBITS_PATH
+LIBITS_CPP=-I$(LIBITS_ROOT) 
+LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a $(LIBITS_ROOT)/../lib/libprod.a $(LIBITS_ROOT)/../lib/libRdP.a $(LIBITS_ROOT)/../lib/libCAMI.a
+else
+LIBITS_LINK=-lITS
+endif
+
+
+AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(LIBITS_CPP) $(LIBDDD_CPP) $(LIBEXPAT_CPP)
 #
 #libmcctl_a_SOURCES = mcCmd.c  mcCover.c  mcDbg.c  mcDnC.c  mcGFP.c  mc.h  mcInt.h  mcMc.c  mcSCC.c  mcUtil.c  mcVacuum.c
 
@@ -14,4 +32,4 @@ libctlits_a_SOURCES = ctlCheck.hh ctlCheck.cpp
 
 
 test_ctl_SOURCES = test_ctl.cpp
-test_ctl_LDADD =  $(top_srcdir)/vis/ctlp/libctlp.a $(top_srcdir)/vis/mc/libctlits.a $(GLULIBPATH)/libcu.a  $(GLULIBPATH)/libglu.a  $(ITSPATH)/lib/libITS.a $(ITSPATH)/lib/libRdP.a $(ITSPATH)/lib/libCAMI.a -lm $(LIBDDDPATH)/libDDD.a 
+test_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) -lm 
