@@ -40,8 +40,7 @@ static char rcsid[] UNUSED = "$Id: ctlpCmd.c,v 1.14 2005/05/19 02:35:25 awedh Ex
 /* Static function prototypes                                                */
 /*---------------------------------------------------------------------------*/
 
-static int FormulaArrayCountSubformulae(array_t *formulaArray);
-static void FormulaVisitUnvisitedSubformulae(Ctlp_Formula_t *formula, int *ptr);
+
 
 /**AutomaticEnd***************************************************************/
 
@@ -100,13 +99,14 @@ CtlpFormulaSetStatesToNULL(
   Ctlp_Formula_t *formula)
 {
   if(formula!=NIL(Ctlp_Formula_t)) {
-    formula->states = NIL(mdd_t);
+    formula->forward = NIL(Ctlp_Formula_t);
     if(formula->type != Ctlp_ID_c) {
       CtlpFormulaSetStatesToNULL(formula->left);
       CtlpFormulaSetStatesToNULL(formula->right);
     }
   }
 }
+
 
 /*---------------------------------------------------------------------------*/
 /* Definition of static functions                                            */
@@ -237,13 +237,13 @@ CommandCtlpTest(
     }
   }
 
-  (void)fprintf(vis_stdout, "No. of subformulae (including formulae) = %d\n",
-                FormulaArrayCountSubformulae(existentialConvertedArray));
-  if (forwardTraversal) {
-    (void)fprintf(vis_stdout,
-                  "No. of forward subformulae (including formulae) = %d\n",
-                  FormulaArrayCountSubformulae(forwardExistentialArray));
-  }
+/*   (void)fprintf(vis_stdout, "No. of subformulae (including formulae) = %d\n", */
+/*                 FormulaArrayCountSubformulae(existentialConvertedArray)); */
+/*   if (forwardTraversal) { */
+/*     (void)fprintf(vis_stdout, */
+/*                   "No. of forward subformulae (including formulae) = %d\n", */
+/*                   FormulaArrayCountSubformulae(forwardExistentialArray)); */
+/*   } */
 
 
   Ctlp_FormulaArrayFree(convertedArray);
@@ -260,66 +260,6 @@ usage:
   (void) fprintf(vis_stderr, "usage: _ctlp_test file [-h]\n");
   (void) fprintf(vis_stderr, "   -h  print the command usage\n");
   return 1;		/* error exit */
-}
-
-
-/**Function********************************************************************
-
-  Synopsis    [Counts the number of subformulae in formulaArray.]
-
-  Description [The function counts the number of subformulae in formulaArray
-  (including the formulae themselves) by traversing the DAG. It uses the field
-  states in Ctlp_Formula_t to mark the visited states.]
-  
-  SideEffects [The field states is set to 1.]
-
-******************************************************************************/
-static int
-FormulaArrayCountSubformulae(
-  array_t *formulaArray)
-{
-  int num, i;
-  Ctlp_Formula_t *formula;
-  int count = 0;
-  
-  num = array_n(formulaArray);
-  for(i=0; i<num; i++){
-    formula = array_fetch(Ctlp_Formula_t *, formulaArray, i);
-    FormulaVisitUnvisitedSubformulae(formula, &count);
-  }
-  /* Set the field states to NULL */
-  for(i=0; i<num; i++){
-    formula = array_fetch(Ctlp_Formula_t *, formulaArray, i);
-    CtlpFormulaSetStatesToNULL(formula);
-  }
-  return count;
-}
-
-/**Function********************************************************************
-
-  Synopsis    [Visits each unvisited subformula of formula.]
-
-  Description [The formula visits each unvisited subformula of formula and
-  increments *ptr by 1 each time. It also marks each of those as visited.]
-  
-  SideEffects []
-
-******************************************************************************/
-static void
-FormulaVisitUnvisitedSubformulae(
-  Ctlp_Formula_t *formula,
-  int *ptr)
-{
-  if(formula!=NIL(Ctlp_Formula_t)) {
-    if(formula->states == NIL(mdd_t)) {
-      (*ptr)++;
-      formula->states = (mdd_t *) 1;
-      if(formula->type != Ctlp_ID_c) {
-        FormulaVisitUnvisitedSubformulae(formula->left, ptr);
-        FormulaVisitUnvisitedSubformulae(formula->right, ptr);
-      }
-    }
-  }
 }
 
 
