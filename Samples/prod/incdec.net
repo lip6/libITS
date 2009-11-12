@@ -1,0 +1,37 @@
+#place (2) inc0 mk(<..>)
+#place (2) inc1
+#place (2) inc2
+#place (1) dec0 mk(<..>)
+#place (1) dec1
+#place (1) dec2
+#place (0) var mk(<..>)
+#trans testinc
+in {inc0:<..>;var<9;}
+out {inc1:<..>;}
+#endtr
+#trans doinc
+in {inc1:<..>;var:<..>;}
+out {inc0:<..>;var:2<..>;}
+#endtr
+#trans dieinc
+in {inc0:<..>;var:9<..>;}
+out {var:9<..>;inc2:<..>;}
+#endtr
+#trans breakinc
+in {inc2:<..>;}
+#endtr
+#trans testdec
+in {dec0:<..>;var:2<..>;}
+out {dec1:<..>;var:2<..>;}
+#endtr
+#trans dodec
+in {dec1:<..>;var:<..>;}
+out {dec0:<..>;}
+#endtr
+#trans diedec
+in {dec0:<..>;var:<..>;var<2;}
+out {var:<..>;dec2:<..>;}
+#endtr
+#trans breakdec
+in {dec2:<..>;}
+#endtr

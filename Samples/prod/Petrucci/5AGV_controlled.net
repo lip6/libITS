@@ -1,0 +1,283 @@
+#place (0) I1 mk(<..>)
+#place (0) I2
+#place (1) A1
+#place (1) A2
+#place (1) A3
+#place (1) A4
+#place (1) A5
+#place (1) A6 mk(<..>)
+#place (2) W11
+#place (2) W12 mk(<..>)
+#place (2) W13
+#place (2) W14
+#place (3) D1
+#place (3) D2
+#place (3) D3
+#place (3) D4 mk(<..>)
+#place (3) D5
+#place (3) D6 
+#place (4) W31
+#place (4) W32 mk(<..>)
+#place (4) W33 mk(<..>)
+#place (4) W34
+#place (4) W35
+#place (4) W36
+#place (5) F1
+#place (5) F2
+#place (5) F3
+#place (5) F4
+#place (5) F5
+#place (5) F6 mk(<..>)
+#place (5) F7
+#place (5) F8
+#place (6) O1 mk(<..>)
+#place (6) O2
+#place (7) E1 mk(<..>)
+#place (7) E2
+#place (7) E3
+#place (7) E4
+#place (7) E5
+#place (7) E6
+#place (7) E7
+#place (7) E8
+#place (7) E9
+#place (7) E10
+#place (8) W21
+#place (8) W22
+#place (8) W23 mk(<..>)
+#place (8) W24
+#place (9) B1
+#place (9) B2
+#place (9) B3
+#place (9) B4
+#place (9) B5
+#place (9) B6
+#place (9) B7
+#place (9) B8 mk(<..>)
+#place (9) B9
+#place (9) B10
+#place (9) B11
+#place (9) B12
+#place (9) B13
+#place (9) B14
+#place (10) I3
+#place (10) I4 mk(<..>)
+#place (11) Z1 mk(<..>)
+#place (11) Z2 mk(<..>)
+#place (11) Z3 mk(<..>)
+#place (11) Z4
+
+#trans t1
+in {I2:<..>;}
+out {I1:<..>;}
+#endtr
+#trans t2
+in {I1:<..>;A6:<..>;}
+out {I2:<..>;A1:<..>;}
+#endtr
+#trans t3
+in {A1:<..>;Z1:<..>;}
+out {A2:<..>;}
+#endtr
+#trans t4
+in {A2:<..>;}
+out {A3:<..>;Z1:<..>;}
+#endtr
+#trans t5
+in {A3:<..>;W14:<..>;}
+out {A4:<..>;W11:<..>;}
+#endtr
+#trans t6
+in {A4:<..>;Z1:<..>;}
+out {A5:<..>;}
+#endtr
+#trans t7
+in {A5:<..>;}
+out {A6:<..>;Z1:<..>;}
+#endtr
+#trans t8
+in {W11:<..>;}
+out {W12:<..>;}
+#endtr
+#trans t9
+in {W12:<..>;}
+out {W13:<..>;}
+#endtr
+#trans t10
+in {W13:<..>;D3:<..>;}
+out {W14:<..>;D4:<..>;}
+#endtr
+#trans t11
+in {D4:<..>;Z2:<..>;}
+out {D5:<..>;}
+#endtr
+#trans t12
+in {D5:<..>;}
+out {D6:<..>;Z2:<..>;}
+#endtr
+#trans t13
+in {W31:<..>;D6:<..>;}
+out {W32:<..>;D1:<..>;}
+#endtr
+#trans t14
+in {D1:<..>;Z2:<..>;}
+out {D2:<..>;}
+#endtr
+#trans t15
+in {D2:<..>;}
+out {D3:<..>;Z2:<..>;}
+#endtr
+#trans t16
+in {I4:<..>;}
+out {I3:<..>;}
+#endtr
+#trans t17
+in {I3:<..>;B14:<..>;}
+out {I4:<..>;B1:<..>;}
+#endtr
+#trans t18
+in {B1:<..>;Z1:<..>;Z2:<..>;Z3:<..>;}
+out {B2:<..>;}
+#endtr
+#trans t19
+in {B2:<..>;}
+out {B3:<..>;Z1:<..>;}
+#endtr
+#trans t20
+in {B3:<..>;}
+out {B4:<..>;}
+#endtr
+#trans t21
+in {B4:<..>;}
+out {B5:<..>;Z2:<..>;}
+#endtr
+#trans t22
+in {B5:<..>;}
+out {B6:<..>;}
+#endtr
+#trans t23
+in {B6:<..>;}
+out {B7:<..>;Z3:<..>;}
+#endtr
+#trans t24
+in {B7:<..>;W24:<..>;}
+out {B8:<..>;W21:<..>;}
+#endtr
+#trans t25
+in {B8:<..>;Z1:<..>;Z2:<..>;Z3:<..>;}
+out {B9:<..>;}
+#endtr
+#trans t26
+in {B9:<..>;}
+out {B10:<..>;Z3:<..>;}
+#endtr
+#trans t27
+in {B10:<..>;}
+out {B11:<..>;}
+#endtr
+#trans t28
+in {B11:<..>;}
+out {B12:<..>;Z2:<..>;}
+#endtr
+#trans t29
+in {B12:<..>;}
+out {B13:<..>;}
+#endtr
+#trans t30
+in {B13:<..>;}
+out {B14:<..>;Z1:<..>;}
+#endtr
+#trans t31
+in {W33:<..>;W32:<..>;}
+out {W34:<..>;}
+#endtr
+#trans t32
+in {W34:<..>;}
+out {W36:<..>;}
+#endtr
+#trans t33
+in {W36:<..>;F8:<..>;}
+out {W31:<..>;W35:<..>;F1:<..>;}
+#endtr
+#trans t34
+in {W35:<..>;E10:<..>;}
+out {W33:<..>;E1:<..>;}
+#endtr
+#trans t35
+in {E1:<..>;Z3:<..>;Z4:<..>;}
+out {E2:<..>;}
+#endtr
+#trans t36
+in {E2:<..>;}
+out {E3:<..>;Z3:<..>;}
+#endtr
+#trans t37
+in {E3:<..>;}
+out {E4:<..>;}
+#endtr
+#trans t38
+in {E4:<..>;}
+out {E5:<..>;Z4:<..>;}
+#endtr
+#trans t39
+in {E5:<..>;W23:<..>;}
+out {E6:<..>;W24:<..>;}
+#endtr
+#trans t40
+in {E6:<..>;Z3:<..>;Z4:<..>;}
+out {E7:<..>;}
+#endtr
+#trans t41
+in {E7:<..>;}
+out {E8:<..>;Z4:<..>;}
+#endtr
+#trans t42
+in {E8:<..>;}
+out {E9:<..>;}
+#endtr
+#trans t43
+in {E9:<..>;}
+out {E10:<..>;Z3:<..>;}
+#endtr
+#trans t44
+in {W21:<..>;}
+out {W22:<..>;}
+#endtr
+#trans t45
+in {W22:<..>;}
+out {W23:<..>;}
+#endtr
+#trans t46
+in {F1:<..>;Z4:<..>;}
+out {F2:<..>;}
+#endtr
+#trans t47
+in {F2:<..>;}
+out {F3:<..>;Z4:<..>;}
+#endtr
+#trans t48
+in {F3:<..>;}
+out {F4:<..>;}
+#endtr
+#trans t49
+in {F4:<..>;O2:<..>;}
+out {F5:<..>;O1:<..>;}
+#endtr
+#trans t50
+in {F5:<..>;Z4:<..>;}
+out {F6:<..>;}
+#endtr
+#trans t51
+in {F6:<..>;}
+out {F7:<..>;}
+#endtr
+#trans t52
+in {F7:<..>;}
+out {F8:<..>;Z4:<..>;}
+#endtr
+#trans t53
+in {O1:<..>;}
+out {O2:<..>;}
+#endtr
+
+

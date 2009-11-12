@@ -1,0 +1,2215 @@
+#place (0) mess_to_send_ID1_ID2_0
+#place (0) mess_to_send_ID1_ID2_2
+#place (0) mess_to_send_ID1_ID2_3
+#place (0) nb_to_write_ID1_0 mk(<..>)
+#place (0) nb_to_write_ID1_1
+#place (0) nb_to_write_ID1_2
+#place (0) nb_to_write_ID1_3
+#place (0) do_write_ID1
+#place (0) to_write_ID1_ID2_0
+#place (0) to_write_ID1_ID2_1
+#place (0) to_write_ID1_ID2_2
+#place (0) to_write_ID1_ID2_3
+#place (1) mess_to_send_ID0_ID2_0
+#place (1) mess_to_send_ID0_ID1_1
+#place (1) mess_to_send_ID1_ID2_1
+#place (1) mess_to_send_ID0_ID1_2
+#place (1) mess_to_send_ID0_ID2_3
+#place (1) to_write_ID0_ID2_0
+#place (1) to_write_ID0_ID1_1
+#place (1) to_write_ID0_ID1_2
+#place (1) to_write_ID0_ID2_3
+#place (2) mess_to_send_ID0_ID1_0
+#place (2) mess_to_send_ID0_ID2_1
+#place (2) mess_to_send_ID0_ID1_3
+#place (2) nb_to_write_ID0_0 mk(<..>)
+#place (2) nb_to_write_ID0_1
+#place (2) nb_to_write_ID0_2
+#place (2) nb_to_write_ID0_3
+#place (2) do_write_ID0
+#place (2) to_write_ID0_ID1_0
+#place (2) to_write_ID0_ID2_1
+#place (2) to_write_ID0_ID1_3
+#place (3) mess_to_send_ID0_ID2_2
+#place (3) canal_ID0_ID2_1
+#place (3) canal_ID1_ID2_1
+#place (3) canal_ID0_ID2_2
+#place (3) canal_ID1_ID2_3
+#place (3) to_read_ID0_ID2_1
+#place (3) to_read_ID0_ID2_2
+#place (3) packet_ID0_ID2_1
+#place (3) packet_ID0_ID2_2
+#place (3) to_write_ID0_ID2_2
+#place (4) lock_ID2 mk(<..>)
+#place (4) while_read_next_ID2
+#place (4) nb_to_read_ID2_0 mk(<..>)
+#place (4) nb_to_read_ID2_1
+#place (4) nb_to_read_ID2_2
+#place (4) nb_to_read_ID2_3
+#place (4) canal_ID0_ID2_3
+#place (4) to_read_ID1_ID2_1
+#place (4) to_read_ID0_ID2_3
+#place (4) to_read_ID1_ID2_3
+#place (4) packet_ID0_ID2_3
+#place (4) packet_ID1_ID2_3
+#place (5) canal_ID0_ID2_0
+#place (5) canal_ID1_ID2_0
+#place (5) canal_ID1_ID2_2
+#place (5) to_read_ID0_ID2_0
+#place (5) to_read_ID1_ID2_0
+#place (5) to_read_ID1_ID2_2
+#place (5) packet_ID0_ID2_0
+#place (5) packet_ID1_ID2_0
+#place (5) packet_ID1_ID2_1
+#place (5) packet_ID1_ID2_2
+#place (6) mess_to_send_ID1_ID0_0
+#place (6) mess_to_send_ID1_ID0_1
+#place (6) canal_ID1_ID0_0
+#place (6) canal_ID2_ID0_1
+#place (6) canal_ID2_ID0_2
+#place (6) canal_ID1_ID0_3
+#place (6) to_read_ID1_ID0_3
+#place (6) packet_ID1_ID0_3
+#place (6) to_write_ID1_ID0_0
+#place (6) to_write_ID1_ID0_1
+#place (7) lock_ID0 mk(<..>)
+#place (7) while_read_next_ID0
+#place (7) nb_to_read_ID0_0 mk(<..>)
+#place (7) nb_to_read_ID0_1
+#place (7) nb_to_read_ID0_2
+#place (7) nb_to_read_ID0_3
+#place (7) to_read_ID1_ID0_0
+#place (7) to_read_ID2_ID0_0
+#place (7) to_read_ID2_ID0_1
+#place (7) to_read_ID2_ID0_2
+#place (7) packet_ID1_ID0_0
+#place (7) packet_ID2_ID0_2
+#place (8) canal_ID1_ID0_1
+#place (8) canal_ID2_ID0_3
+#place (8) to_read_ID1_ID0_1
+#place (8) to_read_ID1_ID0_2
+#place (8) to_read_ID2_ID0_3
+#place (8) packet_ID2_ID0_0
+#place (8) packet_ID1_ID0_1
+#place (8) packet_ID2_ID0_1
+#place (8) packet_ID1_ID0_2
+#place (8) packet_ID2_ID0_3
+#place (9) list_MN_ID1_ID0 mk(<..>)
+#place (9) list_MN_ID1_ID2 mk(<..>)
+#place (9) connection_all_ID1
+#place (9) nb_list_MN_ID1_0
+#place (9) nb_list_MN_ID1_1
+#place (9) nb_list_MN_ID1_2 mk(<..>)
+#place (9) in_connection_ID1_ID0_0
+#place (9) in_connection_ID1_ID2_0
+#place (9) end_poll_ID1
+#place (10) req_to_execute_ID1_ID0_0
+#place (10) req_to_execute_ID2_ID0_0
+#place (10) req_to_execute_ID1_ID0_1
+#place (10) req_to_execute_ID2_ID0_1
+#place (10) req_to_execute_ID1_ID0_3
+#place (10) end_ID0
+#place (10) handlerAnswerPrimary_ID1_ID0
+#place (10) select_less_uid_ID1_ID0
+#place (10) select_less_uid_ID2_ID0
+#place (10) note_negociate_terminate_ID0
+#place (11) mess_to_send_ID1_ID0_2
+#place (11) mess_to_send_ID1_ID0_3
+#place (11) canal_ID1_ID0_2
+#place (11) to_write_ID1_ID0_2
+#place (11) to_write_ID1_ID0_3
+#place (11) req_to_execute_ID0_ID2_2
+#place (11) req_to_execute_ID2_ID0_3
+#place (11) handlerAnswerPrimary_ID2_ID0
+#place (11) handlerAskPrimary_ID0_ID2
+#place (11) paramaters_AnPM_Node_ID0_ID4
+#place (12) req_to_execute_ID1_ID0_2
+#place (12) req_to_execute_ID0_ID1_3
+#place (12) req_to_execute_ID2_ID1_3
+#place (12) req_to_execute_ID1_ID2_3
+#place (12) handlerAnswerPrimary_ID0_ID1
+#place (12) handlerAnswerPrimary_ID2_ID1
+#place (12) handlerAnswerPrimary_ID1_ID2
+#place (12) handlerAskPrimary_ID1_ID0
+#place (12) handlerAskPrimary_ID2_ID1
+#place (12) primary_node_ID0_ID4 mk(<..>)
+#place (12) paramaters_AnPM_Node_ID1_ID4
+#place (12) paramaters_AnPM_Node_ID2_ID4
+#place (13) init_ID1 mk(<..>)
+#place (13) first_negociation_phase_ID1
+#place (13) nb_list_negociation_ID1_1
+#place (13) nb_list_negociation_ID1_2 mk(<..>)
+#place (13) nb_list_negociation_ID1_3
+#place (13) select_less_uid_ID0_ID1
+#place (13) select_less_uid_ID2_ID1
+#place (13) note_negociate_terminate_ID1
+#place (13) primary_ID1_NOK
+#place (13) primary_ID1_OK mk(<..>)
+#place (14) nb_list_negociation_ID1_0
+#place (14) second_negociation_phase_ID1
+#place (14) req_to_execute_ID0_ID1_0
+#place (14) req_to_execute_ID2_ID1_0
+#place (14) req_to_execute_ID0_ID1_1
+#place (14) req_to_execute_ID2_ID1_1
+#place (14) req_to_execute_ID0_ID1_2
+#place (14) end_ID1
+#place (14) handlerAskPrimary_ID0_ID1
+#place (14) primary_node_ID1_ID4 mk(<..>)
+#place (15) canal_ID0_ID1_1
+#place (15) canal_ID0_ID1_2
+#place (15) canal_ID2_ID1_2
+#place (15) to_read_ID0_ID1_1
+#place (15) to_read_ID0_ID1_2
+#place (15) to_read_ID2_ID1_2
+#place (15) packet_ID0_ID1_1
+#place (15) packet_ID0_ID1_2
+#place (15) packet_ID2_ID1_2
+#place (15) req_to_execute_ID2_ID1_2
+#place (16) lock_ID1 mk(<..>)
+#place (16) while_read_next_ID1
+#place (16) nb_to_read_ID1_0 mk(<..>)
+#place (16) nb_to_read_ID1_1
+#place (16) nb_to_read_ID1_2
+#place (16) nb_to_read_ID1_3
+#place (16) canal_ID2_ID1_0
+#place (16) canal_ID2_ID1_1
+#place (16) to_read_ID2_ID1_0
+#place (16) to_read_ID2_ID1_1
+#place (16) packet_ID2_ID1_0
+#place (16) packet_ID2_ID1_1
+#place (17) canal_ID0_ID1_0
+#place (17) canal_ID0_ID1_3
+#place (17) canal_ID2_ID1_3
+#place (17) to_read_ID0_ID1_0
+#place (17) to_read_ID0_ID1_3
+#place (17) to_read_ID2_ID1_3
+#place (17) packet_ID0_ID1_0
+#place (17) packet_ID0_ID1_3
+#place (17) packet_ID2_ID1_3
+#place (18) end_poll_ID2
+#place (18) req_to_execute_ID0_ID2_0
+#place (18) req_to_execute_ID1_ID2_0
+#place (18) req_to_execute_ID0_ID2_1
+#place (18) req_to_execute_ID1_ID2_1
+#place (18) req_to_execute_ID1_ID2_2
+#place (18) end_ID2
+#place (18) handlerAskPrimary_ID1_ID2
+#place (18) primary_node_ID2_ID4 mk(<..>)
+#place (19) mess_to_send_ID2_ID1_1
+#place (19) mess_to_send_ID2_ID1_2
+#place (19) mess_to_send_ID2_ID0_3
+#place (19) nb_to_write_ID2_0 mk(<..>)
+#place (19) nb_to_write_ID2_1
+#place (19) nb_to_write_ID2_2
+#place (19) nb_to_write_ID2_3
+#place (19) do_write_ID2
+#place (19) to_write_ID2_ID0_1
+#place (19) to_write_ID2_ID1_1
+#place (19) to_write_ID2_ID1_2
+#place (19) to_write_ID2_ID0_3
+#place (20) mess_to_send_ID2_ID0_0
+#place (20) mess_to_send_ID2_ID1_0
+#place (20) mess_to_send_ID2_ID0_1
+#place (20) mess_to_send_ID2_ID0_2
+#place (20) mess_to_send_ID2_ID1_3
+#place (20) canal_ID2_ID0_0
+#place (20) to_write_ID2_ID0_0
+#place (20) to_write_ID2_ID1_0
+#place (20) to_write_ID2_ID0_2
+#place (20) to_write_ID2_ID1_3
+#place (21) init_ID2 mk(<..>)
+#place (21) first_negociation_phase_ID2
+#place (21) list_MN_ID2_ID0 mk(<..>)
+#place (21) list_MN_ID2_ID1 mk(<..>)
+#place (21) connection_all_ID2
+#place (21) nb_list_MN_ID2_0
+#place (21) nb_list_MN_ID2_1
+#place (21) nb_list_MN_ID2_2 mk(<..>)
+#place (21) in_connection_ID2_ID0_0
+#place (21) in_connection_ID2_ID1_0
+#place (22) nb_list_negociation_ID2_0
+#place (22) nb_list_negociation_ID2_1
+#place (22) nb_list_negociation_ID2_2 mk(<..>)
+#place (22) nb_list_negociation_ID2_3
+#place (22) second_negociation_phase_ID2
+#place (22) select_less_uid_ID0_ID2
+#place (22) select_less_uid_ID1_ID2
+#place (22) note_negociate_terminate_ID2
+#place (22) primary_ID2_NOK
+#place (22) primary_ID2_OK mk(<..>)
+#place (23) list_MN_ID0_ID1 mk(<..>)
+#place (23) list_MN_ID0_ID2 mk(<..>)
+#place (23) connection_all_ID0
+#place (23) nb_list_MN_ID0_0
+#place (23) nb_list_MN_ID0_1
+#place (23) nb_list_MN_ID0_2 mk(<..>)
+#place (23) in_connection_ID0_ID1_0
+#place (23) in_connection_ID0_ID2_0
+#place (23) second_negociation_phase_ID0
+#place (23) end_poll_ID0
+#place (24) init_ID0 mk(<..>)
+#place (24) first_negociation_phase_ID0
+#place (24) nb_list_negociation_ID0_0
+#place (24) nb_list_negociation_ID0_1
+#place (24) nb_list_negociation_ID0_2 mk(<..>)
+#place (24) nb_list_negociation_ID0_3
+#place (24) req_to_execute_ID2_ID0_2
+#place (24) req_to_execute_ID0_ID2_3
+#place (24) handlerAnswerPrimary_ID0_ID2
+#place (24) handlerAskPrimary_ID2_ID0
+#trans election_1_ID0
+in{init_ID0:<..>;}
+out{first_negociation_phase_ID0:<..>;}
+#endtr
+#trans election_1_ID1
+in{init_ID1:<..>;}
+out{first_negociation_phase_ID1:<..>;}
+#endtr
+#trans election_1_ID2
+in{init_ID2:<..>;}
+out{first_negociation_phase_ID2:<..>;}
+#endtr
+#trans connectStarted_ID1_ID0_1
+in{connection_all_ID1:<..>;list_MN_ID1_ID0:<..>;nb_list_MN_ID1_1:<..>;}
+out{in_connection_ID1_ID0_0:<..>;nb_list_MN_ID1_0:<..>;}
+#endtr
+#trans connectStarted_ID2_ID0_1
+in{connection_all_ID2:<..>;list_MN_ID2_ID0:<..>;nb_list_MN_ID2_1:<..>;}
+out{in_connection_ID2_ID0_0:<..>;nb_list_MN_ID2_0:<..>;}
+#endtr
+#trans connectStarted_ID0_ID1_1
+in{nb_list_MN_ID0_1:<..>;connection_all_ID0:<..>;list_MN_ID0_ID1:<..>;}
+out{in_connection_ID0_ID1_0:<..>;nb_list_MN_ID0_0:<..>;}
+#endtr
+#trans connectStarted_ID2_ID1_1
+in{connection_all_ID2:<..>;list_MN_ID2_ID1:<..>;nb_list_MN_ID2_1:<..>;}
+out{in_connection_ID2_ID1_0:<..>;nb_list_MN_ID2_0:<..>;}
+#endtr
+#trans connectStarted_ID0_ID2_1
+in{nb_list_MN_ID0_1:<..>;connection_all_ID0:<..>;list_MN_ID0_ID2:<..>;}
+out{in_connection_ID0_ID2_0:<..>;nb_list_MN_ID0_0:<..>;}
+#endtr
+#trans connectStarted_ID1_ID2_1
+in{connection_all_ID1:<..>;list_MN_ID1_ID2:<..>;nb_list_MN_ID1_1:<..>;}
+out{in_connection_ID1_ID2_0:<..>;nb_list_MN_ID1_0:<..>;}
+#endtr
+#trans connectStarted_ID1_ID0_2
+in{connection_all_ID1:<..>;list_MN_ID1_ID0:<..>;nb_list_MN_ID1_2:<..>;}
+out{in_connection_ID1_ID0_0:<..>;nb_list_MN_ID1_1:<..>;}
+#endtr
+#trans connectStarted_ID2_ID0_2
+in{connection_all_ID2:<..>;list_MN_ID2_ID0:<..>;nb_list_MN_ID2_2:<..>;}
+out{in_connection_ID2_ID0_0:<..>;nb_list_MN_ID2_1:<..>;}
+#endtr
+#trans connectStarted_ID0_ID1_2
+in{connection_all_ID0:<..>;list_MN_ID0_ID1:<..>;nb_list_MN_ID0_2:<..>;}
+out{in_connection_ID0_ID1_0:<..>;nb_list_MN_ID0_1:<..>;}
+#endtr
+#trans connectStarted_ID2_ID1_2
+in{connection_all_ID2:<..>;list_MN_ID2_ID1:<..>;nb_list_MN_ID2_2:<..>;}
+out{in_connection_ID2_ID1_0:<..>;nb_list_MN_ID2_1:<..>;}
+#endtr
+#trans connectStarted_ID0_ID2_2
+in{connection_all_ID0:<..>;list_MN_ID0_ID2:<..>;nb_list_MN_ID0_2:<..>;}
+out{in_connection_ID0_ID2_0:<..>;nb_list_MN_ID0_1:<..>;}
+#endtr
+#trans connectStarted_ID1_ID2_2
+in{connection_all_ID1:<..>;list_MN_ID1_ID2:<..>;nb_list_MN_ID1_2:<..>;}
+out{in_connection_ID1_ID2_0:<..>;nb_list_MN_ID1_1:<..>;}
+#endtr
+#trans connectCompleted_ID1_ID0_0
+in{in_connection_ID1_ID0_0:<..>;}
+out{mess_to_send_ID1_ID0_0:<..>;connection_all_ID1:<..>;}
+#endtr
+#trans connectCompleted_ID2_ID0_0
+in{in_connection_ID2_ID0_0:<..>;}
+out{mess_to_send_ID2_ID0_0:<..>;connection_all_ID2:<..>;}
+#endtr
+#trans connectCompleted_ID0_ID1_0
+in{in_connection_ID0_ID1_0:<..>;}
+out{mess_to_send_ID0_ID1_0:<..>;connection_all_ID0:<..>;}
+#endtr
+#trans connectCompleted_ID2_ID1_0
+in{in_connection_ID2_ID1_0:<..>;}
+out{mess_to_send_ID2_ID1_0:<..>;connection_all_ID2:<..>;}
+#endtr
+#trans connectCompleted_ID0_ID2_0
+in{in_connection_ID0_ID2_0:<..>;}
+out{mess_to_send_ID0_ID2_0:<..>;connection_all_ID0:<..>;}
+#endtr
+#trans connectCompleted_ID1_ID2_0
+in{in_connection_ID1_ID2_0:<..>;}
+out{mess_to_send_ID1_ID2_0:<..>;connection_all_ID1:<..>;}
+#endtr
+#trans continue_negociation_ID0_0_1
+in{nb_list_negociation_ID0_1:<..>;nb_list_MN_ID0_0:<..>;connection_all_ID0:<..>;}
+out{nb_list_negociation_ID0_1:<..>;nb_list_MN_ID0_0:<..>;first_negociation_phase_ID0:<..>;}
+#endtr
+#trans continue_negociation_ID1_0_1
+in{nb_list_MN_ID1_0:<..>;connection_all_ID1:<..>;nb_list_negociation_ID1_1:<..>;}
+out{nb_list_MN_ID1_0:<..>;first_negociation_phase_ID1:<..>;nb_list_negociation_ID1_1:<..>;}
+#endtr
+#trans continue_negociation_ID2_0_1
+in{nb_list_MN_ID2_0:<..>;connection_all_ID2:<..>;nb_list_negociation_ID2_1:<..>;}
+out{nb_list_MN_ID2_0:<..>;first_negociation_phase_ID2:<..>;nb_list_negociation_ID2_1:<..>;}
+#endtr
+#trans continue_negociation_ID0_0_2
+in{nb_list_MN_ID0_0:<..>;connection_all_ID0:<..>;nb_list_negociation_ID0_2:<..>;}
+out{nb_list_MN_ID0_0:<..>;first_negociation_phase_ID0:<..>;nb_list_negociation_ID0_2:<..>;}
+#endtr
+#trans continue_negociation_ID1_0_2
+in{nb_list_MN_ID1_0:<..>;connection_all_ID1:<..>;nb_list_negociation_ID1_2:<..>;}
+out{nb_list_MN_ID1_0:<..>;first_negociation_phase_ID1:<..>;nb_list_negociation_ID1_2:<..>;}
+#endtr
+#trans continue_negociation_ID2_0_2
+in{nb_list_MN_ID2_0:<..>;nb_list_negociation_ID2_2:<..>;connection_all_ID2:<..>;}
+out{nb_list_MN_ID2_0:<..>;nb_list_negociation_ID2_2:<..>;first_negociation_phase_ID2:<..>;}
+#endtr
+#trans continue_negociation_ID0_0_3
+in{nb_list_MN_ID0_0:<..>;connection_all_ID0:<..>;nb_list_negociation_ID0_3:<..>;}
+out{nb_list_MN_ID0_0:<..>;first_negociation_phase_ID0:<..>;nb_list_negociation_ID0_3:<..>;}
+#endtr
+#trans continue_negociation_ID1_0_3
+in{nb_list_MN_ID1_0:<..>;nb_list_negociation_ID1_3:<..>;connection_all_ID1:<..>;}
+out{nb_list_MN_ID1_0:<..>;nb_list_negociation_ID1_3:<..>;first_negociation_phase_ID1:<..>;}
+#endtr
+#trans continue_negociation_ID2_0_3
+in{nb_list_MN_ID2_0:<..>;connection_all_ID2:<..>;nb_list_negociation_ID2_3:<..>;}
+out{nb_list_MN_ID2_0:<..>;first_negociation_phase_ID2:<..>;nb_list_negociation_ID2_3:<..>;}
+#endtr
+#trans choose_primary_master_ID0_0_0
+in{nb_list_MN_ID0_0:<..>;connection_all_ID0:<..>;nb_list_negociation_ID0_0:<..>;}
+out{nb_list_negociation_ID0_0:<..>;nb_list_MN_ID0_0:<..>;second_negociation_phase_ID0:<..>;}
+#endtr
+#trans choose_primary_master_ID1_0_0
+in{nb_list_MN_ID1_0:<..>;nb_list_negociation_ID1_0:<..>;connection_all_ID1:<..>;}
+out{nb_list_negociation_ID1_0:<..>;second_negociation_phase_ID1:<..>;nb_list_MN_ID1_0:<..>;}
+#endtr
+#trans choose_primary_master_ID2_0_0
+in{nb_list_MN_ID2_0:<..>;connection_all_ID2:<..>;nb_list_negociation_ID2_0:<..>;}
+out{nb_list_negociation_ID2_0:<..>;second_negociation_phase_ID2:<..>;nb_list_MN_ID2_0:<..>;}
+#endtr
+#trans connect_all_ID0
+in{end_poll_ID0:<..>;}
+out{connection_all_ID0:<..>;}
+#endtr
+#trans connect_all_ID1
+in{end_poll_ID1:<..>;}
+out{connection_all_ID1:<..>;}
+#endtr
+#trans connect_all_ID2
+in{end_poll_ID2:<..>;}
+out{connection_all_ID2:<..>;}
+#endtr
+#trans poll_ID0
+in{lock_ID0:<..>;first_negociation_phase_ID0:<..>;}
+out{while_read_next_ID0:<..>;}
+#endtr
+#trans poll_ID1
+in{lock_ID1:<..>;first_negociation_phase_ID1:<..>;}
+out{while_read_next_ID1:<..>;}
+#endtr
+#trans poll_ID2
+in{lock_ID2:<..>;first_negociation_phase_ID2:<..>;}
+out{while_read_next_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_0_0
+in{nb_to_read_ID0_0:<..>;lock_ID0:<..>;canal_ID1_ID0_0:<..>;}
+out{nb_to_read_ID0_1:<..>;to_read_ID1_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_0_0
+in{nb_to_read_ID0_0:<..>;lock_ID0:<..>;canal_ID2_ID0_0:<..>;}
+out{nb_to_read_ID0_1:<..>;to_read_ID2_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_0_0
+in{nb_to_read_ID1_0:<..>;lock_ID1:<..>;canal_ID0_ID1_0:<..>;}
+out{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_1:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_0_0
+in{nb_to_read_ID1_0:<..>;lock_ID1:<..>;canal_ID2_ID1_0:<..>;}
+out{nb_to_read_ID1_1:<..>;to_read_ID2_ID1_0:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_0_0
+in{nb_to_read_ID2_0:<..>;canal_ID0_ID2_0:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_1:<..>;lock_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+#endtr
+#trans receive_ID1_ID2_0_0
+in{nb_to_read_ID2_0:<..>;lock_ID2:<..>;canal_ID1_ID2_0:<..>;}
+out{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_1:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_1_0
+in{nb_to_read_ID0_0:<..>;lock_ID0:<..>;canal_ID1_ID0_1:<..>;}
+out{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_1:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_1_0
+in{nb_to_read_ID0_0:<..>;lock_ID0:<..>;canal_ID2_ID0_1:<..>;}
+out{nb_to_read_ID0_1:<..>;to_read_ID2_ID0_1:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_1_0
+in{nb_to_read_ID1_0:<..>;lock_ID1:<..>;canal_ID0_ID1_1:<..>;}
+out{nb_to_read_ID1_1:<..>;to_read_ID0_ID1_1:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_1_0
+in{nb_to_read_ID1_0:<..>;lock_ID1:<..>;canal_ID2_ID1_1:<..>;}
+out{nb_to_read_ID1_1:<..>;lock_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+#endtr
+#trans receive_ID0_ID2_1_0
+in{nb_to_read_ID2_0:<..>;canal_ID0_ID2_1:<..>;lock_ID2:<..>;}
+out{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_1:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID2_1_0
+in{nb_to_read_ID2_0:<..>;lock_ID2:<..>;canal_ID1_ID2_1:<..>;}
+out{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_1:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_2_0
+in{nb_to_read_ID0_0:<..>;canal_ID1_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_1:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_2_0
+in{nb_to_read_ID0_0:<..>;canal_ID2_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_1:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_2_0
+in{nb_to_read_ID1_0:<..>;canal_ID0_ID1_2:<..>;lock_ID1:<..>;}
+out{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_1:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_2_0
+in{nb_to_read_ID1_0:<..>;canal_ID2_ID1_2:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_1:<..>;to_read_ID2_ID1_2:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_2_0
+in{canal_ID0_ID2_2:<..>;nb_to_read_ID2_0:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_1:<..>;lock_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID2_2_0
+in{nb_to_read_ID2_0:<..>;lock_ID2:<..>;canal_ID1_ID2_2:<..>;}
+out{nb_to_read_ID2_1:<..>;lock_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID0_3_0
+in{nb_to_read_ID0_0:<..>;canal_ID1_ID0_3:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_1:<..>;lock_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+#endtr
+#trans receive_ID2_ID0_3_0
+in{canal_ID2_ID0_3:<..>;nb_to_read_ID0_0:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_1:<..>;lock_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+#endtr
+#trans receive_ID0_ID1_3_0
+in{nb_to_read_ID1_0:<..>;canal_ID0_ID1_3:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_1:<..>;lock_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+#endtr
+#trans receive_ID2_ID1_3_0
+in{nb_to_read_ID1_0:<..>;lock_ID1:<..>;canal_ID2_ID1_3:<..>;}
+out{nb_to_read_ID1_1:<..>;lock_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+#endtr
+#trans receive_ID0_ID2_3_0
+in{nb_to_read_ID2_0:<..>;canal_ID0_ID2_3:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_1:<..>;lock_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+#endtr
+#trans receive_ID1_ID2_3_0
+in{nb_to_read_ID2_0:<..>;canal_ID1_ID2_3:<..>;lock_ID2:<..>;}
+out{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_1:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_0_1
+in{nb_to_read_ID0_1:<..>;lock_ID0:<..>;canal_ID1_ID0_0:<..>;}
+out{nb_to_read_ID0_2:<..>;to_read_ID1_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_0_1
+in{nb_to_read_ID0_1:<..>;lock_ID0:<..>;canal_ID2_ID0_0:<..>;}
+out{nb_to_read_ID0_2:<..>;to_read_ID2_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_0_1
+in{nb_to_read_ID1_1:<..>;lock_ID1:<..>;canal_ID0_ID1_0:<..>;}
+out{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_2:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_0_1
+in{nb_to_read_ID1_1:<..>;lock_ID1:<..>;canal_ID2_ID1_0:<..>;}
+out{nb_to_read_ID1_2:<..>;to_read_ID2_ID1_0:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_0_1
+in{nb_to_read_ID2_1:<..>;canal_ID0_ID2_0:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_2:<..>;lock_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+#endtr
+#trans receive_ID1_ID2_0_1
+in{nb_to_read_ID2_1:<..>;lock_ID2:<..>;canal_ID1_ID2_0:<..>;}
+out{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_2:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_1_1
+in{nb_to_read_ID0_1:<..>;lock_ID0:<..>;canal_ID1_ID0_1:<..>;}
+out{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_2:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_1_1
+in{nb_to_read_ID0_1:<..>;lock_ID0:<..>;canal_ID2_ID0_1:<..>;}
+out{nb_to_read_ID0_2:<..>;to_read_ID2_ID0_1:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_1_1
+in{nb_to_read_ID1_1:<..>;lock_ID1:<..>;canal_ID0_ID1_1:<..>;}
+out{nb_to_read_ID1_2:<..>;to_read_ID0_ID1_1:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_1_1
+in{nb_to_read_ID1_1:<..>;lock_ID1:<..>;canal_ID2_ID1_1:<..>;}
+out{nb_to_read_ID1_2:<..>;lock_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+#endtr
+#trans receive_ID0_ID2_1_1
+in{nb_to_read_ID2_1:<..>;canal_ID0_ID2_1:<..>;lock_ID2:<..>;}
+out{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_2:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID2_1_1
+in{nb_to_read_ID2_1:<..>;lock_ID2:<..>;canal_ID1_ID2_1:<..>;}
+out{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_2:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_2_1
+in{nb_to_read_ID0_1:<..>;canal_ID1_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_2:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_2_1
+in{nb_to_read_ID0_1:<..>;canal_ID2_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_2:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_2_1
+in{nb_to_read_ID1_1:<..>;canal_ID0_ID1_2:<..>;lock_ID1:<..>;}
+out{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_2:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_2_1
+in{nb_to_read_ID1_1:<..>;canal_ID2_ID1_2:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_2:<..>;to_read_ID2_ID1_2:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_2_1
+in{canal_ID0_ID2_2:<..>;nb_to_read_ID2_1:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_2:<..>;lock_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID2_2_1
+in{nb_to_read_ID2_1:<..>;lock_ID2:<..>;canal_ID1_ID2_2:<..>;}
+out{nb_to_read_ID2_2:<..>;lock_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID0_3_1
+in{nb_to_read_ID0_1:<..>;canal_ID1_ID0_3:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_2:<..>;lock_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+#endtr
+#trans receive_ID2_ID0_3_1
+in{canal_ID2_ID0_3:<..>;nb_to_read_ID0_1:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_2:<..>;lock_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+#endtr
+#trans receive_ID0_ID1_3_1
+in{nb_to_read_ID1_1:<..>;canal_ID0_ID1_3:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_2:<..>;lock_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+#endtr
+#trans receive_ID2_ID1_3_1
+in{nb_to_read_ID1_1:<..>;lock_ID1:<..>;canal_ID2_ID1_3:<..>;}
+out{nb_to_read_ID1_2:<..>;lock_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+#endtr
+#trans receive_ID0_ID2_3_1
+in{nb_to_read_ID2_1:<..>;canal_ID0_ID2_3:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_2:<..>;lock_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+#endtr
+#trans receive_ID1_ID2_3_1
+in{nb_to_read_ID2_1:<..>;canal_ID1_ID2_3:<..>;lock_ID2:<..>;}
+out{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_2:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_0_2
+in{nb_to_read_ID0_2:<..>;lock_ID0:<..>;canal_ID1_ID0_0:<..>;}
+out{nb_to_read_ID0_3:<..>;to_read_ID1_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_0_2
+in{nb_to_read_ID0_2:<..>;lock_ID0:<..>;canal_ID2_ID0_0:<..>;}
+out{nb_to_read_ID0_3:<..>;to_read_ID2_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_0_2
+in{nb_to_read_ID1_2:<..>;lock_ID1:<..>;canal_ID0_ID1_0:<..>;}
+out{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_3:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_0_2
+in{nb_to_read_ID1_2:<..>;lock_ID1:<..>;canal_ID2_ID1_0:<..>;}
+out{nb_to_read_ID1_3:<..>;to_read_ID2_ID1_0:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_0_2
+in{nb_to_read_ID2_2:<..>;canal_ID0_ID2_0:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_3:<..>;lock_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+#endtr
+#trans receive_ID1_ID2_0_2
+in{nb_to_read_ID2_2:<..>;lock_ID2:<..>;canal_ID1_ID2_0:<..>;}
+out{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_3:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_1_2
+in{nb_to_read_ID0_2:<..>;lock_ID0:<..>;canal_ID1_ID0_1:<..>;}
+out{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_3:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_1_2
+in{nb_to_read_ID0_2:<..>;lock_ID0:<..>;canal_ID2_ID0_1:<..>;}
+out{nb_to_read_ID0_3:<..>;to_read_ID2_ID0_1:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_1_2
+in{nb_to_read_ID1_2:<..>;lock_ID1:<..>;canal_ID0_ID1_1:<..>;}
+out{nb_to_read_ID1_3:<..>;to_read_ID0_ID1_1:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_1_2
+in{nb_to_read_ID1_2:<..>;lock_ID1:<..>;canal_ID2_ID1_1:<..>;}
+out{nb_to_read_ID1_3:<..>;lock_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+#endtr
+#trans receive_ID0_ID2_1_2
+in{nb_to_read_ID2_2:<..>;canal_ID0_ID2_1:<..>;lock_ID2:<..>;}
+out{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_3:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID2_1_2
+in{nb_to_read_ID2_2:<..>;lock_ID2:<..>;canal_ID1_ID2_1:<..>;}
+out{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_3:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_2_2
+in{nb_to_read_ID0_2:<..>;canal_ID1_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_3:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_2_2
+in{nb_to_read_ID0_2:<..>;canal_ID2_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_3:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_2_2
+in{nb_to_read_ID1_2:<..>;canal_ID0_ID1_2:<..>;lock_ID1:<..>;}
+out{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_3:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_2_2
+in{nb_to_read_ID1_2:<..>;canal_ID2_ID1_2:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_3:<..>;to_read_ID2_ID1_2:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_2_2
+in{canal_ID0_ID2_2:<..>;nb_to_read_ID2_2:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_3:<..>;lock_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID2_2_2
+in{nb_to_read_ID2_2:<..>;lock_ID2:<..>;canal_ID1_ID2_2:<..>;}
+out{nb_to_read_ID2_3:<..>;lock_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID0_3_2
+in{nb_to_read_ID0_2:<..>;canal_ID1_ID0_3:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_3:<..>;lock_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+#endtr
+#trans receive_ID2_ID0_3_2
+in{canal_ID2_ID0_3:<..>;nb_to_read_ID0_2:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_3:<..>;lock_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+#endtr
+#trans receive_ID0_ID1_3_2
+in{nb_to_read_ID1_2:<..>;canal_ID0_ID1_3:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_3:<..>;lock_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+#endtr
+#trans receive_ID2_ID1_3_2
+in{nb_to_read_ID1_2:<..>;lock_ID1:<..>;canal_ID2_ID1_3:<..>;}
+out{nb_to_read_ID1_3:<..>;lock_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+#endtr
+#trans receive_ID0_ID2_3_2
+in{nb_to_read_ID2_2:<..>;canal_ID0_ID2_3:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_3:<..>;lock_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+#endtr
+#trans receive_ID1_ID2_3_2
+in{nb_to_read_ID2_2:<..>;canal_ID1_ID2_3:<..>;lock_ID2:<..>;}
+out{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_3:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_0_3
+in{nb_to_read_ID0_3:<..>;lock_ID0:<..>;canal_ID1_ID0_0:<..>;}
+out{nb_to_read_ID0_0:<..>;to_read_ID1_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_0_3
+in{nb_to_read_ID0_3:<..>;lock_ID0:<..>;canal_ID2_ID0_0:<..>;}
+out{nb_to_read_ID0_0:<..>;to_read_ID2_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_0_3
+in{nb_to_read_ID1_3:<..>;lock_ID1:<..>;canal_ID0_ID1_0:<..>;}
+out{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_0:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_0_3
+in{nb_to_read_ID1_3:<..>;lock_ID1:<..>;canal_ID2_ID1_0:<..>;}
+out{nb_to_read_ID1_0:<..>;to_read_ID2_ID1_0:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_0_3
+in{nb_to_read_ID2_3:<..>;canal_ID0_ID2_0:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_0:<..>;lock_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+#endtr
+#trans receive_ID1_ID2_0_3
+in{nb_to_read_ID2_3:<..>;lock_ID2:<..>;canal_ID1_ID2_0:<..>;}
+out{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_0:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_1_3
+in{nb_to_read_ID0_3:<..>;lock_ID0:<..>;canal_ID1_ID0_1:<..>;}
+out{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_1_3
+in{nb_to_read_ID0_3:<..>;lock_ID0:<..>;canal_ID2_ID0_1:<..>;}
+out{nb_to_read_ID0_0:<..>;to_read_ID2_ID0_1:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_1_3
+in{nb_to_read_ID1_3:<..>;lock_ID1:<..>;canal_ID0_ID1_1:<..>;}
+out{nb_to_read_ID1_0:<..>;to_read_ID0_ID1_1:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_1_3
+in{nb_to_read_ID1_3:<..>;lock_ID1:<..>;canal_ID2_ID1_1:<..>;}
+out{nb_to_read_ID1_0:<..>;lock_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+#endtr
+#trans receive_ID0_ID2_1_3
+in{nb_to_read_ID2_3:<..>;canal_ID0_ID2_1:<..>;lock_ID2:<..>;}
+out{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_0:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID2_1_3
+in{nb_to_read_ID2_3:<..>;lock_ID2:<..>;canal_ID1_ID2_1:<..>;}
+out{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_0:<..>;lock_ID2:<..>;}
+#endtr
+#trans receive_ID1_ID0_2_3
+in{nb_to_read_ID0_3:<..>;canal_ID1_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID2_ID0_2_3
+in{nb_to_read_ID0_3:<..>;canal_ID2_ID0_2:<..>;lock_ID0:<..>;}
+out{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_0:<..>;lock_ID0:<..>;}
+#endtr
+#trans receive_ID0_ID1_2_3
+in{nb_to_read_ID1_3:<..>;canal_ID0_ID1_2:<..>;lock_ID1:<..>;}
+out{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_0:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID2_ID1_2_3
+in{nb_to_read_ID1_3:<..>;canal_ID2_ID1_2:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_0:<..>;to_read_ID2_ID1_2:<..>;lock_ID1:<..>;}
+#endtr
+#trans receive_ID0_ID2_2_3
+in{canal_ID0_ID2_2:<..>;nb_to_read_ID2_3:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_0:<..>;lock_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID2_2_3
+in{nb_to_read_ID2_3:<..>;lock_ID2:<..>;canal_ID1_ID2_2:<..>;}
+out{nb_to_read_ID2_0:<..>;lock_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+#endtr
+#trans receive_ID1_ID0_3_3
+in{nb_to_read_ID0_3:<..>;canal_ID1_ID0_3:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_0:<..>;lock_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+#endtr
+#trans receive_ID2_ID0_3_3
+in{canal_ID2_ID0_3:<..>;nb_to_read_ID0_3:<..>;lock_ID0:<..>;}
+out{nb_to_read_ID0_0:<..>;lock_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+#endtr
+#trans receive_ID0_ID1_3_3
+in{nb_to_read_ID1_3:<..>;canal_ID0_ID1_3:<..>;lock_ID1:<..>;}
+out{nb_to_read_ID1_0:<..>;lock_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+#endtr
+#trans receive_ID2_ID1_3_3
+in{nb_to_read_ID1_3:<..>;lock_ID1:<..>;canal_ID2_ID1_3:<..>;}
+out{nb_to_read_ID1_0:<..>;lock_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+#endtr
+#trans receive_ID0_ID2_3_3
+in{nb_to_read_ID2_3:<..>;canal_ID0_ID2_3:<..>;lock_ID2:<..>;}
+out{nb_to_read_ID2_0:<..>;lock_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+#endtr
+#trans receive_ID1_ID2_3_3
+in{nb_to_read_ID2_3:<..>;canal_ID1_ID2_3:<..>;lock_ID2:<..>;}
+out{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_0:<..>;lock_ID2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_0_0
+in{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_0:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_0:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_0_0
+in{nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+out{packet_ID0_ID2_0:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_0_0
+in{nb_to_read_ID0_0:<..>;to_read_ID1_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_0:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_0_0
+in{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_0:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_0_0
+in{nb_to_read_ID0_0:<..>;to_read_ID2_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_0:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_0_0
+in{nb_to_read_ID1_0:<..>;to_read_ID2_ID1_0:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_0:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_1_0
+in{nb_to_read_ID1_0:<..>;to_read_ID0_ID1_1:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_1:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_1_0
+in{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;}
+out{packet_ID0_ID2_1:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_1_0
+in{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_1:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_1_0
+in{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_1:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_1_0
+in{nb_to_read_ID0_0:<..>;to_read_ID2_ID0_1:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_1:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_1_0
+in{nb_to_read_ID1_0:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+out{packet_ID2_ID1_1:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_2_0
+in{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_0:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_2:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_2_0
+in{nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+out{packet_ID0_ID2_2:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_2_0
+in{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_2:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_2_0
+in{nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+out{packet_ID1_ID2_2:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_2_0
+in{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_2:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_2_0
+in{nb_to_read_ID1_0:<..>;to_read_ID2_ID1_2:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_2:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_3_0
+in{nb_to_read_ID1_0:<..>;while_read_next_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+out{packet_ID0_ID1_3:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_3_0
+in{nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+out{packet_ID0_ID2_3:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_3_0
+in{nb_to_read_ID0_0:<..>;while_read_next_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+out{packet_ID1_ID0_3:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_3_0
+in{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_3:<..>;nb_to_read_ID2_3:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_3_0
+in{nb_to_read_ID0_0:<..>;while_read_next_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+out{packet_ID2_ID0_3:<..>;nb_to_read_ID0_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_3_0
+in{nb_to_read_ID1_0:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+out{packet_ID2_ID1_3:<..>;nb_to_read_ID1_3:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_0_1
+in{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_1:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_0:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_0_1
+in{nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+out{packet_ID0_ID2_0:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_0_1
+in{nb_to_read_ID0_1:<..>;to_read_ID1_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_0:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_0_1
+in{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_0:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_0_1
+in{nb_to_read_ID0_1:<..>;to_read_ID2_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_0:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_0_1
+in{nb_to_read_ID1_1:<..>;to_read_ID2_ID1_0:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_0:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_1_1
+in{nb_to_read_ID1_1:<..>;to_read_ID0_ID1_1:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_1:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_1_1
+in{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;}
+out{packet_ID0_ID2_1:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_1_1
+in{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_1:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_1:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_1_1
+in{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_1:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_1_1
+in{nb_to_read_ID0_1:<..>;to_read_ID2_ID0_1:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_1:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_1_1
+in{nb_to_read_ID1_1:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+out{packet_ID2_ID1_1:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_2_1
+in{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_1:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_2:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_2_1
+in{nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+out{packet_ID0_ID2_2:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_2_1
+in{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_1:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_2:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_2_1
+in{nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+out{packet_ID1_ID2_2:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_2_1
+in{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_1:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_2:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_2_1
+in{nb_to_read_ID1_1:<..>;to_read_ID2_ID1_2:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_2:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_3_1
+in{nb_to_read_ID1_1:<..>;while_read_next_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+out{packet_ID0_ID1_3:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_3_1
+in{nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+out{packet_ID0_ID2_3:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_3_1
+in{nb_to_read_ID0_1:<..>;while_read_next_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+out{packet_ID1_ID0_3:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_3_1
+in{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_1:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_3:<..>;nb_to_read_ID2_0:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_3_1
+in{nb_to_read_ID0_1:<..>;while_read_next_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+out{packet_ID2_ID0_3:<..>;nb_to_read_ID0_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_3_1
+in{nb_to_read_ID1_1:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+out{packet_ID2_ID1_3:<..>;nb_to_read_ID1_0:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_0_2
+in{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_2:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_0:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_0_2
+in{nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+out{packet_ID0_ID2_0:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_0_2
+in{nb_to_read_ID0_2:<..>;to_read_ID1_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_0:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_0_2
+in{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_0:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_0_2
+in{nb_to_read_ID0_2:<..>;to_read_ID2_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_0:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_0_2
+in{nb_to_read_ID1_2:<..>;to_read_ID2_ID1_0:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_0:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_1_2
+in{nb_to_read_ID1_2:<..>;to_read_ID0_ID1_1:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_1:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_1_2
+in{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;}
+out{packet_ID0_ID2_1:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_1_2
+in{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_2:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_1:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_1_2
+in{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_1:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_1_2
+in{nb_to_read_ID0_2:<..>;to_read_ID2_ID0_1:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_1:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_1_2
+in{nb_to_read_ID1_2:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+out{packet_ID2_ID1_1:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_2_2
+in{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_2:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_2:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_2_2
+in{nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+out{packet_ID0_ID2_2:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_2_2
+in{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_2:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_2:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_2_2
+in{nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+out{packet_ID1_ID2_2:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_2_2
+in{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_2:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_2:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_2_2
+in{nb_to_read_ID1_2:<..>;to_read_ID2_ID1_2:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_2:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_3_2
+in{nb_to_read_ID1_2:<..>;while_read_next_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+out{packet_ID0_ID1_3:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_3_2
+in{nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+out{packet_ID0_ID2_3:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_3_2
+in{nb_to_read_ID0_2:<..>;while_read_next_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+out{packet_ID1_ID0_3:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_3_2
+in{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_2:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_3:<..>;nb_to_read_ID2_1:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_3_2
+in{nb_to_read_ID0_2:<..>;while_read_next_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+out{packet_ID2_ID0_3:<..>;nb_to_read_ID0_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_3_2
+in{nb_to_read_ID1_2:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+out{packet_ID2_ID1_3:<..>;nb_to_read_ID1_1:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_0_3
+in{to_read_ID0_ID1_0:<..>;nb_to_read_ID1_3:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_0:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_0_3
+in{nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_0:<..>;}
+out{packet_ID0_ID2_0:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_0_3
+in{nb_to_read_ID0_3:<..>;to_read_ID1_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_0:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_0_3
+in{to_read_ID1_ID2_0:<..>;nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_0:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_0_3
+in{nb_to_read_ID0_3:<..>;to_read_ID2_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_0:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_0_3
+in{nb_to_read_ID1_3:<..>;to_read_ID2_ID1_0:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_0:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_1_3
+in{nb_to_read_ID1_3:<..>;to_read_ID0_ID1_1:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_1:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_1_3
+in{to_read_ID0_ID2_1:<..>;nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;}
+out{packet_ID0_ID2_1:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_1_3
+in{to_read_ID1_ID0_1:<..>;nb_to_read_ID0_3:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_1:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_1_3
+in{to_read_ID1_ID2_1:<..>;nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_1:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_1_3
+in{nb_to_read_ID0_3:<..>;to_read_ID2_ID0_1:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_1:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_1_3
+in{nb_to_read_ID1_3:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_1:<..>;}
+out{packet_ID2_ID1_1:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_2_3
+in{to_read_ID0_ID1_2:<..>;nb_to_read_ID1_3:<..>;while_read_next_ID1:<..>;}
+out{packet_ID0_ID1_2:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_2_3
+in{nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_2:<..>;}
+out{packet_ID0_ID2_2:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_2_3
+in{to_read_ID1_ID0_2:<..>;nb_to_read_ID0_3:<..>;while_read_next_ID0:<..>;}
+out{packet_ID1_ID0_2:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_2_3
+in{nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;to_read_ID1_ID2_2:<..>;}
+out{packet_ID1_ID2_2:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_2_3
+in{to_read_ID2_ID0_2:<..>;nb_to_read_ID0_3:<..>;while_read_next_ID0:<..>;}
+out{packet_ID2_ID0_2:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_2_3
+in{nb_to_read_ID1_3:<..>;to_read_ID2_ID1_2:<..>;while_read_next_ID1:<..>;}
+out{packet_ID2_ID1_2:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID0_3_3
+in{nb_to_read_ID1_3:<..>;while_read_next_ID1:<..>;to_read_ID0_ID1_3:<..>;}
+out{packet_ID0_ID1_3:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID0_3_3
+in{nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;to_read_ID0_ID2_3:<..>;}
+out{packet_ID0_ID2_3:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID1_3_3
+in{nb_to_read_ID0_3:<..>;while_read_next_ID0:<..>;to_read_ID1_ID0_3:<..>;}
+out{packet_ID1_ID0_3:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID2_ID1_3_3
+in{to_read_ID1_ID2_3:<..>;nb_to_read_ID2_3:<..>;while_read_next_ID2:<..>;}
+out{packet_ID1_ID2_3:<..>;nb_to_read_ID2_2:<..>;}
+#endtr
+#trans receivedPacket_ID0_ID2_3_3
+in{nb_to_read_ID0_3:<..>;while_read_next_ID0:<..>;to_read_ID2_ID0_3:<..>;}
+out{packet_ID2_ID0_3:<..>;nb_to_read_ID0_2:<..>;}
+#endtr
+#trans receivedPacket_ID1_ID2_3_3
+in{nb_to_read_ID1_3:<..>;while_read_next_ID1:<..>;to_read_ID2_ID1_3:<..>;}
+out{packet_ID2_ID1_3:<..>;nb_to_read_ID1_2:<..>;}
+#endtr
+#trans send_ID1_ID0_0_1
+in{do_write_ID1:<..>;to_write_ID1_ID0_0:<..>;nb_to_write_ID1_1:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID0_0:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_0_1
+in{do_write_ID2:<..>;to_write_ID2_ID0_0:<..>;nb_to_write_ID2_1:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID0_0:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_0_1
+in{do_write_ID0:<..>;to_write_ID0_ID1_0:<..>;nb_to_write_ID0_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID1_0:<..>;}
+#endtr
+#trans send_ID2_ID1_0_1
+in{to_write_ID2_ID1_0:<..>;do_write_ID2:<..>;nb_to_write_ID2_1:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID1_0:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_0_1
+in{to_write_ID0_ID2_0:<..>;do_write_ID0:<..>;nb_to_write_ID0_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID2_0:<..>;}
+#endtr
+#trans send_ID1_ID2_0_1
+in{to_write_ID1_ID2_0:<..>;do_write_ID1:<..>;nb_to_write_ID1_1:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID2_0:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_1_1
+in{do_write_ID1:<..>;nb_to_write_ID1_1:<..>;to_write_ID1_ID0_1:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID0_1:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_1_1
+in{do_write_ID2:<..>;nb_to_write_ID2_1:<..>;to_write_ID2_ID0_1:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID0_1:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_1_1
+in{do_write_ID0:<..>;nb_to_write_ID0_1:<..>;to_write_ID0_ID1_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID1_1:<..>;}
+#endtr
+#trans send_ID2_ID1_1_1
+in{do_write_ID2:<..>;to_write_ID2_ID1_1:<..>;nb_to_write_ID2_1:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID1_1:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_1_1
+in{to_write_ID0_ID2_1:<..>;do_write_ID0:<..>;nb_to_write_ID0_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID2_1:<..>;}
+#endtr
+#trans send_ID1_ID2_1_1
+in{to_write_ID1_ID2_1:<..>;do_write_ID1:<..>;nb_to_write_ID1_1:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID2_1:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_2_1
+in{do_write_ID1:<..>;nb_to_write_ID1_1:<..>;to_write_ID1_ID0_2:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID0_2:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_2_1
+in{do_write_ID2:<..>;to_write_ID2_ID0_2:<..>;nb_to_write_ID2_1:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID0_2:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_2_1
+in{do_write_ID0:<..>;to_write_ID0_ID1_2:<..>;nb_to_write_ID0_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID1_2:<..>;}
+#endtr
+#trans send_ID2_ID1_2_1
+in{do_write_ID2:<..>;to_write_ID2_ID1_2:<..>;nb_to_write_ID2_1:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID1_2:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_2_1
+in{do_write_ID0:<..>;to_write_ID0_ID2_2:<..>;nb_to_write_ID0_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID2_2:<..>;}
+#endtr
+#trans send_ID1_ID2_2_1
+in{do_write_ID1:<..>;nb_to_write_ID1_1:<..>;to_write_ID1_ID2_2:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID2_2:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_3_1
+in{do_write_ID1:<..>;nb_to_write_ID1_1:<..>;to_write_ID1_ID0_3:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID0_3:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_3_1
+in{do_write_ID2:<..>;nb_to_write_ID2_1:<..>;to_write_ID2_ID0_3:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID0_3:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_3_1
+in{to_write_ID0_ID1_3:<..>;do_write_ID0:<..>;nb_to_write_ID0_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID1_3:<..>;}
+#endtr
+#trans send_ID2_ID1_3_1
+in{do_write_ID2:<..>;to_write_ID2_ID1_3:<..>;nb_to_write_ID2_1:<..>;}
+out{nb_to_write_ID2_0:<..>;canal_ID2_ID1_3:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_3_1
+in{do_write_ID0:<..>;to_write_ID0_ID2_3:<..>;nb_to_write_ID0_1:<..>;}
+out{nb_to_write_ID0_0:<..>;do_write_ID0:<..>;canal_ID0_ID2_3:<..>;}
+#endtr
+#trans send_ID1_ID2_3_1
+in{do_write_ID1:<..>;to_write_ID1_ID2_3:<..>;nb_to_write_ID1_1:<..>;}
+out{nb_to_write_ID1_0:<..>;canal_ID1_ID2_3:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_0_2
+in{do_write_ID1:<..>;to_write_ID1_ID0_0:<..>;nb_to_write_ID1_2:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID0_0:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_0_2
+in{do_write_ID2:<..>;to_write_ID2_ID0_0:<..>;nb_to_write_ID2_2:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID0_0:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_0_2
+in{do_write_ID0:<..>;to_write_ID0_ID1_0:<..>;nb_to_write_ID0_2:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID1_0:<..>;}
+#endtr
+#trans send_ID2_ID1_0_2
+in{to_write_ID2_ID1_0:<..>;do_write_ID2:<..>;nb_to_write_ID2_2:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID1_0:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_0_2
+in{to_write_ID0_ID2_0:<..>;do_write_ID0:<..>;nb_to_write_ID0_2:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID2_0:<..>;}
+#endtr
+#trans send_ID1_ID2_0_2
+in{to_write_ID1_ID2_0:<..>;do_write_ID1:<..>;nb_to_write_ID1_2:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID2_0:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_1_2
+in{do_write_ID1:<..>;nb_to_write_ID1_2:<..>;to_write_ID1_ID0_1:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID0_1:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_1_2
+in{do_write_ID2:<..>;nb_to_write_ID2_2:<..>;to_write_ID2_ID0_1:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID0_1:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_1_2
+in{do_write_ID0:<..>;nb_to_write_ID0_2:<..>;to_write_ID0_ID1_1:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID1_1:<..>;}
+#endtr
+#trans send_ID2_ID1_1_2
+in{do_write_ID2:<..>;to_write_ID2_ID1_1:<..>;nb_to_write_ID2_2:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID1_1:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_1_2
+in{to_write_ID0_ID2_1:<..>;do_write_ID0:<..>;nb_to_write_ID0_2:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID2_1:<..>;}
+#endtr
+#trans send_ID1_ID2_1_2
+in{to_write_ID1_ID2_1:<..>;do_write_ID1:<..>;nb_to_write_ID1_2:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID2_1:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_2_2
+in{do_write_ID1:<..>;nb_to_write_ID1_2:<..>;to_write_ID1_ID0_2:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID0_2:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_2_2
+in{do_write_ID2:<..>;to_write_ID2_ID0_2:<..>;nb_to_write_ID2_2:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID0_2:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_2_2
+in{do_write_ID0:<..>;to_write_ID0_ID1_2:<..>;nb_to_write_ID0_2:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID1_2:<..>;}
+#endtr
+#trans send_ID2_ID1_2_2
+in{do_write_ID2:<..>;to_write_ID2_ID1_2:<..>;nb_to_write_ID2_2:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID1_2:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_2_2
+in{do_write_ID0:<..>;to_write_ID0_ID2_2:<..>;nb_to_write_ID0_2:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID2_2:<..>;}
+#endtr
+#trans send_ID1_ID2_2_2
+in{do_write_ID1:<..>;nb_to_write_ID1_2:<..>;to_write_ID1_ID2_2:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID2_2:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_3_2
+in{do_write_ID1:<..>;nb_to_write_ID1_2:<..>;to_write_ID1_ID0_3:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID0_3:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_3_2
+in{do_write_ID2:<..>;nb_to_write_ID2_2:<..>;to_write_ID2_ID0_3:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID0_3:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_3_2
+in{to_write_ID0_ID1_3:<..>;do_write_ID0:<..>;nb_to_write_ID0_2:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID1_3:<..>;}
+#endtr
+#trans send_ID2_ID1_3_2
+in{do_write_ID2:<..>;to_write_ID2_ID1_3:<..>;nb_to_write_ID2_2:<..>;}
+out{nb_to_write_ID2_1:<..>;canal_ID2_ID1_3:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_3_2
+in{do_write_ID0:<..>;to_write_ID0_ID2_3:<..>;nb_to_write_ID0_2:<..>;}
+out{nb_to_write_ID0_1:<..>;do_write_ID0:<..>;canal_ID0_ID2_3:<..>;}
+#endtr
+#trans send_ID1_ID2_3_2
+in{do_write_ID1:<..>;to_write_ID1_ID2_3:<..>;nb_to_write_ID1_2:<..>;}
+out{nb_to_write_ID1_1:<..>;canal_ID1_ID2_3:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_0_3
+in{do_write_ID1:<..>;to_write_ID1_ID0_0:<..>;nb_to_write_ID1_3:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID0_0:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_0_3
+in{do_write_ID2:<..>;to_write_ID2_ID0_0:<..>;nb_to_write_ID2_3:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID0_0:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_0_3
+in{do_write_ID0:<..>;to_write_ID0_ID1_0:<..>;nb_to_write_ID0_3:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID1_0:<..>;}
+#endtr
+#trans send_ID2_ID1_0_3
+in{to_write_ID2_ID1_0:<..>;do_write_ID2:<..>;nb_to_write_ID2_3:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID1_0:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_0_3
+in{to_write_ID0_ID2_0:<..>;do_write_ID0:<..>;nb_to_write_ID0_3:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID2_0:<..>;}
+#endtr
+#trans send_ID1_ID2_0_3
+in{to_write_ID1_ID2_0:<..>;do_write_ID1:<..>;nb_to_write_ID1_3:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID2_0:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_1_3
+in{do_write_ID1:<..>;nb_to_write_ID1_3:<..>;to_write_ID1_ID0_1:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID0_1:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_1_3
+in{do_write_ID2:<..>;nb_to_write_ID2_3:<..>;to_write_ID2_ID0_1:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID0_1:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_1_3
+in{do_write_ID0:<..>;nb_to_write_ID0_3:<..>;to_write_ID0_ID1_1:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID1_1:<..>;}
+#endtr
+#trans send_ID2_ID1_1_3
+in{do_write_ID2:<..>;to_write_ID2_ID1_1:<..>;nb_to_write_ID2_3:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID1_1:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_1_3
+in{to_write_ID0_ID2_1:<..>;do_write_ID0:<..>;nb_to_write_ID0_3:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID2_1:<..>;}
+#endtr
+#trans send_ID1_ID2_1_3
+in{to_write_ID1_ID2_1:<..>;do_write_ID1:<..>;nb_to_write_ID1_3:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID2_1:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_2_3
+in{do_write_ID1:<..>;nb_to_write_ID1_3:<..>;to_write_ID1_ID0_2:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID0_2:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_2_3
+in{do_write_ID2:<..>;to_write_ID2_ID0_2:<..>;nb_to_write_ID2_3:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID0_2:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_2_3
+in{do_write_ID0:<..>;to_write_ID0_ID1_2:<..>;nb_to_write_ID0_3:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID1_2:<..>;}
+#endtr
+#trans send_ID2_ID1_2_3
+in{do_write_ID2:<..>;to_write_ID2_ID1_2:<..>;nb_to_write_ID2_3:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID1_2:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_2_3
+in{do_write_ID0:<..>;to_write_ID0_ID2_2:<..>;nb_to_write_ID0_3:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID2_2:<..>;}
+#endtr
+#trans send_ID1_ID2_2_3
+in{do_write_ID1:<..>;nb_to_write_ID1_3:<..>;to_write_ID1_ID2_2:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID2_2:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID1_ID0_3_3
+in{do_write_ID1:<..>;nb_to_write_ID1_3:<..>;to_write_ID1_ID0_3:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID0_3:<..>;do_write_ID1:<..>;}
+#endtr
+#trans send_ID2_ID0_3_3
+in{do_write_ID2:<..>;nb_to_write_ID2_3:<..>;to_write_ID2_ID0_3:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID0_3:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID1_3_3
+in{to_write_ID0_ID1_3:<..>;do_write_ID0:<..>;nb_to_write_ID0_3:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID1_3:<..>;}
+#endtr
+#trans send_ID2_ID1_3_3
+in{do_write_ID2:<..>;to_write_ID2_ID1_3:<..>;nb_to_write_ID2_3:<..>;}
+out{nb_to_write_ID2_2:<..>;canal_ID2_ID1_3:<..>;do_write_ID2:<..>;}
+#endtr
+#trans send_ID0_ID2_3_3
+in{do_write_ID0:<..>;to_write_ID0_ID2_3:<..>;nb_to_write_ID0_3:<..>;}
+out{nb_to_write_ID0_2:<..>;do_write_ID0:<..>;canal_ID0_ID2_3:<..>;}
+#endtr
+#trans send_ID1_ID2_3_3
+in{do_write_ID1:<..>;to_write_ID1_ID2_3:<..>;nb_to_write_ID1_3:<..>;}
+out{nb_to_write_ID1_2:<..>;canal_ID1_ID2_3:<..>;do_write_ID1:<..>;}
+#endtr
+#trans RQNI_ID1_ID0
+in{req_to_execute_ID0_ID1_0:<..>;}
+out{end_ID1:<..>;mess_to_send_ID1_ID0_1:<..>;}
+#endtr
+#trans RQNI_ID2_ID0
+in{req_to_execute_ID0_ID2_0:<..>;}
+out{end_ID2:<..>;mess_to_send_ID2_ID0_1:<..>;}
+#endtr
+#trans RQNI_ID0_ID1
+in{req_to_execute_ID1_ID0_0:<..>;}
+out{end_ID0:<..>;mess_to_send_ID0_ID1_1:<..>;}
+#endtr
+#trans RQNI_ID2_ID1
+in{req_to_execute_ID1_ID2_0:<..>;}
+out{end_ID2:<..>;mess_to_send_ID2_ID1_1:<..>;}
+#endtr
+#trans RQNI_ID0_ID2
+in{req_to_execute_ID2_ID0_0:<..>;}
+out{end_ID0:<..>;mess_to_send_ID0_ID2_1:<..>;}
+#endtr
+#trans RQNI_ID1_ID2
+in{req_to_execute_ID2_ID1_0:<..>;}
+out{end_ID1:<..>;mess_to_send_ID1_ID2_1:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID0_0
+in{packet_ID0_ID1_0:<..>;}
+out{req_to_execute_ID0_ID1_0:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID0_0
+in{packet_ID0_ID2_0:<..>;}
+out{req_to_execute_ID0_ID2_0:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID1_0
+in{packet_ID1_ID0_0:<..>;}
+out{req_to_execute_ID1_ID0_0:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID1_0
+in{packet_ID1_ID2_0:<..>;}
+out{req_to_execute_ID1_ID2_0:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID2_0
+in{packet_ID2_ID0_0:<..>;}
+out{req_to_execute_ID2_ID0_0:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID2_0
+in{packet_ID2_ID1_0:<..>;}
+out{req_to_execute_ID2_ID1_0:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID0_1
+in{packet_ID0_ID1_1:<..>;}
+out{req_to_execute_ID0_ID1_1:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID0_1
+in{packet_ID0_ID2_1:<..>;}
+out{req_to_execute_ID0_ID2_1:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID1_1
+in{packet_ID1_ID0_1:<..>;}
+out{req_to_execute_ID1_ID0_1:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID1_1
+in{packet_ID1_ID2_1:<..>;}
+out{req_to_execute_ID1_ID2_1:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID2_1
+in{packet_ID2_ID0_1:<..>;}
+out{req_to_execute_ID2_ID0_1:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID2_1
+in{packet_ID2_ID1_1:<..>;}
+out{req_to_execute_ID2_ID1_1:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID0_2
+in{packet_ID0_ID1_2:<..>;}
+out{req_to_execute_ID0_ID1_2:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID0_2
+in{packet_ID0_ID2_2:<..>;}
+out{req_to_execute_ID0_ID2_2:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID1_2
+in{packet_ID1_ID0_2:<..>;}
+out{req_to_execute_ID1_ID0_2:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID1_2
+in{packet_ID1_ID2_2:<..>;}
+out{req_to_execute_ID1_ID2_2:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID2_2
+in{packet_ID2_ID0_2:<..>;}
+out{req_to_execute_ID2_ID0_2:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID2_2
+in{packet_ID2_ID1_2:<..>;}
+out{req_to_execute_ID2_ID1_2:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID0_3
+in{packet_ID0_ID1_3:<..>;}
+out{req_to_execute_ID0_ID1_3:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID0_3
+in{packet_ID0_ID2_3:<..>;}
+out{req_to_execute_ID0_ID2_3:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID1_3
+in{packet_ID1_ID0_3:<..>;}
+out{req_to_execute_ID1_ID0_3:<..>;}
+#endtr
+#trans dispatchPacket_ID2_ID1_3
+in{packet_ID1_ID2_3:<..>;}
+out{req_to_execute_ID1_ID2_3:<..>;}
+#endtr
+#trans dispatchPacket_ID0_ID2_3
+in{packet_ID2_ID0_3:<..>;}
+out{req_to_execute_ID2_ID0_3:<..>;}
+#endtr
+#trans dispatchPacket_ID1_ID2_3
+in{packet_ID2_ID1_3:<..>;}
+out{req_to_execute_ID2_ID1_3:<..>;}
+#endtr
+#trans isNoRead_ID0_0
+in{nb_to_read_ID0_0:<..>;while_read_next_ID0:<..>;}
+out{nb_to_read_ID0_0:<..>;do_write_ID0:<..>;lock_ID0:<..>;}
+#endtr
+#trans isNoRead_ID1_0
+in{nb_to_read_ID1_0:<..>;while_read_next_ID1:<..>;}
+out{nb_to_read_ID1_0:<..>;lock_ID1:<..>;do_write_ID1:<..>;}
+#endtr
+#trans isNoRead_ID2_0
+in{nb_to_read_ID2_0:<..>;while_read_next_ID2:<..>;}
+out{nb_to_read_ID2_0:<..>;lock_ID2:<..>;do_write_ID2:<..>;}
+#endtr
+#trans ANI_ID1_ID0
+in{req_to_execute_ID0_ID1_1:<..>;}
+out{end_ID1:<..>;mess_to_send_ID1_ID0_2:<..>;}
+#endtr
+#trans ANI_ID2_ID0
+in{req_to_execute_ID0_ID2_1:<..>;}
+out{end_ID2:<..>;mess_to_send_ID2_ID0_2:<..>;}
+#endtr
+#trans ANI_ID0_ID1
+in{req_to_execute_ID1_ID0_1:<..>;}
+out{end_ID0:<..>;mess_to_send_ID0_ID1_2:<..>;}
+#endtr
+#trans ANI_ID2_ID1
+in{req_to_execute_ID1_ID2_1:<..>;}
+out{end_ID2:<..>;mess_to_send_ID2_ID1_2:<..>;}
+#endtr
+#trans ANI_ID0_ID2
+in{req_to_execute_ID2_ID0_1:<..>;}
+out{end_ID0:<..>;mess_to_send_ID0_ID2_2:<..>;}
+#endtr
+#trans ANI_ID1_ID2
+in{req_to_execute_ID2_ID1_1:<..>;}
+out{end_ID1:<..>;mess_to_send_ID1_ID2_2:<..>;}
+#endtr
+#trans read_next_ID0
+in{end_ID0:<..>;}
+out{while_read_next_ID0:<..>;}
+#endtr
+#trans read_next_ID1
+in{end_ID1:<..>;}
+out{while_read_next_ID1:<..>;}
+#endtr
+#trans read_next_ID2
+in{end_ID2:<..>;}
+out{while_read_next_ID2:<..>;}
+#endtr
+#trans isNoWrite_ID0_0
+in{do_write_ID0:<..>;nb_to_write_ID0_0:<..>;}
+out{nb_to_write_ID0_0:<..>;end_poll_ID0:<..>;}
+#endtr
+#trans isNoWrite_ID1_0
+in{do_write_ID1:<..>;nb_to_write_ID1_0:<..>;}
+out{nb_to_write_ID1_0:<..>;end_poll_ID1:<..>;}
+#endtr
+#trans isNoWrite_ID2_0
+in{do_write_ID2:<..>;nb_to_write_ID2_0:<..>;}
+out{nb_to_write_ID2_0:<..>;end_poll_ID2:<..>;}
+#endtr
+#trans AnPM_ID1_ID0
+in{req_to_execute_ID0_ID1_3:<..>;}
+out{handlerAnswerPrimary_ID0_ID1:<..>;}
+#endtr
+#trans AnPM_ID2_ID0
+in{req_to_execute_ID0_ID2_3:<..>;}
+out{handlerAnswerPrimary_ID0_ID2:<..>;}
+#endtr
+#trans AnPM_ID0_ID1
+in{req_to_execute_ID1_ID0_3:<..>;}
+out{handlerAnswerPrimary_ID1_ID0:<..>;}
+#endtr
+#trans AnPM_ID2_ID1
+in{req_to_execute_ID1_ID2_3:<..>;}
+out{handlerAnswerPrimary_ID1_ID2:<..>;}
+#endtr
+#trans AnPM_ID0_ID2
+in{req_to_execute_ID2_ID0_3:<..>;}
+out{handlerAnswerPrimary_ID2_ID0:<..>;}
+#endtr
+#trans AnPM_ID1_ID2
+in{req_to_execute_ID2_ID1_3:<..>;}
+out{handlerAnswerPrimary_ID2_ID1:<..>;}
+#endtr
+#trans AsPM_ID1_ID0
+in{req_to_execute_ID0_ID1_2:<..>;}
+out{handlerAskPrimary_ID0_ID1:<..>;}
+#endtr
+#trans AsPM_ID2_ID0
+in{req_to_execute_ID0_ID2_2:<..>;}
+out{handlerAskPrimary_ID0_ID2:<..>;}
+#endtr
+#trans AsPM_ID0_ID1
+in{req_to_execute_ID1_ID0_2:<..>;}
+out{handlerAskPrimary_ID1_ID0:<..>;}
+#endtr
+#trans AsPM_ID2_ID1
+in{req_to_execute_ID1_ID2_2:<..>;}
+out{handlerAskPrimary_ID1_ID2:<..>;}
+#endtr
+#trans AsPM_ID0_ID2
+in{req_to_execute_ID2_ID0_2:<..>;}
+out{handlerAskPrimary_ID2_ID0:<..>;}
+#endtr
+#trans AsPM_ID1_ID2
+in{req_to_execute_ID2_ID1_2:<..>;}
+out{handlerAskPrimary_ID2_ID1:<..>;}
+#endtr
+#trans write_ID1_ID0_0_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID0_0:<..>;}
+out{to_write_ID1_ID0_0:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID2_ID0_0_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID0_0:<..>;}
+out{to_write_ID2_ID0_0:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID1_0_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID1_0:<..>;}
+out{to_write_ID0_ID1_0:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID2_ID1_0_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID1_0:<..>;}
+out{to_write_ID2_ID1_0:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID2_0_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID2_0:<..>;}
+out{to_write_ID0_ID2_0:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID1_ID2_0_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID2_0:<..>;}
+out{to_write_ID1_ID2_0:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID1_ID0_1_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID0_1:<..>;}
+out{to_write_ID1_ID0_1:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID2_ID0_1_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID0_1:<..>;}
+out{to_write_ID2_ID0_1:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID1_1_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID1_1:<..>;}
+out{to_write_ID0_ID1_1:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID2_ID1_1_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID1_1:<..>;}
+out{to_write_ID2_ID1_1:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID2_1_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID2_1:<..>;}
+out{to_write_ID0_ID2_1:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID1_ID2_1_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID2_1:<..>;}
+out{to_write_ID1_ID2_1:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID1_ID0_2_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID0_2:<..>;}
+out{to_write_ID1_ID0_2:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID2_ID0_2_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID0_2:<..>;}
+out{to_write_ID2_ID0_2:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID1_2_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID1_2:<..>;}
+out{to_write_ID0_ID1_2:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID2_ID1_2_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID1_2:<..>;}
+out{to_write_ID2_ID1_2:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID2_2_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID2_2:<..>;}
+out{to_write_ID0_ID2_2:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID1_ID2_2_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID2_2:<..>;}
+out{to_write_ID1_ID2_2:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID1_ID0_3_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID0_3:<..>;}
+out{to_write_ID1_ID0_3:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID2_ID0_3_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID0_3:<..>;}
+out{to_write_ID2_ID0_3:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID1_3_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID1_3:<..>;}
+out{to_write_ID0_ID1_3:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID2_ID1_3_0
+in{nb_to_write_ID2_0:<..>;mess_to_send_ID2_ID1_3:<..>;}
+out{to_write_ID2_ID1_3:<..>;nb_to_write_ID2_1:<..>;}
+#endtr
+#trans write_ID0_ID2_3_0
+in{nb_to_write_ID0_0:<..>;mess_to_send_ID0_ID2_3:<..>;}
+out{to_write_ID0_ID2_3:<..>;nb_to_write_ID0_1:<..>;}
+#endtr
+#trans write_ID1_ID2_3_0
+in{nb_to_write_ID1_0:<..>;mess_to_send_ID1_ID2_3:<..>;}
+out{to_write_ID1_ID2_3:<..>;nb_to_write_ID1_1:<..>;}
+#endtr
+#trans write_ID1_ID0_0_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID0_0:<..>;}
+out{to_write_ID1_ID0_0:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID2_ID0_0_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID0_0:<..>;}
+out{to_write_ID2_ID0_0:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID1_0_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID1_0:<..>;}
+out{to_write_ID0_ID1_0:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID2_ID1_0_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID1_0:<..>;}
+out{to_write_ID2_ID1_0:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID2_0_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID2_0:<..>;}
+out{to_write_ID0_ID2_0:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID1_ID2_0_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID2_0:<..>;}
+out{to_write_ID1_ID2_0:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID1_ID0_1_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID0_1:<..>;}
+out{to_write_ID1_ID0_1:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID2_ID0_1_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID0_1:<..>;}
+out{to_write_ID2_ID0_1:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID1_1_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID1_1:<..>;}
+out{to_write_ID0_ID1_1:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID2_ID1_1_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID1_1:<..>;}
+out{to_write_ID2_ID1_1:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID2_1_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID2_1:<..>;}
+out{to_write_ID0_ID2_1:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID1_ID2_1_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID2_1:<..>;}
+out{to_write_ID1_ID2_1:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID1_ID0_2_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID0_2:<..>;}
+out{to_write_ID1_ID0_2:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID2_ID0_2_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID0_2:<..>;}
+out{to_write_ID2_ID0_2:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID1_2_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID1_2:<..>;}
+out{to_write_ID0_ID1_2:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID2_ID1_2_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID1_2:<..>;}
+out{to_write_ID2_ID1_2:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID2_2_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID2_2:<..>;}
+out{to_write_ID0_ID2_2:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID1_ID2_2_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID2_2:<..>;}
+out{to_write_ID1_ID2_2:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID1_ID0_3_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID0_3:<..>;}
+out{to_write_ID1_ID0_3:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID2_ID0_3_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID0_3:<..>;}
+out{to_write_ID2_ID0_3:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID1_3_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID1_3:<..>;}
+out{to_write_ID0_ID1_3:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID2_ID1_3_1
+in{nb_to_write_ID2_1:<..>;mess_to_send_ID2_ID1_3:<..>;}
+out{to_write_ID2_ID1_3:<..>;nb_to_write_ID2_2:<..>;}
+#endtr
+#trans write_ID0_ID2_3_1
+in{nb_to_write_ID0_1:<..>;mess_to_send_ID0_ID2_3:<..>;}
+out{to_write_ID0_ID2_3:<..>;nb_to_write_ID0_2:<..>;}
+#endtr
+#trans write_ID1_ID2_3_1
+in{nb_to_write_ID1_1:<..>;mess_to_send_ID1_ID2_3:<..>;}
+out{to_write_ID1_ID2_3:<..>;nb_to_write_ID1_2:<..>;}
+#endtr
+#trans write_ID1_ID0_0_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID0_0:<..>;}
+out{to_write_ID1_ID0_0:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID2_ID0_0_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID0_0:<..>;}
+out{to_write_ID2_ID0_0:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID1_0_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID1_0:<..>;}
+out{to_write_ID0_ID1_0:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID2_ID1_0_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID1_0:<..>;}
+out{to_write_ID2_ID1_0:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID2_0_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID2_0:<..>;}
+out{to_write_ID0_ID2_0:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID1_ID2_0_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID2_0:<..>;}
+out{to_write_ID1_ID2_0:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID1_ID0_1_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID0_1:<..>;}
+out{to_write_ID1_ID0_1:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID2_ID0_1_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID0_1:<..>;}
+out{to_write_ID2_ID0_1:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID1_1_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID1_1:<..>;}
+out{to_write_ID0_ID1_1:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID2_ID1_1_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID1_1:<..>;}
+out{to_write_ID2_ID1_1:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID2_1_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID2_1:<..>;}
+out{to_write_ID0_ID2_1:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID1_ID2_1_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID2_1:<..>;}
+out{to_write_ID1_ID2_1:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID1_ID0_2_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID0_2:<..>;}
+out{to_write_ID1_ID0_2:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID2_ID0_2_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID0_2:<..>;}
+out{to_write_ID2_ID0_2:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID1_2_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID1_2:<..>;}
+out{to_write_ID0_ID1_2:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID2_ID1_2_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID1_2:<..>;}
+out{to_write_ID2_ID1_2:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID2_2_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID2_2:<..>;}
+out{to_write_ID0_ID2_2:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID1_ID2_2_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID2_2:<..>;}
+out{to_write_ID1_ID2_2:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID1_ID0_3_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID0_3:<..>;}
+out{to_write_ID1_ID0_3:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID2_ID0_3_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID0_3:<..>;}
+out{to_write_ID2_ID0_3:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID1_3_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID1_3:<..>;}
+out{to_write_ID0_ID1_3:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID2_ID1_3_2
+in{nb_to_write_ID2_2:<..>;mess_to_send_ID2_ID1_3:<..>;}
+out{to_write_ID2_ID1_3:<..>;nb_to_write_ID2_3:<..>;}
+#endtr
+#trans write_ID0_ID2_3_2
+in{nb_to_write_ID0_2:<..>;mess_to_send_ID0_ID2_3:<..>;}
+out{to_write_ID0_ID2_3:<..>;nb_to_write_ID0_3:<..>;}
+#endtr
+#trans write_ID1_ID2_3_2
+in{nb_to_write_ID1_2:<..>;mess_to_send_ID1_ID2_3:<..>;}
+out{to_write_ID1_ID2_3:<..>;nb_to_write_ID1_3:<..>;}
+#endtr
+#trans write_ID1_ID0_0_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID0_0:<..>;}
+out{to_write_ID1_ID0_0:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans write_ID2_ID0_0_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID0_0:<..>;}
+out{to_write_ID2_ID0_0:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID1_0_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID1_0:<..>;}
+out{to_write_ID0_ID1_0:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID2_ID1_0_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID1_0:<..>;}
+out{to_write_ID2_ID1_0:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID2_0_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID2_0:<..>;}
+out{to_write_ID0_ID2_0:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID1_ID2_0_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID2_0:<..>;}
+out{to_write_ID1_ID2_0:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans write_ID1_ID0_1_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID0_1:<..>;}
+out{to_write_ID1_ID0_1:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans write_ID2_ID0_1_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID0_1:<..>;}
+out{to_write_ID2_ID0_1:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID1_1_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID1_1:<..>;}
+out{to_write_ID0_ID1_1:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID2_ID1_1_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID1_1:<..>;}
+out{to_write_ID2_ID1_1:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID2_1_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID2_1:<..>;}
+out{to_write_ID0_ID2_1:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID1_ID2_1_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID2_1:<..>;}
+out{to_write_ID1_ID2_1:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans write_ID1_ID0_2_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID0_2:<..>;}
+out{to_write_ID1_ID0_2:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans write_ID2_ID0_2_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID0_2:<..>;}
+out{to_write_ID2_ID0_2:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID1_2_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID1_2:<..>;}
+out{to_write_ID0_ID1_2:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID2_ID1_2_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID1_2:<..>;}
+out{to_write_ID2_ID1_2:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID2_2_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID2_2:<..>;}
+out{to_write_ID0_ID2_2:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID1_ID2_2_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID2_2:<..>;}
+out{to_write_ID1_ID2_2:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans write_ID1_ID0_3_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID0_3:<..>;}
+out{to_write_ID1_ID0_3:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans write_ID2_ID0_3_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID0_3:<..>;}
+out{to_write_ID2_ID0_3:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID1_3_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID1_3:<..>;}
+out{to_write_ID0_ID1_3:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID2_ID1_3_3
+in{nb_to_write_ID2_3:<..>;mess_to_send_ID2_ID1_3:<..>;}
+out{to_write_ID2_ID1_3:<..>;nb_to_write_ID2_0:<..>;}
+#endtr
+#trans write_ID0_ID2_3_3
+in{nb_to_write_ID0_3:<..>;mess_to_send_ID0_ID2_3:<..>;}
+out{to_write_ID0_ID2_3:<..>;nb_to_write_ID0_0:<..>;}
+#endtr
+#trans write_ID1_ID2_3_3
+in{nb_to_write_ID1_3:<..>;mess_to_send_ID1_ID2_3:<..>;}
+out{to_write_ID1_ID2_3:<..>;nb_to_write_ID1_0:<..>;}
+#endtr
+#trans answer_prim_ID1_ID0_ID4
+in{primary_node_ID1_ID4:<..>;handlerAskPrimary_ID0_ID1:<..>;}
+out{end_ID1:<..>;primary_node_ID1_ID4:<..>;mess_to_send_ID1_ID0_3:<..>;paramaters_AnPM_Node_ID0_ID4:<..>;}
+#endtr
+#trans answer_prim_ID2_ID0_ID4
+in{primary_node_ID2_ID4:<..>;handlerAskPrimary_ID0_ID2:<..>;}
+out{end_ID2:<..>;primary_node_ID2_ID4:<..>;mess_to_send_ID2_ID0_3:<..>;paramaters_AnPM_Node_ID0_ID4:<..>;}
+#endtr
+#trans answer_prim_ID0_ID1_ID4
+in{primary_node_ID0_ID4:<..>;handlerAskPrimary_ID1_ID0:<..>;}
+out{primary_node_ID0_ID4:<..>;end_ID0:<..>;mess_to_send_ID0_ID1_3:<..>;paramaters_AnPM_Node_ID1_ID4:<..>;}
+#endtr
+#trans answer_prim_ID2_ID1_ID4
+in{primary_node_ID2_ID4:<..>;handlerAskPrimary_ID1_ID2:<..>;}
+out{end_ID2:<..>;primary_node_ID2_ID4:<..>;mess_to_send_ID2_ID1_3:<..>;paramaters_AnPM_Node_ID1_ID4:<..>;}
+#endtr
+#trans answer_prim_ID0_ID2_ID4
+in{primary_node_ID0_ID4:<..>;handlerAskPrimary_ID2_ID0:<..>;}
+out{primary_node_ID0_ID4:<..>;end_ID0:<..>;mess_to_send_ID0_ID2_3:<..>;paramaters_AnPM_Node_ID2_ID4:<..>;}
+#endtr
+#trans answer_prim_ID1_ID2_ID4
+in{primary_node_ID1_ID4:<..>;handlerAskPrimary_ID2_ID1:<..>;}
+out{end_ID1:<..>;primary_node_ID1_ID4:<..>;mess_to_send_ID1_ID2_3:<..>;paramaters_AnPM_Node_ID2_ID4:<..>;}
+#endtr
+#trans unknow_PM_ID1_ID0_ID4
+in{paramaters_AnPM_Node_ID1_ID4:<..>;handlerAnswerPrimary_ID0_ID1:<..>;}
+out{select_less_uid_ID0_ID1:<..>;}
+#endtr
+#trans unknow_PM_ID2_ID0_ID4
+in{paramaters_AnPM_Node_ID2_ID4:<..>;handlerAnswerPrimary_ID0_ID2:<..>;}
+out{select_less_uid_ID0_ID2:<..>;}
+#endtr
+#trans unknow_PM_ID0_ID1_ID4
+in{paramaters_AnPM_Node_ID0_ID4:<..>;handlerAnswerPrimary_ID1_ID0:<..>;}
+out{select_less_uid_ID1_ID0:<..>;}
+#endtr
+#trans unknow_PM_ID2_ID1_ID4
+in{paramaters_AnPM_Node_ID2_ID4:<..>;handlerAnswerPrimary_ID1_ID2:<..>;}
+out{select_less_uid_ID1_ID2:<..>;}
+#endtr
+#trans unknow_PM_ID0_ID2_ID4
+in{paramaters_AnPM_Node_ID0_ID4:<..>;handlerAnswerPrimary_ID2_ID0:<..>;}
+out{select_less_uid_ID2_ID0:<..>;}
+#endtr
+#trans unknow_PM_ID1_ID2_ID4
+in{paramaters_AnPM_Node_ID1_ID4:<..>;handlerAnswerPrimary_ID2_ID1:<..>;}
+out{select_less_uid_ID2_ID1:<..>;}
+#endtr
+#trans canBePrimary_ID0_ID1
+in{select_less_uid_ID1_ID0:<..>;}
+out{note_negociate_terminate_ID0:<..>;}
+#endtr
+#trans canBePrimary_ID0_ID2
+in{select_less_uid_ID2_ID0:<..>;}
+out{note_negociate_terminate_ID0:<..>;}
+#endtr
+#trans canBePrimary_ID1_ID2
+in{select_less_uid_ID2_ID1:<..>;}
+out{note_negociate_terminate_ID1:<..>;}
+#endtr
+#trans cannotBePrimary_ID1_ID0_NOK
+in{primary_ID1_NOK:<..>;select_less_uid_ID0_ID1:<..>;}
+out{primary_ID1_NOK:<..>;note_negociate_terminate_ID1:<..>;}
+#endtr
+#trans cannotBePrimary_ID2_ID0_NOK
+in{primary_ID2_NOK:<..>;select_less_uid_ID0_ID2:<..>;}
+out{primary_ID2_NOK:<..>;note_negociate_terminate_ID2:<..>;}
+#endtr
+#trans cannotBePrimary_ID2_ID1_NOK
+in{primary_ID2_NOK:<..>;select_less_uid_ID1_ID2:<..>;}
+out{primary_ID2_NOK:<..>;note_negociate_terminate_ID2:<..>;}
+#endtr
+#trans cannotBePrimary_ID1_ID0_OK
+in{primary_ID1_OK:<..>;select_less_uid_ID0_ID1:<..>;}
+out{primary_ID1_NOK:<..>;note_negociate_terminate_ID1:<..>;}
+#endtr
+#trans cannotBePrimary_ID2_ID0_OK
+in{primary_ID2_OK:<..>;select_less_uid_ID0_ID2:<..>;}
+out{primary_ID2_NOK:<..>;note_negociate_terminate_ID2:<..>;}
+#endtr
+#trans cannotBePrimary_ID2_ID1_OK
+in{primary_ID2_OK:<..>;select_less_uid_ID1_ID2:<..>;}
+out{primary_ID2_NOK:<..>;note_negociate_terminate_ID2:<..>;}
+#endtr
+#trans remove_node_from_list_ID0_0
+in{note_negociate_terminate_ID0:<..>;nb_list_negociation_ID0_0:<..>;}
+out{end_ID0:<..>;nb_list_negociation_ID0_3:<..>;}
+#endtr
+#trans remove_node_from_list_ID1_0
+in{note_negociate_terminate_ID1:<..>;nb_list_negociation_ID1_0:<..>;}
+out{end_ID1:<..>;nb_list_negociation_ID1_3:<..>;}
+#endtr
+#trans remove_node_from_list_ID2_0
+in{note_negociate_terminate_ID2:<..>;nb_list_negociation_ID2_0:<..>;}
+out{end_ID2:<..>;nb_list_negociation_ID2_3:<..>;}
+#endtr
+#trans remove_node_from_list_ID0_1
+in{note_negociate_terminate_ID0:<..>;nb_list_negociation_ID0_1:<..>;}
+out{end_ID0:<..>;nb_list_negociation_ID0_0:<..>;}
+#endtr
+#trans remove_node_from_list_ID1_1
+in{note_negociate_terminate_ID1:<..>;nb_list_negociation_ID1_1:<..>;}
+out{end_ID1:<..>;nb_list_negociation_ID1_0:<..>;}
+#endtr
+#trans remove_node_from_list_ID2_1
+in{note_negociate_terminate_ID2:<..>;nb_list_negociation_ID2_1:<..>;}
+out{end_ID2:<..>;nb_list_negociation_ID2_0:<..>;}
+#endtr
+#trans remove_node_from_list_ID0_2
+in{note_negociate_terminate_ID0:<..>;nb_list_negociation_ID0_2:<..>;}
+out{end_ID0:<..>;nb_list_negociation_ID0_1:<..>;}
+#endtr
+#trans remove_node_from_list_ID1_2
+in{note_negociate_terminate_ID1:<..>;nb_list_negociation_ID1_2:<..>;}
+out{end_ID1:<..>;nb_list_negociation_ID1_1:<..>;}
+#endtr
+#trans remove_node_from_list_ID2_2
+in{note_negociate_terminate_ID2:<..>;nb_list_negociation_ID2_2:<..>;}
+out{end_ID2:<..>;nb_list_negociation_ID2_1:<..>;}
+#endtr
+#trans remove_node_from_list_ID0_3
+in{note_negociate_terminate_ID0:<..>;nb_list_negociation_ID0_3:<..>;}
+out{end_ID0:<..>;nb_list_negociation_ID0_2:<..>;}
+#endtr
+#trans remove_node_from_list_ID1_3
+in{note_negociate_terminate_ID1:<..>;nb_list_negociation_ID1_3:<..>;}
+out{end_ID1:<..>;nb_list_negociation_ID1_2:<..>;}
+#endtr
+#trans remove_node_from_list_ID2_3
+in{note_negociate_terminate_ID2:<..>;nb_list_negociation_ID2_3:<..>;}
+out{end_ID2:<..>;nb_list_negociation_ID2_2:<..>;}
+#endtr

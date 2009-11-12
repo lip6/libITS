@@ -1,0 +1,8 @@
+#place p1 mk(210*<..>)
+#place p2 mk(7*<..>)
+#trans t1
+in {p1:p2;}
+#endtr
+#trans t2
+in {p2:p1;}
+#endtr

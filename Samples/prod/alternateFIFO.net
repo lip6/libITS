@@ -1,0 +1,70 @@
+#place Send0 mk(<..>)
+#place WaitAck0
+#place Receive0
+#place WaitMess0
+#place Send1 
+#place WaitAck1
+#place Receive1
+#place WaitMess1 mk(<..>)
+#queue Mess loss cp(50)
+#queue Ack loss cp(50)
+
+#trans sm0
+in {Send0:<..>;}
+out {WaitAck0:<..>;Mess:<.0.>;}
+#endtr
+
+#trans rsm0
+in {WaitAck0:<..>;}
+out {WaitAck0:<..>;Mess:<.0.>;}
+#endtr
+
+#trans ra0
+in {WaitAck0:<..>;Ack:<.0.>;}
+out {Send1:<..>;}
+#endtr
+
+#trans rm0
+in {WaitMess0:<..>;Mess:<.0.>;}
+out {Receive0:<..>;}
+#endtr
+
+#trans sa0
+in {Receive0:<..>;}
+out {WaitMess1:<..>;Ack:<.0.>;}
+#endtr
+
+#trans rsa0
+in {WaitMess1:<..>;}
+out {WaitMess1:<..>;Ack:<.0.>;}
+#endtr
+
+#trans sm1
+in {Send1:<..>;}
+out {WaitAck1:<..>;Mess:<.1.>;}
+#endtr
+
+#trans rsm1
+in {WaitAck1:<..>;}
+out {WaitAck1:<..>;Mess:<.1.>;}
+#endtr
+
+#trans ra1
+in {WaitAck1:<..>;Ack:<.1.>;}
+out {Send0:<..>;}
+#endtr
+
+#trans rm1
+in {WaitMess1:<..>;Mess:<.1.>;}
+out {Receive1:<..>;}
+#endtr
+
+#trans sa1
+in {Receive1:<..>;}
+out {WaitMess0:<..>;Ack:<.1.>;}
+#endtr
+
+#trans rsa1
+in {WaitMess0:<..>;}
+out {WaitMess0:<..>;Ack:<.1.>;}
+#endtr

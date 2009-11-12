@@ -1,0 +1,129 @@
+#place A mk(<..>)
+#place B
+#place C
+#place D
+#place E mk(<..>)
+#place F
+#place G
+#place H
+#place ackP1 cp(20)
+#place mess0 cp(20)
+#place ackP0 cp(20)
+#place mess1 cp(20)
+#place ack1 cp(20)
+#place messP0 cp(20)
+#place ack0 cp(20)
+#place messP1 cp(20)
+
+#trans t1
+in {D:<..>;ackP1:<..>;}
+out {A:<..>;}
+#endtr
+
+#trans t2
+in {A:<..>;mess1<1;}
+out {B:<..>;mess0:<..>;}
+#endtr
+
+#trans t3
+in {B:<..>;ackP0:<..>;}
+out {C:<..>;}
+#endtr
+
+#trans t4
+in {C:<..>;mess0<1;}
+out {D:<..>;mess1:<..>;}
+#endtr
+
+#trans t5
+in {B:<..>;mess1<1;}
+out {B:<..>;mess0:<..>;}
+#endtr
+
+#trans t6
+in {D:<..>;mess0<1;}
+out {D:<..>;mess1:<..>;}
+#endtr
+
+#trans t7
+in {ackP1:<..>;}
+#endtr
+
+#trans t8
+in {mess0:<..>;}
+#endtr
+
+#trans t9
+in {ackP0:<..>;}
+#endtr
+
+#trans t10
+in {mess1:<..>;}
+#endtr
+
+#trans t11
+in {ack1:<..>;ackP0<1;}
+out {ackP1:<..>;}
+#endtr
+
+#trans t12
+in {mess0:<..>;messP1<1;}
+out {messP0:<..>;}
+#endtr
+
+#trans t13
+in {ack0:<..>;ackP1<1;}
+out {ackP0:<..>;}
+#endtr
+
+#trans t14
+in {mess1:<..>;messP0<1;}
+out {messP1:<..>;}
+#endtr
+
+#trans t15
+in {ack1:<..>;}
+#endtr
+
+#trans t16
+in {messP0:<..>;}
+#endtr
+
+#trans t17
+in {ack0:<..>;}
+#endtr
+
+#trans t18
+in {messP1:<..>;}
+#endtr
+
+#trans t19
+in {E:<..>;ack0<1;}
+out {E:<..>;ack1:<..>;}
+#endtr
+
+#trans t20
+in {G:<..>;ack1<1;}
+out {G:<..>;ack0:<..>;}
+#endtr
+
+#trans t21
+in {H:<..>;ack0<1;}
+out {E:<..>;ack1:<..>;}
+#endtr
+
+#trans t22
+in {E:<..>;messP0:<..>;}
+out {F:<..>;}
+#endtr
+
+#trans t23
+in {F:<..>;ack1<1;}
+out {G:<..>;ack0:<..>;}
+#endtr
+
+#trans t24
+in {G:<..>;messP1:<..>;}
+out {H:<..>;}
+#endtr
+

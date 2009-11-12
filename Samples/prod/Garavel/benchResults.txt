@@ -1,0 +1,410 @@
+   From: Hubert Garavel <Hubert.Garavel@inrialpes.fr>
+     To: PetriNets@daimi.au.dk
+   Date: Fri, 26 Sep 2003 10:52:32 +0200
+Subject: (PN) Efficient Petri Net tool for computing quasi-liveness? (summary)
+
+Parent nodes: 2003/07/2709
+
+Dear all,
+
+This is a follow-up to my previous message dated July 28, 2003
+about "Efficient Petri net tool for computing quasi-liveness".
+
+Thanks to all the scientists who took time to apply their favorite
+Petri net tool to the proposed Petri net and shared the results
+with me. Appended to this message is a digest of e-mail discussions
+with tool authors.
+
+The conclusions seem to be converging. In the proposed Petri Net,
+	- there are about 9.8 x 10^21 reachable states
+	- no transition is dead (all transitions are enabled at some
+	  point during generation).
+
+I hope that this kind of "challenge" will be helpful. Given the high
+number of Petri net tools, it is not easy to find a right one for a 
+practical task. 
+
+Opinions and reactions are welcome.
+ 
+				Best regards
+				Hubert
+
+
+',',',',',',',',',',',' Hubert GARAVEL           | INRIA Rhone-Alpes / VASY
+',',',',',',',',',',',' hubert.garavel@inria.fr  | 655, avenue de l'Europe
+',',',',',',',',',',',' tel: +(33) 4 76 61 52 24 | 38330 Montbonnot St Martin
+',',',',',',',',',',',' fax: +(33) 4 76 61 52 52 | France
+',',',',',',',',',',',' http://www.inrialpes.fr/vasy
+
+
+Table of contents
+	1. Results by Gianfranco Ciardo and Radu Siminiceanu (SMART)
+	2. Results by Karsten Schmidt (LoLA)
+	3. Results by Bernard Berthomieu and Francois Vernadat (TINA)
+	4. Results by Oriol Roig (Versify)
+	
+1. Results by Gianfranco Ciardo and Radu Siminiceanu (SMART tool)
+-----------------------------------------------------------------
+
+Scientists:
+	Gianfranco Ciardo <ciardo@CS.WM.EDU>
+	Radu I. Siminiceanu <radu@CS.WM.EDU>
+	College of William and Mary 
+	Department of Computer Science 
+	P.O. Box 8795 
+	Williamsburg, VA 23187-8795 
+
+Tool used:
+	SMART
+	http://www.cs.wm.edu/~ciardo/SMART/index.html
+
+Platform used:
+	i386/Linux	
+
+Translation of sample Petri Net to SMART input format:
+	Automatic (small C program written by Radu Siminiceanu)
+
+Techniques used:
+	Symbolic state space generation	(using MDDs)
+	Unbound Saturation (see TACAS 2003 paper)
+
+Results:
+	Step 1:
+		(Exact) state space generated in 81 seconds, resulting in
+		9,794,739,147,610,899,087,361 states.
+	Step 2:
+		After applying a new variable reordering heuristic (which is
+		provisionally called saturation reordering), the (exhaustive)
+		state-space construction time was reducted to 8 seconds.
+	Step 3:
+		As SMART does not have a primitive query to ask about 
+		dead transitions, Radu generated (automatically) a set 
+		of 776 SMART queries (one query per transition). These 
+		requests have been evaluated on the symbolic state space.
+		All 776 queries have been evaluated in 27 seconds (that
+		is an average of about 0.03 seconds per query)
+
+	Output:
+		For each transition, the corresponding query displays the
+		number of reachable states from which the transition is
+		enabled.
+
+Use of structural properties:
+   By construction, the Petri net benchmark had two "structural" properties:
+      1) There is at most one token per place
+      2) The set of places is partitioned in "sequential components". In 
+	 each sequential component, there is at most one place with a token.
+
+   Did SMART took advantage of these properties (and how)?
+
+      As for 1), the answer is NO. The safe place property is not an advantage
+      to the method described in the "Saturation Unbound" (TACAS 2003).
+      All that is needed is an assumption that the state space is finite.
+      SMART finds the limits for each group of places assigned to a partition
+      (i.e. the local state space bounds) on the fly, as it builds the overall
+      state space. 
+ 
+      As for 2) the answer is YES. The sequential components decomposition 
+      was a useful "hint" for the required partitioning in SMART. For the
+      moment, the partition must be specified by the user, manually. Then,
+      SMART refined it slightly (mostly by further splitting components 
+      into smaller ones), using an off-line reordering algorithm, to 
+      achieve a better runtime (a speedup of about 9). The fact that there
+      is at most one token per component at all times is a collateral
+      property that does not change the exhaustive state-space construction
+      algorithm. It just helped finding a good partitioning, this being the
+      equivalent in MDDs of the crucial variable ordering problem in BDDs.
+
+Additional remarks:
+	Many transitions are enabled by the same number of states, which
+	suggest the existence of symmetries.
+
+2. Results by Karsten Schmidt (LoLA tool)
+-----------------------------------------
+
+Scientist:
+	Karsten Schmidt <kschmidt@informatik.hu-berlin.de>
+	Humboldt-Universitaet
+	Institut fuer Informatik
+	10099 Berlin, Germany
+
+Tool used:
+	LoLA
+	http://www.informatik.hu-berlin.de/~kschmidt/lola.html
+
+Platform used:
+	SunBlade 100
+
+Translation of sample Petri Net to LoLA input format:
+	Manual, by editor commands (10 minutes) 
+
+Technique used:
+	Explicit reachability (explicit state space) analysis 
+	with partial order reduction
+	The reduction is described in a paper presented at the 
+	1999 Petri net conference (LNCS 1639). 
+
+Results:
+	1) A little script was written that produces a quasi-liveness query
+	   for each transition. Each query was verified in isolation, as 
+	   partial order reduction (here: stubborn sets) works best for
+	   local properties.
+
+	2) At first, LoLA reported the existence of dead transitions, but
+	   after careful investigation, a subtle error was found and fixed.
+
+	3) The new version of LoLA confirmed that 774 transitions out of
+	   776 were live. For each of these, it produced an execution trace
+	   (witness path) enabling the transition. Some traces were quite
+	   long:
+		trace length    transition
+		89               t518
+		160              t195
+		358              t512
+		1682             t552
+		3830             t549
+		6232             t551
+	        (Remaining trace lengths range between 1 and 47).
+
+	As LoLA was used in DFS mode, the traces are not necessarily the
+	minimum length path, but tended to be close to optimum in other 
+	examples.
+
+	The maximum run-time was 4 seconds on a SunBlade 100. The overall
+	completion time for all problems (except t517 and t550) is 32 
+	seconds (sequentially processed, controlled by a shell script).
+
+	The largest state space (terminated as soon as the target transition
+	becomes enabled) consisted of 6292 states.
+
+	4) For the two remaining ones (t517 and t550), LoLA did not finish
+	   within 1.000.000 states. Then, t517 and t550 received a special
+	   treatment.
+
+	   LoLA has a simulation algorithm, that would repeatedly generate
+	   paths through the search space, up to a user provided length.
+	   This algorithm is equipped with a greedy style transition selection
+	   that is supposed to attract a simulation path towards a given 
+	   state predicate (in this case: "all pre-places of the target
+	   transition marked"). The selection heuristic is closely related
+	   to partial order reduction. For both t517 and t550, the very
+	   first generated path was successful:
+
+    		trace length    transition
+     		5934           t517
+     		2863           t550
+
+	Both runs required less than a second. These two paths may contain
+	cycles, since we do not store intermediate states.
+
+Use of structural properties:
+      1) "There is at most one token per place"
+	 This property was used. LoLA accepts a directive of the form
+		#define CAPACITY <n>
+	 that indicates to represent states with log_2 (n+1) bits per place.
+        
+      2) "The set of places is partitioned in "sequential components". In 
+         each sequential component, there is at most one place with a token."
+	 Not exploited at all.
+
+Additional remarks:
+
+	- In the proposed Petri net, many transitions are not immediatly
+	reachable from the initial marking. Brute force state space 
+	generation visits only 250 transition (depth first) or 175 
+	transitions (breadth first). During generation of the first 500.000
+	states, breadth first search reaches depth 7.
+
+	- Karsten also reports about an attempt at generating the entire state
+	space modulo symmetries:
+	The Petri Net example has a highly symmetric structure. LoLA
+	computes symmetries automatically, as graph automorphisms of the
+	Petri net. The automorphism group is represented as a set of 232
+	generators, computed in about 1 minute. The group itself consists
+	of more than 10^46 automorphisms. Unfortunately, despite the large
+	number of automorphisms (state classes have a size less or equal to
+	the number of automorphisms), symmetry reduction seems to be not
+	sufficient to fit the state space explicitly into memory. I stopped
+	reduced state space construction at 8.000.000 states.
+
+3. Results by Bernard Berthomieu and Francois Vernadat (TINA tool)
+------------------------------------------------------------------
+
+Scientist:
+	Bernard Berthomieu and Francois Vernadat
+	LAAS-CNRS
+	7 avenue Colonel Roche 
+	31077 TOULOUSE cedex
+	France
+
+Tool used:
+	TINA
+	http://www.laas.fr/tina/
+
+Platform used:
+	SunFire V880, 900MHz
+
+Translation of sample Petri Net to TINA input format:
+	Manual.
+
+Technique used:
+	Covering steps methods (ICATPN'97, FORTE'02)
+	possibly combined with net reductions
+
+Results:
+	As Tina does not have a primitive construction to ask about dead
+	transitions, one was added as follows:
+
+	- It builds a covering step graph (CSG), using the available CSG
+	  construction modified as follows: the exploration strategy gives
+	  priority to the transitions that have never been fired so far,
+	  and it stops as soon as all transitions have been found quasi-live.
+
+	- When a transition is fired for the first time, an enabling trace
+	  is printed for it, starting at the initial marking (it is not
+	  necessarily the shortest possible enabling trace for that
+	  transition).
+
+	- Exploration may proceed depth-first or breadth-first,
+
+	- The construction may be preceded by reduction of the net. The 
+	  reduction rules are adapted from Berthelot and Esparza sets and
+	  preserve quasi-liveness. Through the rules, every trace of the
+	  reduced net corresponds with a regular set of traces of the 
+	  original net.
+
+	Then, different strategies were tried, including:
+
+	1) Straight breadth-first construction of the CSG (without 
+	   reductions).  A partial CSG is obtained in 7 minutes, with
+	   327,052 markings and 1,110,112 transitions. As this graph 
+	   contains all the transitions, no transition is dead. Enabling
+	   traces have been printed for all of them.
+
+	2) Reduction followed by depth-first construction of the CSG.
+	   The reductions allow to replace the initial Petri net (485 places,
+	   776 transitions) by a smaller one (133 places, 185 transitions).
+	   A partial CSG with 644,519 markings and 1,527,037 transitions was
+	   obtained after 1 hour and 32 minutes. All transitions of the 
+	   reduced net were found firable. Since reductions preserve 
+	   quasi-liveness, no transition of the original net is dead. From 
+	   the reduction records and enabling traces for the reduced net, 
+	   enabling traces for all transitions of the original net can be 
+	   rebuilt.
+
+	3) Reduction followed by breadth-first construction of the CSG.
+	   This leads to a partial CSG with 41,568 markings and 106,058
+           transitions, computed in 6s. No transition is found dead. Then,
+	   the enabling traces are processed as in 2).
+
+Use of structural properties:
+      1) "There is at most one token per place"
+	 Not exploited
+
+      2) "The set of places is partitioned in "sequential components". In
+         each sequential component, there is at most one place with a token."
+	 Not exploited. A simple variant of  the CSG construction that
+	 makes use of the process decomposition was experimented in order
+	 to weaken the conflict relation. For that particular example, it
+	 did not give  better results than the standard CSG. However, 
+	 taking  benefit of these structural properties seems interesting
+	 in general and has to be investigated in depth.
+
+Additional remarks:
+
+	The CSG construction reveals a fair amount of concurrency. At some
+	points, more than 15 transitions are fired simultaneously in one 
+	CSG step.
+	
+	In experiment 3), the longest enabling trace computed has length 35.
+
+4. Results by Oriol Roig (Versify tool)
+--------------------------------------
+
+Scientist:
+	Oriol Roig <oriol@cadence.com>
+
+Tool used:
+	Versify 
+	http://people.ac.upc.es/oriol/versify/COPYRIGHT.html
+
+Platform used:
+	2GHz Linux box with 1.5G RAM 
+
+Translation of sample Petri Net to Versify input format:
+        Manual.
+
+Technique used:
+	Symbolic state space construction (BDD)        
+
+Results:
+	By typing the command
+	   versify_pn -Esample.g -ford4 -vord12 -states -time sample.out
+	Versify was able to build the reachability set (RS) in a couple 
+	of minutes. The number of reachable states found (9.79474E+21)
+	was identical to the one given by SMART (see above).
+
+	The state space is represented by a BDD with 485 variables.
+	After having generated the RS, Versify dumps the order of the 
+	variables (places) that it used.
+
+	Versify then checked the net for deadlocks in few seconds.
+
+	Unfortunately, Versify doesn't report transitions that are never 
+	enabled. This is not implemented, but would be very easy to obtain 
+	once RS is computed (the hardest part is to get RS). All one needs
+	is a look like
+		foreach transition t {
+			if ((RS * E(t)) == 0) {
+				t is not enabled in any marking
+			}
+		}
+	where E(t) means the enable function of transition t, which in BDD
+	terms is represented as the product of the input place variables if
+	you use one variable per place.
+
+Use of structural properties:
+      1) "There is at most one token per place"
+         By default, Versify just won't work if the PN is not 1-safe, 
+         but is able to detect whether that's the case.  The capacity of 
+         each place is assumed to be 1 and after computing the reachable 
+	 markings, Versify checks if there is any marking such that a 
+	 transition t is enabled and any of its output places is also marked
+	 (output places that are also input places do not count). If the check 
+         does not hold, then Versify says so and don't do any further analysis. 
+         If you know a priori those places that are k-bounded, you can specify 
+         that in the input file (and again, the analysis is good as far as 
+         there's no unsafe marking in the reachable markings).
+
+      2) "The set of places is partitioned in "sequential components". In
+         each sequential component, there is at most one place with a token."
+	 Not exploited, but it would certainly improve memory and runtime if
+         instead of using one-hot encoding (as Versify currently does), one
+         encodes the n markings of each sequential component with log2(n+1)
+         variables.
+
+Additional remarks:
+	The largest BDD reported had about 127K nodes, which means that a
+	machine with much less memory would also do.
+
+	It would be worth trying to reduce the Petri net using the series/
+	parallel transformations provided by Versify. These reductions are
+	applied first, then Versify computes the reachable markings in the
+	reduced net and finally expands the reduced set of markings, thus
+	computing the original set of markings more efficiently.
+
+
+
+-- 
+',',',',',',',',',',',' Hubert GARAVEL           | INRIA Rhone-Alpes / VASY
+',',',',',',',',',',',' hubert.garavel@inria.fr  | 655, avenue de l'Europe
+',',',',',',',',',',',' tel: +(33) 4 76 61 52 24 | 38330 Montbonnot St Martin
+',',',',',',',',',',',' fax: +(33) 4 76 61 52 52 | France
+',',',',',',',',',',',' http://www.inrialpes.fr/vasy
+
+----
+[[ Homepage and archive:              http://www.daimi.au.dk/PetriNets/pnml/ ]]
+[[ Post messages/summary of replies:                   PetriNets@daimi.au.dk ]]
+[[ Read before posting:       http://www.daimi.au.dk/PetriNets/pnml/faq.html ]]
+[[ Subscribe:          http://mailman.daimi.au.dk/mailman/listinfo/petrinets ]]
+

@@ -1,0 +1,374 @@
+// From "Design and validation of a controller", Laure Petrucci, SCI 2000
+// http://www.lsv.ens-cachan.fr/Publis/PAPERS/Pet-sci2000.ps
+
+// Normally, Maria reports 836 states, 2862 arcs
+// #define MIN // for canonical initial markings (512 states, 1600 arcs)
+// #define MAX // for worst possible initial markings (898 states, 3221 arcs)
+
+/* The MIN option unfires the following local transitions, transforming
+ * the initial marking to a situation where no local actions have been
+ * performed after synchronisations:
+ *  t1, t7..t6, t8, t45..t44, t50
+ */
+
+/* The MAX option fires the following local transitions, transforming
+ * the initial marking to a situation where only synchronisation actions
+ * are enabled:
+ *  t9, t16, t31, t32, t53, t25..t30, t11..t12, t35..t38, t51..t52
+ */
+
+#ifdef MODULAR
+trans :t2;
+
+subnet
+{
+#endif // MODULAR
+
+  place i12 (1) bool:
+#ifdef MIN
+    true
+#else
+    false
+#endif
+    ;
+#ifdef MODULAR
+  trans i12_t2:trans t2
+#else // MODULAR
+  trans :i12_t2
+#endif // MODULAR
+  in { place i12: false; } out { place i12: true; };
+
+  trans i12_t1 in { place i12: true; } out { place i12: false; };
+#ifdef MODULAR
+};
+
+trans :t5;
+
+subnet
+{
+#endif // MODULAR
+
+  place a (1) unsigned (1..6):
+#ifdef MIN
+    4
+#else
+    6
+#endif
+    ;
+
+#ifdef MODULAR
+  trans a_t2:trans t2
+#else // MODULAR
+  trans :a_t2
+#endif // MODULAR
+  in { place a: 6; } out { place a: 1; };
+#ifdef MODULAR
+  trans a_t5:trans t5
+#else // MODULAR
+  trans :a_t5
+#endif // MODULAR
+  in { place a: 3; } out { place a: 4; };
+
+  trans a_t in { place a: a; } out { place a: +a; }
+  gate a != 6, a != 3;
+#ifdef MODULAR
+};
+
+trans :t10;
+
+subnet
+{
+#endif // MODULAR
+
+  place w1 (1) unsigned (11..14):
+#ifdef MAX
+    13
+#else
+# ifdef MIN
+    11
+# else
+    12
+# endif
+#endif
+    ;
+
+#ifdef MODULAR
+  trans w1_t5:trans t5
+#else // MODULAR
+  trans :w1_t5
+#endif // MODULAR
+  in { place w1: 14; } out { place w1: 11; };
+#ifdef MODULAR
+  trans w1_t10:trans t10
+#else // MODULAR
+  trans :w1_t10
+#endif // MODULAR
+  in { place w1: 13; } out { place w1: 14; };
+
+  trans w1_t in { place w1: w; } out { place w1: +w; }
+  gate w != 13, w != 14;
+#ifdef MODULAR
+};
+
+trans :t17;
+
+subnet
+{
+#endif // MODULAR
+
+  place i34 (1) bool:
+#ifdef MAX
+    false
+#else
+    true
+#endif
+    ;
+
+#ifdef MODULAR
+  trans i34_t17:trans t17
+#else // MODULAR
+  trans :i34_t17
+#endif // MODULAR
+  in { place i34: false; } out { place i34: true; };
+
+  trans i34_t16 in { place i34: true; } out { place i34: false; };
+#ifdef MODULAR
+};
+
+trans :t13;
+trans :t33;
+trans :t34;
+
+subnet
+{
+#endif // MODULAR
+
+  place w (1) unsigned (33..36):
+#ifdef MAX
+    36
+#else
+    33
+#endif
+    ;
+  place w3 (0..1) unsigned (31..32)
+#ifdef MAX
+#else
+    : 32
+#endif
+    ;
+
+#ifdef MODULAR
+  trans w3_t13:trans t13
+#else // MODULAR
+  trans :w3_t13
+#endif // MODULAR
+  in { place w3: 31; } out { place w3: 32; };
+#ifdef MODULAR
+  trans w3_t34:trans t34
+#else // MODULAR
+  trans :w3_t34
+#endif // MODULAR
+  in { place w: 35; } out { place w: 33; };
+#ifdef MODULAR
+  trans w3_t33:trans t33
+#else // MODULAR
+  trans :w3_t33
+#endif // MODULAR
+  in { place w: 36; } out { place w3: 31; place w: 35; };
+
+  trans w3_t31 in { place w3: 32; place w: 33; } out { place w: 34; };
+  trans w3_t32 in { place w: 34; } out { place w: 36; };
+#ifdef MODULAR
+};
+
+trans :t24;
+trans :t39;
+
+subnet
+{
+#endif // MODULAR
+
+  place w2 (1) unsigned (21..24):
+#ifdef MIN
+    21
+#else
+    23
+#endif
+    ;
+
+#ifdef MODULAR
+  trans w2_t24:trans t24
+#else // MODULAR
+  trans :w2_t24
+#endif // MODULAR
+  in { place w2: 24; } out { place w2: 21; };
+#ifdef MODULAR
+  trans w2_t39:trans t39
+#else // MODULAR
+  trans :w2_t39
+#endif // MODULAR
+  in { place w2: 23; } out { place w2: 24; };
+
+  trans w2_t in { place w2: w; } out { place w2: +w; }
+  gate w != 23, w != 24;
+#ifdef MODULAR
+};
+
+trans :t49;
+
+subnet
+{
+#endif // MODULAR
+
+  place o (1) bool:
+#ifdef MAX
+    false
+#else
+    true
+#endif
+    ;
+
+#ifdef MODULAR
+  trans o_t49:trans t49
+#else // MODULAR
+  trans :o_t49
+#endif // MODULAR
+  in { place o: false; } out { place o: true; };
+  trans o_t53 in { place o: true; } out { place o: false; };
+#ifdef MODULAR
+};
+
+subnet
+{
+#endif // MODULAR
+
+  place b (1) unsigned (1..14):
+#ifdef MAX
+    14
+#else
+    8
+#endif
+    ;
+
+#ifdef MODULAR
+  trans t24:trans t24
+#else // MODULAR
+  trans :t24
+#endif // MODULAR
+  in { place b: 7; } out { place b: 8; };
+#ifdef MODULAR
+  trans t17:trans t17
+#else // MODULAR
+  trans :t17
+#endif // MODULAR
+  in { place b: 14; } out { place b: 1; };
+  trans b in { place b: b; } out { place b: +b; }
+  gate b != 7, b != 14;
+#ifdef MODULAR
+};
+
+subnet
+{
+#endif // MODULAR
+
+  place d (1) unsigned (1..6):
+#ifdef MAX
+    6
+#else
+    4
+#endif
+    ;
+
+#ifdef MODULAR
+  trans t10:trans t10
+#else // MODULAR
+  trans :t10
+#endif // MODULAR
+  in { place d: 3; } out { place d: 4; };
+#ifdef MODULAR
+  trans t13:trans t13
+#else // MODULAR
+  trans :t13
+#endif // MODULAR
+  in { place d: 6; } out { place d: 1; };
+
+  trans d in { place d: d; } out { place d: +d; }
+  gate d != 3, d != 6;
+#ifdef MODULAR
+};
+
+subnet
+{
+#endif // MODULAR
+
+  place e (1) unsigned (1..10):
+#ifdef MAX
+    5
+#else
+    1
+#endif
+    ;
+
+#ifdef MODULAR
+  trans t39:trans t39
+#else // MODULAR
+  trans :t39
+#endif // MODULAR
+  in { place e: 5; } out { place e: 6; };
+#ifdef MODULAR
+  trans t34:trans t34
+#else // MODULAR
+  trans :t34
+#endif // MODULAR
+  in { place e: 10; } out { place e: 1; };
+
+  trans e in { place e: e; } out { place e: +e; }
+  gate e != 5, e != 10;
+#ifdef MODULAR
+};
+
+subnet
+{
+#endif // MODULAR
+
+  place f (1) unsigned (1..8):
+#ifdef MAX
+    8
+#else
+# ifdef MIN
+    5
+# else
+    6
+# endif
+#endif
+    ;
+
+#ifdef MODULAR
+  trans t49:trans t49
+#else // MODULAR
+  trans :t49
+#endif // MODULAR
+  in { place f: 4; } out { place f: 5; };
+#ifdef MODULAR
+  trans t33:trans t33
+#else // MODULAR
+  trans :t33
+#endif // MODULAR
+  in { place f: 8; } out { place f: 1; };
+
+  trans f in { place f: f; } out { place f: +f; }
+  gate f != 4, f != 8;
+#ifdef MODULAR
+};
+#else // MODULAR
+trans t2:trans i12_t2:trans a_t2;
+trans t5:trans a_t5:trans w1_t5;
+trans t10:trans w1_t10:trans t10;
+trans t17:trans i34_t17:trans t17;
+trans t13:trans w3_t13:trans t13;
+trans t33:trans w3_t33:trans t33;
+trans t34:trans w3_t34:trans t34;
+trans t24:trans w2_t24:trans t24;
+trans t39:trans w2_t39:trans t39;
+trans t49:trans o_t49:trans t49;
+#endif // MODULAR

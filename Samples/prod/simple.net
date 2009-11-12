@@ -1,0 +1,19 @@
+#place A mk(4*<..>)
+#place B 
+#place C mk(4*<..>)
+#queue F
+#trans sa
+in {A:<..>;C:<..>;}
+out {B:<..>;F:<.1.>;}
+#endtr
+#trans sb
+in {B:<..>;}
+out {A:<..>;F:<.2.>;}
+#endtr
+#trans ra
+in {F:<.1.>;}
+out {C:<..>;}
+#endtr
+#trans rb
+in {F:<.2.>;}
+#endtr
