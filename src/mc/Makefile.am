@@ -1,5 +1,5 @@
 lib_LIBRARIES =  libctlits.a # libmcctl.a
-noinst_PROGRAMS = test_ctl
+noinst_PROGRAMS = its-ctl
 
 if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
@@ -30,6 +30,5 @@ AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(LIBITS_CPP) $(LIBDDD_CP
 
 libctlits_a_SOURCES = ctlCheck.hh ctlCheck.cpp
 
-
-test_ctl_SOURCES = test_ctl.cpp
-test_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) -lm 
+its_ctl_SOURCES = test_ctl.cpp
+its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) -lm 
