@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TPN name="/home/Louis/Developpement/romeo/trunk/examples/swPN_bucci04.xml">
+  <place id="3" label="P11" initialMarking="1"> 
+      <graphics color="0"> 
+         <position x="68.99948682" y="99.000000501"/> 
+         <deltaLabel deltax="31.0" deltay="-6.0"/> 
+      </graphics> 
+      <scheduling gamma="1" omega="3"/> 
+  </place> 
+
+  <place id="4" label="P21" initialMarking="1"> 
+      <graphics color="0"> 
+         <position x="194.99948682" y="102.000000501"/> 
+         <deltaLabel deltax="32.0" deltay="-6.0"/> 
+      </graphics> 
+      <scheduling gamma="1" omega="2"/> 
+  </place> 
+
+  <place id="5" label="P32" initialMarking="0"> 
+      <graphics color="0"> 
+         <position x="317.99948682" y="258.000000501"/> 
+         <deltaLabel deltax="19.0" deltay="9.0"/> 
+      </graphics> 
+      <scheduling gamma="0" omega="0"/> 
+  </place> 
+
+  <place id="6" label="P12" initialMarking="0"> 
+      <graphics color="0"> 
+         <position x="68.99948682" y="253.000000501"/> 
+         <deltaLabel deltax="18.0" deltay="13.0"/> 
+      </graphics> 
+      <scheduling gamma="0" omega="0"/> 
+  </place> 
+
+  <place id="7" label="P31" initialMarking="1"> 
+      <graphics color="0"> 
+         <position x="317.99948682" y="107.000000501"/> 
+         <deltaLabel deltax="33.0" deltay="-7.0"/> 
+      </graphics> 
+      <scheduling gamma="1" omega="1"/> 
+  </place> 
+
+  <place id="8" label="P22" initialMarking="0"> 
+      <graphics color="0"> 
+         <position x="194.99948682" y="256.000000501"/> 
+         <deltaLabel deltax="24.0" deltay="8.0"/> 
+      </graphics> 
+      <scheduling gamma="0" omega="0"/> 
+  </place> 
+
+  <transition id="1" label="T11"  eft="50" lft="50" eft_param="a" lft_param="a"> 
+     <graphics color="0"> 
+        <position x="68.99948682" y="25.000000501"/> 
+        <deltaLabel deltax="34.0" deltay="11.0"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="3" label="T12"  eft="10" lft="20" eft_param="10" lft_param="20"> 
+     <graphics color="0"> 
+        <position x="68.99948682" y="193.000000501"/> 
+        <deltaLabel deltax="36.0" deltay="7.0"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="5" label="T21"  eft="100" lft="infini" eft_param="a*2"> 
+     <graphics color="0"> 
+        <position x="194.99948682" y="23.000000501"/> 
+        <deltaLabel deltax="53.0" deltay="15.0"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="6" label="T31"  eft="150" lft="150" eft_param="a*3" lft_param="a*3"> 
+     <graphics color="0"> 
+        <position x="317.99948682" y="24.000000501"/> 
+        <deltaLabel deltax="38.0" deltay="12.0"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="7" label="T32"  eft="20" lft="28" eft_param="20" lft_param="28"> 
+     <graphics color="0"> 
+        <position x="317.99948682" y="193.000000501"/> 
+        <deltaLabel deltax="44.0" deltay="5.0"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="8" label="T22"  eft="18" lft="28" eft_param="18" lft_param="28"> 
+     <graphics color="0"> 
+        <position x="194.99948682" y="193.000000501"/> 
+        <deltaLabel deltax="38.0" deltay="10.0"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="9" label="T33"  eft="0" lft="0" eft_param="0" lft_param="0"> 
+     <graphics color="0"> 
+        <position x="317.99948682" y="310.000000501"/> 
+        <deltaLabel deltax="10" deltay="10"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="10" label="T13"  eft="0" lft="0" eft_param="0" lft_param="0"> 
+     <graphics color="0"> 
+        <position x="68.99948682" y="310.000000501"/> 
+        <deltaLabel deltax="10" deltay="10"/> 
+     </graphics> 
+  </transition> 
+
+  <transition id="11" label="T23"  eft="0" lft="0" eft_param="0" lft_param="0"> 
+     <graphics color="0"> 
+        <position x="194.99948682" y="309.000000501"/> 
+        <deltaLabel deltax="10.0" deltay="10.0"/> 
+     </graphics> 
+  </transition> 
+
+  <arc place="3" transition="1" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="3" transition="3" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="6" transition="3" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="4" transition="5" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="7" transition="6" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="7" transition="7" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="3" transition="7" type="timedInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="4" transition="7" type="timedInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="5" transition="7" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="4" transition="8" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="3" transition="8" type="timedInhibitor" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="8" transition="8" type="TransitionPlace" weight="1"> 
+     <nail xnail="0" ynail="0"/> 
+     <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+
+  <arc place="5" transition="9" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="6" transition="10" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <arc place="8" transition="11" type="PlaceTransition" weight="1"> 
+    <nail xnail="0" ynail="0"/> 
+    <graphics  color="0"> 
+     </graphics> 
+  </arc> 
+ 
+
+  <misc>
+     <constraint left="a     " op="LowerOrEqual" right="     70"/>
+     <constraint left="a     " op="GreaterOrEqual" right="     30"/>
+  </misc>
+
+  <preferences> 
+      <colorPlace  c0="SkyBlue2"  c1="gray"  c2="cyan"  c3="green"  c4="yellow"  c5="brown" /> 
+ 
+      <colorTransition  c0="yellow"  c1="gray"  c2="cyan"  c3="green"  c4="SkyBlue2"  c5="brown" /> 
+ 
+      <colorArc  c0="black"  c1="gray"  c2="blue"  c3="#beb760"  c4="#be5c7e"  c5="#46be90" /> 
+ 
+  </preferences> 
+ </TPN> 
+

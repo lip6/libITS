@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TPN name="/Users/olivier/Documents/IRCCyN/romeo/romeo/examples/oex1.xml">
+  <place id="1" label="P 1" initialMarking="1">
+      <graphics>
+         <position x="163.0" y="127.0"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="2" label="P 2" initialMarking="1">
+      <graphics>
+         <position x="336" y="131"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="3" label="P 3" initialMarking="1">
+      <graphics>
+         <position x="488" y="132"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="4" label="P 4" initialMarking="1">
+      <graphics>
+         <position x="625" y="137"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="5" label="P 5" initialMarking="1">
+      <graphics>
+         <position x="162" y="253"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="6" label="P 6" initialMarking="1">
+      <graphics>
+         <position x="337" y="254"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="7" label="P 7" initialMarking="1">
+      <graphics>
+         <position x="481" y="261"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="8" label="P 8" initialMarking="1">
+      <graphics>
+         <position x="618" y="256"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="9" label="P 9" initialMarking="0">
+      <graphics>
+         <position x="164" y="408"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="10" label="P 10" initialMarking="0">
+      <graphics>
+         <position x="349" y="408"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="11" label="P 11" initialMarking="0">
+      <graphics>
+         <position x="493" y="404"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <place id="12" label="P 12" initialMarking="0">
+      <graphics>
+         <position x="620" y="403"/>
+         <deltaLabel deltax="10" deltay="10"/>
+      </graphics>
+      <scheduling gamma="0" omega="0"/>
+  </place> 
+
+  <transition id="1" label="T 1"  eft="20" lft="20">
+     <graphics>
+        <position x="167" y="195"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="2" label="T 2"  eft="40" lft="40">
+     <graphics>
+        <position x="334" y="196"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="3" label="T 3"  eft="10" lft="10">
+     <graphics>
+        <position x="475" y="200"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="4" label="T 4"  eft="20" lft="20">
+     <graphics>
+        <position x="604" y="205"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="5" label="T 5"  eft="2" lft="9">
+     <graphics>
+        <position x="170" y="335"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="6" label="T 6"  eft="23" lft="25">
+     <graphics>
+        <position x="350" y="338"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="7" label="T 7"  eft="1" lft="2">
+     <graphics>
+        <position x="477" y="339"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="8" label="T 8"  eft="5" lft="8">
+     <graphics>
+        <position x="605" y="340"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="9" label="T 9"  eft="1" lft="4">
+     <graphics>
+        <position x="168" y="502"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="10" label="T 10"  eft="2" lft="5">
+     <graphics>
+        <position x="363" y="509"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="11" label="T 11"  eft="2" lft="3">
+     <graphics>
+        <position x="499" y="506"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <transition id="12" label="T 12"  eft="6" lft="11">
+     <graphics>
+        <position x="607" y="506"/>
+        <deltaLabel deltax="10" deltay="10"/>
+     </graphics>
+  </transition> 
+
+  <arc place="1" transition="1" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="5" transition="1" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="1" transition="1" type="TransitionPlace" weight="1">
+     <nail xnail="168" ynail="166"/>
+  </arc> 
+
+  <arc place="2" transition="2" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="6" transition="2" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="2" transition="2" type="TransitionPlace" weight="1">
+     <nail xnail="340" ynail="172"/>
+  </arc> 
+
+  <arc place="3" transition="3" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="7" transition="3" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="3" transition="3" type="TransitionPlace" weight="1">
+     <nail xnail="484" ynail="177"/>
+  </arc> 
+
+  <arc place="4" transition="4" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="8" transition="4" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="4" transition="4" type="TransitionPlace" weight="1">
+     <nail xnail="616" ynail="183"/>
+  </arc> 
+
+  <arc place="5" transition="5" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="9" transition="5" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="6" transition="6" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="10" transition="6" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="7" transition="7" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="11" transition="7" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="8" transition="8" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="12" transition="8" type="TransitionPlace" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+
+  <arc place="9" transition="9" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="10" transition="10" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="11" transition="11" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+  <arc place="12" transition="12" type="PlaceTransition" weight="1">
+     <nail xnail="0" ynail="0"/>
+  </arc> 
+ 
+
+</TPN> 
+
