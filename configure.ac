@@ -42,6 +42,7 @@ AC_CONFIG_FILES([
   src/parser_RdPE/Makefile
   src/parser_CAMI/Makefile
   demo/Makefile
+  bin/Makefile
 ])
 
 # Do it !! (mandatory)
