@@ -1,0 +1,27 @@
+<TPN name="C:\svnlibddd\libits\trunk\Samples\ITSXML\philo4/Fork.xml">
+  <place id="3" label="fork" initialMarking="1" >
+    <graphics>
+      <position x="182" y="161"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <transition id="4" label="put" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="300" y="119"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+  </transition>
+  <transition id="5" label="get" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="300" y="196"/>
+      <deltaLabel deltax="24" deltay="-12"/>
+    </graphics>
+  </transition>
+  <arc place="3" transition="4" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="5" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+</TPN>

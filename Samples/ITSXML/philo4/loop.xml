@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model>
+<instance id='3' name='group' type='binaryPhilo4' />
+<synchronization id='4' name='get' label='' />
+<synchronization id='5' name='put' label='' />
+<arc  instance='3'  synchronization='4' labels='acquire; getFork' />
+<arc  instance='3'  synchronization='5' labels='release; putFork' />
+</model>
+

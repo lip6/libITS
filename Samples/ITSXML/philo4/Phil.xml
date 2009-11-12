@@ -1,0 +1,91 @@
+<TPN name="C:\svnlibddd\libits\trunk\Samples\ITSXML\philo4/Phil.xml">
+  <place id="3" label="idle" initialMarking="1" >
+    <graphics>
+      <position x="351" y="204"/>
+      <deltaLabel deltax="-23" deltay="-12"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="4" label="waitL" initialMarking="0" >
+    <graphics>
+      <position x="293" y="108"/>
+      <deltaLabel deltax="-31" deltay="-17"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="5" label="waitR" initialMarking="0" >
+    <graphics>
+      <position x="408" y="111"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="6" label="hasL" initialMarking="0" >
+    <graphics>
+      <position x="222" y="259"/>
+      <deltaLabel deltax="-33" deltay="14"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="7" label="hasR" initialMarking="0" >
+    <graphics>
+      <position x="475" y="293"/>
+      <deltaLabel deltax="25" deltay="2"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <transition id="8" label="hungry" public="0" eft="0" lft="infini" >
+    <graphics>
+      <position x="349" y="67"/>
+      <deltaLabel deltax="34" deltay="-6"/>
+    </graphics>
+  </transition>
+  <transition id="9" label="getL" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="239" y="146"/>
+      <deltaLabel deltax="-35" deltay="-21"/>
+    </graphics>
+  </transition>
+  <transition id="10" label="getR" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="504" y="142"/>
+      <deltaLabel deltax="23" deltay="-16"/>
+    </graphics>
+  </transition>
+  <transition id="11" label="eat" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="347" y="272"/>
+      <deltaLabel deltax="29" deltay="-12"/>
+    </graphics>
+  </transition>
+  <arc place="3" transition="8" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="7" transition="10" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="9" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="8" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="11" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="9" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="7" transition="11" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="11" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="10" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="8" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+</TPN>

@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd'>
+<types>
+<type name='Fork' formalism='Time Petri Net' format='Romeo' path='./Fork.xml' />
+<type name='Phil' formalism='Time Petri Net' format='Romeo' path='./Phil.xml' />
+<type name='OnePhiloFork' formalism='ITSComposite' format='Composite' path='./OnePhiloFork.xml' />
+<type name='binaryPhilo2' formalism='ITSComposite' format='Composite' path='./binaryPhilo2.xml' />
+<type name='binaryPhilo4' formalism='ITSComposite' format='Composite' path='./binaryPhilo4.xml' />
+<type name='loop' formalism='ITSComposite' format='Composite' path='./loop.xml' />
+</types>
+<main type='loop' state='' />
+</model>
+
