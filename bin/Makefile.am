@@ -1,13 +1,9 @@
-noinst_PROGRAMS = romeo-sdd
+noinst_PROGRAMS = its-reach
 
-ITSLIBPATH= $(top_builddir)/src/its/lib/libITS.a  $(top_builddir)/src/its/lib/libRdP.a
 
-if WITH_LIBITS_PATH
-LIBITS_CPP=-I$(LIBITS_ROOT)
-LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a $(LIBITS_ROOT)/../lib/libprod.a $(LIBITS_ROOT)/../lib/libRdP.a
-else
-LIBITS_LINK=-lITS
-endif
+LIBITS_CPP=-I$(top_srcdir)/src
+LIBITS_PATH=$(top_srcdir)/lib/libITS.a $(top_srcdir)/lib/libprod.a $(top_srcdir)/lib/libRdP.a $(top_srcdir)/lib/libCAMI.a
+
 
 if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
@@ -23,11 +19,7 @@ AM_CXXFLAGS = -g -O2 -Wall
 LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH) -lexpat 
 
 
-romeo_sdd_SOURCES = main.cpp \
-	CSMACD.hh CSMACD.cpp \
-	examples.hh examples.cpp \
-	fischer.hh fischer.cpp \
-	train.hh train.cpp 
+its_reach_SOURCES = main.cpp 
 
-romeo_sdd_LDADD = $(LDADDFLAGS)  
+its_reach_LDADD = $(LDADDFLAGS)  
 

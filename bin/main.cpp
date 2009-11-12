@@ -2,19 +2,15 @@
 
 // The ITS model referential
 #include "ITSModel.hh"
-#include "SDED.h"
-// The Time Petri net declaration
-#include "TPNet.hh"
-#include "examples.hh"
-#include "train.hh"
-#include "fischer.hh"
-#include "CSMACD.hh"
+#include "SDD.h"
 // romeo parser
 #include "XMLLoader.hh"
 // prod parser
 #include "Modular2ITS.hh"
 // ITSModel parser
 #include "ITSModelXMLLoader.hh"
+// Cami parser
+#include "JSON2ITS.hh"
 
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
@@ -55,8 +51,8 @@ void exhibitModel (ITSModel & model) {
 
 
 void usage() {
-  cerr << "Timed Petri Net SDD/DDD Analyzer; package " << PACKAGE_STRING <<endl;
-  cerr << "This tool performs state-space generation of extended timed Petri Nets allowing \n"
+  cerr << "Instantiable Transition Systems SDD/DDD Analyzer; package " << PACKAGE_STRING <<endl;
+  cerr << "This tool performs state-space generation of ITS, including extended timed Petri Nets allowing \n"
        << "inhibitor,pre,post (hyper)arcs. " <<endl
        << " The reachability set is computed using SDD/DDD, the Hierarchical Set Decision Diagram library, \n"
        << " Please see README file enclosed \n"
@@ -64,9 +60,9 @@ void usage() {
        << "(see Samples dir for documentation and examples). \n \nOptions :" << endl;
   cerr<<  "    -i path : specifies the path to input Romeo model " <<endl;
   cerr<<  "    -p path : specifies the path to input Prod format model with possible module info pnddd style (xxx.net)" <<endl;
-  cerr<<  "    -e exampleid : use a hard coded example. exampleid is an int, see HARDEXAMPLES.txt for details on this option.\n" ;
   cerr<<  "    -xml path : use a XML encoded ITSModel file, as produced by Coloane or Romeo.\n" ;
-  cerr << "    --order : in conjunction with -e, use a custom order for some examples. \n" ;
+  cerr<<  "    -c path : use a CAMI encoded ordinary P/T net, as produced by Coloane or Macao. Use -j in conjunction with this option.\n" ;
+  cerr<<  "    -j path : use a JSON encoded hierarchy description file for a CAMI model, as produced using PaToH.\n" ;
   cerr << "    --dump-order : dump the currently used variable order to stdout and exit. \n" ;
   cerr<<  "    -d path : specifies the path prefix to construct dot state-space graph" <<endl;
   cerr<<  "    --sdd : privilege SDD storage." <<endl;
@@ -75,10 +71,6 @@ void usage() {
   cerr<<  "    -ssD2 INT : use 2 level depth for scalar sets. Integer provided defines level 2 block size." <<endl;
   cerr<<  "    -ssDR INT : use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
   cerr<<  "    -ssDS INT : use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level." <<endl;
-  cerr<<  "    --texhead : print tex header"  << endl;
-  cerr<<  "    --texline : print tex line " <<endl ;
-  cerr<<  "    --textail : print tex tail"  << endl;
-  cerr<<  "    --tex : print full tex description" <<endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
@@ -99,14 +91,14 @@ int main (int argc, char **argv) {
  string pathromeoff;
  string pathprodff;
  string pathXMLff;
- bool doFullTex;
- bool doTexLine;
+ string pathCAMIff;
+ string pathjsonff;
  bool doromeoparse = false;
  bool doprodparse = false;
  bool doXMLITSparse = false;
- bool dosimpleexample=false;
- bool usecustomorder=false;
- int numexample=0;
+ bool doCAMIparse = false;
+ bool dojsonparse = false;
+
  its::storage method = ddd_storage ;
  // parse command line args to get the options
 
@@ -130,16 +122,21 @@ int main (int argc, char **argv) {
        { cerr << "give argument value for ITSModel XML file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
      pathXMLff = argv[i];
      doXMLITSparse = true;
+   } else if ( ! strcmp(argv[i],"-c") ) {
+     if (++i > argc) 
+       { cerr << "give argument value for CAMI file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
+     pathCAMIff = argv[i];
+     doCAMIparse = true;
+   } else if ( ! strcmp(argv[i],"-j") ) {
+     if (++i > argc) 
+       { cerr << "give argument value for JSON file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
+     pathjsonff = argv[i];
+     dojsonparse = true;
    } else if (! strcmp(argv[i],"-d") ) {
      if (++i > argc) 
        { cerr << "give argument value for .dot file name please after " << argv[i-1]<<endl; usage() ; exit(1);;}
      pathdotff = argv[i];
      dodotexport = true;
-   } else if (! strcmp(argv[i],"-e") ) {
-     if (++i > argc) 
-       { cerr << "give integer argument value for example file name please after " << argv[i-1]<<endl; usage() ; exit(1);;}
-     numexample = atoi(argv[i]);
-     dosimpleexample = true;
    } else if (! strcmp(argv[i],"-ssD2") ) {
      if (++i > argc) 
        { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);;}
@@ -157,26 +154,12 @@ int main (int argc, char **argv) {
      model.setScalarStrategy(SHALLOWREC,grain);
    } else if (! strcmp(argv[i],"--help") || ! strcmp(argv[i],"-h")  ) {
      usage(); exit(0);
-   } else if (! strcmp(argv[i],"--texhead")   ) {
-     Statistic s = Statistic(SDD::one,"");
-     s.print_header(cout);
-     exit(0);
-   } else if (! strcmp(argv[i],"--textail")   ) {
-     Statistic s = Statistic(SDD::one,"");
-	      s.print_trailer(cout);
-	      exit(0);
-   } else if (! strcmp(argv[i],"--tex")   ) {
-     doFullTex = true;
-   } else if (! strcmp(argv[i],"--texline")   ) {
-     doTexLine = true;
    } else if (! strcmp(argv[i],"--quiet")   ) {
      beQuiet = true;
    } else if (! strcmp(argv[i],"--ddd")   ) {
      method = ddd_storage;
      modelName = "d3:";
      model.setStorage(ddd_storage);
-   } else if (! strcmp(argv[i],"--order")   ) {
-     usecustomorder = true;
    } else if (! strcmp(argv[i],"--sdd")   ) {
      method = sdd_storage ;
      model.setStorage(sdd_storage);
@@ -190,111 +173,12 @@ int main (int argc, char **argv) {
  }
  
  
- if ( dosimpleexample ) {
-   
-   if (numexample > 100 && numexample < 200) {
-     int nbtrains = numexample - 100;
-     modelName += "trains " + to_string(nbtrains);
-     loadTrains(nbtrains,model);
-     // Update the model to point at this model type as main instance
-     model.setInstance("Trains","main");
-     // The only state defined in the type "trains" is "init"
-     // This sets the initial state of the main instance
-     model.setInstanceState("init");
-   } else if ( (numexample > 200 && numexample < 300) || numexample > 1000 ) {
-     int nbtrains = numexample - 200;
-     if (nbtrains > 800)
-       nbtrains -= 800;
-     modelName += "fischer " + to_string(nbtrains);
-     loadFischer(nbtrains,model);
-     // Update the model to point at this model type as main instance
-     model.setInstance("Fischer","main");
-     // The only state defined in the type "trains" is "init"
-     // This sets the initial state of the main instance
-     model.setInstanceState("init");
-   } else if (numexample > 300 && numexample < 400) {
-     int nbtrains = numexample - 300;
-     modelName += "fischer2pow " + to_string(nbtrains);
-     loadFischer(nbtrains,model,true);
-     // Update the model to point at this model type as main instance
-     model.setInstance("Fischer","main");
-     // The only state defined in the type "trains" is "init"
-     // This sets the initial state of the main instance
-     model.setInstanceState("init");
-   } else if (numexample > 400 && numexample < 500) {
-     int nbtrains = numexample - 400;
-     modelName += "train2pow " + to_string(nbtrains);
-     loadTrains(nbtrains,model,true);
-     // Update the model to point at this model type as main instance
-     model.setInstance("Trains","main");
-     // The only state defined in the type "trains" is "init"
-     // This sets the initial state of the main instance
-     model.setInstanceState("init");
-   } else if (numexample > 500 && numexample < 600) {
-     int nbtrains = numexample - 500;
-     modelName += "csmacd " + to_string(nbtrains);
-     loadCsmacd(nbtrains,model);
-     // Update the model to point at this model type as main instance
-     model.setInstance("CSMACD","main");
-     // The only state defined in the type "trains" is "init"
-     // This sets the initial state of the main instance
-     model.setInstanceState("init");
-   } else {
-     
-     // build a Time Petri Net
-     // The name of the type
-     TPNet net ("test");
-     
-     if (numexample == 0) {
-       // A test for inhibitor hyper arcs
-       loadTrivial(net);
-       modelName += "trivial " ;
-     } else if (numexample == 1) {
-       // Morgan's Ex1
-       modelName += " ex1" ;
-       loadExample1(net);
-     } else if (numexample == 2) {
-       // Morgan's Ex2
-       modelName += " ex2" ;
-       loadExample2(net);
-     } else if (numexample == 3 ) {
-       // Morgan's Ex
-       modelName += " ex3" ;
-       loadExample3(net);
-     } else if (numexample == 14) {
-       // Morgan's Ex14
-       modelName += " ex14" ;
-       loadExample14(net);
-     } 
-     
-     /// Finished building the net
-       model.declareType (net);
-       
-       // For custom var order
-       if (usecustomorder) {
-	 modelName += " :ord";
-	 if (numexample == 1) {
-	   // use with example 1
-	   updateOrderEx1(model);
-	 } else if (numexample == 3) {
-	   // use with example 3
-	   updateOrderEx3(model);
-	 }
-       }
-       
-       // Update the model to point at this model type as main instance
-       model.setInstance("test","main");
-       // The only state defined in the type "test" is "init"
-       // This set the initial state of the main instance
-       model.setInstanceState("init");
-   } // small examples
- } else if (doprodparse) {
+ if (doprodparse) {
    vLabel nname = RdPELoader::loadModularProd(model,pathprodff);
    modelName += pathprodff ;
    model.setInstance(nname, "main");
    model.setInstanceState("init");
  } else if ( doromeoparse) {
-   // No -e option
    // Parse the input file to build the system
    
    TPNet * pnet = XMLLoader::loadXML(pathromeoff);
@@ -304,14 +188,22 @@ int main (int argc, char **argv) {
    model.setInstanceState("init");	  
  } else if (doXMLITSparse) {
    ITSModelXMLLoader::loadXML(pathXMLff, model);
+ } else if (doCAMIparse) {
+    if (! dojsonparse) {
+      std::cerr << "You need to specify a hierarchy configuration file in JSON format." << std::endl;
+      exit(1);
+    } else {
+      JSONLoader::loadJsonCami (model, pathCAMIff, pathjsonff);
+//         model.print(std::cerr);
+    } 
  } else {
-   std::cerr << "Please use -i, -p, -xml or -e option to specify input problem.\n" ;
+   std::cerr << "Please use -i, -p, -xml or -c option to specify input problem.\n" ;
    usage();
    exit(1);
  } 
 	
  exhibitModel(model);
-// SDED::pstats(false);
+
  return 0;
 }
 
