@@ -1,0 +1,194 @@
+[
+    [
+     "primary_ID1_NOK"
+    ,"primary_ID1_OK"
+    ]
+,
+  
+    ["init_ID1"                                                                      
+    ,"first_negociation_phase_ID1"                                                   
+    ,"connection_all_ID1"                                                            
+    ,"second_negociation_phase_ID1"                                                  
+    ,"end_poll_ID1"                                                                  
+    ,"lock_ID1"                                                                      
+    ,"while_read_next_ID1"                                                           
+    ,"do_write_ID1"                                                                  
+    ,"end_ID1"                                                                       
+    ,"note_negociate_terminate_ID1"
+    ]
+                                                      
+    ,
+    
+    [
+        ["nb_list_MN_ID1_0"                                                              
+        ,"nb_list_negociation_ID1_0"                                                     
+        ,"nb_to_read_ID1_0"                                                              
+        ,"nb_to_write_ID1_0"
+        ]
+                                                                     
+        ,
+        ["nb_list_MN_ID1_1"                                                              
+        ,"nb_list_negociation_ID1_1"                                                     
+        ,"nb_to_read_ID1_1"                                                              
+        ,"nb_to_write_ID1_1"
+        ]
+                                                                     
+        ,
+        ["nb_list_negociation_ID1_2"                                                     
+        ,"nb_to_read_ID1_2"
+        ,"nb_to_write_ID1_2"
+        ]
+    
+        ,
+        ["nb_list_negociation_ID1_3"
+        ,"nb_to_read_ID1_3"
+        ,"nb_to_write_ID1_3"
+        ]
+    ]
+
+    
+    
+    
+    ,
+    ["canal_ID1_ID0_0"
+    ,"in_connection_ID1_ID0_0"
+    ,"mess_to_send_ID1_ID0_0"
+    ,"to_read_ID1_ID0_0"
+    ,"packet_ID1_ID0_0"
+    ,"to_write_ID1_ID0_0"
+    ,"req_to_execute_ID1_ID0_0"
+    ]
+    
+    ,
+    ["canal_ID1_ID0_1"
+    ,"mess_to_send_ID1_ID0_1"
+    ,"to_read_ID1_ID0_1"
+    ,"packet_ID1_ID0_1"
+    ,"to_write_ID1_ID0_1"
+    ,"req_to_execute_ID1_ID0_1"
+    ]
+    
+    ,
+    ["canal_ID1_ID0_2"
+    ,"mess_to_send_ID1_ID0_2"
+    ,"to_read_ID1_ID0_2"
+    ,"packet_ID1_ID0_2"
+    ,"to_write_ID1_ID0_2"
+    ,"req_to_execute_ID1_ID0_2"
+    ]
+    
+    ,
+    ["list_MN_ID1_ID0"
+    ,"handlerAnswerPrimary_ID1_ID0"
+    ,"handlerAskPrimary_ID1_ID0"
+    ,"select_less_uid_ID1_ID0"
+    ]
+    ,
+    ["canal_ID1_ID0_3"
+    ,"mess_to_send_ID1_ID0_3"
+    ,"to_read_ID1_ID0_3"
+    ,"packet_ID1_ID0_3"
+    ,"to_write_ID1_ID0_3"
+    ,"req_to_execute_ID1_ID0_3"
+    ]
+    
+    ,
+    ["primary_node_ID1_ID4"
+    ,"paramaters_AnPM_Node_ID1_ID4"
+    ]
+    
+  
+, 
+   
+    ["init_ID0"                                                                      
+    ,"first_negociation_phase_ID0"                                                   
+    ,"connection_all_ID0"                                                            
+    ,"second_negociation_phase_ID0"                                                  
+    ,"end_poll_ID0"                                                                  
+    ,"lock_ID0"                                                                      
+    ,"while_read_next_ID0"                                                           
+    ,"do_write_ID0"                                                                  
+    ,"end_ID0"                                                                       
+    ,"note_negociate_terminate_ID0"
+    ]
+                                                      
+    ,
+    
+    [
+        ["nb_list_MN_ID0_0"                                                              
+        ,"nb_list_negociation_ID0_0"                                                     
+        ,"nb_to_read_ID0_0"                                                              
+        ,"nb_to_write_ID0_0"
+        ]
+                                                                     
+        ,
+        ["nb_list_MN_ID0_1"                                                              
+        ,"nb_list_negociation_ID0_1"                                                     
+        ,"nb_to_read_ID0_1"                                                              
+        ,"nb_to_write_ID0_1"
+        ]
+                                                                     
+        ,
+        ["nb_list_negociation_ID0_2"                                                     
+        ,"nb_to_read_ID0_2"                                                              
+        ,"nb_to_write_ID0_2"
+        ]
+                                                                     
+        ,
+        ["nb_list_negociation_ID0_3"                                                     
+        ,"nb_to_read_ID0_3"                                                              
+        ,"nb_to_write_ID0_3"
+        ]
+   ]
+                                                                 
+                                     
+    ,
+    ["canal_ID0_ID1_0"
+    ,"in_connection_ID0_ID1_0"                                                       
+    ,"mess_to_send_ID0_ID1_0"                                                        
+    ,"to_read_ID0_ID1_0"                                                             
+    ,"packet_ID0_ID1_0"                                                              
+    ,"to_write_ID0_ID1_0"                                                            
+    ,"req_to_execute_ID0_ID1_0"
+    ]
+                                                                   
+    ,
+    ["canal_ID0_ID1_1"
+    ,"mess_to_send_ID0_ID1_1"                                                        
+    ,"to_read_ID0_ID1_1"                                                             
+    ,"packet_ID0_ID1_1"                                                              
+    ,"to_write_ID0_ID1_1"                                                            
+    ,"req_to_execute_ID0_ID1_1"
+    ]
+                                                                   
+    ,
+    ["canal_ID0_ID1_2"
+    ,"mess_to_send_ID0_ID1_2"                                                        
+    ,"to_read_ID0_ID1_2"                                                             
+    ,"packet_ID0_ID1_2"                                                              
+    ,"to_write_ID0_ID1_2"                                                            
+    ,"req_to_execute_ID0_ID1_2"
+    ]
+      
+ ,
+    ["list_MN_ID0_ID1"                                                               
+    ,"handlerAnswerPrimary_ID0_ID1"                                                  
+    ,"handlerAskPrimary_ID0_ID1"                                                     
+    ,"select_less_uid_ID0_ID1"
+    ]                                                             
+    ,
+    ["canal_ID0_ID1_3"
+    ,"mess_to_send_ID0_ID1_3"                                                        
+    ,"to_read_ID0_ID1_3"                                                             
+    ,"packet_ID0_ID1_3"                                                              
+    ,"to_write_ID0_ID1_3"                                                            
+    ,"req_to_execute_ID0_ID1_3"
+    ]                                                               
+                                                          
+                                                                                                               
+    ,
+    ["primary_node_ID0_ID4"                                                          
+    ,"paramaters_AnPM_Node_ID0_ID4"
+    ]
+  
+]

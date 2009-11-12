@@ -1,0 +1,5 @@
+EX(TRUE);
+! EX(TRUE);
+EX(FALSE);
+AG (EX ( TRUE)) ;
+
