@@ -2,6 +2,7 @@
 #define ___VIS__FILEDESCRIPTORS__HH__
 
 #include <stdio.h>
+#include "util.h"
 
 extern FILE *vis_stderr;
 extern FILE *vis_stdout;

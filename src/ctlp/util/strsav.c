@@ -7,6 +7,7 @@
 /* LINTLIBRARY */
 
 #include <stdio.h>
+#include <string.h>
 #include "util.h"
 
 
@@ -97,55 +98,3 @@ util_strcat4(
 }
 
 
-#if !HAVE_STRSTR
-/**Function********************************************************************
-
-  Synopsis    [required]
-
-  Description [optional]
-
-  SideEffects [required]
-
-  SeeAlso     [optional]
-
-******************************************************************************/
-char *
-strstr(
-  char const * s,
-  char const * pat)
-{
-  int len;
-
-  len = strlen(pat);
-  for (; *s != '\0'; ++s)
-    if (*s == *pat && memcmp(s, pat, len) ==  0) {
-      return (char *)s; /* UGH */
-    }
-  return NULL;
-}
-#endif /* !HAVE_STRSTR */
-
-#if !HAVE_STRCHR
-/**Function********************************************************************
-
-  Synopsis    [required]
-
-  Description [optional]
-
-  SideEffects [required]
-
-  SeeAlso     [optional]
-
-******************************************************************************/
-char *
-strchr(char const * s, int c)
-{
-   for (; *s != '\0'; s++) {
-     if (*s == c) {
-       return (char *)s;
-     }
-   }
-   return NULL;
-   
-}
-#endif /* !HAVE_STRCHR */
