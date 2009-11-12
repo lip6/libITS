@@ -1,3 +1,3 @@
-SUBDIRS = src lib bin
+SUBDIRS = src lib bin Samples
 
 

@@ -43,6 +43,11 @@ AC_CONFIG_FILES([
   src/parser_CAMI/Makefile
   demo/Makefile
   bin/Makefile
+  Samples/Makefile
+  Samples/prod/Makefile
+  Samples/prod/Generators/Makefile			
+  Samples/prod/Generators/CiardoPN2000/Makefile
+  Samples/prod/Generators/Other/Makefile
 ])
 
 # Do it !! (mandatory)
