@@ -191,6 +191,13 @@ namespace
         return get_str_< string >( begin, end );
     }
 
+#ifndef BOOST_NO_STD_WSTRING
+  wstring get_str( wstring::const_iterator begin, wstring::const_iterator end )
+  {
+    return get_str_< wstring >( begin, end );
+  }
+#endif
+
     
     template< class String_t, class Iter_t >
     String_t get_str( Iter_t begin, Iter_t end )
@@ -641,11 +648,6 @@ void json_spirit::read_or_throw( std::string::const_iterator& begin, std::string
 }
 
 #ifndef BOOST_NO_STD_WSTRING
-
-wstring get_str( wstring::const_iterator begin, wstring::const_iterator end )
-{
-  return get_str_< wstring >( begin, end );
-}
 
 
 bool json_spirit::read( const std::wstring& s, wValue& value )
