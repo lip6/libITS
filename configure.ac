@@ -13,6 +13,9 @@ if test "x${with_libddd}" != x; then
     AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
 fi
 
+# M4 macros location
+AC_CONFIG_MACRO_DIR([m4])
+
 # programs used to build
 # we make static libs (use ranlib)
 AC_PROG_RANLIB
@@ -31,6 +34,10 @@ AC_PROG_CXX
 #use bison/flex parsers
 AM_PROG_LEX
 AC_PROG_YACC
+
+# Enable boost if found:
+AX_BOOST_BASE
+AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
 
 # automake :
 # build these Makefile using the Makefile.in files in each directory

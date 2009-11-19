@@ -102,7 +102,7 @@ else
 LIBDDD_LINK=-lddd
 endif
 
-AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src/its/src/lib  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall
+AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src/its/src/lib  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS)
 AM_CXXFLAGS = -g -O2 -Wall
 
 libITS_a_SOURCES = $(ITSSOURCES)
