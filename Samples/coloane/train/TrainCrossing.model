@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='ITSComposite' xposition='0' yposition='0'>
+<attributes>
+</attributes>
+<nodes>
+<node nodetype='instance' id='3' xposition='172' yposition='153' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='192' yposition='193'>t</attribute>
+<attribute name='type' xposition='162' yposition='213'>TrainGroup</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='4' xposition='328' yposition='153' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='348' yposition='193'>cg</attribute>
+<attribute name='type' xposition='348' yposition='213'>ControlledGate</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='5' xposition='268' yposition='110' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='288' yposition='90'>App</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='6' xposition='268' yposition='222' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='269' yposition='234'>Exit</attribute>
+</attributes>
+</node>
+</nodes>
+<arcs>
+<arc arctype='arc' id='7' startid='3' endid='5' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='230' yposition='124'>App</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='8' startid='4' endid='5' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='306' yposition='124'>App</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='9' startid='3' endid='6' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='231' yposition='199'>Exit</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='10' startid='6' endid='4' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='299' yposition='199'>Exit</attribute>
+</attributes>
+</arc>
+</arcs>
+<stickys>
+</stickys>
+</model>

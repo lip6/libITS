@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='ITSComposite' xposition='0' yposition='0'>
+<attributes>
+</attributes>
+<nodes>
+<node nodetype='instance' id='3' xposition='165' yposition='187' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='185' yposition='227'>c</attribute>
+<attribute name='type' xposition='185' yposition='247'>Controller</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='4' xposition='334' yposition='187' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='354' yposition='227'>g</attribute>
+<attribute name='type' xposition='354' yposition='247'>Gate</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='5' xposition='268' yposition='267' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='298' yposition='262'>ExitLast</attribute>
+<attribute name='label' xposition='269' yposition='277'>Exit</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='6' xposition='268' yposition='149' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='291' yposition='141'>AppFirst</attribute>
+<attribute name='label' xposition='268' yposition='129'>App</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='7' xposition='122' yposition='152' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='70' yposition='147'>AppOther</attribute>
+<attribute name='label' xposition='122' yposition='129'>App</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='8' xposition='122' yposition='267' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='77' yposition='247'>ExitOther</attribute>
+<attribute name='label' xposition='123' yposition='277'>Exit</attribute>
+</attributes>
+</node>
+</nodes>
+<arcs>
+<arc arctype='arc' id='9' startid='8' endid='3' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='143' yposition='227'>Exit</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='10' startid='7' endid='3' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='143' yposition='169'>Enter</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='11' startid='3' endid='5' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='221' yposition='227'>ExitLast</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='12' startid='3' endid='6' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='216' yposition='168'>EnterFirst</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='13' startid='5' endid='4' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='301' yposition='227'>Exit</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='14' startid='4' endid='6' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='301' yposition='168'>App</attribute>
+</attributes>
+</arc>
+</arcs>
+<stickys>
+</stickys>
+</model>

@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/its.xsd'>
+<types>
+<type name='controller_v1' id='7000' formalism='Time Petri Net' path='/train/controller_v1.model'/>
+<type name='train' id='7001' formalism='Time Petri Net' path='/train/train.model'/>
+<type name='gate' id='7002' formalism='Time Petri Net' path='/train/gate.model'/>
+<type name='controlledGate' id='7003' formalism='ITSComposite' path='/train/controlledGate.model'/>
+<type name='SingleTrainCrossing' id='7004' formalism='ITSComposite' path='/train/TrainCrossing.model'/>
+<type name='trainGroup' id='7005' formalism='Scalar Set Composite' path='/train/trainGroup.model'/>
+<type name='FiveTrainCrossing' id='7006' formalism='ITSComposite' path='/train/TrainCrossing.model'/>
+</types>
+<concepts>
+<concept name='Controller' id='7007' effective='7000' parent='7003'/>
+<concept name='Gate' id='7008' effective='7002' parent='7003'/>
+<concept name='TrainGroup' id='7009' effective='7001' parent='7004'/>
+<concept name='ControlledGate' id='7010' effective='7002' parent='7004'/>
+<concept name='Train' id='7011' effective='7001' parent='7005'/>
+<concept name='TrainGroup' id='7012' effective='7005' parent='7006'/>
+<concept name='ControlledGate' id='7013' effective='7003' parent='7006'/>
+</concepts>
+<parameters>
+<parameter name='$N' id='7014' parent='7000' value='5'/>
+<parameter name='$SIZE' id='7015' parent='7005' value='5'/>
+</parameters>
+</model>
