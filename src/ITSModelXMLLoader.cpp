@@ -9,6 +9,7 @@
 #include "XMLLoader.hh"
 #include "ITSModelXMLLoader.hh"
 #include "CompositeXMLLoader.hh"
+#include "ScalarSetXMLLoader.hh"
 
 
 void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_Char** Attr)
@@ -33,12 +34,18 @@ void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_C
       }
     }
     // Decide which parser to invoke
-    if ( format == "Romeo" && formalism == "TimePetriNet" ) {
+    if ( format == "Romeo" && formalism == "Time Petri Net" ) {
       its::TPNet * pnet = XMLLoader::loadXML(path);
       model->declareType(*pnet);
     } else if ( format == "Composite" && formalism == "ITSComposite" ) {
       its::Composite * tcomp = CompositeXMLLoader::loadXML(path,*model,true);
       model->declareType(*tcomp);
+    } else if ( format == "Composite" && formalism == "Scalar Set Composite" ) {
+      its::Composite * tcomp = ScalarSetXMLLoader::loadXML(path,*model,true);
+      model->declareType(*tcomp);
+    } else {
+      std::cerr << "Unrecognized format/formalism pair :" << format << "/" << formalism << std::endl;
+      std::cerr << "When parsing type :" << name << std::endl;
     }
   }
 }
