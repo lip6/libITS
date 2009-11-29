@@ -31,4 +31,4 @@ AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(LIBITS_CPP) $(LIBDDD_CP
 libctlits_a_SOURCES = ctlCheck.hh ctlCheck.cpp
 
 its_ctl_SOURCES = test_ctl.cpp
-its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) -lm 
+its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) -lm 
