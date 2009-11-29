@@ -30,7 +30,7 @@ void exhibitModel (ITSModel & model) {
   if (! beQuiet) {
     std::cout << model << std::endl;
   
-    std::cout << model.getInitialState() << std::endl;
+    //   std::cout << model.getInitialState() << std::endl;
   }
   if (dodumporder) {
     model.printVarOrder(std::cout);
@@ -43,7 +43,7 @@ void exhibitModel (ITSModel & model) {
   // Print some stats : memory size, number of states ....
   Statistic S = Statistic(reachable, modelName , CSV); // can also use LATEX instead of CSV
   S.print_table(std::cout);
-
+  std::cout << std::endl;
   // Export the SDD of final states to dot : generates files final.dot and d3final.dot
   if (dodotexport)
     exportDot(reachable,pathdotff);
@@ -109,47 +109,47 @@ int main (int argc, char **argv) {
  for (int i=1;i < argc; i++) {
    if ( ! strcmp(argv[i],"-i") ) {
      if (++i > argc) 
-       { cerr << "give argument value for romeo xml file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
+       { cerr << "give argument value for romeo xml file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
      pathromeoff = argv[i];
      doromeoparse = true;
    } else if ( ! strcmp(argv[i],"-p") ) {
      if (++i > argc) 
-       { cerr << "give argument value for Prod file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
+       { cerr << "give argument value for Prod file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
      pathprodff = argv[i];
      doprodparse = true;
    } else if ( ! strcmp(argv[i],"-xml") ) {
      if (++i > argc) 
-       { cerr << "give argument value for ITSModel XML file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
+       { cerr << "give argument value for ITSModel XML file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
      pathXMLff = argv[i];
      doXMLITSparse = true;
    } else if ( ! strcmp(argv[i],"-c") ) {
      if (++i > argc) 
-       { cerr << "give argument value for CAMI file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
+       { cerr << "give argument value for CAMI file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
      pathCAMIff = argv[i];
      doCAMIparse = true;
    } else if ( ! strcmp(argv[i],"-j") ) {
      if (++i > argc) 
-       { cerr << "give argument value for JSON file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
+       { cerr << "give argument value for JSON file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
      pathjsonff = argv[i];
      dojsonparse = true;
    } else if (! strcmp(argv[i],"-d") ) {
      if (++i > argc) 
-       { cerr << "give argument value for .dot file name please after " << argv[i-1]<<endl; usage() ; exit(1);;}
+       { cerr << "give argument value for .dot file name please after " << argv[i-1]<<endl; usage() ; exit(1);}
      pathdotff = argv[i];
      dodotexport = true;
    } else if (! strcmp(argv[i],"-ssD2") ) {
      if (++i > argc) 
-       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);;}
+       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);}
      int grain = atoi(argv[i]);
      model.setScalarStrategy(DEPTH1,grain);
    }else if (! strcmp(argv[i],"-ssDR") ) {
      if (++i > argc) 
-       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);;}
+       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);}
      int grain = atoi(argv[i]);
      model.setScalarStrategy(DEPTHREC,grain);   
    }else if (! strcmp(argv[i],"-ssDS") ) {
      if (++i > argc) 
-       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);;}
+       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);}
      int grain = atoi(argv[i]);
      model.setScalarStrategy(SHALLOWREC,grain);
    } else if (! strcmp(argv[i],"--help") || ! strcmp(argv[i],"-h")  ) {
