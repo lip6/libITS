@@ -58,6 +58,7 @@ ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
 	$(MYSRCDIR)/PNetType.hh \
 	$(MYSRCDIR)/PTransition.hh \
 	$(MYSRCDIR)/ScalarSet.hh \
+	$(MYSRCDIR)/ScalarSetXMLLoader.hh \
 	$(MYSRCDIR)/ScalarSetType.hh \
 	$(MYSRCDIR)/ScalarState.hh \
 	$(MYSRCDIR)/Synchronization.hh \
@@ -84,6 +85,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/PNet.cpp \
 	$(MYSRCDIR)/PTransition.cpp \
 	$(MYSRCDIR)/ScalarSet.cpp \
+	$(MYSRCDIR)/ScalarSetXMLLoader.cpp \
 	$(MYSRCDIR)/ScalarSetType.cpp \
 	$(MYSRCDIR)/ScalarState.cpp \
 	$(MYSRCDIR)/Synchronization.cpp \
