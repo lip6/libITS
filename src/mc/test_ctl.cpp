@@ -1,6 +1,15 @@
+// The ITS model referential
 #include "ITSModel.hh"
+#include "SDD.h"
+// romeo parser
+#include "XMLLoader.hh"
+// prod parser
 #include "Modular2ITS.hh"
+// ITSModel parser
+#include "ITSModelXMLLoader.hh"
+// Cami parser
 #include "JSON2ITS.hh"
+
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
 #include "statistic.hpp"
@@ -19,7 +28,31 @@ using namespace its;
 static bool with_garbage=true;
 
 void usage () {
-  std::cerr << "Document options here :\n\t-p [PROD file]\n\t-c [CAMI file]\n\t-j [JSON hierarchy definition file]\n\t-ctl [CTL formulas file]\n\t[--forward]\n\t[--no-garbage]\n\t[--ddd]\n\n" << std::endl;
+  cerr << "Instantiable Transition Systems SDD/DDD CTL Analyzer; package " << PACKAGE_STRING <<endl;
+  cerr << "This tool performs CTL verification ostate-space of ITS, including extended timed Petri Nets allowing \n"
+       << "inhibitor,pre,post (hyper)arcs. " <<endl
+       << " The reachability set is computed using SDD/DDD, the Hierarchical Set Decision Diagram library, \n"
+       << " Please see README file enclosed \n"
+       << "in the distribution for more details. Input is a ROMEO xml model file, a CAMI/JSON pair or an ITS XML set of files as prouced through Coloane.\n"
+       << "(see Samples dir for documentation and examples). \n \nOptions :" << endl;
+  cerr<<  "    -i path : specifies the path to input Romeo model " <<endl;
+  cerr<<  "    -p path : specifies the path to input Prod format model with possible module info pnddd style (xxx.net)" <<endl;
+  cerr<<  "    -xml path : use a XML encoded ITSModel file, as produced by Coloane or Romeo.\n" ;
+  cerr<<  "    -c path : use a CAMI encoded ordinary P/T net, as produced by Coloane or Macao. Use -j in conjunction with this option.\n" ;
+  cerr<<  "    -j path : use a JSON encoded hierarchy description file for a CAMI model, as produced using PaToH.\n" ;
+  cerr<<  "    -ctl [CTL formulas file]\n";
+  cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
+  cerr<<  "    [--backward] to force backward CTL model-checking (classic algorithm from 10^20 states & beyond)\n";
+  cerr << "    --dump-order : dump the currently used variable order to stdout and exit. \n" ;
+  cerr<<  "    --sdd : privilege SDD storage." <<endl;
+  cerr<<  "    --ddd : privilege DDD (no hierarchy) encoding.[DEFAULT]" <<endl;
+  cerr<<  "    --no-garbage : disable garbage collection (may be faster, more memory)" <<endl;
+  cerr<<  "    -ssD2 INT : use 2 level depth for scalar sets. Integer provided defines level 2 block size." <<endl;
+  cerr<<  "    -ssDR INT : use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
+  cerr<<  "    -ssDS INT : use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level." <<endl;
+  cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
+  cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
+  cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
 
 int main (int argc, char ** argv) {  
@@ -29,10 +62,12 @@ int main (int argc, char ** argv) {
   string pathformff;
   string pathcamiff;
   string pathjsonff;
+  string pathxmlff;
   bool doprodparse = false;
   bool docamiparse = false;
   bool dojsonparse = false;
-  
+  bool doxmlparse = false;
+
   bool dofwtranslation = false;
   bool dobwtranslation = false;
 
@@ -56,6 +91,11 @@ int main (int argc, char ** argv) {
        { cerr << "give argument value for JSON file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
      pathjsonff = argv[i];
      dojsonparse = true;
+   } else if ( ! strcmp(argv[i],"-xml") ) {
+     if (++i > argc) 
+       { cerr << "give argument value for ITSModel XML file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
+     pathxmlff = argv[i];
+     doxmlparse = true;
    } else if (! strcmp(argv[i],"-ctl") ) {
      if (++i > argc) 
        { cerr << "give argument value for .ctl formula file name please after " << argv[i-1]<<endl; usage() ; exit(1);;}
@@ -79,8 +119,8 @@ int main (int argc, char ** argv) {
    dofwtranslation = true;
  }
 
- if (pathformff == "" || ( pathprodff == "" && pathcamiff == "") ) {
-   fprintf(stderr, " Please provide both a ctl file name with -ctl and and a model file with -p (PROD format) or -c/-j (Cami/Json) \n");
+ if (pathformff == "" || ( pathprodff == "" && pathcamiff == "" && pathxmlff == "") ) {
+   fprintf(stderr, " Please provide both a ctl file name with -ctl and and a model file with -p (PROD format) or -c/-j (Cami/Json) or -xml (XML Coloane mainModel.xml file) \n");
    return 1;
  }
 
@@ -104,6 +144,8 @@ int main (int argc, char ** argv) {
       JSONLoader::loadJsonCami (model, pathcamiff, pathjsonff);
 //         model.print(std::cerr);
     }
+  } else if (doxmlparse) {
+    ITSModelXMLLoader::loadXML(pathxmlff, model);
   }
 
   // Build CTL context
