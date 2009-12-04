@@ -138,9 +138,14 @@ void XMLLoader::loadArcs(void * data, const XML_Char* Elt, const XML_Char** Attr
             // Was it intended to handle stopwatches? If so, then it is
             // "timedInhibitor" and not "logicalInhibitor" 
     		at = its::INHIBITOR;
-    	} else if (type == "flush" ) {
-	  at = its::RESET;
-	}
+    	} else if (type == "flush") {
+    		at = its::RESET;
+    	} else if (type == "read") {
+    		at = its::TEST;
+    	} else {
+    		std::cerr << "Error unrecognized arc type " << type << std::endl;
+    		return;
+    	}
 
         pn->addArc(av,tnames[transition],at);
     }
