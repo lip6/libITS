@@ -1,7 +1,7 @@
 /*
  * ITSModel.hh
  *
- *  Created on: 3 déc. 2008
+ *  Created on: 3 dï¿½c. 2008
  *      Author: yann
  */
 
@@ -69,7 +69,7 @@ public :
   // Creates an instance of the given "type" of name "name" and sets it as the main instance of the model.
   // Returns false if the type name does not exist
   bool setInstance (Label type, Label name);
-  // defines the intial state of the main instance, should be a state label of type(main)
+  // defines the initial state of the main instance, should be a state label of type(main)
   // returns false in case of failure (no main instance defined, no corresponding state label)
   bool setInstanceState (Label stateName);
   // returns a const pointer to a type given its name
