@@ -32,6 +32,11 @@ namespace its {
     /** the set T of public transition labels */
     labels_t getTransLabels () const { return concrete_->getTransLabels() ; }
 
+    /** Print a set of states, explicitly. 
+     *  Watch out, do not call on large its::State (>10^6). str is there for recursion, pass an empty string. */
+    void printState (State s, std::ostream & os) const { return concrete_->printState(s,os); }
+
+
     /** order */
     bool setVarOrder (labels_t vars) const { return concrete_->setVarOrder(vars); }
     /** Optional, ok to return true.
