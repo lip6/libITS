@@ -65,6 +65,11 @@ public :
   virtual void printVarOrder (std::ostream & os) const = 0;
 
   virtual std::ostream & print (std::ostream & os) const = 0;
+
+  /** Print a set of states, explicitly. 
+   *  Watch out, do not call on large its::State (>10^6). */
+  virtual void printState (State s, std::ostream & os) const = 0;
+
 };
 
 typedef const Type * pType;
