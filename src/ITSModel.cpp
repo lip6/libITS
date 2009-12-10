@@ -134,19 +134,21 @@ SDD ITSModel::computeReachable (bool wGarbage) const {
 }
 
 void ITSModel::print (std::ostream & os) const  {
-	for (types_it it = types_.begin();
-	it != types_.end();
-	++it) {
-		(*it)->print(os);
-		os << "\n";
-	}
+  for (types_it it = types_.begin();
+       it != types_.end();
+       ++it) {
+    (*it)->print(os);
+    os << "\n";
+  }
+  
+  if (model_ != NULL) {
+    os << "// target model : \n";
+    model_->print(os) ;
+    os << " = " << initName_;
+    os << " ;" << std::endl;
+  }
 
-	if (model_ != NULL) {
-		os << "// target model : \n";
-		model_->print(os) ;
-		os << " = " << initName_;
-		os << " ;" << std::endl;
-	}
+  model_->getType()->printState(getInitialState(),os);
 }
 
   // Factory role
