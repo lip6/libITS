@@ -61,6 +61,8 @@ public :
   /* delegated */
   std::ostream & print (std::ostream & os) const { return comp_.print(os); }  
   Label getName() const { return comp_.getName(); }
+
+  void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Scalar Set" << std::endl; }
 };
 
 
