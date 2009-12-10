@@ -20,6 +20,8 @@ class CompositeType : public  TypeBasics {
   Composite comp_;
 
   Transition getFullShom (const Synchronization & sync) const ;
+
+  void recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const;
  protected :
   // returns the set of component instance names 
   labels_t getVarSet () const;
@@ -49,6 +51,9 @@ public :
 
   /* delegated */
   std::ostream & print (std::ostream & os) const { return comp_.print(os); }  
+
+  void printState (State s, std::ostream & os) const;
+
   Label getName() const { return comp_.getName(); }
 };
 
