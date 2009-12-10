@@ -45,7 +45,7 @@ public :
 
   comps_it comps_begin() const { return comps_.begin() ; }
   comps_it comps_end() const { return comps_.end() ; }
-
+  comps_it comps_find (Label iname) const { return findName(iname,comps_); }
 
 
   Composite (Label name) : NamedElement(name) {};
