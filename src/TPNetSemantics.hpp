@@ -161,6 +161,8 @@ namespace its {
     static GSDD getState (const Marking &m, const VarOrder & vo) ;
 
     static GShom encapsulate (const HomType & h);
+
+    static void printState (State s, std::ostream & os, const VarOrder & vo) ;
     
   };
 
@@ -209,6 +211,51 @@ namespace its {
   template <>
   inline GSDD sddSemantics::getState (const Marking &m, const VarOrder & vo) {
     return getMarking(m,vo);
+  }
+
+  template<>
+  inline void dddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
+    // should have a single variable, hence a single arc with a DDD label
+    assert(s.begin() != s.end());
+    assert(s.begin()->second == State::one);
+    DDD state = (const DDD &) * s.begin()->first;
+    // for now just invoke DDD print
+    // first set DDD varnames appropriately
+    for (unsigned int i=0; i < vo.size() ; ++i) {
+      DDD::varName(i, vo.getLabel(i));
+    }
+    os << state;
+  }
+
+  static void recPrintSDD (State s, std::ostream & os, const VarOrder & vo, vLabel str) {
+    if (s == State::one)
+      os << "[ " << str << "]"<<std::endl;
+    else if(s ==  State::top)
+      os << "[ " << str << "T ]"<<std::endl;
+    else if(s == State::null)
+      os << "[ " << str << "0 ]"<<std::endl;
+    else{
+      for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
+	std::stringstream tmp;
+	// Fixme  for pretty print variable names
+	Label varname = vo.getLabel(s.variable());
+	tmp << varname << "={";
+	// grab the DDD on the arc
+	DDD val = (const DDD &) * vi->first;
+	for (DDD::const_iterator it = val.begin(); it != val.end() ; /**increment in loop */) {
+	  tmp << to_string(it->first) ;
+	  ++it;
+	  if (it != val.end()) tmp << ",";
+	}
+	tmp << "}";
+	recPrintSDD(vi->second, os, vo, str + tmp.str() + " ");
+      }
+    }
+  }
+
+  template<>
+  inline void sddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
+    recPrintSDD(s, os, vo, "");
   }
 
 
