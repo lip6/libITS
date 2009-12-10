@@ -143,6 +143,14 @@ public :
     return net_.print(os);
   }
 
+  /** Print a set of states, explicitly. 
+   *  Watch out, do not call on large its::State (>10^6) */
+  void printState (State s, std::ostream & os) const {
+    Semantics::printState (s, os, *getVarOrder());
+  }
+
+
+
 };
 
 
