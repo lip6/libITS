@@ -145,6 +145,34 @@ State CompositeType::getState(Label stateLabel) const {
   return M0;
 }
 
+  void CompositeType::recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const {
+    if (s == State::one)
+      os << "[ " << str << "]"<<std::endl;
+    else if(s ==  State::top)
+      os << "[ " << str << "T ]"<<std::endl;
+    else if(s == State::null)
+      os << "[ " << str << "0 ]"<<std::endl;
+    else{
+      for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
+	std::stringstream tmp;
+	// Fixme  for pretty print variable names
+	Label varname = vo.getLabel(s.variable());
+	tmp << varname << "={";
+	// the variable should correspond to an instance
+	State val =  (const State &) * vi->first;
+	const Instance & inst = *comp_.comps_find(varname);
+	inst.getType()->printState(val,tmp);
+	tmp << "}";
+	recPrintState(vi->second, os, vo, str + tmp.str() + " ");
+      }
+    }
+  }
+
+  void CompositeType::printState (State s, std::ostream & os) const {
+    vLabel str;
+    recPrintState(s,os,*getVarOrder(),str);
+  }
+
 
 
 } //namespace
