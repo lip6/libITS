@@ -14,7 +14,7 @@
 #include "tgbaalgos/dotty.hh"
 #include "tgba/tgbatba.hh"
 
-#include "tgba/tgbareduc.hh"
+#include "tgbaalgos/reductgba_sim.hh"
 
 #include "sogtgba.hh"
 #include "sogtgbautils.hh"
@@ -74,14 +74,13 @@ namespace sogits {
 
   spot::timer_map timers;
   timers.start("construction");
-  spot::tgba* a = spot::ltl_to_tgba_fm(f, &dict, fm_exprop_opt,
+  const spot::tgba* a = spot::ltl_to_tgba_fm(f, &dict, fm_exprop_opt,
                          fm_symb_merge_opt, post_branching, fair_loop_approx);
 
   if (scc_optim)
     {
-      spot::tgba_reduc* n = new spot::tgba_reduc(a);
+      const spot::tgba* n = spot::reduc_tgba_sim(a, spot::Reduce_Scc);
       delete a;
-      n->prune_scc();
       a = n;
     }
 
@@ -93,7 +92,7 @@ namespace sogits {
         << err <<  "'" << std::endl;
     exit(2);
   }
-  spot::tgba* tba = NULL;
+  const spot::tgba* tba = NULL;
   unsigned int n_acc = a->number_of_acceptance_conditions();
   if (echeck_inst->max_acceptance_conditions() < n_acc) {
     tba = a;
