@@ -40,8 +40,9 @@ public :
 	// Add a place to this net, returns false if place name already exists.
 	bool addPlace (Label pname) ;
 	// Add a transition to this net, returns false if this transition already exists
+        // The label is used for synchronizations, while name should be unique in the net.
 	// Visibility may be public or private.
-	bool addTransition (Label tname, Visibility vis);
+        bool addTransition (Label tname, Label tlabel, Visibility vis);
 
 	// a type for passing arc descriptions
 	typedef std::pair<vLabel,int> ArcVal;

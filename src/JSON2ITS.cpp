@@ -203,10 +203,10 @@ vLabel buildComposite (Hierarchie * hier, const RdPE & R , std::vector<Transitio
 
       if ( locality == 2 ) {
 	// pure local
-	net.addTransition (tname, its::PRIVATE);
+	net.addTransition (tname, tname, its::PRIVATE);
       } else if ( locality == 1 ) {
 	// touches the component
-	net.addTransition (tname, its::PUBLIC);
+	net.addTransition (tname, tname, its::PUBLIC);
 	// increment it
 	++it;
       } else {

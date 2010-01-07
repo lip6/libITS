@@ -10,7 +10,7 @@ namespace its {
  *  associating a clock to transitions. */
 class TPNet : public PNet {
  public :
-  TPNet (Label name) : PNet(name) { addTransition("elapse", PUBLIC); };
+  TPNet (Label name) : PNet(name) { addTransition("elapse", "elapse", PUBLIC); };
   
   // Clock bounds can be associated to transitions => when this feature is used we actually build a Time Petri net
   // min and max define the min and max bounds of the clock.

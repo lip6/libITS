@@ -17,6 +17,7 @@ std::string toString (Visibility v);
 
 class PTransition : public NamedElement {
   Visibility vis_;
+  vLabel label_;
 public :
   typedef std::vector<Arc> arcs_t;
   typedef arcs_t::const_iterator arcs_it;
@@ -27,7 +28,8 @@ private :
   enum How {ENABLE, ACTION,DISABLE };
   TimeConstraint clock_;
 public :
-  PTransition (Label name, Visibility vis) : NamedElement (name), vis_(vis){};
+  /** The name is the unique identifier, while the label is used for synchronizations. */
+  PTransition (Label name, Label label, Visibility vis) : NamedElement (name), vis_(vis), label_(label) {};
 
    // iterator accessor
   arcs_it begin() const { return  arcs_.begin() ; }
@@ -35,6 +37,10 @@ public :
 
   Visibility getVisibility() const {
     return vis_;
+  }
+
+  Label getLabel () const {
+    return label_;
   }
   
   bool isTimed () const { return clock_.isTimed(); }

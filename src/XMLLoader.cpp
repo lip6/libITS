@@ -52,15 +52,12 @@ void XMLLoader::loadTransitions(void * data, const XML_Char* Elt, const XML_Char
         
         // I do not use the label to make it easier to reference the
         // transition when creating arcs
-	if (isPublic)
-	  s << label ;
-	else
 	  s << "T_" << id << label ;
 	tnames[id] = s.str();
 	if (isPublic)
-	  pn->addTransition(s.str(),its::PUBLIC);
+	  pn->addTransition(s.str(),label,its::PUBLIC);
 	else
-	  pn->addTransition(s.str(),its::PRIVATE);
+	  pn->addTransition(s.str(),label,its::PRIVATE);
 
 	pn->addClock(s.str(),eft,lft);
     }

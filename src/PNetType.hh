@@ -100,14 +100,28 @@ public :
     // use the provided order
     const VarOrder * po =  getVarOrder();
     for (labels_t::const_iterator it = tau.begin() ; it != tau.end() ; ++it) {
-      PNet::trans_it t = findName(*it,net_.transitions_begin(), net_.transitions_end());
-      if (t == net_.transitions_end()) {
+      bool foundOne = false;
+      HomType  enabler;
+      HomType  actioner;
+      for (PNet::trans_it t = net_.transitions_begin(); t != net_.transitions_end(); ++t ) {
+	if (t->getLabel() == *it) {
+	  if (!foundOne) {
+	    enabler =  getTransitionEnabler(*t, *po);
+	    actioner = getTransitionAction(*t, *po);
+	    foundOne = true;
+	  } else {
+	    enabler =  enabler + getTransitionEnabler(*t, *po);
+	    actioner = actioner + getTransitionAction(*t, *po);
+	  }
+	}
+      }
+      if (! foundOne) {
 	std::cerr << "Asked for succ by transition "<< *it << " but no such transition label exists in type " << net_.getName() << std::endl ;
 	assert(false);
       }
       // foo = \sum_i Compose ( foo_i ) 
-      enab = enab & getTransitionEnabler(*t, *po);
-      action = action & getTransitionAction(*t, *po);
+      enab = enab & enabler;
+      action = action & actioner;
     }
     // compound transition expression
     HomType trans = action & enab ; 

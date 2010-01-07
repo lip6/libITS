@@ -33,7 +33,9 @@ void PTransition::addArc (const Arc & a) {
 void PTransition::print (std::ostream & os) const {
 	os << "    "
 	   << toString(getVisibility())
-	   << " transition " << getName() ;
+	   << " transition " << getName() 
+	   << " label \"" << getLabel() << "\"";
+
 	if ( isTimed() ) {
 	  clock_.print(os) ;
 	}

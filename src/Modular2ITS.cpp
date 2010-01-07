@@ -95,7 +95,7 @@ vLabel RdPELoader::loadModularProd (its::ITSModel & model, const std::string & p
       mod_vit netit = modules.find(mod);
       PNet * net = & netit->second ;
       vLabel tname = it->name;
-      net->addTransition (tname, its::PRIVATE);
+      net->addTransition (tname, tname, its::PRIVATE);
       for(vector< pair<int,int> >::const_iterator jt=it->inhibitor.begin(); jt != it->inhibitor.end(); ++jt) {
 	net->addArc (PNet::ArcVal( R.places[jt->first].name, jt->second), tname, its::INHIBITOR);
       }
@@ -119,7 +119,7 @@ vLabel RdPELoader::loadModularProd (its::ITSModel & model, const std::string & p
 	mod_vit netit = modules.find( targetmodule );
 	PNet & net = netit->second ;
 	// NOTE THIS OP DOES NOTHING IF TRANSITION EXISTS
-	net.addTransition (tname, its::PUBLIC);
+	net.addTransition (tname, tname, its::PUBLIC);
 	net.addArc (PNet::ArcVal( R.places[jt->first].name, jt->second), tname, its::INHIBITOR);
       }
       for(vector< pair<int,int> >::const_iterator jt=it->pre.begin(); jt != it->pre.end(); ++jt) {
@@ -128,7 +128,7 @@ vLabel RdPELoader::loadModularProd (its::ITSModel & model, const std::string & p
 	mod_vit netit = modules.find( targetmodule );
 	PNet & net = netit->second ;
 	// NOTE THIS OP DOES NOTHING IF TRANSITION EXISTS
-	net.addTransition (tname, its::PUBLIC);
+	net.addTransition (tname, tname, its::PUBLIC);
 	net.addArc (PNet::ArcVal( R.places[jt->first].name, jt->second), tname, its::INPUT);
       }
       for(vector< pair<int,int> >::const_iterator jt=it->post.begin(); jt != it->post.end(); ++jt) {
@@ -137,7 +137,7 @@ vLabel RdPELoader::loadModularProd (its::ITSModel & model, const std::string & p
 	mod_vit netit = modules.find( targetmodule );
 	PNet * net = & netit->second ;
 	// NOTE THIS OP DOES NOTHING IF TRANSITION EXISTS
-	net->addTransition (tname, its::PUBLIC);
+	net->addTransition (tname, tname, its::PUBLIC);
 	net->addArc (PNet::ArcVal( R.places[jt->first].name, jt->second), tname, its::OUTPUT);
       }
       if ( ! it->preAuto.empty() || ! it->postAuto.empty() ) {

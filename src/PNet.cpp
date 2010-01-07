@@ -9,7 +9,7 @@ bool PNet::addPlace (Label pname) {
     places_.push_back(Place(pname));
     // Add a "transition" to test for atomic property : place is marked
     vLabel tname = pname;
-    addTransition(tname,PUBLIC);
+    addTransition(tname, tname, PUBLIC);
     addArc(ArcVal(pname,1),tname,TEST);
     return true;
   }
@@ -17,9 +17,9 @@ bool PNet::addPlace (Label pname) {
 }
 
 
-bool PNet::addTransition (Label tname, Visibility vis) {
+  bool PNet::addTransition (Label tname, Label tlabel, Visibility vis) {
   if ( findName(tname,transitions_) == transitions_.end() ) {
-	  transitions_.push_back(PTransition(tname,vis));
+    transitions_.push_back(PTransition(tname,tlabel,vis));
       return true;
   }
   return false;

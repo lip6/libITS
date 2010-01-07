@@ -141,7 +141,7 @@ place		: placelevel VARIABLE
 
 nomtransition   : TRANS VARIABLE
                 {
-		  if(!R->addTransition($2,PRIVATE))
+		  if(!R->addTransition($2,$2,PRIVATE))
 		  { 	
 		    yyerror("creation d'une transition");return(1);
 		  }
