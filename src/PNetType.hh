@@ -53,7 +53,7 @@ public :
     labels_t labs;
     for ( PNet::trans_it it = net_.transitions_begin() ; it != net_.transitions_end(); ++it ) {
       if (it->getVisibility() == PUBLIC)
-	labs.push_back(it->getName());
+	labs.push_back(it->getLabel());
     }
     return labs;
   }
@@ -94,39 +94,32 @@ public :
    * Otherwise, an assertion violation will be raised !!
    * */
   virtual Transition getSuccs (const labels_t & tau) const {
-    // Build inh, pre, post for the compound transition 
-    HomType enab= HomType::id;
-    HomType action= HomType::id;
+    HomType resultTrans = HomType::id;
     // use the provided order
     const VarOrder * po =  getVarOrder();
+    // iterate on labels
     for (labels_t::const_iterator it = tau.begin() ; it != tau.end() ; ++it) {
-      bool foundOne = false;
-      HomType  enabler;
-      HomType  actioner;
-      for (PNet::trans_it t = net_.transitions_begin(); t != net_.transitions_end(); ++t ) {
-	if (t->getLabel() == *it) {
-	  if (!foundOne) {
-	    enabler =  getTransitionEnabler(*t, *po);
-	    actioner = getTransitionAction(*t, *po);
-	    foundOne = true;
-	  } else {
-	    enabler =  enabler + getTransitionEnabler(*t, *po);
-	    actioner = actioner + getTransitionAction(*t, *po);
-	  }
-	}
-      }
-      if (! foundOne) {
-	std::cerr << "Asked for succ by transition "<< *it << " but no such transition label exists in type " << net_.getName() << std::endl ;
-	assert(false);
-      }
-      // foo = \sum_i Compose ( foo_i ) 
-      enab = enab & enabler;
-      action = action & actioner;
+    	HomType  labelAction;
+    	bool foundOne = false;
+        for (PNet::trans_it t = net_.transitions_begin(); t != net_.transitions_end(); ++t ) {
+        	if (t->getLabel() == *it) {
+        		if (!foundOne) {
+        			labelAction = labelAction + ( getTransitionAction(*t, *po)  & getTransitionEnabler(*t, *po));
+        			foundOne = true;
+        		} else {
+        			// add the effect of this action
+        			labelAction = getTransitionAction(*t, *po)  & getTransitionEnabler(*t, *po) ;
+        		}
+        	}
+        }
+        if (! foundOne) {
+        	std::cerr << "Asked for succ by transition "<< *it << " but no such transition label exists in type " << net_.getName() << std::endl ;
+        	assert(false);
+        }
+        resultTrans = labelAction & resultTrans ;
     }
-    // compound transition expression
-    HomType trans = action & enab ; 
     // The DDD state variant uses an intermediate variable called DEFAULT_VAR
-    Transition res = Semantics::encapsulate(trans);
+    Transition res = Semantics::encapsulate(resultTrans);
     return res;
   }
 	
