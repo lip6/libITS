@@ -100,19 +100,19 @@ public :
     // iterate on labels
     for (labels_t::const_iterator it = tau.begin() ; it != tau.end() ; ++it) {
     	HomType  labelAction;
-    	bool foundOne = false;
+    	bool isFirstTrWithLabel = true;
         for (PNet::trans_it t = net_.transitions_begin(); t != net_.transitions_end(); ++t ) {
         	if (t->getLabel() == *it) {
-        		if (!foundOne) {
-        			labelAction = labelAction + ( getTransitionAction(*t, *po)  & getTransitionEnabler(*t, *po));
-        			foundOne = true;
+        		if (! isFirstTrWithLabel) {
+        			labelAction = labelAction +  Semantics::getFullHom(*t, *po) ;
         		} else {
         			// add the effect of this action
-        			labelAction = getTransitionAction(*t, *po)  & getTransitionEnabler(*t, *po) ;
+        			labelAction = Semantics::getFullHom(*t, *po) ;
+        			isFirstTrWithLabel = false;
         		}
         	}
         }
-        if (! foundOne) {
+        if (isFirstTrWithLabel) {
         	std::cerr << "Asked for succ by transition "<< *it << " but no such transition label exists in type " << net_.getName() << std::endl ;
         	assert(false);
         }
