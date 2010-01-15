@@ -229,11 +229,11 @@ namespace its {
 
   static void recPrintSDD (State s, std::ostream & os, const VarOrder & vo, vLabel str) {
     if (s == State::one)
-      os << "[ " << str << "]"<<std::endl;
+      os << "[ " << str << "]";
     else if(s ==  State::top)
-      os << "[ " << str << "T ]"<<std::endl;
+      os << "[ " << str << "T ]";
     else if(s == State::null)
-      os << "[ " << str << "0 ]"<<std::endl;
+      os << "[ " << str << "0 ]";
     else{
       for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
 	std::stringstream tmp;
