@@ -275,7 +275,7 @@ namespace slog
 //     its::State div = fixpoint( nextRel * its::Transition::id ) (s->right());
 //     bool isDiv = div != its::State::null;
     std::stringstream ss;
-    if ( ss.nbStates() < 15 )
+    if ( s->right().nbStates() < 15 )
       model_.getType()->printState(s->right(), ss) ;
 
     return (left_->format_state(s->left())
