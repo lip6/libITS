@@ -264,7 +264,6 @@ std::string* check_at_prop(const petri_net* p,
   // external block for full garbage
   }
   MemoryManager::garbage();
-  MemoryManager::garbage();
 
   return 0;
 
