@@ -54,6 +54,8 @@ public :
 
   its::State getInitialState () const { return model.getInitialState() ; }
 
+  its::pType getType() const { return model.getInstance()->getType() ; }
+
   its::Transition getNextRel () const {
     return model.getNextRel();
   }
