@@ -534,10 +534,15 @@ namespace dsog
     const dsog_state* s = dynamic_cast<const dsog_state*>(state);
     if (s)
       {
+	std::stringstream ss;
+	if (s->right().nbStates() <= 15)
+	  model_.getType()->printState(s->right(), ss) ;
+
 	return (left_->format_state(s->left())
 		+ " * "
 		+ " SDD size: " + to_string(s->right().nbStates()) + " hash:" + to_string(s->right().hash())
-		+ (s->get_div() ? " (div)" : ""));
+		+ (s->get_div() ? " (div)" : "")
+		+ ss.str());
       }
     else
       {
