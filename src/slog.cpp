@@ -269,9 +269,20 @@ namespace slog
   {
     const slog_state* s = dynamic_cast<const slog_state*>(state);
     assert(s);
+
+    // debugging...
+//     its::Transition nextRel = model_.getNextRel();
+//     its::State div = fixpoint( nextRel * its::Transition::id ) (s->right());
+//     bool isDiv = div != its::State::null;
+    std::stringstream ss;
+    if ( ss.nbStates() < 15 )
+      model_.getType()->printState(s->right(), ss) ;
+
     return (left_->format_state(s->left())
 	    + " * "
-	    + " SDD size: " + to_string(s->right().nbStates()) + " hash:" + to_string(s->right().hash()));
+	    + " SDD size: " + to_string(s->right().nbStates()) 
+//	    + (isDiv ? " div "  : " not div ")
+	    + " hash:" + to_string(s->right().hash()) + ss.str() );
   }
 
   state*
