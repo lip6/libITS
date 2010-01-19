@@ -136,6 +136,7 @@ namespace sogits {
 
   void LTLChecker::fs_model_check() {
     its::fsltlModel * fsmodel = (its::fsltlModel *) model_;
+    fsmodel->setSogModel(sogModel_);
     fsmodel->declareType (a_);
     fsmodel->buildComposedSystem();
     its::State res = fsmodel->findSCC();
