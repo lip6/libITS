@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "misc/timer.hh"
+
 #include "ltlast/atomic_prop.hh"
 #include "ltlvisit/apcollect.hh"
 #include "ltlenv/environment.hh"
@@ -16,6 +16,7 @@
 
 #include "tgbaalgos/reductgba_sim.hh"
 
+
 #include "sogtgba.hh"
 #include "sogtgbautils.hh"
 #include "apiterator.hh"
@@ -27,152 +28,147 @@
 
 namespace sogits {
 
-  void model_check(its::ITSModel & model_,
-		   const spot::ltl::formula* f,
-		   sog_product_type sogtype,
-		   const std::string& echeck_algo,
-		   bool ce_expected,
-		   bool fm_exprop_opt,
-		   bool fm_symb_merge_opt,
-		   bool post_branching,
-		   bool fair_loop_approx, const std::string & ltl_string,
-		   bool display,
-		   bool scc_optim) {
-
-  // find all AP in the formula
-  spot::ltl::atomic_prop_set *sap = spot::ltl::atomic_prop_collect(f);
-
-  // For bdd varnum to AP name in Spot
-  spot::bdd_dict dict;
-
-  sogIts model = model_;
-  sog_tgba systgba(model, &dict);
-
-  if (sap) {
-    APIterator::varset_t vars ;
-
-    for(spot::ltl::atomic_prop_set::iterator  it = sap->begin(); it != sap->end(); ++it) {
-       // declare them in a spot dictionary
-      int varnum = dict.register_proposition(*it, &systgba);
-
-      vars.push_back(varnum);
-      // Load into model m !  + check existence
-      // varnum will be used in subsequent interactions with the ITS model
-      bool ret =  model.setObservedAP ( (*it)->name() , varnum );
-
-      if ( ! ret  ) {
-        delete sap;
-        sap = 0;
-	std::cout << "the atomic proposition '" <<  (*it)->name()
-        << "' does not correspond to any known proposition" << std::endl;
-	return;
-      }
+  void LTLChecker::model_check(sog_product_type sogtype) {
+    if (! buildTgbaFromformula())
+      return;
+    
+    const char* err;
+    spot::emptiness_check_instantiator* echeck_inst =
+      spot::emptiness_check_instantiator::construct(echeck_algo_.c_str(), &err);
+    if (!echeck_inst) {
+      std::cerr << "Failed to parse argument of -a near `"
+		<< err <<  "'" << std::endl;
+      exit(2);
     }
-    APIteratorFactory::setAPVarSet(vars);
-  }
-
-
-  spot::timer_map timers;
-  timers.start("construction");
-  const spot::tgba* a = spot::ltl_to_tgba_fm(f, &dict, fm_exprop_opt,
-                         fm_symb_merge_opt, post_branching, fair_loop_approx);
-
-  if (scc_optim)
-    {
-      const spot::tgba* n = spot::reduc_tgba_sim(a, spot::Reduce_Scc);
-      delete a;
-      a = n;
+    tba_ = NULL;
+    unsigned int n_acc = a_->number_of_acceptance_conditions();
+    if (echeck_inst->max_acceptance_conditions() < n_acc) {
+      tba_ = a_;
+      a_ = new spot::tgba_tba_proxy(a_);
     }
-
-  const char* err;
-  spot::emptiness_check_instantiator* echeck_inst =
-      spot::emptiness_check_instantiator::construct(echeck_algo.c_str(), &err);
-  if (!echeck_inst) {
-    std::cerr << "Failed to parse argument of -a near `"
-        << err <<  "'" << std::endl;
-    exit(2);
-  }
-  const spot::tgba* tba = NULL;
-  unsigned int n_acc = a->number_of_acceptance_conditions();
-  if (echeck_inst->max_acceptance_conditions() < n_acc) {
-    tba = a;
-    a = new spot::tgba_tba_proxy(a);
-  }
-  if (a->number_of_acceptance_conditions()
-      < echeck_inst->min_acceptance_conditions()) {
-      std::cerr << echeck_algo << " requires at least "
-          << echeck_inst->min_acceptance_conditions()
-          << " acceptance conditions." << std::endl;
+    if (a_->number_of_acceptance_conditions()
+	< echeck_inst->min_acceptance_conditions()) {
+      std::cerr << echeck_algo_ << " requires at least "
+		<< echeck_inst->min_acceptance_conditions()
+		<< " acceptance conditions." << std::endl;
       exit(1);
-  }
-
-
-  spot::tgba * prod = NULL;
-  switch (sogtype) {
-  case PLAIN_SOG :
-    prod = new spot::tgba_product(a, &systgba);
-    break;
-  case SLOG :
-    prod = new slog::slog_tgba(a, model);
-    break;
-  case DSOG :
-    prod = new dsog::dsog_tgba(a, model);
-    break;
-  }
-
-  if (display)
-    {
-      spot::dotty_reachable(std::cout, prod);
-      exit(0);
     }
 
-  spot::emptiness_check *ec =  echeck_inst->instantiate(prod);
-  timers.stop("construction");
 
-  timers.start("emptiness check");
-  spot::emptiness_check_result* res = ec->check();
-  timers.stop("emptiness check");
-
-  ec->print_stats(std::cout);
-//  timers.print(std::cout);
-  const spot::timer& tec = timers.timer("emptiness check");
-  clock_t total = tec.utime() + tec.stime();
-  std::cout << total << " ticks for the emptiness check" << std::endl;
-
-  SDD d;
-  Statistic S = Statistic(d, ltl_string , CSV); // can also use LATEX instead of CSV
-  S.print_table(std::cout);
-
-  if (res) {
-    if (ce_expected) {
-      std::cout << "an accepting run exists" << std::endl;
-      spot::tgba_run* run = res->accepting_run();
-      if (run)
-        {
-          spot::print_tgba_run(std::cout, prod, run);
-          delete run;
-        }
+    spot::tgba * prod = NULL;
+    switch (sogtype) {
+    case PLAIN_SOG :
+      prod = new spot::tgba_product(a_, systgba_);
+      break;
+    case SLOG :
+      prod = new slog::slog_tgba(a_, *sogModel_);
+      break;
+    case DSOG :
+      prod = new dsog::dsog_tgba(a_, *sogModel_);
+      break;
     }
-    else {
-      std::cout << "an accepting run exists (use option '-e' to print it)"
-                << std::endl;
+
+    if (display_)
+      {
+	spot::dotty_reachable(std::cout, prod);
+	exit(0);
+      }
+
+    spot::emptiness_check *ec =  echeck_inst->instantiate(prod);
+    timers.stop("construction");
+
+    timers.start("emptiness check");
+    spot::emptiness_check_result* res = ec->check();
+    timers.stop("emptiness check");
+
+    ec->print_stats(std::cout);
+    //  timers.print(std::cout);
+    const spot::timer& tec = timers.timer("emptiness check");
+    clock_t total = tec.utime() + tec.stime();
+    std::cout << total << " ticks for the emptiness check" << std::endl;
+
+    SDD d;
+    Statistic S = Statistic(d, ltl_string_ , CSV); // can also use LATEX instead of CSV
+    S.print_table(std::cout);
+
+    if (res) {
+      if (ce_expected_) {
+	std::cout << "an accepting run exists" << std::endl;
+	spot::tgba_run* run = res->accepting_run();
+	if (run)
+	  {
+	    spot::print_tgba_run(std::cout, prod, run);
+	    delete run;
+	  }
+      } else {
+	std::cout << "an accepting run exists (use option '-e' to print it)"
+		  << std::endl;
+      }
+      delete res;
+    } else {
+      std::cout << "no accepting run found" << std::endl;
     }
-    delete res;
+
+    delete ec;
+    delete prod;
+    delete echeck_inst;
+
+    return;
+  } //
+
+  LTLChecker::~LTLChecker () {
+    delete sogModel_;
+    delete systgba_;
+    delete a_;
+    if (tba_)
+      delete tba_;
+    delete sap_;
   }
-  else {
-    std::cout << "no accepting run found" << std::endl;
+
+  bool LTLChecker::buildTgbaFromformula () {
+    // find all AP in the formula
+    sap_ = spot::ltl::atomic_prop_collect(f_);
+
+
+    sogModel_ = new sogIts (*model_);
+    systgba_ = new sog_tgba(*sogModel_, &dict_);
+
+    if (sap_) {
+      APIterator::varset_t vars ;
+
+      for(spot::ltl::atomic_prop_set::iterator  it = sap_->begin(); it != sap_->end(); ++it) {
+	// declare them in a spot dictionary
+	int varnum = dict_.register_proposition(*it, systgba_);
+
+	vars.push_back(varnum);
+	// Load into model m !  + check existence
+	// varnum will be used in subsequent interactions with the ITS model
+	bool ret =  sogModel_->setObservedAP ( (*it)->name() , varnum );
+
+	if ( ! ret  ) {
+	  delete sap_;
+	  sap_ = 0;
+	  std::cout << "the atomic proposition '" <<  (*it)->name()
+		    << "' does not correspond to any known proposition" << std::endl;
+	  return false;
+	}
+      }
+      APIteratorFactory::setAPVarSet(vars);
+    }
+
+
+    timers.start("construction");
+    a_ = spot::ltl_to_tgba_fm(f_, &dict_, fm_exprop_opt_, fm_symb_merge_opt_, post_branching_, fair_loop_approx_);
+
+    if (scc_optim_)
+      {
+	const spot::tgba* n = spot::reduc_tgba_sim(a_, spot::Reduce_Scc);
+	delete a_;
+	a_ = n;
+      }
+
+
+    return true;
   }
-
-  delete ec;
-  delete prod;
-  delete echeck_inst;
-  delete a;
-  if (tba)
-    delete tba;
-  delete sap;
-
-  return;
-} //
-
 
 } // namespace
