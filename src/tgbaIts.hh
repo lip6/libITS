@@ -5,6 +5,8 @@
 #include "PNet.hh"
 #include "tgba/tgba.hh"
 #include "misc/bddlt.hh"
+#include "tgbaalgos/dotty.hh"
+
 
 #include <iosfwd>
 #include <map>
@@ -144,8 +146,8 @@ namespace its {
     State getState(Label stateLabel) const {
       // only one initial state
       assert (stateLabel == "init");
-      // the initial state has id 0 by definition
-      return State(DEFAULT_VAR, DDD(0,0));
+      // the initial state has id 1 by definition
+      return State(DEFAULT_VAR, DDD(0, 1 ));
     }
 
     /** Use delegation on net_ */
@@ -154,7 +156,7 @@ namespace its {
     }
 
     std::ostream& print(std::ostream& os) const {
-      // TODO : use tgba_dump
+      spot::dotty_reachable(os, tgba_);// TODO : use tgba_dump
       return os;
     }
 
