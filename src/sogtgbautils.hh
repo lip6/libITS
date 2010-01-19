@@ -84,7 +84,8 @@ namespace sogits {
     spot::timer_map timers;
 
     bool buildTgbaFromformula ();
-    
+
+    void fs_model_check();
   public :
     LTLChecker () : sap_(NULL), 
 		    f_(NULL), 

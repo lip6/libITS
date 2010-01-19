@@ -22,6 +22,7 @@
 #include "apiterator.hh"
 #include "slog.hh"
 #include "dsog.hh"
+#include "fsltl.hh"
 
 #include "statistic.hpp"
 
@@ -31,6 +32,11 @@ namespace sogits {
   void LTLChecker::model_check(sog_product_type sogtype) {
     if (! buildTgbaFromformula())
       return;
+
+    if (sogtype == FSLTL) {
+      fs_model_check();
+      return;
+    }
     
     const char* err;
     spot::emptiness_check_instantiator* echeck_inst =
@@ -66,6 +72,9 @@ namespace sogits {
     case DSOG :
       prod = new dsog::dsog_tgba(a_, *sogModel_);
       break;
+    case FSLTL :
+      // (case treated for compiler warning) should not happen, tested at top of function
+      return;
     }
 
     if (display_)
@@ -123,6 +132,18 @@ namespace sogits {
     if (tba_)
       delete tba_;
     delete sap_;
+  }
+
+  void LTLChecker::fs_model_check() {
+    its::fsltlModel * fsmodel = (its::fsltlModel *) model_;
+    fsmodel->declareType (a_);
+    fsmodel->buildComposedSystem();
+    its::State res = fsmodel->findSCC();
+    if (res != its::State::null)
+      std::cout << "an accepting run exists" << std::endl;
+    else
+      std::cout << "no accepting run found" << std::endl;
+    return;
   }
 
   bool LTLChecker::buildTgbaFromformula () {
