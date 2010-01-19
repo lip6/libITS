@@ -54,9 +54,10 @@ namespace its {
     labels_t tgbalabs = tgba->getTransLabels();
 
     for (labels_it it = tgbalabs.begin() ; it != tgbalabs.end() ; ++it ) {
+      std::cerr << "label :" << *it << std::endl;
       TgbaType::tgba_arc_label_t arcLab = tgba_->getTransLabelDescription(*it);
-      
-      Transition apcond = sogIts_.getSelector(arcLab.first,getInstance()->getType());
+      std::cerr << "desc :" << arcLab.first << ":" << arcLab.second << std::endl;      
+      Transition apcond = sogIts_.getSelector(arcLab.first, getInstance()->getType());
       
       
     }
