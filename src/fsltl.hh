@@ -17,10 +17,24 @@ namespace its {
     // Because we need more knowledge when interrogating the tgba
     const class TgbaType * tgba_;
     // To handle all the atomic proposition interaction with bdd and spot
-    sogIts sogIts_;
+    sogIts * sogIts_;
+
+    State getInitState () ;
+
+    Transition allTrans_;
+    Transition getNextByAll () ;
+
+    Transition getNextByAcc (bdd acc) ;
+
+    typedef std::map<int,Transition> accToTrans_t;
+    typedef accToTrans_t::iterator accToTrans_it;
+    accToTrans_t accToTrans_;
+
   public :
     // ctor
-    fsltlModel() : tgba_(NULL), sogIts_(*this) {};
+    fsltlModel() : tgba_(NULL), sogIts_(NULL), allTrans_(Transition::null) {};
+
+    void setSogModel ( sogIts * sogits) { sogIts_ = sogits ; }
 
     // Play factory role for building ITS types from other formalisms
     // Returns false and aborts if type name already exists.

@@ -38,6 +38,8 @@ namespace its {
       return false;
     }
 
+    std::cout << *this << std::endl;
+
     // Ok preconditions fulfilled.
     // Build the composite.
     vLabel compname = tgba->getName() + "x" + getInstance()->getType()->getName();
@@ -57,15 +59,56 @@ namespace its {
       std::cerr << "label :" << *it << std::endl;
       TgbaType::tgba_arc_label_t arcLab = tgba_->getTransLabelDescription(*it);
       std::cerr << "desc :" << arcLab.first << ":" << arcLab.second << std::endl;      
-      Transition apcond = sogIts_.getSelector(arcLab.first, getInstance()->getType());
-      
+      Transition apcond = sogIts_->getSelector(arcLab.first, getInstance()->getType());
+
+      labels_t labtodo;
+      labtodo.push_back(*it);
+      Transition toadd = localApply(tgba->getSuccs(labtodo),0) & localApply(getInstance()->getType()->getLocals()  & apcond, 1) ;
+      allTrans_ = allTrans_ + toadd;
+      if (arcLab.second != bddfalse) {
+	accToTrans_it accit = accToTrans_.find(arcLab.second.id());
+	if (accit == accToTrans_.end()) {
+	  // first occurrence
+	  
+	  accToTrans_ [arcLab.second.id()] = toadd;
+	} else {
+	  accit->second = accit->second + toadd;
+	}
+      }
       
     }
+
+    std::cout << "Built model with initstate :" << getInitState() << std::endl;
+    std::cout << "Transition rel (all) :" << allTrans_ << std::endl;
+
 
     return true;
   }
 
+  State fsltlModel::getInitState () {
+    return State(1, getInstance()->getType()->getState("init"), State(0, findType("TGBA")->getState("init")));
+  }
+
+  Transition fsltlModel::getNextByAll () {
+    return allTrans_;
+  }
+
+  Transition fsltlModel::getNextByAcc (bdd acc) {
+    return Transition::id;
+  }  
+
   State fsltlModel::findSCC () {
+    State reach = fixpoint (getNextByAll() + Transition::id) ( getInitState()); 
+    
+    std::cout << "Reachable states : " << reach.nbStates();
+    if (reach.nbStates() < 15)
+      std::cout << reach << std::endl;
+
+    State div = fixpoint (getNextByAll()) (reach);
+
+    std::cout << "Divergence ? " << div.nbStates() << std::endl;
+    if (div.nbStates() < 15)
+      std::cout << div << std::endl;
     return State::null;
   }
 
