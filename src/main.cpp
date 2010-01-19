@@ -199,6 +199,8 @@ int main(int argc, const char *argv[]) {
    model->setInstance(nname,"main");
    model->setInstanceState("init");
 
+  if (print_pn)
+    std::cout << *model << std::endl;
 
 
 //   // Parse and build the model !!!
@@ -248,8 +250,6 @@ std::string* check_at_prop(const petri_net* p,
 }
 */
 
-  if (print_pn)
-    std::cout << model;
 
   /*
   if (print_rg)
