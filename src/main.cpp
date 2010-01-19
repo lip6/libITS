@@ -42,6 +42,7 @@
 
 // fair CTL bricks
 #include "tgbaIts.hh"
+#include "fsltl.hh"
 
 using namespace its;
 using namespace sogits;
@@ -170,6 +171,9 @@ int main(int argc, const char *argv[]) {
     else if (!strcmp(argv[pn_index], "-SDSOG")) {
       sogtype = DSOG;
     }
+    else if (!strcmp(argv[pn_index], "-SFSLTL")) {
+      sogtype = FSLTL;
+    }
     else if (!strcmp(argv[pn_index], "-x")) {
       fm_exprop_opt = true;
     }
@@ -181,14 +185,19 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  ITSModel model;
+  ITSModel * model;
+  if (sogtype == FSLTL) {
+    model = new fsltlModel();
+  } else {
+    model = new ITSModel();
+  }
 
-  vLabel nname = RdPELoader::loadModularProd(model,pathprodff);
+  vLabel nname = RdPELoader::loadModularProd(*model,pathprodff);
 //  PNet * pnet = ProdLoader::loadProd(pathprodff);
 //   model.declareType(*pnet);
 //   modelName += pathprodff ;
-   model.setInstance(nname,"main");
-   model.setInstanceState("init");
+   model->setInstance(nname,"main");
+   model->setInstanceState("init");
 
 
 
@@ -252,15 +261,19 @@ std::string* check_at_prop(const petri_net* p,
 
 
 
-  if (check)
-    model_check(model, f, sogtype,
-                algo_string, ce_expected,
-                fm_exprop_opt, fm_symb_merge_opt,
-                post_branching, fair_loop_approx, "STATS", print_rg,
-		scc_optim);
+  if (check) {
+    LTLChecker checker;
+    checker.setFormula(f);
+    checker.setModel(model);
+    checker.setOptions(algo_string, ce_expected,
+		       fm_exprop_opt, fm_symb_merge_opt,
+		       post_branching, fair_loop_approx, "STATS", print_rg,
+		       scc_optim);
+    checker.model_check(sogtype);
+  }
 
   spot::ltl::destroy(f);
-
+  delete model;
   // external block for full garbage
   }
   MemoryManager::garbage();
