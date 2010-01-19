@@ -65,5 +65,10 @@ namespace its {
     return true;
   }
 
+  State fsltlModel::findSCC () {
+    return State::null;
+  }
+
+
 }
 
