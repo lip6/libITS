@@ -66,25 +66,27 @@ namespace its {
       Transition toadd = localApply(tgba->getSuccs(labtodo),0) & localApply(getInstance()->getType()->getLocals()  & apcond, 1) ;
       allTrans_ = allTrans_ + toadd;
       if (arcLab.second != bddfalse) {
-	accToTrans_it accit = accToTrans_.find(arcLab.second.id());
-	if (accit == accToTrans_.end()) {
-	  // first occurrence
-	  
-	  accToTrans_ [arcLab.second.id()] = toadd;
-	} else {
-	  accit->second = accit->second + toadd;
+	labels_t accs = tgba_->getAcceptanceSet(arcLab.second);
+	for (labels_it acc = accs.begin() ; acc != accs.end() ; ++acc) {
+	  accToTrans_it accit = accToTrans_.find(*acc);
+	  if (accit == accToTrans_.end()) {
+	    // first occurrence
+	    accToTrans_ [*acc] = toadd;
+	  } else {
+	    accit->second = accit->second + toadd;
+	  }
 	}
       }
+    }      
       
+      
+      std::cout << "Built model with initstate :" << getInitState() << std::endl;
+      std::cout << "Transition rel (all) :" << allTrans_ << std::endl;
+      
+      
+      return true;
     }
-
-    std::cout << "Built model with initstate :" << getInitState() << std::endl;
-    std::cout << "Transition rel (all) :" << allTrans_ << std::endl;
-
-
-    return true;
-  }
-
+    
   State fsltlModel::getInitState () {
     return State(1, getInstance()->getType()->getState("init"), State(0, findType("TGBA")->getState("init")));
   }
@@ -93,8 +95,8 @@ namespace its {
     return allTrans_;
   }
 
-  Transition fsltlModel::getNextByAcc (bdd acc) {
-    return Transition::id;
+  Transition fsltlModel::getNextByAcc (Label acc) {
+    return accToTrans_[acc];
   }  
 
   State fsltlModel::findSCC () {
@@ -103,15 +105,30 @@ namespace its {
     std::cout << "Reachable states : " << reach.nbStates();
     if (reach.nbStates() < 15)
       std::cout << reach << std::endl;
+    
+    State div;
+    if ( accToTrans_.empty() ) {
+      div = fixpoint (getNextByAll()) (reach);
 
-    State div = fixpoint (getNextByAll()) (reach);
-
+    } else {
+      div = reach;
+      State sat = div;
+      do {
+	sat = div;
+	for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
+	  div = (fixpoint (getNextByAll() + Transition::id ) & accit->second) (div);
+	}
+      } while (div != sat);
+    }
     std::cout << "Divergence ? " << div.nbStates() << std::endl;
     if (div.nbStates() < 15)
       std::cout << div << std::endl;
-    return State::null;
+    if (div != State::null) {
+      std::cout << "accepting run exists" << std::endl;
+    }
+    return div;
+
   }
 
 
-}
-
+  }

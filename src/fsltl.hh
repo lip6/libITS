@@ -24,9 +24,9 @@ namespace its {
     Transition allTrans_;
     Transition getNextByAll () ;
 
-    Transition getNextByAcc (bdd acc) ;
+    Transition getNextByAcc (Label acc) ;
 
-    typedef std::map<int,Transition> accToTrans_t;
+    typedef std::map<std::string,Transition> accToTrans_t;
     typedef accToTrans_t::iterator accToTrans_it;
     accToTrans_t accToTrans_;
 
