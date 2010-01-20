@@ -27,6 +27,9 @@
 #include "statistic.hpp"
 
 
+// #define trace std::cerr
+#define trace if (0) std::cerr
+
 namespace sogits {
 
   void LTLChecker::model_check(sog_product_type sogtype) {
@@ -140,6 +143,9 @@ namespace sogits {
     fsmodel->declareType (a_);
     fsmodel->buildComposedSystem();
     its::State res = fsmodel->findSCC();
+    Statistic S = Statistic(res, ltl_string_ , CSV); // can also use LATEX instead of CSV
+    S.print_table(std::cout);
+
     if (res != its::State::null)
       std::cout << "an accepting run exists" << std::endl;
     else
