@@ -2,6 +2,10 @@
 #include "tgbaIts.hh"
 #include "Composite.hh"
 
+
+// #define trace std::cerr
+#define trace if (0) std::cerr
+
 namespace its {
 
 
@@ -31,57 +35,60 @@ namespace its {
       std::cerr << "Initial state not set when calling \"buildComposedSystem\"\n" ;
       return false;
     }
+
     // lookup the TGBA
-    pType tgba = findType("TGBA");
-    if (! tgba) {
+    
+//    pType tgba = findType("TGBA");
+    if (! tgba_) {
       std::cerr << "TGBA not set when calling \"buildComposedSystem\"\n" ;
       return false;
     }
 
     std::cout << *this << std::endl;
 
-    // Ok preconditions fulfilled.
-    // Build the composite.
-    vLabel compname = tgba->getName() + "x" + getInstance()->getType()->getName();
-    Composite * comp = new Composite(compname);
-    // Instance names
-    vLabel syst = "system";
-    vLabel aut = "tgba";
-    // an instance of the system
-    comp->addInstance (syst, getInstance()->getType()->getName(), *this);
-    // an instance of the TGBA
-    comp->addInstance (aut, tgba->getName(), *this);
+//     // Ok preconditions fulfilled.
+//     // Build the composite.
+//     vLabel compname = tgba->getName() + "x" + getInstance()->getType()->getName();
+//     Composite * comp = new Composite(compname);
+//     // Instance names
+//     vLabel syst = "system";
+//     vLabel aut = "tgba";
+//     // an instance of the system
+//     comp->addInstance (syst, getInstance()->getType()->getName(), *this);
+//     // an instance of the TGBA
+//     comp->addInstance (aut, tgba->getName(), *this);
 
     // Grab the TGBA labels
-    labels_t tgbalabs = tgba->getTransLabels();
+    labels_t tgbalabs = tgba_->getTransLabels();
 
     for (labels_it it = tgbalabs.begin() ; it != tgbalabs.end() ; ++it ) {
-      std::cerr << "label :" << *it << std::endl;
+      trace << "label :" << *it << std::endl;
       TgbaType::tgba_arc_label_t arcLab = tgba_->getTransLabelDescription(*it);
-      std::cerr << "desc :" << arcLab.first << ":" << arcLab.second << std::endl;      
+      trace << "desc :" << arcLab.first << ":" << arcLab.second << std::endl;      
       Transition apcond = sogIts_->getSelector(arcLab.first, getInstance()->getType());
 
       labels_t labtodo;
       labtodo.push_back(*it);
-      Transition toadd = localApply(tgba->getSuccs(labtodo),0) & localApply(getInstance()->getType()->getLocals()  & apcond, 1) ;
+      Transition toadd = localApply(tgba_->getSuccs(labtodo),0) & localApply(getInstance()->getType()->getLocals()  & apcond, 1) ;
+      
       allTrans_ = allTrans_ + toadd;
-      if (arcLab.second != bddfalse) {
-	labels_t accs = tgba_->getAcceptanceSet(arcLab.second);
-	for (labels_it acc = accs.begin() ; acc != accs.end() ; ++acc) {
-	  accToTrans_it accit = accToTrans_.find(*acc);
-	  if (accit == accToTrans_.end()) {
-	    // first occurrence
-	    accToTrans_ [*acc] = toadd;
-	  } else {
-	    accit->second = accit->second + toadd;
-	  }
+
+      labels_t accs = tgba_->getAcceptanceSet(arcLab.second);
+      for (labels_it acc = accs.begin() ; acc != accs.end() ; ++acc) {
+	accToTrans_it accit = accToTrans_.find(*acc);
+	if (accit == accToTrans_.end()) {
+	  // first occurrence
+	  accToTrans_ [*acc] = toadd;
+	} else {
+	  accit->second = accit->second + toadd;
 	}
       }
+
     }      
       
       
-      std::cout << "Built model with initstate :" << getInitState() << std::endl;
-      std::cout << "Transition rel (all) :" << allTrans_ << std::endl;
+//       std::cout << "Built model with initstate :" << getInitState() << std::endl;
+//       std::cout << "Transition rel (all) :" << allTrans_ << std::endl;
       
       
       return true;
@@ -115,17 +122,16 @@ namespace its {
       State sat = div;
       do {
 	sat = div;
+	div = fixpoint (getNextByAll()) (div);
 	for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
 	  div = (fixpoint (getNextByAll() + Transition::id ) & accit->second) (div);
 	}
       } while (div != sat);
     }
-    std::cout << "Divergence ? " << div.nbStates() << std::endl;
+    trace << "Divergence ? " << div.nbStates() << std::endl;
     if (div.nbStates() < 15)
-      std::cout << div << std::endl;
-    if (div != State::null) {
-      std::cout << "accepting run exists" << std::endl;
-    }
+      trace << div << std::endl;
+
     return div;
 
   }
