@@ -20,7 +20,7 @@ my $dir = $opt_d or die "Specify target directory -d please! \n$usage" if (!defi
 my $cwd =  getcwd or die "Can't get cwd, used to decide where to do output.\n";
 
 # the list of all methods (taken from main.cpp)
-my @genType = ("SOG","DSOG","SLOG");
+my @genType = ("SOG","DSOG","SLOG","FSLTL");
 
 my $DEFAULT_TIMEOUT = 120;
 # howto use this tool
