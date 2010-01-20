@@ -78,7 +78,7 @@ namespace its {
     /** A helper function to print the atomic prop condition formula bdd */
     void print_cond(bdd cond, std::ostream & os) const;
     /** A pretty print for tgba arc labels, wrapper that relies on print_acc and print_cond */
-    vLabel get_arc_label (const tgba_arc_label_t & lab);
+    vLabel get_arc_label (const tgba_arc_label_t & lab) const;
 
 
     /** A map to store string label to tgba_arc_label correspondance */
@@ -157,6 +157,23 @@ namespace its {
 
     std::ostream& print(std::ostream& os) const {
       spot::dotty_reachable(os, tgba_);// TODO : use tgba_dump
+      os << "Internal view (arcs):" << std::endl;
+      for (arcs_t::const_iterator it = arcs_.begin() ; it != arcs_.end() ; ++it ) {
+	os << get_arc_label(it->first);
+	os << it->first.first.id() << "/" << it->first.second.id() << "  ";
+	os << "   : "; 
+	for (tgba_arcs_it jt = it->second.begin() ; jt != it->second.end() ; ++jt) {
+	  os << jt->first << "->" << jt->second << " ;" ;
+	}
+	os << std::endl;
+      }
+      os << "Internal view (labmap):" << std::endl;
+      for (labmap_t::const_iterator it = labmap_.begin() ; it != labmap_.end() ; ++it) {
+ 	os << it->first << " mapsto " << get_arc_label(it->second) << "  ";
+	os << it->second.first.id() << "/" << it->second.second.id() << "  ";
+	os << std::endl;
+      }
+      os << std::endl;
       return os;
     }
 
