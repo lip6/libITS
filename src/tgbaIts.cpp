@@ -74,7 +74,7 @@ namespace its {
   /** compute a vector of strings representing a bdd of an acceptance set */
   labels_t TgbaType::getAcceptanceSet (bdd acc) const {
     map_cond_set_it it = map_cond_set_.find(acc);
-    if ( it == map_cond_set_.end() ) {
+    if (true || it == map_cond_set_.end() ) {
       labels_t ret;
       
       const spot::bdd_dict* d = tgba_->get_dict();
@@ -142,7 +142,7 @@ namespace its {
   }
 
   /** A pretty print for tgba arc labels, wrapper that relies on print_acc and print_cond */
-  vLabel TgbaType::get_arc_label (const tgba_arc_label_t & lab) {
+  vLabel TgbaType::get_arc_label (const tgba_arc_label_t & lab) const {
     std::stringstream os;
     os << "<" ;
     print_cond(lab.first, os);
