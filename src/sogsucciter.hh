@@ -24,6 +24,7 @@ class sog_succ_iterator : public spot::tgba_succ_iterator {
   virtual ~sog_succ_iterator();
 
     void first();
+    void step();
     void next();
     bool done() const;
     spot::state* current_state() const;
@@ -39,7 +40,7 @@ private:
   const sog_state & from; ///< The source state.
 
   APIterator it;
-  bool div_has_been_visited;
+  bool div_needs_visit;
   its::State succstates;
   sog_state * current_succ;
 };
