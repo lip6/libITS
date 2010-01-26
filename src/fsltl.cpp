@@ -108,31 +108,46 @@ namespace its {
   }  
 
   State fsltlModel::findSCC () {
-    State reach = fixpoint (getNextByAll() + Transition::id,true) ( getInitState()); 
+    State reach = fixpoint (getNextByAll() + Transition::id, true) ( getInitState()); 
     
-    std::cout << "Reachable states : " << reach.nbStates();
-    if (reach.nbStates() < 15)
-      std::cout << reach << std::endl;
+//     trace << "Reachable states : " << reach.nbStates();
+//     if (reach.nbStates() < 15)
+//       trace << reach << std::endl;
     
     State div;
     if ( accToTrans_.empty() ) {
-      div = fixpoint (getNextByAll()) (reach);
-
+      // No acceptance condition : any cycle is accepting
+      div = fixpoint (getNextByAll(), true) (reach);
     } else {
+      // Fixpoint on all acceptance conds 
       div = reach;
       State sat = div;
       int j=0;
       do {
 	trace << "start of SCC loop, iteration " << j++ << " with nbstates= " << div.nbStates()<<std::endl;
 	sat = div;
-	div = fixpoint (getNextByAll()) (div);
+
+
+	// only states that allow a loop and suffixes
+	div = fixpoint (getNextByAll(), true) (div);
+
 	trace << "After loop detection " << j << " with nbstates= " << div.nbStates()<<std::endl;
+
 	int i =0;
+
+	// For each acceptance condition
 	for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
+
 	  trace << "For acceptance condition " << ++i << " :" <<  accit->first << std::endl ;
-	  div = (fixpoint (getNextByAll() + Transition::id ) & accit->second) (div);
+
+	  // Let Next = all transitions (any label or acceptance)
+	  // and black = successors that validate the acceptance condition "black"
+	  // ( (Next + Id)^* & black ) (states)
+	  div = (fixpoint (getNextByAll() + Transition::id,true) & accit->second) (div);
+
 	  trace << "Reduced to " << div.nbStates() << " states." << std::endl;
 	}
+
       } while (div != sat);
     }
     trace << "Divergence ? " << div.nbStates() << std::endl;
