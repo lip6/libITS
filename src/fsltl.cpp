@@ -3,8 +3,8 @@
 #include "Composite.hh"
 
 
-// #define trace std::cerr
-#define trace if (0) std::cerr
+#define trace std::cerr
+// #define trace if (0) std::cerr
 
 namespace its {
 
@@ -69,7 +69,7 @@ namespace its {
 
       labels_t labtodo;
       labtodo.push_back(*it);
-      Transition toadd = localApply(tgba_->getSuccs(labtodo),0) & localApply(getInstance()->getType()->getLocals()  & apcond, 1) ;
+      Transition toadd = localApply(tgba_->getSuccs(labtodo),1) & localApply(getInstance()->getType()->getLocals()  & apcond, 0) ;
       
       allTrans_ = allTrans_ + toadd;
 
@@ -95,7 +95,8 @@ namespace its {
     }
     
   State fsltlModel::getInitState () {
-    return State(1, getInstance()->getType()->getState("init"), State(0, findType("TGBA")->getState("init")));
+//    return State(1, getInstance()->getType()->getState("init"), State(0, findType("TGBA")->getState("init")));
+    return State(1, findType("TGBA")->getState("init"), State(0, getInstance()->getType()->getState("init")));
   }
 
   Transition fsltlModel::getNextByAll () {
@@ -107,7 +108,7 @@ namespace its {
   }  
 
   State fsltlModel::findSCC () {
-    State reach = fixpoint (getNextByAll() + Transition::id) ( getInitState()); 
+    State reach = fixpoint (getNextByAll() + Transition::id,true) ( getInitState()); 
     
     std::cout << "Reachable states : " << reach.nbStates();
     if (reach.nbStates() < 15)
@@ -120,11 +121,17 @@ namespace its {
     } else {
       div = reach;
       State sat = div;
+      int j=0;
       do {
+	trace << "start of SCC loop, iteration " << j++ << " with nbstates= " << div.nbStates()<<std::endl;
 	sat = div;
 	div = fixpoint (getNextByAll()) (div);
+	trace << "After loop detection " << j << " with nbstates= " << div.nbStates()<<std::endl;
+	int i =0;
 	for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
+	  trace << "For acceptance condition " << ++i << " :" <<  accit->first << std::endl ;
 	  div = (fixpoint (getNextByAll() + Transition::id ) & accit->second) (div);
+	  trace << "Reduced to " << div.nbStates() << " states." << std::endl;
 	}
       } while (div != sat);
     }
