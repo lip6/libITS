@@ -16,6 +16,10 @@ class CTLChecker {
   typedef hom_map_t::const_iterator hom_map_it;
   mutable hom_map_t hom_map;
 
+  /** A cache containing the Homomorphisms representing formulas */
+  typedef std::map<Ctlp_Formula_t *, its::Transition> ctl_cache_t;
+  typedef ctl_cache_t::const_iterator ctl_cache_it;
+  mutable ctl_cache_t ctl_cache;
   /** A cache containing the states representing formulas */
   typedef std::map<Ctlp_Formula_t *, its::State> ctl_statecache_t;
   typedef ctl_statecache_t::const_iterator ctl_statecache_it;
@@ -27,6 +31,8 @@ public :
   CTLChecker (const its::ITSModel & model) : model(model),predRel(its::Transition::null) {}
 
   its::Transition getSelectorAP (Label apname) const;
+
+  its::Transition getHomomorphism (Ctlp_Formula_t *formula) const;
 
   its::State getStateVerifying (Ctlp_Formula_t *formula) const;
 
