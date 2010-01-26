@@ -114,6 +114,54 @@ namespace slog
     its::State dest_; ///< The current successor aggregate (could be empty).   
   };
 
+
+  /// \brief A divergent state in some specific cases.
+  class slog_div_state : public spot::state {
+  public:
+    slog_div_state(const bdd& c, const bdd &a);
+    int compare(const state* other) const;
+    size_t hash() const;
+    state* clone() const;
+    const bdd& get_condition() const;
+    const bdd& get_acceptance() const;
+
+    
+    // pretty print
+    std::ostream & print (std::ostream &) const ;
+    
+  private:
+    bdd cond; ///< the condition.
+    bdd acc; ///< the (full) acceptance set
+  };
+
+  class slog_div_succ_iterator : public spot::tgba_succ_iterator
+  {
+  public:
+    slog_div_succ_iterator(const spot::bdd_dict* d,
+			   const slog_div_state* s);
+
+
+    void first();
+    void next();
+    bool done() const;
+
+    spot::state* current_state() const;
+    bdd current_condition() const;
+    bdd current_acceptance_conditions() const;
+    std::string format_transition() const;
+
+  private:
+    slog_div_succ_iterator(const slog_div_succ_iterator& s);
+    slog_div_succ_iterator& operator=(const slog_div_succ_iterator& s);
+
+    const spot::bdd_dict* dict;
+    const slog_div_state* state;
+    bool done_;
+  };
+
+
+
+
   /// \brief A lazy product.  (States are computed on the fly.)
   class slog_tgba : public spot::tgba
   {
@@ -127,7 +175,7 @@ namespace slog
 
     virtual spot::state* get_init_state() const;
 
-    virtual slog_succ_iterator*
+    virtual spot::tgba_succ_iterator*
     succ_iter(const spot::state* local_state,
 	      const spot::state* global_state = 0,
 	      const spot::tgba* global_automaton = 0) const;

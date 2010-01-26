@@ -23,8 +23,12 @@
 #include <string>
 #include <cassert>
 #include "misc/hashfunc.hh"
+#include "tgba/bddprint.hh"
 
 using namespace spot;
+
+// #define trace std::cerr
+#define trace while (0) std::cerr
 
 
 namespace slog
@@ -47,6 +51,9 @@ namespace slog
   int
   slog_state::compare(const state* other) const
   {
+    if (dynamic_cast<const slog_div_state*>(other))
+      return 1;
+
     const slog_state* o = dynamic_cast<const slog_state*>(other);
     assert(o);
     int res = left_->compare(o->left());
@@ -226,11 +233,19 @@ namespace slog
 			  model_.getInitialState() );
   }
 
-  slog_succ_iterator*
+  spot::tgba_succ_iterator*
   slog_tgba::succ_iter(const state* local_state,
 		       const state* global_state,
 		       const tgba* global_automaton) const
   {
+    const slog_div_state* d = dynamic_cast<const slog_div_state*>(local_state);
+    if (d)
+      {
+	return new slog_div_succ_iterator(get_dict(), d);
+      }
+    
+
+
     const slog_state* s =
       dynamic_cast<const slog_state*>(local_state);
     assert(s);
@@ -267,6 +282,17 @@ namespace slog
   std::string
   slog_tgba::format_state(const state* state) const
   {
+    const slog_div_state* d = dynamic_cast<const slog_div_state*>(state);
+    if (d) {
+      std::ostringstream os;
+      os // <<  left_->format_state(d->get_left_state()) 
+	 << " * div_state(";
+      spot::bdd_print_formula(os, dict_, d->get_condition()) << ")";
+      
+      return os.str();
+    }
+
+
     const slog_state* s = dynamic_cast<const slog_state*>(state);
     assert(s);
 
@@ -320,6 +346,91 @@ namespace slog
       dynamic_cast<const slog_succ_iterator*>(t);
     assert(i);
     return left_->transition_annotation(i->left_);
+  }
+
+
+  slog_div_state::slog_div_state(const bdd& c, const bdd& a) : cond(c),acc(a) {
+  }
+
+  int slog_div_state::compare(const state* other) const {
+    const slog_div_state* m = dynamic_cast<const slog_div_state*>(other);
+    if (!m)
+      return -1;
+    return cond.id() - m->cond.id();
+  }
+
+  size_t slog_div_state::hash() const {
+    __gnu_cxx::hash<int> H;
+    return H(cond.id());
+  }
+
+  spot::state* slog_div_state::clone() const {
+    return new slog_div_state(*this);
+  }
+
+  const bdd& slog_div_state::get_condition() const {
+    return cond;
+  }
+
+  const bdd& slog_div_state::get_acceptance() const {
+    return acc;
+  }
+
+  std::ostream & slog_div_state::print (std::ostream & os) const {
+    return (os << "SlogDivState " << std::endl);
+  }
+
+  
+  slog_div_succ_iterator::slog_div_succ_iterator(const spot::bdd_dict* d,
+						 const slog_div_state* s)
+    : dict(d), state(s), done_(false)
+  {
+  }
+
+  void slog_div_succ_iterator::first() {
+    done_ = false;
+  }
+
+  void slog_div_succ_iterator::next() {
+    if (!done_)
+      done_ = true;
+  }
+
+  bool slog_div_succ_iterator::done() const {
+    return  done_;
+  }
+
+  spot::state* slog_div_succ_iterator::current_state() const {
+    assert(!done_);
+    trace << "FIRING : " << format_transition() << std::endl;
+    trace << "FROM a div state" << std::endl << std::endl;
+    return new slog_div_state(*state);
+  }
+
+  bdd slog_div_succ_iterator::current_condition() const {
+    assert(!done());
+    return state->get_condition();
+  }
+
+  bdd slog_div_succ_iterator::current_acceptance_conditions() const {
+    assert(!done());
+    return state->get_acceptance();
+  }
+
+  std::string slog_div_succ_iterator::format_transition() const {
+    assert(!done());
+    std::ostringstream os;
+    spot::bdd_print_formula(os, dict, state->get_condition());
+    return "div(" + os.str() + ")";
+  }
+
+  slog_div_succ_iterator::slog_div_succ_iterator(const slog_div_succ_iterator& s) {
+    assert(false);
+  }
+
+  slog_div_succ_iterator& slog_div_succ_iterator::operator=(const slog_div_succ_iterator& s) {
+    assert(false);
+    return *this;
   }
 
 }
