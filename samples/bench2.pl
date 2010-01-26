@@ -149,18 +149,23 @@ sub workonfile {
 	      #	    print $outline;
 	      $verdict = 1;
 	      last;
+	    } elsif ($outline =~ /TIME LIMIT/ ) {
+	      $verdict = 2;
+	      @stats = ();
 	    }
 	  }
 	  close MYTOOL;
 
 	  print "$method, $ff,\"$line\", $nbstates, $ticks, $nbtrans, $verdict, ".(join " , ",@stats)."\n";
-	  if (defined $prevverdict) {
-	    if ($prevverdict != $verdict) {
-	      print STDERR "HOUSTON, we have a problem !!  ($method, $ff, '$line')\n";
-	      print STDERR "Reproduce with $call\n";
+	  if ($verdict != 2) {
+	    if (defined $prevverdict) {
+	      if ($prevverdict != $verdict) {
+		print STDERR "HOUSTON, we have a problem !!  ($method, $ff, '$line')\n";
+		print STDERR "Reproduce with $call\n";
+	      }
+	    } else {
+	      $prevverdict = $verdict ;
 	    }
-	  } else {
-	    $prevverdict = $verdict ;
 	  }
 	}
       }

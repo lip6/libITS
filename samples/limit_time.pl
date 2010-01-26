@@ -25,7 +25,7 @@ print $cmd."\n";
 
 
 if (my $pid = pipe_from_fork('BAR')) {
-  $SIG{ALRM} = sub { print "Killed by timeout after $time seconds \n"; kill 9,$pid ; wait ; exit 0 ;};
+  $SIG{ALRM} = sub { print "TIME LIMIT: Killed by timeout after $time seconds \n"; kill 9,$pid ; wait ; exit 0 ;};
 
   alarm $time;
   # parent
