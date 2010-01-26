@@ -50,6 +50,11 @@ if (! -x $checksog_exe) {
 }
 
 my $timeout = defined $opt_t ? $opt_t :  $DEFAULT_TIMEOUT ;
+my $tmlimexe = $cwd."/limit_time.pl";
+if  (-x $tmlimexe) {
+  $checksog_exe = "$tmlimexe $timeout ".$checksog_exe;
+}
+
 
 my $doComparison = 1;
 if (defined $opt_q) {
@@ -114,7 +119,7 @@ sub workonfile {
 	  $line =~ s/\\"/"/g;
 	  my $call = "$checksog_exe -S$method -f'$line' -c $ff";
 
-	  #	print STDERR $call."\n";
+	  	print STDERR $call."\n";
 	  open MYTOOL,"$call|";
 	  my $verdict = 0;
 	  my $nbstates =0;

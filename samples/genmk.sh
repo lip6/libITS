@@ -13,7 +13,7 @@ all: $(FILES:.net=.log)
 
 .SUFFIXES: .net .log
 .net.log:
-	./bench2.pl -m all -f $< > $@.tmp
+	./bench2.pl -t 120 -m all -f $< > $@.tmp
 	mv $@.tmp $@
 EOF
 
