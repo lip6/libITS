@@ -54,7 +54,7 @@ sog_succ_iterator::sog_succ_iterator(const sogIts& m, const sog_state& s)
   : model(m), 
     from(s), 
     it(APIteratorFactory::create()), 
-    div_has_been_visited(true),
+    div_needs_visit(false),
     succstates(from.get_succ()), 
     current_succ(NULL) {
   // set status of iterator to done() initially
@@ -67,54 +67,51 @@ sog_succ_iterator::sog_succ_iterator(const sogIts& m, const sog_state& s)
     delete current_succ;
   }
 
+
+  void sog_succ_iterator::step() {
+    // iterate until a non empty succ is found (or end reached)
+    for (  ; ! it.done() ; it.next() ) {
+      sog_state s (model, succstates, it.current() );
+      if ( s.get_states() != SDD::null ) {
+	current_succ = new sog_state(s);
+	break;
+      }
+    }
+  }
+
 void sog_succ_iterator::first() {
   // set whether the div successor exists, i.e. the source agregate contains a circuit
   if (from.get_div())
-    div_has_been_visited = false;
+    div_needs_visit = true;
 
   /// position "it" at first of ap bdd set
   it.first();
-  // iterate until a non empty succ is found (or end reached)
-  for (  ; ! it.done() ; it.next() ) {
-    sog_state s (model, succstates, it.current() );
-    if ( s.get_states() != SDD::null ) {
-      current_succ = new sog_state(s);
-      break;
-    }
-  }
+  step();
 }
 
 
 void sog_succ_iterator::next() {
   assert(!done());
-  if ( ! it.done() ) {
-    // find the next non empty agregate built as
-    // (ap&Trans +id)^* & ap (succstates)
-    for (it.next()  ; ! it.done() ; it.next() )
-      {
-	sog_state s (model, succstates, it.current() );
-	if ( s.get_states() != SDD::null ) {
-	  current_succ = new sog_state(s);
-	  break;
-	}
-      }
+  if (div_needs_visit) {
+    div_needs_visit = false;
+    return;
   }
-  else
-    div_has_been_visited = true;
+  // else
+  it.next();
+  step();
 } //
 
 bool sog_succ_iterator::done() const {
-  return  it.done() && div_has_been_visited;
+  return  it.done() && ! div_needs_visit;
 } //
 
 spot::state* sog_succ_iterator::current_state() const {
   assert(!done());
-  if (! it.done() ) {
+  if (! div_needs_visit ) {
     trace << "FIRING : " << it.current() << std::endl;
     trace << "FROM " << from << std::endl;
     return new sog_state(*current_succ);
-  }
-  else {
+  } else {
     trace << "REACHED DIV STATE"  << std::endl;
     return new sog_div_state(from.get_condition());
   }
