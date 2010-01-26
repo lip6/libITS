@@ -8,6 +8,7 @@ my @sum;
 my @max;
 my @min;
 my $count = 0;
+my $fail = 0;
 
 my $head = <>;
 my @head = split(',', $head);
@@ -27,22 +28,27 @@ while (<>)
     shift @res;
     shift @res;
     shift @res;
+    my $verdict = $res[3];
 
-    if ($count)
-    {
-	my $i;
-	for ($i = 0; $i <= $#sum; ++$i)
+    if ($verdict == 2 || $#res < 6) {
+      ++$fail;
+    } else {
+      if ($count)
 	{
-	    $sum[$i] += $res[$i];
-	    $max[$i] = $res[$i] if $max[$i] < $res[$i];
-	    $min[$i] = $res[$i] if $min[$i] > $res[$i];
+	  my $i;
+	  for ($i = 0; $i <= $#sum; ++$i)
+	    {
+	      $sum[$i] += $res[$i];
+	      $max[$i] = $res[$i] if $max[$i] < $res[$i];
+	      $min[$i] = $res[$i] if $min[$i] > $res[$i];
+	    }
 	}
-    }
-    else
-    {
-	@sum = @res;
-	@max = @res;
-	@min = @res;
+      else
+	{
+	  @sum = @res;
+	  @max = @res;
+	  @min = @res;
+	}
     }
     ++$count;
 }
@@ -54,6 +60,7 @@ for ($i = 0; $i <= $#sum; ++$i)
 }
 
 
+print "Failed : $fail/$count\n";
 print "\t@{[join(', ',@head)]}";
 print "MOY:\t@{[join(', ',@sum)]}\n";
 print "MIN:\t@{[join(', ',@min)]}\n";
