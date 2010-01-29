@@ -80,6 +80,7 @@ namespace sogits {
     std::string ltl_string_;
     bool display_;
     bool scc_optim_;
+    bool print_formula_tgba_;
 
     spot::timer_map timers;
 
@@ -101,7 +102,8 @@ namespace sogits {
 		    fair_loop_approx_(false),
 		    ltl_string_("formula"), 
 		    display_(false), 
-		    scc_optim_(true) {}
+		    scc_optim_(true),
+                    print_formula_tgba_(false) {}
 
     ~LTLChecker();
 
@@ -121,7 +123,8 @@ namespace sogits {
 		     bool fair_loop_approx=false,
 		     const std::string & ltl_string ="formula",
 		     bool dotdump = false,
-		     bool scc_optim = true) 
+		     bool scc_optim = true,
+		     bool print_formula_tgba = false) 
     {
       echeck_algo_ = echeck_algo;
       ce_expected_ = ce_expected;
@@ -131,7 +134,8 @@ namespace sogits {
       fair_loop_approx_ = fair_loop_approx;
       ltl_string_ = ltl_string;
       display_ = dotdump;
-      scc_optim_ = scc_optim;    
+      scc_optim_ = scc_optim;
+      print_formula_tgba_ = print_formula_tgba;
     }
     
     /// \brief Check if the Petri net \a n can produce at least one infinite

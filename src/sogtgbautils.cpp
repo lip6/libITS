@@ -195,6 +195,9 @@ namespace sogits {
 	a_ = n;
       }
 
+    if (print_formula_tgba_)
+      spot::dotty_reachable(std::cout, a_);
+
 
     return true;
   }
