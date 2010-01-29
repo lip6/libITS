@@ -24,6 +24,7 @@
 #include <cassert>
 #include "misc/hashfunc.hh"
 #include "tgba/bddprint.hh"
+#include "tgbaIts.hh"
 
 using namespace spot;
 
@@ -85,12 +86,23 @@ namespace slog
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-  slog_succ_iterator::slog_succ_iterator(const tgba * aut, tgba_succ_iterator* left, const sogIts & model, const its::State& right)
+  slog_succ_iterator::slog_succ_iterator(const tgba * aut, const spot::state * aut_state, tgba_succ_iterator* left, const sogIts & model, const its::State& right)
     : aut_(aut),
       left_(left),
       model_(model),
       right_(right)
   {
+
+    /** Test whether there is a self loop labeled with ALL acceptance conditions */
+    for (left_->first() ; ! left_->done() ; left_->next() ) {
+      if ( left_->current_state()->compare(aut_state) == 0 ) {
+//	std::cerr << "on arc :" << aut_->transition_annotation(left_) << std::endl;
+	if ( left_->current_acceptance_conditions() ==  aut_->all_acceptance_conditions()  ) {
+	  std::cerr << "\ndetected condition !" << std::endl;
+	}
+      }
+    }
+
   }
 
   slog_succ_iterator::~slog_succ_iterator()
@@ -167,7 +179,6 @@ namespace slog
   slog_succ_iterator::first()
   {
     left_->first();
-
     next_non_false_();
   }
 
@@ -254,7 +265,9 @@ namespace slog
 					      global_state,
 					      global_automaton);
 
-    return new slog_succ_iterator(left_, li, model_, s->right());
+    // std::cerr << "Building succ_iter from state : " << left_->format_state (s->left()) << std::endl;
+
+    return new slog_succ_iterator(left_, s->left(), li, model_, s->right());
   }
 
   bdd

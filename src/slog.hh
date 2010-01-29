@@ -82,7 +82,7 @@ namespace slog
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-    slog_succ_iterator(const spot::tgba * aut, spot::tgba_succ_iterator* left, const sogIts & model, const its::State& right);
+    slog_succ_iterator(const spot::tgba * aut, const spot::state * aut_state, spot::tgba_succ_iterator* left, const sogIts & model, const its::State& right);
 
     virtual ~slog_succ_iterator();
 
