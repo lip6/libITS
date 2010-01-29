@@ -68,6 +68,8 @@ void syntax(const char* prog) {
             << std::endl
             << "  -p              display the net"
             << std::endl
+            << "  -s              show the formula automaton"
+            << std::endl
             << "Options of the formula transformation:"
             << std::endl
             << "  -b              branching postponement"
@@ -104,6 +106,7 @@ int main(int argc, const char *argv[]) {
   bool fm_symb_merge_opt = true;
   bool post_branching = false;
   bool fair_loop_approx = false;
+  bool print_formula_tgba = false;
 
   bool scc_optim = true;
 
@@ -135,6 +138,9 @@ int main(int argc, const char *argv[]) {
     }
     else if (!strcmp(argv[pn_index], "-e")) {
       ce_expected = true;
+    }
+    else if (!strcmp(argv[pn_index], "-s")) {
+      print_formula_tgba = true;
     }
     else if (!strncmp(argv[pn_index], "-f", 2)) {
       ltl_string = argv[pn_index]+2;
@@ -268,7 +274,7 @@ std::string* check_at_prop(const petri_net* p,
     checker.setOptions(algo_string, ce_expected,
 		       fm_exprop_opt, fm_symb_merge_opt,
 		       post_branching, fair_loop_approx, "STATS", print_rg,
-		       scc_optim);
+		       scc_optim, print_formula_tgba);
     checker.model_check(sogtype);
   }
 
