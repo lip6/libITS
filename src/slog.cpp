@@ -26,10 +26,13 @@
 #include "tgba/bddprint.hh"
 #include "tgbaIts.hh"
 
+// for fsltl type optimization of terminal states
+#include "fsltl.hh"
+
 using namespace spot;
 
-// #define trace std::cerr
-#define trace while (0) std::cerr
+#define trace std::cerr
+// #define trace while (0) std::cerr
 
 
 namespace slog
@@ -244,30 +247,109 @@ namespace slog
 			  model_.getInitialState() );
   }
 
+
+  class tgba_no_succ_iterator : public tgba_succ_iterator {
+
+    state* current_state() const {
+      return 0;
+    }
+    
+
+    /// \brief Get the condition on the transition leading to this successor.
+    ///
+    /// This is a boolean function of atomic propositions.
+    bdd current_condition() const {
+      return bddfalse;
+    }
+
+    /// \brief Get the acceptance conditions on the transition leading
+    /// to this successor.
+    bdd current_acceptance_conditions() const {
+      return bddfalse;
+    }
+    void first() {};
+    void next() {};
+    bool done() const {
+      return true;
+    }
+  };
+
   spot::tgba_succ_iterator*
   slog_tgba::succ_iter(const state* local_state,
 		       const state* global_state,
 		       const tgba* global_automaton) const
   {
+    // test for div case
     const slog_div_state* d = dynamic_cast<const slog_div_state*>(local_state);
-    if (d)
-      {
-	return new slog_div_succ_iterator(get_dict(), d);
-      }
+    if (d) {
+      return new slog_div_succ_iterator(get_dict(), d, d->get_condition(), d->get_acceptance());
+    }
     
 
-
-    const slog_state* s =
-      dynamic_cast<const slog_state*>(local_state);
+    // else it should be a normal slog state
+    const slog_state* s = dynamic_cast<const slog_state*>(local_state);
     assert(s);
+
 
     tgba_succ_iterator* li = left_->succ_iter(s->left(),
 					      global_state,
 					      global_automaton);
 
-    // std::cerr << "Building succ_iter from state : " << left_->format_state (s->left()) << std::endl;
+    // Test whether the tgba state is terminal
+    if ( isTerminalState(li, s->left()) ) {
+      std::cout << "could use FSLTL algo !!" << std::endl;
+      its::fsltlModel::trans_t nextAccs;
+      its::Transition all = its::State::null;
 
+      typedef std::map<std::string,its::Transition> accToTrans_t;
+      typedef accToTrans_t::iterator accToTrans_it;
+      accToTrans_t accToTrans;
+
+      for ( li->first(); !li->done() ; li->next() ) {
+
+	// compute toadd : the transition relation corresponding to this arc
+	its::Transition apcond = model_.getSelector(li->current_condition());
+	its::Transition toadd = model_.getNextRel () & apcond;
+
+	all = all + toadd;
+
+	labels_t accs = its::TgbaType::getAcceptanceSet (li->current_acceptance_conditions(), left_);
+	for (labels_it acc = accs.begin() ; acc != accs.end() ; ++acc) {
+	  accToTrans_it accit = accToTrans.find(*acc);
+	  if (accit == accToTrans.end()) {
+	    // first occurrence
+	    accToTrans [*acc] = toadd;
+	  } else {
+	    accit->second = accit->second + toadd;
+	  }
+	}  
+      }
+      
+      for (accToTrans_it accit = accToTrans.begin() ; accit != accToTrans.end() ; ++accit ) {
+	nextAccs.push_back(accit->second);
+	trace << "For acceptance condition  :" <<  accit->first << std::endl ;
+      }
+      
+      
+      its::State scc = its::fsltlModel::findSCC_owcty (all, nextAccs, s->right());
+
+      if (scc == its::State::null) {
+	return new tgba_no_succ_iterator();
+      } else {
+	return new slog_div_succ_iterator(get_dict(), s, bddtrue, left_->all_acceptance_conditions());
+      }
+    }
+    
+    // std::cerr << "Building succ_iter from state : " << left_->format_state (s->left()) << std::endl;
     return new slog_succ_iterator(left_, s->left(), li, model_, s->right());
+  }
+
+  bool slog_tgba::isTerminalState (tgba_succ_iterator * it, state * source) const {
+    for ( it->first(); !it->done() ; it->next() ) {
+      if (it->current_state()->compare(source) != 0)
+	return false;
+    }
+    return true;
   }
 
   bdd
@@ -395,8 +477,10 @@ namespace slog
 
   
   slog_div_succ_iterator::slog_div_succ_iterator(const spot::bdd_dict* d,
-						 const slog_div_state* s)
-    : dict(d), state(s), done_(false)
+						 const spot::state* s,
+						 const bdd & cond,
+						 const bdd & acc)
+    : dict(d), state(s), done_(false), cond_(cond), acc_(acc)
   {
   }
 
@@ -417,23 +501,23 @@ namespace slog
     assert(!done_);
     trace << "FIRING : " << format_transition() << std::endl;
     trace << "FROM a div state" << std::endl << std::endl;
-    return new slog_div_state(*state);
+    return new slog_div_state(cond_,acc_);
   }
 
   bdd slog_div_succ_iterator::current_condition() const {
     assert(!done());
-    return state->get_condition();
+    return cond_;
   }
 
   bdd slog_div_succ_iterator::current_acceptance_conditions() const {
     assert(!done());
-    return state->get_acceptance();
+    return acc_;
   }
 
   std::string slog_div_succ_iterator::format_transition() const {
     assert(!done());
     std::ostringstream os;
-    spot::bdd_print_formula(os, dict, state->get_condition());
+    spot::bdd_print_formula(os, dict, cond_);
     return "div(" + os.str() + ")";
   }
 

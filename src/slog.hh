@@ -138,7 +138,7 @@ namespace slog
   {
   public:
     slog_div_succ_iterator(const spot::bdd_dict* d,
-			   const slog_div_state* s);
+			   const spot::state* s, const bdd & cond, const bdd & acc);
 
 
     void first();
@@ -155,8 +155,10 @@ namespace slog
     slog_div_succ_iterator& operator=(const slog_div_succ_iterator& s);
 
     const spot::bdd_dict* dict;
-    const slog_div_state* state;
+    const spot::state* state;
     bool done_;
+    bdd cond_;
+    bdd acc_;
   };
 
 
@@ -200,7 +202,9 @@ namespace slog
     spot::bdd_dict* dict_;
     const spot::tgba* left_;
     const sogIts & model_;
-
+    
+    // helper function
+    bool isTerminalState (spot::tgba_succ_iterator * it, spot::state * source) const ;
     // Disallow copy.
     slog_tgba(const slog_tgba&);
     slog_tgba& operator=(const slog_tgba&);
