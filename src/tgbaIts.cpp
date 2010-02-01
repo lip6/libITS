@@ -71,14 +71,11 @@ namespace its {
     build_labels();
   }
 
-  /** compute a vector of strings representing a bdd of an acceptance set */
-  labels_t TgbaType::getAcceptanceSet (bdd acc) const {
-    map_cond_set_it it = map_cond_set_.find(acc);
-    if (true || it == map_cond_set_.end() ) {
-      labels_t ret;
-      
-      const spot::bdd_dict* d = tgba_->get_dict();
-      while (acc != bddfalse)
+  labels_t TgbaType::getAcceptanceSet (bdd acc, const spot::tgba * tgba)  {
+    labels_t ret;
+    
+    const spot::bdd_dict* d = tgba->get_dict();
+    while (acc != bddfalse)
       {
 	bdd cube = bdd_satone(acc);
 	acc -= cube;
@@ -108,11 +105,12 @@ namespace its {
 	  }
       }
       
-      std::sort(ret.begin(), ret.end());
-      map_cond_set_.insert(map_cond_set_t::value_type(acc,ret));
-      return ret;
-    }
-    return it->second;
+    std::sort(ret.begin(), ret.end());
+    return ret;
+  }
+  /** compute a vector of strings representing a bdd of an acceptance set */
+  labels_t TgbaType::getAcceptanceSet (bdd acc) const {
+    return getAcceptanceSet(acc, tgba_);
   }
 
   /** A helper function to print the acceptance conditions bdd 
