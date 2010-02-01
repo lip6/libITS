@@ -47,11 +47,21 @@ namespace its {
     // Returns false and abort if any preconditions are unfulfilled
     bool buildComposedSystem ();
 
-    // Verify whether there are accepting paths in the product.
-    // Precondition : buildComposedSystem has been invoked.
-    // Returns the set of accepting states + suffix.
-    State findSCC ();
 
+    /// calls static operation with member data.
+    State findSCC_owcty();
+
+    /// to represent a set of transition relations as passed to findSCC algorithm.
+    typedef std::vector<its::Transition> trans_t;
+    typedef trans_t::const_iterator trans_it;
+
+    /// Verify whether there are accepting paths in the product.
+    /// Precondition : buildComposedSystem has been invoked.
+    /// Returns the set of accepting states + suffix.
+    /// Algorithm used is a variant of "one-way catch them young" ('92)
+    /// see [Tacas2001 - Is there a best symbolic cycle detection algorithm - Fisler et al.]
+    // Arguments : all: the whole transition relation, nextAccs : one transition relation per acceptance condition, init : initial states.
+    static State findSCC_owcty (its::Transition nextAll, const trans_t & nextAccs, its::State init);
 
   };
 

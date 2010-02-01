@@ -37,26 +37,14 @@ namespace its {
     }
 
     // lookup the TGBA
-    
-//    pType tgba = findType("TGBA");
     if (! tgba_) {
       std::cerr << "TGBA not set when calling \"buildComposedSystem\"\n" ;
       return false;
     }
 
-    std::cout << *this << std::endl;
+    trace << *this << std::endl;
 
-//     // Ok preconditions fulfilled.
-//     // Build the composite.
-//     vLabel compname = tgba->getName() + "x" + getInstance()->getType()->getName();
-//     Composite * comp = new Composite(compname);
-//     // Instance names
-//     vLabel syst = "system";
-//     vLabel aut = "tgba";
-//     // an instance of the system
-//     comp->addInstance (syst, getInstance()->getType()->getName(), *this);
-//     // an instance of the TGBA
-//     comp->addInstance (aut, tgba->getName(), *this);
+    // Ok preconditions fulfilled.
 
     // Grab the TGBA labels
     labels_t tgbalabs = tgba_->getTransLabels();
@@ -107,17 +95,29 @@ namespace its {
     return accToTrans_[acc];
   }  
 
-  State fsltlModel::findSCC () {
-    State reach = fixpoint (getNextByAll() + Transition::id, true) ( getInitState()); 
+
+  State fsltlModel::findSCC_owcty () {
+    trans_t nextAccs;
+    for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
+      nextAccs.push_back(accit->second);
+      trace << "For acceptance condition  :" <<  accit->first << std::endl ;
+    }
+    
+    return findSCC_owcty (getNextByAll(), nextAccs, getInitState());
+  }
+
+  State fsltlModel::findSCC_owcty (its::Transition nextAll, const trans_t & nextAccs, its::State init) {
+
+    State reach = fixpoint (nextAll  + Transition::id, true) ( init ); 
     
 //     trace << "Reachable states : " << reach.nbStates();
 //     if (reach.nbStates() < 15)
 //       trace << reach << std::endl;
     
     State div;
-    if ( accToTrans_.empty() ) {
+    if (nextAccs.empty()) {
       // No acceptance condition : any cycle is accepting
-      div = fixpoint (getNextByAll(), true) (reach);
+      div = fixpoint (nextAll, true) (reach);
     } else {
       // Fixpoint on all acceptance conds 
       div = reach;
@@ -129,21 +129,18 @@ namespace its {
 
 
 	// only states that allow a loop and suffixes
-	div = fixpoint (getNextByAll(), true) (div);
+	div = fixpoint (nextAll, true) (div);
 
 	trace << "After loop detection " << j << " with nbstates= " << div.nbStates()<<std::endl;
 
-	int i =0;
-
 	// For each acceptance condition
-	for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
+	for (trans_it accit = nextAccs.begin(); accit != nextAccs.end() ; ++accit) {
 
-	  trace << "For acceptance condition " << ++i << " :" <<  accit->first << std::endl ;
 
 	  // Let Next = all transitions (any label or acceptance)
 	  // and black = successors that validate the acceptance condition "black"
 	  // ( (Next + Id)^* & black ) (states)
-	  div = (fixpoint (getNextByAll() + Transition::id,true) & accit->second) (div);
+	  div = (fixpoint (nextAll + Transition::id,true) & (*accit)) (div);
 
 	  trace << "Reduced to " << div.nbStates() << " states." << std::endl;
 	}
