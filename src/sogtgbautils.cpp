@@ -142,7 +142,7 @@ namespace sogits {
     fsmodel->setSogModel(sogModel_);
     fsmodel->declareType (a_);
     fsmodel->buildComposedSystem();
-    its::State res = fsmodel->findSCC();
+    its::State res = fsmodel->findSCC_owcty();
     Statistic S = Statistic(res, ltl_string_ , CSV); // can also use LATEX instead of CSV
     S.print_table(std::cout);
 
