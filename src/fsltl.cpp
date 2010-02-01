@@ -42,7 +42,8 @@ namespace its {
       return false;
     }
 
-    trace << *this << std::endl;
+    // Verbose print of built system
+    // trace << *this << std::endl;
 
     // Ok preconditions fulfilled.
 
@@ -140,7 +141,11 @@ namespace its {
 	  // Let Next = all transitions (any label or acceptance)
 	  // and black = successors that validate the acceptance condition "black"
 	  // ( (Next + Id)^* & black ) (states)
-	  div = (fixpoint (nextAll + Transition::id,true) & (*accit)) (div);
+	  // NB: creating t before application is necessary to enforce proper ref count
+	  // otherwise the composition could be gc'ed by the fixpoint's true attribute.
+	  its::Transition  t =  (fixpoint (nextAll + Transition::id,true) & (*accit));
+
+	  div = t (div);
 
 	  trace << "Reduced to " << div.nbStates() << " states." << std::endl;
 	}
