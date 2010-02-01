@@ -31,8 +31,8 @@
 
 using namespace spot;
 
-#define trace std::cerr
-// #define trace while (0) std::cerr
+// #define trace std::cerr
+#define trace while (0) std::cerr
 
 
 namespace slog
