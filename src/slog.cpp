@@ -31,8 +31,8 @@
 
 using namespace spot;
 
-// #define trace std::cerr
-#define trace while (0) std::cerr
+#define trace std::cerr
+// #define trace while (0) std::cerr
 
 
 namespace slog
@@ -297,7 +297,7 @@ namespace slog
 
     // Test whether the tgba state is terminal
     if ( isTerminalState(li, s->left()) ) {
-      std::cout << "could use FSLTL algo !!" << std::endl;
+      trace << "could use FSLTL algo !!" << std::endl;
       its::fsltlModel::trans_t nextAccs;
       its::Transition all = its::State::null;
 
@@ -346,9 +346,12 @@ namespace slog
 
   bool slog_tgba::isTerminalState (tgba_succ_iterator * it, state * source) const {
     for ( it->first(); !it->done() ; it->next() ) {
-      if (it->current_state()->compare(source) != 0)
+      if (it->current_state()->compare(source) != 0) {
+	trace << "State " << left_->format_state(source) << "is not terminal" << std::endl;
 	return false;
+      }
     }
+    trace << "State " << left_->format_state(source) << "IS terminal" << std::endl;
     return true;
   }
 
