@@ -65,7 +65,7 @@ its::State sogIts::leastPostTestFixpoint ( State init, bdd cond ) const {
   Transition hcond = getSelector(cond);
   Transition hnext = getNextRel();
   
-  Transition sat = fixpoint ( (hcond &  hnext) + Transition::id ) & hcond;
+  Transition sat = fixpoint ( (hcond &  hnext) + Transition::id , true ) & hcond;
   trace << "Saturate (post) least fixpoint under conditions : " << sat << std::endl;
   return sat(init);
 }
@@ -77,7 +77,7 @@ its::State sogIts::leastPreTestFixpoint ( its::State init, bdd cond ) const {
   Transition hcond = getSelector(cond);
   Transition hnext = getNextRel();
   
-  Transition sat = fixpoint ( ( hnext & hcond ) + Transition::id );
+  Transition sat = fixpoint ( ( hnext & hcond ) + Transition::id , true );
   
   trace << "Saturate (pre) least fixpoint under conditions : " << sat << std::endl;
   State res =  sat(init);
@@ -143,6 +143,6 @@ State  sogIts::succSatisfying ( its::State init, bdd cond) const {
 
 // Return the set of divergent states in a set, using  (hcond & next) as transition relation
 State sogIts::getDivergent (State init, bdd cond) const {
-  return fixpoint ( (getSelector(cond) & model.getNextRel()) * Transition::id ) (init);
+  return fixpoint ( (getSelector(cond) & model.getNextRel()) * Transition::id , true ) (init);
 }
 
