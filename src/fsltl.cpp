@@ -3,8 +3,8 @@
 #include "Composite.hh"
 
 
-// #define trace std::cerr
-#define trace if (0) std::cerr
+#define trace std::cerr
+// #define trace if (0) std::cerr
 
 namespace its {
 
@@ -130,9 +130,9 @@ namespace its {
 
 
 	// only states that allow a loop and suffixes
-	div = fixpoint (nextAll, true) (div);
+	// div = fixpoint (nextAll, true) (div);
 
-	trace << "After loop detection " << j << " with nbstates= " << div.nbStates()<<std::endl;
+	// trace << "After loop detection " << j << " with nbstates= " << div.nbStates()<<std::endl;
 
 	// For each acceptance condition
 	for (trans_it accit = nextAccs.begin(); accit != nextAccs.end() ; ++accit) {
