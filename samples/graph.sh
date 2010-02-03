@@ -28,8 +28,8 @@ set output '$output'
 # (the jitter is multiplicative because the scale is logarithmic)
 jitter(x) = x*(9.5+rand(0))/10
 
-plot '$output.data' using (jitter(\$1)):(jitter(\$2)) with dots lw 7, \
-     x with lines
+plot '$output.data' using (jitter(\$1)):(jitter(\$2)), \
+     x
 EOF
 
 gnuplot $output.gnuplot
