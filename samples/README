@@ -10,10 +10,11 @@ To run the benchmarks on all the models in newTests/.
 
     make -f newTests.mk
 
-    (Use make -j2 newTests.mk if you have a dualcore with a lot of memory.)
+    (Use make -j2 -f newTests.mk if you have a dualcore with a lot of
+    memory.)
 
 
-3.  Calculate statistics with
+3a.  Calculate statistics with
 
     ./sum.pl newTests/**/*.log
 
@@ -28,3 +29,13 @@ To run the benchmarks on all the models in newTests/.
     to filter on a method and a model, use
 
       ./sum.pl -f '^SOG.*ring' newTests/**/*.log
+
+3b.  Alternatively, generate scatter graphs to compare two techniques
+
+     ./graph.sh sog-dsog-ticks.eps SOG DSOG 5 newTests/**/*.log
+
+     where:
+     - sog-dsog-ticks.eps is the name of the output file,
+     - SOG and DSOG are the name of the two techniques to compare
+     - 5 is the number of the column of the test output you want to plot
+         (Column 5 in is the number of ticks.)
