@@ -1,0 +1,77 @@
+<TPN name="D:\DocsDeYann\its-tools-win-r2009\6K/l6000.model.xml">
+  <transition id="3" label="t2" public="0" eft="0" lft="infini" >
+    <graphics>
+      <position x="272" y="249"/>
+      <deltaLabel deltax="20" deltay="20"/>
+    </graphics>
+  </transition>
+  <transition id="4" label="t1" public="0" eft="0" lft="infini" >
+    <graphics>
+      <position x="382" y="77"/>
+      <deltaLabel deltax="20" deltay="20"/>
+    </graphics>
+  </transition>
+  <place id="5" label="p1" initialMarking="6000" >
+    <graphics>
+      <position x="71" y="26"/>
+      <deltaLabel deltax="20" deltay="20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="6" label="p3" initialMarking="2000" >
+    <graphics>
+      <position x="151" y="306"/>
+      <deltaLabel deltax="20" deltay="20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="7" label="p2" initialMarking="0" >
+    <graphics>
+      <position x="402" y="246"/>
+      <deltaLabel deltax="20" deltay="20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <transition id="8" label="t3" public="0" eft="0" lft="infini" >
+    <graphics>
+      <position x="95" y="196"/>
+      <deltaLabel deltax="-18" deltay="18"/>
+    </graphics>
+  </transition>
+  <arc place="7" transition="3" type="TransitionPlace" weight="3000" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="3" type="PlaceTransition" weight="3" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="4" type="PlaceTransition" weight="2" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="4" type="PlaceTransition" weight="6000" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="4" type="TransitionPlace" weight="6000" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="8" type="PlaceTransition" weight="2000" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="7" transition="4" type="TransitionPlace" weight="3" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="8" type="TransitionPlace" weight="2000" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="7" transition="8" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="8" type="TransitionPlace" weight="2" >
+    <nail xnail="52" ynail="94"/>
+  </arc>
+  <arc place="7" transition="3" type="PlaceTransition" weight="3000" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="3" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+</TPN>
