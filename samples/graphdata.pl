@@ -11,9 +11,9 @@ my $opt_x = shift @ARGV;
 my $opt_y = shift @ARGV;
 my $opt_c = (shift @ARGV) - 3;
 
-my @sum;
-my @max;
-my @min;
+
+my $max = 0;
+
 my $count = 0;
 my $fail = 0;
 
@@ -36,8 +36,13 @@ while (<>)
     my $meth = shift @res;
     my $model = shift @res;
     my $formula = shift @res;
+    if (defined $res[$opt_c]) {
+	if ($res[$opt_c] > $max) {
+	    $max = $res[$opt_c];
+	}
+    }
 
-    $result{"$model,$formula"}{$meth} = [@res];
+    $result{"$model,$formula"}{$meth} = [@res];    
 }
 
 foreach my $key (keys %result)
@@ -45,10 +50,16 @@ foreach my $key (keys %result)
     if (defined $result{$key}{$opt_x}
 	and defined $result{$key}{$opt_y})
     {
-	my $t1 = $result{$key}{$opt_x};
+	my $t1 = $result{$key}{$opt_x};	
 	my $val1 = $t1->[$opt_c];
+	if (! defined $val1) {
+	    $val1 = 2* $max;
+	}
 	my $t2 = $result{$key}{$opt_y};
 	my $val2 = $t2->[$opt_c];
+	if (! defined $val2) {
+	    $val2 = 2* $max;
+	}
 	print "$val1 $val2\n";
     }
 }
