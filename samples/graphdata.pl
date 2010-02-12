@@ -35,8 +35,8 @@ while (<>)
     my @res = split(',',$_);
     my $meth = shift @res;
     my $model = shift @res;
-    my $formula = shift @res;
-    if (defined $res[$opt_c]) {
+    my $formula = shift @res;    
+    if (defined $res[$opt_c] && $res[$opt_c] !~ /^\s*$/) {
 	if ($res[$opt_c] > $max) {
 	    $max = $res[$opt_c];
 	}
