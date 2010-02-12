@@ -106,6 +106,7 @@ public :
   // !! no controls, if var set is incomplete errors will occur
   bool updateVarOrder (Label type, const labels_t & order);
   void printVarOrder (std::ostream & os) const;
+  bool loadOrder (std::istream & is);
 
   // returns the "Next" relation, i.e. exactly one step of the transition relation.
   // tests for presence of "elapse" transition.

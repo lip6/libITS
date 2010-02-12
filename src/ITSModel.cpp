@@ -185,7 +185,28 @@ void ITSModel::print (std::ostream & os) const  {
     return addType(newtype);
   }
 
-  
+  bool ITSModel::loadOrder (std::istream & is) {
+    while (!is.eof()) {
+      vLabel line;
+      is >> line;
+      if (line == "#TYPE") {
+	vLabel type;
+	is >> type;
+	labels_t order;
+	while (!is.eof()) {
+	  vLabel variable;
+	  is >> variable;
+	  if (variable == "#END")
+	    break;
+	  order.push_back(variable);
+	}
+	if (!updateVarOrder(type,order))
+	  return false;
+      }
+    }
+    return true;
+  }
+
   bool ITSModel::updateVarOrder (Label type, const labels_t & order) {
     pType ptype = findType (type);
     if (ptype == NULL) {
@@ -201,7 +222,7 @@ void ITSModel::print (std::ostream & os) const  {
        ++it ) {
       os << "#TYPE " << (*it)->getName() << "\n";
       (*it)->printVarOrder(os);
-      os << "#END " << (*it)->getName() << "\n";
+      os << "#END" << std::endl ;
     }
   }
 

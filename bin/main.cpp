@@ -1,3 +1,5 @@
+#include <iostream>
+#include <fstream>
 #include <cstring>
 
 // The ITS model referential
@@ -20,6 +22,7 @@ using namespace its;
 
 static bool beQuiet = false;
 static string pathdotff = "final";
+static string pathorderff = "order";
 static bool dodotexport=false;
 static bool dodumporder = false;
 static bool with_garbage=true;
@@ -33,7 +36,9 @@ void exhibitModel (ITSModel & model) {
     //   std::cout << model.getInitialState() << std::endl;
   }
   if (dodumporder) {
-    model.printVarOrder(std::cout);
+    ofstream os (pathorderff.c_str());
+    model.printVarOrder(os);
+    os.close();
     exit(0);
   }
   // Compute reachable states
@@ -63,7 +68,8 @@ void usage() {
   cerr<<  "    -xml path : use a XML encoded ITSModel file, as produced by Coloane or Romeo.\n" ;
   cerr<<  "    -c path : use a CAMI encoded ordinary P/T net, as produced by Coloane or Macao. Use -j in conjunction with this option.\n" ;
   cerr<<  "    -j path : use a JSON encoded hierarchy description file for a CAMI model, as produced using PaToH.\n" ;
-  cerr << "    --dump-order : dump the currently used variable order to stdout and exit. \n" ;
+  cerr << "    --dump-order path : dump the currently used variable order to file designated by path and exit. \n" ;
+  cerr << "    --load-order path : load the variable order from the file designated by path. \n" ;
   cerr<<  "    -d path : specifies the path prefix to construct dot state-space graph" <<endl;
   cerr<<  "    --sdd : privilege SDD storage." <<endl;
   cerr<<  "    --ddd : privilege DDD (no hierarchy) encoding.[DEFAULT]" <<endl;
@@ -93,11 +99,13 @@ int main (int argc, char **argv) {
  string pathXMLff;
  string pathCAMIff;
  string pathjsonff;
+ string pathorderinff = "order";
  bool doromeoparse = false;
  bool doprodparse = false;
  bool doXMLITSparse = false;
  bool doCAMIparse = false;
  bool dojsonparse = false;
+ bool doloadorder = false;
 
  its::storage method = ddd_storage ;
  // parse command line args to get the options
@@ -166,7 +174,15 @@ int main (int argc, char **argv) {
    } else if (! strcmp(argv[i],"--no-garbage")   ) {
      with_garbage = false;  
    } else if (! strcmp(argv[i],"--dump-order")   ) {
+     if (++i > argc) 
+       { cerr << "give path value for dump-order " << argv[i-1]<<endl; usage() ; exit(1);}
+     pathorderff = argv[i];     
      dodumporder = true;
+   } else if (! strcmp(argv[i],"--load-order")   ) {
+     if (++i > argc) 
+       { cerr << "give path value for load-order " << argv[i-1]<<endl; usage() ; exit(1);}
+     pathorderinff = argv[i];     
+     doloadorder = true;
    } else {
      cerr << "Error : incorrect Argument : "<<argv[i] <<endl ; usage(); exit(0);
    }
@@ -201,6 +217,14 @@ int main (int argc, char **argv) {
    usage();
    exit(1);
  } 
+
+ if (doloadorder) {
+   ifstream is (pathorderinff.c_str());
+   if (! model.loadOrder(is)) {
+     std::cerr << "Problem load provided order file :" << pathorderinff << "\n";
+     exit(1);
+   }
+ }
 	
  exhibitModel(model);
 
