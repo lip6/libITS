@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model>
+<instance id='3' name='t_i' type='train.model' />
+<delegator id='4' visibility='public' label='Exit' kind='ANY' />
+<delegator id='5' visibility='public' label='App' kind='ANY' />
+<arc  instance='3'  synchronization='5' />
+<arc  instance='3'  synchronization='4' />
+<size size='5' />
+</model>
+

@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model>
+<instance id='3' name='c' type='controller_v1.model' />
+<instance id='4' name='g' type='gate.model' />
+<synchronization id='5' name='ExitLast' label='Exit' />
+<synchronization id='6' name='AppFirst' label='App' />
+<synchronization id='7' name='AppOther' label='App' />
+<synchronization id='8' name='ExitOther' label='Exit' />
+<arc  instance='3'  synchronization='8' labels='Exit' />
+<arc  instance='3'  synchronization='7' labels='Enter' />
+<arc  instance='3'  synchronization='5' labels='ExitLast' />
+<arc  instance='3'  synchronization='6' labels='EnterFirst' />
+<arc  instance='4'  synchronization='5' labels='Exit' />
+<arc  instance='4'  synchronization='6' labels='App' />
+</model>
+

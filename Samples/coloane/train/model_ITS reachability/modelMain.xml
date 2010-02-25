@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd'>
+<types>
+<type name='train.model' formalism='Time Petri Net' format='Romeo' path='./train.model.xml' />
+<type name='trainGroup.model' formalism='Scalar Set Composite' format='Composite' path='./trainGroup.model.xml' />
+<type name='controller_v1.model' formalism='Time Petri Net' format='Romeo' path='./controller_v1.model.xml' />
+<type name='gate.model' formalism='Time Petri Net' format='Romeo' path='./gate.model.xml' />
+<type name='controlledGate.model' formalism='ITSComposite' format='Composite' path='./controlledGate.model.xml' />
+<type name='TrainCrossing.model' formalism='ITSComposite' format='Composite' path='./TrainCrossing.model.xml' />
+</types>
+<main type='TrainCrossing.model' state='' />
+</model>
+

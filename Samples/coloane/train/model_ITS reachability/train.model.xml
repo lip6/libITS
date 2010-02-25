@@ -1,0 +1,78 @@
+<TPN name="/data/yzhang/runtime-EclipseApplication/coloane/train/model_ITS reachability/train.model.xml">
+  <place id="3" label="far" initialMarking="1" >
+    <graphics>
+      <position x="335" y="186"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="4" label="close" initialMarking="0" >
+    <graphics>
+      <position x="257" y="121"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="5" label="on" initialMarking="0" >
+    <graphics>
+      <position x="192" y="186"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="6" label="left" initialMarking="0" >
+    <graphics>
+      <position x="257" y="250"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <transition id="7" label="App" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="333" y="124"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+  </transition>
+  <transition id="8" label="enter" public="0" eft="3" lft="5" >
+    <graphics>
+      <position x="190" y="124"/>
+      <deltaLabel deltax="-30" deltay="-20"/>
+    </graphics>
+  </transition>
+  <transition id="9" label="leave" public="0" eft="2" lft="4" >
+    <graphics>
+      <position x="190" y="253"/>
+      <deltaLabel deltax="-42" deltay="-15"/>
+    </graphics>
+  </transition>
+  <transition id="10" label="Exit" public="1" eft="0" lft="0" >
+    <graphics>
+      <position x="333" y="253"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+  </transition>
+  <arc place="5" transition="8" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="8" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="9" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="10" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="9" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="10" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="7" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="7" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+</TPN>

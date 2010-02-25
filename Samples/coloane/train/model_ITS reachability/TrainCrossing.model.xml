@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model>
+<instance id='3' name='t' type='trainGroup.model' />
+<instance id='4' name='cg' type='controlledGate.model' />
+<synchronization id='5' name='App' label='' />
+<synchronization id='6' name='Exit' label='' />
+<arc  instance='3'  synchronization='5' labels='App' />
+<arc  instance='4'  synchronization='5' labels='App' />
+<arc  instance='3'  synchronization='6' labels='Exit' />
+<arc  instance='4'  synchronization='6' labels='Exit' />
+</model>
+
