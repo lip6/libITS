@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='ITSComposite' xposition='0' yposition='0'>
+<attributes>
+</attributes>
+<nodes>
+<node nodetype='instance' id='3' xposition='211' yposition='251' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='231' yposition='291'>trans</attribute>
+<attribute name='type' xposition='231' yposition='311'>gate</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='21' xposition='413' yposition='386' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='label' xposition='433' yposition='366'>Else</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='4' xposition='408' yposition='126' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='label' xposition='428' yposition='106'>App</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='5' xposition='402' yposition='205' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='label' xposition='422' yposition='185'>Exit</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='6' xposition='401' yposition='252' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='label' xposition='421' yposition='232'>Nop</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='7' xposition='407' yposition='289' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='label' xposition='427' yposition='269'>Open</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='8' xposition='407' yposition='332' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='label' xposition='427' yposition='312'>Close</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='15' xposition='586' yposition='251' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='606' yposition='291'>referee</attribute>
+<attribute name='type' xposition='606' yposition='311'>alternator</attribute>
+</attributes>
+</node>
+</nodes>
+<arcs>
+<arc arctype='arc' id='17' startid='15' endid='5' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='494' yposition='228'>isEnv</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='16' startid='15' endid='4' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='497' yposition='188'>isEnv</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='19' startid='15' endid='7' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='496' yposition='270'>isCon</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='18' startid='15' endid='6' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='493' yposition='251'>isCon</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='20' startid='15' endid='8' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='496' yposition='291'>isCon</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='23' startid='15' endid='21' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='499' yposition='318'>isEnv</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='22' startid='3' endid='21' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='312' yposition='318'>Else</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='9' startid='3' endid='4' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='309' yposition='188'>App</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='10' startid='3' endid='5' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='306' yposition='228'>Exit</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='11' startid='3' endid='6' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='306' yposition='251'>Nop</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='12' startid='3' endid='7' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='309' yposition='270'>Open</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='13' startid='3' endid='8' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='309' yposition='291'>Close</attribute>
+</attributes>
+</arc>
+</arcs>
+<stickys>
+</stickys>
+</model>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/fr.lip6.move.coloane.its.xsd'>
+<types>
+<type name='traincrosscontroll.model' id='7000' formalism='ITSComposite' path='/train/traincrosscontroll.model'/>
+<type name='controlledGate.model' id='7001' formalism='ITSComposite' path='/train/controlledGate.model'/>
+<type name='controller_v1.model' id='7002' formalism='Time Petri Net' path='/train/controller_v1.model'/>
+<type name='gate.model' id='7003' formalism='Time Petri Net' path='/train/gate.model'/>
+<type name='train.model' id='7004' formalism='Time Petri Net' path='/train/train.model'/>
+<type name='TrainCrossing.model' id='7005' formalism='ITSComposite' path='/train/TrainCrossing.model'/>
+<type name='trainGroup.model' id='7006' formalism='Scalar Set Composite' path='/train/trainGroup.model'/>
+<type name='alternator.model' id='7007' formalism='Time Petri Net' path='/train/alternator.model'/>
+<type name='CONTROLLER.model' id='7008' formalism='ITSComposite' path='/train/CONTROLLER.model'/>
+</types>
+<concepts>
+<concept name='TrainCrossing' id='7009' effective='7005' parent='7000'/>
+<concept name='CONTROLLER' id='7010' effective='7008' parent='7000'/>
+<concept name='Controller' id='7011' effective='7002' parent='7001'/>
+<concept name='Gate' id='7012' effective='7003' parent='7001'/>
+<concept name='TrainGroup' id='7013' effective='7006' parent='7005'/>
+<concept name='ControlledGate' id='7014' effective='7001' parent='7005'/>
+<concept name='Train' id='7015' effective='7004' parent='7006'/>
+<concept name='gate' id='7016' effective='7003' parent='7008'/>
+<concept name='alternator' id='7017' effective='7007' parent='7008'/>
+</concepts>
+<parameters>
+<parameter name='$N' id='7018' parent='7002' value='1'/>
+<parameter name='$SIZE' id='7019' parent='7006' value='1'/>
+</parameters>
+</model>

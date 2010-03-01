@@ -18,11 +18,13 @@
 <node nodetype='synchronization' id='5' xposition='268' yposition='110' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='288' yposition='90'>App</attribute>
+<attribute name='label' xposition='288' yposition='130'>App</attribute>
 </attributes>
 </node>
 <node nodetype='synchronization' id='6' xposition='268' yposition='222' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='269' yposition='234'>Exit</attribute>
+<attribute name='label' xposition='288' yposition='202'>Exit</attribute>
 </attributes>
 </node>
 </nodes>
