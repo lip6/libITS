@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='Time Petri Net' xposition='0' yposition='0'>
+<attributes>
+<attribute name='authors' xposition='0' yposition='20'>yz,ytm</attribute>
+<attribute name='title' xposition='0' yposition='0'>Alternator</attribute>
+<attribute name='comments' xposition='0' yposition='40'>A referee component that forces alternation between two players.</attribute>
+</attributes>
+<nodes>
+<node nodetype='place' id='3' xposition='314' yposition='106' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='340' yposition='107'>ConTurn</attribute>
+<attribute name='marking' xposition='328' yposition='132'>1</attribute>
+</attributes>
+</node>
+<node nodetype='place' id='4' xposition='314' yposition='278' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='343' yposition='279'>EnvTurn</attribute>
+<attribute name='marking' xposition='0' yposition='0'>0</attribute>
+</attributes>
+</node>
+<node nodetype='transition' id='5' xposition='192' yposition='198' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
+<attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
+<attribute name='visibility' xposition='166' yposition='220'>public</attribute>
+<attribute name='label' xposition='144' yposition='208'>Con</attribute>
+</attributes>
+</node>
+<node nodetype='transition' id='6' xposition='418' yposition='196' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
+<attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
+<attribute name='visibility' xposition='437' yposition='226'>public</attribute>
+<attribute name='label' xposition='425' yposition='214'>Env</attribute>
+</attributes>
+</node>
+<node nodetype='transition' id='7' xposition='219' yposition='77' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
+<attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
+<attribute name='visibility' xposition='188' yposition='87'>public</attribute>
+<attribute name='label' xposition='166' yposition='75'>isCon</attribute>
+</attributes>
+</node>
+<node nodetype='transition' id='8' xposition='229' yposition='314' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
+<attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
+<attribute name='visibility' xposition='203' yposition='335'>public</attribute>
+<attribute name='label' xposition='182' yposition='323'>isEnv</attribute>
+</attributes>
+</node>
+</nodes>
+<arcs>
+<arc arctype='arc' id='9' startid='3' endid='5' color='#000000' curved='true'>
+<pi xposition='221' yposition='160'/>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='10' startid='5' endid='4' color='#000000' curved='true'>
+<pi xposition='234' yposition='262'/>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='11' startid='4' endid='6' color='#000000' curved='true'>
+<pi xposition='392' yposition='254'/>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='12' startid='6' endid='3' color='#000000' curved='true'>
+<pi xposition='393' yposition='161'/>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='test' id='13' startid='3' endid='7' color='#000000' curved='false'>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='test' id='14' startid='4' endid='8' color='#000000' curved='false'>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+</arcs>
+<stickys>
+<sticky xposition='564' yposition='49' width='238' height='129'>
+<value>Force alternation Black/White
+White moves first.
+isWhite and isBlack are predicates.</value>
+</sticky>
+</stickys>
+</model>
