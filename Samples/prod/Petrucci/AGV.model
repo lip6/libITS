@@ -1,0 +1,601 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='ITSComposite' xposition='0' yposition='0'>
+<attributes>
+</attributes>
+<nodes>
+<node nodetype='synchronization' id='70' xposition='594' yposition='499' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='590' yposition='480'>W3E</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='71' xposition='175' yposition='604' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='171' yposition='580'>W2E</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='3' xposition='161' yposition='91' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='112' yposition='113'>input1</attribute>
+<attribute name='type' xposition='179' yposition='100'>I1</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='64' xposition='675' yposition='582' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='695' yposition='562'>zone4</attribute>
+<attribute name='label' xposition='695' yposition='582'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='4' xposition='161' yposition='177' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='106' yposition='199'>input2</attribute>
+<attribute name='type' xposition='179' yposition='183'>I2</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='65' xposition='675' yposition='627' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='695' yposition='607'>zone4</attribute>
+<attribute name='label' xposition='695' yposition='627'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='5' xposition='418' yposition='92' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='379' yposition='115'>agv A</attribute>
+<attribute name='type' xposition='419' yposition='98'>AGV_A</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='6' xposition='666' yposition='92' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='728' yposition='98'>workstation 1</attribute>
+<attribute name='type' xposition='679' yposition='98'>W1</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='7' xposition='512' yposition='592' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='458' yposition='607'>agv E</attribute>
+<attribute name='type' xposition='513' yposition='599'>AGV_E</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='76' xposition='496' yposition='654' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='451' yposition='661'>control E</attribute>
+<attribute name='label' xposition='453' yposition='682'>control</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='8' xposition='314' yposition='351' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='325' yposition='384'>agv B</attribute>
+<attribute name='type' xposition='313' yposition='357'>AGV_B</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='77' xposition='546' yposition='656' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='538' yposition='661'>control E</attribute>
+<attribute name='label' xposition='536' yposition='684'>control</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='9' xposition='830' yposition='580' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='850' yposition='620'>agv F</attribute>
+<attribute name='type' xposition='831' yposition='586'>AGV_F</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='10' xposition='1014' yposition='579' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='1016' yposition='614'>output</attribute>
+<attribute name='type' xposition='1028' yposition='585'>O1</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='11' xposition='846' yposition='253' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='851' yposition='289'>agv D</attribute>
+<attribute name='type' xposition='846' yposition='259'>AGV_D</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='12' xposition='160' yposition='476' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='130' yposition='512'>workstation 2</attribute>
+<attribute name='type' xposition='173' yposition='483'>W2</attribute>
+</attributes>
+</node>
+<node nodetype='instance' id='13' xposition='660' yposition='378' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='645' yposition='408'>workstation 3</attribute>
+<attribute name='type' xposition='673' yposition='384'>W3</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='14' xposition='276' yposition='102' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='296' yposition='82'>I1A</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='17' xposition='550' yposition='103' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='545' yposition='79'>W1A</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='81' xposition='410' yposition='514' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='366' yposition='507'>zone3</attribute>
+<attribute name='label' xposition='408' yposition='518'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='21' xposition='420' yposition='41' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='369' yposition='5'>control A</attribute>
+<attribute name='label' xposition='376' yposition='23'>control</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='80' xposition='413' yposition='568' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='366' yposition='561'>zone3</attribute>
+<attribute name='label' xposition='380' yposition='545'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='20' xposition='476' yposition='43' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='496' yposition='23'>control A</attribute>
+<attribute name='label' xposition='496' yposition='43'>control</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='83' xposition='675' yposition='499' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='695' yposition='479'>zone4</attribute>
+<attribute name='label' xposition='695' yposition='559'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='82' xposition='675' yposition='539' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='695' yposition='519'>zone4</attribute>
+<attribute name='label' xposition='695' yposition='539'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='25' xposition='445' yposition='206' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='471' yposition='186'>zone1</attribute>
+<attribute name='label' xposition='475' yposition='199'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='92' xposition='527' yposition='327' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='574' yposition='320'>zone2</attribute>
+<attribute name='label' xposition='548' yposition='320'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='24' xposition='390' yposition='206' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='409' yposition='186'>zone1</attribute>
+<attribute name='label' xposition='410' yposition='206'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='95' xposition='413' yposition='430' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='433' yposition='410'>zone3</attribute>
+<attribute name='label' xposition='433' yposition='430'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='88' xposition='252' yposition='430' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='272' yposition='410'>W2B</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='91' xposition='527' yposition='266' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='574' yposition='261'>zone2</attribute>
+<attribute name='label' xposition='547' yposition='259'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='35' xposition='222' yposition='314' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='156' yposition='295'>controlB</attribute>
+<attribute name='label' xposition='161' yposition='314'>control</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='32' xposition='245' yposition='268' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='215' yposition='261'>I2B</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='38' xposition='329' yposition='206' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='349' yposition='206'>zone1</attribute>
+<attribute name='label' xposition='358' yposition='193'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='96' xposition='413' yposition='476' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='406' yposition='451'>zone3</attribute>
+<attribute name='label' xposition='415' yposition='483'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='37' xposition='278' yposition='206' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='254' yposition='186'>zone1</attribute>
+<attribute name='label' xposition='298' yposition='186'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='41' xposition='774' yposition='170' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='794' yposition='150'>W1D</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='44' xposition='955' yposition='253' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='975' yposition='233'>controlD</attribute>
+<attribute name='label' xposition='975' yposition='253'>control</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='45' xposition='955' yposition='300' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='975' yposition='280'>controlD</attribute>
+<attribute name='label' xposition='975' yposition='300'>control</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='117' xposition='219' yposition='375' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='157' yposition='357'>controlB</attribute>
+<attribute name='label' xposition='161' yposition='375'>control</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='49' xposition='527' yposition='296' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='574' yposition='289'>zone2</attribute>
+<attribute name='label' xposition='547' yposition='289'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='48' xposition='527' yposition='233' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='574' yposition='213'>zone2</attribute>
+<attribute name='label' xposition='547' yposition='213'>bad</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='55' xposition='765' yposition='499' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='785' yposition='479'>W3F</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='52' xposition='764' yposition='336' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='784' yposition='316'>W3D</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='59' xposition='919' yposition='592' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='942' yposition='595'>O1F</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='63' xposition='946' yposition='510' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='966' yposition='490'>control F</attribute>
+<attribute name='label' xposition='966' yposition='510'>control</attribute>
+</attributes>
+</node>
+<node nodetype='synchronization' id='62' xposition='946' yposition='469' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='name' xposition='966' yposition='449'>control F</attribute>
+<attribute name='label' xposition='966' yposition='469'>control</attribute>
+</attributes>
+</node>
+</nodes>
+<arcs>
+<arc arctype='arc' id='15' startid='3' endid='14' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='239' yposition='81'>t2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='16' startid='5' endid='14' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='347' yposition='97'>t2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='19' startid='6' endid='17' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='579' yposition='66'>t5</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='18' startid='5' endid='17' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='484' yposition='97'>t5</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='23' startid='5' endid='21' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='419' yposition='66'>t3</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='22' startid='5' endid='20' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='447' yposition='67'>t6</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='29' startid='5' endid='25' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='446' yposition='163'>a5</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='28' startid='5' endid='24' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='411' yposition='163'>a5</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='34' startid='8' endid='32' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='284' yposition='308'>t17</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='33' startid='4' endid='32' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='195' yposition='233'>t17</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='39' startid='8' endid='37' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='294' yposition='228'>b2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='36' startid='8' endid='35' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='265' yposition='333'>t18</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='42' startid='6' endid='41' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='724' yposition='131'>t10</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='43' startid='11' endid='41' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='848' yposition='212'>t10</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='40' startid='8' endid='38' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='330' yposition='228'>b13</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='46' startid='11' endid='44' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='912' yposition='253'>t11</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='47' startid='11' endid='45' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='912' yposition='279'>t14</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='51' startid='11' endid='49' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='631' yposition='279'>d2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='50' startid='11' endid='48' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='630' yposition='233'>d5</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='54' startid='13' endid='52' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='712' yposition='357'>t13</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='53' startid='11' endid='52' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='813' yposition='293'>t13</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='57' startid='55' endid='9' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='797' yposition='539'>t33</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='56' startid='13' endid='55' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='712' yposition='438'>t33</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='61' startid='10' endid='59' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='984' yposition='582'>t49</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='60' startid='9' endid='59' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='890' yposition='575'>t49</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='68' startid='9' endid='64' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='752' yposition='581'>f7</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='69' startid='9' endid='65' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='752' yposition='603'>f7</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='66' startid='9' endid='62' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='901' yposition='518'>t46</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='67' startid='9' endid='63' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='901' yposition='545'>t50</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='78' startid='7' endid='76' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='500' yposition='626'>t35</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='79' startid='7' endid='77' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='535' yposition='626'>t40</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='72' startid='7' endid='70' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='561' yposition='545'>t34</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='73' startid='13' endid='70' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='627' yposition='438'>t34</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='74' startid='12' endid='71' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='167' yposition='540'>t39</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='75' startid='7' endid='71' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='358' yposition='599'>t39</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='85' startid='7' endid='80' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='458' yposition='568'>e2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='84' startid='7' endid='81' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='458' yposition='538'>e2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='87' startid='7' endid='83' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='614' yposition='539'>e7</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='86' startid='7' endid='82' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='614' yposition='561'>e4</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='93' startid='8' endid='91' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='495' yposition='280'>b4</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='94' startid='8' endid='92' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='491' yposition='329'>b11</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='89' startid='8' endid='88' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='291' yposition='387'>t24</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='90' startid='12' endid='88' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='214' yposition='451'>t24</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='102' startid='8' endid='25' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='431' yposition='228'>b13</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='103' startid='8' endid='8' color='#000000' curved='false'>
+<attributes>
+</attributes>
+</arc>
+<arc arctype='arc' id='100' startid='5' endid='38' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='369' yposition='163'>a2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='101' startid='8' endid='24' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='384' yposition='228'>b2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='98' startid='8' endid='96' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='380' yposition='413'>b9</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='99' startid='5' endid='37' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='342' yposition='163'>a2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='97' startid='8' endid='95' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='380' yposition='387'>b6</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='110' startid='8' endid='80' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='380' yposition='481'>b9</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='111' startid='7' endid='95' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='458' yposition='469'>e9</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='108' startid='11' endid='92' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='630' yposition='297'>d5</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='109' startid='8' endid='81' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='379' yposition='446'>b6</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='106' startid='8' endid='49' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='491' yposition='297'>b11</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='107' startid='11' endid='91' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='631' yposition='259'>d2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='104' startid='48' endid='48' color='#000000' curved='false'>
+<attributes>
+</attributes>
+</arc>
+<arc arctype='arc' id='105' startid='8' endid='48' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='495' yposition='253'>b4</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='118' startid='8' endid='117' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='266' yposition='363'>t25</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='116' startid='9' endid='82' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='752' yposition='559'>f2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='115' startid='9' endid='83' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='752' yposition='539'>f2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='114' startid='7' endid='65' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='614' yposition='614'>e4</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='113' startid='7' endid='64' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='614' yposition='586'>e7</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='112' startid='7' endid='96' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='458' yposition='507'>e9</attribute>
+</attributes>
+</arc>
+</arcs>
+<stickys>
+</stickys>
+</model>

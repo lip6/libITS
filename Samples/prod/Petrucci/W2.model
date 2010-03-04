@@ -1,35 +1,35 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='Time Petri Net' xposition='0' yposition='0'>
 <attributes>
-<attribute name='title' xposition='0' yposition='0'>AGV</attribute>
+<attribute name='title' xposition='0' yposition='0'>AGV SYSTEM</attribute>
 <attribute name='comments' xposition='0' yposition='20'>Workstations W2</attribute>
 </attributes>
 <nodes>
-<node nodetype='place' id='47' xposition='717' yposition='436' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='place' id='3' xposition='717' yposition='436' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='737' yposition='431'>W21</attribute>
 <attribute name='marking' xposition='0' yposition='0'>0</attribute>
 </attributes>
 </node>
-<node nodetype='place' id='50' xposition='660' yposition='493' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='place' id='4' xposition='660' yposition='493' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='680' yposition='473'>W24</attribute>
 <attribute name='marking' xposition='0' yposition='0'>0</attribute>
 </attributes>
 </node>
-<node nodetype='place' id='49' xposition='716' yposition='589' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='place' id='5' xposition='716' yposition='589' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='744' yposition='588'>W23</attribute>
 <attribute name='marking' xposition='736' yposition='569'>1</attribute>
 </attributes>
 </node>
-<node nodetype='place' id='48' xposition='716' yposition='515' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='place' id='6' xposition='716' yposition='515' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='737' yposition='514'>W22</attribute>
 <attribute name='marking' xposition='0' yposition='0'>0</attribute>
 </attributes>
 </node>
-<node nodetype='transition' id='89' xposition='656' yposition='438' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='transition' id='7' xposition='656' yposition='438' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
@@ -37,7 +37,7 @@
 <attribute name='label' xposition='660' yposition='419'>t24</attribute>
 </attributes>
 </node>
-<node nodetype='transition' id='108' xposition='656' yposition='592' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='transition' id='8' xposition='656' yposition='592' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
@@ -45,7 +45,7 @@
 <attribute name='label' xposition='623' yposition='588'>t39</attribute>
 </attributes>
 </node>
-<node nodetype='transition' id='107' xposition='715' yposition='478' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='transition' id='9' xposition='715' yposition='478' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
@@ -53,7 +53,7 @@
 <attribute name='label' xposition='747' yposition='474'>t44</attribute>
 </attributes>
 </node>
-<node nodetype='transition' id='104' xposition='714' yposition='550' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='transition' id='10' xposition='714' yposition='550' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
@@ -63,42 +63,42 @@
 </node>
 </nodes>
 <arcs>
-<arc arctype='arc' id='189' startid='50' endid='89' color='#000000' curved='false'>
+<arc arctype='arc' id='17' startid='3' endid='9' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='179' startid='89' endid='47' color='#000000' curved='false'>
+<arc arctype='arc' id='16' startid='10' endid='5' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='223' startid='49' endid='108' color='#000000' curved='false'>
+<arc arctype='arc' id='18' startid='9' endid='6' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='217' startid='108' endid='50' color='#000000' curved='false'>
+<arc arctype='arc' id='11' startid='4' endid='7' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='208' startid='48' endid='104' color='#000000' curved='false'>
+<arc arctype='arc' id='12' startid='7' endid='3' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='209' startid='104' endid='49' color='#000000' curved='false'>
+<arc arctype='arc' id='13' startid='5' endid='8' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='211' startid='47' endid='107' color='#000000' curved='false'>
+<arc arctype='arc' id='14' startid='8' endid='4' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='239' startid='107' endid='48' color='#000000' curved='false'>
+<arc arctype='arc' id='15' startid='6' endid='10' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>

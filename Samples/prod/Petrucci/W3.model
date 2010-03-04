@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='Time Petri Net' xposition='0' yposition='0'>
 <attributes>
-<attribute name='title' xposition='0' yposition='0'>AGV</attribute>
+<attribute name='title' xposition='0' yposition='0'>AGV SYSTEM</attribute>
 <attribute name='comments' xposition='0' yposition='20'>Workstations W3</attribute>
 </attributes>
 <nodes>
@@ -83,63 +83,63 @@
 </node>
 </nodes>
 <arcs>
-<arc arctype='arc' id='17' startid='4' endid='10' color='#000000' curved='false'>
+<arc arctype='arc' id='17' startid='11' endid='8' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='16' startid='5' endid='10' color='#000000' curved='false'>
+<arc arctype='arc' id='16' startid='7' endid='11' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='19' startid='7' endid='11' color='#000000' curved='false'>
+<arc arctype='arc' id='19' startid='10' endid='7' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='18' startid='11' endid='8' color='#000000' curved='false'>
+<arc arctype='arc' id='18' startid='13' endid='4' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='21' startid='13' endid='4' color='#000000' curved='false'>
-<attributes>
-<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='20' startid='10' endid='7' color='#000000' curved='false'>
-<attributes>
-<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='23' startid='8' endid='12' color='#000000' curved='false'>
-<attributes>
-<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='22' startid='12' endid='3' color='#000000' curved='false'>
+<arc arctype='arc' id='21' startid='12' endid='3' color='#000000' curved='false'>
 <pi xposition='255' yposition='559'/>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='25' startid='12' endid='6' color='#000000' curved='false'>
+<arc arctype='arc' id='20' startid='8' endid='12' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='24' startid='6' endid='13' color='#000000' curved='false'>
+<arc arctype='arc' id='23' startid='6' endid='13' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='14' startid='3' endid='9' color='#000000' curved='false'>
+<arc arctype='arc' id='22' startid='12' endid='6' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='15' startid='9' endid='5' color='#000000' curved='false'>
+<arc arctype='arc' id='25' startid='9' endid='5' color='#000000' curved='false'>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='24' startid='3' endid='9' color='#000000' curved='false'>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='14' startid='4' endid='10' color='#000000' curved='false'>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='15' startid='5' endid='10' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>

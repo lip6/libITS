@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/fr.lip6.move.coloane.its.xsd'>
+<types>
+<type name='AGV_A.model' id='7000' formalism='Time Petri Net' path='/AGV/AGV_A.model'/>
+<type name='AGV_B.model' id='7001' formalism='Time Petri Net' path='/AGV/AGV_B.model'/>
+<type name='AGV_D.model' id='7002' formalism='Time Petri Net' path='/AGV/AGV_D.model'/>
+<type name='AGV_E.model' id='7003' formalism='Time Petri Net' path='/AGV/AGV_E.model'/>
+<type name='AGV_F.model' id='7004' formalism='Time Petri Net' path='/AGV/AGV_F.model'/>
+<type name='I1.model' id='7005' formalism='Time Petri Net' path='/AGV/I1.model'/>
+<type name='I2.model' id='7006' formalism='Time Petri Net' path='/AGV/I2.model'/>
+<type name='O1.model' id='7007' formalism='Time Petri Net' path='/AGV/O1.model'/>
+<type name='W1.model' id='7008' formalism='Time Petri Net' path='/AGV/W1.model'/>
+<type name='W2.model' id='7009' formalism='Time Petri Net' path='/AGV/W2.model'/>
+<type name='W3.model' id='7010' formalism='Time Petri Net' path='/AGV/W3.model'/>
+<type name='AGV.model' id='7011' formalism='ITSComposite' path='/AGV/AGV.model'/>
+</types>
+<concepts>
+<concept name='I1' id='7012' effective='7005' parent='7011'/>
+<concept name='I2' id='7013' effective='7006' parent='7011'/>
+<concept name='AGV_A' id='7014' effective='7000' parent='7011'/>
+<concept name='W1' id='7015' effective='7008' parent='7011'/>
+<concept name='AGV_E' id='7016' effective='7003' parent='7011'/>
+<concept name='AGV_B' id='7017' effective='7001' parent='7011'/>
+<concept name='AGV_F' id='7018' effective='7004' parent='7011'/>
+<concept name='AGV_D' id='7019' effective='7002' parent='7011'/>
+<concept name='O1' id='7020' effective='7007' parent='7011'/>
+<concept name='W3' id='7021' effective='7010' parent='7011'/>
+<concept name='W2' id='7022' effective='7009' parent='7011'/>
+</concepts>
+<parameters>
+</parameters>
+</model>
