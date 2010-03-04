@@ -1,0 +1,78 @@
+<TPN name="/data/yzhang/WS-CTRL/AGV/AGV.model_ITS reachability/W2.model.xml">
+  <place id="3" label="W21" initialMarking="0" >
+    <graphics>
+      <position x="717" y="436"/>
+      <deltaLabel deltax="20" deltay="-5"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="4" label="W24" initialMarking="0" >
+    <graphics>
+      <position x="660" y="493"/>
+      <deltaLabel deltax="20" deltay="-20"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="5" label="W23" initialMarking="1" >
+    <graphics>
+      <position x="716" y="589"/>
+      <deltaLabel deltax="28" deltay="-1"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="6" label="W22" initialMarking="0" >
+    <graphics>
+      <position x="716" y="515"/>
+      <deltaLabel deltax="21" deltay="-1"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <transition id="7" label="t24" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="656" y="438"/>
+      <deltaLabel deltax="4" deltay="-19"/>
+    </graphics>
+  </transition>
+  <transition id="8" label="t39" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="656" y="592"/>
+      <deltaLabel deltax="-33" deltay="-4"/>
+    </graphics>
+  </transition>
+  <transition id="9" label="t44" public="0" eft="0" lft="infini" >
+    <graphics>
+      <position x="715" y="478"/>
+      <deltaLabel deltax="32" deltay="-4"/>
+    </graphics>
+  </transition>
+  <transition id="10" label="t45" public="0" eft="0" lft="infini" >
+    <graphics>
+      <position x="714" y="550"/>
+      <deltaLabel deltax="21" deltay="-4"/>
+    </graphics>
+  </transition>
+  <arc place="4" transition="8" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="8" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="10" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="9" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="10" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="9" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="7" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="7" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+</TPN>

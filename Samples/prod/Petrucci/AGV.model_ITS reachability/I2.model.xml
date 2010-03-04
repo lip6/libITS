@@ -1,0 +1,40 @@
+<TPN name="/data/yzhang/WS-CTRL/AGV/AGV.model_ITS reachability/I2.model.xml">
+  <place id="3" label="I3" initialMarking="0" >
+    <graphics>
+      <position x="288" y="134"/>
+      <deltaLabel deltax="-21" deltay="-7"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="4" label="I4" initialMarking="1" >
+    <graphics>
+      <position x="288" y="166"/>
+      <deltaLabel deltax="0" deltay="15"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <transition id="5" label="t17" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="313" y="153"/>
+      <deltaLabel deltax="19" deltay="12"/>
+    </graphics>
+  </transition>
+  <transition id="6" label="t16" public="0" eft="0" lft="infini" >
+    <graphics>
+      <position x="263" y="153"/>
+      <deltaLabel deltax="-33" deltay="-4"/>
+    </graphics>
+  </transition>
+  <arc place="4" transition="5" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="5" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="6" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="6" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+</TPN>
