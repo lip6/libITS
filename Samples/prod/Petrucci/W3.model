@@ -46,7 +46,7 @@
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
 <attribute name='visibility' xposition='333' yposition='293'>public</attribute>
-<attribute name='label' xposition='310' yposition='270'>t13</attribute>
+<attribute name='label' xposition='310' yposition='270'>take1</attribute>
 </attributes>
 </node>
 <node nodetype='transition' id='10' xposition='263' yposition='486' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
@@ -70,7 +70,7 @@
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
 <attribute name='visibility' xposition='333' yposition='593'>public</attribute>
-<attribute name='label' xposition='310' yposition='625'>t33</attribute>
+<attribute name='label' xposition='333' yposition='613'>produce</attribute>
 </attributes>
 </node>
 <node nodetype='transition' id='13' xposition='313' yposition='452' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
@@ -78,68 +78,68 @@
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
 <attribute name='visibility' xposition='333' yposition='452'>public</attribute>
-<attribute name='label' xposition='339' yposition='429'>t34</attribute>
+<attribute name='label' xposition='339' yposition='429'>take2</attribute>
 </attributes>
 </node>
 </nodes>
 <arcs>
-<arc arctype='arc' id='17' startid='11' endid='8' color='#000000' curved='false'>
+<arc arctype='arc' id='17' startid='13' endid='4' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='16' startid='7' endid='11' color='#000000' curved='false'>
+<arc arctype='arc' id='16' startid='10' endid='7' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='19' startid='10' endid='7' color='#000000' curved='false'>
+<arc arctype='arc' id='19' startid='8' endid='12' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='18' startid='13' endid='4' color='#000000' curved='false'>
-<attributes>
-<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='21' startid='12' endid='3' color='#000000' curved='false'>
+<arc arctype='arc' id='18' startid='12' endid='3' color='#000000' curved='false'>
 <pi xposition='255' yposition='559'/>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='20' startid='8' endid='12' color='#000000' curved='false'>
+<arc arctype='arc' id='21' startid='12' endid='6' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='23' startid='6' endid='13' color='#000000' curved='false'>
+<arc arctype='arc' id='20' startid='6' endid='13' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='22' startid='12' endid='6' color='#000000' curved='false'>
+<arc arctype='arc' id='23' startid='3' endid='9' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='25' startid='9' endid='5' color='#000000' curved='false'>
+<arc arctype='arc' id='22' startid='9' endid='5' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='24' startid='3' endid='9' color='#000000' curved='false'>
+<arc arctype='arc' id='25' startid='5' endid='10' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='14' startid='4' endid='10' color='#000000' curved='false'>
+<arc arctype='arc' id='24' startid='4' endid='10' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='15' startid='5' endid='10' color='#000000' curved='false'>
+<arc arctype='arc' id='14' startid='11' endid='8' color='#000000' curved='false'>
+<attributes>
+<attribute name='valuation' xposition='0' yposition='0'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='15' startid='7' endid='11' color='#000000' curved='false'>
 <attributes>
 <attribute name='valuation' xposition='0' yposition='0'>1</attribute>
 </attributes>
