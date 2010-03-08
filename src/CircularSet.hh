@@ -2,11 +2,16 @@
 #define __CIRCULAR_SET__HH__
 
 #include "ScalarSet.hh"
+#include "CircularSync.hh"
+
+// for Visibility, consider refactoring...
+#include "PTransition.hh"
+
 
 namespace its {
 
 
-  class CircularSet : public Scalarset {
+  class CircularSet : public ScalarSet {
     
   public :
 
