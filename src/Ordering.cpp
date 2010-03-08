@@ -61,8 +61,10 @@ Label VarOrder::getLabel (int index) const {
 bool VarOrder::updateOrder (const labels_t & vars) {
 	// check variable existence in current vars
 	for (labels_it it = vars.begin(); it != vars.end() ; ++it ) {
-		if ( getIndex(*it) == -1)
-			return false;
+	  if ( getIndex(*it) == -1) {
+	    std::cerr << "Unknown variable :" << *it << " when attempting to set a new variable order." << std::endl;
+	    return false;
+	  }
 	}
 	setFromCollection(vars);
 	return true;
