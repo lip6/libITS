@@ -4,9 +4,6 @@
 #include "ScalarSet.hh"
 #include "CircularSync.hh"
 
-// for Visibility, consider refactoring...
-#include "PTransition.hh"
-
 
 namespace its {
 
@@ -30,13 +27,13 @@ namespace its {
     
     /** Add a circular synchronization to this composite.
      * Specify name (should be unique among circular synchronizations) */
-    bool addSynchronization (Label sname, Visibility vis, bool isAND=true);
+    bool addSynchronization (Label sname, Label slabel);
     
     enum InstanceID { CURRENT, NEXT };
-    /** A synchronization part : <instanceName,transitionLabel>. 
+    /** A synchronization part : <instanceName,transitionLabels>. 
      *  Instance name may be CUR or NEXT the instances targeted in the transition
      */
-    bool addSyncPart (Label sname, InstanceID subnetname, Label tname);
+    bool addSyncPart (Label sname, InstanceID subnetname, const labels_t & tname);
 
     std::ostream & print (std::ostream & os) const ;
   };
