@@ -56,12 +56,26 @@ public:
   bool hasCapacity() const {return capacity!=0;}
 };
 
+class Clock {
+ public:
+  int eft;
+  // -1 means infinity
+  int lft;
+
+  Clock(int eft=0, int lft=-1): eft(eft), lft(lft) {};
+    bool isConstraint() const {
+      return eft != 0 || lft != -1;
+    }
+};
+
 class Transition:public Node{          
 public:
   string name;
+  Clock clock;
   Transition(const string &t):name(t){};
   ~Transition(){};
 };
+
 
 class RdPE: public RdPMonteur {
 public:
@@ -96,6 +110,8 @@ public:
   bool addQueue(const string &place,int capacity=0,int mod=0);
   bool addLossQueue(const string &place,int capacity=0,int mod=0);
   bool addTrans(const string &transition);
+  bool setEft(const string &transition,int eft);
+  bool setLft(const string &transition,int lft);
   bool addPre(const string &place,const string &transition,int valuation=1);
   bool addPost(const string &place,const string &transition,int valuation=1);  
   bool addPreQueue(const string &place,const string &transition,int valuation=1);
@@ -108,6 +124,7 @@ public:
   /* Visualisation */
   int nbPlace() const {return places.size();};
   int nbTransition() const {return transitions.size();};
+  bool isTimePetriNet () const ;
 };
 
 ostream& operator<<(ostream &,const RdPE &);
