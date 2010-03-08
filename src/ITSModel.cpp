@@ -193,9 +193,11 @@ void ITSModel::print (std::ostream & os) const  {
 	vLabel type;
 	is >> type;
 	labels_t order;
+	// get rid of trailing newline (chomp !)
+	getline(is,line);
 	while (!is.eof()) {
 	  vLabel variable;
-	  is >> variable;
+	  getline(is,variable);
 	  if (variable == "#END")
 	    break;
 	  order.push_back(variable);
@@ -210,6 +212,7 @@ void ITSModel::print (std::ostream & os) const  {
   bool ITSModel::updateVarOrder (Label type, const labels_t & order) {
     pType ptype = findType (type);
     if (ptype == NULL) {
+      std::cerr << "No such type \"" << type << "\" found in updatevarOrder. "<< std::endl;
       return false;
     } else {
       return ptype->setVarOrder(order);
