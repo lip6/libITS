@@ -65,7 +65,7 @@ bool ScalarSet::addDelegator (Label sname, Label slabel, bool isALL){
   }
 
 std::ostream & ScalarSet::print (std::ostream & os) const {
-  os << "ScalarSet [" << comp_.getType()->getName() << "] " <<  getName() << " {\n\n";
+  os << "ScalarSet " << comp_.getType()->getName() << "[" << size_ << "] " <<  getName() << " {\n\n";
   
   os << "    // instance name \n" ;
   os << "    instanceName " << comp_.getName() << ";\n";
