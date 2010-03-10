@@ -1,17 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd'>
 <types>
-<type name='I1.model' formalism='Time Petri Net' format='Romeo' path='./I1.model.xml' />
-<type name='I2.model' formalism='Time Petri Net' format='Romeo' path='./I2.model.xml' />
-<type name='AGV_A.model' formalism='Time Petri Net' format='Romeo' path='./AGV_A.model.xml' />
-<type name='W1.model' formalism='Time Petri Net' format='Romeo' path='./W1.model.xml' />
+<type name='IO_generic.model' formalism='Time Petri Net' format='Romeo' path='./IO_generic.model.xml' />
+<type name='AGV_A' formalism='Time Petri Net' format='Romeo' path='./AGV_A.xml' />
+<type name='Work_generic.model' formalism='Time Petri Net' format='Romeo' path='./Work_generic.model.xml' />
 <type name='AGV_E.model' formalism='Time Petri Net' format='Romeo' path='./AGV_E.model.xml' />
 <type name='AGV_B.model' formalism='Time Petri Net' format='Romeo' path='./AGV_B.model.xml' />
 <type name='AGV_F.model' formalism='Time Petri Net' format='Romeo' path='./AGV_F.model.xml' />
-<type name='AGV_D.model' formalism='Time Petri Net' format='Romeo' path='./AGV_D.model.xml' />
-<type name='O1.model' formalism='Time Petri Net' format='Romeo' path='./O1.model.xml' />
+<type name='AGV_D' formalism='Time Petri Net' format='Romeo' path='./AGV_D.xml' />
 <type name='W3.model' formalism='Time Petri Net' format='Romeo' path='./W3.model.xml' />
-<type name='W2.model' formalism='Time Petri Net' format='Romeo' path='./W2.model.xml' />
 <type name='AGV.model' formalism='ITSComposite' format='Composite' path='./AGV.model.xml' />
 </types>
 <main type='AGV.model' state='' />

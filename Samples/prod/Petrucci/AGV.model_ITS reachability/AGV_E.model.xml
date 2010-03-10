@@ -1,4 +1,4 @@
-<TPN name="/data/yzhang/WS-CTRL/AGV/AGV.model_ITS reachability/AGV_E.model.xml">
+<TPN name="/data/yzhang/WS-CTRL/AGV2/AGV.model_ITS reachability/AGV_E.model.xml">
   <place id="3" label="E2" initialMarking="0" >
     <graphics>
       <position x="471" y="461"/>
@@ -41,9 +41,9 @@
     </graphics>
     <scheduling gamma="0" omega="0"/>
   </place>
-  <transition id="9" label="e2" public="1" eft="0" lft="infini" >
+  <transition id="9" label="inBuffer1" public="1" eft="0" lft="infini" >
     <graphics>
-      <position x="394" y="532"/>
+      <position x="469" y="342"/>
       <deltaLabel deltax="20" deltay="0"/>
     </graphics>
   </transition>
@@ -68,9 +68,9 @@
     </graphics>
     <scheduling gamma="0" omega="0"/>
   </place>
-  <transition id="13" label="e9" public="1" eft="0" lft="infini" >
+  <transition id="13" label="inBuffer1" public="1" eft="0" lft="infini" >
     <graphics>
-      <position x="523" y="386"/>
+      <position x="569" y="342"/>
       <deltaLabel deltax="20" deltay="0"/>
     </graphics>
   </transition>
@@ -81,10 +81,10 @@
     </graphics>
     <scheduling gamma="0" omega="0"/>
   </place>
-  <transition id="15" label="t35" public="1" eft="0" lft="infini" >
+  <transition id="15" label="control" public="1" eft="0" lft="infini" >
     <graphics>
       <position x="414" y="464"/>
-      <deltaLabel deltax="-4" deltay="16"/>
+      <deltaLabel deltax="20" deltay="-20"/>
     </graphics>
   </transition>
   <transition id="17" label="t36" public="0" eft="0" lft="infini" >
@@ -93,28 +93,28 @@
       <deltaLabel deltax="19" deltay="-18"/>
     </graphics>
   </transition>
-  <transition id="16" label="e4" public="1" eft="0" lft="infini" >
+  <transition id="16" label="inBuffer2" public="1" eft="0" lft="infini" >
     <graphics>
       <position x="470" y="675"/>
       <deltaLabel deltax="20" deltay="0"/>
     </graphics>
   </transition>
-  <transition id="19" label="t34" public="1" eft="0" lft="infini" >
+  <transition id="19" label="input" public="1" eft="0" lft="infini" >
     <graphics>
       <position x="313" y="452"/>
-      <deltaLabel deltax="-4" deltay="-23"/>
+      <deltaLabel deltax="20" deltay="-20"/>
     </graphics>
   </transition>
-  <transition id="18" label="e7" public="1" eft="0" lft="infini" >
+  <transition id="18" label="inBuffer2" public="1" eft="0" lft="infini" >
     <graphics>
-      <position x="620" y="512"/>
+      <position x="344" y="646"/>
       <deltaLabel deltax="20" deltay="0"/>
     </graphics>
   </transition>
-  <transition id="21" label="t40" public="1" eft="0" lft="infini" >
+  <transition id="21" label="control" public="1" eft="0" lft="infini" >
     <graphics>
       <position x="586" y="576"/>
-      <deltaLabel deltax="-4" deltay="-17"/>
+      <deltaLabel deltax="20" deltay="-20"/>
     </graphics>
   </transition>
   <transition id="20" label="t41" public="0" eft="0" lft="infini" >
@@ -129,10 +129,10 @@
       <deltaLabel deltax="-3" deltay="13"/>
     </graphics>
   </transition>
-  <transition id="22" label="t39" public="1" eft="0" lft="infini" >
+  <transition id="22" label="output" public="1" eft="0" lft="infini" >
     <graphics>
       <position x="656" y="592"/>
-      <deltaLabel deltax="20" deltay="-20"/>
+      <deltaLabel deltax="20" deltay="20"/>
     </graphics>
   </transition>
   <transition id="25" label="t37" public="0" eft="0" lft="infini" >
@@ -153,13 +153,52 @@
       <deltaLabel deltax="25" deltay="-3"/>
     </graphics>
   </transition>
+  <arc place="7" transition="18" type="read" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="15" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="15" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="17" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="11" transition="19" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="17" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="10" transition="22" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="7" transition="21" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="21" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="10" transition="23" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="8" transition="23" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="6" transition="22" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
   <arc place="14" transition="26" type="TransitionPlace" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
-  <arc place="12" transition="26" type="PlaceTransition" weight="1" >
+  <arc place="11" transition="24" type="TransitionPlace" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
-  <arc place="11" transition="24" type="TransitionPlace" weight="1" >
+  <arc place="14" transition="24" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="8" transition="25" type="TransitionPlace" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
   <arc place="4" transition="25" type="PlaceTransition" weight="1" >
@@ -168,61 +207,22 @@
   <arc place="3" transition="9" type="read" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
-  <arc place="14" transition="13" type="read" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="7" transition="20" type="PlaceTransition" weight="1" >
+  <arc place="12" transition="26" type="PlaceTransition" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
   <arc place="12" transition="20" type="TransitionPlace" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
+  <arc place="14" transition="13" type="read" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
   <arc place="5" transition="19" type="TransitionPlace" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="3" transition="17" type="PlaceTransition" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="7" transition="18" type="read" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
   <arc place="8" transition="16" type="read" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
-  <arc place="5" transition="15" type="PlaceTransition" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="7" transition="21" type="TransitionPlace" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="11" transition="19" type="PlaceTransition" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="3" transition="15" type="TransitionPlace" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="10" transition="22" type="PlaceTransition" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="6" transition="22" type="TransitionPlace" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="6" transition="21" type="PlaceTransition" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="4" transition="17" type="TransitionPlace" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="8" transition="23" type="PlaceTransition" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="8" transition="25" type="TransitionPlace" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="14" transition="24" type="PlaceTransition" weight="1" >
-    <nail xnail="0" ynail="0"/>
-  </arc>
-  <arc place="10" transition="23" type="TransitionPlace" weight="1" >
+  <arc place="7" transition="20" type="PlaceTransition" weight="1" >
     <nail xnail="0" ynail="0"/>
   </arc>
 </TPN>

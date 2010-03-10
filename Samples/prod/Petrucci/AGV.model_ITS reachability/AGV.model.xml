@@ -1,115 +1,70 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <model>
-<synchronization id='3' name='W3E' label='' />
-<synchronization id='4' name='W2E' label='' />
-<instance id='5' name='input1' type='I1.model' />
-<synchronization id='6' name='zone4' label='bad' />
-<instance id='7' name='input2' type='I2.model' />
-<synchronization id='8' name='zone4' label='bad' />
-<instance id='9' name='agv A' type='AGV_A.model' />
-<instance id='10' name='workstation 1' type='W1.model' />
-<instance id='11' name='agv E' type='AGV_E.model' />
-<synchronization id='12' name='control E' label='control' />
-<instance id='13' name='agv B' type='AGV_B.model' />
-<synchronization id='14' name='control E' label='control' />
-<instance id='15' name='agv F' type='AGV_F.model' />
-<instance id='17' name='agv D' type='AGV_D.model' />
-<instance id='16' name='output' type='O1.model' />
-<instance id='19' name='workstation 3' type='W3.model' />
-<instance id='18' name='workstation 2' type='W2.model' />
-<synchronization id='21' name='W1A' label='' />
+<synchronization id='3' name='NOP' label='control' />
+<synchronization id='4' name='W3E' label='' />
+<synchronization id='5' name='W2E' label='' />
+<instance id='6' name='input1' type='IO_generic.model' />
+<instance id='7' name='input2' type='IO_generic.model' />
+<instance id='8' name='agv A' type='AGV_A' />
+<instance id='9' name='workstation 1' type='Work_generic.model' />
+<instance id='10' name='agv E' type='AGV_E.model' />
+<synchronization id='11' name='control E' label='control' />
+<instance id='12' name='agv B' type='AGV_B.model' />
+<instance id='13' name='agv F' type='AGV_F.model' />
+<instance id='14' name='agv D' type='AGV_D' />
+<instance id='15' name='output' type='IO_generic.model' />
+<synchronization id='17' name='W1A' label='' />
+<instance id='16' name='workstation 3' type='W3.model' />
+<synchronization id='19' name='control A' label='control' />
+<instance id='18' name='workstation 2' type='Work_generic.model' />
+<synchronization id='21' name='zone4' label='bad' />
 <synchronization id='20' name='I1A' label='' />
-<synchronization id='23' name='control A' label='control' />
+<synchronization id='23' name='I2B' label='' />
 <synchronization id='22' name='zone3' label='bad' />
-<synchronization id='25' name='control A' label='control' />
-<synchronization id='24' name='zone3' label='bad' />
-<synchronization id='27' name='zone4' label='bad' />
-<synchronization id='26' name='zone4' label='bad' />
-<synchronization id='29' name='zone2' label='bad' />
-<synchronization id='28' name='zone1' label='bad' />
-<synchronization id='31' name='zone3' label='bad' />
-<synchronization id='30' name='zone1' label='bad' />
-<synchronization id='34' name='controlB' label='control' />
-<synchronization id='35' name='I2B' label='' />
-<synchronization id='32' name='W2B' label='' />
-<synchronization id='33' name='zone2' label='bad' />
-<synchronization id='38' name='zone1' label='bad' />
-<synchronization id='39' name='W1D' label='' />
-<synchronization id='36' name='zone1' label='bad' />
-<synchronization id='37' name='zone3' label='bad' />
-<synchronization id='42' name='controlB' label='control' />
-<synchronization id='43' name='zone2' label='bad' />
-<synchronization id='40' name='controlD' label='control' />
-<synchronization id='41' name='controlD' label='control' />
-<synchronization id='46' name='W3D' label='' />
-<synchronization id='47' name='O1F' label='' />
-<synchronization id='44' name='zone2' label='bad' />
-<synchronization id='45' name='W3F' label='' />
-<synchronization id='49' name='control F' label='control' />
-<synchronization id='48' name='control F' label='control' />
-<arc  instance='9'  synchronization='20' labels='t2' />
-<arc  instance='5'  synchronization='20' labels='t2' />
-<arc  instance='9'  synchronization='25' labels='t6' />
-<arc  instance='9'  synchronization='23' labels='t3' />
-<arc  instance='9'  synchronization='21' labels='t5' />
-<arc  instance='10'  synchronization='21' labels='t5' />
-<arc  instance='7'  synchronization='35' labels='t17' />
-<arc  instance='13'  synchronization='35' labels='t17' />
-<arc  instance='9'  synchronization='30' labels='a5' />
-<arc  instance='9'  synchronization='28' labels='a5' />
-<arc  instance='17'  synchronization='39' labels='t10' />
-<arc  instance='10'  synchronization='39' labels='t10' />
-<arc  instance='13'  synchronization='34' labels='t18' />
-<arc  instance='13'  synchronization='38' labels='b2' />
-<arc  instance='17'  synchronization='44' labels='d5' />
-<arc  instance='19'  synchronization='46' labels='t13' />
-<arc  instance='17'  synchronization='46' labels='t13' />
-<arc  instance='15'  synchronization='45' labels='t33' />
-<arc  instance='13'  synchronization='36' labels='b13' />
-<arc  instance='17'  synchronization='40' labels='t11' />
-<arc  instance='17'  synchronization='41' labels='t14' />
-<arc  instance='17'  synchronization='43' labels='d2' />
-<arc  instance='15'  synchronization='8' labels='f7' />
-<arc  instance='15'  synchronization='49' labels='t46' />
-<arc  instance='15'  synchronization='48' labels='t50' />
-<arc  instance='11'  synchronization='12' labels='t35' />
-<arc  instance='19'  synchronization='45' labels='t33' />
-<arc  instance='16'  synchronization='47' labels='t49' />
-<arc  instance='15'  synchronization='47' labels='t49' />
-<arc  instance='15'  synchronization='6' labels='f7' />
-<arc  instance='11'  synchronization='24' labels='e2' />
-<arc  instance='11'  synchronization='4' labels='t39' />
-<arc  instance='11'  synchronization='26' labels='e7' />
-<arc  instance='11'  synchronization='22' labels='e2' />
-<arc  instance='11'  synchronization='3' labels='t34' />
-<arc  instance='11'  synchronization='14' labels='t40' />
-<arc  instance='18'  synchronization='4' labels='t39' />
-<arc  instance='19'  synchronization='3' labels='t34' />
-<arc  instance='13'  synchronization='28' labels='b13' />
-<arc  instance='18'  synchronization='32' labels='t24' />
-<arc  instance='9'  synchronization='36' labels='a2' />
-<arc  instance='13'  synchronization='13' labels='' />
-<arc  instance='13'  synchronization='33' labels='b4' />
-<arc  instance='11'  synchronization='27' labels='e4' />
-<arc  instance='13'  synchronization='32' labels='t24' />
-<arc  instance='13'  synchronization='29' labels='b11' />
-<arc  instance='17'  synchronization='29' labels='d5' />
-<arc  instance='13'  synchronization='22' labels='b6' />
-<arc  instance='13'  synchronization='24' labels='b9' />
-<arc  instance='11'  synchronization='31' labels='e9' />
-<arc  instance='9'  synchronization='38' labels='a2' />
-<arc  instance='13'  synchronization='31' labels='b6' />
-<arc  instance='13'  synchronization='30' labels='b2' />
-<arc  instance='13'  synchronization='37' labels='b9' />
-<arc  instance='15'  synchronization='26' labels='f2' />
-<arc  instance='11'  synchronization='8' labels='e4' />
-<arc  instance='13'  synchronization='42' labels='t25' />
-<arc  instance='15'  synchronization='27' labels='f2' />
-<arc  instance='44'  synchronization='44' labels='' />
-<arc  instance='13'  synchronization='44' labels='b4' />
-<arc  instance='13'  synchronization='43' labels='b11' />
-<arc  instance='17'  synchronization='33' labels='d2' />
-<arc  instance='11'  synchronization='37' labels='e9' />
-<arc  instance='11'  synchronization='6' labels='e7' />
+<synchronization id='25' name='zone1' label='bad' />
+<synchronization id='24' name='controlB' label='control' />
+<synchronization id='27' name='controlD' label='control' />
+<synchronization id='26' name='W2B' label='' />
+<synchronization id='29' name='O1F' label='' />
+<synchronization id='28' name='W1D' label='' />
+<synchronization id='31' name='W3F' label='' />
+<synchronization id='30' name='W3D' label='' />
+<synchronization id='32' name='zone2' label='bad' />
+<synchronization id='33' name='control F' label='control' />
+<arc  instance='18'  synchronization='5' labels='produce' />
+<arc  instance='10'  synchronization='22' labels='inBuffer1' />
+<arc  instance='12'  synchronization='12' labels='' />
+<arc  instance='18'  synchronization='26' labels='take' />
+<arc  instance='16'  synchronization='4' labels='take2' />
+<arc  instance='32'  synchronization='32' labels='' />
+<arc  instance='12'  synchronization='32' labels='inBuffer2' />
+<arc  instance='8'  synchronization='25' labels='inBuffer' />
+<arc  instance='13'  synchronization='21' labels='inBuffer' />
+<arc  instance='12'  synchronization='26' labels='output' />
+<arc  instance='12'  synchronization='22' labels='inBuffer3' />
+<arc  instance='9'  synchronization='17' labels='take' />
+<arc  instance='7'  synchronization='23' labels='io' />
+<arc  instance='8'  synchronization='20' labels='input' />
+<arc  instance='6'  synchronization='20' labels='io' />
+<arc  instance='9'  synchronization='28' labels='produce' />
+<arc  instance='12'  synchronization='24' labels='control' />
+<arc  instance='8'  synchronization='19' labels='control' />
+<arc  instance='8'  synchronization='17' labels='output' />
+<arc  instance='14'  synchronization='30' labels='input' />
+<arc  instance='16'  synchronization='30' labels='take1' />
+<arc  instance='14'  synchronization='28' labels='output' />
+<arc  instance='12'  synchronization='23' labels='input' />
+<arc  instance='14'  synchronization='27' labels='control' />
+<arc  instance='13'  synchronization='33' labels='control' />
+<arc  instance='14'  synchronization='32' labels='inBuffer' />
+<arc  instance='12'  synchronization='25' labels='inBuffer1' />
+<arc  instance='16'  synchronization='31' labels='produce' />
+<arc  instance='15'  synchronization='29' labels='io' />
+<arc  instance='13'  synchronization='29' labels='output' />
+<arc  instance='13'  synchronization='31' labels='input' />
+<arc  instance='10'  synchronization='5' labels='output' />
+<arc  instance='10'  synchronization='21' labels='inBuffer2' />
+<arc  instance='10'  synchronization='4' labels='input' />
+<arc  instance='10'  synchronization='11' labels='control' />
 </model>
 

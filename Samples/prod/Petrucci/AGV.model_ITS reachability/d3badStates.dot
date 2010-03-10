@@ -1,0 +1,14 @@
+digraph  "d3badStates" {
+    size="20,20";
+     P_3W31_2  [label="P_3W31"];
+     P_3W31_2->one    [label="1"];
+     P_3W31_3  [label="P_3W31"];
+     P_3W31_3->one    [label="0"];
+     Mod_0  [shape=invhouse];
+     Mod_0  [label="Mod_0"];
+     Mod_0->P_3W31_2    [label="21"];
+     Mod_1  [shape=invhouse];
+     Mod_1  [label="Mod_1"];
+     Mod_1->P_3W31_3    [label="32"];
+}
+
