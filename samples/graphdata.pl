@@ -1,11 +1,22 @@
 #!/usr/bin/perl -w
 use Getopt::Std;
+use strict;
 
 if ($#ARGV <= 3)
 {
-    print STDERR "syntax: graphdata.pl meth1 meth2 column files...\n";
+    print STDERR "syntax: graphdata.pl [-v] meth1 meth2 column files...\n";
+    print STDERR "\n  -v distinguish verdicts instead of models";
     exit(2);
 }
+
+my $opt_v = 0;
+if ($ARGV[0] eq '-v')
+{
+    $opt_v = 1;
+    shift @ARGV;
+}
+
+my %verdict = ( 0 => "empty", 1 => "non-empty", 2 => "unknown" );
 
 my $opt_x = shift @ARGV;
 my $opt_y = shift @ARGV;
@@ -28,7 +39,6 @@ my %result;
 while (<>)
 {
     next if ($_ =~ /^\w*$/) or ($_ eq $head);
-
 
     chomp;
 
@@ -60,9 +70,22 @@ foreach my $key (keys %result)
 	if (! defined $val2) {
 	    $val2 = 2* $max;
 	}
-	(my $model = $key) =~ s,.*?/?([^/]*).net.*,$1,;
-	$model =~ s/\dnm/-nm/;
-	$model =~ s/\d+//;
+
+	my $model;
+
+	if ($opt_v)
+	{
+	    my $v1 = int $t1->[3];
+	    my $v2 = int $t2->[3];
+	    $v1 = $v2 if ($v1 > $v2);
+	    $model = $verdict{$v1};
+	}
+	else
+	{
+	    ($model = $key) =~ s,.*?/?([^/]*).net.*,$1,;
+	    $model =~ s/\dnm/-nm/;
+	    $model =~ s/\d+//;
+	}
 	print "$model $val1 $val2\n";
     }
 }

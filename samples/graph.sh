@@ -2,7 +2,7 @@
 
 
 if [ $# -le 4 ]; then
-    echo "syntax: graph.sh output.ps meth1 meth2 column files..." >&2
+    echo "syntax: graph.sh output.ps [-v] meth1 meth2 column files..." >&2
     exit 2;
 fi
 
@@ -11,7 +11,7 @@ shift
 
 echo "Gathering data..."
 
-./graphdata.pl "$@" >$output.data
+./graphdata.pl $opt "$@" >$output.data
 
 models=`cut -f 1 -d ' ' $output.data | sort -u | tr '\n' ' '`
 
@@ -35,7 +35,7 @@ plot \\
 EOF
 
 
-echo "Models: $models"
+echo "Plots: $models"
 for i in $models; do
   sed -n "s/^$i \(.*\)$/\\1/p" < $output.data > $output.$i.data
   echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype 1  title \"$i\", \\" >> $output.gnuplot
