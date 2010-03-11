@@ -69,8 +69,14 @@ namespace sogits {
     case PLAIN_SOG :
       prod = new spot::tgba_product(a_, systgba_);
       break;
-    case SLOG :
-      prod = new slog::slog_tgba(a_, *sogModel_);
+    case SLOG_NOFS :
+      prod = new slog::slog_tgba(a_, *sogModel_,NOFS);
+      break;
+    case SLOG_FST :
+      prod = new slog::slog_tgba(a_, *sogModel_,FST);
+      break;
+    case SLOG_FSA :
+      prod = new slog::slog_tgba(a_, *sogModel_,FSA);
       break;
     case DSOG :
       prod = new dsog::dsog_tgba(a_, *sogModel_);
@@ -79,6 +85,7 @@ namespace sogits {
       // (case treated for compiler warning) should not happen, tested at top of function
       return;
     }
+    
 
     if (display_)
       {

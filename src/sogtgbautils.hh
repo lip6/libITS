@@ -50,9 +50,20 @@ namespace sogits {
   enum sog_product_type {
     FSLTL, // < The fully symbolic approach: encode tgba as an ITS.
     PLAIN_SOG, // < The basic algorithm with static parameters.
-    SLOG, // < The (Symbolic) Local Obs Graph algorithm
+    SLOG_NOFS, // < The (Symbolic) Local Obs Graph algorithm
+    SLOG_FST, // < The (Symbolic) Local Obs Graph algorithm with Terminal states FSLTL test.
+    SLOG_FSA, // < The (Symbolic) Local Obs Graph algorithm with Accepting states FSLTL test.
     DSOG // < The Dynamic Symbolic Obs Graph algorithm
   } ;
+
+
+
+  /// An enum to capture the strategies related to activation of Fully-Symbolic emptiness check.
+  enum FSTYPE {
+    NOFS, // < Do not use FS emptiness check at all
+    FST, // < Use FS emptiness check, but only for terminal states (no successor except self, a priori => all acceptance conditions represented)
+    FSA // < Use FS emptiness check for all states potentially accepting (self loop acceptance conds = full acceptance cond set)
+  };
 
 
 
