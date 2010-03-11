@@ -1,6 +1,6 @@
-// Copyright (C) 2004, 2009  Laboratoire d'Informatique de Paris 6 (LIP6),
-// dï¿½artement Systï¿½es Rï¿½artis Coopï¿½atifs (SRC), Universitï¿½Pierre
-// et Marie Curie.
+// Copyright (C) 2004, 2009, 2010 Laboratoire d'Informatique de Paris
+// 6 (LIP6), département Systèmes Répartis Coopératifs (SRC),
+// Université Pierre et Marie Curie.
 //
 // This file is part of the Spot tutorial. Spot is a model checking
 // library.
@@ -57,8 +57,9 @@ void syntax(const char* prog) {
             << std::endl
             << "  -C              display the number of states and edges of the SOG"
             << std::endl
-            << "  -c              check the formula"
-            << std::endl
+            << "  -c              check the formula" << std::endl
+	    << "  -dR3            disable the SCC reduction" << std::endl
+	    << "  -R3f            enable full SCC reduction" << std::endl
             << "  -e              display a sequence (if any) of the net "
             << "satisfying the formula (implies -c)" << std::endl
             << "  -fformula       specify the formula" << std::endl
@@ -109,6 +110,7 @@ int main(int argc, const char *argv[]) {
   bool print_formula_tgba = false;
 
   bool scc_optim = true;
+  bool scc_optim_full = false;
 
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
@@ -147,6 +149,10 @@ int main(int argc, const char *argv[]) {
     }
     else if (!strncmp(argv[pn_index], "-dR3", 4)) {
       scc_optim = false;
+    }
+    else if (!strncmp(argv[pn_index], "-R3f", 4)) {
+      scc_optim = true;
+      scc_optim_full = true;
     }
     else if (!strncmp(argv[pn_index], "-F", 2)) {
       std::ifstream fin(argv[pn_index]+2);
@@ -222,7 +228,7 @@ int main(int argc, const char *argv[]) {
 
   spot::ltl::formula* f = spot::ltl::parse(ltl_string, pel);
   if (spot::ltl::format_parse_errors(std::cerr, ltl_string, pel)) {
-    spot::ltl::destroy(f);
+    f->destroy();
     return 1;
   }
 
@@ -274,11 +280,11 @@ std::string* check_at_prop(const petri_net* p,
     checker.setOptions(algo_string, ce_expected,
 		       fm_exprop_opt, fm_symb_merge_opt,
 		       post_branching, fair_loop_approx, "STATS", print_rg,
-		       scc_optim, print_formula_tgba);
+		       scc_optim, scc_optim_full, print_formula_tgba);
     checker.model_check(sogtype);
   }
 
-  spot::ltl::destroy(f);
+  f->destroy();
   delete model;
   // external block for full garbage
   }

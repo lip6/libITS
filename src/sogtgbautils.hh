@@ -57,10 +57,10 @@ namespace sogits {
 
 
   class LTLChecker {
-    
+
     spot::ltl::atomic_prop_set *sap_;
     const spot::ltl::formula* f_;
-    
+
     // For bdd varnum to AP name in Spot
     spot::bdd_dict dict_;
 
@@ -80,6 +80,7 @@ namespace sogits {
     std::string ltl_string_;
     bool display_;
     bool scc_optim_;
+    bool scc_optim_full_;
     bool print_formula_tgba_;
 
     spot::timer_map timers;
@@ -88,10 +89,10 @@ namespace sogits {
 
     void fs_model_check();
   public :
-    LTLChecker () : sap_(NULL), 
-		    f_(NULL), 
-		    dict_(), 
-		    model_(NULL), 
+    LTLChecker () : sap_(NULL),
+		    f_(NULL),
+		    dict_(),
+		    model_(NULL),
 		    sogModel_(NULL),
 		    a_(NULL),
 		    systgba_(NULL),
@@ -100,9 +101,10 @@ namespace sogits {
 		    fm_symb_merge_opt_(true),
 		    post_branching_(false),
 		    fair_loop_approx_(false),
-		    ltl_string_("formula"), 
-		    display_(false), 
+		    ltl_string_("formula"),
+		    display_(false),
 		    scc_optim_(true),
+		    scc_optim_full_(false),
                     print_formula_tgba_(false) {}
 
     ~LTLChecker();
@@ -111,7 +113,7 @@ namespace sogits {
       f_ = f;
     }
 
-    void setModel (its::ITSModel * model) { 
+    void setModel (its::ITSModel * model) {
       model_ = model;
     }
 
@@ -124,7 +126,8 @@ namespace sogits {
 		     const std::string & ltl_string ="formula",
 		     bool dotdump = false,
 		     bool scc_optim = true,
-		     bool print_formula_tgba = false) 
+		     bool scc_optim_full = false,
+		     bool print_formula_tgba = false)
     {
       echeck_algo_ = echeck_algo;
       ce_expected_ = ce_expected;
@@ -135,9 +138,10 @@ namespace sogits {
       ltl_string_ = ltl_string;
       display_ = dotdump;
       scc_optim_ = scc_optim;
+      scc_optim_full_ = scc_optim_full;
       print_formula_tgba_ = print_formula_tgba;
     }
-    
+
     /// \brief Check if the Petri net \a n can produce at least one infinite
     /// sequence accepted by the formula \a f.
     ///

@@ -14,7 +14,7 @@
 #include "tgbaalgos/dotty.hh"
 #include "tgba/tgbatba.hh"
 
-#include "tgbaalgos/reductgba_sim.hh"
+#include "tgbaalgos/sccfilter.hh"
 
 
 #include "sogtgba.hh"
@@ -40,7 +40,7 @@ namespace sogits {
       fs_model_check();
       return;
     }
-    
+
     const char* err;
     spot::emptiness_check_instantiator* echeck_inst =
       spot::emptiness_check_instantiator::construct(echeck_algo_.c_str(), &err);
@@ -190,7 +190,7 @@ namespace sogits {
 
     if (scc_optim_)
       {
-	const spot::tgba* n = spot::reduc_tgba_sim(a_, spot::Reduce_Scc);
+	const spot::tgba* n = spot::scc_filter(a_, scc_optim_full_);
 	delete a_;
 	a_ = n;
       }
