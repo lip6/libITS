@@ -24,6 +24,9 @@
 
 #include "tgba/tgba.hh"
 #include "sogIts.hh"
+#include "sogtgbautils.hh"
+
+
 
 namespace slog
 {
@@ -171,7 +174,7 @@ namespace slog
     /// \brief Constructor.
     /// \param left The left automata in the product.
     /// \param right The ITS model.
-    slog_tgba(const spot::tgba* left, const sogIts & right);
+    slog_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType);
 
     virtual ~slog_tgba();
 
@@ -202,6 +205,7 @@ namespace slog
     spot::bdd_dict* dict_;
     const spot::tgba* left_;
     const sogIts & model_;
+    sogits::FSTYPE fsType_;
     
     // helper function
     bool isTerminalState (spot::tgba_succ_iterator * it, spot::state * source) const ;
