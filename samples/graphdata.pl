@@ -62,12 +62,12 @@ foreach my $key (keys %result)
     {
 	my $t1 = $result{$key}{$opt_x};
 	my $val1 = $t1->[$opt_c];
-	if (! defined $val1) {
+	if ((! defined $val1) || $val1 =~ /^\s*$/) {
 	    $val1 = 2* $max;
 	}
 	my $t2 = $result{$key}{$opt_y};
 	my $val2 = $t2->[$opt_c];
-	if (! defined $val2) {
+	if ((! defined $val2) || $val1 =~ /^\s*$/) {
 	    $val2 = 2* $max;
 	}
 
