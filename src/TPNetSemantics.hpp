@@ -14,11 +14,11 @@ namespace its {
   class TPNetSemantics {
   public :
     typedef typename HomType::NodeType NodeType;
-    
+  
     // triggers foo(var,val) or localApply( foo(DEFAULT, val) , var) according to 
     // partial specialization used (see bottom of this file)
     static HomType getHom ( GHom (* foo) (int,int) , int var, int val) ;
-    
+  
     static HomType getEnablerHom (const Arc & a, const VarOrder & pi) {
       // to handle hyper arcs, we use a set and OR the result
       std::set<HomType> homs;
@@ -43,11 +43,11 @@ namespace its {
       }
       return HomType::add(homs);
     }
-
+  
     static HomType getDisablerHom (const Arc & a, const VarOrder & pi) {
       return ! getEnablerHom(a,pi);
     }
-
+  
     static HomType getActionHom (const Arc & a, const VarOrder & pi) {
       // to handle hyper arcs, we use a set and OR the result
       std::set<HomType> homs;
@@ -213,18 +213,26 @@ namespace its {
     return getMarking(m,vo);
   }
 
-  template<>
-  inline void dddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
-    // should have a single variable, hence a single arc with a DDD label
-    assert(s.begin() != s.end());
-    assert(s.begin()->second == State::one);
-    DDD state = (const DDD &) * s.begin()->first;
-    // for now just invoke DDD print
-    // first set DDD varnames appropriately
-    for (unsigned int i=0; i < vo.size() ; ++i) {
-      DDD::varName(i, vo.getLabel(i));
+
+
+  static void recPrintDDD (const GDDD & d, std::ostream & os, const VarOrder & vo, vLabel str) {
+    if (d == DDD::one)
+      os << "[ " << str << "]"<<std::endl;
+    else if(d == DDD::top)
+      os << "[ " << str << "T ]"<<std::endl;
+    else if(d == DDD::null)
+      os << "[ " << str << "0 ]"<<std::endl;
+    else{
+      if (d.size() == 1 && d.begin()->first == 0) {
+	recPrintDDD(d.begin()->second,os,vo,str);
+      } else {
+	for(GDDD::const_iterator vi=d.begin();vi!=d.end();++vi){
+	  std::stringstream tmp;
+	  tmp << vo.getLabel(d.variable())<<'('<<vi->first<<") ";
+	  recPrintDDD(vi->second,os,vo,str+tmp.str());
+	}
+      }
     }
-    os << state;
   }
 
   static void recPrintSDD (State s, std::ostream & os, const VarOrder & vo, vLabel str) {
@@ -236,19 +244,29 @@ namespace its {
       os << "[ " << str << "0 ]";
     else{
       for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
-	std::stringstream tmp;
-	// Fixme  for pretty print variable names
-	Label varname = vo.getLabel(s.variable());
-	tmp << varname << "={";
-	// grab the DDD on the arc
+	
+		
+	// grab the DDD on the arc	
 	DDD val = (const DDD &) * vi->first;
-	for (DDD::const_iterator it = val.begin(); it != val.end() ; /**increment in loop */) {
-	  tmp << to_string(it->first) ;
-	  ++it;
-	  if (it != val.end()) tmp << ",";
+	
+	if (val.size() == 1 && val.begin()->first == 0) {
+	  // skip {0} values
+	  recPrintSDD(vi->second, os, vo, str);
+	} else {
+	  std::stringstream tmp;
+	  // pretty print variable names
+	  Label varname = vo.getLabel(s.variable());
+	  tmp << varname << "={";
+	
+	  for (DDD::const_iterator it = val.begin(); it != val.end() ; /**increment in loop */) {
+	    tmp << to_string(it->first) ;
+	    ++it;
+	    if (it != val.end()) tmp << ",";
+	  }
+	  tmp << "} ";
+	
+	  recPrintSDD(vi->second, os, vo, str + tmp.str());
 	}
-	tmp << "}";
-	recPrintSDD(vi->second, os, vo, str + tmp.str() + " ");
       }
     }
   }
@@ -258,6 +276,15 @@ namespace its {
     recPrintSDD(s, os, vo, "");
   }
 
+  template<>
+  inline void dddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
+    // should have a single variable, hence a single arc with a DDD label
+    assert(s.begin() != s.end());
+    assert(s.begin()->second == State::one);
+    DDD state = (const DDD &) * s.begin()->first;
+    // for now just invoke DDD print
+    recPrintDDD(state, os, vo, "");
+  }
 
 
 } // namespace
