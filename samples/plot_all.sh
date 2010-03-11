@@ -6,6 +6,7 @@
 ./graph.sh dsog-fsltl-time.eps DSOG FSLTL 7 test_bench/**/*.log
 ./graph.sh slog-dsog-time.eps SLOG DSOG 7 test_bench/**/*.log
 ./graph.sh slog-fsltl-time.eps SLOG FSLTL 7 test_bench/**/*.log
+./graph.sh slog-slogfst-time.eps SLOG SLOG-FST 7 test_bench/**/*.log
 
 
 ./graph.sh sog-dsog-mem.eps SOG DSOG 8 test_bench/**/*.log
@@ -14,3 +15,4 @@
 ./graph.sh dsog-fsltl-mem.eps DSOG FSLTL 8 test_bench/**/*.log
 ./graph.sh slog-dsog-mem.eps SLOG DSOG 8 test_bench/**/*.log
 ./graph.sh slog-fsltl-mem.eps SLOG FSLTL 8 test_bench/**/*.log
+./graph.sh slog-slogfst-mem.eps SLOG SLOG-FST 8 test_bench/**/*.log
