@@ -53,13 +53,13 @@ void syntax(const char* prog) {
             << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
-            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLOG,DSOG} (SLOG by default)"
+            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLOG,DSOG,FSLTL,SLOG-FST,SLOG-FSA} (SLOG-FST by default)\n"
+	    << "                  The FST variants include a test for switching to fully symbolic emptiness check in terminal states.\n"
+	    << "                  The FSA variants include a test for switching to fully symbolic emptiness check in any potentially accepting automaton state."
             << std::endl
             << "  -C              display the number of states and edges of the SOG"
             << std::endl
             << "  -c              check the formula" << std::endl
-	    << "  -dR3            disable the SCC reduction" << std::endl
-	    << "  -R3f            enable full SCC reduction" << std::endl
             << "  -e              display a sequence (if any) of the net "
             << "satisfying the formula (implies -c)" << std::endl
             << "  -fformula       specify the formula" << std::endl
@@ -73,6 +73,8 @@ void syntax(const char* prog) {
             << std::endl
             << "Options of the formula transformation:"
             << std::endl
+	    << "  -dR3            disable the SCC reduction" << std::endl
+	    << "  -R3f            enable full SCC reduction" << std::endl
             << "  -b              branching postponement"
             << " (false by default)" << std::endl
             << "  -l              fair-loop approximation"
@@ -115,7 +117,7 @@ int main(int argc, const char *argv[]) {
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
 
-  sog_product_type sogtype = SLOG;
+  sog_product_type sogtype = SLOG_FST;
 
   std::string pathprodff = argv[argc-1];
 
@@ -178,7 +180,13 @@ int main(int argc, const char *argv[]) {
       sogtype = PLAIN_SOG;
     }
     else if (!strcmp(argv[pn_index], "-SSLOG")) {
-      sogtype = SLOG;
+      sogtype = SLOG_NOFS;
+    }
+    else if (!strcmp(argv[pn_index], "-SSLOG-FSA")) {
+      sogtype = SLOG_FSA;
+    }
+    else if (!strcmp(argv[pn_index], "-SSLOG-FST")) {
+      sogtype = SLOG_FST;
     }
     else if (!strcmp(argv[pn_index], "-SDSOG")) {
       sogtype = DSOG;
