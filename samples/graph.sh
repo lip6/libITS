@@ -13,6 +13,8 @@ echo "Gathering data..."
 
 ./graphdata.pl $opt "$@" >$output.data
 
+[ "x$1" = "x-v" ] && shift
+
 models=`cut -f 1 -d ' ' $output.data | sort -u | tr '\n' ' '`
 
 
