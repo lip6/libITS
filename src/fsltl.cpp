@@ -3,8 +3,8 @@
 #include "Composite.hh"
 
 
-#define trace std::cerr
-// #define trace if (0) std::cerr
+// #define trace std::cerr
+#define trace while (0) std::cerr
 
 namespace its {
 
