@@ -13,7 +13,8 @@ echo "Gathering data..."
 
 ./graphdata.pl "$@" >$output.data
 
-echo "Rendering graph..."
+models=`cut -f 1 -d ' ' $output.data | sort -u | tr '\n' ' '`
+
 
 cat > $output.gnuplot  <<EOF
 set terminal postscript eps enhanced color
@@ -21,15 +22,27 @@ set xlabel "$1"
 set ylabel "$2"
 set logscale x
 set logscale y
-unset key
+#unset key
+set key left
 set output '$output'
 
 # Use some jitter to distinguish points that would otherwise be equal
 # (the jitter is multiplicative because the scale is logarithmic)
-jitter(x) = x*(9.5+rand(0))/10
+spread=10 # maximum percentage added or substracted to the real value
+jitter(x) = x*(100+2*spread*(rand(0)-0.5))/100
 
-plot '$output.data' using (jitter(\$1)):(jitter(\$2)), \
-     x
+plot \\
 EOF
+
+
+echo "Models: $models"
+for i in $models; do
+  sed -n "s/^$i \(.*\)$/\\1/p" < $output.data > $output.$i.data
+  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype 1  title \"$i\", \\" >> $output.gnuplot
+done
+
+echo '  x notitle' >> $output.gnuplot
+
+echo "Rendering graph..."
 
 gnuplot $output.gnuplot

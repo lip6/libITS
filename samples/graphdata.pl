@@ -35,14 +35,14 @@ while (<>)
     my @res = split(',',$_);
     my $meth = shift @res;
     my $model = shift @res;
-    my $formula = shift @res;    
+    my $formula = shift @res;
     if (defined $res[$opt_c] && $res[$opt_c] !~ /^\s*$/) {
 	if ($res[$opt_c] > $max) {
 	    $max = $res[$opt_c];
 	}
     }
 
-    $result{"$model,$formula"}{$meth} = [@res];    
+    $result{"$model,$formula"}{$meth} = [@res];
 }
 
 foreach my $key (keys %result)
@@ -50,7 +50,7 @@ foreach my $key (keys %result)
     if (defined $result{$key}{$opt_x}
 	and defined $result{$key}{$opt_y})
     {
-	my $t1 = $result{$key}{$opt_x};	
+	my $t1 = $result{$key}{$opt_x};
 	my $val1 = $t1->[$opt_c];
 	if (! defined $val1) {
 	    $val1 = 2* $max;
@@ -60,6 +60,9 @@ foreach my $key (keys %result)
 	if (! defined $val2) {
 	    $val2 = 2* $max;
 	}
-	print "$val1 $val2\n";
+	(my $model = $key) =~ s,.*?/?([^/]*).net.*,$1,;
+	$model =~ s/\dnm/-nm/;
+	$model =~ s/\d+//;
+	print "$model $val1 $val2\n";
     }
 }
