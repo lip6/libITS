@@ -31,8 +31,8 @@
 
 using namespace spot;
 
-#define trace std::cerr
-// #define trace while (0) std::cerr
+// #define trace std::cerr
+#define trace while (0) std::cerr
 
 
 namespace slog
@@ -97,14 +97,14 @@ namespace slog
   {
 
     /** Test whether there is a self loop labeled with ALL acceptance conditions */
-    for (left_->first() ; ! left_->done() ; left_->next() ) {
-      if ( left_->current_state()->compare(aut_state) == 0 ) {
-//	std::cerr << "on arc :" << aut_->transition_annotation(left_) << std::endl;
-	if ( left_->current_acceptance_conditions() ==  aut_->all_acceptance_conditions()  ) {
-	  std::cerr << "\ndetected condition !" << std::endl;
-	}
-      }
-    }
+//     for (left_->first() ; ! left_->done() ; left_->next() ) {
+//       if ( left_->current_state()->compare(aut_state) == 0 ) {
+// //	std::cerr << "on arc :" << aut_->transition_annotation(left_) << std::endl;
+// 	if ( left_->current_acceptance_conditions() ==  aut_->all_acceptance_conditions()  ) {
+// 	  trace << "\ndetected condition !" << std::endl;
+// 	}
+//       }
+//     }
 
   }
 
@@ -225,8 +225,8 @@ namespace slog
   /// \brief Constructor.
   /// \param left The left automata in the product.
   /// \param right The ITS model.
-  slog_tgba::slog_tgba(const spot::tgba* left, const sogIts & right)
-    : dict_(left->get_dict()), left_(left), model_(right)
+  slog_tgba::slog_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType)
+    : dict_(left->get_dict()), left_(left), model_(right), fsType_(fsType)
   {
     // register that we use the same bdd variables (dict) as the automaton.
     // these vars are unregistered in dtor
@@ -296,7 +296,7 @@ namespace slog
 					      global_automaton);
 
     // Test whether the tgba state is terminal
-    if ( isTerminalState(li, s->left()) ) {
+    if ( (fsType_==sogits::FSA || fsType_==sogits::FST) && isTerminalState(li, s->left()) ) {
       trace << "could use FSLTL algo !!" << std::endl;
       its::fsltlModel::trans_t nextAccs;
       its::Transition all = its::State::null;
