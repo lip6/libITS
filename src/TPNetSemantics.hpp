@@ -223,7 +223,7 @@ namespace its {
     else if(d == DDD::null)
       os << "[ " << str << "0 ]"<<std::endl;
     else{
-      if (d.size() == 1 && d.begin()->first == 0) {
+      if (d.nbsons() == 1 && d.begin()->first == 0) {
 	recPrintDDD(d.begin()->second,os,vo,str);
       } else {
 	for(GDDD::const_iterator vi=d.begin();vi!=d.end();++vi){
@@ -249,7 +249,7 @@ namespace its {
 	// grab the DDD on the arc	
 	DDD val = (const DDD &) * vi->first;
 	
-	if (val.size() == 1 && val.begin()->first == 0) {
+	if (val.nbsons() == 1 && val.begin()->first == 0) {
 	  // skip {0} values
 	  recPrintSDD(vi->second, os, vo, str);
 	} else {
