@@ -3,177 +3,177 @@
 <attributes>
 </attributes>
 <nodes>
-<node nodetype='synchronization' id='70' xposition='44' yposition='273' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='3' xposition='44' yposition='273' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='64' yposition='253'>NOP</attribute>
 <attribute name='label' xposition='64' yposition='273'>control</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='3' xposition='594' yposition='499' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='4' xposition='594' yposition='499' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='590' yposition='480'>W3E</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='4' xposition='175' yposition='604' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='5' xposition='175' yposition='604' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='171' yposition='580'>W2E</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='5' xposition='161' yposition='91' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='6' xposition='161' yposition='91' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='112' yposition='113'>input1</attribute>
 <attribute name='type' xposition='179' yposition='100'>IO</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='6' xposition='161' yposition='177' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='7' xposition='160' yposition='144' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
-<attribute name='name' xposition='106' yposition='199'>input2</attribute>
-<attribute name='type' xposition='179' yposition='183'>IO</attribute>
+<attribute name='name' xposition='105' yposition='166'>input2</attribute>
+<attribute name='type' xposition='178' yposition='150'>IO</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='7' xposition='418' yposition='92' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='8' xposition='418' yposition='92' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='379' yposition='115'>agv A</attribute>
 <attribute name='type' xposition='419' yposition='98'>AGV_A</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='8' xposition='666' yposition='92' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='9' xposition='660' yposition='118' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
-<attribute name='name' xposition='728' yposition='98'>workstation 1</attribute>
-<attribute name='type' xposition='674' yposition='66'>WorkStation</attribute>
+<attribute name='name' xposition='722' yposition='124'>workstation 1</attribute>
+<attribute name='type' xposition='668' yposition='92'>WorkStation</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='9' xposition='512' yposition='592' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='10' xposition='512' yposition='592' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='458' yposition='607'>agv E</attribute>
 <attribute name='type' xposition='513' yposition='599'>AGV_E</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='10' xposition='496' yposition='654' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='11' xposition='496' yposition='654' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='451' yposition='661'>control E</attribute>
 <attribute name='label' xposition='453' yposition='682'>control</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='11' xposition='314' yposition='351' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='12' xposition='261' yposition='227' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
-<attribute name='name' xposition='325' yposition='384'>agv B</attribute>
-<attribute name='type' xposition='313' yposition='357'>AGV_B</attribute>
+<attribute name='name' xposition='272' yposition='260'>agv B</attribute>
+<attribute name='type' xposition='260' yposition='233'>AGV_B</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='12' xposition='830' yposition='580' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='13' xposition='757' yposition='589' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
-<attribute name='name' xposition='850' yposition='620'>agv F</attribute>
-<attribute name='type' xposition='831' yposition='586'>AGV_F</attribute>
+<attribute name='name' xposition='777' yposition='629'>agv F</attribute>
+<attribute name='type' xposition='758' yposition='595'>AGV_F</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='13' xposition='846' yposition='253' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='14' xposition='509' yposition='227' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
-<attribute name='name' xposition='851' yposition='289'>agv D</attribute>
-<attribute name='type' xposition='846' yposition='259'>AGV_D</attribute>
+<attribute name='name' xposition='472' yposition='253'>agv D</attribute>
+<attribute name='type' xposition='509' yposition='233'>AGV_D</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='14' xposition='1014' yposition='579' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='15' xposition='944' yposition='589' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
-<attribute name='name' xposition='1016' yposition='614'>output</attribute>
-<attribute name='type' xposition='1034' yposition='639'>IO</attribute>
+<attribute name='name' xposition='946' yposition='624'>output</attribute>
+<attribute name='type' xposition='964' yposition='649'>IO</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='15' xposition='660' yposition='378' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='17' xposition='660' yposition='378' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='645' yposition='408'>workstation 3</attribute>
 <attribute name='type' xposition='673' yposition='384'>W3</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='17' xposition='550' yposition='103' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='16' xposition='550' yposition='103' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='545' yposition='79'>W1A</attribute>
 </attributes>
 </node>
-<node nodetype='instance' id='16' xposition='160' yposition='476' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='instance' id='19' xposition='160' yposition='476' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='name' xposition='130' yposition='512'>workstation 2</attribute>
 <attribute name='type' xposition='173' yposition='483'>WorkStation</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='19' xposition='420' yposition='41' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='18' xposition='420' yposition='41' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='369' yposition='5'>control A</attribute>
 <attribute name='label' xposition='376' yposition='23'>control</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='18' xposition='276' yposition='102' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='21' xposition='276' yposition='102' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='296' yposition='82'>I1A</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='21' xposition='681' yposition='606' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='20' xposition='647' yposition='606' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='701' yposition='586'>zone4</attribute>
-<attribute name='label' xposition='699' yposition='621'>bad</attribute>
+<attribute name='name' xposition='667' yposition='586'>zone4</attribute>
+<attribute name='label' xposition='665' yposition='621'>bad</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='20' xposition='433' yposition='490' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='23' xposition='433' yposition='490' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='386' yposition='483'>zone3</attribute>
 <attribute name='label' xposition='400' yposition='467'>bad</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='23' xposition='245' yposition='268' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='22' xposition='276' yposition='159' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='215' yposition='261'>I2B</attribute>
+<attribute name='name' xposition='246' yposition='152'>I2B</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='22' xposition='123' yposition='369' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='25' xposition='123' yposition='369' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='57' yposition='350'>controlB</attribute>
 <attribute name='label' xposition='62' yposition='369'>control</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='25' xposition='382' yposition='212' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='24' xposition='368' yposition='173' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='358' yposition='192'>zone1</attribute>
-<attribute name='label' xposition='402' yposition='192'>bad</attribute>
+<attribute name='name' xposition='344' yposition='153'>zone1</attribute>
+<attribute name='label' xposition='388' yposition='153'>bad</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='24' xposition='245' yposition='427' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='27' xposition='245' yposition='427' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='210' yposition='408'>W2B</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='27' xposition='955' yposition='253' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='26' xposition='627' yposition='233' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='975' yposition='233'>controlD</attribute>
-<attribute name='label' xposition='975' yposition='253'>control</attribute>
+<attribute name='name' xposition='647' yposition='213'>controlD</attribute>
+<attribute name='label' xposition='647' yposition='233'>control</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='26' xposition='774' yposition='170' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='29' xposition='545' yposition='157' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='794' yposition='150'>W1D</attribute>
+<attribute name='name' xposition='565' yposition='137'>W1D</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='29' xposition='919' yposition='592' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='28' xposition='865' yposition='602' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='942' yposition='595'>O1F</attribute>
+<attribute name='name' xposition='888' yposition='605'>O1F</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='28' xposition='835' yposition='382' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='31' xposition='545' yposition='311' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='855' yposition='362'>W3D</attribute>
+<attribute name='name' xposition='565' yposition='291'>W3D</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='31' xposition='765' yposition='499' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='30' xposition='765' yposition='499' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='785' yposition='479'>W3F</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='30' xposition='523' yposition='289' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='32' xposition='368' yposition='240' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
-<attribute name='name' xposition='570' yposition='269'>zone2</attribute>
-<attribute name='label' xposition='543' yposition='269'>bad</attribute>
+<attribute name='name' xposition='415' yposition='220'>zone2</attribute>
+<attribute name='label' xposition='388' yposition='220'>bad</attribute>
 </attributes>
 </node>
-<node nodetype='synchronization' id='32' xposition='919' yposition='445' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<node nodetype='synchronization' id='33' xposition='919' yposition='445' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
 <attributes>
 <attribute name='name' xposition='939' yposition='425'>control F</attribute>
 <attribute name='label' xposition='939' yposition='445'>control</attribute>
@@ -181,177 +181,177 @@
 </node>
 </nodes>
 <arcs>
-<arc arctype='arc' id='68' startid='30' endid='30' color='#000000' curved='false'>
-<attributes>
-</attributes>
-</arc>
-<arc arctype='arc' id='69' startid='11' endid='30' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='418' yposition='320'>inBuffer2</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='64' startid='11' endid='24' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='263' yposition='384'>output</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='65' startid='11' endid='20' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='373' yposition='420'>inBuffer3</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='66' startid='7' endid='25' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='400' yposition='152'>inBuffer</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='67' startid='12' endid='21' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='755' yposition='593'>inBuffer</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='34' startid='7' endid='18' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='347' yposition='97'>input</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='35' startid='5' endid='18' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='218' yposition='96'>io</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='38' startid='8' endid='17' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='589' yposition='98'>take</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='39' startid='6' endid='23' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='203' yposition='222'>io</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='36' startid='7' endid='19' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='419' yposition='66'>control</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='37' startid='7' endid='17' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='484' yposition='97'>output</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='42' startid='8' endid='26' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='720' yposition='131'>produce</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='43' startid='11' endid='22' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='218' yposition='360'>control</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='40' startid='11' endid='23' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='279' yposition='309'>input</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='41' startid='13' endid='26' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='810' yposition='211'>output</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='46' startid='15' endid='28' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='747' yposition='380'>take1</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='47' startid='13' endid='28' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='840' yposition='317'>input</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='44' startid='11' endid='25' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='348' yposition='281'>inBuffer1</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='45' startid='13' endid='30' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='684' yposition='271'>inBuffer</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='50' startid='12' endid='32' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='874' yposition='512'>control</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='49' startid='13' endid='27' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='900' yposition='253'>control</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='48' startid='31' endid='12' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='797' yposition='539'>input</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='55' startid='12' endid='29' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='874' yposition='646'>output</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='54' startid='14' endid='29' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='966' yposition='585'>io</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='53' startid='15' endid='31' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='712' yposition='438'>produce</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='52' startid='9' endid='10' color='#000000' curved='false'>
+<arc arctype='arc' id='68' startid='10' endid='11' color='#000000' curved='false'>
 <attributes>
 <attribute name='labels' xposition='504' yposition='623'>control</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='59' startid='9' endid='3' color='#000000' curved='false'>
+<arc arctype='arc' id='64' startid='30' endid='13' color='#000000' curved='false'>
 <attributes>
-<attribute name='labels' xposition='553' yposition='545'>input</attribute>
+<attribute name='labels' xposition='761' yposition='544'>input</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='58' startid='9' endid='21' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='596' yposition='599'>inBuffer2</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='57' startid='9' endid='4' color='#000000' curved='false'>
+<arc arctype='arc' id='65' startid='10' endid='5' color='#000000' curved='false'>
 <attributes>
 <attribute name='labels' xposition='343' yposition='598'>output</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='56' startid='9' endid='20' color='#000000' curved='false'>
+<arc arctype='arc' id='66' startid='10' endid='20' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='579' yposition='599'>inBuffer2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='67' startid='10' endid='4' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='553' yposition='545'>input</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='34' startid='19' endid='5' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='167' yposition='540'>produce</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='35' startid='10' endid='23' color='#000000' curved='false'>
 <attributes>
 <attribute name='labels' xposition='472' yposition='541'>inBuffer1</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='63' startid='11' endid='11' color='#000000' curved='false'>
-<attributes>
-</attributes>
-</arc>
-<arc arctype='arc' id='62' startid='16' endid='24' color='#000000' curved='false'>
-<attributes>
-<attribute name='labels' xposition='202' yposition='451'>take</attribute>
-</attributes>
-</arc>
-<arc arctype='arc' id='61' startid='15' endid='3' color='#000000' curved='false'>
+<arc arctype='arc' id='38' startid='17' endid='4' color='#000000' curved='false'>
 <attributes>
 <attribute name='labels' xposition='627' yposition='438'>take2</attribute>
 </attributes>
 </arc>
-<arc arctype='arc' id='60' startid='16' endid='4' color='#000000' curved='false'>
+<arc arctype='arc' id='39' startid='32' endid='32' color='#000000' curved='false'>
 <attributes>
-<attribute name='labels' xposition='167' yposition='540'>produce</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='36' startid='12' endid='12' color='#000000' curved='false'>
+<attributes>
+</attributes>
+</arc>
+<arc arctype='arc' id='37' startid='19' endid='27' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='202' yposition='451'>take</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='42' startid='13' endid='20' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='702' yposition='597'>inBuffer</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='43' startid='12' endid='27' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='237' yposition='322'>output</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='40' startid='12' endid='32' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='314' yposition='233'>inBuffer2</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='41' startid='8' endid='24' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='393' yposition='132'>inBuffer</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='46' startid='7' endid='22' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='218' yposition='151'>io</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='47' startid='8' endid='21' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='347' yposition='97'>input</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='44' startid='12' endid='23' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='347' yposition='358'>inBuffer3</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='45' startid='9' endid='16' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='586' yposition='111'>take</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='51' startid='8' endid='18' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='419' yposition='66'>control</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='50' startid='12' endid='25' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='192' yposition='298'>control</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='49' startid='9' endid='29' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='602' yposition='137'>produce</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='48' startid='6' endid='21' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='218' yposition='96'>io</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='55' startid='14' endid='29' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='527' yposition='192'>output</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='54' startid='17' endid='31' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='602' yposition='344'>take1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='53' startid='14' endid='31' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='527' yposition='269'>input</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='52' startid='8' endid='16' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='484' yposition='97'>output</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='59' startid='14' endid='32' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='438' yposition='233'>inBuffer</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='58' startid='13' endid='33' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='838' yposition='517'>control</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='57' startid='14' endid='26' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='568' yposition='230'>control</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='56' startid='12' endid='22' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='268' yposition='193'>input</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='63' startid='13' endid='28' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='811' yposition='655'>output</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='62' startid='15' endid='28' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='904' yposition='595'>io</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='61' startid='17' endid='30' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='712' yposition='438'>produce</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='60' startid='12' endid='24' color='#000000' curved='false'>
+<attributes>
+<attribute name='labels' xposition='314' yposition='200'>inBuffer1</attribute>
 </attributes>
 </arc>
 </arcs>

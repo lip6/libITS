@@ -18,12 +18,12 @@
 <attribute name='marking' xposition='0' yposition='0'>0</attribute>
 </attributes>
 </node>
-<node nodetype='transition' id='5' xposition='412' yposition='82' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<node nodetype='transition' id='5' xposition='308' yposition='82' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
 <attributes>
 <attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
 <attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
-<attribute name='visibility' xposition='432' yposition='62'>public</attribute>
-<attribute name='label' xposition='432' yposition='82'>io</attribute>
+<attribute name='visibility' xposition='328' yposition='62'>public</attribute>
+<attribute name='label' xposition='328' yposition='82'>io</attribute>
 </attributes>
 </node>
 <node nodetype='transition' id='6' xposition='263' yposition='82' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
