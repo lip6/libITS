@@ -40,6 +40,7 @@ XMLLOADERSOURCES =  $(MYSRCDIR)/CompositeXMLLoader.hh $(MYSRCDIR)/CompositeXMLLo
 
 ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
 	$(MYSRCDIR)/CircularSet.hh \
+	$(MYSRCDIR)/CircularSetType.hh \
 	$(MYSRCDIR)/CircularSetXMLLoader.hh \
 	$(MYSRCDIR)/CircularSync.hh \
 	$(MYSRCDIR)/Composite.hh \
