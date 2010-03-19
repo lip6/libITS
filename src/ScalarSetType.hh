@@ -29,20 +29,21 @@ class ScalarSetType : public TypeBasics {
   pType getConcrete () const ;
 protected :
   labels_t getVarSet () const { return labels_t(); }
+  const ScalarSet & getComp() const { return comp_; }
 public :
   // factory behavior
-  void setStrategy (scalarStrategy strat, int parameter=1) ;
+  virtual void setStrategy (scalarStrategy strat, int parameter=1) ;
 
 
 
   ScalarSetType (const ScalarSet & c) : comp_(c), strat_(NULL) { setStrategy(DEPTH1);};
-  ~ScalarSetType() { delete strat_; }
+  virtual ~ScalarSetType() { delete strat_; }
 
   /** the set InitStates of designated initial states (a copy)*/
   labels_t getInitStates () const ;
 
   /** the set T of public transition labels (a copy)*/
-  labels_t getTransLabels () const ;
+  virtual labels_t getTransLabels () const ;
 
   /** state and transitions representation functions */
   /** Local transitions */
@@ -62,7 +63,7 @@ public :
   std::ostream & print (std::ostream & os) const { return comp_.print(os); }  
   Label getName() const { return comp_.getName(); }
 
-  void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Scalar Set" << std::endl; }
+  virtual void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Scalar Set" << std::endl; }
 };
 
 

@@ -1,7 +1,10 @@
-
+#include <typeinfo>
 #include <iostream>
 #include "ScalarSetType.hh"
+#include "CircularSetType.hh"
 #include "Composite.hh"
+
+#define trace while(0) std::cerr
 
 namespace its {
 
@@ -27,6 +30,26 @@ labels_t ScalarSetType::getTransLabels () const {
   return ret;
 }
 
+/** the set T of public transition labels (a copy)*/
+labels_t CircularSetType::getTransLabels () const {
+  std::set<vLabel> toRet;
+  // cumulate to "super" labels
+  labels_t super = ScalarSetType::getTransLabels();
+  for (labels_it it = super.begin() ; it != super.end() ; ++it)
+    toRet.insert(*it);
+  
+  // Add circular sync labels
+  const CircularSet & comp = getCComp();
+  for (CircularSet::circs_it it = comp.circs_begin() ; it != comp.circs_end(); ++it)
+    toRet.insert(it->getLabel());
+
+  labels_t ret;
+  for (std::set<vLabel>::const_iterator it = toRet.begin() ; it != toRet.end() ; ++it ) {
+    ret.push_back(*it);
+  }
+  return ret;
+}
+
 
   //////// strategies
   // Strategies
@@ -44,28 +67,104 @@ labels_t ScalarSetType::getTransLabels () const {
       else
 	return comp_.getInstance().getType()->getName() + "_" + to_string(i) ;
     }
+
+    /** returns a pointer to circularSet if available (i.e. we are actually building a circular set) or NULL otherwise */
+    const CircularSet * getCComp () const {
+      return dynamic_cast<const CircularSet*> ( &comp_ ) ;
+    }
   public :
     BasicStrategy (const ScalarSet & comp, ITSModel & m, int param): comp_(comp),model_(m),grain_(param) { 
       // protect against bad value, causes a crash on (n % grain) otherwise
       if (grain_ == 0) 
 	grain_ =1;
     };
+    // in a context with n internal instances, connect 0 to 1, 1 to 2 etc.. n-2 to n-1 with private syncs.
+    void addInternal (Composite *net, const CircularSet * ccomp, int n) const {
+      trace << "Augmenting Nary n=" << n << " composition " << net->getName() << " with internal private transitions." << std::endl ;
+      for (CircularSet::circs_it it = ccomp->circs_begin() ; it != ccomp->circs_end(); ++it) {
+	vLabel tname;
+	for (int i=0; i< n-1; ++i) {
+	  int next = i + 1  ;
+    
+	  tname = it->getName()+to_string(i);
+	  // empty label indicates a private event
+	  net->addSynchronization(tname,"");	  
+	  for (labels_it lit = it->getCurrentLabels().begin() ; 
+	       lit != it->getCurrentLabels().end() ;
+	       ++lit) {
+	    net->addSyncPart(tname,instanceName(i),*lit);
+	  }
+	  for (labels_it lit = it->getNextLabels().begin() ; 
+	       lit != it->getNextLabels().end() ;
+	       ++lit) {
+	    net->addSyncPart(tname,instanceName(next),*lit);
+	  }
+	}
+	
+      }
+    }
+    // in a context with n internal instances, connect n-1 to 0 with private syncs.
+    void addLoop (Composite *net, const CircularSet * ccomp, int n) const {
+      trace  << "Augmenting Nary n=" << n << " composition " << net->getName() << " with circular private syncs"  << std::endl ;
+      for (CircularSet::circs_it it = ccomp->circs_begin() ; it != ccomp->circs_end(); ++it) {
+	vLabel tname;
+	int i =n-1;
+	int next = 0;
+	
+	tname = it->getName()+to_string(i);
+	// empty label indicates a private event
+	net->addSynchronization(tname,"");	  
+	for (labels_it lit = it->getCurrentLabels().begin() ; 
+	     lit != it->getCurrentLabels().end() ;
+	     ++lit) {
+	  net->addSyncPart(tname,instanceName(i),*lit);
+	}
+	for (labels_it lit = it->getNextLabels().begin() ; 
+	     lit != it->getNextLabels().end() ;
+	     ++lit) {
+	  net->addSyncPart(tname,instanceName(next),*lit);
+	}
+      }
+    }
+    // in a context with n internal instances, create public "hooks" on left of 0 and right of n-1.
+    void addEdges (Composite *net, const CircularSet * ccomp, int n) const {
+      trace  << "Augmenting Nary n=" << n << " composition " << net->getName() << " with public visibility syncs at edges "  << std::endl ;
+      for (CircularSet::circs_it it = ccomp->circs_begin() ; it != ccomp->circs_end(); ++it) {
+	vLabel tname;
+	int i =n-1;
+	int next = 0;
+	
+	tname = it->getName()+to_string(i);
+	for (labels_it lit = it->getCurrentLabels().begin() ; 
+	     lit != it->getCurrentLabels().end() ;
+	     ++lit) {
+	  net->addSynchronization(*lit,*lit);	  
+	  net->addSyncPart(*lit,instanceName(i),*lit);
+	}
+	for (labels_it lit = it->getNextLabels().begin() ; 
+	     lit != it->getNextLabels().end() ;
+	     ++lit) {
+	  net->addSynchronization(*lit,*lit);	  
+	  net->addSyncPart(*lit,instanceName(next),*lit);
+	}
+      }
+    }
 
     // build a representation of N = n*grain + complement instances
     // with grain > complement. Normally used with N/grain = n, N % grain = complement.
     // encoding uses $complement$ blocks of $grain+1$ instances
     // and n-complement blocks of n
-    void buildNaryRepresentation (int n , int grain=1, int complement =0){
+    void buildNaryRepresentation (int n , int grain=1, int complement =0,bool close_loop=false){
       int N = n*grain + complement;
       
       Composite net (typeName(N));
-      
       for (int i=0 ; i < complement ; ++i) {
 	net.addInstance(instanceName(i),typeName(grain+1),model_);
       }
       for (int i=complement; i< n; ++i) {
 	net.addInstance(instanceName(i),typeName(grain),model_);
       }
+      
       // delegators
       for (ScalarSet::syncs_it it = comp_.syncs_begin() ; it != comp_.syncs_end() ; ++it ){
 	Label sname = it->getName();
@@ -102,6 +201,16 @@ labels_t ScalarSetType::getTransLabels () const {
 	}
 	assert ( i ==  comp_.size());
       }
+      // Circular set specific handling
+      if (const CircularSet * ccomp = getCComp()) {
+	addInternal(&net,ccomp,n);
+	if (close_loop) {
+	  addLoop(&net,ccomp,n);
+	} else {
+	  addEdges(&net,ccomp,n);
+	}
+      } 
+
       model_.declareType(net);
       
     }
@@ -125,7 +234,8 @@ labels_t ScalarSetType::getTransLabels () const {
 	// default parameters again make this a simple 1 depth composition
 	buildNaryRepresentation ( grain_ + 1 );
  
-      buildNaryRepresentation (n/grain_, grain_, n % grain_) ;
+      // close loop set to true here
+      buildNaryRepresentation (n/grain_, grain_, n % grain_, true) ;
       return typeName(n);
     } 
   };
@@ -136,7 +246,7 @@ labels_t ScalarSetType::getTransLabels () const {
     DepthRecStrategy (const ScalarSet & comp, ITSModel & m, int param = 1, double factor = 1.0): BasicStrategy(comp,m,param), factor_(factor) {};
     
 
-    void buildNWiseComposite (int n, int grain)  {
+    void buildNWiseComposite (int n, int grain, bool close_loop)  {
       int part = n / grain;
       int rem = n % grain ;
       if (model_.findType(typeName(n)) != NULL)
@@ -146,21 +256,21 @@ labels_t ScalarSetType::getTransLabels () const {
 	buildNaryRepresentation (n);
 	return ;
       } else if (part > 1)
-	buildNWiseComposite (part, (int) (grain * factor_) );
+	buildNWiseComposite (part, (int) (grain * factor_) ,false);
 
       if (rem != 0)
-	buildNWiseComposite (part + 1, (int) (grain * factor_) );
+	buildNWiseComposite (part + 1, (int) (grain * factor_) ,false);
 
 //       std::cerr << "Building a composite for n=" << n << " with grain="<<grain  << " blocks " 
 // 		<< " of sizes " << (grain-1) << "*" << part << ".." << part + rem << std :: endl ;
-      buildNaryRepresentation(grain,part,rem);
+      buildNaryRepresentation(grain,part,rem, close_loop);
     }
 
     virtual vLabel buildRepresentation ( ) {
      // clone the basic contained type
       model_.cloneType(comp_.getInstance().getType());
       size_t n = comp_.size();
-      buildNWiseComposite(n, grain_);
+      buildNWiseComposite(n, grain_,true);
       return typeName(n);
     }
 
@@ -172,7 +282,7 @@ labels_t ScalarSetType::getTransLabels () const {
     ShallowRecStrategy (const ScalarSet & comp, ITSModel & m, int param = 1): BasicStrategy(comp,m,param) {};
     
 
-    void buildNWiseComposite (int n, int grain)  {
+    void buildNWiseComposite (int n, int grain, bool close_loop)  {
       if (model_.findType(typeName(n)) != NULL)
 	return ;
       else if (n < grain || grain == 1) {
@@ -194,20 +304,20 @@ labels_t ScalarSetType::getTransLabels () const {
       int blocksize = n / nblocks;
 
       if (rem != 0)
-	buildNWiseComposite (blocksize + 1, grain  );
-      buildNWiseComposite (blocksize, grain );
+	buildNWiseComposite (blocksize + 1, grain , false);
+      buildNWiseComposite (blocksize, grain , false);
 
 
 //       std::cerr << "Building a composite for n=" << n << " with grain="<<grain  << " in " << nblocks << " blocks " 
 // 		<< " of sizes " << (part+1) << "*" << rem << "+" << part << "*" << nblocks - rem << std :: endl ;
-      buildNaryRepresentation(nblocks,blocksize,rem);
+      buildNaryRepresentation(nblocks,blocksize,rem, close_loop);
     }
 
     virtual vLabel buildRepresentation ( ) {
      // clone the basic contained type
       model_.cloneType(comp_.getInstance().getType());
       size_t n = comp_.size();
-      buildNWiseComposite(n, grain_);
+      buildNWiseComposite(n, grain_, true);
       return typeName(n);
     }
 
