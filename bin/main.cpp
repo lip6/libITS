@@ -221,7 +221,7 @@ int main (int argc, char **argv) {
  if (doloadorder) {
    ifstream is (pathorderinff.c_str());
    if (! model.loadOrder(is)) {
-     std::cerr << "Problem load provided order file :" << pathorderinff << "\n";
+     std::cerr << "Problem loading provided order file :" << pathorderinff << "\n";
      exit(1);
    }
  }
