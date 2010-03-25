@@ -10,6 +10,7 @@
 
 #include "TypeBasics.hh"
 #include "Composite.hh"
+#include "TypeVisitor.hh"
 
 namespace its {
 
@@ -55,6 +56,8 @@ public :
   void printState (State s, std::ostream & os) const;
 
   Label getName() const { return comp_.getName(); }
+
+  void visit (class TypeVisitor * visitor) const { visitor->visitComposite(comp_); }
 };
 
 } // namespace
