@@ -49,11 +49,12 @@ namespace its {
 	ids[sync->getName()] = ++id;
 	os << "<node nodetype='synchronization' id='" << id << "' xposition='0' yposition='0' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>\n";
 	os << "<attributes>\n";
-	os << "<attribute name='label' xposition='0' yposition='0'> " << sync->getLabel() << "</attribute>\n";
-	os << "<attribute name='name' xposition='0' yposition='0'> " << sync->getName() << "</attribute>\n";
+	os << "<attribute name='label' xposition='0' yposition='0'>" << sync->getLabel() << "</attribute>\n";
+	os << "<attribute name='name' xposition='0' yposition='0'>" << sync->getName() << "</attribute>\n";
 	os << "</attributes>\n";
 	os << "</node>\n";
       }
+      os << "</nodes>\n";
       // ARCS
       os << "<arcs>\n";
       for (Composite::syncs_it sync = comp.syncs_begin() ; sync != comp.syncs_end() ; ++sync) {
@@ -78,30 +79,30 @@ namespace its {
       // next free id
       int id = 2;
       // Store name to  Coloane ID correspondance
-      std::map<vLabel,int> ids;
+      std::map<vLabel,int> pids,tids;
       // Current marking
       PNet::markings_it mark = net.markings_find(state);
 
       // XML file header
       os << "<?xml version='1.0' encoding='UTF-8'?>\n"
-	 << "model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='Time Petri Net' xposition='0' yposition='0'>\n"
+	 << "<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='Time Petri Net' xposition='0' yposition='0'>\n"
 	 << "<attributes>\n</attributes>\n";
       // Nodes
       os << "<nodes>\n";
       for (PNet::trans_it t = net.transitions_begin() ; t != net.transitions_end() ; ++t ) {
-	ids[t->getName()] = ++id;
-	os << "<node nodetype='transition'"
+	tids[t->getName()] = ++id;
+	os << "<node nodetype='transition' "
 	   << "id='" << id << "' xposition='0' yposition='0' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>\n";
 	os << "<attributes>\n";
 	os << "<attribute name='latestFiringTime' xposition='0' yposition='0'>" << TimeConstraint::infString(t->getClock().lft) << "</attribute>\n";
 	os << "<attribute name='earliestFiringTime' xposition='0' yposition='0'>"<< t->getClock().eft <<"</attribute>\n";
-	os << "<attribute name='visibility' xposition='0' yposition='0'>"<< (t->getVisibility()==PUBLIC?"public":"private") <<"</attribute>";
-	os << "<attribute name='label' xposition='0' yposition='0'>"<< t->getLabel() <<"</attribute>";
+	os << "<attribute name='visibility' xposition='0' yposition='0'>"<< (t->getVisibility()==PUBLIC?"public":"private") <<"</attribute>\n";
+	os << "<attribute name='label' xposition='0' yposition='0'>"<< t->getLabel() <<"</attribute>\n";
 	os << "</attributes>\n";
 	os << "</node>\n";
       }
       for (PNet::places_it p=net.places_begin() ; p != net.places_end() ; ++p) {
-	ids[p->getName()] = ++id;
+	pids[p->getName()] = ++id;
 	os << "<node nodetype='place' id='"<< id <<"' xposition='0' yposition='0' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>\n"
 	   << "<attributes>\n"
 	   << "<attribute name='name' xposition='0' yposition='0'>"<< p->getName()  <<"</attribute>\n"
@@ -120,28 +121,28 @@ namespace its {
 	  int src=0,dest=0,val=0;
 	  if (arc->getType() == INPUT) {
 	    type = "arc";
-	    src = ids[arc->begin()->getPlace()];
-	    dest = ids[t->getName()];
+	    src = pids[arc->begin()->getPlace()];
+	    dest = tids[t->getName()];
 	    val = arc->begin()->getValuation();
 	  } else if (arc->getType() == OUTPUT) {
 	    type = "arc";
-	    dest = ids[arc->begin()->getPlace()];
-	    src = ids[t->getName()];
+	    dest = pids[arc->begin()->getPlace()];
+	    src = tids[t->getName()];
 	    val = arc->begin()->getValuation();
 	  } else if (arc->getType() == INHIBITOR) {
 	    type = "inhibitor";
-	    src = ids[arc->begin()->getPlace()];
-	    dest = ids[t->getName()];
+	    src = pids[arc->begin()->getPlace()];
+	    dest = tids[t->getName()];
 	    val = arc->begin()->getValuation();
 	  } else if (arc->getType() == TEST) {
 	    type = "test";
-	    src = ids[arc->begin()->getPlace()];
-	    dest = ids[t->getName()];
+	    src = pids[arc->begin()->getPlace()];
+	    dest = tids[t->getName()];
 	    val = arc->begin()->getValuation();
 	  } else if (arc->getType() == RESET) {
 	    type = "reset";
-	    src = ids[arc->begin()->getPlace()];
-	    dest = ids[t->getName()];
+	    src = pids[arc->begin()->getPlace()];
+	    dest = tids[t->getName()];
 	    val = 0;
 	  } 	  
 	  os << "<arc arctype='" << type << "' id='"<< id << "' startid='" << src << "' endid='" << dest << "' color='#000000' curved='true'>\n" ;
@@ -150,7 +151,7 @@ namespace its {
 	    os << "<attribute name='valuation' xposition='0' yposition='0'>" <<  val  << "</attribute>\n" ;
 	  }
 	  os << "</attributes>\n";
-	  os << "</arc>n";
+	  os << "</arc>\n";
 	}
       }
       os << "</arcs>\n";
@@ -163,14 +164,14 @@ namespace its {
 
       void visitPNet (const class PNet & net) {
 	for (PNet::markings_it state = net.markings_begin(); state != net.markings_end() ; ++state) {
-	  std::ofstream os ( (wd + "/" + net.getName() + "_" + state->first + ".model").c_str() );
+	  std::ofstream os ( std::string(wd + "/" + net.getName() + "_" + state->first + ".model").c_str() );
 	  exportTPN(net,os, state->first);
 	  os.close();
 	}
       }
       void visitComposite (const class Composite & net) {
 	for (Composite::cstates_it state = net.cstates_begin() ; state != net.cstates_end() ; ++state) {
-	  std::ofstream os ((wd + "/" + net.getName() + "_" + state->first + ".model").c_str());
+	  std::ofstream os (std::string(wd + "/" + net.getName() + "_" + state->first + ".model").c_str());
 	  exportComposite(net,os, state->first);
 	  os.close();
 	}
