@@ -80,6 +80,9 @@ public :
   // returns the SDD version of the initial state
   State getInitialState () const ;
 
+  // Visitor pattern to work on the underlying types
+  void visitTypes (class TypeVisitor *) const ;
+
   // Play factory role for building ITS types from other formalisms
   // Returns false and aborts if type name already exists.
   // Create a type to hold a Petri net.
@@ -114,7 +117,7 @@ public :
   // returns the full reachable state space of the system from the initial state(s)
   // also caches result. Optional parameter to deactivate garbage collection.
   State computeReachable (bool wGarbage=true) const;
-
+  
 
   // semi private function used in Scalar sandboxes
   void cloneType (pType type) { int n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }
