@@ -43,6 +43,7 @@ ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
 	$(MYSRCDIR)/CircularSetType.hh \
 	$(MYSRCDIR)/CircularSetXMLLoader.hh \
 	$(MYSRCDIR)/CircularSync.hh \
+	$(MYSRCDIR)/ColoaneExport.hh \
 	$(MYSRCDIR)/Composite.hh \
 	$(MYSRCDIR)/CompositeType.hh \
 	$(MYSRCDIR)/CState.hh \
@@ -72,13 +73,15 @@ ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
 	$(MYSRCDIR)/TPNetSemantics.hpp \
 	$(MYSRCDIR)/Type.hh \
 	$(MYSRCDIR)/TypeBasics.hh \
-	$(MYSRCDIR)/TypeCacher.hh 
+	$(MYSRCDIR)/TypeCacher.hh \
+	$(MYSRCDIR)/TypeVisitor.hh 
 
 ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/Arc.cpp \
 	$(MYSRCDIR)/CircularSet.cpp \
 	$(MYSRCDIR)/CircularSetXMLLoader.cpp \
 	$(MYSRCDIR)/CircularSync.cpp \
+	$(MYSRCDIR)/ColoaneExport.cpp \
 	$(MYSRCDIR)/Composite.cpp \
 	$(MYSRCDIR)/CompositeType.cpp \
 	$(MYSRCDIR)/Delegator.cpp \
