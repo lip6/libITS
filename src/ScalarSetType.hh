@@ -3,7 +3,7 @@
 
 #include "TypeBasics.hh"
 #include "ScalarSet.hh"
-
+#include "TypeVisitor.hh"
 #include "ITSModel.hh"
 
 namespace its {
@@ -64,6 +64,11 @@ public :
   Label getName() const { return comp_.getName(); }
 
   virtual void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Scalar Set" << std::endl; }
+
+    /** Allow to visit the underlying type definition */
+  void visit (class TypeVisitor * visitor) const {
+    visitor->visitScalar(comp_);
+  }
 };
 
 
