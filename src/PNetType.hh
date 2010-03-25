@@ -4,6 +4,7 @@
 #include "TypeBasics.hh"
 #include "PNet.hh"
 #include "TPNetSemantics.hpp"
+#include "TypeVisitor.hh"
 #include <iosfwd>
 #include <map>
 
@@ -156,6 +157,10 @@ public :
     Semantics::printState (s, os, *getVarOrder());
   }
 
+  /** Allow to visit the underlying type definition */
+  virtual void visit (class TypeVisitor * visitor) const {
+    visitor->visitPNet(net_);
+  }
 
 
 };
