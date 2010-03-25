@@ -63,6 +63,8 @@ namespace its {
     Label getName() const { return concrete_->getName() ; }
     std::ostream & print ( std::ostream& os ) const { return concrete_->print(os);}
     
+    void visit (class TypeVisitor * visitor) const { concrete_->visit(visitor); }
+
   };
 
 }

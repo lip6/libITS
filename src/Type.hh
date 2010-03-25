@@ -56,6 +56,9 @@ public :
 	/** To obtain a representation of a labeled state */
     virtual State getState(Label stateLabel) const = 0;
 
+  /** Allow to visit the underlying type definition */
+  virtual void visit (class TypeVisitor * visitor) const = 0;
+
   /** Optional, ok to return true.
    * updates the variable order used in this type */
   virtual bool setVarOrder (labels_t vars) const = 0;
