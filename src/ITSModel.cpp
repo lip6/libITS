@@ -229,6 +229,11 @@ void ITSModel::print (std::ostream & os) const  {
     }
   }
 
+  // Visitor pattern to work on the underlying types
+  void ITSModel::visitTypes (class TypeVisitor * visitor) const {
+    for (types_it it = types_.begin(); it != types_.end() ; ++it )
+      (*it)->visit(visitor);
+  }
 
 
 
