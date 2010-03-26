@@ -59,6 +59,11 @@ void Node::addPostAuto(int node,int valuation){
   postAuto.push_back(x);
 }
 
+void Node::addTest(int node,int valuation){
+  pair<int,int> x(node,valuation);
+  test.push_back(x);
+}
+
 void Node::addReset(int node){
   reset.push_back(node);
 }
@@ -174,6 +179,24 @@ bool RdPE::addPre(const string &place,const string &trans,int valuation){
   places[p].addPost(t,valuation);
   return true;
 }
+
+bool RdPE::addTest(const string &place,const string &trans,int valuation){
+  int p,t;
+  map<string,int>::const_iterator pi=placeName.find(place);
+  if(pi==placeName.end() || places[pi->second].isQueue())
+    return false;
+  else
+    p=pi->second;
+  map<string,int>::const_iterator ti=transitionName.find(trans);
+  if(ti==transitionName.end())
+    return false;
+  else
+    t=ti->second;
+  transitions[t].addTest(p,valuation);
+  places[p].addTest(t,valuation);
+  return true;
+}
+
 
 bool RdPE::addPost(const string &place,const string &trans,int valuation){
   int p,t;
@@ -366,6 +389,34 @@ ostream& operator<<(ostream &os,const RdPE &R){
     os<<" }"<<endl;
   }
   return(os);
+}
+
+bool RdPE::setEft(int tr,int eft) { 
+  if (tr >= nbTransition() ) {
+    std::cerr << "Unknown transition id " << tr << " when setting earliest firing time\n";
+    return false;
+  }
+  Transition & t = transitions[tr];
+  t.clock.eft = eft;
+  return true;
+}
+bool RdPE::setLft(int tr,int lft) { 
+  if (tr >= nbTransition() ) {
+    std::cerr << "Unknown transition id " << tr << " when setting latest firing time\n";
+    return false;
+  }
+  Transition & t = transitions[tr];
+  t.clock.lft = lft;
+  return true;
+}
+bool RdPE::setVisibility(int tr,bool isPublic) { 
+  if (tr >= nbTransition() ) {
+    std::cerr << "Unknown transition id " << tr << " when setting earliest firing time\n";
+    return false;
+  }
+  Transition & t = transitions[tr];
+  t.isPublic = isPublic;
+  return true;
 }
 
 

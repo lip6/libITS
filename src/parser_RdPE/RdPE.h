@@ -35,7 +35,7 @@ class Node{
 public:
   Node(){};
   virtual ~Node(){};
-  vector< pair<int,int> > pre, post, inhibitor, preAuto, postAuto;
+  vector< pair<int,int> > pre, post, inhibitor, preAuto, postAuto, test;
   vector<int> reset;
   void addPre(int,int);
   void addPost(int,int);
@@ -43,6 +43,7 @@ public:
   void addPreAuto(int,int);
   void addPostAuto(int,int);
   void addReset(int);
+  void addTest(int,int);
 };
 
 class Place:public Node{
@@ -71,8 +72,10 @@ class Clock {
 class Transition:public Node{          
 public:
   string name;
+  // handle visibility
+  bool isPublic;
   Clock clock;
-  Transition(const string &t):name(t){};
+ Transition(const string &t):name(t),isPublic(false){};
   ~Transition(){};
 };
 
@@ -110,17 +113,19 @@ public:
   bool addQueue(const string &place,int capacity=0,int mod=0);
   bool addLossQueue(const string &place,int capacity=0,int mod=0);
   bool addTrans(const string &transition);
-  bool setEft(const string &transition,int eft);
-  bool setLft(const string &transition,int lft);
+  bool setEft(int tr,int eft);
+  bool setLft(int tr,int lft);
+  bool setVisibility(int tr,bool isPublic);
   bool addPre(const string &place,const string &transition,int valuation=1);
   bool addPost(const string &place,const string &transition,int valuation=1);  
   bool addPreQueue(const string &place,const string &transition,int valuation=1);
   bool addPostQueue(const string &place,const string &transition,int valuation=1);  
   bool addInhibitor(const string &place,const string &transition,int valuation=1);
+  bool addTest(const string &place,const string &transition,int valuation=1);
   bool addPreAuto(const string &place,const string &transition,const string &valuation);
   bool addPostAuto(const string &place,const string &transition,const string &valuation);  
   bool addReset(const string &place,const string &transition);
-
+  
   /* Visualisation */
   int nbPlace() const {return places.size();};
   int nbTransition() const {return transitions.size();};
