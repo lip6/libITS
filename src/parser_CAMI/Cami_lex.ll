@@ -40,31 +40,36 @@
 %option yylineno
 %option prefix="Cami"
 %%
-"net"                                           {return(NET);}
-"declaration"                                   {return(DECLARATION);}
-"version"                                       {return(CAMIVERSION);}
-"title"                                         {return(TITLE);}
-"project"                                       {return(PROJECT);}
-"date"                                          {return(DATE);}
-"code"                                          {return(CODE);}
-"name"                                          {return(NAME);}
-"marking"                                       {return(MARKING);}
-"domain"                                        {return(DOMAINE);}
-"component"                                     {return(COMPONENT);}
-"guard"                                         {return(GUARD);}
-"priority"                                      {return(PRIORITY);}
-"action"                                        {return(ACTION);}
-"delay"                                         {return(DELAY);}
-"weight"                                        {return(WEIGHT);}
-"place"                                         {return(PLACE);}
-"transition"                                    {return(TRANSITION);}
-"queue"                                         {return(QUEUE);}
-"immediate transition"                          {return(IMMEDIATE);}
-"capacity"                                      {return(CAPACITY);}
-"valuation"                                     {return(VALUATION);}
-"arc"                                           {return(ARC);}
-"inhibitor arc"                                 {return(INHIBITOR);}
-"author(s)"					                            {return(AUTHORS);}
+"3:net"                                           {return(NET);}
+"11:declaration"                                   {return(DECLARATION);}
+"7:version"                                       {return(CAMIVERSION);}
+"5:title"                                         {return(TITLE);}
+"7:project"                                       {return(PROJECT);}
+"4:date"                                          {return(DATE);}
+"4:code"                                          {return(CODE);}
+"4:name"                                          {return(NAME);}
+"7:marking"                                       {return(MARKING);}
+"6:domain"                                        {return(DOMAINE);}
+"9:component"                                     {return(COMPONENT);}
+"5:guard"                                         {return(GUARD);}
+"8:priority"                                      {return(PRIORITY);}
+"6:action"                                        {return(ACTION);}
+"5:delay"                                         {return(DELAY);}
+"6:weight"                                        {return(WEIGHT);}
+"5:place"                                         {return(PLACE);}
+"10:transition"                                    {return(TRANSITION);}
+"5:queue"                                         {return(QUEUE);}
+"20:immediate transition"                          {return(IMMEDIATE);}
+"8:capacity"                                      {return(CAPACITY);}
+"9:valuation"                                     {return(VALUATION);}
+"3:arc"                                           {return(ARC);}
+"13:inhibitor arc"                                 {return(INHIBITOR);}
+"9:inhibitor"                                       {return(INHIBITOR);}
+"16:latestFiringTime"                               {return (LFT);}
+"18:earliestFiringTime"                             {return (EFT);}
+"10:visibility"                                      {return (VISIBILITY);}
+"5:label"                                           {return (LABEL); }
+"9:author(s)"					                            {return(AUTHORS);}
 "//"						                                {return(COMMENTAIRE);}
 "DB()" 		                        	            {return(DB);}
 "FB()"				        	                        {return(FB);}
