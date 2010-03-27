@@ -12,7 +12,7 @@
 //#include "util/dotExporter.h"
 
 #include <iostream>
-
+#include <sstream>
 
 
 //#define TRACE
@@ -78,10 +78,7 @@ pInstance  ITSModel::getInstance () const {
 }
 
 State ITSModel::getInitialState () const {
-  if (initial_ == SDD::null) {
-    initial_ = getInstance()->getType()->getState("TOTO");
-  }
-  return initial_;
+  return getInstance()->getType()->getState(initName_);
 }
 
 bool ITSModel::setInstanceState (Label stateName) {
@@ -89,7 +86,6 @@ bool ITSModel::setInstanceState (Label stateName) {
     return false;
   labels_t inits = getInstance()->getType()->getInitStates () ;
   if ( find(inits.begin(),inits.end(), stateName) != inits.end()) {
-    initial_ =  getInstance()->getType()->getState(stateName);
     initName_ = stateName;
     return true;
   }
@@ -188,10 +184,13 @@ void ITSModel::print (std::ostream & os) const  {
   bool ITSModel::loadOrder (std::istream & is) {
     while (!is.eof()) {
       vLabel line;
-      is >> line;
-      if (line == "#TYPE") {
+      getline(is,line);
+      std::stringstream il (line);
+      vLabel token;
+      il >> token;
+      if (token == "#TYPE") {
 	vLabel type;
-	is >> type;
+	il >> type;
 	labels_t order;
 	// get rid of trailing newline (chomp !)
 	getline(is,line);
@@ -204,8 +203,15 @@ void ITSModel::print (std::ostream & os) const  {
 	}
 	if (!updateVarOrder(type,order))
 	  return false;
+      } else if (line.empty()) {
+	continue;
+      } else {
+	
+	std::cerr << "syntax error in input order file, at line :\n" << line << "\n expected a #TYPE marker\n";
+	return false;
       }
     }
+    setInstanceState(initName_);
     return true;
   }
 
