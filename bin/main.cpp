@@ -13,6 +13,7 @@
 #include "ITSModelXMLLoader.hh"
 // Cami parser
 #include "JSON2ITS.hh"
+#include "parser_json/parse_json.hh"
 
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
@@ -65,7 +66,7 @@ void usage() {
        << "(see Samples dir for documentation and examples). \n \nOptions :" << endl;
   cerr<<  "    -i path : specifies the path to input Romeo model " <<endl;
   cerr<<  "    -p path : specifies the path to input Prod format model with possible module info pnddd style (xxx.net)" <<endl;
-  cerr<<  "    -xml path : use a XML encoded ITSModel file, as produced by Coloane or Romeo.\n" ;
+  cerr<<  "    -xml path : use a XML encoded ITSModel file, as produced by Coloane.\n" ;
   cerr<<  "    -c path : use a CAMI encoded ordinary P/T net, as produced by Coloane or Macao. Use -j in conjunction with this option.\n" ;
   cerr<<  "    -j path : use a JSON encoded hierarchy description file for a CAMI model, as produced using PaToH.\n" ;
   cerr << "    --dump-order path : dump the currently used variable order to file designated by path and exit. \n" ;
@@ -198,8 +199,15 @@ int main (int argc, char **argv) {
    // Parse the input file to build the system
    
    TPNet * pnet = XMLLoader::loadXML(pathromeoff);
-   model.declareType(*pnet);
-   modelName += pathromeoff ;
+   if (dojsonparse) {
+     json::Hierarchie * hier = new json::Hierarchie();
+     json::json_parse(pathjsonff, *hier);
+     model.declareType(*pnet,hier);
+     model.print(std::cerr);
+   } else {
+     model.declareType(*pnet);
+     modelName += pathromeoff ;
+   }
    model.setInstance(pnet->getName(),"main");
    model.setInstanceState("init");	  
  } else if (doXMLITSparse) {
