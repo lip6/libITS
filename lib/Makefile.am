@@ -49,6 +49,7 @@ ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
 	$(MYSRCDIR)/CState.hh \
 	$(MYSRCDIR)/Delegator.hh \
 	$(MYSRCDIR)/JSON2ITS.hh \
+	$(MYSRCDIR)/JSONPNetType.hh \
 	$(MYSRCDIR)/Hom_PlaceArcs.hh \
 	$(MYSRCDIR)/Hom_Basic.hh \
 	$(MYSRCDIR)/Instance.hh \
@@ -86,6 +87,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/CompositeType.cpp \
 	$(MYSRCDIR)/Delegator.cpp \
 	$(MYSRCDIR)/JSON2ITS.cpp \
+	$(MYSRCDIR)/JSONPNetType.cpp \
 	$(MYSRCDIR)/Hom_Basic.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
 	$(MYSRCDIR)/Modular2ITS.cpp \
@@ -113,7 +115,7 @@ else
 LIBDDD_LINK=-lddd
 endif
 
-AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src/its/src/lib  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS)
+AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS)
 AM_CXXFLAGS = -g -O2 -Wall
 
 libITS_a_SOURCES = $(ITSSOURCES)
