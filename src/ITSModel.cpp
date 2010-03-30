@@ -174,7 +174,7 @@ void ITSModel::print (std::ostream & os) const  {
     pType newtype = new CompositeType(comp);
     return addType(newtype);
   }
-  // Create a type to hold a Petri net.
+  // Create a type to hold a Scalar set.
   bool ITSModel::declareType (const class ScalarSet & net) {
     ScalarSetType* newtype = new ScalarSetType(net);
     newtype->setStrategy(scalarStrat_, scalarParam_);
