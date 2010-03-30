@@ -24,6 +24,9 @@
 namespace spot {
   class tgba ;
 }
+namespace json {
+  class Hierarchie;
+}
 
 namespace its {
 
@@ -86,6 +89,8 @@ public :
   // Returns false and aborts if type name already exists.
   // Create a type to hold a Petri net.
   bool declareType (const class PNet & net);
+  // Create a type to hold a Petri net, with hierarchical representation based on JSON description.
+  bool declareType (const class PNet & net, const class json::Hierarchie * hier);
   // Create a type to hold a Timed Petri net.
   bool declareType (const class TPNet & net);
   // Create a type to hold a composite

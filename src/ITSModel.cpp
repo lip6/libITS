@@ -2,6 +2,7 @@
 
 // For factory role
 #include "PNetType.hh"
+#include "JSONPNetType.hh"
 #include "TPNetType.hh"
 #include "Composite.hh"
 #include "TComposite.hh"
@@ -142,9 +143,8 @@ void ITSModel::print (std::ostream & os) const  {
     model_->print(os) ;
     os << " = " << initName_;
     os << " ;" << std::endl;
+    model_->getType()->printState(getInitialState(),os);
   }
-
-  model_->getType()->printState(getInitialState(),os);
 }
 
   // Factory role
@@ -157,6 +157,12 @@ void ITSModel::print (std::ostream & os) const  {
     else 
       return addType(new PNetType(net));
   }
+  // Create a type to hold a Petri net, with hierarchical representation based on JSON description.
+  bool ITSModel::declareType (const class PNet & net, const json::Hierarchie * hier) {
+    return addType(new JsonPNetType(net,hier));
+  }
+
+
   // Create a type to hold a Petri net.
   bool ITSModel::declareType (const class TPNet & net) {
     if (storage_ == sdd_storage)
