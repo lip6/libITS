@@ -19,8 +19,13 @@
 #include "JSException.hh"
 
 
+
+namespace json {
 /**
  * \param filename : Nom du fichier de configuration JSON à parser
  * \param h1 : Renvoie la configuration de la hiérarchie
  */
 void json_parse(const std::string& filename,Hierarchie& h1);
+
+
+}

@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+
+namespace json {
 /**
  * Enumeration for identified a type of one element
  *  - PLA = A place
@@ -128,3 +130,5 @@ class Hierarchie : public ItfElement
 
 };
 
+
+}

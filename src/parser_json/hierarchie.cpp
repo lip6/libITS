@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+namespace json {
+
 EltType PName::getType() {
   return PLA;
 }
@@ -70,4 +72,7 @@ void Hierarchie::print(int cpt) {
  */
 EltType Hierarchie::getType() {
   return HIE;
+}
+
+
 }
