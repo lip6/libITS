@@ -10,7 +10,7 @@
 #include <set>
 
 
-
+using namespace json;
 
 // to store which variables (of the RdPE) belong to each hierarchy level
 typedef std::set<int> places_t;
