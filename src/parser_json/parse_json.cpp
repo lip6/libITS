@@ -13,7 +13,7 @@
 
 #include <sstream>
 
-
+namespace json {
 
 void add_pair( json_spirit::Object& obj, const std::string& name, const json_spirit::Value& value )
 {
@@ -142,4 +142,7 @@ void json_parse(const std::string& filename,Hierarchie& h1)
     //h1.inverted_identification();
     //std::cout << "Parsing JSON File " << filename << " :" << std::endl;
     //h1.print(0);
+}
+
+
 }
