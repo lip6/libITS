@@ -16,7 +16,7 @@ class JsonPNetType : public TypeBasics {
   // The sandbox model to build the final representation in
   mutable ITSModel model_;
   // The JSON hierarchy
-  json::Hierarchie hier_;
+  const json::Hierarchie *hier_;
   // real type for delegation
   mutable pType concrete_;
   // lazy build of concrete
@@ -26,7 +26,7 @@ protected :
   const PNet & getNet() const { return net_; }
 public :
 
-  JsonPNetType (const PNet & net, const json::Hierarchie & hier) : net_(net), hier_(hier), concrete_(NULL) {}
+  JsonPNetType (const PNet & net, const json::Hierarchie * hier) : net_(net), hier_(hier), concrete_(NULL) {}
   virtual ~JsonPNetType() {}
 
   /** the set InitStates of designated initial states (a copy)*/

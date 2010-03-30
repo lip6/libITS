@@ -142,17 +142,17 @@ namespace its {
 	// A basic petri net module : list of places.
 	vLabel netname = nextName();
 	hiername [hier] = netname;
-	its::PNet net (netname);
+	its::PNet newnet (netname);
 	
 	places_t & places = varset[hier]; 
 	
 	
 	for (json::Hierarchie::elts_it it = hier->begin() ; it != hier->end() ; ++it ) {      
 	  vLabel pname = ((json::PName *) (*it))->place;
-	  net.addPlace( pname );
+	  newnet.addPlace( pname );
 	  places.insert( pname );
 	  for (PNet::markings_it mark = net.markings_begin() ; mark != net.markings_end() ; ++mark) {
-	    net.setMarking(mark->first, pname, mark->second.getMarking(pname));
+	    newnet.setMarking(mark->first, pname, mark->second.getMarking(pname));
 	  }
 	}
 
@@ -165,10 +165,10 @@ namespace its {
 
 	  if ( locality == 2 ) {
 	    // pure local
-	    net.addTransition (tname, tlabel, its::PRIVATE);
+	    newnet.addTransition (tname, tlabel, its::PRIVATE);
 	  } else if ( locality == 1 ) {
 	    // touches the component
-	    net.addTransition (tname, tlabel, its::PUBLIC);
+	    newnet.addTransition (tname, tlabel, its::PUBLIC);
 	    // increment it
 	    ++it;
 	  } else {
@@ -181,7 +181,7 @@ namespace its {
 	  for (PTransition::arcs_it arc = curt.begin() ; arc != curt.end() ; ++arc) {
 	    for (Arc::places_it pit = arc->begin() ; pit != arc->end() ; ++pit) {
 	      if ( places.find(pit->getPlace()) != places.end() ) {
-		net.addArc (its::PNet::ArcVal(pit->getPlace(),pit->getValuation()),  tname, arc->getType());
+		newnet.addArc (its::PNet::ArcVal(pit->getPlace(),pit->getValuation()),  tname, arc->getType());
 	      }
 	    }
 	  }
@@ -194,7 +194,7 @@ namespace its {
 	//    std::cerr << "Built model : " ;
 	//    net.print(std::cerr);
 	//    std::cerr << std::endl;
-	model.declareType(net);
+	model.declareType(newnet);
 	return netname;
       }
     }
@@ -214,8 +214,10 @@ namespace its {
 	trans.push_back(*tit);
 
 
-      vLabel name = jrb.buildComposite(&hier_,net_,trans,model_);
+      vLabel name = jrb.buildComposite(hier_,net_,trans,model_);
       concrete_ =  model_.findType(name);
+
+      std::cerr << model_ << std::endl;
     }
     return concrete_;
   }
