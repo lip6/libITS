@@ -198,12 +198,12 @@ int main (int argc, char **argv) {
  } else if ( doromeoparse) {
    // Parse the input file to build the system
    
-   TPNet * pnet = XMLLoader::loadXML(pathromeoff);
+   TPNet * pnet = XMLLoader::loadXML(pathromeoff, dojsonparse);
    if (dojsonparse) {
      json::Hierarchie * hier = new json::Hierarchie();
      json::json_parse(pathjsonff, *hier);
      model.declareType(*pnet,hier);
-     model.print(std::cerr);
+     //     model.print(std::cerr);
    } else {
      model.declareType(*pnet);
      modelName += pathromeoff ;
