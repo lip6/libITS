@@ -36,6 +36,10 @@ namespace its {
       
       for (PTransition::arcs_it arc = t.begin() ; arc != t.end() ; ++arc) {
 	for (Arc::places_it pit = arc->begin() ; pit != arc->end() ; ++pit) {
+// 	  std::cerr << "arc to place : " << pit->getPlace() << std::endl;
+// 	  for (places_it ppit = places.begin(); ppit != places.end() ; ++ppit)
+// 	    std::cerr << *ppit << " ," ;
+// 	  std::cerr << std::endl;
 	  if ( places.find(pit->getPlace()) != places.end() ) {
 	    local = true;
 	  } else {
@@ -74,11 +78,11 @@ namespace its {
 	  comp.addInstance ( inst,  inst , model);
 	  comp.updateStateDef ( "init", inst, "init");
 	  
-	  for (places_it subit = subp.begin() ; subit != subp.end() ; ++subit ) {
-	    vLabel pname = *subit ;
-	    comp.addSynchronization (pname, pname);
-	    comp.addSyncPart (pname, inst, pname);
-	  }
+// 	  for (places_it subit = subp.begin() ; subit != subp.end() ; ++subit ) {
+// 	    vLabel pname = *subit ;
+// 	    comp.addSynchronization (pname, pname);
+// 	    comp.addSyncPart (pname, inst, pname);
+// 	  }
 	  
 	}
 	
@@ -88,11 +92,16 @@ namespace its {
 	  PTransition & curt = *it;
 	  Label tname = curt.getName();
 	  int locality =  isLocal (curt, places);
+
+// 	  std::cerr << "locality =" << locality << std::endl;
 	  
 	  if ( locality == 2 ) {
 	    // pure local
-	    // no label
-	    comp.addSynchronization( tname, "");
+	    // copy the label if PUBLIC transition
+	    if (curt.getVisibility() == PUBLIC)
+	      comp.addSynchronization( tname, curt.getLabel());
+	    else
+	      comp.addSynchronization( tname, "");
 	    
 	  } else if ( locality == 1 ) {
 	    // touches the component
@@ -165,10 +174,10 @@ namespace its {
 
 	  if ( locality == 2 ) {
 	    // pure local
-	    newnet.addTransition (tname, tlabel, its::PRIVATE);
+	    newnet.addTransition (tname, tname, its::PRIVATE);
 	  } else if ( locality == 1 ) {
 	    // touches the component
-	    newnet.addTransition (tname, tlabel, its::PUBLIC);
+	    newnet.addTransition (tname, tname, its::PUBLIC);
 	    // increment it
 	    ++it;
 	  } else {
@@ -213,6 +222,7 @@ namespace its {
       for (PNet::trans_it tit= net_.transitions_begin() ; tit != net_.transitions_end() ; ++tit)
 	trans.push_back(*tit);
 
+      //      std::cerr << "trans size : " << trans.size() << std::endl;
 
       vLabel name = jrb.buildComposite(hier_,net_,trans,model_);
       concrete_ =  model_.findType(name);
