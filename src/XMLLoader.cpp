@@ -17,6 +17,7 @@
 typedef std::map<int,std::string> map_t;
 static map_t tnames;
 static map_t pnames;
+static bool hasUniqueNames = false;
 
 void XMLLoader::loadTransitions(void * data, const XML_Char* Elt, const XML_Char** Attr)
 {
@@ -87,7 +88,10 @@ void XMLLoader::loadPlaces(void * data, const XML_Char* Elt, const XML_Char** At
         
         // I do not use the label to make it easier to reference the place
         // when creating arcs
-        s << "P_" << id << label;
+	if (! hasUniqueNames)
+	  s << "P_" << id << label;
+	else
+	  s << label;
       	pnames[id] = s.str() ;
 
         pn->addPlace(s.str());
@@ -148,10 +152,10 @@ void XMLLoader::loadArcs(void * data, const XML_Char* Elt, const XML_Char** Attr
     }
 }
 
-its::TPNet * XMLLoader::loadXML(std::string filename) 
+its::TPNet * XMLLoader::loadXML(std::string filename, bool hasPureNames) 
 {
 	char *Buffer = NULL;
-
+	hasUniqueNames = hasPureNames;
 	
 	// remove any path info up to file name: suppose path separator is / not backslash
 	std::string netname = filename.substr(filename.find_last_of("/",filename.size())+1 );

@@ -13,7 +13,7 @@ class XMLLoader
 		static void loadTransitions(void * data, const XML_Char* Elt, const XML_Char** Attr);
 		static void loadPlaces(void * data, const XML_Char* Elt, const XML_Char** Attr);
 		static void loadArcs(void * data, const XML_Char* Elt, const XML_Char** Attr);
-		static its::TPNet * loadXML(std::string filename);
+  static its::TPNet * loadXML(std::string filename, bool hasUniqueNames=false);
 			
 };
 
