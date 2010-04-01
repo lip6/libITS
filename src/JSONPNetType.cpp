@@ -140,7 +140,7 @@ namespace its {
 	      }
 	    }
 	  }
-	  if (targets.size() == 1) {
+	  if (targets.size() == 1 && locality == 2) {
 	    // was pure local to a subcomponent : use the label
 	    comp.addSyncPart (tname, *targets.begin(), tlabel);
 	  } else {
