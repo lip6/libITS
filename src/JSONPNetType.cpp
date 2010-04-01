@@ -91,6 +91,8 @@ namespace its {
 	for ( std::vector<PTransition>::iterator it = trans.begin() ; it != trans.end() ; /** increment done in non erase case */ ) {
 	  PTransition & curt = *it;
 	  Label tname = curt.getName();
+	  Label tlabel = curt.getLabel();
+	  Visibility tvis = curt.getVisibility();
 	  int locality =  isLocal (curt, places);
 
 // 	  std::cerr << "locality =" << locality << std::endl;
@@ -98,13 +100,18 @@ namespace its {
 	  if ( locality == 2 ) {
 	    // pure local
 	    // copy the label if PUBLIC transition
-	    if (curt.getVisibility() == PUBLIC)
-	      comp.addSynchronization( tname, curt.getLabel());
-	    else
+	    if (tvis == PUBLIC) {
+	      comp.addSynchronization( tname, tlabel);
+	      // keep the transition alive, it needs to be further exported
+	      ++it;
+	    } else {
 	      comp.addSynchronization( tname, "");
+	      // remove from todo list
+	      it = trans.erase(it);
+	    }
 	    
 	  } else if ( locality == 1 ) {
-	    // touches the component
+	    // touches the component, not yet fully resolved
 	    comp.addSynchronization (tname, tname);
 	    // increment it
 	    ++it;
@@ -127,20 +134,22 @@ namespace its {
 		places_t & subp = varset[*hit];
 		if ( subp.find(pit->getPlace()) != subp.end() ) {
 		  targets.insert(hiername[*hit]);
-		  // to next transition
+		  // to next transition arc
 		  break;
 		}
 	      }
 	    }
 	  }
-	  // add sync parts
-	  for (targets_it tit = targets.begin() ; tit != targets.end() ; ++tit ) {
-	    comp.addSyncPart (tname, *tit, tname);
+	  if (targets.size() == 1) {
+	    // was pure local to a subcomponent : use the label
+	    comp.addSyncPart (tname, *targets.begin(), tlabel);
+	  } else {
+	    // add sync parts
+	    for (targets_it tit = targets.begin() ; tit != targets.end() ; ++tit ) {
+	      comp.addSyncPart (tname, *tit, tname);
+	    }
 	  }
 	  
-	  if (locality == 2)
-	    // remove from todo list
-	    it = trans.erase(it);
 
 	}
 	
@@ -171,12 +180,21 @@ namespace its {
 	  PTransition & curt = *it;
 	  Label tname = curt.getName();
 	  Label tlabel = curt.getLabel();
+	  Visibility tvis = curt.getVisibility();
 
 	  if ( locality == 2 ) {
 	    // pure local
-	    newnet.addTransition (tname, tname, its::PRIVATE);
+	    newnet.addTransition (tname, tlabel, tvis);
+
+	    if (tvis == its::PRIVATE) {
+	      // remove from todo list
+	      it = trans.erase(it);
+	    } else {
+	      // keep it in todo list for export from higher level components
+	      ++it;
+	    }
 	  } else if ( locality == 1 ) {
-	    // touches the component
+	    // touches the component, not yet fully resolved
 	    newnet.addTransition (tname, tname, its::PUBLIC);
 	    // increment it
 	    ++it;
@@ -194,9 +212,6 @@ namespace its {
 	      }
 	    }
 	  }
-	  if (locality == 2)
-	    // remove from todo list
-	    it = trans.erase(it);
 	  
 
 	}
