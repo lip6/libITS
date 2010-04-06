@@ -13,8 +13,13 @@ namespace its {
  * Note: Implementation is stored in  ScalarSetType.cpp. */
 class CircularSetType : public ScalarSetType {
   const CircularSet & getCComp() const { return (const CircularSet &) getComp(); }
+
+  protected :
+    virtual void setComp(const ScalarSet & comp) { comp_ = new CircularSet((const CircularSet&)comp); }
+
+
 public :
-  CircularSetType (const CircularSet & c) : ScalarSetType(c) {};
+  CircularSetType (const CircularSet & c) : ScalarSetType() { setComp(c);};
   virtual ~CircularSetType() {}
 
 
