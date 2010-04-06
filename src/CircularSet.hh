@@ -18,6 +18,7 @@ namespace its {
 
   private :
     circs_t circs_;
+
   public :
     circs_it circs_begin() const { return circs_.begin() ; }
     circs_it circs_end() const { return circs_.end() ; }
@@ -35,6 +36,7 @@ namespace its {
      */
     bool addSyncPart (Label sname, InstanceID subnetname, const labels_t & tname);
 
+    // overloaded
     std::ostream & print (std::ostream & os) const ;
   };
 
