@@ -1,6 +1,6 @@
 #include <typeinfo>
 #include <iostream>
-#include "JsonPNetType.hh"
+#include "JSONPNetType.hh"
 #include "CircularSetType.hh"
 #include "Composite.hh"
 
