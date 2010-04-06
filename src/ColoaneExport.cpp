@@ -176,7 +176,7 @@ namespace its {
 	  os.close();
 	}
       }
-      void visitScalar (const class ScalarSet & net) { std::cerr << "Export to coloane not implemented for Circular Set !!" << std::endl; }
+      void visitScalar (const class ScalarSet & net) { std::cerr << "Export to coloane not implemented for Scalar Set !!" << std::endl; }
       void visitCircular (const class CircularSet & net) { std::cerr << "Export to coloane not implemented for Circular Set !!" << std::endl; }
 
 
