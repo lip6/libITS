@@ -1,99 +1,141 @@
 #include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <cstring>
 
-#include "IPN.hh"
+#include "ITSModel.hh"
+#include "PNet.hh"
+#include "Composite.hh"
+#include "CircularSet.hh"
+
 #include "statistic.hpp"
 
 
-std::string toString (int i) {
-  char buff [16];
-  sprintf (buff,"%d",i);
-  return buff;
+using namespace its;
+using namespace std;
+
+void usage() {
+  cerr << "Instantiable Transition Systems: Philo example; package " << PACKAGE_STRING <<endl;
+  cerr << "Usage : philoITS NN [-ssD2/-ssDR/-ssDS see below]  where NN is the mandatory size. Default is -ssD2 1" << endl;
+  cerr<<  "    -ssD2 INT : use 2 level depth for scalar sets. Integer provided defines level 2 block size." <<endl;
+  cerr<<  "    -ssDR INT : use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
+  cerr<<  "    -ssDS INT : use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level." <<endl;
 }
 
-
-void buildPhiloType (IPNModel & m) {
-  UnitNet * philo = new UnitNet("Philo") ;
+void buildPhiloType (ITSModel & m) {
+  PNet net ("Philo") ;
   
-  philo->addPlace ("Idle");
-  philo->addPlace ("WaitL");
-  philo->addPlace ("WaitR");
-  philo->addPlace ("HasL");
-  philo->addPlace ("HasR");
+  net.addPlace ("Idle");
+  net.addPlace ("WaitL");
+  net.addPlace ("WaitR");
+  net.addPlace ("HasL");
+  net.addPlace ("HasR");
 
-  philo->openStateDef ("default");
-  philo->updateStateDef("Idle",1);
-  philo->closeStateDef();
+  net.setMarking("init","Idle",1);
+
+  vLabel tname = "hungry";
+  net.addTransition(tname, "" , PRIVATE);
+  net.addArc (PNet::ArcVal("Idle",1), tname,INPUT);
+  net.addArc (PNet::ArcVal("WaitL",1), tname,OUTPUT);
+  net.addArc (PNet::ArcVal("WaitR",1), tname,OUTPUT);
   
-  philo->addTransition("hungry", PRIVATE);
-  philo->addArc ("Idle","hungry",1,INPUT);
-  philo->addArc ("WaitL","hungry",1,OUTPUT);
-  philo->addArc ("WaitR","hungry",1,OUTPUT);
+  tname = "getLeft";
+  net.addTransition(tname, tname , PUBLIC);
+  net.addArc (PNet::ArcVal("WaitL",1), tname,INPUT);
+  net.addArc (PNet::ArcVal("HasL",1), tname,OUTPUT);
+
+  tname = "getRight";
+  net.addTransition(tname, tname , PUBLIC);
+  net.addArc (PNet::ArcVal("WaitR",1), tname,INPUT);
+  net.addArc (PNet::ArcVal("HasR",1), tname,OUTPUT);
+
+  tname = "eat";
+  net.addTransition(tname, tname , PUBLIC);
+  net.addArc (PNet::ArcVal("HasL",1), tname,INPUT);
+  net.addArc (PNet::ArcVal("HasR",1), tname,INPUT);
+  net.addArc (PNet::ArcVal("Idle",1), tname,OUTPUT);
   
-  philo->addTransition("getLeft", PUBLIC);
-  philo->addArc ("WaitL","getLeft",1,INPUT);
-  philo->addArc ("HasL","getLeft",1,OUTPUT);
-
-  philo->addTransition("getRight", PUBLIC);
-  philo->addArc ("WaitR","getRight",1,INPUT);
-  philo->addArc ("HasR","getRight",1,OUTPUT);
-
-  philo->addTransition("eat", PUBLIC);
-  philo->addArc ("HasL","eat",1,INPUT);
-  philo->addArc ("HasR","eat",1,INPUT);
-  philo->addArc ("Idle","eat",1,OUTPUT);
-
-  m.addType (philo);
-
-
+  m.declareType (net);
 }
 
-void buildForkType (IPNModel & m) {
-  UnitNet * fork = new UnitNet("Fork") ;
+void buildForkType (ITSModel & m) {
+  PNet net("Fork");
 
-  fork->addPlace ("fork");
+  net.addPlace ("fork");
 
-  fork->openStateDef ("default");
-  fork->updateStateDef("fork",1);
-  fork->closeStateDef();
+  net.setMarking("init","fork",1);
 
-  fork->addTransition ("get",PUBLIC);
-  fork->addArc ("fork","get",1,INPUT);
+  vLabel tname = "get";
+  net.addTransition(tname, tname , PUBLIC);
+  net.addArc (PNet::ArcVal("fork",1), tname,INPUT);
 
-  fork->addTransition ("put",PUBLIC);
-  fork->addArc("fork","put",1,OUTPUT);
+  tname = "put";
+  net.addTransition(tname, tname , PUBLIC);
+  net.addArc (PNet::ArcVal("fork",1), tname,OUTPUT);
 
-  m.addType(fork);
+  m.declareType(net);
 }
 
-void buildPhiloForkType (IPNModel & m) {
+void buildPhiloForkType (ITSModel & m) {
   // 2^0 philo = 1 philo
-  CompositeNet *pf = new CompositeNet ("PhiloFork0");
+  Composite comp ("PhiloFork");
 
-  pf->addInstance ("p","Philo",m);
-  pf->addInstance ("f","Fork",m);
+  comp.addInstance ("p","Philo",m);
+  comp.addInstance ("f","Fork",m);
   
-  pf->addSynchronization("internal",PRIVATE);
-  pf->addSyncPart("internal","p","getLeft");
-  pf->addSyncPart("internal","f","get");
+  comp.updateStateDef("init","p","init");
+  comp.updateStateDef("init","f","init");
 
-  pf->addSynchronization("getRight",PUBLIC);
-  pf->addSyncPart("getRight","p","getRight");
+  // private = empty label
+  vLabel sname = "internal";
+  comp.addSynchronization(sname,"");
+  comp.addSyncPart(sname,"p","getLeft");
+  comp.addSyncPart(sname,"f","get");
 
-  pf->addSynchronization("putRight",PUBLIC);
-  pf->addSyncPart("putRight","p","eat");
-  pf->addSyncPart("putRight","f","put");
+  sname = "getRight";
+  comp.addSynchronization(sname,sname);
+  comp.addSyncPart(sname,"p","getRight");
 
-  pf->addSynchronization("getFork",PUBLIC);
-  pf->addSyncPart("getFork","f","get");
+  sname = "putRight";
+  comp.addSynchronization(sname,sname);
+  comp.addSyncPart(sname,"p","eat");
+  comp.addSyncPart(sname,"f","put");
 
-  pf->addSynchronization("putFork",PUBLIC);
-  pf->addSyncPart("putFork","f","put");
+  sname = "getFork";
+  comp.addSynchronization(sname,sname);
+  comp.addSyncPart(sname,"f","get");
 
-  m.addType (pf);
+  sname = "putFork";
+  comp.addSynchronization(sname,sname);
+  comp.addSyncPart(sname,"f","put");
+
+  m.declareType (comp);
 }
 
+
+void buildPhiloCircular (ITSModel & m, int n) {
+  CircularSet cs ("Philos");
+
+  cs.setSize(n);
+
+  cs.setInstance("pf","PhiloFork",m);
+
+  cs.createStateDef("init","init");
+  
+  vLabel sname = "get";
+  cs.addSynchronization(sname,"");
+  cs.addSyncPart(sname,CircularSet::CURRENT,labels_t(1,"getRight"));
+  cs.addSyncPart(sname,CircularSet::NEXT,labels_t(1,"getFork"));
+
+  sname = "put";
+  cs.addSynchronization(sname,"");
+  cs.addSyncPart(sname,CircularSet::CURRENT,labels_t(1,"putRight"));
+  cs.addSyncPart(sname,CircularSet::NEXT,labels_t(1,"putFork"));
+
+  cs.print(std::cout);
+  m.declareType(cs);
+}
+/*
 void buildPhiloCompose (IPNModel & m, int n) {
   CompositeNet *pf = new CompositeNet ("PhiloFork" + toString(n));
 
@@ -141,17 +183,55 @@ void buildTableType (IPNModel & m, const std::string & nphilo) {
   m.addType (table);
 }
 
+*/
+
 
 
 
 int main (int argc, char **argv) {
   
   // create a model to hold net types.
-  IPNModel model ;
+  ITSModel model ;
   buildPhiloType (model);
   buildForkType (model);
   buildPhiloForkType (model);
 
+  if (argc >=3) {
+    int i = 2;
+    if (! strcmp(argv[i],"-ssD2") ) {
+     if (++i > argc) 
+       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);}
+     int grain = atoi(argv[i]);
+     model.setScalarStrategy(DEPTH1,grain);
+    }else if (! strcmp(argv[i],"-ssDR") ) {
+      if (++i > argc) 
+	{ cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);}
+      int grain = atoi(argv[i]);
+      model.setScalarStrategy(DEPTHREC,grain);   
+    }else if (! strcmp(argv[i],"-ssDS") ) {
+      if (++i > argc) 
+	{ cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);}
+      int grain = atoi(argv[i]);
+      model.setScalarStrategy(SHALLOWREC,grain);
+    }
+  }
+  	
+  int n = 10;
+  if (argc >= 2)
+    n = atoi(argv[1]);
+  buildPhiloCircular(model,n);
+
+  model.setInstance("Philos","main");
+  model.setInstanceState("init");
+  std::cerr << model << std::endl;
+
+  State s = model.computeReachable(true);
+  Statistic S = Statistic(s,"Philos "+to_string(n),CSV);  
+
+  S.print_header(std::cout);
+  S.print_line(std::cout);
+
+  /*
   // 2^pow philo, e.g. pow = 3 -> 8 philo
   int pow ;
   if (argc > 1) {
@@ -190,5 +270,5 @@ int main (int argc, char **argv) {
   S.print_line(out);
   S.print_header(std::cout);
   S.print_line(std::cout);
-
+  */
 }
