@@ -11,7 +11,7 @@ namespace its {
 /** the set InitStates of designated initial states (a copy)*/
 labels_t ScalarSetType::getInitStates () const {
   labels_t ret;
-  for (ScalarSet::cstates_it it = comp_.cstates_begin(); it != comp_.cstates_end() ; ++it) {
+  for (ScalarSet::cstates_it it = getComp().cstates_begin(); it != getComp().cstates_end() ; ++it) {
     ret.push_back(it->first);
   }
   return ret;
@@ -20,7 +20,7 @@ labels_t ScalarSetType::getInitStates () const {
 /** the set T of public transition labels (a copy)*/
 labels_t ScalarSetType::getTransLabels () const {
   std::set<vLabel> toRet;
-  for (ScalarSet::syncs_it it = comp_.syncs_begin(); it != comp_.syncs_end() ; ++it) {
+  for (ScalarSet::syncs_it it = getComp().syncs_begin(); it != getComp().syncs_end() ; ++it) {
       toRet.insert(it->getLabel());
   }
   labels_t ret;
@@ -333,16 +333,16 @@ labels_t CircularSetType::getTransLabels () const {
     }
     switch (strat) {
     case DEPTH1 :
-      strat_ = new BasicStrategy(comp_, model_, parameter);
+      strat_ = new BasicStrategy(getComp(), model_, parameter);
       break ;
     case DEPTHREC :
-      strat_ = new DepthRecStrategy(comp_,model_,parameter);
+      strat_ = new DepthRecStrategy(getComp(),model_,parameter);
       break;
     case SHALLOWREC :
-      strat_ = new DepthRecStrategy(comp_,model_,parameter);
+      strat_ = new DepthRecStrategy(getComp(),model_,parameter);
       break;
     default :
-      strat_ = new BasicStrategy(comp_, model_, parameter);
+      strat_ = new BasicStrategy(getComp(), model_, parameter);
       break;
     }
     return;
@@ -352,6 +352,7 @@ labels_t CircularSetType::getTransLabels () const {
     if (concrete_ == NULL ) {
       vLabel name = strat_->buildRepresentation();
       concrete_ =  model_.findType(name);
+      std::cerr << model_ << std::endl;
     }
     return concrete_;
   }

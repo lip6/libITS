@@ -17,8 +17,6 @@ namespace its {
 
 
 class ScalarSetType : public TypeBasics {
-  // The concrete model declaration storage class
-  ScalarSet comp_;
   // The sandbox model to build the final representation in
   mutable ITSModel model_;
   // strategy
@@ -28,16 +26,24 @@ class ScalarSetType : public TypeBasics {
   // lazy build of concrete
   pType getConcrete () const ;
 protected :
+  // The concrete model declaration storage class
+  ScalarSet *comp_;
+
   labels_t getVarSet () const { return labels_t(); }
-  const ScalarSet & getComp() const { return comp_; }
+  const ScalarSet & getComp() const { return *comp_; }
+  virtual void setComp(const ScalarSet & comp) { 
+    comp_ = new ScalarSet(comp); 
+  }
+  // protected constructor for use in circular set : does NOT initialize comp_
+  ScalarSetType():strat_(NULL) { setStrategy(DEPTH1); }
 public :
   // factory behavior
   virtual void setStrategy (scalarStrategy strat, int parameter=1) ;
 
 
 
-  ScalarSetType (const ScalarSet & c) : comp_(c), strat_(NULL) { setStrategy(DEPTH1);};
-  virtual ~ScalarSetType() { delete strat_; }
+  ScalarSetType (const ScalarSet & c) : strat_(NULL) { setStrategy(DEPTH1); setComp(c);};
+  virtual ~ScalarSetType() { delete strat_; delete comp_; }
 
   /** the set InitStates of designated initial states (a copy)*/
   labels_t getInitStates () const ;
@@ -60,14 +66,14 @@ public :
   State getState(Label stateLabel) const  {  return getConcrete()->getState(stateLabel) ;};
   
   /* delegated */
-  std::ostream & print (std::ostream & os) const { return comp_.print(os); }  
-  Label getName() const { return comp_.getName(); }
+  std::ostream & print (std::ostream & os) const { return getComp().print(os); }  
+  Label getName() const { return getComp().getName(); }
 
   virtual void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Scalar Set" << std::endl; }
 
     /** Allow to visit the underlying type definition */
   void visit (class TypeVisitor * visitor) const {
-    visitor->visitScalar(comp_);
+    visitor->visitScalar(getComp());
   }
 };
 

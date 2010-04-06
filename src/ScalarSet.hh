@@ -38,6 +38,7 @@ private :
   cstates_t cstates_;
 public :
   ScalarSet (Label name) : NamedElement(name),comp_("",NULL),size_(1) {};
+  virtual ~ScalarSet() {};
 
   cstates_it cstates_begin () const { return cstates_.begin() ; }
   cstates_it cstates_end () const { return cstates_.end() ; }
@@ -72,7 +73,7 @@ public :
   /** Sets the state of n instances to the specified substate. */
   bool updateStateDef (Label state, int n , Label substate);
 
-    std::ostream & print (std::ostream & os) const ;
+  virtual std::ostream & print (std::ostream & os) const ;
 };
 
 
