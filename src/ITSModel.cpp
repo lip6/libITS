@@ -9,6 +9,7 @@
 #include "CompositeType.hh"
 #include "TypeCacher.hh"
 #include "ScalarSetType.hh"
+#include "CircularSetType.hh"
 #include "MemoryManager.h"
 //#include "util/dotExporter.h"
 
@@ -186,6 +187,14 @@ void ITSModel::print (std::ostream & os) const  {
     newtype->setStrategy(scalarStrat_, scalarParam_);
     return addType(newtype);
   }
+
+  // Create a type to hold a circular set.
+  bool ITSModel::declareType (const class CircularSet & net) {
+    CircularSetType* newtype = new CircularSetType(net);
+    newtype->setStrategy(scalarStrat_, scalarParam_);
+    return addType(newtype);
+  }
+
 
   bool ITSModel::loadOrder (std::istream & is) {
     while (!is.eof()) {

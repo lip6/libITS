@@ -99,6 +99,8 @@ public :
   bool declareType (const class TComposite & comp);
   // Create a type to hold a scalar set
   bool declareType (const class ScalarSet & net) ;
+  // Create a type to hold a circular set
+  bool declareType (const class CircularSet & net) ;
   // Create a type to hold a spot::tgba : this function is implemented in sog-its project, file sogIts.cpp
   bool declareType (const class spot::tgba & tgba);
 
