@@ -65,7 +65,7 @@ namespace its {
 
 
 std::ostream & CircularSet::print (std::ostream & os) const {
-  os << "CircularSet [" << comp_.getType()->getName() << "] " <<  getName() << " {\n\n";
+  os << "CircularSet " << comp_.getType()->getName() << " [" << size() << "] " <<  getName() << " {\n\n";
   
   os << "    // instance name \n" ;
   os << "    instanceName " << comp_.getName() << ";\n";
