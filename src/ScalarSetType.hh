@@ -66,7 +66,13 @@ public :
   State getState(Label stateLabel) const  {  return getConcrete()->getState(stateLabel) ;};
   
   /* delegated */
-  std::ostream & print (std::ostream & os) const { return getComp().print(os); }  
+  std::ostream & print (std::ostream & os) const { 
+    getComp().print(os); 
+    // force representation construction
+    getConcrete();
+    os << "Encoded as a submodel :\n" << model_ << std::endl;
+    return os;
+  }  
   Label getName() const { return getComp().getName(); }
 
   virtual void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Scalar Set" << std::endl; }
