@@ -1,7 +1,7 @@
 /*
  * Scalarset.hh
  *
- *  Created on: 3 déc. 2008
+ *  Created on: 3 dec. 2008
  *      Author: yann
  */
 
@@ -59,8 +59,8 @@ public :
    */
   bool setInstance (Label name, Label type_name, const ITSModel & model);
   /** Add a delegator synchronization to this scalarset.
-   * PRIVATE delegators may be fired in isolation (mostly used with ALL option)
-   * PUBLIC delegators are offered to external synchronization
+   * PRIVATE delegators (i.e. empty string "" label) may be fired in isolation (mostly used with ALL option)
+   * PUBLIC delegators (i.e. bearing a label) are offered to external synchronization
    * ALL delegators synchronize all contained instances with && composition semantics, that is all parts must fire congruently
    * ANY syncs use || (or actually XOR) composition semantics, that is one and only one part will fire 
    * Specify name (should exist in the contained instance type), visibility, ALL or ANY */
@@ -71,7 +71,7 @@ public :
      */
   bool createStateDef (Label state, Label substate);
   /** Sets the state of n instances to the specified substate. */
-  bool updateStateDef (Label state, int n , Label substate);
+  //  bool updateStateDef (Label state, int n , Label substate);
 
   virtual std::ostream & print (std::ostream & os) const ;
 };
