@@ -88,7 +88,7 @@ labels_t CircularSetType::getTransLabels () const {
     
 	  tname = it->getName()+to_string(i);
 	  // empty label indicates a private event
-	  net->addSynchronization(tname,"");	  
+	  net->addSynchronization(tname,it->getLabel());	  
 	  for (labels_it lit = it->getCurrentLabels().begin() ; 
 	       lit != it->getCurrentLabels().end() ;
 	       ++lit) {
@@ -113,7 +113,7 @@ labels_t CircularSetType::getTransLabels () const {
 	
 	tname = it->getName()+to_string(i);
 	// empty label indicates a private event
-	net->addSynchronization(tname,"");	  
+	net->addSynchronization(tname,it->getLabel());	  
 	for (labels_it lit = it->getCurrentLabels().begin() ; 
 	     lit != it->getCurrentLabels().end() ;
 	     ++lit) {
