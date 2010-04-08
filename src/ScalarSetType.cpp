@@ -154,14 +154,14 @@ labels_t CircularSetType::getTransLabels () const {
     // with grain > complement. Normally used with N/grain = n, N % grain = complement.
     // encoding uses $complement$ blocks of $grain+1$ instances
     // and n-complement blocks of n
-    void buildNaryRepresentation (int n , int grain=1, int complement =0,bool close_loop=false){
+    void buildNaryRepresentation (size_t n , int grain=1, int complement =0,bool close_loop=false){
       int N = n*grain + complement;
       
       Composite net (typeName(N));
       for (int i=0 ; i < complement ; ++i) {
 	net.addInstance(instanceName(i),typeName(grain+1),model_);
       }
-      for (int i=complement; i< n; ++i) {
+      for (size_t i=complement; i< n; ++i) {
 	net.addInstance(instanceName(i),typeName(grain),model_);
       }
       
@@ -172,12 +172,12 @@ labels_t CircularSetType::getTransLabels () const {
 	if ( it->isALL() ) {
 	  // handle it as a single sync with $n$ parts
 	  net.addSynchronization( sname, slabel );
-	  for (int i=0 ; i < n ; ++i) {
+	  for (size_t i=0 ; i < n ; ++i) {
 	    net.addSyncPart (sname , instanceName(i), sname);
 	  }
 	} else {
 	  // handle it as $n$ syncs each with a single part
-	  for (int i=0 ; i < n ; ++i) {
+	  for (size_t i=0 ; i < n ; ++i) {
 	    vLabel newName = sname + to_string(i); 
 	    net.addSynchronization( newName , slabel );
 	    net.addSyncPart (newName , instanceName(i), sname);
@@ -189,17 +189,20 @@ labels_t CircularSetType::getTransLabels () const {
       for (ScalarSet::cstates_it it = comp_.cstates_begin() ; it != comp_.cstates_end() ; ++it ){
 	Label stname = it->first;
 	// instance number
-	size_t i = 0;
-	size_t ndefault = it->second.getDefaultStateCard( comp_.size() );
-	for (  ; i < ndefault ; ++i) { 	  
+	for (size_t i = 0; i < n ; ++i) {
 	  net.updateStateDef (stname , instanceName(i), it->second.getDefault() );
 	}
-	for (ScalarState::assignments_it assit = it->second.begin() ; assit != it->second.end() ; ++assit ) {
-	  for (size_t j=0 ; j < assit->second && i < comp_.size() ; ++j, ++i ) {
-	    net.updateStateDef (stname , instanceName(i), assit->first );
-	  }
-	}
-	assert ( i ==  comp_.size());
+
+	// size_t ndefault = it->second.getDefaultStateCard( comp_.size() );
+	// for (  ; i < ndefault ; ++i) { 	  
+	//   net.updateStateDef (stname , instanceName(i), it->second.getDefault() );
+	// }
+	// for (ScalarState::assignments_it assit = it->second.begin() ; assit != it->second.end() ; ++assit ) {
+	//   for (size_t j=0 ; j < assit->second && i < n ; ++j, ++i ) {
+	//     net.updateStateDef (stname , instanceName(i), assit->first );
+	//   }
+	// }
+	// assert ( i ==  comp_.size());
       }
       // Circular set specific handling
       if (const CircularSet * ccomp = getCComp()) {
@@ -352,7 +355,6 @@ labels_t CircularSetType::getTransLabels () const {
     if (concrete_ == NULL ) {
       vLabel name = strat_->buildRepresentation();
       concrete_ =  model_.findType(name);
-      std::cerr << model_ << std::endl;
     }
     return concrete_;
   }
