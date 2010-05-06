@@ -30,7 +30,7 @@ public:
 
   void first() {
     last = !size;
-    // cue = 0,0....0
+    // cur = 0,0....0
     cur = bvec_false(size);
   }
 
