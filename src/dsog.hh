@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Laboratoire d'Informatique de Paris 6 (LIP6),
+// Copyright (C) 2009, 2010 Laboratoire d'Informatique de Paris 6 (LIP6),
 // département Systèmes Répartis Coopératifs (SRC), Université Pierre
 // et Marie Curie.
 //
@@ -163,7 +163,7 @@ namespace dsog
   class dsog_div_succ_iterator : public spot::tgba_succ_iterator
   {
   public:
-    dsog_div_succ_iterator(const spot::bdd_dict* d,
+    dsog_div_succ_iterator(const dsog_tgba* aut,
 			   const bdd& c,
 			   tgba_succ_iterator* li);
 
@@ -180,7 +180,7 @@ namespace dsog
     dsog_div_succ_iterator(const dsog_div_succ_iterator& s);
     dsog_div_succ_iterator& operator=(const dsog_div_succ_iterator& s);
 
-    const spot::bdd_dict* dict;
+    const dsog_tgba* aut_;
     bdd cond; ///< The condition which must label the unique successor.
     spot::tgba_succ_iterator* left_iter_;
   };

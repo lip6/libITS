@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Laboratoire d'Informatique de Paris 6 (LIP6),
+// Copyright (C) 2009, 2010 Laboratoire d'Informatique de Paris 6 (LIP6),
 // département Systèmes Répartis Coopératifs (SRC), Université Pierre
 // et Marie Curie.
 //
@@ -316,7 +316,15 @@ namespace dsog
   dsog_succ_iterator::current_state() const
   {
     if (has_div)
-      return new dsog_div_state(left_iter_->current_state(), cur->get_cond());
+      {
+	// AP(left_iter_->current_state()).
+	const spot::scc_map& scc = aut_->get_scc_map();
+	unsigned sccn = scc.scc_of_state(left_iter_->current_state());
+	bdd ap =        scc.aprec_set_of(sccn);
+
+	return new dsog_div_state(left_iter_->current_state(),
+				  bdd_existcomp(cur->get_cond(), ap));
+      }
     else
       return dest_->clone();
   }
@@ -335,10 +343,10 @@ namespace dsog
   }
 
 
-  dsog_div_succ_iterator::dsog_div_succ_iterator(const spot::bdd_dict* d,
+  dsog_div_succ_iterator::dsog_div_succ_iterator(const dsog_tgba* aut,
 						 const bdd& c,
 						 tgba_succ_iterator* li)
-    : dict(d), cond(c), left_iter_(li)
+    : aut_(aut), cond(c), left_iter_(li)
   {
   }
 
@@ -368,7 +376,14 @@ namespace dsog
     assert(!done());
     trace << "FIRING : " << format_transition() << std::endl;
     trace << "FROM a div state" << std::endl << std::endl;
-    return new dsog_div_state(left_iter_->current_state(), cond);
+
+    // AP(left_iter_->current_state()).
+    const spot::scc_map& scc = aut_->get_scc_map();
+    unsigned sccn = scc.scc_of_state(left_iter_->current_state());
+    bdd ap =        scc.aprec_set_of(sccn);
+
+    return new dsog_div_state(left_iter_->current_state(),
+			      bdd_existcomp(cond, ap));
   }
 
   bdd dsog_div_succ_iterator::current_condition() const {
@@ -384,7 +399,7 @@ namespace dsog
   std::string dsog_div_succ_iterator::format_transition() const {
     assert(!done());
     std::ostringstream os;
-    spot::bdd_print_formula(os, dict, cond);
+    spot::bdd_print_formula(os, aut_->get_dict(), cond);
     return "div(" + os.str() + ")";
   }
 
@@ -492,7 +507,7 @@ namespace dsog
 						  global_state,
 						  global_automaton);
 
-	return new dsog_div_succ_iterator(get_dict(), d->get_condition(), li);
+	return new dsog_div_succ_iterator(this, d->get_condition(), li);
       }
 
     const dsog_state* s =
