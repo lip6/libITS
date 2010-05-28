@@ -6,6 +6,11 @@
  */
 #include "ScalarSet.hh"
 #include <iostream>
+#include <algorithm>
+
+using std::find;
+
+
 
 namespace its {
 

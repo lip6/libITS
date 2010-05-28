@@ -5,7 +5,10 @@
  *      Author: yann
  */
 #include "CircularSet.hh"
+#include <algorithm>
 #include <iostream>
+
+using std::find;
 
 namespace its {
 

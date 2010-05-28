@@ -15,6 +15,9 @@
 
 #include <iostream>
 #include <sstream>
+#include <algorithm>
+
+using std::find;
 
 
 //#define TRACE

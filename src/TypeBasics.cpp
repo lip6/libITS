@@ -1,4 +1,7 @@
 #include "TypeBasics.hh"
+#include <algorithm>
+
+using std::find;
 
 
 

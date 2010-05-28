@@ -6,13 +6,14 @@
 #include <fstream>
 #include <vector>
 #include <set>
-
+#include <cstdlib>
 
 using std::string;
 using std::endl;
 using std::cerr;
 using std::vector;
 using std::set;
+
 
 using its::PNet;
 
