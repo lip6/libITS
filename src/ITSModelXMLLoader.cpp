@@ -89,21 +89,23 @@ void ITSModelXMLLoader::loadXML(const std::string & filename, its::ITSModel & mo
   length = file.tellg();
   file.seekg(0, std::ios::beg);
   Buffer = new char[length+1];
-  file.read(Buffer, length);
+  memset(Buffer,0,length+1);
+  file.read(Buffer,length);
+  int readcount = strlen(Buffer);
   file.close();
 	
   // Parsing types
   XML_Parser p = XML_ParserCreate(NULL);
   XML_SetUserData(p, &model);
   XML_SetElementHandler(p, ITSModelXMLLoader::loadTypes, NULL);
-  XML_Parse(p, Buffer, strlen(Buffer), 1);
+  XML_Parse(p, Buffer, readcount, 1);
   XML_ParserFree(p);
 	
   // Parsing arcs
   p = XML_ParserCreate(NULL);
   XML_SetUserData(p, &model);
   XML_SetElementHandler(p, ITSModelXMLLoader::loadScenario, NULL);
-  XML_Parse(p, Buffer, strlen(Buffer), 1);
+  XML_Parse(p, Buffer,  readcount, 1);
   XML_ParserFree(p);
 	
   delete [] Buffer;
