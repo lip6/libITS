@@ -38,7 +38,12 @@ namespace its {
 
 
     /** order */
-    bool setVarOrder (labels_t vars) const { return concrete_->setVarOrder(vars); }
+    bool setVarOrder (labels_t vars) const { 
+      state_cache.clear();
+      trans_vals.clear();
+      locals_ = Transition(GSDD::top);
+      return concrete_->setVarOrder(vars); 
+    }
     /** Optional, ok to return true.
      * updates the variable order used in this type */
     void printVarOrder (std::ostream & os) const { return concrete_->printVarOrder(os); }
