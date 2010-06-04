@@ -340,7 +340,7 @@ its::Transition CTLChecker::getSelectorAP (Label apname) const {
     
     Transition t = type->getSuccs (touse);
     if (! t.is_selector() ) {
-      std::cerr << "Your atomic proposition identifier " << apname << " does not correspond to a state based predicate. Check that it is the name of a place in your Petri net, or relevant with respect to your ITS type declaration." << std::endl;
+      std::cerr << "Your atomic proposition identifier " << apname << " does not correspond to a state based predicate (it is not a selector). Check that it is the name of a place in your Petri net, or relevant with respect to your ITS type declaration." << std::endl;
       std::cerr << "Error is fatal, sorry." << std::endl;
       exit(1);
     }
