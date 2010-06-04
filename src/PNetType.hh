@@ -70,7 +70,7 @@ public :
 
   /** state and transitions representation functions */
   /** Local transitions */
-  virtual Transition getLocals () const {
+  Transition getLocals () const {
     std::set<GShom> locals;
     const VarOrder & vo = *getVarOrder();
     for ( PNet::trans_it it = net_.transitions_begin() ; it != net_.transitions_end(); ++it ) {

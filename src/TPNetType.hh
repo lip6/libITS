@@ -26,6 +26,31 @@ namespace its {
       cnames.insert(cnames.end(),pnames.begin(),pnames.end());
       return cnames;
     }
+
+    // return the reset transition to reset disbled transition clocks
+    Transition getResetDisabled () const {
+	const VarOrder * vo = this->getVarOrder();
+	HomType elapse = HomType::id;
+ 	for ( TPNet::trans_it it = this->net_.transitions_begin() ; it != this->net_.transitions_end(); ++it ) {
+ 	  // now consider local enablign conditions for public transitions
+ 	  if (true || it->getVisibility() == PRIVATE) {
+ 	    if ( it->isTimed() ) {	      
+	      int cvar = vo->getIndex( TPNet::clockName(*it) );
+ 	      // Case 2 : Time step
+ 	      // Case 2.1 : t disabled, do a reset
+ 	      // Case 2.2 : t enabled, max bound not reached, increment
+ 	      HomType timet = ITE (Semantics::getEnablerHom(*it,*vo), 
+				   HomType::id,
+				   Semantics::getRZ(it->getClock(), cvar) );
+ 	      // Add this to the global elapse synchronization
+ 	      elapse = elapse & timet;
+ 	    }
+ 	  }
+ 	}
+	return Semantics::encapsulate(elapse);
+
+
+    }
  public :
     typedef typename TPNetTType<HomType>::Semantics Semantics;
 
@@ -66,6 +91,7 @@ namespace its {
 	return PNetTType<HomType>::getTransitionAction(t,vo);
       }
     }
+
     
     Transition getSuccs (const labels_t & tau) const {
       labels_t eltab;
@@ -91,7 +117,7 @@ namespace its {
  	}
 	return Semantics::encapsulate(elapse);
       } else {
-	return PNetTType<HomType>::getSuccs(tau);
+	return getResetDisabled() & PNetTType<HomType>::getSuccs(tau);
       }
     }
 
