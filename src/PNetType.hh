@@ -34,6 +34,11 @@ class PNetTType :  public TypeBasics {
     return pnames;
   }
 
+  // return the reset transition to reset disbled transition clocks
+  virtual Transition getResetDisabled () const {
+    return Transition::id;
+  }
+
 public :
 
   typedef  TPNetSemantics<HomType> Semantics ;
@@ -65,12 +70,12 @@ public :
 
   /** state and transitions representation functions */
   /** Local transitions */
-  Transition getLocals () const {
+  virtual Transition getLocals () const {
     std::set<GShom> locals;
     const VarOrder & vo = *getVarOrder();
     for ( PNet::trans_it it = net_.transitions_begin() ; it != net_.transitions_end(); ++it ) {
       if (it->getVisibility() == PRIVATE) {
-	locals.insert( getTransitionHom (*it,vo) );
+	locals.insert( getResetDisabled() & getTransitionHom (*it,vo) );
       }
     }
     if (! locals.empty())
