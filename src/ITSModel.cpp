@@ -211,7 +211,6 @@ void ITSModel::print (std::ostream & os) const  {
 	il >> type;
 	labels_t order;
 	// get rid of trailing newline (chomp !)
-	getline(is,line);
 	while (!is.eof()) {
 	  vLabel variable;
 	  getline(is,variable);
@@ -219,6 +218,9 @@ void ITSModel::print (std::ostream & os) const  {
 	    break;
 	  order.push_back(variable);
 	}
+// DEBUG
+// 	for (labels_it iit = order.begin() ; iit != order.end() ; ++iit)
+// 	  std::cout << *iit << std::endl;
 	if (!updateVarOrder(type,order))
 	  return false;
       } else if (line.empty()) {
