@@ -1,3 +1,4 @@
+#include <fstream>
 // The ITS model referential
 #include "ITSModel.hh"
 #include "SDD.h"
@@ -44,6 +45,7 @@ void usage () {
   cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
   cerr<<  "    [--backward] to force backward CTL model-checking (classic algorithm from 10^20 states & beyond)\n";
   cerr << "    --dump-order : dump the currently used variable order to stdout and exit. \n" ;
+  cerr << "    --load-order path : load the variable order from the file designated by path. \n" ;
   cerr<<  "    --sdd : privilege SDD storage." <<endl;
   cerr<<  "    --ddd : privilege DDD (no hierarchy) encoding.[DEFAULT]" <<endl;
   cerr<<  "    --no-garbage : disable garbage collection (may be faster, more memory)" <<endl;
@@ -63,10 +65,13 @@ int main (int argc, char ** argv) {
   string pathcamiff;
   string pathjsonff;
   string pathxmlff;
+  string pathorderinff = "order";
   bool doprodparse = false;
   bool docamiparse = false;
   bool dojsonparse = false;
   bool doxmlparse = false;
+  bool doloadorder = false;
+  bool bequiet = false;
 
   bool dofwtranslation = false;
   bool dobwtranslation = false;
@@ -109,6 +114,13 @@ int main (int argc, char ** argv) {
      with_garbage = false;  
    } else if (! strcmp(argv[i],"--ddd")   ) {
      model.setStorage(ddd_storage);
+   } else if (! strcmp(argv[i],"--quiet")   ) {
+     bequiet = true;
+   } else if (! strcmp(argv[i],"--load-order")   ) {
+     if (++i > argc) 
+       { cerr << "give path value for load-order " << argv[i-1]<<endl; usage() ; exit(1);}
+     pathorderinff = argv[i];     
+     doloadorder = true;
    } else {
      cerr << "Error : incorrect Argument : "<<argv[i] <<endl ; usage(); exit(1);
    }
@@ -146,6 +158,18 @@ int main (int argc, char ** argv) {
     }
   } else if (doxmlparse) {
     ITSModelXMLLoader::loadXML(pathxmlff, model);
+  }
+
+  if (! bequiet)
+    std::cout << model << std::endl;
+
+
+  if (doloadorder) {
+    ifstream is (pathorderinff.c_str());
+    if (! model.loadOrder(is)) {
+      std::cerr << "Problem loading provided order file :" << pathorderinff << "\n";
+      exit(1);
+    }
   }
 
   // Build CTL context
