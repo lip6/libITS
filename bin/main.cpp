@@ -5,6 +5,7 @@
 // The ITS model referential
 #include "ITSModel.hh"
 #include "SDD.h"
+#include "MemoryManager.h"
 // romeo parser
 #include "XMLLoader.hh"
 // prod parser
@@ -28,10 +29,14 @@ static bool dodotexport=false;
 static bool dodumporder = false;
 static bool with_garbage=true;
 static std::string modelName = "";
+// if BMC use is wanted, will be >0
+static int BMC = -1;
+
 
 void exhibitModel (ITSModel & model) {
 	// pretty print the model for inspection
   if (! beQuiet) {
+    std::cout << "Model in internal textual format :" << std::endl;
     std::cout << model << std::endl;
   
     //   std::cout << model.getInitialState() << std::endl;
@@ -42,8 +47,25 @@ void exhibitModel (ITSModel & model) {
     os.close();
     exit(0);
   }
-  // Compute reachable states
-  State reachable = model.computeReachable(with_garbage);
+  State reachable;
+  if (BMC <0) {
+    // Compute reachable states
+    reachable = model.computeReachable(with_garbage);
+  } else {
+    Transition hnext = model.getNextRel() + Transition::id;
+    reachable = model.getInitialState();
+    State previous = reachable;
+    for (int i=0; i < BMC ; ++i) {
+      std::cout << "At depth " << i << " NbStates=" << reachable.nbStates() << std::endl;
+      reachable = hnext (reachable);
+      if (previous == reachable) {
+	std::cout << "Full state space explored, with depth of "<< i << std::endl;
+	break;
+      }
+      previous = reachable;
+      MemoryManager::garbage();
+    }
+  }
   if (!beQuiet && reachable.nbStates() < 10)
     std::cout << reachable << std::endl;	
   // Print some stats : memory size, number of states ....
@@ -74,6 +96,7 @@ void usage() {
   cerr<<  "    -d path : specifies the path prefix to construct dot state-space graph" <<endl;
   cerr<<  "    --sdd : privilege SDD storage." <<endl;
   cerr<<  "    --ddd : privilege DDD (no hierarchy) encoding.[DEFAULT]" <<endl;
+  cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
   cerr<<  "    --no-garbage : disable garbage collection (may be faster, more memory)" <<endl;
   cerr<<  "    -ssD2 INT : use 2 level depth for scalar sets. Integer provided defines level 2 block size." <<endl;
   cerr<<  "    -ssDR INT : use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
@@ -146,6 +169,10 @@ int main (int argc, char **argv) {
        { cerr << "give argument value for .dot file name please after " << argv[i-1]<<endl; usage() ; exit(1);}
      pathdotff = argv[i];
      dodotexport = true;
+   } else if (! strcmp(argv[i],"-bmc") ) {
+     if (++i > argc) 
+       { cerr << "give argument value for BMC depth " << argv[i-1]<<endl; usage() ; exit(1);}
+     BMC = atoi(argv[i]); 
    } else if (! strcmp(argv[i],"-ssD2") ) {
      if (++i > argc) 
        { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usage() ; exit(1);}
