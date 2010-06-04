@@ -75,7 +75,11 @@ public :
     const VarOrder & vo = *getVarOrder();
     for ( PNet::trans_it it = net_.transitions_begin() ; it != net_.transitions_end(); ++it ) {
       if (it->getVisibility() == PRIVATE) {
-	locals.insert( getResetDisabled() & getTransitionHom (*it,vo) );
+	Transition ht = getTransitionHom (*it,vo);
+	if (! ht.is_selector()) 
+	  locals.insert( getResetDisabled() & ht );
+	else
+	  locals.insert(ht);
       }
     }
     if (! locals.empty())

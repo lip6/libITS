@@ -117,7 +117,11 @@ namespace its {
  	}
 	return Semantics::encapsulate(elapse);
       } else {
-	return getResetDisabled() & PNetTType<HomType>::getSuccs(tau);
+	Transition ret = PNetTType<HomType>::getSuccs(tau);
+	if (! ret.is_selector() ) {
+	  ret = getResetDisabled() & ret;
+	}
+	return ret;
       }
     }
 
