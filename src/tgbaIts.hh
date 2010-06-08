@@ -30,6 +30,12 @@ namespace its {
   public :
     TgbaType (const spot::tgba * tgba_) ;
 
+    /** Allow to visit the underlying type definition */
+    void visit (class TypeVisitor * visitor) const {
+    }
+
+
+
     /** the set InitStates of designated initial states */
     labels_t getInitStates () const {
       return labels_t(1,"init");
