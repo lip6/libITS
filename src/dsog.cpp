@@ -74,8 +74,7 @@ namespace dsog
   }
 
   size_t dsog_div_state::hash() const {
-    __gnu_cxx::hash<int> H;
-    return H(cond.id());
+    return wang32_hash(cond.id());
   }
 
   spot::state* dsog_div_state::clone() const {
