@@ -91,6 +91,7 @@ namespace slog
      * right : the source aggregate */
   slog_succ_iterator::slog_succ_iterator(const tgba * aut, const spot::state * aut_state, tgba_succ_iterator* left, const sogIts & model, const its::State& right)
     : aut_(aut),
+      aut_state_(aut_state),
       left_(left),
       model_(model),
       right_(right)
@@ -145,6 +146,14 @@ namespace slog
   void
   slog_succ_iterator::step_()
   {
+    // Test if this TGBA arc is a self-loop without acceptance conditions
+    bdd curacc = left_->current_acceptance_conditions();
+    if (curacc == bddfalse && left_->current_state()->compare(aut_state_) == 0) {
+      dest_ = its::State::null;
+      return;
+    }
+
+
     // progress to "entry" states of succ in ITS model
     bdd curcond = left_->current_condition();
     dest_ = model_.succSatisfying ( right_, curcond );
@@ -241,10 +250,29 @@ namespace slog
   state*
   slog_tgba::get_init_state() const
   {
+    
+    // The initial state of the tgba
+    state * init_tgba = left_->get_init_state();
+    // Iterate over init states successors, and add to F the atomic props which are on arcs without acceptance conds
+    bdd F = bddfalse;
 
-    // FIXME: saturer sur l'état initial ?
-    return new slog_state(left_->get_init_state(),
-			  model_.getInitialState() );
+    tgba_succ_iterator * it = left_->succ_iter(init_tgba);
+    for ( it->first() ; ! it->done() ; it->next() ) {
+      const state * dest = it->current_state();
+      // Test self loop
+      if ( dest->compare(init_tgba) == 0 ) {
+	// Test ac=0 (empty acceptance cond arcs)
+	if (it->current_acceptance_conditions() == bddfalse && left_->all_acceptance_conditions() != bddfalse) {
+	  F |= it->current_condition();
+	}
+      }
+      delete dest;
+    }
+    delete it;
+
+
+    return new slog_state(init_tgba,
+			  model_.leastPreTestFixpoint (model_.getInitialState(), F));
   }
 
 
@@ -458,8 +486,7 @@ namespace slog
   }
 
   size_t slog_div_state::hash() const {
-    __gnu_cxx::hash<int> H;
-    return H(cond.id());
+    return wang32_hash(cond.id());
   }
 
   spot::state* slog_div_state::clone() const {
