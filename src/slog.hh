@@ -111,6 +111,7 @@ namespace slog
     friend class slog_tgba;
   protected:
     const spot::tgba * aut_;
+    const spot::state * aut_state_;
     spot::tgba_succ_iterator* left_;
     const sogIts & model_; ///< The ITS model.
     its::State right_; ///< The source state.   
