@@ -1,0 +1,4 @@
+bash-4.0$ ../../src/sog-its -SSLOG -R3f -C -c -g -f"A U G (B & F C)" exemple.net | dotty -
+
+Ou remplacer -SSLOG par -SDSOG, -SSOG, -SFSLTL (sans le dotty)
+Sans option -g (avec -c) on a des stats
