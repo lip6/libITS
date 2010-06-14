@@ -108,7 +108,9 @@ bool ITSModel::setInstanceState (Label stateName) {
       labels_t tau;
       tau.push_back("elapse");
       Shom elapse = getInstance()->getType()->getSuccs(tau);
-      trans = trans + elapse;
+      // Huh, no time constraints ?? Forget about time then.
+      if ( elapse != Transition::id )
+	trans = trans + elapse;
     }
     return trans;
   }
