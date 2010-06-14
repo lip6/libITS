@@ -111,6 +111,16 @@ GHom varLeqState (int var, int val) {
  return varCompState (var,LEQ,val);
 }
 
+GHom varLtState (int var, int val) {
+  return varCompState (var,LT,val);
+}
+
+GHom varGeqState (int var, int val) {
+ return varCompState (var,GEQ,val);
+}
+
+
+
 
 class _setVarConst:public StrongHom {
 
