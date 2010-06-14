@@ -13,8 +13,12 @@ GHom varEqState (int var, int val) ;
 GHom varNeqState (int var, int val) ;
 // keep paths where variable var is strictly greater than val
 GHom varGtState (int var, int val) ;
+// keep paths where variable var is strictly < val
+GHom varLtState (int var, int val) ;
 // keep paths where variable var is <= to val
 GHom varLeqState (int var, int val) ;
+// keep paths where variable var is >= to val
+GHom varGeqState (int var, int val) ;
 // set a var to a constant
 GHom setVarConst (int var, int val) ;
 // increment or decrement the value of var by val
