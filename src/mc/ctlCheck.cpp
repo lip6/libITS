@@ -36,9 +36,10 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
     switch (Ctlp_FormulaReadType(ctlFormula)) {
     case Ctlp_ID_c:
       // basic case
-      result = getSelectorAP( Ctlp_FormulaReadVariableName(ctlFormula) );
-      break;
-
+	result =  getSelectorAP( Ctlp_FormulaReadVariableName(ctlFormula) );
+	if ( ! strcmp (Ctlp_FormulaReadValueName(ctlFormula), "0") )
+	  result = ! result ;
+	break;
     case Ctlp_TRUE_c:
       result = Transition::id;
       break;
@@ -326,6 +327,14 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 }
 
 its::Transition CTLChecker::getSelectorAP (Label apname) const {
+
+  vLabel predicate = apname + "= 1";
+  its::Transition pred = model.getPredicate(predicate);
+  std::cout << pred << std::endl;
+  return pred;
+
+// BEFORE PREDICATE API INTRODUCED WAS :
+/**
   //  std::cerr << "asked for selector AP for :" << apname << std::endl;
   pType type =  model.getInstance()->getType();
   labels_t labs = type->getTransLabels();
@@ -348,6 +357,7 @@ its::Transition CTLChecker::getSelectorAP (Label apname) const {
   }
 
   return Transition::id;
+*/
 }
 
 its::Transition CTLChecker::getPredRel () const
