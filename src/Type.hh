@@ -51,7 +51,7 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-//  virtual Transition getPredicate (Label predicate) const = 0;
+  virtual Transition getPredicate (Label predicate) const = 0;
 
 	/** To obtain a representation of a labeled state */
     virtual State getState(Label stateLabel) const = 0;
