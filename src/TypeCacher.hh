@@ -36,6 +36,14 @@ namespace its {
      *  Watch out, do not call on large its::State (>10^6). str is there for recursion, pass an empty string. */
     void printState (State s, std::ostream & os) const { return concrete_->printState(s,os); }
 
+    /** The state predicate function : string p -> SHom.
+     *  returns a selector homomorphism that selects states verifying the predicate 'p'.
+     *  The syntax of the predicate is left to the concrete type realization.
+     *  The only constraint is that the character '.' is used as a namespace separator
+     *  and should not be used in the concrete predicate syntax.
+     *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
+    Transition getPredicate (Label predicate) const { return concrete_->getPredicate(predicate); }
+
 
     /** order */
     bool setVarOrder (labels_t vars) const { 
