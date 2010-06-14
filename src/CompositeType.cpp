@@ -6,6 +6,8 @@
  */
 
 #include "CompositeType.hh"
+// exit function
+#include <cstdlib>
 
 namespace its {
 
@@ -143,6 +145,37 @@ State CompositeType::getState(Label stateLabel) const {
     M0 = GSDD(i,instance->getType()->getState(substate),M0);
   }
   return M0;
+}
+
+
+Transition CompositeType::getPredicate (Label predicate) const {
+  // The predicate should respect the grammar : varName "." .*
+  // Where varName is an instance name such as found in getVariableSet(), getVarOrder()
+  // "." is the namespace separator and .* represents any sequence of characters. 
+  // This function consumes varName"." and passes the rest of the string to the type of the instance designated
+    
+  // step 1 : parse the predicate
+  const char * pred = predicate.c_str();
+  vLabel remain, var;
+  for (const char * cp = pred ; *cp ; ++cp) {
+    if ( *cp == '.' ) {
+      remain = cp+1;
+      break;
+    } else {
+      var += *cp;
+    }
+  }
+
+  int instindex =  getVarOrder()->getIndex ( var );
+  if (instindex == -1) {
+    std::cerr << "Error variable " + var + " cannot be resolved as an instance name when trying to parse predicate : "  + predicate << std::endl;
+    std::cerr << "Failing with error code 2"<< std::endl;
+    exit (2);
+  }
+//   std::cerr << "Composite delegating predicate " << remain << " on instance :"<<var << std::endl;
+ 
+  Composite::comps_it instance = findName( var, comp_.comps_begin() , comp_.comps_end() );
+  return localApply( instance->getType()->getPredicate(remain), instindex);
 }
 
   void CompositeType::recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const {
