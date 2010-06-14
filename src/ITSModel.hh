@@ -123,7 +123,14 @@ public :
   // returns the full reachable state space of the system from the initial state(s)
   // also caches result. Optional parameter to deactivate garbage collection.
   State computeReachable (bool wGarbage=true) const;
-  
+  /** The state predicate function : string p -> SHom.
+   *  returns a selector homomorphism that selects states verifying the predicate 'p'.
+   *  The syntax of the predicate is left to the concrete type realization.
+   *  The only constraint is that the character '.' is used as a namespace separator
+   *  and should not be used in the concrete predicate syntax.
+   *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
+  Transition getPredicate (Label predicate) const { return getInstance()->getType()->getPredicate(predicate); }
+
 
   // semi private function used in Scalar sandboxes
   void cloneType (pType type) { int n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }
