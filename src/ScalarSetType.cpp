@@ -1,5 +1,8 @@
 #include <typeinfo>
 #include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <cstdio>
 #include "ScalarSetType.hh"
 #include "CircularSetType.hh"
 #include "Composite.hh"
@@ -7,6 +10,19 @@
 #define trace while(0) std::cerr
 
 namespace its {
+
+
+    static int typeSize (Label type) {
+      const char * typestr = type.c_str();
+      const char * cp;
+      for (cp = typestr + strlen(typestr) - 1 ;
+	   *cp != '_';
+	   --cp)  /*NOP*/ ;
+      // go back beyond the '_'
+      ++cp;
+      return atoi(cp);
+    }
+
 
 /** the set InitStates of designated initial states (a copy)*/
 labels_t ScalarSetType::getInitStates () const {
@@ -29,6 +45,70 @@ labels_t ScalarSetType::getTransLabels () const {
   }
   return ret;
 }
+  class InstanceNameFinder : public TypeVisitor {
+    int n_;
+    vLabel prefix_;
+  public :
+    InstanceNameFinder(int n):n_(n) {};
+    ~InstanceNameFinder() {};
+    Label getPrefix() { return prefix_; }
+    // or also could be a TPNet
+    void visitPNet (const class PNet & net) { /* Terminal recursion case, we are fine, stop here. */ ; }
+    void visitComposite (const class Composite & net) { 
+      for (Composite::comps_it it = net.comps_begin() ; it != net.comps_end() ; ++ it) {
+	int isize = typeSize ( it->getType()->getName() );
+	if (n_ < isize) {
+	  prefix_ += it->getName() + ".";
+	  it->getType()->visit(this);
+	  break;
+	} else {
+	  n_ -= isize;
+	}
+      }
+    }
+    void visitScalar (const class ScalarSet & net) { std::cerr << "Unexpected nested scalar/circular types. Failing, sorry."<< std::endl ; assert(false); }
+    void visitCircular (const class CircularSet & net) { std::cerr << "Unexpected nested scalar/circular types. Failing, sorry."<< std::endl ; assert(false); }
+  };
+
+
+
+    /** The state predicate function : string p -> SHom.
+   *  returns a selector homomorphism that selects states verifying the predicate 'p'.
+   *  The syntax of the predicate is left to the concrete type realization.
+   *  The only constraint is that the character '.' is used as a namespace separator
+   *  and should not be used in the concrete predicate syntax.
+   *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
+  Transition ScalarSetType::getPredicate (Label predicate) const {
+    
+    // Step 1 : parse the predicate index up to "."
+    const char * pred = predicate.c_str();
+    vLabel remain, var;
+    for (const char * cp = pred ; *cp ; ++cp) {
+      if ( *cp == '.' ) {
+	remain = cp+1;
+	break;
+      } else {
+	var += *cp;
+      }
+    }
+
+    // Step 2 : check if it is an integer
+    int value = 0;
+    if ( sscanf (var.c_str(), "%d" , &value) == 0 ) {
+      std::cerr << "Unable to parse : " << var << " to an integer designating an instance when parsing predicate " << predicate << std::endl;
+      std::cerr << "Error is fatal, failing with error code 2" << std::endl;
+      exit (2);      
+    }
+    
+    InstanceNameFinder inf (value);
+    // Step 3 : resolve within concrete.
+    getConcrete()->visit( & inf );
+    vLabel prefix = inf.getPrefix();
+    
+    return getConcrete()->getPredicate(prefix + remain);
+  }
+
+
 
 /** the set T of public transition labels (a copy)*/
 labels_t CircularSetType::getTransLabels () const {
