@@ -12,17 +12,6 @@
 namespace its {
 
 
-    static int typeSize (Label type) {
-      const char * typestr = type.c_str();
-      const char * cp;
-      for (cp = typestr + strlen(typestr) - 1 ;
-	   *cp != '_';
-	   --cp)  /*NOP*/ ;
-      // go back beyond the '_'
-      ++cp;
-      return atoi(cp);
-    }
-
 
 /** the set InitStates of designated initial states (a copy)*/
 labels_t ScalarSetType::getInitStates () const {
@@ -48,17 +37,20 @@ labels_t ScalarSetType::getTransLabels () const {
   class InstanceNameFinder : public TypeVisitor {
     int n_;
     vLabel prefix_;
+    RepresentationStrategy * strat_;
   public :
-    InstanceNameFinder(int n):n_(n) {};
+    InstanceNameFinder(int n, RepresentationStrategy * strat):n_(n), strat_(strat) {};
     ~InstanceNameFinder() {};
     Label getPrefix() { return prefix_; }
     // or also could be a TPNet
     void visitPNet (const class PNet & net) { /* Terminal recursion case, we are fine, stop here. */ ; }
     void visitComposite (const class Composite & net) { 
       for (Composite::comps_it it = net.comps_begin() ; it != net.comps_end() ; ++ it) {
-	int isize = typeSize ( it->getType()->getName() );
+	int isize = strat_->getTypeSize ( it->getType()->getName() );
 	if (n_ < isize) {
 	  prefix_ += it->getName() + ".";
+	  if (isize == 1)
+	    return;
 	  it->getType()->visit(this);
 	  break;
 	} else {
@@ -100,11 +92,15 @@ labels_t ScalarSetType::getTransLabels () const {
       exit (2);      
     }
     
-    InstanceNameFinder inf (value);
+    InstanceNameFinder inf (value, strat_);
     // Step 3 : resolve within concrete.
     getConcrete()->visit( & inf );
     vLabel prefix = inf.getPrefix();
     
+    std::cerr << "Found prefix : "<< prefix << std::endl;
+    std::cerr << "When searching instance : "<< value << std::endl;
+    std::cerr << "In model : "<< *getConcrete() << std::endl;
+
     return getConcrete()->getPredicate(prefix + remain);
   }
 
@@ -147,6 +143,22 @@ labels_t CircularSetType::getTransLabels () const {
       else
 	return comp_.getInstance().getType()->getName() + "_" + to_string(i) ;
     }
+
+  public :
+    int getTypeSize (Label type) const {
+      if (type == comp_.getInstance().getType()->getName())
+	return 1 ;
+      const char * typestr = type.c_str();
+      const char * cp;
+      for (cp = typestr + strlen(typestr) - 1 ;
+	   *cp != '_';
+	   --cp)  /*NOP*/ ;
+      // go back beyond the '_'
+      ++cp;
+      return atoi(cp);
+    }
+
+  protected:
 
     /** returns a pointer to circularSet if available (i.e. we are actually building a circular set) or NULL otherwise */
     const CircularSet * getCComp () const {
