@@ -53,6 +53,7 @@ void usage () {
   cerr<<  "    -ssDR INT : use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
   cerr<<  "    -ssDS INT : use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level." <<endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
+  cerr<<  "    --legend : show full table legend" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -76,6 +77,7 @@ int main (int argc, char ** argv) {
   bool dofwtranslation = false;
   bool dobwtranslation = false;
 
+  bool showlegend = false;
   /// Parsed Model
   ITSModel model;
 
@@ -105,6 +107,8 @@ int main (int argc, char ** argv) {
      if (++i > argc) 
        { cerr << "give argument value for .ctl formula file name please after " << argv[i-1]<<endl; usage() ; exit(1);;}
      pathformff = argv[i];
+   } else if (! strcmp(argv[i],"--legend")   ) {
+     showlegend = true;
    } else if (! strcmp(argv[i],"--forward")   ) {
      dofwtranslation = true;
    } else if (! strcmp(argv[i],"--backward")   ) {
@@ -266,4 +270,7 @@ int main (int argc, char ** argv) {
     std::cout << "\n *************************************** \n\n";
   }
 
+  if (showlegend) {
+    SS3.print_legend(std::cout);
+  }
 }
