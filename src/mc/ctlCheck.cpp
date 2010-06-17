@@ -330,7 +330,7 @@ its::Transition CTLChecker::getSelectorAP (Label apname) const {
 
   vLabel predicate = apname + "= 1";
   its::Transition pred = model.getPredicate(predicate);
-  std::cout << pred << std::endl;
+  //  std::cout << pred << std::endl;
   return pred;
 
 // BEFORE PREDICATE API INTRODUCED WAS :
