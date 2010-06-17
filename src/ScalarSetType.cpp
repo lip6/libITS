@@ -97,9 +97,9 @@ labels_t ScalarSetType::getTransLabels () const {
     getConcrete()->visit( & inf );
     vLabel prefix = inf.getPrefix();
     
-    std::cerr << "Found prefix : "<< prefix << std::endl;
-    std::cerr << "When searching instance : "<< value << std::endl;
-    std::cerr << "In model : "<< *getConcrete() << std::endl;
+//     std::cerr << "Found prefix : "<< prefix << std::endl;
+//     std::cerr << "When searching instance : "<< value << std::endl;
+//     std::cerr << "In model : "<< *getConcrete() << std::endl;
 
     return getConcrete()->getPredicate(prefix + remain);
   }
