@@ -19,8 +19,8 @@
 // Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 // 02111-1307, USA.
 
-#ifndef SPOT_TGBA_SLOGPRODUCT_HH
-# define SPOT_TGBA_SLOGPRODUCT_HH
+#ifndef SPOT_TGBA_SLAPPRODUCT_HH
+# define SPOT_TGBA_SLAPPRODUCT_HH
 
 #include "tgba/tgba.hh"
 #include "sogIts.hh"
@@ -28,7 +28,7 @@
 
 
 
-namespace slog
+namespace slap
 {
 
   /// \brief A state for spot::tgba_product.
@@ -36,7 +36,7 @@ namespace slog
   ///
   /// This state is in fact a pair of state: the state from the left
   /// automaton and that of the right.
-  class slog_state : public spot::state
+  class slap_state : public spot::state
   {
   public:
     /// \brief Constructor
@@ -44,16 +44,16 @@ namespace slog
     /// \param right The state from the right automaton.
     /// These states are acquired by spot::state_product, and will
     /// be deleted on destruction.
-    slog_state(spot::state* left, its::State right)
+    slap_state(spot::state* left, its::State right)
       :	left_(left),
 	right_(right)
     {
     }
 
     /// Copy constructor
-    slog_state(const slog_state& o);
+    slap_state(const slap_state& o);
 
-    virtual ~slog_state();
+    virtual ~slap_state();
 
     state*
     left() const
@@ -69,7 +69,7 @@ namespace slog
 
     virtual int compare(const state* other) const;
     virtual size_t hash() const;
-    virtual slog_state* clone() const;
+    virtual slap_state* clone() const;
 
   private:
     spot::state* left_;		///< State from the left automaton.
@@ -78,16 +78,16 @@ namespace slog
 
 
   /// \brief Iterate over the successors of a product computed on the fly.
-  class slog_succ_iterator: public spot::tgba_succ_iterator
+  class slap_succ_iterator: public spot::tgba_succ_iterator
   {
   public:
     /** aut : the automaton, passed to allow creation of iterators
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-    slog_succ_iterator(const spot::tgba * aut, const spot::state * aut_state, spot::tgba_succ_iterator* left, const sogIts & model, const its::State& right);
+    slap_succ_iterator(const spot::tgba * aut, const spot::state * aut_state, spot::tgba_succ_iterator* left, const sogIts & model, const its::State& right);
 
-    virtual ~slog_succ_iterator();
+    virtual ~slap_succ_iterator();
 
     // iteration
     void first();
@@ -95,7 +95,7 @@ namespace slog
     bool done() const;
 
     // inspection
-    slog_state* current_state() const;
+    slap_state* current_state() const;
     bdd current_condition() const;
     bdd current_acceptance_conditions() const;
 
@@ -108,7 +108,7 @@ namespace slog
     //@}
 
     // to allow pretty printing of arc annotations
-    friend class slog_tgba;
+    friend class slap_tgba;
   protected:
     const spot::tgba * aut_;
     const spot::state * aut_state_;
@@ -120,9 +120,9 @@ namespace slog
 
 
   /// \brief A divergent state in some specific cases.
-  class slog_div_state : public spot::state {
+  class slap_div_state : public spot::state {
   public:
-    slog_div_state(const bdd& c, const bdd &a);
+    slap_div_state(const bdd& c, const bdd &a);
     int compare(const state* other) const;
     size_t hash() const;
     state* clone() const;
@@ -138,10 +138,10 @@ namespace slog
     bdd acc; ///< the (full) acceptance set
   };
 
-  class slog_div_succ_iterator : public spot::tgba_succ_iterator
+  class slap_div_succ_iterator : public spot::tgba_succ_iterator
   {
   public:
-    slog_div_succ_iterator(const spot::bdd_dict* d,
+    slap_div_succ_iterator(const spot::bdd_dict* d,
 			   const spot::state* s, const bdd & cond, const bdd & acc);
 
 
@@ -155,8 +155,8 @@ namespace slog
     std::string format_transition() const;
 
   private:
-    slog_div_succ_iterator(const slog_div_succ_iterator& s);
-    slog_div_succ_iterator& operator=(const slog_div_succ_iterator& s);
+    slap_div_succ_iterator(const slap_div_succ_iterator& s);
+    slap_div_succ_iterator& operator=(const slap_div_succ_iterator& s);
 
     const spot::bdd_dict* dict;
     const spot::state* state;
@@ -169,15 +169,15 @@ namespace slog
 
 
   /// \brief A lazy product.  (States are computed on the fly.)
-  class slog_tgba : public spot::tgba
+  class slap_tgba : public spot::tgba
   {
   public:
     /// \brief Constructor.
     /// \param left The left automata in the product.
     /// \param right The ITS model.
-    slog_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType);
+    slap_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType);
 
-    virtual ~slog_tgba();
+    virtual ~slap_tgba();
 
     virtual spot::state* get_init_state() const;
 
@@ -211,10 +211,10 @@ namespace slog
     // helper function
     bool isTerminalState (spot::tgba_succ_iterator * it, spot::state * source) const ;
     // Disallow copy.
-    slog_tgba(const slog_tgba&);
-    slog_tgba& operator=(const slog_tgba&);
+    slap_tgba(const slap_tgba&);
+    slap_tgba& operator=(const slap_tgba&);
   };
 
 }
 
-#endif // SPOT_TGBA_SLOGPRODUCT_HH
+#endif // SPOT_TGBA_SLAPPRODUCT_HH

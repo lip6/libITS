@@ -20,7 +20,7 @@
 #include "sogtgba.hh"
 #include "sogtgbautils.hh"
 #include "apiterator.hh"
-#include "slog.hh"
+#include "slap.hh"
 #include "dsog.hh"
 #include "fsltl.hh"
 
@@ -69,14 +69,14 @@ namespace sogits {
     case PLAIN_SOG :
       prod = new spot::tgba_product(a_, systgba_);
       break;
-    case SLOG_NOFS :
-      prod = new slog::slog_tgba(a_, *sogModel_,NOFS);
+    case SLAP_NOFS :
+      prod = new slap::slap_tgba(a_, *sogModel_,NOFS);
       break;
-    case SLOG_FST :
-      prod = new slog::slog_tgba(a_, *sogModel_,FST);
+    case SLAP_FST :
+      prod = new slap::slap_tgba(a_, *sogModel_,FST);
       break;
-    case SLOG_FSA :
-      prod = new slog::slog_tgba(a_, *sogModel_,FSA);
+    case SLAP_FSA :
+      prod = new slap::slap_tgba(a_, *sogModel_,FSA);
       break;
     case DSOG :
       prod = new dsog::dsog_tgba(a_, *sogModel_);

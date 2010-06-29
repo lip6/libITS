@@ -19,7 +19,7 @@
 // Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 // 02111-1307, USA.
 
-#include "slog.hh"
+#include "slap.hh"
 #include <string>
 #include <cassert>
 #include "misc/hashfunc.hh"
@@ -35,30 +35,30 @@ using namespace spot;
 #define trace while (0) std::cerr
 
 
-namespace slog
+namespace slap
 {
 
   ////////////////////////////////////////////////////////////
   // state_product
-  slog_state::slog_state(const slog_state& o)
+  slap_state::slap_state(const slap_state& o)
     : state(),
       left_(o.left()->clone()),
       right_(o.right())
   {
   }
 
-  slog_state::~slog_state()
+  slap_state::~slap_state()
   {
     delete left_;
   }
 
   int
-  slog_state::compare(const state* other) const
+  slap_state::compare(const state* other) const
   {
-    if (dynamic_cast<const slog_div_state*>(other))
+    if (dynamic_cast<const slap_div_state*>(other))
       return 1;
 
-    const slog_state* o = dynamic_cast<const slog_state*>(other);
+    const slap_state* o = dynamic_cast<const slap_state*>(other);
     assert(o);
     int res = left_->compare(o->left());
     if (res != 0)
@@ -70,26 +70,26 @@ namespace slog
   }
 
   size_t
-  slog_state::hash() const
+  slap_state::hash() const
   {
     // We assume that size_t is 32-bit wide.
     return wang32_hash(left_->hash()) ^ right_.hash();
   }
 
-  slog_state*
-  slog_state::clone() const
+  slap_state*
+  slap_state::clone() const
   {
-    return new slog_state(*this);
+    return new slap_state(*this);
   }
 
   ////////////////////////////////////////////////////////////
-  // slog_succ_iterator
+  // slap_succ_iterator
 
     /** aut : the automaton, passed to allow creation of iterators
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-  slog_succ_iterator::slog_succ_iterator(const tgba * aut, const spot::state * aut_state, tgba_succ_iterator* left, const sogIts & model, const its::State& right)
+  slap_succ_iterator::slap_succ_iterator(const tgba * aut, const spot::state * aut_state, tgba_succ_iterator* left, const sogIts & model, const its::State& right)
     : aut_(aut),
       aut_state_(aut_state),
       left_(left),
@@ -109,13 +109,13 @@ namespace slog
 
   }
 
-  slog_succ_iterator::~slog_succ_iterator()
+  slap_succ_iterator::~slap_succ_iterator()
   {
     delete left_;
   }
 
   bdd
-  slog_succ_iterator::compute_weaker_selfloop_ap()
+  slap_succ_iterator::compute_weaker_selfloop_ap()
   {
     // The acceptance condition labeling the arc of the tgba
     bdd ac = left_->current_acceptance_conditions();
@@ -144,7 +144,7 @@ namespace slog
   }
 
   void
-  slog_succ_iterator::step_()
+  slap_succ_iterator::step_()
   {
     // Test if this TGBA arc is a self-loop without acceptance conditions, if the TGBA has acceptance conds
     if (aut_->all_acceptance_conditions() != bddfalse) {
@@ -173,7 +173,7 @@ namespace slog
   }
 
   void
-  slog_succ_iterator::next_non_false_()
+  slap_succ_iterator::next_non_false_()
   {
     while (!left_->done())
       {
@@ -190,14 +190,14 @@ namespace slog
   }
 
   void
-  slog_succ_iterator::first()
+  slap_succ_iterator::first()
   {
     left_->first();
     next_non_false_();
   }
 
   void
-  slog_succ_iterator::next()
+  slap_succ_iterator::next()
   {
     // Progress in the tgba succs
     left_->next();
@@ -206,37 +206,37 @@ namespace slog
   }
 
   bool
-  slog_succ_iterator::done() const
+  slap_succ_iterator::done() const
   {
     return left_->done();
   }
 
 
-  slog_state*
-  slog_succ_iterator::current_state() const
+  slap_state*
+  slap_succ_iterator::current_state() const
   {
-    return new slog_state(left_->current_state(),
+    return new slap_state(left_->current_state(),
 			  dest_);
   }
 
   bdd
-  slog_succ_iterator::current_condition() const
+  slap_succ_iterator::current_condition() const
   {
     return left_->current_condition();
   }
 
-  bdd slog_succ_iterator::current_acceptance_conditions() const
+  bdd slap_succ_iterator::current_acceptance_conditions() const
   {
     return left_->current_acceptance_conditions();
   }
 
   ////////////////////////////////////////////////////////////
-  // slog_tgba
+  // slap_tgba
 
   /// \brief Constructor.
   /// \param left The left automata in the product.
   /// \param right The ITS model.
-  slog_tgba::slog_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType)
+  slap_tgba::slap_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType)
     : dict_(left->get_dict()), left_(left), model_(right), fsType_(fsType)
   {
     // register that we use the same bdd variables (dict) as the automaton.
@@ -244,13 +244,13 @@ namespace slog
     dict_->register_all_variables_of(&left_, this);
   }
 
-  slog_tgba::~slog_tgba()
+  slap_tgba::~slap_tgba()
   {
     dict_->unregister_all_my_variables(this);
   }
 
   state*
-  slog_tgba::get_init_state() const
+  slap_tgba::get_init_state() const
   {
     
     // The initial state of the tgba
@@ -273,7 +273,7 @@ namespace slog
     delete it;
 
 
-    return new slog_state(init_tgba,
+    return new slap_state(init_tgba,
 			  model_.leastPreTestFixpoint (model_.getInitialState(), F));
   }
 
@@ -305,19 +305,19 @@ namespace slog
   };
 
   spot::tgba_succ_iterator*
-  slog_tgba::succ_iter(const state* local_state,
+  slap_tgba::succ_iter(const state* local_state,
 		       const state* global_state,
 		       const tgba* global_automaton) const
   {
     // test for div case
-    const slog_div_state* d = dynamic_cast<const slog_div_state*>(local_state);
+    const slap_div_state* d = dynamic_cast<const slap_div_state*>(local_state);
     if (d) {
-      return new slog_div_succ_iterator(get_dict(), d, d->get_condition(), d->get_acceptance());
+      return new slap_div_succ_iterator(get_dict(), d, d->get_condition(), d->get_acceptance());
     }
     
 
-    // else it should be a normal slog state
-    const slog_state* s = dynamic_cast<const slog_state*>(local_state);
+    // else it should be a normal slap state
+    const slap_state* s = dynamic_cast<const slap_state*>(local_state);
     assert(s);
 
 
@@ -366,15 +366,15 @@ namespace slog
       if (scc == its::State::null) {
 	return new tgba_no_succ_iterator();
       } else {
-	return new slog_div_succ_iterator(get_dict(), s, bddtrue, left_->all_acceptance_conditions());
+	return new slap_div_succ_iterator(get_dict(), s, bddtrue, left_->all_acceptance_conditions());
       }
     }
     
     // std::cerr << "Building succ_iter from state : " << left_->format_state (s->left()) << std::endl;
-    return new slog_succ_iterator(left_, s->left(), li, model_, s->right());
+    return new slap_succ_iterator(left_, s->left(), li, model_, s->right());
   }
 
-  bool slog_tgba::isTerminalState (tgba_succ_iterator * it, state * source) const {
+  bool slap_tgba::isTerminalState (tgba_succ_iterator * it, state * source) const {
     for ( it->first(); !it->done() ; it->next() ) {
       if (it->current_state()->compare(source) != 0) {
 	trace << "State " << left_->format_state(source) << "is not terminal" << std::endl;
@@ -386,31 +386,31 @@ namespace slog
   }
 
   bdd
-  slog_tgba::compute_support_conditions(const state* in) const
+  slap_tgba::compute_support_conditions(const state* in) const
   {
-    const slog_state* s = dynamic_cast<const slog_state*>(in);
+    const slap_state* s = dynamic_cast<const slap_state*>(in);
     assert(s);
     return left_->support_conditions(s->left());
   }
 
   bdd
-  slog_tgba::compute_support_variables(const state* in) const
+  slap_tgba::compute_support_variables(const state* in) const
   {
-    const slog_state* s = dynamic_cast<const slog_state*>(in);
+    const slap_state* s = dynamic_cast<const slap_state*>(in);
     assert(s);
     return left_->support_variables(s->left());
   }
 
   bdd_dict*
-  slog_tgba::get_dict() const
+  slap_tgba::get_dict() const
   {
     return dict_;
   }
 
   std::string
-  slog_tgba::format_state(const state* state) const
+  slap_tgba::format_state(const state* state) const
   {
-    const slog_div_state* d = dynamic_cast<const slog_div_state*>(state);
+    const slap_div_state* d = dynamic_cast<const slap_div_state*>(state);
     if (d) {
       std::ostringstream os;
       os // <<  left_->format_state(d->get_left_state()) 
@@ -421,7 +421,7 @@ namespace slog
     }
 
 
-    const slog_state* s = dynamic_cast<const slog_state*>(state);
+    const slap_state* s = dynamic_cast<const slap_state*>(state);
     assert(s);
 
     // debugging...
@@ -440,9 +440,9 @@ namespace slog
   }
 
   state*
-  slog_tgba::project_state(const state* s, const tgba* t) const
+  slap_tgba::project_state(const state* s, const tgba* t) const
   {
-    const slog_state* s2 = dynamic_cast<const slog_state*>(s);
+    const slap_state* s2 = dynamic_cast<const slap_state*>(s);
     assert(s2);
     if (t == this)
       return s2->clone();
@@ -456,59 +456,59 @@ namespace slog
   }
 
   bdd
-  slog_tgba::all_acceptance_conditions() const
+  slap_tgba::all_acceptance_conditions() const
   {
     return left_->all_acceptance_conditions();
   }
 
   bdd
-  slog_tgba::neg_acceptance_conditions() const
+  slap_tgba::neg_acceptance_conditions() const
   {
     return left_->neg_acceptance_conditions();
   }
 
   std::string
-  slog_tgba::transition_annotation(const tgba_succ_iterator* t) const
+  slap_tgba::transition_annotation(const tgba_succ_iterator* t) const
   {
-    const slog_succ_iterator* i =
-      dynamic_cast<const slog_succ_iterator*>(t);
+    const slap_succ_iterator* i =
+      dynamic_cast<const slap_succ_iterator*>(t);
     assert(i);
     return left_->transition_annotation(i->left_);
   }
 
 
-  slog_div_state::slog_div_state(const bdd& c, const bdd& a) : cond(c),acc(a) {
+  slap_div_state::slap_div_state(const bdd& c, const bdd& a) : cond(c),acc(a) {
   }
 
-  int slog_div_state::compare(const state* other) const {
-    const slog_div_state* m = dynamic_cast<const slog_div_state*>(other);
+  int slap_div_state::compare(const state* other) const {
+    const slap_div_state* m = dynamic_cast<const slap_div_state*>(other);
     if (!m)
       return -1;
     return cond.id() - m->cond.id();
   }
 
-  size_t slog_div_state::hash() const {
+  size_t slap_div_state::hash() const {
     return wang32_hash(cond.id());
   }
 
-  spot::state* slog_div_state::clone() const {
-    return new slog_div_state(*this);
+  spot::state* slap_div_state::clone() const {
+    return new slap_div_state(*this);
   }
 
-  const bdd& slog_div_state::get_condition() const {
+  const bdd& slap_div_state::get_condition() const {
     return cond;
   }
 
-  const bdd& slog_div_state::get_acceptance() const {
+  const bdd& slap_div_state::get_acceptance() const {
     return acc;
   }
 
-  std::ostream & slog_div_state::print (std::ostream & os) const {
-    return (os << "SlogDivState " << std::endl);
+  std::ostream & slap_div_state::print (std::ostream & os) const {
+    return (os << "SlapDivState " << std::endl);
   }
 
   
-  slog_div_succ_iterator::slog_div_succ_iterator(const spot::bdd_dict* d,
+  slap_div_succ_iterator::slap_div_succ_iterator(const spot::bdd_dict* d,
 						 const spot::state* s,
 						 const bdd & cond,
 						 const bdd & acc)
@@ -516,48 +516,48 @@ namespace slog
   {
   }
 
-  void slog_div_succ_iterator::first() {
+  void slap_div_succ_iterator::first() {
     done_ = false;
   }
 
-  void slog_div_succ_iterator::next() {
+  void slap_div_succ_iterator::next() {
     if (!done_)
       done_ = true;
   }
 
-  bool slog_div_succ_iterator::done() const {
+  bool slap_div_succ_iterator::done() const {
     return  done_;
   }
 
-  spot::state* slog_div_succ_iterator::current_state() const {
+  spot::state* slap_div_succ_iterator::current_state() const {
     assert(!done_);
     trace << "FIRING : " << format_transition() << std::endl;
     trace << "FROM a div state" << std::endl << std::endl;
-    return new slog_div_state(cond_,acc_);
+    return new slap_div_state(cond_,acc_);
   }
 
-  bdd slog_div_succ_iterator::current_condition() const {
+  bdd slap_div_succ_iterator::current_condition() const {
     assert(!done());
     return cond_;
   }
 
-  bdd slog_div_succ_iterator::current_acceptance_conditions() const {
+  bdd slap_div_succ_iterator::current_acceptance_conditions() const {
     assert(!done());
     return acc_;
   }
 
-  std::string slog_div_succ_iterator::format_transition() const {
+  std::string slap_div_succ_iterator::format_transition() const {
     assert(!done());
     std::ostringstream os;
     spot::bdd_print_formula(os, dict, cond_);
     return "div(" + os.str() + ")";
   }
 
-  slog_div_succ_iterator::slog_div_succ_iterator(const slog_div_succ_iterator& s) {
+  slap_div_succ_iterator::slap_div_succ_iterator(const slap_div_succ_iterator& s) {
     assert(false);
   }
 
-  slog_div_succ_iterator& slog_div_succ_iterator::operator=(const slog_div_succ_iterator& s) {
+  slap_div_succ_iterator& slap_div_succ_iterator::operator=(const slap_div_succ_iterator& s) {
     assert(false);
     return *this;
   }

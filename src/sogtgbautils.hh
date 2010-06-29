@@ -50,9 +50,9 @@ namespace sogits {
   enum sog_product_type {
     FSLTL, // < The fully symbolic approach: encode tgba as an ITS.
     PLAIN_SOG, // < The basic algorithm with static parameters.
-    SLOG_NOFS, // < The (Symbolic) Local Obs Graph algorithm
-    SLOG_FST, // < The (Symbolic) Local Obs Graph algorithm with Terminal states FSLTL test.
-    SLOG_FSA, // < The (Symbolic) Local Obs Graph algorithm with Accepting states FSLTL test.
+    SLAP_NOFS, // < The (Symbolic) Local Obs Graph algorithm
+    SLAP_FST, // < The (Symbolic) Local Obs Graph algorithm with Terminal states FSLTL test.
+    SLAP_FSA, // < The (Symbolic) Local Obs Graph algorithm with Accepting states FSLTL test.
     DSOG // < The Dynamic Symbolic Obs Graph algorithm
   } ;
 

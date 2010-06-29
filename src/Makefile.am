@@ -1,4 +1,6 @@
-noinst_PROGRAMS = sog-its testite
+noinst_PROGRAMS = its-ltl 
+# just a small test for AP
+# testite
 
 
 if WITH_LIBDDD_PATH
@@ -31,7 +33,7 @@ LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
 MYHEADER =apiterator.hh \
 	dsog.hh \
 	fsltl.hh \
-	slog.hh \
+	slap.hh \
 	sogIts.hh \
 	sogstate.hh \
 	sogsucciter.hh \
@@ -44,7 +46,7 @@ MYSRC = apiterator.cpp \
 	dsog.cpp \
 	fsltl.cpp \
 	main.cpp \
-	slog.cpp \
+	slap.cpp \
 	sogIts.cpp \
 	sogstate.cpp \
 	sogsucciter.cpp \
@@ -52,9 +54,10 @@ MYSRC = apiterator.cpp \
 	sogtgbautils.cpp \
 	tgbaIts.cpp
 
-sog_its_SOURCES = $(MYSRC) $(MYHEADER)
+its_ltl_SOURCES = $(MYSRC) $(MYHEADER)
 
-sog_its_LDADD = $(LDADDFLAGS)
+its_ltl_LDADD = $(LDADDFLAGS)
 
-testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
-testite_LDADD =  $(LDADDFLAGS)
+
+#testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
+#testite_LDADD =  $(LDADDFLAGS)

@@ -53,7 +53,7 @@ void syntax(const char* prog) {
             << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
-            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLOG,DSOG,FSLTL,SLOG-FST,SLOG-FSA} (SLOG-FST by default)\n"
+            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLAP,DSOG,FSLTL,SLAP-FST,SLAP-FSA} (SLAP-FST by default)\n"
 	    << "                  The FST variants include a test for switching to fully symbolic emptiness check in terminal states.\n"
 	    << "                  The FSA variants include a test for switching to fully symbolic emptiness check in any potentially accepting automaton state."
             << std::endl
@@ -117,7 +117,7 @@ int main(int argc, const char *argv[]) {
   std::string ltl_string = "1"; // true
   std::string algo_string = "Cou99";
 
-  sog_product_type sogtype = SLOG_FST;
+  sog_product_type sogtype = SLAP_FST;
 
   std::string pathprodff = argv[argc-1];
 
@@ -179,14 +179,14 @@ int main(int argc, const char *argv[]) {
     else if (!strcmp(argv[pn_index], "-SSOG")) {
       sogtype = PLAIN_SOG;
     }
-    else if (!strcmp(argv[pn_index], "-SSLOG")) {
-      sogtype = SLOG_NOFS;
+    else if (!strcmp(argv[pn_index], "-SSLAP")) {
+      sogtype = SLAP_NOFS;
     }
-    else if (!strcmp(argv[pn_index], "-SSLOG-FSA")) {
-      sogtype = SLOG_FSA;
+    else if (!strcmp(argv[pn_index], "-SSLAP-FSA")) {
+      sogtype = SLAP_FSA;
     }
-    else if (!strcmp(argv[pn_index], "-SSLOG-FST")) {
-      sogtype = SLOG_FST;
+    else if (!strcmp(argv[pn_index], "-SSLAP-FST")) {
+      sogtype = SLAP_FST;
     }
     else if (!strcmp(argv[pn_index], "-SDSOG")) {
       sogtype = DSOG;
