@@ -203,7 +203,7 @@ namespace sogits {
       }
 
     if (print_formula_tgba_)
-      spot::dotty_reachable(std::cout, a_);
+      spot::dotty_reachable(std::cerr, a_);
 
 
     return true;
