@@ -8,7 +8,6 @@
 
 #include "Composite.hh"
 #include "TComposite.hh"
-#include "PTransition.hh"
 #include "CompositeXMLLoader.hh"
 
 // for pretty names

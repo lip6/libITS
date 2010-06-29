@@ -5,6 +5,10 @@ MYSRCDIR= $(top_srcdir)/src
 MYPRODSRCDIR= $(MYSRCDIR)/prod
 MYJSONSRCDIR= $(MYSRCDIR)/parser_json
 MYJSONSPIRITSRCDIR= $(MYJSONSRCDIR)/json_spirit
+MYPETRISRCDIR = $(MYSRCDIR)/petri
+MYCOMPSRCDIR = $(MYSRCDIR)/composite
+MYSCALARSRCDIR = $(MYSRCDIR)/scalar
+
 
 libprod_a_YFLAGS = -d 
 libprod_a_LFLAGS = -olex.yy.c
@@ -33,75 +37,93 @@ JSONSOURCES = $(JSONSPIRITSOURCES) \
 		$(MYJSONSRCDIR)/parse_json.cpp   \
 		$(MYJSONSRCDIR)/parse_json.hh
 
-XMLLOADERSOURCES =  $(MYSRCDIR)/CompositeXMLLoader.hh $(MYSRCDIR)/CompositeXMLLoader.cpp \
+XMLLOADERSOURCES =  $(MYCOMPSRCDIR)/CompositeXMLLoader.hh $(MYCOMPSRCDIR)/CompositeXMLLoader.cpp \
 	$(MYSRCDIR)/ITSModelXMLLoader.hh $(MYSRCDIR)/ITSModelXMLLoader.cpp \
-	$(MYSRCDIR)/XMLLoader.hh $(MYSRCDIR)/XMLLoader.cpp
+	$(MYPETRISRCDIR)/XMLLoader.hh $(MYPETRISRCDIR)/XMLLoader.cpp
 
 
-ITSHEADERS = 	$(MYSRCDIR)/Arc.hh \
-	$(MYSRCDIR)/CircularSet.hh \
-	$(MYSRCDIR)/CircularSetType.hh \
-	$(MYSRCDIR)/CircularSetXMLLoader.hh \
-	$(MYSRCDIR)/CircularSync.hh \
+PETRIHEADERS = 	$(MYPETRISRCDIR)/Arc.hh \
+	$(MYPETRISRCDIR)/JSON2ITS.hh \
+	$(MYPETRISRCDIR)/JSONPNetType.hh \
+	$(MYPETRISRCDIR)/Hom_PlaceArcs.hh \
+	$(MYPETRISRCDIR)/Hom_Basic.hh \
+	$(MYPETRISRCDIR)/Marking.hh \
+	$(MYPETRISRCDIR)/Modular2ITS.hh \
+	$(MYPETRISRCDIR)/Place.hh \
+	$(MYPETRISRCDIR)/PNet.hh \
+	$(MYPETRISRCDIR)/PNetType.hh \
+	$(MYPETRISRCDIR)/PTransition.hh \
+	$(MYPETRISRCDIR)/TimeConstraint.hh \
+	$(MYPETRISRCDIR)/TPNet.hh \
+	$(MYPETRISRCDIR)/TPNetType.hh \
+	$(MYPETRISRCDIR)/TPNetSemantics.hpp 
+
+
+COMPOSITEHEADERS = 	$(MYCOMPSRCDIR)/Composite.hh \
+	$(MYCOMPSRCDIR)/CompositeType.hh \
+	$(MYCOMPSRCDIR)/CState.hh \
+	$(MYCOMPSRCDIR)/Synchronization.hh \
+	$(MYCOMPSRCDIR)/TComposite.hh 
+
+
+SCALARHEADERS = $(MYSCALARSRCDIR)/CircularSet.hh \
+	$(MYSCALARSRCDIR)/CircularSetType.hh \
+	$(MYSCALARSRCDIR)/CircularSetXMLLoader.hh \
+	$(MYSCALARSRCDIR)/CircularSync.hh \
+	$(MYSCALARSRCDIR)/Delegator.hh \
+	$(MYSCALARSRCDIR)/ScalarSet.hh \
+	$(MYSCALARSRCDIR)/ScalarSetXMLLoader.hh \
+	$(MYSCALARSRCDIR)/ScalarSetType.hh \
+	$(MYSCALARSRCDIR)/ScalarState.hh 
+
+
+ITSHEADERS = $(PETRIHEADERS) \
+	$(COMPOSITEHEADERS) \
+	$(SCALARHEADERS) \
 	$(MYSRCDIR)/ColoaneExport.hh \
-	$(MYSRCDIR)/Composite.hh \
-	$(MYSRCDIR)/CompositeType.hh \
-	$(MYSRCDIR)/CState.hh \
-	$(MYSRCDIR)/Delegator.hh \
-	$(MYSRCDIR)/JSON2ITS.hh \
-	$(MYSRCDIR)/JSONPNetType.hh \
-	$(MYSRCDIR)/Hom_PlaceArcs.hh \
-	$(MYSRCDIR)/Hom_Basic.hh \
 	$(MYSRCDIR)/Instance.hh \
 	$(MYSRCDIR)/ITSModel.hh \
-	$(MYSRCDIR)/Marking.hh \
-	$(MYSRCDIR)/Modular2ITS.hh \
 	$(MYSRCDIR)/Naming.hh \
 	$(MYSRCDIR)/Ordering.hh \
-	$(MYSRCDIR)/Place.hh \
-	$(MYSRCDIR)/PNet.hh \
-	$(MYSRCDIR)/PNetType.hh \
-	$(MYSRCDIR)/PTransition.hh \
-	$(MYSRCDIR)/ScalarSet.hh \
-	$(MYSRCDIR)/ScalarSetXMLLoader.hh \
-	$(MYSRCDIR)/ScalarSetType.hh \
-	$(MYSRCDIR)/ScalarState.hh \
-	$(MYSRCDIR)/Synchronization.hh \
-	$(MYSRCDIR)/TimeConstraint.hh \
-	$(MYSRCDIR)/TComposite.hh \
-	$(MYSRCDIR)/TPNet.hh \
-	$(MYSRCDIR)/TPNetType.hh \
-	$(MYSRCDIR)/TPNetSemantics.hpp \
 	$(MYSRCDIR)/Type.hh \
 	$(MYSRCDIR)/TypeBasics.hh \
 	$(MYSRCDIR)/TypeCacher.hh \
 	$(MYSRCDIR)/TypeVisitor.hh 
 
+PETRISOURCES = 	$(MYPETRISRCDIR)/Arc.cpp \
+	$(MYPETRISRCDIR)/JSON2ITS.cpp \
+	$(MYPETRISRCDIR)/JSONPNetType.cpp \
+	$(MYPETRISRCDIR)/Hom_Basic.cpp \
+	$(MYPETRISRCDIR)/Modular2ITS.cpp \
+	$(MYPETRISRCDIR)/Place.cpp \
+	$(MYPETRISRCDIR)/PNet.cpp \
+	$(MYPETRISRCDIR)/PTransition.cpp \
+	$(MYPETRISRCDIR)/TPNet.cpp 
+
+
+COMPOSITESOURCES = $(MYCOMPSRCDIR)/Composite.cpp \
+	$(MYCOMPSRCDIR)/CompositeType.cpp \
+	$(MYCOMPSRCDIR)/Synchronization.cpp \
+	$(MYCOMPSRCDIR)/TComposite.cpp 
+
+
+SCALARSOURCES = $(MYSCALARSRCDIR)/CircularSet.cpp \
+	$(MYSCALARSRCDIR)/CircularSetXMLLoader.cpp \
+	$(MYSCALARSRCDIR)/CircularSync.cpp \
+	$(MYSCALARSRCDIR)/Delegator.cpp \
+	$(MYSCALARSRCDIR)/ScalarSet.cpp \
+	$(MYSCALARSRCDIR)/ScalarSetXMLLoader.cpp \
+	$(MYSCALARSRCDIR)/ScalarSetType.cpp \
+	$(MYSCALARSRCDIR)/ScalarState.cpp 
+
+
 ITSSOURCES = $(ITSHEADERS) \
-	$(MYSRCDIR)/Arc.cpp \
-	$(MYSRCDIR)/CircularSet.cpp \
-	$(MYSRCDIR)/CircularSetXMLLoader.cpp \
-	$(MYSRCDIR)/CircularSync.cpp \
+	$(PETRISOURCES) \
+	$(COMPOSITESOURCES) \
+	$(SCALARSOURCES) \
 	$(MYSRCDIR)/ColoaneExport.cpp \
-	$(MYSRCDIR)/Composite.cpp \
-	$(MYSRCDIR)/CompositeType.cpp \
-	$(MYSRCDIR)/Delegator.cpp \
-	$(MYSRCDIR)/JSON2ITS.cpp \
-	$(MYSRCDIR)/JSONPNetType.cpp \
-	$(MYSRCDIR)/Hom_Basic.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
-	$(MYSRCDIR)/Modular2ITS.cpp \
 	$(MYSRCDIR)/Ordering.cpp \
-	$(MYSRCDIR)/Place.cpp \
-	$(MYSRCDIR)/PNet.cpp \
-	$(MYSRCDIR)/PTransition.cpp \
-	$(MYSRCDIR)/ScalarSet.cpp \
-	$(MYSRCDIR)/ScalarSetXMLLoader.cpp \
-	$(MYSRCDIR)/ScalarSetType.cpp \
-	$(MYSRCDIR)/ScalarState.cpp \
-	$(MYSRCDIR)/Synchronization.cpp \
-	$(MYSRCDIR)/TComposite.cpp \
-	$(MYSRCDIR)/TPNet.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
 	$(MYSRCDIR)/TypeCacher.cpp \
 	$(JSONSOURCES) \
@@ -115,7 +137,7 @@ else
 LIBDDD_LINK=-lddd
 endif
 
-AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS)
-AM_CXXFLAGS = -g -O2 -Wall
+AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O0 -Wall $(BOOST_CPPFLAGS)
+AM_CXXFLAGS = -g -O0 -Wall
 
 libITS_a_SOURCES = $(ITSSOURCES)

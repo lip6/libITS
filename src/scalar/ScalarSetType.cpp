@@ -5,7 +5,7 @@
 #include <cstdio>
 #include "ScalarSetType.hh"
 #include "CircularSetType.hh"
-#include "Composite.hh"
+#include "composite/Composite.hh"
 
 #define trace while(0) std::cerr
 

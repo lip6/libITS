@@ -6,10 +6,10 @@
 
 #include <expat.h>
 
-#include "XMLLoader.hh"
+#include "petri/XMLLoader.hh"
 #include "ITSModelXMLLoader.hh"
-#include "CompositeXMLLoader.hh"
-#include "ScalarSetXMLLoader.hh"
+#include "composite/CompositeXMLLoader.hh"
+#include "scalar/ScalarSetXMLLoader.hh"
 
 
 void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_Char** Attr)

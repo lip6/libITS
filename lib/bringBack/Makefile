@@ -11,3 +11,5 @@ all : ../libRdP.a ../libCAMI.a
 clean :
 	rm -f ../libCAMI.a ../libRdP.a
 
+maintainer-clean : clean
+

@@ -5,9 +5,9 @@
 #include <cstring>
 
 #include "ITSModel.hh"
-#include "PNet.hh"
-#include "Composite.hh"
-#include "CircularSet.hh"
+#include "petri/PNet.hh"
+#include "composite/Composite.hh"
+#include "scalar/CircularSet.hh"
 
 #include "statistic.hpp"
 

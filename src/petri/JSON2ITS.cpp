@@ -1,6 +1,6 @@
 #include "JSON2ITS.hh"
 #include "PNet.hh"
-#include "Composite.hh"
+#include "composite/Composite.hh"
 #include "parser_RdPE/RdPE.h"
 #include "parser_CAMI/Cami.hpp"
 #include "parser_json/parse_json.hh"

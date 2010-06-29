@@ -1,15 +1,16 @@
 #include "ITSModel.hh"
 
 // For factory role
-#include "PNetType.hh"
-#include "JSONPNetType.hh"
-#include "TPNetType.hh"
-#include "Composite.hh"
-#include "TComposite.hh"
-#include "CompositeType.hh"
+#include "petri/PNetType.hh"
+#include "petri/JSONPNetType.hh"
+#include "petri/TPNetType.hh"
+#include "composite/Composite.hh"
+#include "composite/TComposite.hh"
+#include "composite/CompositeType.hh"
 #include "TypeCacher.hh"
-#include "ScalarSetType.hh"
-#include "CircularSetType.hh"
+#include "scalar/ScalarSetType.hh"
+#include "scalar/CircularSetType.hh"
+
 #include "MemoryManager.h"
 //#include "util/dotExporter.h"
 
