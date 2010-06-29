@@ -3,13 +3,13 @@
 #include "ITSModel.hh"
 #include "SDD.h"
 // romeo parser
-#include "XMLLoader.hh"
+#include "petri/XMLLoader.hh"
 // prod parser
-#include "Modular2ITS.hh"
+#include "petri/Modular2ITS.hh"
 // ITSModel parser
 #include "ITSModelXMLLoader.hh"
 // Cami parser
-#include "JSON2ITS.hh"
+#include "petri/JSON2ITS.hh"
 
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
