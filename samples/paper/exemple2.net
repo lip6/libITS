@@ -5,6 +5,9 @@
 #place s2
 #place s3
 #place s4
+#place s5
+#place s6
+#place s7
 #trans t_s0s1
 in {s0:<..>;}
 out {s1:<..>;}
@@ -13,8 +16,16 @@ out {s1:<..>;}
 in {s0:<..>;}
 out {s2:<..>;B:<..>;}
 #endtr
-#trans t_s1s0
+#trans t_s1s6
 in {s1:<..>;}
+out {s6:<..>;}
+#endtr
+#trans t_s6s7
+in {s6:<..>;}
+out {s7:<..>;}
+#endtr
+#trans t_s7s0
+in {s7:<..>;}
 out {s0:<..>;}
 #endtr
 #trans t_s2s3
@@ -25,8 +36,12 @@ out {s3:<..>;}
 in {s3:<..>;A:<..>;}
 out {s4:<..>;B:<..>;}
 #endtr
-#trans t_s4s2
+#trans t_s4s5
 in {s4:<..>;}
+out {s5:<..>;}
+#endtr
+#trans t_s5s2
+in {s5:<..>;}
 out {s2:<..>;A:<..>;}
 #endtr
 
