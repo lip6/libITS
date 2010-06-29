@@ -146,11 +146,13 @@ namespace slog
   void
   slog_succ_iterator::step_()
   {
-    // Test if this TGBA arc is a self-loop without acceptance conditions
-    bdd curacc = left_->current_acceptance_conditions();
-    if (curacc == bddfalse && left_->current_state()->compare(aut_state_) == 0) {
-      dest_ = its::State::null;
-      return;
+    // Test if this TGBA arc is a self-loop without acceptance conditions, if the TGBA has acceptance conds
+    if (aut_->all_acceptance_conditions() != bddfalse) {
+      bdd curacc = left_->current_acceptance_conditions();
+      if (curacc == bddfalse && left_->current_state()->compare(aut_state_) == 0) {
+	dest_ = its::State::null;
+	return;
+      }
     }
 
 
@@ -262,7 +264,7 @@ namespace slog
       // Test self loop
       if ( dest->compare(init_tgba) == 0 ) {
 	// Test ac=0 (empty acceptance cond arcs)
-	if (it->current_acceptance_conditions() == bddfalse && left_->all_acceptance_conditions() != bddfalse) {
+	if (it->current_acceptance_conditions() == bddfalse && left_->all_acceptance_conditions() != it->current_acceptance_conditions()) {
 	  F |= it->current_condition();
 	}
       }
