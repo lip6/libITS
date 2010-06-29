@@ -20,7 +20,7 @@ To run the benchmarks on all the models in newTests/.
 
     If you want to filter on a method, use
 
-      ./sum.pl -f '^SLOG' newTests/**/*.log
+      ./sum.pl -f '^SLAP' newTests/**/*.log
 
     to filter on a model, use
 

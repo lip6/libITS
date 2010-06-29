@@ -89,7 +89,7 @@ sub workonfile {
 	$nbformula ++;
 #	print "Working on formula : $line \n";
 	# ../check-sog -Fformula -c -e invoice.cami.net 1
-	my $call = "$checksog_exe -SSLOG -f\"$line\" -c  $ff|";
+	my $call = "$checksog_exe -SSLAP -f\"$line\" -c  $ff|";
 	
 	print STDERR $call."\n";
 	open MYTOOL,$call;
