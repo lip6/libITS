@@ -36,9 +36,9 @@
 #include "MemoryManager.h"
 
 // prod parser
-#include "Modular2ITS.hh"
+#include "petri/Modular2ITS.hh"
 #include "prod/ProdLoader.hh"
-#include "PNet.hh"
+#include "petri/PNet.hh"
 
 // fair CTL bricks
 #include "tgbaIts.hh"

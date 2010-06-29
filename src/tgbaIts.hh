@@ -2,7 +2,6 @@
 #define __TGBA_ITS_HH__
 
 #include "TypeBasics.hh"
-#include "PNet.hh"
 #include "tgba/tgba.hh"
 #include "misc/bddlt.hh"
 #include "tgbaalgos/dotty.hh"
@@ -34,7 +33,9 @@ namespace its {
     void visit (class TypeVisitor * visitor) const {
     }
 
-
+    /** This function is not relevant for TGBA implementation (afaics currently) */
+    its::Transition getPredicate(const std::string&) const 
+    { return its::Transition::id; }
 
     /** the set InitStates of designated initial states */
     labels_t getInitStates () const {

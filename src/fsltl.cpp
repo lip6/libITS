@@ -1,6 +1,5 @@
 #include "fsltl.hh"
 #include "tgbaIts.hh"
-#include "Composite.hh"
 
 
 // #define trace std::cerr

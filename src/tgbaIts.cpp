@@ -4,7 +4,7 @@
 #include "ltlvisit/tostring.hh"
 #include "ltlast/atomic_prop.hh"
 #include "misc/escape.hh"
-#include "Hom_Basic.hh"
+#include "petri/Hom_Basic.hh"
 
 namespace its {
 
