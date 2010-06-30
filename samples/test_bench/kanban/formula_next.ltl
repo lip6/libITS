@@ -1,0 +1,100 @@
+F(P4 R XPm2)
+X(GPm1 M P2)
+(Pm2 R Pout4) M P3
+GPm1 U !P2
+Pm1 & (!Pout3 W !Pm1)
+Pback2 | ((Pm4 | !Pout3) & (Pout3 | !Pm4))
+X(Pout2 U !P3)
+F(GP2 | !Pm3)
+G(!Pout1 M !Pout2)
+!P1 U !Pback4
+G((!P2 & !P1) | (P2 & P1))
+(FP3 & !Pback1) | (Pback1 & G!P3)
+((Pout3 | !Pm1) & !Pback1) | (Pm1 & Pback1 & !Pout3)
+(FPback3 & XPm4) | (X!Pm4 & G!Pback3)
+X((Pout2 & XP4) | (!Pout2 & X!P4))
+F(!Pout4 | !Pm3)
+P1 | (!Pback1 & !P3) | (P3 & Pback1)
+GP2 M FPm3
+Pback4 W FGPback1
+((!P1 & !Pback4) | (Pback4 & P1)) R Pback4
+GPm3 | G!Pback3
+(Pback3 & ((!P2 & !P4) | (P4 & P2))) | (!Pback3 & (P4 | P2) & (!P2 | !P4))
+Pback4 W (P1 | !P3)
+X!P3 R !P3
+Pout4 M X!Pm3
+P2 M XXPback3
+XGPback4 U Pout3
+XPout1 M !P2
+(Pback3 & !P4) | (P4 & !Pback3) | !P1
+F(!Pback3 W !Pout3)
+(Pout3 & !Pback4) | (Pback4 & !Pout3)
+X(!P3 M !Pout2)
+(XP1 & !Pout2) | (Pout2 & X!P1)
+G!P2 M Pout2
+FPback4 U XPback4
+((Pout2 U P2) & !Pm4) | (Pm4 & (!Pout2 R !P2))
+Pm4 | XG!Pm3
+X(Pout1 & F!Pout1)
+(((!P1 & !P2) | (P2 & P1)) & !P3) | (P3 & (P2 | P1) & (!P1 | !P2))
+!Pm4 & G!Pout4
+P2 & ((!Pout4 & !Pback4) | (Pback4 & Pout4))
+XPout3 W !Pm4
+Pm3 U (Pout4 U Pout3)
+(!Pm3 & G!Pout2) | (Pm3 & FPout2)
+(Pback4 & (Pout3 W Pout2)) | (!Pback4 & (!Pout3 M !Pout2))
+(FPout4 & !Pm3) | (Pm3 & G!Pout4)
+FPout2 W FPout4
+X((FP3 & !Pback4) | (Pback4 & G!P3))
+F((Pm2 & GP3) | (!Pm2 & F!P3))
+((Pm4 R P1) & !Pback1) | (Pback1 & (!Pm4 U !P1))
+F(!Pback3 U !P4)
+(Pm3 & !Pm4) | (Pm4 & !Pm3) | !Pback1
+(GPout1 & XPback1) | (F!Pout1 & X!Pback1)
+XG((!Pback2 & !Pm4) | (Pm4 & Pback2))
+(P1 W Pout4) U Pout1
+((P3 U P2) & !P1) | (P1 & (!P3 R !P2))
+F(!P4 | !Pm4)
+FPback3 U XPback1
+Pm3 | (!Pm4 M !Pout3)
+Pout2 | !Pback2 | !P4
+X((P1 & !Pm3) | (Pm3 & !P1))
+F(Pback4 W FP1)
+Pout2 | (!Pback1 & !Pout1)
+P2 M ((!Pm1 & !P4) | (P4 & Pm1))
+(Pback1 U Pm2) M P3
+Pout2 U (Pback3 M P4)
+P4 & (!Pm3 W !P4)
+FP1 | G!Pback2
+X((P3 & XPout2) | (!P3 & X!Pout2))
+XG(Pback4 M P2)
+XXXFP4
+F(P2 W !Pback3)
+P1 W X!P2
+(Pout1 R Pm1) W Pm4
+(XPout1 & G!Pout2) | (FPout2 & X!Pout1)
+(Pm2 & GFPout4) | (!Pm2 & FG!Pout4)
+G(!Pout4 & !Pback3)
+X((Pout2 & !Pm4) | (Pm4 & !Pout2))
+F(XP2 M Pm3)
+FPm1 W GPback2
+((P4 W Pback1) & !P1) | (P1 & (!P4 M !Pback1))
+((Pback2 & !Pm4) | (Pm4 & !Pback2)) W Pm3
+Pout2 | !Pout1 | !P3
+(Pout1 & (Pback1 R Pm2)) | (!Pout1 & (!Pback1 U !Pm2))
+G(!Pout4 U Pm2)
+P3 M GFPback4
+P1 | (!Pm2 & !Pout3) | (Pout3 & Pm2)
+((Pback3 & !Pm4) | (Pm4 & !Pback3)) M Pm1
+!Pout2 U XP2
+Pback2 R (Pm3 R Pout4)
+Pout4 | ((P3 | !Pout1) & (Pout1 | !P3))
+(Pout3 & !P2) | (P2 & !Pout3)
+XG(Pback4 M Pm1)
+XF((Pm1 & !Pout4) | (Pout4 & !Pm1))
+(Pout3 W Pm2) | !P2
+(Pout1 | FPout3) & (!Pout1 | G!Pout3)
+G(!P3 | !Pm1)
+((P3 | !Pm2) & !Pout3) | (Pout3 & Pm2 & !P3)
+FG((Pback1 & !Pback4) | (Pback4 & !Pback1))
+(P4 | P1) & (!P1 | !P4)
