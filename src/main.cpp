@@ -201,6 +201,10 @@ int main(int argc, const char *argv[]) {
       fm_symb_merge_opt = false;
     }
     else {
+      if (pn_index != argc - 1) {
+	std::cerr << "Unrecognized argument :" << argv[pn_index] << std::endl;
+	syntax(argv[0]);
+      }
       break;
     }
   }
