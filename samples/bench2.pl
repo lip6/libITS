@@ -7,7 +7,7 @@ use File::Find;
 
 ###############
 my $nusmv= "~/NuSMV/NuSMV-2.4.3-x86_64-linux-gnu/bin/NuSMV";
-my $default_checksog="../src/sog-its";
+my $default_checksog="../src/its-ltl";
 #############
 
 our $opt_f;
@@ -101,8 +101,14 @@ sub workonfile {
     if ( -r $formff ) {
       push @formulas, $formff;
     }
+    $formff = dirname($ff)."/formula_next.ltl";
+    if ( -r $formff ) {
+      push @formulas, $formff;
+    }
     my $nbformula = 0;
     foreach  my $formulaff (@formulas) {
+      # Set to true indicates we have "next" X operator  in the formula
+      my $hasnext = ($formulaff =~ /.*next.*/);
       open IN,$formulaff or die "Bad formula file name";
 #      print "Working on formula file : $formulaff \n";
       while (my $line = <IN>) {
@@ -113,6 +119,10 @@ sub workonfile {
 	# ../check-sog -Fformula -c -e invoice.cami.net 1
 	my $prevverdict;
 	foreach my $m (@methods) {
+	  if ($hasnext && $m =~ /D?SOG/) {
+	    next;
+	  }
+
 	  $method = $m;
 
 
