@@ -263,7 +263,15 @@ labels_t CircularSetType::getTransLabels () const {
 	Label slabel = it->getLabel();
 	if ( it->isALL() ) {
 	  // handle it as a single sync with $n$ parts
-	  net.addSynchronization( sname, slabel );
+	  if (! close_loop && slabel == "") {
+	  // if isALL and the EXTERNAL delegator is Private visibility
+	  // then we should use public labels in internal components and only use private for
+	  // the most external component (as identified by the close_loop parameter)
+	     net.addSynchronization( sname, sname );
+	  } else {
+	    net.addSynchronization( sname , slabel );
+	  }
+	 
 	  for (size_t i=0 ; i < n ; ++i) {
 	    net.addSyncPart (sname , instanceName(i), sname);
 	  }
