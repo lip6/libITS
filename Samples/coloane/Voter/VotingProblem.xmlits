@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/fr.lip6.move.coloane.its.xsd'>
+<types>
+<type name='Voter.model' id='7000' formalism='Time Petri Net' path='/Voter/Voter.model'/>
+<type name='voters.model' id='7001' formalism='Scalar Set Composite' path='/Voter/voters.model'/>
+</types>
+<concepts>
+<concept name='voter' id='7002' effective='7000' parent='7001'/>
+</concepts>
+<parameters>
+<parameter name='$SIZE' id='7003' parent='7001' value='20'/>
+</parameters>
+<checks>
+<check>
+<typeid>7001</typeid>
+<formulas>
+<formula name='Formula' description='New formula' formula='EX ( TRUE) ;'/>
+</formulas>
+</check>
+</checks>
+</model>

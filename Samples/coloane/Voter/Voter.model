@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='Time Petri Net' xposition='0' yposition='0'>
+<attributes>
+</attributes>
+<nodes>
+<node nodetype='place' id='3' xposition='253' yposition='98' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='273' yposition='98'>init</attribute>
+<attribute name='marking' xposition='273' yposition='78'>1</attribute>
+</attributes>
+</node>
+<node nodetype='place' id='4' xposition='165' yposition='248' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='185' yposition='248'>yes</attribute>
+<attribute name='marking' xposition='185' yposition='228'>0</attribute>
+</attributes>
+</node>
+<node nodetype='place' id='5' xposition='321' yposition='260' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='341' yposition='260'>no</attribute>
+<attribute name='marking' xposition='341' yposition='240'>0</attribute>
+</attributes>
+</node>
+<node nodetype='transition' id='6' xposition='206' yposition='169' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
+<attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
+<attribute name='visibility' xposition='156' yposition='169'>public</attribute>
+<attribute name='label' xposition='226' yposition='169'>vote</attribute>
+</attributes>
+</node>
+<node nodetype='transition' id='7' xposition='296' yposition='169' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='latestFiringTime' xposition='0' yposition='0'>inf</attribute>
+<attribute name='earliestFiringTime' xposition='0' yposition='0'>0</attribute>
+<attribute name='visibility' xposition='268' yposition='187'>public</attribute>
+<attribute name='label' xposition='316' yposition='169'>vote</attribute>
+</attributes>
+</node>
+</nodes>
+<arcs>
+<arc arctype='arc' id='8' startid='3' endid='6' color='#000000' curved='true'>
+<attributes>
+<attribute name='valuation' xposition='229' yposition='133'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='9' startid='6' endid='4' color='#000000' curved='true'>
+<attributes>
+<attribute name='valuation' xposition='185' yposition='208'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='10' startid='3' endid='7' color='#000000' curved='true'>
+<attributes>
+<attribute name='valuation' xposition='274' yposition='133'>1</attribute>
+</attributes>
+</arc>
+<arc arctype='arc' id='11' startid='7' endid='5' color='#000000' curved='true'>
+<attributes>
+<attribute name='valuation' xposition='308' yposition='214'>1</attribute>
+</attributes>
+</arc>
+</arcs>
+<stickys>
+</stickys>
+</model>

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd' formalism='Scalar Set Composite' xposition='0' yposition='0'>
+<attributes>
+<attribute name='size' xposition='0' yposition='0'>$SIZE</attribute>
+</attributes>
+<nodes>
+<node nodetype='instance' id='3' xposition='179' yposition='136' scale='100' interface='false' alt='0' foreground='#000000' background='#ffffff'>
+<attributes>
+<attribute name='name' xposition='199' yposition='116'>i</attribute>
+<attribute name='type' xposition='199' yposition='116'>voter</attribute>
+</attributes>
+</node>
+<node nodetype='delegator' id='4' xposition='317' yposition='71' scale='100' interface='false' alt='0' foreground='#000000' background='#000000'>
+<attributes>
+<attribute name='visibility' xposition='337' yposition='51'>private</attribute>
+<attribute name='label' xposition='337' yposition='51'>vote</attribute>
+<attribute name='kind' xposition='338' yposition='80'>ALL</attribute>
+</attributes>
+</node>
+</nodes>
+<arcs>
+<arc arctype='arc' id='5' startid='3' endid='4' color='#000000' curved='true'>
+<attributes>
+</attributes>
+</arc>
+</arcs>
+<stickys>
+</stickys>
+</model>
