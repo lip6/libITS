@@ -46,8 +46,8 @@ void usage () {
   cerr<<  "    [--backward] to force backward CTL model-checking (classic algorithm from 10^20 states & beyond)\n";
   cerr << "    --dump-order : dump the currently used variable order to stdout and exit. \n" ;
   cerr << "    --load-order path : load the variable order from the file designated by path. \n" ;
-  cerr<<  "    --sdd : privilege SDD storage." <<endl;
-  cerr<<  "    --ddd : privilege DDD (no hierarchy) encoding.[DEFAULT]" <<endl;
+  cerr<<  "    --sdd : privilege SDD storage.[DEFAULT]" <<endl;
+  cerr<<  "    --ddd : privilege DDD (no hierarchy) encoding." <<endl;
   cerr<<  "    --no-garbage : disable garbage collection (may be faster, more memory)" <<endl;
   cerr<<  "    -ssD2 INT : use 2 level depth for scalar sets. Integer provided defines level 2 block size." <<endl;
   cerr<<  "    -ssDR INT : use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
@@ -118,6 +118,12 @@ int main (int argc, char ** argv) {
      with_garbage = false;  
    } else if (! strcmp(argv[i],"--ddd")   ) {
      model.setStorage(ddd_storage);
+   }
+   /* Avoid arror argument when user uses --sdd
+    * By defaut, codage is SDD is ITSModel
+    */
+   else if (! strcmp(argv[i],"--sdd")   ) {
+         model.setStorage(sdd_storage);
    } else if (! strcmp(argv[i],"--quiet")   ) {
      bequiet = true;
    } else if (! strcmp(argv[i],"--load-order")   ) {
