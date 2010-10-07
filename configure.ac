@@ -3,6 +3,9 @@ AC_INIT([SOGITS],[0.1],[Yann.Thierry-mieg@lip6.fr])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
+# M4 macros location
+AC_CONFIG_MACRO_DIR([m4])
+
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
             [AC_HELP_STRING([--with-libddd=/root/of/libddd],
@@ -37,8 +40,7 @@ if test "x${with_libits}" != x; then
     AC_SUBST([LIBITS_ROOT],[${with_libits}])
 fi
 
-# M4 macros location
-AC_CONFIG_MACRO_DIR([m4])
+
 
 # programs used to build
 # we make static libs (use ranlib)
@@ -58,6 +60,11 @@ AC_PROG_CXX
 #use bison/flex parsers
 AM_PROG_LEX
 AC_PROG_YACC
+
+# Enable boost if found:
+AX_BOOST_BASE
+AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
+
 
 # automake :
 # build these Makefile using the Makefile.in files in each directory
