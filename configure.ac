@@ -37,7 +37,8 @@ if test "x${with_libits}" != x; then
     AC_SUBST([LIBITS_ROOT],[${with_libits}])
 fi
 
-
+# M4 macros location
+AC_CONFIG_MACRO_DIR([m4])
 
 # programs used to build
 # we make static libs (use ranlib)
