@@ -52,7 +52,7 @@ cp/[ ]*"("		{ return(CP);}
 ^out			{ return(UGLYPREFIX_OUT);}
 [0-9]+		{ sscanf(yytext,"%d",&RdPMlval.i); return(ENTIER);}
 [a-zA-Z_][a-zA-Z0-9_]*	{ RdPMlval.s=strdup(yytext); return(VARIABLE);}
-[ \t\n]			{}
+[ \t\n\r]			{}
 %%
 
 
