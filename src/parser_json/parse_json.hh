@@ -13,8 +13,6 @@
 #include <cassert>
 #include <algorithm>
 #include <fstream>
-#include <boost/bind.hpp>
-#include "json_spirit/json_spirit.h"
 #include "hierarchie.hh"
 #include "JSException.hh"
 
