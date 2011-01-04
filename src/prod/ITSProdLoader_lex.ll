@@ -30,7 +30,7 @@
 %}
 %option noyywrap
 %option yylineno
-%option prefix="RdPM"
+%option prefix="ITSProd"
 %%
 "("			{ return('('); }
 ")"			{ return(')'); }
