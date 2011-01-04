@@ -43,10 +43,10 @@ extern	FILE *ITSProdin;
 extern char rdptext[];
 
 extern void ITSProderror (const char *s) {
-	cerr << "Parse error :" << s ;
+	cerr << "Parsing error :" << s << endl;
 	cerr << "While parsing .net model file at line :" << ITSProdlineno <<endl;
 	cerr << "Please be aware this may have unknowable effects on your analysis." << endl;
-	cerr << "attempting error ignore"; 
+	cerr << "attempting error ignore" << endl; 
 }
 
 /*........... Code C additionnel ....*/
