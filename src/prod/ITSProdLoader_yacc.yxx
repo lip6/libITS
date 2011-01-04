@@ -38,13 +38,13 @@ static	PNet *R;
 static  string t;
 
 extern int yylex();
-extern int RdPMlineno;
-extern	FILE *RdPMin;
+extern int ITSProdlineno;
+extern	FILE *ITSProdin;
 extern char rdptext[];
 
-extern void RdPMerror (const char *s) {
+extern void ITSProderror (const char *s) {
 	cerr << "Parse error :" << s ;
-	cerr << "While parsing .net model file at line :" << RdPMlineno <<endl;
+	cerr << "While parsing .net model file at line :" << ITSProdlineno <<endl;
 	cerr << "Please be aware this may have unknowable effects on your analysis." << endl;
 	cerr << "attempting error ignore"; 
 }
@@ -84,7 +84,7 @@ extern "C" {
 %type <i> marquage
 %type <i> placelevel
 
-%name-prefix="RdPM"
+%name-prefix="ITSProd"
 
 %start reseau
 
@@ -224,11 +224,11 @@ marquage	: TOKEN {$$=1;}
 
 its::PNet * ProdLoader::loadProd(const std::string & filename){
   int i;
-  if ((RdPMin=fopen(filename.c_str(),"r"))==NULL)
+  if ((ITSProdin=fopen(filename.c_str(),"r"))==NULL)
     return false;
   R= new PNet(filename);
   i=(int) yyparse();
-  fclose(RdPMin);
+  fclose(ITSProdin);
   return R;
 }
 
