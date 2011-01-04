@@ -41,10 +41,10 @@ extern	FILE *RdPMin;
 extern char rdptext[];
 
 extern void RdPMerror (const char *s) {
-	cerr << "Parse error :" << s ;
+	cerr << "Parse error :" << s  << endl ;
 	cerr << "While parsing .net model file at line :" << RdPMlineno <<endl;
 	cerr << "Please be aware this may have unknowable effects on your analysis." << endl;
-	cerr << "attempting error ignore";
+	cerr << "attempting error ignore" << endl;
 }
 
 /*........... Code C additionnel ....*/
@@ -72,6 +72,8 @@ extern "C" {
   int i;
   char *s;
 }
+
+%error-verbose
 
 %token IN OUT MK CP PLACE QUEUE TRANS ENDTR TOKEN RESET LOSS INHIBITOR STAR
 %token <i> ENTIER
