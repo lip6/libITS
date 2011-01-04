@@ -31,11 +31,21 @@ JSONSPIRITSOURCES = $(MYJSONSPIRITSRCDIR)/json_spirit.h \
 
 JSONSOURCES = $(JSONSPIRITSOURCES) \
 		$(MYJSONSRCDIR)/hierarchie.cpp	 \
+		$(MYJSONSRCDIR)/json_model.cpp	 \
 		$(MYJSONSRCDIR)/hierarchie.hh   \
 		$(MYJSONSRCDIR)/JSException.cpp	 \
 		$(MYJSONSRCDIR)/JSException.hh	 \
 		$(MYJSONSRCDIR)/parse_json.cpp   \
-		$(MYJSONSRCDIR)/parse_json.hh
+		$(MYJSONSRCDIR)/parse_json.hh \
+		$(MYPETRISRCDIR)/JSON2ITS.cpp \
+		$(MYPETRISRCDIR)/JSON2ITS.hh \
+		$(MYPETRISRCDIR)/JSONPNetType.hh \
+		$(MYPETRISRCDIR)/JSONPNetType.cpp 
+
+if HAVE_BOOST
+JSONSTUFF = $JSONSOURCES
+endif
+
 
 XMLLOADERSOURCES =  $(MYCOMPSRCDIR)/CompositeXMLLoader.hh $(MYCOMPSRCDIR)/CompositeXMLLoader.cpp \
 	$(MYSRCDIR)/ITSModelXMLLoader.hh $(MYSRCDIR)/ITSModelXMLLoader.cpp \
@@ -43,8 +53,6 @@ XMLLOADERSOURCES =  $(MYCOMPSRCDIR)/CompositeXMLLoader.hh $(MYCOMPSRCDIR)/Compos
 
 
 PETRIHEADERS = 	$(MYPETRISRCDIR)/Arc.hh \
-	$(MYPETRISRCDIR)/JSON2ITS.hh \
-	$(MYPETRISRCDIR)/JSONPNetType.hh \
 	$(MYPETRISRCDIR)/Hom_PlaceArcs.hh \
 	$(MYPETRISRCDIR)/Hom_Basic.hh \
 	$(MYPETRISRCDIR)/Marking.hh \
@@ -91,8 +99,6 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(MYSRCDIR)/TypeVisitor.hh 
 
 PETRISOURCES = 	$(MYPETRISRCDIR)/Arc.cpp \
-	$(MYPETRISRCDIR)/JSON2ITS.cpp \
-	$(MYPETRISRCDIR)/JSONPNetType.cpp \
 	$(MYPETRISRCDIR)/Hom_Basic.cpp \
 	$(MYPETRISRCDIR)/Modular2ITS.cpp \
 	$(MYPETRISRCDIR)/Place.cpp \
@@ -126,7 +132,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/Ordering.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
 	$(MYSRCDIR)/TypeCacher.cpp \
-	$(JSONSOURCES) \
+	$(JSONSTUFF) \
 	$(XMLLOADERSOURCES)
 
 
