@@ -16,6 +16,7 @@
 #include "petri/JSON2ITS.hh"
 #include "parser_json/parse_json.hh"
 
+
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
 #include "statistic.hpp"
@@ -90,7 +91,9 @@ void usage() {
   cerr<<  "    -p path : specifies the path to input Prod format model with possible module info pnddd style (xxx.net)" <<endl;
   cerr<<  "    -xml path : use a XML encoded ITSModel file, as produced by Coloane.\n" ;
   cerr<<  "    -c path : use a CAMI encoded ordinary P/T net, as produced by Coloane or Macao. Use -j in conjunction with this option.\n" ;
+#ifdef HAVE_BOOST_FLAG  
   cerr<<  "    -j path : use a JSON encoded hierarchy description file for a CAMI model, as produced using PaToH.\n" ;
+#endif
   cerr << "    --dump-order path : dump the currently used variable order to file designated by path and exit. \n" ;
   cerr << "    --load-order path : load the variable order from the file designated by path. \n" ;
   cerr<<  "    -d path : specifies the path prefix to construct dot state-space graph" <<endl;
@@ -159,11 +162,13 @@ int main (int argc, char **argv) {
        { cerr << "give argument value for CAMI file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
      pathCAMIff = argv[i];
      doCAMIparse = true;
+#ifdef HAVE_BOOST_FLAG  
    } else if ( ! strcmp(argv[i],"-j") ) {
      if (++i > argc) 
        { cerr << "give argument value for JSON file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
      pathjsonff = argv[i];
      dojsonparse = true;
+#endif
    } else if (! strcmp(argv[i],"-d") ) {
      if (++i > argc) 
        { cerr << "give argument value for .dot file name please after " << argv[i-1]<<endl; usage() ; exit(1);}
@@ -227,10 +232,12 @@ int main (int argc, char **argv) {
    
    TPNet * pnet = XMLLoader::loadXML(pathromeoff, dojsonparse);
    if (dojsonparse) {
+#ifdef HAVE_BOOST_FLAG  
      json::Hierarchie * hier = new json::Hierarchie();
      json::json_parse(pathjsonff, *hier);
      model.declareType(*pnet,hier);
      //     model.print(std::cerr);
+#endif
    } else {
      model.declareType(*pnet);
      modelName += pathromeoff ;
@@ -244,7 +251,9 @@ int main (int argc, char **argv) {
       std::cerr << "You need to specify a hierarchy configuration file in JSON format." << std::endl;
       exit(1);
     } else {
+#ifdef HAVE_BOOST_FLAG  
       JSONLoader::loadJsonCami (model, pathCAMIff, pathjsonff);
+#endif
 //         model.print(std::cerr);
     } 
  } else {
