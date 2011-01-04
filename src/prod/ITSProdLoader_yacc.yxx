@@ -75,6 +75,8 @@ extern "C" {
   char *s;
 }
 
+%error-verbose
+
 %token UGLYPREFIX_IN UGLYPREFIX_OUT MK CP PLACE TRANS ENDTR TOKEN UGLYPREFIX_RESET UGLYPREFIX_INHIBITOR
 %token <i> ENTIER
 %token <s> VARIABLE
