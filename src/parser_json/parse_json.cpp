@@ -10,7 +10,7 @@
  */
 
 #include "parse_json.hh"
-
+#include "parser_json/json_spirit/json_spirit.h"
 #include <sstream>
 
 namespace json {

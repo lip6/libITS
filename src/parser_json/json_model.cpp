@@ -1,5 +1,7 @@
 
 #include "ITSModel.hh"
+#include "petri/JSONPNetType.hh"
+
 
 namespace its {
   // Create a type to hold a Petri net, with hierarchical representation based on JSON description.
