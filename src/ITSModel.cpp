@@ -2,7 +2,6 @@
 
 // For factory role
 #include "petri/PNetType.hh"
-#include "petri/JSONPNetType.hh"
 #include "petri/TPNetType.hh"
 #include "composite/Composite.hh"
 #include "composite/TComposite.hh"
