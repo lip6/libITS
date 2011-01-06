@@ -20,7 +20,7 @@ namespace its {
       // Add a clock for each timed transition
       labels_t cnames ;
       for (PNet::trans_it it = this->net_.transitions_begin() ; it != this->net_.transitions_end(); ++it ) {
-	if (it->isTimed() && it->getClock().lft > 0)
+	if (it->isTimed())
 	  cnames.push_back(TPNet::clockName(*it));
       }
       cnames.insert(cnames.end(),pnames.begin(),pnames.end());
