@@ -140,6 +140,11 @@ int main (int argc, char **argv) {
  // instanciate a Model
  ITSModel model;
 
+ std::cout << "its-reach command run as :\n" << std::endl;
+ for (int i=0;i < argc; i++) {
+   std::cout << argv[i] << "  ";
+ }
+ std::cout << std::endl;
  
  for (int i=1;i < argc; i++) {
    if ( ! strcmp(argv[i],"-i") ) {
@@ -236,7 +241,7 @@ int main (int argc, char **argv) {
      json::Hierarchie * hier = new json::Hierarchie();
      json::json_parse(pathjsonff, *hier);
      model.declareType(*pnet,hier);
-     //     model.print(std::cerr);
+          model.print(std::cerr);
 #endif
    } else {
      model.declareType(*pnet);
@@ -267,6 +272,10 @@ int main (int argc, char **argv) {
    if (! model.loadOrder(is)) {
      std::cerr << "Problem loading provided order file :" << pathorderinff << "\n";
      exit(1);
+   } else {
+     if (! beQuiet) {
+       std::cout << "Successfully loaded order from file " << pathorderinff << std::endl;
+     }
    }
  }
 	
