@@ -63,6 +63,9 @@ bool VarOrder::updateOrder (const labels_t & vars) {
 	for (labels_it it = vars.begin(); it != vars.end() ; ++it ) {
 	  if ( getIndex(*it) == -1) {
 	    std::cerr << "Unknown variable :" << *it << " when attempting to set a new variable order." << std::endl;
+	    std::cerr << "Expected variables are : " ;
+	    this->print(std::cerr);
+	    std::cerr << std::endl;
 	    return false;
 	  }
 	}
