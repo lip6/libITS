@@ -1,4 +1,4 @@
-// Copyright (C) 2004, 2009, 2010 Laboratoire d'Informatique de Paris
+// Copyright (C) 2004, 2009, 2010, 2011 Laboratoire d'Informatique de Paris
 // 6 (LIP6), département Systèmes Répartis Coopératifs (SRC),
 // Université Pierre et Marie Curie.
 //
@@ -48,8 +48,10 @@ using namespace its;
 using namespace sogits;
 
 void syntax(const char* prog) {
-  std::cerr << "Usage: "<< prog << " [OPTIONS...] petri_net_file " << std::endl
+  std::cerr << "Usage: "<< prog << " [OPTIONS...] petri_net_file/ETF format file" << std::endl
             << "where OPTIONS are" << std::endl
+            << "Formats:" << std::endl
+	    << "  -ETF  suppose the input file is ETF format, as produced by LTSmin tool. Default supposes we have a PROD format input Petri net." << std::endl
             << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
@@ -99,6 +101,8 @@ int main(int argc, const char *argv[]) {
   // external block for full garbage
   {
 
+  bool isETF = false;
+
   bool check = false;
   bool print_rg = false;
   bool print_pn = false;
@@ -130,6 +134,9 @@ int main(int argc, const char *argv[]) {
 
     if (!strncmp(argv[pn_index], "-a", 2)) {
       algo_string = argv[pn_index]+2;
+    }
+    else if (!strcmp(argv[pn_index], "-ETF")) {
+      isETF = true;
     }
     else if (!strcmp(argv[pn_index], "-b")) {
       post_branching = true;
@@ -216,12 +223,18 @@ int main(int argc, const char *argv[]) {
     model = new ITSModel();
   }
 
-  vLabel nname = RdPELoader::loadModularProd(*model,pathprodff);
-//  PNet * pnet = ProdLoader::loadProd(pathprodff);
-//   model.declareType(*pnet);
-//   modelName += pathprodff ;
-   model->setInstance(nname,"main");
-   model->setInstanceState("init");
+  if (! isETF) {
+    vLabel nname = RdPELoader::loadModularProd(*model,pathprodff);
+    //  PNet * pnet = ProdLoader::loadProd(pathprodff);
+    //   model.declareType(*pnet);
+    //   modelName += pathprodff ;
+    model->setInstance(nname,"main");
+    model->setInstanceState("init");
+  } else {
+    model->declareETFType(pathprodff);
+    model->setInstance(pathprodff,"main");
+    model->setInstanceState("init");
+  }
 
   if (print_pn)
     std::cout << *model << std::endl;
