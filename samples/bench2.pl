@@ -85,7 +85,7 @@ sub workonfile {
   my $ff = $_ ;
 
   #  Work on all .net source files
-  if ( -f $ff && $ff =~/\.net$/  ) {
+  if ( -f $ff && ( $ff =~/\.net$/ || $ff =~/\.etf$/ ) ) {
     print STDERR "work on file $ff\n" unless $opt_f;
 
     my $totalticks = 0;
@@ -100,6 +100,13 @@ sub workonfile {
     $formff = "$ff.ltl";
     if ( -r $formff ) {
       push @formulas, $formff;
+    }
+    if ( $ff =~ /\.dve\.etf/ ) {
+      $formff = "$ff.ltl";
+      $formff =~ s/\.dve\.etf// ;
+      if ( -r $formff ) {
+	push @formulas, $formff;
+      }
     }
     $formff = dirname($ff)."/formula_next.ltl";
     if ( -r $formff ) {
@@ -127,9 +134,12 @@ sub workonfile {
 
 
 	  $line =~ s/\\"/"/g;
-	  my $call = "$checksog_exe -S$method -f'$line' -c $ff";
-
-	  	print STDERR $call."\n";
+	  my $call = "$checksog_exe -S$method -f'$line' -c ";
+	  if ( $ff =~ /\.etf/ ) {
+	    $call .= "-ETF ";
+	  }
+	  $call .= $ff;
+	  print STDERR $call."\n";
 	  open MYTOOL,"$call|";
 	  my $verdict = 0;
 	  my $nbstates =0;
