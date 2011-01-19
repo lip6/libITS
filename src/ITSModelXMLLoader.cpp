@@ -43,6 +43,8 @@ void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_C
     } else if ( format == "Composite" && formalism == "Scalar Set Composite" ) {
       its::ScalarSet * tcomp = ScalarSetXMLLoader::loadXML(path,*model,true);
       model->declareType(*tcomp);
+    } else if ( format == "ETF" && formalism == "PINS" ) {
+      model->declareETFType(path);
     } else {
       std::cerr << "Unrecognized format/formalism pair :" << format << "/" << formalism << std::endl;
       std::cerr << "When parsing type :" << name << std::endl;

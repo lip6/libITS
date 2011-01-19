@@ -103,6 +103,8 @@ public :
   bool declareType (const class CircularSet & net) ;
   // Create a type to hold a spot::tgba : this function is implemented in sog-its project, file sogIts.cpp
   bool declareType (const class spot::tgba & tgba);
+  // Create a type to represent a PINS wrapper on the ETF file format.
+  bool declareETFType (Label path) ;
 
   // Set the behavior for TPN factory from SDD to DDD strategy.
   // Affects subsequent call to declareType.

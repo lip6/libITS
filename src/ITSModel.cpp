@@ -9,6 +9,7 @@
 #include "TypeCacher.hh"
 #include "scalar/ScalarSetType.hh"
 #include "scalar/CircularSetType.hh"
+#include "etf/ETFType.hh"
 
 #include "MemoryManager.h"
 //#include "util/dotExporter.h"
@@ -193,6 +194,12 @@ void ITSModel::print (std::ostream & os) const  {
   bool ITSModel::declareType (const class CircularSet & net) {
     CircularSetType* newtype = new CircularSetType(net);
     newtype->setStrategy(scalarStrat_, scalarParam_);
+    return addType(newtype);
+  }
+
+  // Create a type to hold a circular set.
+  bool ITSModel::declareETFType (Label path) {
+    EtfType* newtype = new EtfType(path);
     return addType(newtype);
   }
 
