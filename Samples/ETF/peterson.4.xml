@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd'>
+<types>
+<type name='peterson.4.etf' formalism='PINS' format='ETF' path='./peterson.4.etf' />
+</types>
+<main type='./peterson.4.etf' state='init' />
+</model>
