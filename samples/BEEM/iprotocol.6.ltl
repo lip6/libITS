@@ -1,0 +1,3 @@
+F ( "Consumer=consume" )
+GF ( "Consumer=consume" )
+((G F "Medium=dataOk") && (G F "Medium=nakOk" )) -> GF ( "Consumer=consume" )

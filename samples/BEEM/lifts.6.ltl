@@ -1,0 +1,3 @@
+(GF "Environment=pressed_up_0") -> (GF "Wheels=moving_up")
+G ( "Environment=pressed_up_0" -> F "Wheels=moving_up")
+( (!  "Wheels=moving_up") U ("Environment=pressed_up_0" ) ) | G (!  "Wheels=moving_up")

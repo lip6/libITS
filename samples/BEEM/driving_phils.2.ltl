@@ -1,0 +1,2 @@
+G ( (! "acquiring[0]=-1") -> F "acquiring[0]=-1" )
+GF ( ! "acquiring[0]=-1" )

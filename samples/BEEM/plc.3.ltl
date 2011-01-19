@@ -1,0 +1,2 @@
+GF ( "B3=sol70C" | "time=500" ) && GF ( "B3=cempty" | "time=500"  )
+F ( "time=500" )
