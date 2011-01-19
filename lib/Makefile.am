@@ -7,6 +7,7 @@ MYJSONSRCDIR= $(MYSRCDIR)/parser_json
 MYJSONSPIRITSRCDIR= $(MYJSONSRCDIR)/json_spirit
 MYPETRISRCDIR = $(MYSRCDIR)/petri
 MYCOMPSRCDIR = $(MYSRCDIR)/composite
+MYETFSRCDIR = $(MYSRCDIR)/etf
 MYSCALARSRCDIR = $(MYSRCDIR)/scalar
 
 
@@ -73,6 +74,10 @@ COMPOSITEHEADERS = 	$(MYCOMPSRCDIR)/Composite.hh \
 	$(MYCOMPSRCDIR)/Synchronization.hh \
 	$(MYCOMPSRCDIR)/TComposite.hh 
 
+ETFHEADERS = $(MYETFSRCDIR)/ETFType.hh \
+	$(MYETFSRCDIR)/etf-util.h
+
+
 
 SCALARHEADERS = $(MYSCALARSRCDIR)/CircularSet.hh \
 	$(MYSCALARSRCDIR)/CircularSetType.hh \
@@ -87,6 +92,7 @@ SCALARHEADERS = $(MYSCALARSRCDIR)/CircularSet.hh \
 
 ITSHEADERS = $(PETRIHEADERS) \
 	$(COMPOSITEHEADERS) \
+	$(ETFHEADERS) \
 	$(SCALARHEADERS) \
 	$(MYSRCDIR)/ColoaneExport.hh \
 	$(MYSRCDIR)/Instance.hh \
@@ -112,6 +118,28 @@ COMPOSITESOURCES = $(MYCOMPSRCDIR)/Composite.cpp \
 	$(MYCOMPSRCDIR)/Synchronization.cpp \
 	$(MYCOMPSRCDIR)/TComposite.cpp 
 
+ETFSOURCES = $(MYETFSRCDIR)/ETFType.cpp \
+	$(MYETFSRCDIR)/etf-util.c \
+	$(MYETFSRCDIR)/dynamic-array.c \
+	$(MYETFSRCDIR)/stringindex.c \
+	$(MYETFSRCDIR)/chunk_support.c \
+	$(MYETFSRCDIR)/fast_hash.c \
+	$(MYETFSRCDIR)/etf-parser.c \
+	$(MYETFSRCDIR)/ltsmin-syntax.c \
+	$(MYETFSRCDIR)/ltsmin-grammar.c \
+	$(MYETFSRCDIR)/ltsmin-lexer.c \
+	$(MYETFSRCDIR)/lts-type.c \
+	$(MYETFSRCDIR)/etf-objects.c \
+	$(MYETFSRCDIR)/runtime.c \
+	$(MYETFSRCDIR)/stream.c \
+	$(MYETFSRCDIR)/treedbs.c \
+	$(MYETFSRCDIR)/stream_buffer.c \
+	$(MYETFSRCDIR)/stream_diff32.c \
+	$(MYETFSRCDIR)/stream_fd.c \
+	$(MYETFSRCDIR)/stream_mem.c
+
+
+
 
 SCALARSOURCES = $(MYSCALARSRCDIR)/CircularSet.cpp \
 	$(MYSCALARSRCDIR)/CircularSetXMLLoader.cpp \
@@ -126,6 +154,7 @@ SCALARSOURCES = $(MYSCALARSRCDIR)/CircularSet.cpp \
 ITSSOURCES = $(ITSHEADERS) \
 	$(PETRISOURCES) \
 	$(COMPOSITESOURCES) \
+	$(ETFSOURCES) \
 	$(SCALARSOURCES) \
 	$(MYSRCDIR)/ColoaneExport.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
@@ -143,7 +172,7 @@ else
 LIBDDD_LINK=-lddd
 endif
 
-AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O0 -Wall $(BOOST_CPPFLAGS)
+AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall $(BOOST_CPPFLAGS)
 AM_CXXFLAGS = -g -O0 -Wall
 
 libITS_a_SOURCES = $(ITSSOURCES)
