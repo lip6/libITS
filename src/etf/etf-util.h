@@ -6,8 +6,9 @@
 \brief Enumerated Table Format Utilities.
 */
 
-#include "lts-type.h"
+#include "etf/lts-type.h"
 #include "etf/etf-objects.h"
+#include "etf/chunk_support.h"
 
 /**
 Opaque type for ETF models.
@@ -31,7 +32,7 @@ extern etf_rel_t etf_trans_section(etf_model_t model,int section);
 
 extern etf_map_t etf_get_map(etf_model_t model,int map);
 
-// extern chunk etf_get_value(etf_model_t model,int type_no,int idx);
+extern chunk etf_get_value(etf_model_t model,int type_no,int idx);
 
 extern int etf_get_value_count(etf_model_t model,int type_no);
 

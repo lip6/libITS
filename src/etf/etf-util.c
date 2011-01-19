@@ -76,11 +76,11 @@ etf_rel_t etf_trans_section(etf_model_t model,int section){
 	return model->trans[section];
 }
 
-/* chunk etf_get_value(etf_model_t model,int type_no,int idx){ */
-/* 	int len; */
-/* 	char *v=SIgetC(model->type_values[type_no],idx,&len); */
-/* 	return chunk_ld(len,v); */
-/* } */
+chunk etf_get_value(etf_model_t model,int type_no,int idx){ 
+  int len; 
+  char *v=SIgetC(model->type_values[type_no],idx,&len); 
+  return chunk_ld(len,v); 
+} 
 
 int etf_get_value_count(etf_model_t model,int type_no){
 	return SIgetCount(model->type_values[type_no]);
