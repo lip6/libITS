@@ -33,9 +33,16 @@ its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
     int bvar = bdd_var(aps);
     Label prop = apOrder_.getLabel(bvar);
     
-    labels_t tau;
-    tau.push_back(prop);
-    Transition hcond = type->getSuccs(tau);
+    Transition hcond ;
+    int len =type->getName().size();
+    if (type->getName().substr(len-3,len-1)  == "etf" ) {
+      hcond = type->getPredicate(prop);
+    } else {
+      labels_t tau;
+      tau.push_back(prop);
+      hcond = type->getSuccs(tau);
+    }
+
     trace << "aps = " << aps  << std::endl;
     //      std::cerr << "Type = " << * (getInstance()->getType())  << std::endl;
     trace << "prop = " << prop << std::endl ;
