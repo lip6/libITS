@@ -1,7 +1,11 @@
 
 #include "ETFType.hh"
 #include <vector>
+extern "C" {
 #include "etf/etf-util.h"
+#include "etf/chunk_support.h"
+}
+#include "petri/Hom_Basic.hh"
 
 using std::vector;
 
@@ -32,7 +36,7 @@ labels_t EtfType::getVarSet () const {
   labels_t pnames ;
   pnames.reserve(N);
   for (int i=0; i < N ; i++)
-    pnames.push_back(vLabel(lts_type_get_state_name(ltstype,i))+":"+lts_type_get_state_type(ltstype,i));
+    pnames.push_back(vLabel(lts_type_get_state_name(ltstype,i))  ); // +":"+lts_type_get_state_type(ltstype,i));
   return pnames;
 }
 
@@ -145,39 +149,105 @@ State EtfType::getState(Label stateLabel) const {
 
 
 Transition EtfType::getPredicate (Label predicate) const {
+  // The predicate should respect the grammar : varName "=" .*
+  // NB : NO whitespace allowed anywhere in the predicate string, or they will be parsed as part of identifiers.
+  // Where varName is an instance name such as found in getVariableSet(), getVarOrder()
+  // If the type of the variable is "byte" we expect to see an integer on the right.
+  // If the type of the variable is some ad hoc type we expect to see the name of a value of that type on the right.
 
-  return GShom::id;
-
-//   // The predicate should respect the grammar : varName "." .*
-//   // Where varName is an instance name such as found in getVariableSet(), getVarOrder()
-//   // "." is the namespace separator and .* represents any sequence of characters. 
-//   // This function consumes varName"." and passes the rest of the string to the type of the instance designated
+  // step 1 : parse the predicate
+  const char * pred = predicate.c_str();
+  vLabel remain, var;
+  for (const char * cp = pred ; *cp ; ++cp) {
+    if ( *cp == '=' ) {
+      remain = cp+1;
+      break;
+    } else {
+      var += *cp;
+    }
+  }
+  
+  int N=lts_type_get_state_length(ltstype);  
+  int varindex = -1;
+  for (int i=0; i < N ; i++) {
+    vLabel var2 = lts_type_get_state_name(ltstype,i);
+    if (var2 == var) {
+      varindex = i;
+      break;
+    }
+  }
+  if (varindex == -1) {
+    std::cerr << "Error variable " + var + " cannot be resolved as an instance name when trying to parse predicate : "  + predicate << std::endl;
+    std::cerr << "Failing with error code 2"<< std::endl;
+    exit (2);
+  }
+  // This is the actual index given the current Ordering
+  int instindex =  getVarOrder()->getIndex ( var );
+  
+  // Find the type 
+  vLabel type = lts_type_get_state_type(ltstype,varindex);
+  if ( type == "byte" || type == "int") {
+    int value = 0 ;
+    if ( sscanf (remain.c_str(), "%d" , &value) == 0 ) {
+      std::cerr << "Unable to parse right hand side of comparison as an integer : " << remain << " when parsing predicate " << predicate << std::endl;
+      std::cerr << "Error is fatal, failing with error code 2" << std::endl;
+      exit (2);      
+    }
+//    std::cerr << "Ok for predicate : var"<<instindex<< " = " << value << std::endl;
+    return localApply(varEqState (DEFAULT_VAR, value), instindex);
+  } else {
+    int type_count=lts_type_get_type_count(ltstype);
+    for(int i=0;i<type_count;i++){
+//      Warning(info,"dumping type %s",lts_type_get_type(ltstype,i));
+      vLabel type2 = lts_type_get_type(ltstype,i);
+//      std::cerr << "testing type " << type2 <<" against "<< type << std::endl;
+      if (type2 == type) {
+	// Ids are quoted in LTSmin
+	remain = "\"" + remain + "\"";
+	// Found the right type
+	int values=etf_get_value_count(etfmodel,i);
+	for(int j=0;j<values;j++){
+	  chunk c=etf_get_value(etfmodel,i,j);
+	  size_t len=c.len*2+3;
+	  char str[len];
+	  chunk2string(c,len,str);
+//	  std::cerr << "testing value " << str <<" against "<< remain << std::endl;
+	  
+	  if (vLabel(str) == remain ) {
+	    // Hit !
+//	    std::cerr << "Ok for predicate : var"<<instindex<< " = " << j<< std::endl;
+	    return localApply(varEqState (DEFAULT_VAR, j), instindex);
+	  }	  
+	}
+	{
+	  std::cerr << "Unable to find value \""<< remain << "\" in type "<< type << " of variable " << var ;
+	  std::cerr << " when parsing predicate " << predicate << std::endl;
+	  std::cerr << "Expected a value among :" ;
+	  int values=etf_get_value_count(etfmodel,i);
+	  for(int j=0;j<values;j++){
+	    chunk c=etf_get_value(etfmodel,i,j);
+	    size_t len=c.len*2+3;
+	    char str[len];
+	    chunk2string(c,len,str);
+	    std::cerr << str << "  ;";
+	  }
+	  
+	  std::cerr << std::endl << "Error is fatal, failing with error code 2" << std::endl;
+	  exit (2);      
+	}	
+      }
+    }
+      {
+	std::cerr << "Unable to find type \""<< type << "\" in type declarations of model " ;
+	std::cerr << " when parsing predicate " << predicate << std::endl;
+	std::cerr << "Error is fatal, failing with error code 2" << std::endl;
+	exit (2);      
+      }	
     
-//   // step 1 : parse the predicate
-//   const char * pred = predicate.c_str();
-//   vLabel remain, var;
-//   for (const char * cp = pred ; *cp ; ++cp) {
-//     if ( *cp == '.' ) {
-//       remain = cp+1;
-//       break;
-//     } else {
-//       var += *cp;
-//     }
-//   }
-
-//   int instindex =  getVarOrder()->getIndex ( var );
-//   if (instindex == -1) {
-//     std::cerr << "Error variable " + var + " cannot be resolved as an instance name when trying to parse predicate : "  + predicate << std::endl;
-//     std::cerr << "Failing with error code 2"<< std::endl;
-//     exit (2);
-//   }
-// //   std::cerr << "Etf delegating predicate " << remain << " on instance :"<<var << std::endl;
- 
-//   Etf::comps_it instance = findName( var, comp_.comps_begin() , comp_.comps_end() );
-//   return localApply( instance->getType()->getPredicate(remain), instindex);
-
-}
-
+  }
+  // to please the compiler
+  return GShom::id;
+}  
 
 
   void EtfType::printState (State s, std::ostream & os) const {
