@@ -107,6 +107,11 @@ sub workonfile {
       if ( -r $formff ) {
 	push @formulas, $formff;
       }
+      $formff .= "x";
+      if ( -r $formff ) {
+	push @formulas, $formff;
+      }
+
     }
     $formff = dirname($ff)."/formula_next.ltl";
     if ( -r $formff ) {
@@ -115,7 +120,7 @@ sub workonfile {
     my $nbformula = 0;
     foreach  my $formulaff (@formulas) {
       # Set to true indicates we have "next" X operator  in the formula
-      my $hasnext = ($formulaff =~ /.*next.*/);
+      my $hasnext = ($formulaff =~ /.*next.*/ || $formulaff =~ /\.ltlx/  );
       open IN,$formulaff or die "Bad formula file name";
 #      print "Working on formula file : $formulaff \n";
       while (my $line = <IN>) {
