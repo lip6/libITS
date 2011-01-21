@@ -1,2 +1,4 @@
 GF ( "P_0=CS" )
+!(GF ( "P_0=CS" ))
 GF ( "P_0=CS" | "P_1=CS" | "P_2=CS" | "P_3=CS" | "P_4=CS" )
+!(GF ( "P_0=CS" | "P_1=CS" | "P_2=CS" | "P_3=CS" | "P_4=CS" ))

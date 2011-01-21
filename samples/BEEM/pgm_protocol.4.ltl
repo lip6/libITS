@@ -1,2 +1,4 @@
 G ( ("receiver=r4" && "RXW_LEAD=2") -> F ( "sender=s1" && "packet=3" ) )
+!(G ( ("receiver=r4" && "RXW_LEAD=2") -> F ( "sender=s1" && "packet=3" ) ))
 G ( ( "sender=s0_1" && "TXW_LEAD=1" ) -> ( "x=0" && ( ("x=0" | "x=1" | "x=2"| "x=3") U ( "element=e1" && "element.seq=1" && "x=3" )) ))
+!(G ( ( "sender=s0_1" && "TXW_LEAD=1" ) -> ( "x=0" && ( ("x=0" | "x=1" | "x=2"| "x=3") U ( "element=e1" && "element.seq=1" && "x=3" )) )))

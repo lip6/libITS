@@ -1,2 +1,4 @@
 G ( "Producer=wait_result" -> F "Producer=check" )
+!(G ( "Producer=wait_result" -> F "Producer=check" ))
 G ( "Producer=wait_result" -> F "Producer=ready" )
+!(G ( "Producer=wait_result" -> F "Producer=ready" ))

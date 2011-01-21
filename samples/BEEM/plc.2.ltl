@@ -1,2 +1,4 @@
 GF ( "B3=sol70C" | "time=300" ) && GF ( "B3=cempty" | "time=300"  )
+!(GF ( "B3=sol70C" | "time=300" ) && GF ( "B3=cempty" | "time=300"  ))
 F ( "time=300" )
+!(F ( "time=300" ))

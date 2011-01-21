@@ -1,1 +1,2 @@
 F ( "P_0=elected" | "P_1=elected" | "P_2=elected" )
+!(F ( "P_0=elected" | "P_1=elected" | "P_2=elected" ))
