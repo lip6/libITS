@@ -50,6 +50,8 @@ while (<>)
 	if ($res[$opt_c] > $max) {
 	    $max = $res[$opt_c];
 	}
+    } else {
+      $res[$opt_c] = -1;
     }
 
     $result{"$model,$formula"}{$meth} = [@res];
@@ -62,13 +64,13 @@ foreach my $key (keys %result)
     {
 	my $t1 = $result{$key}{$opt_x};
 	my $val1 = $t1->[$opt_c];
-	if ((! defined $val1) || $val1 =~ /^\s*$/) {
-	    $val1 = 2* $max;
+	if ((! defined $val1) || $val1 =~ /^\s*$/ || $val1 == -1 ) {
+	    $val1 = 4* $max;
 	}
 	my $t2 = $result{$key}{$opt_y};
 	my $val2 = $t2->[$opt_c];
-	if ((! defined $val2) || $val1 =~ /^\s*$/) {
-	    $val2 = 2* $max;
+	if ((! defined $val2) || $val1 =~ /^\s*$/ || $val2 == -1) {
+	    $val2 = 4* $max;
 	}
 
 	my $model;
