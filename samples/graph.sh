@@ -22,16 +22,25 @@ cat > $output.gnuplot  <<EOF
 set terminal postscript eps enhanced color
 set xlabel "$1"
 set ylabel "$2"
+set xtics nomirror
+set ytics nomirror
 set logscale x
 set logscale y
+set view equal xy
+set size square
+
 #unset key
 set key left
 set output '$output'
+
+set clip two
+
 
 # Use some jitter to distinguish points that would otherwise be equal
 # (the jitter is multiplicative because the scale is logarithmic)
 spread=10 # maximum percentage added or substracted to the real value
 jitter(x) = x*(100+2*spread*(rand(0)-0.5))/100
+
 
 plot \\
 EOF
@@ -43,7 +52,9 @@ for i in $models; do
   echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype 1  title \"$i\", \\" >> $output.gnuplot
 done
 
-echo '  x notitle' >> $output.gnuplot
+#echo "  0.1*x notitle , \\" >> $output.gnuplot
+#echo "  10*x notitle  , \\" >> $output.gnuplot
+echo "  x notitle" >> $output.gnuplot
 
 echo "Rendering graph..."
 
