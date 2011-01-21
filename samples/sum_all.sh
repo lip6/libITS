@@ -1,13 +1,13 @@
 
 echo SOG
-./sum.pl -f '^SOG' test_bench/**/*.log
+./sum.pl -f '^SOG' $1/**/*.log
 echo DSOG
-./sum.pl -f '^DSOG' test_bench/**/*.log
+./sum.pl -f '^DSOG' $1/**/*.log
 echo SLAP
-./sum.pl -f '^SLAP,' test_bench/**/*.log
+./sum.pl -f '^SLAP,' $1/**/*.log
 echo SLAP-FSA
-./sum.pl -f '^SLAP-FSA,' test_bench/**/*.log
+./sum.pl -f '^SLAP-FSA,' $1/**/*.log
 echo SLAP-FST
-./sum.pl -f '^SLAP-FST' test_bench/**/*.log
+./sum.pl -f '^SLAP-FST' $1/**/*.log
 echo FSLTL
-./sum.pl -f '^FSLTL' test_bench/**/*.log
+./sum.pl -f '^FSLTL' $1/**/*.log
