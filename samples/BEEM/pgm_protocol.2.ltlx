@@ -1,0 +1,5 @@
+G!"x=0" & X(((XG"receiver=r4" W ("sender=s1" | X"x=0")) & !"element.seq=1") | ("element.seq=1" & (XF!"receiver=r4" M (!"sender=s1" & X!"x=0"))))
+("sender=s1" R "x=0") & G"packet=3"
+X(XXG"RXW_LEAD=2" W "element.seq=1")
+(!"sender=s1" M F"TXW_LEAD=1") U X("receiver=r4" R !"sender=s0_1")
+((!"element=e1" W "sender=s1") & (XF(!"RXW_LEAD=2" R !"packet=3") M "sender=s0_1")) | (("element=e1" M !"sender=s1") & (XG("RXW_LEAD=2" U "packet=3") W !"sender=s0_1"))

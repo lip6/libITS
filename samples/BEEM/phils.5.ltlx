@@ -1,0 +1,5 @@
+G!"phil_6=eat" & X(((XG"phil_0=eat" W ("phil_1=eat" | X"phil_7=eat")) & !"phil_11=eat") | ("phil_11=eat" & (XF!"phil_0=eat" M (!"phil_1=eat" & X!"phil_7=eat"))))
+("phil_1=eat" R "phil_6=eat") & G"phil_2=eat"
+X(XXG"phil_1=eat" W "phil_11=eat")
+X("phil_3=eat" M FG"phil_0=one")
+((!"phil_10=eat" W "phil_2=eat") & (X("phil_2=eat" | F(!"phil_1=eat" R !"phil_2=eat")) M "phil_10=eat")) | (("phil_10=eat" M !"phil_2=eat") & (X(!"phil_2=eat" & G("phil_1=eat" U "phil_2=eat")) W !"phil_10=eat"))

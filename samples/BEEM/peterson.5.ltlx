@@ -1,0 +1,5 @@
+G!"P_1=CS" & X(((XG"P_0=wait" W ("P_0=q2" | X"P_1=CS")) & !"P_3=CS") | ("P_3=CS" & (XF!"P_0=wait" M (!"P_0=q2" & X!"P_1=CS"))))
+("P_0=q2" R "P_1=CS") & (X(G"P_3=CS" M XG"P_0=CS") R "P_0=q3")
+X(X((!"P_0=CS" & XF!"P_0=q2") | ("P_0=CS" & XG"P_0=q2")) W "P_3=CS")
+(!"P_0=q2" M F"P_0=CS") U X("P_0=wait" R !"P_0=q3")
+((!"P_3=CS" W "P_0=q2") & ((F"P_2=CS" | XF!"P_0=q3") M "P_0=q3")) | (("P_3=CS" M !"P_0=q2") & ((G!"P_2=CS" & XG"P_0=q3") W !"P_0=q3"))

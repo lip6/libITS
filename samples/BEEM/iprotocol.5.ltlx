@@ -1,0 +1,5 @@
+G!"Medium=dataOk" & X(((XG"Consumer=consume" W ("Consumer=consume" | X"Medium=dataOk")) & !"Medium=nakOk") | ("Medium=nakOk" & (XF!"Consumer=consume" M (!"Consumer=consume" & X!"Medium=dataOk"))))
+"Medium=dataOk" & (F"Consumer=consume" | !"Medium=nakOk")
+X(XG(!"Medium=dataOk" & !"Medium=nakOk") W "Medium=nakOk")
+(G!"Consumer=consume" M F"Medium=dataOk") U X("Consumer=consume" R !"Medium=dataOk")
+(("Medium=nakOk" M !"Consumer=consume") & XG"Medium=dataOk") | ((!"Medium=nakOk" W "Consumer=consume") & XF!"Medium=dataOk")

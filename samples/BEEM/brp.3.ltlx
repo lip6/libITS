@@ -1,0 +1,5 @@
+G!"Producer=check" & X(((XG"Producer=wait_result" W ("Producer=wait_result" | X"Producer=check")) & !"Producer=ready") | ("Producer=ready" & (XF!"Producer=wait_result" M (!"Producer=wait_result" & X!"Producer=check"))))
+"Producer=check" & (F"Producer=wait_result" | !"Producer=ready")
+X(XG(!"Producer=check" & !"Producer=ready") W "Producer=ready")
+(G!"Producer=wait_result" M F"Producer=check") U X("Producer=wait_result" R !"Producer=check")
+((!"Producer=ready" W "Producer=wait_result") & XF!"Producer=check") | (("Producer=ready" M !"Producer=wait_result") & XG"Producer=check")

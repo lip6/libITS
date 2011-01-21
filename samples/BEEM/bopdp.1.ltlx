@@ -1,0 +1,5 @@
+G!"lsl_interrupt=1" & X(((XG"sleeping=0" W ("sleep_op=0" | X"lsl_interrupt=1")) & !"IOP=back_to_active") | ("IOP=back_to_active" & (XF!"sleeping=0" M (!"sleep_op=0" & X!"lsl_interrupt=1"))))
+("sleep_op=0" R "lsl_interrupt=1") & G"IOP=active"
+X(XXG"sleep_op=0" W "IOP=back_to_active")
+(!"IOP=active" M F"IOP=noise") U X("sleeping=0" R !"IOP=stand_by")
+(("IOP=now_wait" M !"IOP=active") & (XG("sleep_op=0" U "IOP=active") W !"IOP=stand_by")) | ((!"IOP=now_wait" W "IOP=active") & (XF(!"sleep_op=0" R !"IOP=active") M "IOP=stand_by"))

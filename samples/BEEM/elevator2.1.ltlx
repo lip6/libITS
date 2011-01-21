@@ -1,0 +1,5 @@
+G!"cabin=open" & X(((XG"req[1]=1" W ("p=1" | X"req[0]=1")) & !"p=0") | ("p=0" & (XF!"req[1]=1" M (!"p=1" & X!"req[0]=1"))))
+X(((("p=0" & XG!"p=1") | GF"req[1]=1") & (!"p=0" | XF"p=1" | FG!"req[1]=1")) W X"req[0]=1")
+X(X((!"cabin=open" & XF!"req[1]=1") | ("cabin=open" & XG"req[1]=1")) W "p=0")
+(!"p=1" M F"cabin=open") U X("req[1]=1" R !"p=1")
+("p=0" M !"p=1") | ((F"p=0" | XF!"p=1") M "p=1")

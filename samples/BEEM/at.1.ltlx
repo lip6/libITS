@@ -1,0 +1,5 @@
+G!"P_1=CS" & X(((XG"P_0=p3" W ("P_0=p3" | X"P_1=CS")) & !"P_2=CS") | ("P_2=CS" & (XF!"P_0=p3" M (!"P_0=p3" & X!"P_1=CS"))))
+"P_1=CS" & (F"P_0=p3" | !"P_2=CS")
+X(X(("P_0=CS" & XG"P_0=p3") | (!"P_0=CS" & XF!"P_0=p3")) W "P_2=CS")
+(G!"P_0=p3" M F"P_0=CS") U X("P_0=p3" R !"P_0=CS")
+("P_2=CS" M !"P_0=CS") | ((F"P_2=CS" | XF!"P_0=CS") M "P_0=CS")

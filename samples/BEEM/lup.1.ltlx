@@ -1,0 +1,5 @@
+G(X(G!"lup_0=wait" | G!"lup_0=load_data") U !"lup_0=wait")
+X((("lup_0=load_data" & XG!"lup_0=wait") | GF"lup_0=wait") W X"lup_0=load_data")
+X(XG(!"lup_0=wait" & !"lup_0=load_data") W "lup_0=load_data")
+GF"lup_0=wait" | G!"lup_0=wait"
+(("lup_0=load_data" & X"lup_0=load_data") | (!"lup_0=load_data" & X!"lup_0=load_data")) M ((X"lup_0=load_data" & ("lup_0=wait" M "lup_0=load_data")) | (X!"lup_0=load_data" & (!"lup_0=wait" W !"lup_0=load_data")))
