@@ -16,7 +16,7 @@
 #include <setjmp.h>
 #include <errno.h>
 #include <stdint.h>
-#include <popt.h>
+#include "ext/popt.h"
 
 typedef struct {
 	char* key;
