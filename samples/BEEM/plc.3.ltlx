@@ -1,5 +1,0 @@
-G!"time=500" & X(((XG"B3=sol70C" W ("B3=sol70C" | X"time=500")) & !"B3=cempty") | ("B3=cempty" & (XF!"B3=sol70C" M (!"B3=sol70C" & X!"time=500"))))
-"time=500" & (F"B3=sol70C" | !"B3=cempty")
-X(XG(!"time=500" & !"B3=cempty") W "B3=cempty")
-(G!"B3=sol70C" M F"time=500") U X("B3=sol70C" R !"time=500")
-((!"B3=cempty" W "B3=sol70C") & XF!"time=500") | (("B3=cempty" M !"B3=sol70C") & XG"time=500")
