@@ -20,8 +20,8 @@ models=`cut -f 1 -d ' ' $output.data | sort -u | tr '\n' ' '`
 
 cat > $output.gnuplot  <<EOF
 set terminal postscript eps enhanced color
-set xlabel "$1"
-set ylabel "$2"
+set xlabel "$1" 0.0, 1.0
+set ylabel "$2" 1.0, 0.0
 set xtics nomirror
 set ytics nomirror
 set logscale x
