@@ -65,12 +65,12 @@ foreach my $key (keys %result)
 	my $t1 = $result{$key}{$opt_x};
 	my $val1 = $t1->[$opt_c];
 	if ((! defined $val1) || $val1 =~ /^\s*$/ || $val1 == -1 ) {
-	    $val1 = 4* $max;
+	    $val1 = 3* $max;
 	}
 	my $t2 = $result{$key}{$opt_y};
 	my $val2 = $t2->[$opt_c];
 	if ((! defined $val2) || $val1 =~ /^\s*$/ || $val2 == -1) {
-	    $val2 = 4* $max;
+	    $val2 = 3* $max;
 	}
 
 	my $model;
