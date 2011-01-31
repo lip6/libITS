@@ -41,18 +41,7 @@ extern void RTfree(void *rt_ptr);
 
 #define RT_NEW(sort) ((sort*)RTmallocZero(sizeof(sort)))
 
-extern void *RTdlsym (const char *libname, void *handle, const char *symbol);
-
 extern int RTverbosity;
-
-extern void RTinit(int *argc, char **argv[]);
-/**< @brief Initializes the runtime library.
-
-Some platform do not like it is you change argv. Thus this
-call makes a copy of argv allowing subsequent calls
-to make changes to argv without copying again.
-*/
-
 
 extern void (*RThandleFatal)(const char*file,int line,int errnum,int code);
 
