@@ -1,2 +1,2 @@
-G ( "lup_0=wait" -> F "lup_0=load_data" )
-!(G ( "lup_0=wait" -> F "lup_0=load_data" ))
+G ( "lup0=wait" -> F "lup0=load_data" )
+!(G ( "lup0=wait" -> F "lup0=load_data" ))
