@@ -178,7 +178,11 @@ Transition EtfType::getPredicate (Label predicate) const {
   }
   if (varindex == -1) {
     std::cerr << "Error variable " + var + " cannot be resolved as an instance name when trying to parse predicate : "  + predicate << std::endl;
-    std::cerr << "Failing with error code 2"<< std::endl;
+    std::cerr << "Expected one of : " ;
+    for (int i=0; i < N ; i++) {
+      std::cerr << lts_type_get_state_name(ltstype,i) << ", ";
+    }
+    std::cerr << "\nFailing with error code 2"<< std::endl;
     exit (2);
   }
   // This is the actual index given the current Ordering
