@@ -173,6 +173,6 @@ LIBDDD_LINK=-lddd
 endif
 
 AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall $(BOOST_CPPFLAGS)
-AM_CXXFLAGS = -g -O0 -Wall
+AM_CXXFLAGS = -g -O2 -Wall
 
 libITS_a_SOURCES = $(ITSSOURCES)
