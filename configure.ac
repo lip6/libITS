@@ -21,6 +21,11 @@ if test "x${with_libddd}" != x; then
     AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
 fi
 
+
+# M4 macros location
+AC_CONFIG_MACRO_DIR([m4])
+
+
 # option to indicate libits folder
 AC_ARG_WITH([libits],
             [AC_HELP_STRING([--with-libits=/root/of/libits],
@@ -55,6 +60,10 @@ AC_PROG_CC
 # use yacc to create parsers
 AM_PROG_LEX
 AC_PROG_YACC
+
+# Enable boost if found:
+AX_BOOST_BASE
+AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
 
 # define HAS_STDC_HEADERS
 AC_HEADER_STDC

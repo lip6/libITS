@@ -40,7 +40,9 @@ void usage () {
   cerr<<  "    -p path : specifies the path to input Prod format model with possible module info pnddd style (xxx.net)" <<endl;
   cerr<<  "    -xml path : use a XML encoded ITSModel file, as produced by Coloane or Romeo.\n" ;
   cerr<<  "    -c path : use a CAMI encoded ordinary P/T net, as produced by Coloane or Macao. Use -j in conjunction with this option.\n" ;
+#ifdef HAVE_BOOST_FLAG  
   cerr<<  "    -j path : use a JSON encoded hierarchy description file for a CAMI model, as produced using PaToH.\n" ;
+#endif
   cerr<<  "    -ctl [CTL formulas file]\n";
   cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
   cerr<<  "    [--backward] to force backward CTL model-checking (classic algorithm from 10^20 states & beyond)\n";
@@ -93,11 +95,13 @@ int main (int argc, char ** argv) {
        { cerr << "give argument value for Cami file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
      pathcamiff = argv[i];
      docamiparse = true;
+#ifdef HAVE_BOOST_FLAG  
    } else if ( ! strcmp(argv[i],"-j") ) {
      if (++i > argc) 
        { cerr << "give argument value for JSON file name please after " << argv[i-1]<<endl; usage() ;exit(1);;}
      pathjsonff = argv[i];
      dojsonparse = true;
+#endif
    } else if ( ! strcmp(argv[i],"-xml") ) {
      if (++i > argc) 
        { cerr << "give argument value for ITSModel XML file name please after " << argv[i-1]<<endl; usage() ;exit(1);}
@@ -160,11 +164,17 @@ int main (int argc, char ** argv) {
     model.setInstanceState("init");
   } else if (docamiparse) {
     if (! dojsonparse) {
+#ifdef HAVE_BOOST_FLAG  
       std::cerr << "You need to specify a hierarchy configuration file in JSON format." << std::endl;
+#else
+      std::cerr << "BOOST which is necessary to parse JSON files has not been found on your system.." << std::endl;
+#endif
       exit(1);
     } else {
+#ifdef HAVE_BOOST_FLAG  
       JSONLoader::loadJsonCami (model, pathcamiff, pathjsonff);
 //         model.print(std::cerr);
+#endif
     }
   } else if (doxmlparse) {
     ITSModelXMLLoader::loadXML(pathxmlff, model);

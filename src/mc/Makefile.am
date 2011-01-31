@@ -24,7 +24,12 @@ LIBITS_LINK=-lITS
 endif
 
 
-AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(LIBITS_CPP) $(LIBDDD_CPP) $(LIBEXPAT_CPP)
+if HAVE_BOOST
+HAVE_BOOST_FLAG = -DHAVE_BOOST
+endif
+
+
+AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(LIBDDD_CPP) $(LIBEXPAT_CPP)
 #
 #libmcctl_a_SOURCES = mcCmd.c  mcCover.c  mcDbg.c  mcDnC.c  mcGFP.c  mc.h  mcInt.h  mcMc.c  mcSCC.c  mcUtil.c  mcVacuum.c
 
