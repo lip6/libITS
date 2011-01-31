@@ -1,5 +1,6 @@
 # /bin/sh
 
+./graph.sh dsog-sog-time.eps -v DSOG SOG 7 $1/**/*.log
 ./graph.sh sog-dsog-time.eps -v SOG DSOG 7 $1/**/*.log
 ./graph.sh sog-slap-time.eps -v SOG SLAP 7 $1/**/*.log
 ./graph.sh sog-fsltl-time.eps -v SOG FSLTL 7 $1/**/*.log
