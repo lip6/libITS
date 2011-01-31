@@ -20,8 +20,8 @@ models=`cut -f 1 -d ' ' $output.data | sort -u | tr '\n' ' '`
 
 cat > $output.gnuplot  <<EOF
 set terminal postscript eps enhanced color
-set xlabel "$1" 0.0, 1.0
-set ylabel "$2" 1.0, 0.0
+set xlabel "$1" 0.0, 4.0
+set ylabel "$2" 12.0, 0.0
 set xtics nomirror
 set ytics nomirror
 set logscale x
@@ -47,9 +47,11 @@ EOF
 
 
 echo "Plots: $models"
+x=1
 for i in $models; do
   sed -n "s/^$i \(.*\)$/\\1/p" < $output.data > $output.$i.data
-  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype 1  title \"$i\", \\" >> $output.gnuplot
+  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype $x  title \"$i\", \\" >> $output.gnuplot
+  x=`expr $x + 1`
 done
 
 #echo "  0.1*x notitle , \\" >> $output.gnuplot
