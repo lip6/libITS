@@ -25,13 +25,14 @@ while (<>)
     chomp;
 
     my @res = split(',',$_);
-    shift @res;
-    shift @res;
-    shift @res;
+    my $meth = shift @res;
+    my $form = shift @res;
+    my $what = shift @res;
     my $verdict = $res[3];
 
     if ($verdict == 2 || $#res < 6) {
       ++$fail;
+      print "Failed : $meth, $form, $what \n" ;
     } else {
       if ($count)
 	{
