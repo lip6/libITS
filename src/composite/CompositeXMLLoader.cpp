@@ -21,7 +21,7 @@ static its::ITSModel * model=NULL;
 
 void CompositeXMLLoader::loadNodes (void * data, const XML_Char* Elt, const XML_Char** Attr)
 {
-  int id;
+  int id=0;
   std::string name, type, label;
   std::stringstream s;
   
