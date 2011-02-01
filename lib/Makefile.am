@@ -147,8 +147,8 @@ SCALARSOURCES = $(MYSCALARSRCDIR)/CircularSet.cpp \
 	$(MYSCALARSRCDIR)/Delegator.cpp \
 	$(MYSCALARSRCDIR)/ScalarSet.cpp \
 	$(MYSCALARSRCDIR)/ScalarSetXMLLoader.cpp \
-	$(MYSCALARSRCDIR)/ScalarSetType.cpp \
-	$(MYSCALARSRCDIR)/ScalarState.cpp 
+	$(MYSCALARSRCDIR)/ScalarSetType.cpp 
+
 
 
 ITSSOURCES = $(ITSHEADERS) \
@@ -172,7 +172,8 @@ else
 LIBDDD_LINK=-lddd
 endif
 
-AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall $(BOOST_CPPFLAGS)
+AM_CFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall
+AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS)
 AM_CXXFLAGS = -g -O2 -Wall
 
 libITS_a_SOURCES = $(ITSSOURCES)
