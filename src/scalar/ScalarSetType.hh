@@ -12,6 +12,7 @@ namespace its {
   // Strategies
   class RepresentationStrategy {
   public :
+    virtual ~RepresentationStrategy () {};
     virtual vLabel buildRepresentation () = 0; 
     virtual int getTypeSize(Label name) const = 0;
   };

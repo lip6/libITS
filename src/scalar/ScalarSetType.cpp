@@ -157,6 +157,8 @@ labels_t CircularSetType::getTransLabels () const {
       ++cp;
       return atoi(cp);
     }
+    
+    virtual ~BasicStrategy () {}
 
   protected:
 
@@ -347,7 +349,8 @@ labels_t CircularSetType::getTransLabels () const {
     double factor_;
   public :
     DepthRecStrategy (const ScalarSet & comp, ITSModel & m, int param = 1, double factor = 1.0): BasicStrategy(comp,m,param), factor_(factor) {};
-    
+
+    virtual ~DepthRecStrategy () {}        
 
     void buildNWiseComposite (int n, int grain, bool close_loop)  {
       int part = n / grain;
@@ -383,7 +386,8 @@ labels_t CircularSetType::getTransLabels () const {
   class ShallowRecStrategy : public BasicStrategy {
   public :
     ShallowRecStrategy (const ScalarSet & comp, ITSModel & m, int param = 1): BasicStrategy(comp,m,param) {};
-    
+
+    virtual ~ShallowRecStrategy () {}    
 
     void buildNWiseComposite (int n, int grain, bool close_loop)  {
       if (model_.findType(typeName(n)) != NULL)
