@@ -110,7 +110,7 @@ debut:  DB  creation  {for(map<int,int>::const_iterator it=RESET.begin(); it !=R
                       }
         }FB
 		  |
-      erreur {yyerror(" (incorrect Modèl) ")<<endl;exit(1);}
+      erreur {yyerror(" (incorrect Model) ")<<endl;exit(1);}
       |
       debut ESPACE
       |
@@ -195,7 +195,7 @@ commande :
 				yyerror("Incorrect length of the word 'declaration'")<<endl;return 1;
 			}
 			if( !(binary_search(Net.begin(),Net.end(),$7) )){
-				yyerror("Net dosn't Existe")<<endl;return 1;
+				yyerror("Net doesn't exist")<<endl;return 1;
 			}
 
 	  }
@@ -206,7 +206,7 @@ commande :
 				yyerror("Incorrect length of the word 'declaration'")<<endl;return 1;
 			}
 			if( !(binary_search(Net.begin(),Net.end(),$7) )){
-				yyerror("Net dosn't Existe")<<endl;return 1;
+				yyerror("Net doesn't Exist")<<endl;return 1;
 			}
 
 	  }
@@ -221,7 +221,7 @@ commande :
         yyerror("Incorrect length of the Identifier attribut authors")<<endl;return 1;
       }
 			if(!(binary_search(Net.begin(),Net.end(),$7) )){
-			  yyerror("Net dosn't Existe")<<endl;return 1;
+			  yyerror("Net doesn't Exist")<<endl;return 1;
 			}
 
 		}
