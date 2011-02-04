@@ -99,6 +99,7 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(MYSRCDIR)/ITSModel.hh \
 	$(MYSRCDIR)/Naming.hh \
 	$(MYSRCDIR)/Ordering.hh \
+	$(MYSRCDIR)/Options.hh \
 	$(MYSRCDIR)/Type.hh \
 	$(MYSRCDIR)/TypeBasics.hh \
 	$(MYSRCDIR)/TypeCacher.hh \
@@ -159,6 +160,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/ColoaneExport.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
 	$(MYSRCDIR)/Ordering.cpp \
+	$(MYSRCDIR)/Options.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
 	$(MYSRCDIR)/TypeCacher.cpp \
 	$(JSONSTUFF) \
