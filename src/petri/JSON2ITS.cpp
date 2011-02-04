@@ -1,9 +1,10 @@
-#include "JSON2ITS.hh"
-#include "PNet.hh"
+#include "petri/JSON2ITS.hh"
+#include "petri/PNet.hh"
 #include "composite/Composite.hh"
 #include "parser_RdPE/RdPE.h"
 #include "parser_CAMI/Cami.hpp"
 #include "parser_json/parse_json.hh"
+#include "petri/Modular2ITS.hh"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -244,11 +245,7 @@ vLabel buildComposite (Hierarchie * hier, const RdPE & R , std::vector<Transitio
 
 }
 
-
-void JSONLoader::loadJsonCami (its::ITSModel & model, const std::string & pathcamiff, const std::string & confff) {
-  
-  // Load CAMI model into an RdPE
-  RdPE R;
+static void parseCami (RdPE & R, const std::string & pathcamiff) {
 
   try_file_readable(pathcamiff);
   cami::CAMI c(pathcamiff.c_str());
@@ -257,13 +254,31 @@ void JSONLoader::loadJsonCami (its::ITSModel & model, const std::string & pathca
   } else {
     cerr << "Parse error occurred while parsing Cami model file. Are you sure this net is Black&White ?"<<endl;
   }
-  Label modelName = pathcamiff;
+
+}
+
+vLabel JSONLoader::loadCami (its::ITSModel & model, const std::string & pathcamiff) {
+  RdPE R;
+
+  parseCami(R, pathcamiff);
+
+  return RdPELoader::loadModularRdPE(model,R);
+}
+
+vLabel JSONLoader::loadJsonCami (its::ITSModel & model, const std::string & pathcamiff, const std::string & confff) {
+  
+  // Load CAMI model into an RdPE
+  RdPE R;
+  parseCami(R, pathcamiff);
+
+  return loadJsonRdPE (model,  R, confff);
+}
+
+vLabel JSONLoader::loadJsonRdPE (its::ITSModel & model, class RdPE & R, const std::string & confff) {
 
   // Load order file
   try_file_readable(confff);
-
   Hierarchie hier;
-
   json_parse(confff, hier);
 
   // Todo list of transitions
@@ -273,10 +288,9 @@ void JSONLoader::loadJsonCami (its::ITSModel & model, const std::string & pathca
   hiername = hiername_t();
   vLabel mainname = buildComposite (&hier, R , trans, model);
 
-  model.setInstance (mainname, modelName);
-  model.setInstanceState ("init");
-
   varset = varset_t();
   hiername = hiername_t();
+
+  return mainname;
 }
 

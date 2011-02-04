@@ -1,7 +1,8 @@
-#include "Modular2ITS.hh"
-#include "PNet.hh"
+#include "petri/Modular2ITS.hh"
+#include "petri/PNet.hh"
 #include "composite/Composite.hh"
 #include "parser_RdPE/RdPE.h"
+#include "petri/JSON2ITS.hh"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -61,11 +62,7 @@ static int isLocal (const RdPE &R, vector<Transition>::const_iterator t) {
   return mod;
 }
 
-
-vLabel RdPELoader::loadModularProd (its::ITSModel & model, const std::string & pathnetff) {  
-  try_file_readable2(pathnetff);
-  RdPE R = RdPE (pathnetff.c_str());
-  vLabel modelName = pathnetff;
+vLabel RdPELoader::loadModularRdPE (its::ITSModel & model, RdPE & R) {
 
   // build a PNet for each module
   typedef std::map<int, PNet > mod_t;
@@ -186,5 +183,20 @@ vLabel RdPELoader::loadModularProd (its::ITSModel & model, const std::string & p
   model.declareType(c);
 
   return compositeName;
+}
+
+vLabel RdPELoader::loadModularProd (its::ITSModel & model, const std::string & pathnetff) {  
+  try_file_readable2(pathnetff);
+  RdPE R = RdPE (pathnetff.c_str());
+
+  return loadModularRdPE(model, R);
+}
+
+vLabel RdPELoader::loadJsonProd (its::ITSModel & model, const std::string & pathnetff, const std::string & confff) {  
+  try_file_readable2(pathnetff);
+  RdPE R = RdPE (pathnetff.c_str());
+
+  
+  return JSONLoader::loadJsonRdPE(model, R, confff);
 }
 
