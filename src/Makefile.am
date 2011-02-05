@@ -12,7 +12,7 @@ endif
 
 if WITH_LIBITS_PATH
 LIBITS_CPP=-I$(LIBITS_ROOT)
-LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a $(LIBITS_ROOT)/../lib/libprod.a $(LIBITS_ROOT)/../lib/libRdP.a
+LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a $(LIBITS_ROOT)/../lib/libprod.a $(LIBITS_ROOT)/../lib/libRdP.a  $(LIBITS_ROOT)/../lib/libCAMI.a
 else
 LIBITS_LINK=-lITS
 endif
