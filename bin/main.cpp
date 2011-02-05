@@ -125,6 +125,7 @@ int main (int argc, char **argv) {
  // parse command line args to get the options 
  handleInputOptions (args, model);
  // we now should have the model defined.
+ modelName = model.getInstance()->getType()->getName();
  
  bool with_garbage = true;
  // Setup SDD specific settings
