@@ -1,3 +1,4 @@
+AC_PREREQ([2.19])
 AC_INIT([ITSSDD],[0.1],[Yann.Thierry-mieg@lip6.fr])
 # We use automake to build makefiles
 
@@ -29,7 +30,9 @@ test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
 #compile in C++
+AC_PROG_CC
 AC_PROG_CXX
+AC_LANG(C++)
 
 #use bison/flex parsers
 AM_PROG_LEX
@@ -38,6 +41,9 @@ AC_PROG_YACC
 # Enable boost if found:
 AX_BOOST_BASE
 AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
+
+# define HAS_STDC_HEADERS
+AC_HEADER_STDC
 
 # automake :
 # build these Makefile using the Makefile.in files in each directory
