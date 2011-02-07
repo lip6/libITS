@@ -1,5 +1,5 @@
 SUBDIRS = bringBack
-lib_LIBRARIES = libITS.a libprod.a
+lib_LIBRARIES = libITSmain.a libprod.a
 
 MYSRCDIR= $(top_srcdir)/src
 MYPRODSRCDIR= $(MYSRCDIR)/prod
@@ -178,4 +178,11 @@ AM_CFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O2 -st
 AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS)
 AM_CXXFLAGS = -g -O2 -Wall
 
-libITS_a_SOURCES = $(ITSSOURCES)
+libITSmain_a_SOURCES = $(ITSSOURCES)
+
+
+libITS.a : libITSmain.a libprod.a libCAMI.a libprod.a libRdP.a
+	mkdir .tmp-libs ; cd .tmp-libs ; ar x ../libITSmain.a ; ar x ../libprod.a ; ar x ../libRdP.a ; ar x ../libCAMI.a ; ar x ../libprod.a ; ar crus ../libITS.a *.o ; cd .. ; \rm -r .tmp-libs ;
+
+
+all-local : libITS.a
