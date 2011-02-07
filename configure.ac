@@ -62,7 +62,7 @@ AM_PROG_LEX
 AC_PROG_YACC
 
 # Enable boost if found:
-AX_BOOST_BASE
+AX_CHECK_BOOST([1.31])
 AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
 
 # define HAS_STDC_HEADERS
