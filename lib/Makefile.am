@@ -43,9 +43,9 @@ JSONSOURCES = $(JSONSPIRITSOURCES) \
 		$(MYPETRISRCDIR)/JSONPNetType.hh \
 		$(MYPETRISRCDIR)/JSONPNetType.cpp 
 
-if HAVE_BOOST
+# used to be protected by if HAVE_BOOST
 JSONSTUFF = $(JSONSOURCES)
-endif
+
 
 
 XMLLOADERSOURCES =  $(MYCOMPSRCDIR)/CompositeXMLLoader.hh $(MYCOMPSRCDIR)/CompositeXMLLoader.cpp \
