@@ -43,7 +43,7 @@ while (my $line = <IN>) {
 }
 
 if ( @nominal[1] != @tested[1] ) {
-  print "##teamcity[testFailed name='$title' message='regression detected' details='' expected='@nominal[1]' actual='@tested[1]' \n";
+  print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='@nominal[1]' actual='@tested[1]' \n";
 #  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
 } else {
   print "Test successful : $title \n";
