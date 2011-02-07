@@ -2,7 +2,7 @@ noinst_PROGRAMS = its-reach
 
 
 LIBITS_CPP=-I$(top_srcdir)/src
-LIBITS_PATH=$(top_srcdir)/lib/libITS.a $(top_srcdir)/lib/libprod.a $(top_srcdir)/lib/libRdP.a $(top_srcdir)/lib/libCAMI.a
+LIBITS_PATH=$(top_srcdir)/lib/libITS.a 
 
 
 if HAVE_BOOST
