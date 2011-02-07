@@ -182,7 +182,7 @@ libITSmain_a_SOURCES = $(ITSSOURCES)
 
 
 libITS.a : libITSmain.a libprod.a libCAMI.a libprod.a libRdP.a
-	mkdir .tmp-libs ; cd .tmp-libs ; ar x ../libITSmain.a ; ar x ../libprod.a ; ar x ../libRdP.a ; ar x ../libCAMI.a ; ar x ../libprod.a ; ar crus ../libITS.a *.o ; cd .. ; \rm -r .tmp-libs ;
+	mkdir .tmp-libs ; cd .tmp-libs ; ar x ../libITSmain.a ; ar x ../libprod.a ; ar x ../libRdP.a ; ar x ../libCAMI.a ; ar x ../libprod.a ; ar cru ../libITS.a *.o ; cd .. ; ranlib libITS.a ; \rm -r .tmp-libs ;
 
 
 all-local : libITS.a
