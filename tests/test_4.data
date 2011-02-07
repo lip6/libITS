@@ -1,0 +1,9 @@
+CAMI input, no JSON
+../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/election_2.cami  -t  CAMI  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+NetMain,11257,3.6,46088,11362,3,111815,6,412,91904,8,5,0
+

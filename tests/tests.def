@@ -1,0 +1,12 @@
+PROD input, no options, FMS 10
+../bin/its-reach -i test_models/fms10.net --quiet -t PROD
+PROD input, DDD option
+../bin/its-reach -i test_models/fms10.net --quiet -t PROD --ddd
+PROD input, --no-garbage
+../bin/its-reach -i test_models/fms10.net --quiet -t PROD --no-garbage
+CAMI input, no JSON
+../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet
+CAMI input, with JSON
+../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json
+PROD input, philo 100
+../bin/its-reach -i test_models/philo100.net -t PROD --quiet

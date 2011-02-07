@@ -1,0 +1,9 @@
+PROD input, --no-garbage
+../bin/its-reach -i test_models/fms10.net --quiet -t PROD --no-garbage
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/fms10.net  --quiet  -t  PROD  --no-garbage  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+NetMain,2.50141e+09,0.16,3084,581,12,5988,15,73,3305,8,77,0
+

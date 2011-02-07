@@ -1,0 +1,102 @@
+#place P1 mk(10*<..>)
+#place P1wM1
+#place P1M1
+#place M1 mk(3*<..>)
+#place P1d
+#place P1s
+#place P1wP2
+#place P12
+#place P12wM3
+#place P12M3
+#place M3 mk(2*<..>)
+#place P12s
+#place P2 mk(10*<..>)
+#place P2wM2
+#place P2M2
+#place M2 mk(<..>)
+#place P2d
+#place P2wP1
+#place P2s
+#place P3 mk(10*<..>)
+#place P3M2
+#place P3s
+#trans tP1
+in {P1:<..>;}
+out {P1wM1:<..>;}
+#endtr
+#trans tM1
+in {P1wM1:<..>;M1:<..>;}
+out {P1M1:<..>;}
+#endtr
+#trans tP1M1
+in {P1M1:<..>;}
+out {M1:<..>;P1d:<..>;}
+#endtr
+#trans tP1e
+in {P1d:<..>;}
+out {P1s:<..>;}
+#endtr
+#trans tP1s
+in {P1s:<..>;}
+out {P1:<..>;}
+#endtr
+#trans tP1j
+in {P1d:<..>;}
+out {P1wP2:<..>;}
+#endtr
+#trans tx
+in {P1wP2:<..>;P2wP1:<..>;}
+out {P12:<..>;}
+#endtr
+#trans tP12
+in {P12:<..>;}
+out {P12wM3:<..>;}
+#endtr
+#trans tM3
+in {P12wM3:<..>;M3:<..>;}
+out {P12M3:<..>;}
+#endtr
+#trans tP12M3
+in {P12M3:<..>;}
+out {P12s:<..>;M3:<..>;}
+#endtr
+#trans tP12s
+in {P12s:<..>;}
+out {P1:<..>;P2:<..>;}
+#endtr
+#trans tP2
+in {P2:<..>;}
+out {P2wM2:<..>;}
+#endtr
+#trans tM2
+in {P2wM2:<..>;M2:<..>;}
+out {P2M2:<..>;}
+#endtr
+#trans tP2M2
+in {P2M2:<..>;}
+out {P2d:<..>;M2:<..>;}
+#endtr
+#trans tP2j
+in {P2d:<..>;}
+out {P2wP1:<..>;}
+#endtr
+#trans tP2e
+in {P2d:<..>;}
+out {P2s:<..>;}
+#endtr
+#trans tP2s
+in {P2s:<..>;}
+out {P2:<..>;}
+#endtr
+#trans tP3
+in {P3:<..>;}
+out {P3M2:<..>;}
+#endtr
+#trans tP3M2
+in {P3M2:<..>;M2:<..>;}
+out {P3s:<..>;M2:<..>;}
+#endtr
+#trans tP3s
+in {P3s:<..>;}
+out {P3:<..>;}
+#endtr

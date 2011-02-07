@@ -1,0 +1,9 @@
+PROD input, philo 100
+../bin/its-reach -i test_models/philo100.net -t PROD --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/philo100.net  -t  PROD  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+NetMain,4.96926e+62,0.14,3336,418,3,3723,8,823,2022,6,8,0
+
