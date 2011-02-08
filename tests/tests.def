@@ -10,3 +10,21 @@ CAMI input, with JSON
 ../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json
 PROD input, philo 100
 ../bin/its-reach -i test_models/philo100.net -t PROD --quiet
+ROMEO input, no order
+../bin/its-reach -i test_models/train4.xml -t ROMEO --quiet
+ROMEO input, no order
+../bin/its-reach -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord
+ROMEO using BFS
+../bin/its-reach -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint BFS
+ROMEO using DFS
+../bin/its-reach -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint DFS
+COLOANE format for ITS (flat scalar)
+cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet ; cd ..
+COLOANE format for ITS (scalar depth2)
+cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet -ssD2 5 ; cd ..
+COLOANE format for ITS (scalar depth rec)
+cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet -ssDR 5 ; cd ..
+COLOANE format for ITS (scalar depth shallow)
+cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet -ssDS 5 ; cd ..
+ETF format
+../bin/its-reach -i test_models/peterson.4.dve.etf -t ETF --quiet 

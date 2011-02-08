@@ -13,7 +13,7 @@ while (my $line = <STDIN>) {
   print OUT  "$title\n";
   print OUT  "$line\n\n";
   close OUT;
-  my $call = "$line >> $datafile";
+  my $call = "($line) >> $datafile";
     print "Creating test data number $tnum : $call \n" ; 
   system $call ;
   $tnum++;

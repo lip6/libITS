@@ -1,0 +1,9 @@
+ETF format
+../bin/its-reach -i test_models/peterson.4.dve.etf -t ETF --quiet 
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/peterson.4.dve.etf  -t  ETF  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+test\_models/peterson.4.dve.etf,1.11956e+06,2.93,70680,2556,21,240471,115,25,298033,1,763,0
+

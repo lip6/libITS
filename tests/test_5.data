@@ -5,5 +5,5 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/election_2.cami  -t  CAMI  --quiet  --json-order  test_models/election_2.json  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-PNet0,11257,0.88,12728,5963,3,34792,6,409,27123,8,5,0
+PNet0,11257,0.29,12612,5963,3,34792,6,409,27123,8,5,0
 

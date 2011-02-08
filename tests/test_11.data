@@ -1,0 +1,9 @@
+COLOANE format for ITS (flat scalar)
+cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet ; cd ..
+
+its-reach command run as :
+
+../../bin/its-reach  -i  votersMain.xml  -t  ITSXML  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+voters.model,1.07151e+301,44.59,7600,2007,3,3020,6,1011,9,6,5,0
+

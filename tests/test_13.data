@@ -1,0 +1,9 @@
+COLOANE format for ITS (scalar depth rec)
+cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet -ssDR 5 ; cd ..
+
+its-reach command run as :
+
+../../bin/its-reach  -i  votersMain.xml  -t  ITSXML  --quiet  -ssDR  5  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+voters.model,1.07151e+301,0,1684,51,3,82,6,37,12,6,5,0
+

@@ -31,7 +31,7 @@ my $tmpfile = "$ARGV[0].tmp";
 # print "syscalling : $call \n";
 print "##teamcity[testStarted name='$title']\n";
 
-open IN, "$call |";
+open IN, "($call) |";
 while (my $line = <IN>) {
 #  print "read : $line";
   if ($line =~ /Model ,\|S\| /) {

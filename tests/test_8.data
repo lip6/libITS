@@ -1,0 +1,10 @@
+ROMEO input, no order
+../bin/its-reach -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/train4.xml  -t  ROMEO  --quiet  --load-order  test_models/train4.ord  
+Successfully loaded order from file test_models/train4.ord
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+train4,28895,1.35,40780,2693,10,117253,38,304,56885,42,236,0
+
