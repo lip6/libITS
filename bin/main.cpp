@@ -94,7 +94,7 @@ void usage() {
 }
 
 void bugreport () {
-  cerr << "Timed Petri Net SDD/DDD Analyzer; package " << PACKAGE_STRING <<endl;
+  cerr << "ITS SDD/DDD Analyzer; package " << PACKAGE_STRING <<endl;
   cerr << "If you think your model is valid (i.e. it's a bug from us), please send your model files, specify the version you are running on, and we'll try to fix it." <<endl;
   cerr << "Bugreport contact : " << PACKAGE_BUGREPORT <<endl;
   cerr << "Sorry." << endl;
@@ -123,13 +123,19 @@ int main (int argc, char **argv) {
  }
 
  // parse command line args to get the options 
- handleInputOptions (args, model);
+ if (! handleInputOptions (args, model) ) {
+   usage();
+   return 1;
+ }
  // we now should have the model defined.
  modelName = model.getInstance()->getType()->getName();
  
  bool with_garbage = true;
  // Setup SDD specific settings
- handleSDDOptions (args, with_garbage);
+ if (!handleSDDOptions (args, with_garbage)) {
+   usage();
+   return 1;
+ }
 
  
  argc = args.size();
@@ -153,7 +159,7 @@ int main (int argc, char **argv) {
      pathorderff = args[i];     
      dodumporder = true;
    } else {
-     cerr << "Error : incorrect Argument : "<<args[i] <<endl ; usage(); exit(0);
+     cerr << "Error : incorrect Argument : "<<args[i] <<endl ; usage(); return 1;
    }
  }
  
