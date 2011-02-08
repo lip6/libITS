@@ -80,7 +80,7 @@ void handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        { cerr << "Give a file name containing a JSON variable order definition please after " << argv[i-1]<<endl; usageInputOptions() ;exit(1);}
      pathjsonff = argv[i];
      hasJson = true;
-   } else if ( ! strcmp(argv[i],"--order") ) {
+   } else if ( ! strcmp(argv[i],"--load-order") ) {
      if (++i > argc) 
        { cerr << "Give a file name containing a variable order definition please after " << argv[i-1]<<endl; usageInputOptions() ;exit(1);}
      pathorderff = argv[i];
