@@ -34,7 +34,7 @@ namespace its {
  CONFIGURATION : --ddd|--sdd : privilege ddd or sdd in encoding. sdd is default
  For Scalar and circular : -ssD2, -ssDR, -ssDS   (default -ssD2 1)
 */
-void handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
+bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   string pathinputff = "";
   enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF};
@@ -182,8 +182,7 @@ void handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   default : 
     {
       std::cerr << "Please specify input problem type with option -t. Supported types are :  {CAMI|PROD|ROMEO|ITSXML|ETF} \n" ;
-      usageInputOptions();
-      exit(1);
+      return false;
       break;
     }
   }
@@ -193,12 +192,13 @@ void handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
    ifstream is (pathorderff.c_str());
    if (! model.loadOrder(is)) {
      std::cerr << "Problem loading provided order file :" << pathorderff << "\n";
-     exit(1);
+     return false;
    } else {
-       std::cout << "Successfully loaded order from file " << pathorderff << std::endl;
+     std::cout << "Successfully loaded order from file " << pathorderff << std::endl;
    }
  }
 
+ return true;
 }
 
 void usageInputOptions() {
@@ -230,7 +230,7 @@ void usageInputOptions() {
 /** Consumes the options that are recognized in args, and treats them to configure libDDD
  *  Options recognized by this options parser: --no-garbage, --gc-threshold XXX (in kb), --fixpoint {BFS,DFS}
 */
-void handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) {
+bool handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) {
 
   std::vector<const char *> argsleft;
 
@@ -240,18 +240,18 @@ void handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) {
      with_garbage = false;  
    } else if ( ! strcmp(argv[i],"--gc-threshold") ) {
       if (++i > argc) 
-       { cerr << "give numeric value in Kb for gc-threshold option " << argv[i-1]<<endl; usageSDDOptions() ; exit(1);}
+       { cerr << "give numeric value in Kb for gc-threshold option " << argv[i-1]<<endl; usageSDDOptions() ; return false;}
       int threshold = atoi(argv[i]);
       MemoryManager::setGCThreshold (threshold);
    } else if ( ! strcmp(argv[i],"--fixpoint") ) {
       if (++i > argc) 
-	{ cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl; usageSDDOptions() ; exit(1);}
+	{ cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl; usageSDDOptions() ; return false;}
       if (  ! strcmp(argv[i],"DFS")) {
 	Shom::setFixpointStrategy(Shom::DFS);
       } else if  (  ! strcmp(argv[i],"BFS")) {
 	Shom::setFixpointStrategy(Shom::BFS);
       } else {
-	cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl; usageSDDOptions() ; exit(1);
+	cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl; usageSDDOptions() ; return false;
       }
       /** LEFTOVER OPTIONS */
    } else {
@@ -262,6 +262,7 @@ void handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) {
 
   /** return unparsed options */
   argv = argsleft;
+  return true;
 }
 
 void usageSDDOptions() {

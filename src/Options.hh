@@ -12,7 +12,7 @@ namespace its {
    CONFIGURATION : --ddd|--sdd : privilege ddd or sdd in encoding. sdd is default
    For Scalar and circular : -ssD2, -ssDR, -ssDS   (default -ssD2 1)
   */
-  void handleInputOptions (std::vector<const char *> & argv, ITSModel & model);
+  bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model);
 
   /** Prints a message on how to use these options on stderr */
   void usageInputOptions ();
@@ -20,7 +20,7 @@ namespace its {
   /** Consumes the options that are recognized in args, and treats them to configure libDDD
    *  Options recognized by this options parser: --no-garbage, --gc-threshold XXX (in kb), --fixpoint {BFS,DFS}
    */
-  void handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) ;
+  bool handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) ;
 
   /** Prints a message on how to use these options on stderr */
   void usageSDDOptions ();
