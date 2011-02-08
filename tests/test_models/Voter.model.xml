@@ -1,0 +1,47 @@
+<TPN name="C:\workspaceEclipse\ITSModeling\Voter\voters.model_ITS Reachability/Voter.model.xml">
+  <place id="3" label="init" initialMarking="1" >
+    <graphics>
+      <position x="253" y="98"/>
+      <deltaLabel deltax="20" deltay="0"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="4" label="yes" initialMarking="0" >
+    <graphics>
+      <position x="165" y="248"/>
+      <deltaLabel deltax="20" deltay="0"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <place id="5" label="no" initialMarking="0" >
+    <graphics>
+      <position x="326" y="231"/>
+      <deltaLabel deltax="20" deltay="0"/>
+    </graphics>
+    <scheduling gamma="0" omega="0"/>
+  </place>
+  <transition id="6" label="vote" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="206" y="169"/>
+      <deltaLabel deltax="20" deltay="0"/>
+    </graphics>
+  </transition>
+  <transition id="7" label="vote" public="1" eft="0" lft="infini" >
+    <graphics>
+      <position x="296" y="169"/>
+      <deltaLabel deltax="20" deltay="0"/>
+    </graphics>
+  </transition>
+  <arc place="3" transition="6" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="4" transition="6" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="3" transition="7" type="PlaceTransition" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+  <arc place="5" transition="7" type="TransitionPlace" weight="1" >
+    <nail xnail="0" ynail="0"/>
+  </arc>
+</TPN>

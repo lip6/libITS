@@ -1,0 +1,43 @@
+ROMEO using DFS, basic formulae
+../src/mc/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint DFS -ctl  test_models/basic.ctl 
+
+its-reach command run as :
+
+../src/mc/its-ctl  -i  test_models/train4.xml  -t  ROMEO  --quiet  --load-order  test_models/train4.ord  --fixpoint  DFS  -ctl  test_models/basic.ctl  
+Successfully loaded order from file test_models/train4.ord
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Converting to forward existential form...Done !
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
+reachable,28895,1.56,44772,2693,10,133240,66,304,78093,42,1288,0
+
+
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,1.56,44828,1,0,133240,66,522,78093,48,1288,1500
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,1.56,44828,1,0,133240,66,522,78093,48,1288,1500
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,1.56,44828,1,0,133240,66,522,78093,48,1288,1500
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. 
+(forward)formula 3,1,1.76,44832,1,0,133240,66,1262,78093,84,1288,124397
+Formula is TRUE !
+
+ *************************************** 
+

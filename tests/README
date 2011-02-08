@@ -1,0 +1,18 @@
+Define tests in a tests.def file with format :
+Title on one line followed by
+Invocation string on one line
+
+Do NOT put extra newlines at end of file.
+
+Then run 
+./collect_data.pl < tests.def
+Which will build the "expected output" data files.
+These are typically commited to svn.
+
+To evaluate the actual tests run
+run_all.sh
+
+NB : the syntax of the output is adapted to please teamcity continuous integration server.
+
+
+

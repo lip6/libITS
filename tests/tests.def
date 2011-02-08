@@ -1,0 +1,32 @@
+PROD input, no options, FMS 10, basic formulae
+../src/mc/its-ctl -i test_models/fms10.net --quiet -t PROD -ctl  test_models/basic.ctl 
+PROD input, DDD option, basic formulae
+../src/mc/its-ctl -i test_models/fms10.net --quiet -t PROD --ddd -ctl  test_models/basic.ctl 
+PROD input, --no-garbage, basic formulae
+../src/mc/its-ctl -i test_models/fms10.net --quiet -t PROD --no-garbage -ctl  test_models/basic.ctl 
+CAMI input, no JSON, basic formulae
+../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet -ctl  test_models/basic.ctl 
+CAMI input, with JSON, basic formulae
+../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/basic.ctl 
+PROD input, philo 100, basic formulae
+../src/mc/its-ctl -i test_models/philo100.net -t PROD --quiet -ctl  test_models/basic.ctl 
+ROMEO input, no order, basic formulae
+../src/mc/its-ctl -i test_models/train4.xml -t ROMEO --quiet -ctl  test_models/basic.ctl 
+ROMEO input, no order, basic formulae
+../src/mc/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord -ctl  test_models/basic.ctl 
+ROMEO using BFS, basic formulae
+../src/mc/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint BFS -ctl  test_models/basic.ctl 
+ROMEO using DFS, basic formulae
+../src/mc/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint DFS -ctl  test_models/basic.ctl 
+COLOANE format for ITS (flat scalar), basic formulae
+cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ctl  ./basic.ctl  ; cd ..
+COLOANE format for ITS (scalar depth2), basic formulae
+cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ssD2 5 -ctl  ./basic.ctl ; cd ..
+COLOANE format for ITS (scalar depth rec), basic formulae
+cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ssDR 5 -ctl  ./basic.ctl ; cd ..
+COLOANE format for ITS (scalar depth shallow), basic formulae
+cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ssDS 5 -ctl  ./basic.ctl ; cd ..
+ETF format, basic formulae
+../src/mc/its-ctl -i test_models/peterson.4.dve.etf -t ETF --quiet -ctl  test_models/basic.ctl
+CAMI input, with JSON, advanced formulae
+../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/basic.ctl 
