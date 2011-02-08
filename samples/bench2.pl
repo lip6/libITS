@@ -20,14 +20,14 @@ my $dir = $opt_d or die "Specify target directory -d please! \n$usage" if (!defi
 my $cwd =  getcwd or die "Can't get cwd, used to decide where to do output.\n";
 
 # the list of all methods (taken from main.cpp)
-my @genType = ("SOG","DSOG","SLAP","FSLTL","SLAP-FST","SLAP-FSA");
+my @genType = ("SOG","SOP","SLAP","FSLTL","SLAP-FST","SLAP-FSA");
 
 my $DEFAULT_TIMEOUT = 120;
 # howto use this tool
 my $usage =
     "Usage:\n bench.pl -m [generation method list = @genType all] -d [directory base]\n"
   . " bench.pl -m [generation method list = @genType all] -f [file.net]\n"
-  . "example : ./bench.pl -m SOG,DSOG -d test/\n"
+  . "example : ./bench.pl -m SOG,SOP -d test/\n"
   . "\n other options :\n"
   . " -e pathTochecksogexe (default : currentDir/$default_checksog\n"
   . " -t timeout (default $DEFAULT_TIMEOUT seconds)\n"
@@ -131,7 +131,7 @@ sub workonfile {
 	# ../check-sog -Fformula -c -e invoice.cami.net 1
 	my $prevverdict;
 	foreach my $m (@methods) {
-	  if ($hasnext && $m =~ /D?SOG/) {
+	  if ($hasnext && $m =~ /SO[GP]/) {
 	    next;
 	  }
 
@@ -139,11 +139,14 @@ sub workonfile {
 
 
 	  $line =~ s/\\"/"/g;
-	  my $call = "$checksog_exe -S$method -f'$line' -c ";
+	  my $call = "$checksog_exe -S$method -ltl '$line' -c ";
 	  if ( $ff =~ /\.etf/ ) {
-	    $call .= "-ETF ";
+	    $call .= "-t ETF ";
+	  } else {
+	    # should be a net file given the search criterion used
+	    $call .= "-t PROD ";
 	  }
-	  $call .= $ff;
+	  $call .= "-i $ff";
 	  print STDERR $call."\n";
 	  open MYTOOL,"$call|";
 	  my $verdict = 0;
