@@ -45,7 +45,7 @@ int main (int argc, char ** argv) {
   ITSModel model;
   
   // echo options of run
-  std::cout << "its-reach command run as :\n" << std::endl;
+  std::cout << "its-ctl command run as :\n" << std::endl;
   for (int i=0;i < argc; i++) {
     std::cout << argv[i] << "  ";
   }
@@ -86,7 +86,7 @@ int main (int argc, char ** argv) {
   for (int i=0;i < argc; i++) {
     if (! strcmp(args[i],"-ctl") ) {
       if (++i > argc) 
-	{ cerr << "give argument value for .ctl formula file name please after " << args[i-1]<<endl; usage() ; exit(1);;}
+	{ cerr << "give argument value for .ctl formula file name please after " << args[i-1]<<endl; usage() ; exit(1);}
      pathformff = args[i];
    } else if (! strcmp(args[i],"--legend")   ) {
      showlegend = true;
