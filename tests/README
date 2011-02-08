@@ -4,8 +4,8 @@ Invocation string on one line
 
 Do NOT put extra newlines at end of file.
 
-Then 
-run ./collect_data.pl < tests.def
+Then run 
+./collect_data.pl < tests.def
 Which will build the "expected output" data files.
 These are typically commited to svn.
 
