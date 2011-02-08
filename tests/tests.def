@@ -29,4 +29,6 @@ cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ssDS 5
 ETF format, basic formulae
 ../src/mc/its-ctl -i test_models/peterson.4.dve.etf -t ETF --quiet -ctl  test_models/basic.ctl
 CAMI input, with JSON, advanced formulae
-../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/basic.ctl 
+../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/election2.ctl 
+CAMI input, with JSON, advanced formulae, --backward
+../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/election2.ctl --backward
