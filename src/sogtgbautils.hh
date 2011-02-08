@@ -53,7 +53,7 @@ namespace sogits {
     SLAP_NOFS, // < The (Symbolic) Local Obs Graph algorithm
     SLAP_FST, // < The (Symbolic) Local Obs Graph algorithm with Terminal states FSLTL test.
     SLAP_FSA, // < The (Symbolic) Local Obs Graph algorithm with Accepting states FSLTL test.
-    DSOG // < The Dynamic Symbolic Obs Graph algorithm
+    SOP // < The Symbolic Observation Product algorithm
   } ;
 
 

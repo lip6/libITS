@@ -36,9 +36,7 @@
 #include "MemoryManager.h"
 
 // prod parser
-#include "petri/Modular2ITS.hh"
-#include "prod/ProdLoader.hh"
-#include "petri/PNet.hh"
+#include "Options.hh"
 
 // fair CTL bricks
 #include "tgbaIts.hh"
@@ -46,16 +44,27 @@
 
 using namespace its;
 using namespace sogits;
+using std::cerr;
+using std::string;
+using std::endl;
 
-void syntax(const char* prog) {
-  std::cerr << "Usage: "<< prog << " [OPTIONS...] petri_net_file/ETF format file" << std::endl
-            << "where OPTIONS are" << std::endl
-            << "Formats:" << std::endl
-	    << "  -ETF  suppose the input file is ETF format, as produced by LTSmin tool. Default supposes we have a PROD format input Petri net." << std::endl
-            << "Actions:" << std::endl
+
+void usage() {
+  cerr << "Instantiable Transition Systems SDD/DDD LTL Analyzer;" <<endl;
+  cerr << "Mandatory options : -i -t to provide input model, -ltl or -LTL to provide formulae" << std::endl; 
+
+  usageInputOptions();
+  usageSDDOptions();
+  
+  cerr << "This tool performs LTL verification on state-space of ITS" <<endl;
+  cerr << " LTL specific options for  package " << PACKAGE_STRING << endl;
+
+  std::cerr << "  MANDATORY : specify a formula to check " << std::endl
+	    << "  -ltl formula       specify the ltl formula. Must be stuttering invariant for SOG and SOP variants." << std::endl
+	    << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
-            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLAP,DSOG,FSLTL,SLAP-FST,SLAP-FSA} (SLAP-FST by default)\n"
+            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLAP,SOP,FSLTL,SLAP-FST,SLAP-FSA} (SLAP-FST by default)\n"
 	    << "                  The FST variants include a test for switching to fully symbolic emptiness check in terminal states.\n"
 	    << "                  The FSA variants include a test for switching to fully symbolic emptiness check in any potentially accepting automaton state."
             << std::endl
@@ -64,9 +73,9 @@ void syntax(const char* prog) {
             << "  -c              check the formula" << std::endl
             << "  -e              display a sequence (if any) of the net "
             << "satisfying the formula (implies -c)" << std::endl
-            << "  -fformula       specify the formula" << std::endl
-            << "  -Fformula_file  formula read from formula_file"
-            << std::endl
+
+    //            << "  -LTL formula_file  formula read from formula_file"
+    //        << std::endl
             << "  -g              display the sog"
             << std::endl
             << "  -p              display the net"
@@ -101,7 +110,7 @@ int main(int argc, const char *argv[]) {
   // external block for full garbage
   {
 
-  bool isETF = false;
+
 
   bool check = false;
   bool print_rg = false;
@@ -123,98 +132,103 @@ int main(int argc, const char *argv[]) {
 
   sog_product_type sogtype = SLAP_FST;
 
-  std::string pathprodff = argv[argc-1];
-
-  int pn_index = 0;
-  for (;;) {
-    if (argc < pn_index + 2)
-      syntax(argv[0]);
-
-    ++pn_index;
-
-    if (!strncmp(argv[pn_index], "-a", 2)) {
-      algo_string = argv[pn_index]+2;
+    
+  // echo options of run
+  std::cout << "its-ltl command run as :\n" << std::endl;
+  for (int i=0;i < argc; i++) {
+    std::cout << argv[i] << "  ";
+  }
+  std::cout << std::endl;
+  
+  // Build the options vector
+  std::vector<const char *> args;
+  for (int i=1;i < argc; i++) {
+    args.push_back(argv[i]);
+  }
+  
+  std::vector<const char *> argsleft;
+  argc = args.size();
+  
+  for (int i=0;i < argc; i++) {
+    if (!strncmp(args[i], "-a", 2)) {
+      algo_string = args[i]+2;
     }
-    else if (!strcmp(argv[pn_index], "-ETF")) {
-      isETF = true;
-    }
-    else if (!strcmp(argv[pn_index], "-b")) {
+    else if (!strcmp(args[i], "-b")) {
       post_branching = true;
     }
-    else if (!strcmp(argv[pn_index], "-c")) {
+    else if (!strcmp(args[i], "-c")) {
       check = true;
     }
-    else if (!strcmp(argv[pn_index], "-C")) {
+    else if (!strcmp(args[i], "-C")) {
       count = true;
     }
-    else if (!strcmp(argv[pn_index], "-e")) {
+    else if (!strcmp(args[i], "-e")) {
       ce_expected = true;
     }
-    else if (!strcmp(argv[pn_index], "-s")) {
+    else if (!strcmp(args[i], "-s")) {
       print_formula_tgba = true;
     }
-    else if (!strncmp(argv[pn_index], "-f", 2)) {
-      ltl_string = argv[pn_index]+2;
+    else if (!strncmp(args[i], "-ltl", 4)) {
+      if (++i > argc) 
+	{ cerr << "give argument value for ltl formula please after " << args[i-1]<<endl; usage() ; exit(1);}
+      ltl_string = args[i];
     }
-    else if (!strncmp(argv[pn_index], "-dR3", 4)) {
+    else if (!strncmp(args[i], "-dR3", 4)) {
       scc_optim = false;
     }
-    else if (!strncmp(argv[pn_index], "-R3f", 4)) {
+    else if (!strncmp(args[i], "-R3f", 4)) {
       scc_optim = true;
       scc_optim_full = true;
     }
-    else if (!strncmp(argv[pn_index], "-F", 2)) {
-      std::ifstream fin(argv[pn_index]+2);
-      if (!fin) {
-          std::cerr << "Cannot open " << argv[pn_index]+2 << std::endl;
-          exit(2);
-      }
-      if (!std::getline(fin, ltl_string, '\0')) {
-          std::cerr << "Cannot read " << argv[pn_index]+2 << std::endl;
-          exit(2);
-      }
-    }
-    else if (!strcmp(argv[pn_index], "-g")) {
+//     else if (!strncmp(args[i], "-ltl", 4)) {
+//       std::ifstream fin(args[i]+2);
+//       if (!fin) {
+//           std::cerr << "Cannot open " << args[i]+2 << std::endl;
+//           exit(2);
+//       }
+//       if (!std::getline(fin, ltl_string, '\0')) {
+//           std::cerr << "Cannot read " << args[i]+2 << std::endl;
+//           exit(2);
+//       }
+//     }
+    else if (!strcmp(args[i], "-g")) {
       print_rg = true;
     }
-    else if (!strcmp(argv[pn_index], "-l")) {
+    else if (!strcmp(args[i], "-l")) {
       fair_loop_approx = true;
     }
-    else if (!strcmp(argv[pn_index], "-p")) {
+    else if (!strcmp(args[i], "-p")) {
       print_pn = true;
     }
-    else if (!strcmp(argv[pn_index], "-SSOG")) {
+    else if (!strcmp(args[i], "-SSOG")) {
       sogtype = PLAIN_SOG;
     }
-    else if (!strcmp(argv[pn_index], "-SSLAP")) {
+    else if (!strcmp(args[i], "-SSLAP")) {
       sogtype = SLAP_NOFS;
     }
-    else if (!strcmp(argv[pn_index], "-SSLAP-FSA")) {
+    else if (!strcmp(args[i], "-SSLAP-FSA")) {
       sogtype = SLAP_FSA;
     }
-    else if (!strcmp(argv[pn_index], "-SSLAP-FST")) {
+    else if (!strcmp(args[i], "-SSLAP-FST")) {
       sogtype = SLAP_FST;
     }
-    else if (!strcmp(argv[pn_index], "-SDSOG")) {
-      sogtype = DSOG;
+    else if (!strcmp(args[i], "-SSOP")) {
+      sogtype = SOP;
     }
-    else if (!strcmp(argv[pn_index], "-SFSLTL")) {
+    else if (!strcmp(args[i], "-SFSLTL")) {
       sogtype = FSLTL;
     }
-    else if (!strcmp(argv[pn_index], "-x")) {
+    else if (!strcmp(args[i], "-x")) {
       fm_exprop_opt = true;
     }
-    else if (!strcmp(argv[pn_index], "-y")) {
+    else if (!strcmp(args[i], "-y")) {
       fm_symb_merge_opt = false;
     }
     else {
-      if (pn_index != argc - 1) {
-	std::cerr << "Unrecognized argument :" << argv[pn_index] << std::endl;
-	syntax(argv[0]);
-      }
-      break;
+      argsleft.push_back(args[i]);
     }
   }
+  args = argsleft;
 
   ITSModel * model;
   if (sogtype == FSLTL) {
@@ -223,17 +237,29 @@ int main(int argc, const char *argv[]) {
     model = new ITSModel();
   }
 
-  if (! isETF) {
-    vLabel nname = RdPELoader::loadModularProd(*model,pathprodff);
-    //  PNet * pnet = ProdLoader::loadProd(pathprodff);
-    //   model.declareType(*pnet);
-    //   modelName += pathprodff ;
-    model->setInstance(nname,"main");
-    model->setInstanceState("init");
-  } else {
-    model->declareETFType(pathprodff);
-    model->setInstance(pathprodff,"main");
-    model->setInstanceState("init");
+    // parse command line args to get the options 
+  if (! handleInputOptions (args, *model) ) {
+    usage();
+    return 1;
+  }
+  // we now should have the model defined.
+  string modelName = model->getInstance()->getType()->getName();
+  
+  bool with_garbage = true;
+  // Setup SDD specific settings
+  if (!handleSDDOptions (args, with_garbage)) {
+    usage();
+    return 1;
+  }
+
+  if (! args.empty()) {
+    std::cerr << "Unrecognized command line arguments :" ;
+    for (size_t i = 0; i < args.size(); ++i) {
+      std::cerr << args[i] << " ";
+    }
+    std::cerr << std::endl;
+    usage();
+    return 1;
   }
 
   if (print_pn)

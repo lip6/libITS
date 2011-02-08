@@ -78,7 +78,7 @@ namespace sogits {
     case SLAP_FSA :
       prod = new slap::slap_tgba(a_, *sogModel_,FSA);
       break;
-    case DSOG :
+    case SOP :
       prod = new dsog::dsog_tgba(a_, *sogModel_);
       break;
     case FSLTL :
