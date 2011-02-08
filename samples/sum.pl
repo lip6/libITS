@@ -5,6 +5,7 @@ our $opt_f;
 getopt('f');  # Filter.
 
 my @sum;
+my @avg;
 my @max;
 my @min;
 my $count = 0;
@@ -56,13 +57,14 @@ while (<>)
 
 for ($i = 0; $i <= $#sum; ++$i)
 {
-    $sum[$i] /= $count;
-    $sum[$i] = int($sum[$i] * 100) / 100;
+    $avg[$i] = $sum[$i] / $count;
+    $avg[$i] = int($avg[$i] * 100) / 100;
 }
 
 
 print "Failed : $fail/$count\n";
 print "\t@{[join(', ',@head)]}";
-print "MOY:\t@{[join(', ',@sum)]}\n";
+print "TOT:\t@{[join(', ',@sum)]}\n";
+print "AVG:\t@{[join(', ',@avg)]}\n";
 print "MIN:\t@{[join(', ',@min)]}\n";
 print "MAX:\t@{[join(', ',@max)]}\n";
