@@ -1,5 +1,5 @@
 ROMEO using DFS, basic formulae
-../src/mc/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint DFS -ctl  test_models/basic.ctl --backward
+../src/mc/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint DFS -ctl  test_models/basic.ctl 
 
 its-reach command run as :
 
