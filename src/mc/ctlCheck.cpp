@@ -8,152 +8,7 @@ using namespace its;
 
 
 its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const {
-  its::Transition result;
-  ctl_cache_it it = ctl_cache.find(ctlFormula);
-  if ( it == ctl_cache.end() ) {
-    // A miss 
-    // invoke recursive procedures
-    its::Transition leftHom, rightHom;
-    // Handle left child
-    {
-      Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
-      if (leftChild) {
-	leftHom = getHomomorphism (leftChild);
-      }
-    }
-    // Handle right child
-    {
-      Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
-      if (rightChild) {
-	rightHom = getHomomorphism (rightChild);
-      }      
-    }
-    //    std::cerr << "Translating CTL formula : " ;
-    //    Ctlp_FormulaPrint(vis_stderr, ctlFormula);
-    //    std::cerr << std::endl;
-
-    // Now switch on the type of formula
-    switch (Ctlp_FormulaReadType(ctlFormula)) {
-    case Ctlp_ID_c:
-      // basic case
-	result =  getSelectorAP( Ctlp_FormulaReadVariableName(ctlFormula) );
-	if ( ! strcmp (Ctlp_FormulaReadValueName(ctlFormula), "0") )
-	  result = ! result ;
-	break;
-    case Ctlp_TRUE_c:
-      result = Transition::id;
-      break;
-
-    case Ctlp_FALSE_c:
-      result = Transition::null; 
-      break;
-
-    case Ctlp_NOT_c:
-      result = Transition(getReachable() - leftHom (getReachable())) ; 
-      break;
-      
-    case Ctlp_AND_c:
-      result = Transition( ( leftHom (getReachable())) *  (rightHom(getReachable())) );
-      break;
-
-    case Ctlp_EQ_c:
-      assert(false);
-//      result = mdd_xnor(leftMdd, rightMdd); 
-      break;
-
-    case Ctlp_XOR_c:
-      assert(false);
-//      result = mdd_xor(leftMdd, rightMdd); break;
-      break;
-
-    case Ctlp_THEN_c:
-      // A => B    <->  not A or B
-      result = (! leftHom ) + rightHom ;
-      break;
-
-    case Ctlp_OR_c:
-      result = Transition( ( leftHom (getReachable())) +  (rightHom(getReachable())) );
-      //      result = leftHom + rightHom;
-      break;
-
-    case Ctlp_EX_c:
-      
-      result = getPredRel() & leftHom;
-      break;
-
-    case Ctlp_EU_c: 
-      // start from states satisfying g, then add predescessors verifying f in a fixpoint.
-      // f U g <-> ( f & pred + Id )^* & g
-      result = fixpoint ( (leftHom & getPredRel()) + its::Transition::id ) & rightHom ;
-      break;
-    
-    case Ctlp_EG_c: 
-      // start with states satisfying f
-      // then remove states that are not a predescessor of a state in the set
-      // EG f <->  ( f & pred )^* & f
-      result = fixpoint ( leftHom & getPredRel() * its::Transition::id ) & leftHom ;
-      break;
-    
-    case Ctlp_Cmp_c: {
-      // Forward CTL specific operator, curretly unimplemented
-      assert(false);
-//       if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
-// 	result = bdd_is_tautology(leftMdd, 0) ?
-// 	  mdd_one(mddMgr) : mdd_zero(mddMgr);
-//       else
-// 	result = bdd_is_tautology(leftMdd, 0) ?
-// 	  mdd_zero(mddMgr) : mdd_one(mddMgr);
-      break;
-    }
-    case Ctlp_Init_c:
-      // cast to constant homomorphism
-      result = GShom(getInitialState()) ;
-      break;
-    case Ctlp_FwdU_c:
-      /** From Vis source documentation :
-       *							    t
-       ** E[p U q]      = lfp Z[q V (p ^ EX(Z))]   :   p p ... p q
-       ** FwdUntil(p,q) = lfp Z[p V EY(Z ^ q)]     :		    pq q q ... q
-       */
-      /**
-       * In other words, start from states satisfying p, then add successors satisfying q to fixpoint
-       * FwdUntil(p,q) =  ( q & Next  + Id)^* & p
-       */
-      // test for trivial reachability case
-      if (Ctlp_FormulaReadLeftChild(ctlFormula) &&
-	  Ctlp_FormulaReadType(Ctlp_FormulaReadLeftChild(ctlFormula)) ==
-	  Ctlp_Init_c &&
-	  Ctlp_FormulaReadRightChild(ctlFormula) &&
-	  Ctlp_FormulaReadType(Ctlp_FormulaReadRightChild(ctlFormula)) ==
-	  Ctlp_TRUE_c ) {
-	// cast to constant hom
-	result = GShom(getReachable()) ;
-	break;
-      }
-      // the real case
-      result = fixpoint ( (rightHom & getNextRel()) + its::Transition::id ) & leftHom ;
-      break;
-    case Ctlp_FwdG_c:
-      // states reachable by an infinite path of f
-      result = fixpoint ( leftHom & getNextRel() ) ; 
-      break;
-    case Ctlp_EY_c:
-      // exists yesterday : states that have a predescessor that verifies f
-      // take states verifying f, then compute successors
-      // EY f  <->  Next & f (reach)
-      result = getNextRel() & leftHom ;
-      break;
-      
-    default: 
-      fail("Encountered unknown type of CTL formula\n");
-    }
-
-    // std::cerr << "Obtained Homomorphism : " << result << std::endl;
-    
-  } else {
-    result = it->second;
-  }  
-  return result;
+  return Transition::id;
 }
 
 
@@ -186,7 +41,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
     switch (Ctlp_FormulaReadType(ctlFormula)) {
     case Ctlp_ID_c:
       {
-	// basic case
+	// basic case : reachable states verifying atomic proposition 
 	Transition sel =  getSelectorAP( Ctlp_FormulaReadVariableName(ctlFormula) );
 	if ( ! strcmp (Ctlp_FormulaReadValueName(ctlFormula), "0") )
 	  sel = ! sel;
@@ -194,63 +49,72 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	break;
       }
     case Ctlp_TRUE_c:
-      result = getReachable();
+      // TODO : Assign to result full state space
+      // result = ??
       break;
 
     case Ctlp_FALSE_c:
-      result = State::null; 
+      // TODO : Empty set of states
+      // result = ??
       break;
 
     case Ctlp_NOT_c:
-      result = getReachable() - leftStates ; 
+      // TODO : Use set difference
+      // result = ??
       break;
       
     case Ctlp_AND_c:
-      result = leftStates *  rightStates;
+      // TODO : use intersection 
+      // result = ??
       break;
 
     case Ctlp_EQ_c:
       assert(false);
-//      result = mdd_xnor(leftMdd, rightMdd); 
       break;
 
     case Ctlp_XOR_c:
       assert(false);
-//      result = mdd_xor(leftMdd, rightMdd); break;
       break;
 
     case Ctlp_THEN_c:
       // A => B    <->  not A or B
-      result = (getReachable() - leftStates) + rightStates ;
+      // Hence use union and set difference
+      // result = ??
       break;
 
     case Ctlp_OR_c:
-      result = leftStates  +  rightStates ;
-
+      // union of children formulae (i.e. leftStates and rightStates)
+      // result = ??
       break;
 
     case Ctlp_EX_c:
-      
-      result = getPredRel() (leftStates);
+      // Use predecessor relation see getPredRel and left child : leftStates
+      // result = ??
       break;
 
     case Ctlp_EU_c: 
       {
       // start from states satisfying g, then add predescessors verifying f in a fixpoint.
       // f U g <-> ( f & pred + Id )^* & g
-      result = fixpoint ( (leftStates * getPredRel()) + its::Transition::id )  (rightStates) ;
+	// NB : f = leftStates, g = rightStates
+      // result = ??
       break;
       }
     case Ctlp_EG_c: 
       // start with states satisfying f
       // then remove states that are not a predescessor of a state in the set
       // EG f <->  ( f & pred )^* & f      
-      result = fixpoint (  
-			   ( getPredRel()   
-			     + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
-			     ) * its::Transition::id ) (leftStates) ; 
+      // NB : f =leftStates
+      // result = ??
       break;
 			   
+
+      /*********************************************************************************************************/
+
+      /** The rest is specific to forward model checking */
+      /*********************************************************************************************************/
+
+
     case Ctlp_Cmp_c: {
       // Forward CTL specific : compare a formula to false or true
       // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
