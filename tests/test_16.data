@@ -1,5 +1,5 @@
 CAMI input, with JSON, advanced formulae
-../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/election2.ctl 
+../src/mc/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/election2.ctl --backward
 
 
 its-reach command run as :

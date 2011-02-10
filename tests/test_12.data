@@ -1,5 +1,5 @@
 COLOANE format for ITS (scalar depth2), basic formulae
-cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ssD2 5 -ctl  ./basic.ctl ; cd ..
+cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ssD2 5 -ctl  ./basic.ctl --backward ; cd ..
 
 its-reach command run as :
 

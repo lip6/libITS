@@ -1,5 +1,5 @@
 PROD input, --no-garbage, basic formulae
-../src/mc/its-ctl -i test_models/fms10.net --quiet -t PROD --no-garbage -ctl  test_models/basic.ctl 
+../src/mc/its-ctl -i test_models/fms10.net --quiet -t PROD --no-garbage -ctl  test_models/basic.ctl --backward
 
 its-reach command run as :
 
