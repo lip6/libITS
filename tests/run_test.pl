@@ -18,7 +18,7 @@ while (my $line = <IN>) {
     chomp $line;
     @nominal = split (/\,/,$line);
   } elsif ($line =~ /^Formula is (\w+) \!/ )  {
-    my $verdict = ($1 == TRUE);
+    my $verdict = $1;
     push (@refverdicts,$verdict);
   }
 }
@@ -41,7 +41,7 @@ while (my $line = <IN>) {
     chomp $line;
     @tested = split (/\,/,$line);
   } elsif ($line =~ /^Formula is (\w+) \!/ )  {
-    my $verdict = ($1 == TRUE);
+    my $verdict = $1;
     push (@verdicts,$verdict);
   }
 }
@@ -55,9 +55,8 @@ if ( @nominal[1] != @tested[1] ) {
 }
 
 foreach my $i  (0..$#refverdicts ) {
-  if ( @refverdicts[$i] != @verdicts[$i] ) {
+  if ( @refverdicts[$i] !~  /@verdicts[$i]/ ) {
      print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='formula $i : @refverdicts[$i]' actual='@verdict[$i]'] \n";
-     last;
   } else {
     print "Test of formula $i successful.\n";
   }
