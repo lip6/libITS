@@ -1,33 +1,33 @@
 COLOANE format for ITS (scalar depth2), basic formulae
 cd test_models; ../../src/mc/its-ctl -i votersMain.xml -t ITSXML --quiet -ssD2 5 -ctl  ./basic.ctl ; cd ..
 
-its-reach command run as :
+its-ctl command run as :
 
 ../../src/mc/its-ctl  -i  votersMain.xml  -t  ITSXML  --quiet  -ssD2  5  -ctl  ./basic.ctl  
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
 Converting to forward existential form...Done !
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,1.07151e+301,0.4,2172,417,3,634,6,217,10,6,5,0
+reachable,1.07151e+301,0.42,2180,417,3,634,6,217,10,6,5,0
 
 
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,0.41,2272,1,0,634,6,419,10,8,5,621
+(forward)formula 0,1,0.42,2280,1,0,634,6,419,10,8,5,621
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,0.41,2272,1,0,634,6,419,10,8,5,621
+(forward)formula 1,0,0.42,2280,1,0,634,6,419,10,8,5,621
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,0.41,2272,1,0,634,6,419,10,8,5,621
+(forward)formula 2,0,0.42,2280,1,0,634,6,419,10,8,5,621
 Formula is FALSE !
 
  *************************************** 
@@ -35,7 +35,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is exact ! Faster fixpoint algorithm enabled. 
-(forward)formula 3,0,0.83,4056,1,0,1453,6,1234,220,9,6,41285
+(forward)formula 3,0,0.85,4064,1,0,1453,6,1234,220,9,6,41285
 Formula is FALSE !
 
  *************************************** 
