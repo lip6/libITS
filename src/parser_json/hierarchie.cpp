@@ -12,7 +12,7 @@ EltType PName::getType() {
  * Print element
  * \param cpt : Number of space to print
  */
-void PName::print(int cpt) {
+void PName::print(int cpt) const  {
   for (int i = 0; i < cpt; ++i)
     std::cout << " ";
   std::cout << place << "[" << this->level << "]" << std::endl;
@@ -60,9 +60,9 @@ void Hierarchie::addHierarchie(Hierarchie& h) {
  * Print the current element
  * \param cpt : Number of space
  */
-void Hierarchie::print(int cpt) {
+void Hierarchie::print(int cpt) const {
   ++cpt;
-  for (std::vector<ItfElement *>::iterator iter = elts.begin(); iter != elts.end(); ++iter) {
+  for (std::vector<ItfElement *>::const_iterator iter = elts.begin(); iter != elts.end(); ++iter) {
     (*iter)->print(cpt);
   }
 }

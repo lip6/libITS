@@ -38,7 +38,7 @@ class ItfElement
      * Afficher un élément
      * \param cpt : Nombre d'espace à afficher
      */
-    virtual void print(int cpt) = 0;
+    virtual void print(int cpt) const = 0;
 };
 
 /**
@@ -65,7 +65,7 @@ class PName : public ItfElement
      * Print element
      * \param cpt : Number of space to print
      */
-    virtual void print(int cpt);
+    virtual void print(int cpt) const ;
 };
 
 /**
@@ -121,7 +121,7 @@ class Hierarchie : public ItfElement
      * Print the current element
      * \param cpt : Number of space
      */
-    virtual void print(int cpt);
+    virtual void print(int cpt) const;
 
     /**
      * \return Return the type of the class
