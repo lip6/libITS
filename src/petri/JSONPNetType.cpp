@@ -100,18 +100,34 @@ namespace its {
 	    // pure local
 	    // copy the label if PUBLIC transition
 	    if (tvis == PUBLIC) {
-	      comp.addSynchronization( tname, tlabel);
-	      // keep the transition alive, it needs to be further exported
+	      if (!comp.addSynchronization( tname, tlabel))
+	      {
+		std::cout << "Error detected in JSON transformation of " <<std::endl;
+		hier->print(0);
+		std::cout << "when handling  " << net << std::endl;
+	      }
+              // keep the transition alive, it needs to be further exported
 	      ++it;
 	    } else {
-	      comp.addSynchronization( tname, "");
+	      if (!comp.addSynchronization( tname, ""))
+	      {
+		std::cout << "Error detected in JSON transformation of " <<std::endl;
+		hier->print(0);
+		std::cout << "when handling  " << net << std::endl;
+	      }
 	      // remove from todo list
 	      it = trans.erase(it);
 	    }
 	    
 	  } else if ( locality == 1 ) {
 	    // touches the component, not yet fully resolved
-	    comp.addSynchronization (tname, tname);
+	    if (!comp.addSynchronization (tname, tname)) 
+	      {
+		std::cout << "Error detected in JSON transformation of " <<std::endl;
+		hier->print(0);
+		std::cout << "when handling  " << net << std::endl;
+	      }
+
 	    // increment it
 	    ++it;
 	  } else {
@@ -141,11 +157,20 @@ namespace its {
 	  }
 	  if (targets.size() == 1 && locality == 2) {
 	    // was pure local to a subcomponent : use the label
-	    comp.addSyncPart (tname, *targets.begin(), tlabel);
+	    if (!comp.addSyncPart (tname, *targets.begin(), tlabel))  {
+		std::cout << "Error detected in JSON transformation of " <<std::endl;
+		hier->print(0);
+		std::cout << "when handling  " << net << std::endl;
+	      }
+
 	  } else {
 	    // add sync parts
 	    for (targets_it tit = targets.begin() ; tit != targets.end() ; ++tit ) {
-	      comp.addSyncPart (tname, *tit, tname);
+	      if (! comp.addSyncPart (tname, *tit, tname)) {
+		std::cout << "Error detected in JSON transformation of " <<std::endl;
+		hier->print(0);
+		std::cout << "when handling  " << net << std::endl;
+	      }
 	    }
 	  }
 	  
@@ -233,10 +258,13 @@ namespace its {
       JSONRepresentationBuilder jrb;
        // Todo list of transitions
       std::vector<PTransition> trans ;
-      for (PNet::trans_it tit= net_.transitions_begin() ; tit != net_.transitions_end() ; ++tit)
+      std::cerr << "transition : "<< std::endl;
+      for (PNet::trans_it tit= net_.transitions_begin() ; tit != net_.transitions_end() ; ++tit) {
 	trans.push_back(*tit);
+	std::cerr << "transition : "<< *tit << std::endl;
+      }
 
-      //      std::cerr << "trans size : " << trans.size() << std::endl;
+           std::cerr << "trans size : " << trans.size() << std::endl;
 
       vLabel name = jrb.buildComposite(hier_,net_,trans,model_);
       concrete_ =  model_.findType(name);
