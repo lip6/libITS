@@ -97,10 +97,12 @@ vLabel buildComposite (Hierarchie * hier, const RdPE & R , std::vector<Transitio
       comp.addInstance ( inst,  inst , model);
       comp.updateStateDef ( "init", inst, "init");
 
+      // Atomic propositions exported
       for (places_it subit = subp.begin() ; subit != subp.end() ; ++subit ) {
 	vLabel pname = R.places[*subit].name ;
-	comp.addSynchronization (pname, pname);
-	comp.addSyncPart (pname, inst, pname);
+	comp.exposeVarIn (pname,inst);
+// 	comp.addSynchronization (pname, pname);
+// 	comp.addSyncPart (pname, inst, pname);
       }
       
     }
