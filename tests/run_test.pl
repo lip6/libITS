@@ -55,7 +55,7 @@ if ( @nominal[1] != @tested[1] ) {
 }
 
 foreach my $i  (0..$#refverdicts ) {
-  if ( @refverdicts[$i] neq @verdicts[$i] ) {
+  if ( @refverdicts[$i] ne @verdicts[$i] ) {
      print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='formula $i : @refverdicts[$i]' actual='@verdict[$i]'] \n";
   } else {
     print "Test of formula $i successful.\n";
