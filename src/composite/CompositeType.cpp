@@ -161,6 +161,9 @@ Transition CompositeType::getPredicate (Label predicate) const {
     if ( *cp == '.' ) {
       remain = cp+1;
       break;
+    } else if (*cp == '=' || *cp == '<' || *cp == '>' || *cp== '!') {
+      remain = cp;
+      break;
     } else {
       var += *cp;
     }
@@ -168,9 +171,22 @@ Transition CompositeType::getPredicate (Label predicate) const {
 
   int instindex =  getVarOrder()->getIndex ( var );
   if (instindex == -1) {
-    std::cerr << "Error variable " + var + " cannot be resolved as an instance name when trying to parse predicate : "  + predicate << std::endl;
-    std::cerr << "Failing with error code 2"<< std::endl;
-    exit (2);
+
+    // Try to recuperate by interpreting the variable as a nested exposed variable
+    vLabel subcomp = comp_.exposedIn (var);
+    if ( subcomp != "") {
+      // restructure input data
+      remain = var + remain;
+      // the varindex 
+      instindex =  getVarOrder()->getIndex (subcomp);
+      // the subcomp is the var now
+      var = subcomp;
+    } else {
+
+      std::cerr << "Error variable " + var + " cannot be resolved as an instance name or as an exposed sub variable when trying to parse predicate : "  + predicate << std::endl;
+      std::cerr << "Failing with error code 2"<< std::endl;
+      exit (2);
+    }
   }
 //   std::cerr << "Composite delegating predicate " << remain << " on instance :"<<var << std::endl;
  
