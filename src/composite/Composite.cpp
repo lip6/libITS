@@ -102,7 +102,7 @@ bool Composite::updateStateDef (Label state, Label subnet, Label substate) {
 }
 
 std::ostream & Composite::print (std::ostream & os) const {
-	  os << "CompositeNet " << getName() << " {\n\n";
+	  os << "Composite " << getName() << " {\n\n";
 
 	  os << "    // subnets\n" ;
 	  for (comps_it it = comps_.begin();
@@ -110,6 +110,14 @@ std::ostream & Composite::print (std::ostream & os) const {
 	       ++it) {
 	    os << "    subnet " << it->getType()->getName() << " " << it->getName() << " ;\n";
 	  }
+
+	  os << "    // nested exposed variables \n";
+	  for (exposedvars_it it = exposed_.begin();
+	       it != exposed_.end();
+	       ++it) {
+	    os << "    // " << it->first << " in " << it->second << " \n";
+	  }
+	  os << "\n";
 
 	  os << "    // states definition\n" ;
 	  for (cstates_it it=cstates_.begin();

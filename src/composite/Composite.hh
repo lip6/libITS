@@ -27,7 +27,11 @@ public :
   // a private type to store a set of named composite states
   typedef std::map<vLabel,CState> cstates_t;
   typedef cstates_t::const_iterator cstates_it;
-  
+  // used to expose certain variables of nested components, making the structure "transparent"
+  // Maps names of variables in subcomponents to the name of the subcomponent that contains it
+  // Note that two nested components cannot expose the same variable (this is not labeling of states)
+  typedef std::map<vLabel,vLabel> exposedvars_t;
+  typedef exposedvars_t::const_iterator exposedvars_it;
 private :
   // instances contained 
   comps_t comps_;
@@ -35,6 +39,8 @@ private :
   syncs_t syncs_;
   // states
   cstates_t cstates_;
+  // exposed vars
+  exposedvars_t exposed_;
 public :
   cstates_it cstates_begin() const { return cstates_.begin() ; }
   cstates_it cstates_end() const { return cstates_.end() ; }
@@ -46,6 +52,20 @@ public :
   comps_it comps_begin() const { return comps_.begin() ; }
   comps_it comps_end() const { return comps_.end() ; }
   comps_it comps_find (Label iname) const { return findName(iname,comps_); }
+
+  /** Return the name of the subcomponent that exposes this variable or "" is variable is unknown. */
+  vLabel exposedIn (Label varname) const {
+    exposedvars_it it = exposed_.find(varname);
+    if (it == exposed_.end() ) {
+      return "";
+    } else {
+      return it->second;
+    }
+  }
+  
+  void exposeVarIn (Label varname, Label compname) {
+    exposed_[varname] = compname;
+  }
 
 
   Composite (Label name) : NamedElement(name) {};
