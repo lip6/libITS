@@ -30,7 +30,7 @@ class CTLChecker {
 public :
   CTLChecker (const its::ITSModel & model) : model(model),predRel(its::Transition::null) {}
 
-  its::Transition getSelectorAP (Label apname) const;
+  its::Transition getSelectorAP (Label apname, Label value) const;
 
   its::Transition getHomomorphism (Ctlp_Formula_t *formula) const;
 
