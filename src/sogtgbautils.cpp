@@ -166,6 +166,9 @@ namespace sogits {
 
 
     sogModel_ = new sogIts (*model_);
+    if (isPlaceSyntax) {
+      sogModel_->setPlaceSyntax(isPlaceSyntax);
+    }
     systgba_ = new sog_tgba(*sogModel_, &dict_);
 
     if (sap_) {

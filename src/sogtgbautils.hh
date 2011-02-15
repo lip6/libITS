@@ -93,6 +93,7 @@ namespace sogits {
     bool scc_optim_;
     bool scc_optim_full_;
     bool print_formula_tgba_;
+    bool isPlaceSyntax;
 
     spot::timer_map timers;
 
@@ -116,7 +117,8 @@ namespace sogits {
 		    display_(false),
 		    scc_optim_(true),
 		    scc_optim_full_(false),
-                    print_formula_tgba_(false) {}
+                    print_formula_tgba_(false),
+		    isPlaceSyntax(false) {}
 
     ~LTLChecker();
 
@@ -127,6 +129,11 @@ namespace sogits {
     void setModel (its::ITSModel * model) {
       model_ = model;
     }
+
+    // True if for ascending compatibility issues, atomic properties should be reinterpreted
+    // as if they were just the names of places, instead of comparisons.
+    // e.g. reinterpret AP  "Idle0" as "Idle0 = 1"
+    void setPlaceSyntax (bool val) { isPlaceSyntax = val; }
 
     void setOptions (const std::string& echeck_algo,
 		     bool ce_expected,

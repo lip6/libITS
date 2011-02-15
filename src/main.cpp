@@ -68,6 +68,8 @@ void usage() {
 	    << "                  The FST variants include a test for switching to fully symbolic emptiness check in terminal states.\n"
 	    << "                  The FSA variants include a test for switching to fully symbolic emptiness check in any potentially accepting automaton state."
             << std::endl
+            << "  --place-syntax           suppose that atomic properties are just names of variables: \"Idle\" will be interpreted as \"Idle=1\""
+            << std::endl
             << "  -C              display the number of states and edges of the SOG"
             << std::endl
             << "  -c              check the formula" << std::endl
@@ -132,6 +134,7 @@ int main(int argc, const char *argv[]) {
 
   sog_product_type sogtype = SLAP_FST;
 
+  bool isPlaceSyntax = false;
     
   // echo options of run
   std::cout << "its-ltl command run as :\n" << std::endl;
@@ -180,6 +183,10 @@ int main(int argc, const char *argv[]) {
       scc_optim = true;
       scc_optim_full = true;
     }
+    else if (!strcmp(args[i], "--place-syntax")) {
+      isPlaceSyntax = true;
+    }
+
 //     else if (!strncmp(args[i], "-ltl", 4)) {
 //       std::ifstream fin(args[i]+2);
 //       if (!fin) {
@@ -332,6 +339,9 @@ std::string* check_at_prop(const petri_net* p,
 		       fm_exprop_opt, fm_symb_merge_opt,
 		       post_branching, fair_loop_approx, "STATS", print_rg,
 		       scc_optim, scc_optim_full, print_formula_tgba);
+    if (isPlaceSyntax) {
+      checker.setPlaceSyntax(true);
+    }
     checker.model_check(sogtype);
   }
 

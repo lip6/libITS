@@ -34,13 +34,15 @@ its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
     Label prop = apOrder_.getLabel(bvar);
     
     Transition hcond ;
-    int len =type->getName().size();
-    if (type->getName().substr(len-3,len-1)  == "etf" ) {
+//    int len =type->getName().size();
+    if (! isPlaceSyntax ) {
       hcond = type->getPredicate(prop);
     } else {
-      labels_t tau;
-      tau.push_back(prop);
-      hcond = type->getSuccs(tau);
+      hcond = type->getPredicate(prop+"=1");
+      // Used to be (before introduction of getPredicate in ITSModel)
+//       labels_t tau;
+//       tau.push_back(prop);
+//       hcond = type->getSuccs(tau);
     }
 
     trace << "aps = " << aps  << std::endl;
@@ -150,6 +152,8 @@ State  sogIts::succSatisfying ( its::State init, bdd cond) const {
 
 // Return the set of divergent states in a set, using  (hcond & next) as transition relation
 State sogIts::getDivergent (State init, bdd cond) const {
-  return fixpoint ( (getSelector(cond) & model.getNextRel()) * Transition::id , true ) (init);
+  // build separately from application to avoid gc...
+  Transition fix = fixpoint ( (getSelector(cond) & model.getNextRel()) * Transition::id , true );
+  return fix (init);
 }
 

@@ -22,9 +22,17 @@ class sogIts {
    // Defines a mapping from atomic property name to bdd variable index
   its::VarOrder apOrder_;
 
+  // True if for ascending compatibility issues, atomic properties should be reinterpreted
+  // as if they were just the names of places, instead of comparisons.
+  // e.g. reinterpret AP  "Idle0" as "Idle0 = 1"
+  bool isPlaceSyntax;
 public :
-  sogIts (const its::ITSModel & m) : model(m) {};
+  sogIts (const its::ITSModel & m) : model(m),isPlaceSyntax(false) {};
 
+  // True if for ascending compatibility issues, atomic properties should be reinterpreted
+  // as if they were just the names of places, instead of comparisons.
+  // e.g. reinterpret AP  "Idle0" as "Idle0 = 1"
+  void setPlaceSyntax (bool val) { isPlaceSyntax = val; }
   // Atomic properties handling primitives
   // return a selector corresponding to the boolean formula over AP encoded as a bdd.
   its::Transition getSelector(bdd aps) const;
