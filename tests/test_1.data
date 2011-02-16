@@ -8,26 +8,26 @@ No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
 Converting to forward existential form...Done !
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,2.50141e+09,0.03,3044,581,12,5988,15,73,3305,8,77,0
+reachable,2.50141e+09,0.04,3036,581,12,5988,15,73,3305,8,77,0
 
 
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,0.04,3096,1,0,5988,15,104,3305,17,77,128
+(forward)formula 0,1,0.04,3092,1,0,5988,15,104,3305,17,77,128
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,0.04,3096,1,0,5988,15,104,3305,17,77,128
+(forward)formula 1,0,0.04,3092,1,0,5988,15,104,3305,17,77,128
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,0.04,3096,1,0,5988,15,104,3305,17,77,128
+(forward)formula 2,0,0.04,3092,1,0,5988,15,104,3305,17,77,128
 Formula is FALSE !
 
  *************************************** 
@@ -35,7 +35,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is exact ! Faster fixpoint algorithm enabled. 
-(forward)formula 3,1,0.06,3096,1,0,5988,289,188,3305,23,935,9779
+(forward)formula 3,1,0.07,3092,1,0,5988,301,188,3305,23,967,9779
 Formula is TRUE !
 
  *************************************** 

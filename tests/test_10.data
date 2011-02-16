@@ -9,26 +9,26 @@ No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
 Converting to forward existential form...Done !
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,28895,1.52,44776,2693,10,133240,66,304,78093,42,1288,0
+reachable,28895,1.53,44776,2693,10,133240,66,304,78069,42,1283,0
 
 
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,1.53,44832,1,0,133240,66,522,78093,48,1288,1500
+(forward)formula 0,1,1.53,44836,1,0,133240,66,522,78069,48,1283,1500
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,1.53,44832,1,0,133240,66,522,78093,48,1288,1500
+(forward)formula 1,0,1.53,44836,1,0,133240,66,522,78069,48,1283,1500
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,1.53,44832,1,0,133240,66,522,78093,48,1288,1500
+(forward)formula 2,0,1.54,44836,1,0,133240,66,522,78069,48,1283,1500
 Formula is FALSE !
 
  *************************************** 
@@ -36,7 +36,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. 
-(forward)formula 3,1,1.72,44840,1,0,133240,66,1262,78093,84,1288,124397
+(forward)formula 3,1,1.73,44840,1,0,133240,66,1262,78069,84,1283,124397
 Formula is TRUE !
 
  *************************************** 
