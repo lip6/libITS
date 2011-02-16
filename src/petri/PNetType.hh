@@ -157,7 +157,7 @@ public :
       switch (mode) {
 	// parsing variable
       case 0:
-	if (*cp == '!' || *cp == '>' || *cp == '=' || *cp == '>') {
+	if (*cp == '!' || *cp == '>' || *cp == '=' || *cp == '<') {
 	  mode = 1;
 	  comp += *cp;
 	} else {
@@ -165,7 +165,7 @@ public :
 	}
 	break;
       case 1:
-	if (*cp == '!' || *cp == '>' || *cp == '=' || *cp == '>') {
+	if (*cp == '!' || *cp == '>' || *cp == '=' || *cp == '<') {
 	  comp += *cp;
 	} else {
 	  val += *cp;
@@ -208,8 +208,8 @@ public :
       exit (2);      
     }
 
-//     std::cerr << "Petri net parsed predicate var:" << var << " comp:" << comp << " value:"<<val <<std::endl;
-//     std::cerr << "Translates to hom :" << Semantics::getHom ( foo, index, value) << std::endl;
+//      std::cerr << "Petri net parsed predicate var:" << var << " comp:" << comp << " value:"<<val <<std::endl;
+//      std::cerr << "Translates to hom :" << Semantics::getHom ( foo, index, value) << std::endl;
 
     return Semantics::encapsulate( Semantics::getHom ( foo, index, value) );
   }
