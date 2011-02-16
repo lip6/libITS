@@ -174,9 +174,12 @@ vLabel RdPELoader::loadModularRdPE (its::ITSModel & model, RdPE & R) {
   for ( mod_it it = modules.begin() ; it != modules.end() ; ++it ){
     vLabel iname = instName(it->first);
     for (PNet::places_it pit = it->second.places_begin() ; pit != it->second.places_end() ; ++pit ) {
-      vLabel tname = pit->getName() ;
-      c.addSynchronization ( tname, tname );
-      c.addSyncPart (tname, iname , tname);
+      c.exposeVarIn (pit->getName(),iname);
+
+      // Used to be, before getPredicate API
+//       vLabel tname = pit->getName() ;
+//       c.addSynchronization ( tname, tname );
+//       c.addSyncPart (tname, iname , tname);
     }
   }
 
