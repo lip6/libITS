@@ -7,10 +7,13 @@ namespace its {
 bool PNet::addPlace (Label pname) {
   if ( findName(pname, places_)  == places_.end() ) {
     places_.push_back(Place(pname));
+
+    // No longer needed, since we use the getPredicate API now.
     // Add a "transition" to test for atomic property : place is marked
-    vLabel tname = pname;
-    addTransition(tname, tname, PUBLIC);
-    addArc(ArcVal(pname,1),tname,TEST);
+//     vLabel tname = pname;
+//     addTransition(tname, tname, PUBLIC);
+//     addArc(ArcVal(pname,1),tname,TEST);
+
     return true;
   }
   return false;
