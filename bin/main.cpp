@@ -73,6 +73,8 @@ void exhibitModel (ITSModel & model) {
   // Print some stats : memory size, number of states ....
   Statistic S = Statistic(reachable, modelName , CSV); // can also use LATEX instead of CSV
   S.print_table(std::cout);
+  cout.precision(40);
+  std::cout << " Total reachable state count : " << S.getNbStates() << std::endl;
   std::cout << std::endl;
   // Export the SDD of final states to dot : generates files final.dot and d3final.dot
   if (dodotexport)
