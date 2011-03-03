@@ -21,14 +21,15 @@ extern char *mkdtemp(char *);
 #define bswap_16 OSSwapInt16
 #define bswap_32 OSSwapInt32
 #define bswap_64 OSSwapInt64
-#elif defined(__linux__)
-#include <byteswap.h>
 #elif defined(__NetBSD__)
 #define bswap_16 bswap16
 #define bswap_32 bswap32
 #define bswap_64 bswap64
 #else
-#error "Don't know how to deal with endianness on this platform."
+// Assume anything else is a variant of linux or carries byteswap.
+// #elif defined(__linux__)
+#include <byteswap.h>
+// #error "Don't know how to deal with endianness on this platform."
 #endif
 
 #endif
