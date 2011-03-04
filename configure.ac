@@ -67,6 +67,9 @@ AX_CHECK_BOOST([1.31], [103100])
 # AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
 
 
+AC_CHECK_TOOL([STRIP],[strip])
+
+
 # automake :
 # build these Makefile using the Makefile.in files in each directory
 AC_CONFIG_FILES([
