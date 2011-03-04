@@ -45,6 +45,8 @@ AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
 # define HAS_STDC_HEADERS
 AC_HEADER_STDC
 
+AC_CHECK_TOOL([STRIP],[strip])
+
 # automake :
 # build these Makefile using the Makefile.in files in each directory
 AC_CONFIG_FILES([
