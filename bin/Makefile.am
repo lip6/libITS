@@ -21,11 +21,10 @@ endif
 AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBITS_CPP) $(BOOST_CPPFLAGS) $(HAVE_BOOST_FLAG) -g -O2 -Wall 
 AM_CXXFLAGS = -g -O2 -Wall
 
-LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  
+LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  -lexpat
 
 
 its_reach_SOURCES = main.cpp 
 
 its_reach_LDADD = $(LDADDFLAGS)  
-its_reach_LDFLAGS = -Bstatic -lexpat
 
