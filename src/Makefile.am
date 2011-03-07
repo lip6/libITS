@@ -30,7 +30,7 @@ endif
 AM_CPPFLAGS = $(LIBSPOT_CPP) $(LIBITS_CPP) $(LIBDDD_CPP)  -g -O2 -Wall $(BOOST_CPPFLAGS)
 AM_CXXFLAGS = -g -O2 -Wall
 
-LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH)
+LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH) -lexpat
 
 MYHEADER =apiterator.hh \
 	dsog.hh \
@@ -58,8 +58,8 @@ MYSRC = apiterator.cpp \
 
 its_ltl_SOURCES = $(MYSRC) $(MYHEADER)
 
-its_ltl_LDADD = $(LDADDFLAGS)
-its_ltl_LDFLAGS = -Bstatic -lexpat
+its_ltl_LDADD = $(LDADDFLAGS) 
+
 
 #testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
 #testite_LDADD =  $(LDADDFLAGS)
