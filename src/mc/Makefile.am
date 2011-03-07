@@ -12,7 +12,7 @@ if WITH_LIBEXPAT_PATH
 LIBEXPAT_CPP=-I$(LIBEXPAT_ROOT)/include
 LIBEXPAT_PATH=$(LIBEXPAT_ROOT)/lib/libexpat.a
 else
-LIBEXPAT_LINK=-Bstatic -lexpat
+LIBEXPAT_LINK=-lexpat
 endif
 
 
@@ -30,8 +30,7 @@ AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(HAVE_BOOST_FLAG) $(LIBI
 libctlits_a_SOURCES = ctlCheck.hh ctlCheck.cpp
 
 its_ctl_SOURCES = test_ctl.cpp
-its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) 
-its_ctl_LDFLAGS = $(LIBEXPAT_LINK) -Bstatic -lm
+its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) -lm
 
 $(top_srcdir)/src/ctlp/libctlp.a :
 	cd ../ctlp ; make ;
