@@ -41,6 +41,17 @@ if test "x${with_libits}" != x; then
 fi
 
 
+# option to indicate libexpat folder
+AC_ARG_WITH([libexpat],
+            [AC_HELP_STRING([--with-libexpat=/root/of/libexpat],
+                            [specify the path of libexpat])])
+
+
+AM_CONDITIONAL([WITH_LIBEXPAT_PATH], [test "x${with_libexpat}" != x])
+if test "x${with_libexpat}" != x; then
+    AC_SUBST([LIBEXPAT_ROOT],[${with_libexpat}])
+fi
+
 
 # programs used to build
 # we make static libs (use ranlib)
