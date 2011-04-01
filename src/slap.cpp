@@ -49,7 +49,7 @@ namespace slap
 
   slap_state::~slap_state()
   {
-    delete left_;
+    left_->destroy();
   }
 
   int
