@@ -47,7 +47,7 @@ namespace dsog
 
   dsog_div_state::~dsog_div_state()
   {
-    delete left_state_;
+    left_state_->destroy();
   }
 
   dsog_div_state::dsog_div_state(const dsog_div_state& c)
