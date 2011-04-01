@@ -112,7 +112,7 @@ namespace dsog
 
   dsog_state::~dsog_state()
   {
-    delete left_;
+    left_->destroy();
   }
 
   int

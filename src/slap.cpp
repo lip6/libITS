@@ -136,7 +136,7 @@ namespace slap
 	if ( (ac & acprime) == acprime)
 	  F |= it->current_condition();
       }
-      delete dest;
+      dest->destroy();
     }
     delete it;
 
@@ -268,7 +268,7 @@ namespace slap
 	  F |= it->current_condition();
 	}
       }
-      delete dest;
+      dest->destroy();
     }
     delete it;
 
