@@ -222,8 +222,11 @@ int main(int argc, const char *argv[]) {
     else if (!strcmp(args[i], "-SSOP")) {
       sogtype = SOP;
     }
-    else if (!strcmp(args[i], "-SFSLTL")) {
-      sogtype = FSLTL;
+    else if (!strcmp(args[i], "-SFSEL")) {
+      sogtype = FS_EL;
+    }
+    else if (!strcmp(args[i], "-SFSOWCTY")) {
+      sogtype = FS_OWCTY;
     }
     else if (!strcmp(args[i], "-x")) {
       fm_exprop_opt = true;
@@ -238,7 +241,7 @@ int main(int argc, const char *argv[]) {
   args = argsleft;
 
   ITSModel * model;
-  if (sogtype == FSLTL) {
+  if (sogtype == FS_OWCTY || sogtype == FS_EL) {
     model = new fsltlModel();
   } else {
     model = new ITSModel();
