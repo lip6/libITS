@@ -64,7 +64,7 @@ void usage() {
 	    << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
-            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLAP,SOP,FSLTL,SLAP-FST,SLAP-FSA} (SLAP-FST by default)\n"
+            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLAP,SOP,FSOWCTY,FSEL,BCZ99,SLAP-FST,SLAP-FSA} (SLAP-FST by default)\n"
 	    << "                  The FST variants include a test for switching to fully symbolic emptiness check in terminal states.\n"
 	    << "                  The FSA variants include a test for switching to fully symbolic emptiness check in any potentially accepting automaton state."
             << std::endl
@@ -209,6 +209,9 @@ int main(int argc, const char *argv[]) {
     }
     else if (!strcmp(args[i], "-SSOG")) {
       sogtype = PLAIN_SOG;
+    }
+    else if (!strcmp(args[i], "-SBCZ99")) {
+      sogtype = BCZ99;
     }
     else if (!strcmp(args[i], "-SSLAP")) {
       sogtype = SLAP_NOFS;
