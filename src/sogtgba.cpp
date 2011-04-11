@@ -26,10 +26,12 @@
 #include "ltlvisit/apcollect.hh"
 #include "ltlenv/defaultenv.hh"
 #include "tgba/bddprint.hh"
+#include "tgba/state.hh"
 
 #include "sogtgba.hh"
 #include "sogsucciter.hh"
 #include "sogstate.hh"
+#include "bczCSD99.hh"
 
 using its::ITSModel;
 
@@ -46,7 +48,7 @@ namespace sogits {
 
 
 sog_tgba::sog_tgba(const sogIts & m,
-		   spot::bdd_dict* dict): model(m),dict(dict) {
+		   spot::bdd_dict* dict, sog_product_type type): model(m),dict(dict), type(type) {
 } //
 
 sog_tgba::~sog_tgba() {
@@ -54,42 +56,56 @@ sog_tgba::~sog_tgba() {
     dict->unregister_all_my_variables(this);
 } //
 
-spot::state* sog_tgba::get_init_state() const {
-  its::State m0 = model.getInitialState() ;
-  assert(m0 != SDD::null);
-  // now determine which AP are true in m0
-  APIterator it = APIteratorFactory::create();
-  for (it.first() ; ! it.done() ; it.next() ) {
-    its::Transition selector = model.getSelector( it.current() );
-    its::State msel = selector(m0);
-    if (msel != SDD::null) {
-      sog_state * init = new sog_state( model, m0, it.current() );
-      trace << "Initial state of tgba :" << *init << "verifies :"<< it.current()<< std::endl;
-      return init;
+
+  spot::state* sog_tgba::create_state (const sogIts & model, const GSDD & m, bdd ap) const {
+    if (type == PLAIN_SOG) {
+      return new sog_state( model, m, ap );
+    } else if (type == BCZ99) {
+      return new bcz_state( model, m, ap );
+    } else {
+      // Definitely a problem here !
+      assert(false);
     }
   }
-
-  if (APIteratorFactory::empty())
-    return new sog_state(model, m0, bddtrue);
-
- // no conjunction of AP is verified by m0 ???
-  assert (false);
-  // for compiler happiness
-  return NULL;
-}
+  spot::state* sog_tgba::get_init_state() const {
+    its::State m0 = model.getInitialState() ;
+    assert(m0 != SDD::null);
+    // now determine which AP are true in m0
+    APIterator it = APIteratorFactory::create();
+    for (it.first() ; ! it.done() ; it.next() ) {
+      its::Transition selector = model.getSelector( it.current() );
+      its::State msel = selector(m0);
+      if (msel != SDD::null) {
+	spot::state * init = create_state(model, m0, it.current());
+	trace << "Initial state of tgba verifies :"<< it.current()<< std::endl;
+	return init;
+      }
+    }
+  
+    
+    if (APIteratorFactory::empty())
+      return create_state(model, m0, bddtrue);
+    
+    // no conjunction of AP is verified by m0 ???
+    assert (false);
+    // for compiler happiness
+    return NULL;
+  }
 
 spot::tgba_succ_iterator* sog_tgba::succ_iter (const spot::state* local_state,
                                                const spot::state*, const spot::tgba*) const {
-  const sog_state* s = dynamic_cast<const sog_state*>(local_state);
-  if (s) {
+  
+  if (const sog_state* s = dynamic_cast<const sog_state*>(local_state)) {
     // build a new succ iter :
     //   agregate is built by saturating :
     return new sog_succ_iterator(model , *s);
-  }
-  else {
-    const sog_div_state* s = dynamic_cast<const sog_div_state*>(local_state);
+  } else if (const sog_div_state* s = dynamic_cast<const sog_div_state*>(local_state)) {
     assert(s);
     return new sog_div_succ_iterator(dict, s->get_condition());
+  } else if (const bcz_state* s = dynamic_cast<const bcz_state*>(local_state)) {
+    return new bcz_succ_iterator(model , *s);
+  } else {
+    assert(false);
   }
 } //
 
@@ -99,31 +115,36 @@ spot::bdd_dict* sog_tgba::get_dict() const {
 
 std::string sog_tgba::format_state(const spot::state* state) const {
 
-
-  const sog_state* s = dynamic_cast<const sog_state*>(state);
-  if (s) {
+  if (const sog_state* s = dynamic_cast<const sog_state*>(state)) {
     std::stringstream  ss;
     ss  << *s ;
     return ss.str();
-  }
-  else {
-    const sog_div_state* s = dynamic_cast<const sog_div_state*>(state);
+  } else if (const sog_div_state* s = dynamic_cast<const sog_div_state*>(state)) {
     assert(s);
     std::ostringstream os;
     spot::bdd_print_formula(os, dict, s->get_condition());
     return "div_state(" + os.str() + ")";
+  } else if (const bcz_state* s = dynamic_cast<const bcz_state*>(state)) {
+    std::stringstream  ss;
+    ss  << *s ;
+    return ss.str();
+  } else {
+    assert(false);
   }
 } //
 
 std::string sog_tgba::transition_annotation(const spot::tgba_succ_iterator* t) const {
   assert(!t->done());
-  const sog_succ_iterator* it = dynamic_cast<const sog_succ_iterator*>(t);
-  if (it)
+
+  if (  const sog_succ_iterator* it = dynamic_cast<const sog_succ_iterator*>(t) ) {
     return "A transition" ; //it->format_transition();
-  else {
-    const sog_div_succ_iterator* it = dynamic_cast<const sog_div_succ_iterator*>(t);
+  } else if (const sog_div_succ_iterator* it = dynamic_cast<const sog_div_succ_iterator*>(t)) {
     assert(it);
     return it->format_transition();
+  } else if (const bcz_succ_iterator* it = dynamic_cast<const bcz_succ_iterator*>(t) ) {
+    return "A transition" ; //it->format_transition();
+  } else {
+    assert(false);
   }
 } //
 

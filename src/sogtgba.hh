@@ -25,6 +25,7 @@
 #include <string>
 #include <map>
 
+
 #include "tgba/tgba.hh"
 #include "tgba/bdddict.hh"
 #include "tgba/state.hh"
@@ -55,7 +56,8 @@ public:
   /// \skipline sog_tgba::sog_tgba
   /// \until } //
   sog_tgba(const sogIts & m, 
-          spot::bdd_dict* dict);
+	   spot::bdd_dict* dict,
+	   sogits::sog_product_type type);
 
   /// \brief Unregister all the used propositions.
   ///
@@ -145,10 +147,15 @@ private:
   
   /// Point to the associated dictionnary.
   spot::bdd_dict* dict;
+
+  /// The type of this product, currently PLAIN_SOG or BCZ99
+  sog_product_type type;
   
   /// Map the indexes of atomic propositions to the 
   /// corresponding indexes of bdd variables. 
   std::map<int, int> mplace_at_prop;
+
+  spot::state* create_state (const sogIts & model, const GSDD & m, bdd ap) const ;
   
   class bdd_statistics: public spot::unsigned_statistics {
   public:
