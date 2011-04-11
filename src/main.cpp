@@ -51,11 +51,11 @@ using std::endl;
 
 void usage() {
   cerr << "Instantiable Transition Systems SDD/DDD LTL Analyzer;" <<endl;
-  cerr << "Mandatory options : -i -t to provide input model, -ltl or -LTL to provide formulae" << std::endl; 
+  cerr << "Mandatory options : -i -t to provide input model, -ltl or -LTL to provide formulae" << std::endl;
 
   usageInputOptions();
   usageSDDOptions();
-  
+
   cerr << "This tool performs LTL verification on state-space of ITS" <<endl;
   cerr << " LTL specific options for  package " << PACKAGE_STRING << endl;
 
@@ -135,23 +135,23 @@ int main(int argc, const char *argv[]) {
   sog_product_type sogtype = SLAP_FST;
 
   bool isPlaceSyntax = false;
-    
+
   // echo options of run
   std::cout << "its-ltl command run as :\n" << std::endl;
   for (int i=0;i < argc; i++) {
     std::cout << argv[i] << "  ";
   }
   std::cout << std::endl;
-  
+
   // Build the options vector
   std::vector<const char *> args;
   for (int i=1;i < argc; i++) {
     args.push_back(argv[i]);
   }
-  
+
   std::vector<const char *> argsleft;
   argc = args.size();
-  
+
   for (int i=0;i < argc; i++) {
     if (!strncmp(args[i], "-a", 2)) {
       algo_string = args[i]+2;
@@ -172,7 +172,7 @@ int main(int argc, const char *argv[]) {
       print_formula_tgba = true;
     }
     else if (!strncmp(args[i], "-ltl", 4)) {
-      if (++i > argc) 
+      if (++i > argc)
 	{ cerr << "give argument value for ltl formula please after " << args[i-1]<<endl; usage() ; exit(1);}
       ltl_string = args[i];
     }
@@ -247,14 +247,14 @@ int main(int argc, const char *argv[]) {
     model = new ITSModel();
   }
 
-    // parse command line args to get the options 
+    // parse command line args to get the options
   if (! handleInputOptions (args, *model) ) {
     usage();
     return 1;
   }
   // we now should have the model defined.
   string modelName = model->getInstance()->getType()->getName();
-  
+
   bool with_garbage = true;
   // Setup SDD specific settings
   if (!handleSDDOptions (args, with_garbage)) {
@@ -292,47 +292,6 @@ int main(int argc, const char *argv[]) {
     f->destroy();
     return 1;
   }
-
-  // Given the list of AP in the formula
-  // Parse them one by one into model + error control if they don't exist
-  // see example :
-/*
-std::string* check_at_prop(const petri_net* p,
-                           const spot::ltl::formula* f,
-                           spot::ltl::atomic_prop_set*& sap,
-                           std::set<int>& ob_tr) {
-  ob_tr.clear();
-  sap = spot::ltl::atomic_prop_collect(f);
-
-  if (sap) {
-    spot::ltl::atomic_prop_set::iterator it;
-    for(it = sap->begin(); it != sap->end(); ++it) {
-      if(!p->place_exists( (*it)->name() )) {
-        std::string* s = new std::string((*it)->name());
-        delete sap;
-        sap = 0;
-        return s;
-      }
-      int pl = p->get_place_num((*it)->name());
-      for (int t = 0; t < p->t_size(); ++t)
-        if (p->get_incidence()[t].get(pl) != 0)
-          ob_tr.insert(t);
-    }
-  }
-  return 0;
-}
-*/
-
-
-  /*
-  if (print_rg)
-    print_reachability_graph(n, place_marking_bound, f);
-
-  if (count)
-    count_markings(n, place_marking_bound, f);
-  */
-
-
 
   if (check) {
     LTLChecker checker;

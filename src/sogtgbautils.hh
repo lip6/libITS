@@ -17,35 +17,6 @@
 
 namespace sogits {
 
-/// \brief Display some statistics concerning the symbolic observation
-/// graph constructed for \a n when considering the observable
-/// transitions \a obs_tr.
-///
-/// \dontinclude countmarkings.cpp
-/// \skipline void count_markings
-/// \until } //
-  void count_markings(const its::ITSModel & m,  const spot::ltl::formula* f);
-
-/// \brief Display the symbolic observation graph constructed for \a n
-/// when considering the observable transitions \a obs_tr.
-///
-/// \dontinclude printrg.cpp
-/// \skipline void print_reachability_graph
-/// \until } //
-  void print_reachability_graph(const its::ITSModel & m, const spot::ltl::formula* f);
-
-/// \brief Check if the atomic propositions in \a f are transitions of the Petri
-/// net \a p. Return a pointer on the first atomic proposition which is not
-/// a transition name if any and 0 otherwise.
-///
-/// \dontinclude modelcheck.cpp
-/// \skipline const std::string* check_at_prop
-/// \until } //
-  std::string* check_at_prop(its::ITSModel & m,
-                           const spot::ltl::formula* f,
-                           spot::ltl::atomic_prop_set*& sap);
-
-
 
   enum sog_product_type {
     FS_OWCTY, // < The fully symbolic approach: One-Way catch them Young. Encode tgba as an ITS.
