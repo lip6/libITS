@@ -20,10 +20,10 @@ Transition sogIts::getSelector(bdd aps) const {
 // return a selector corresponding to the boolean formula over AP encoded as a bdd.
 its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
   formCache_it it ;
-  if ( formulaCache.find(it,aps.id()) ) 
+  if ( formulaCache.find(it,aps.id()) )
     // cache hit
     return it->second;
-  
+
   if ( aps == bddtrue ) {
     return Transition::id ;
   } else if (aps == bddfalse ) {
@@ -32,7 +32,7 @@ its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
     // a "real" node
     int bvar = bdd_var(aps);
     Label prop = apOrder_.getLabel(bvar);
-    
+
     Transition hcond ;
 //    int len =type->getName().size();
     if (! isPlaceSyntax ) {
@@ -49,19 +49,19 @@ its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
     //      std::cerr << "Type = " << * (getInstance()->getType())  << std::endl;
     trace << "prop = " << prop << std::endl ;
     trace << "hcond = "  << hcond << std::endl ;
-    
+
     Transition ret ;
     if ( bdd_high(aps) == bdd_low(aps) ) {
       // This AP is a don't care in this part of the boolean formula
       ret = getSelector(bdd_high(aps));
     } else {
-      ret = ITE(hcond, getSelector(bdd_high(aps)),  getSelector(bdd_low(aps)) ); 
+      ret = ITE(hcond, getSelector(bdd_high(aps)),  getSelector(bdd_low(aps)) );
     }
     formulaCache.insert(it, aps.id());
     it->second = ret;
-    
+
     trace << "Produced transition :" << ret << std::endl;
-    return ret;    
+    return ret;
   }
 }
 
@@ -73,7 +73,7 @@ its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
 its::State sogIts::leastPostTestFixpoint ( State init, bdd cond ) const {
   Transition hcond = getSelector(cond);
   Transition hnext = getNextRel();
-  
+
   Transition sat = fixpoint ( (hcond &  hnext) + Transition::id , true ) & hcond;
   trace << "Saturate (post) least fixpoint under conditions : " << sat << std::endl;
   return sat(init);
@@ -85,63 +85,13 @@ its::State sogIts::leastPostTestFixpoint ( State init, bdd cond ) const {
 its::State sogIts::leastPreTestFixpoint ( its::State init, bdd cond ) const {
   Transition hcond = getSelector(cond);
   Transition hnext = getNextRel();
-  
+
   Transition sat = fixpoint ( ( hnext & hcond ) + Transition::id , true );
-  
+
   trace << "Saturate (pre) least fixpoint under conditions : " << sat << std::endl;
   State res =  sat(init);
 
   return res;
-
-//   State div =  fixpoint (  hnext & hcond  ) (res);
-//   bool isDiv = div != State::null;
-//   trace << "Diverges under cond ? : " << isDiv << std::endl;
-
-//   State res2 = res;
-//   State toto = res2;
-//   int i = 0;
-//   do {
-//     trace << "Iteration " << ++i << " states : " << toto.nbStates() << std::endl;
-//     res2 = toto;
-//     toto = hcond (toto);
-//     trace << " satisfy cond : " << toto.nbStates() << std::endl;
-//     toto = hnext (toto);
-//     trace << " succs : " << toto.nbStates() << std::endl;
-//     State toto2 = toto * (hcond(res2)) ;
-//     trace << " succs in states sat cond : " << toto2.nbStates() << std::endl;
-//   } while ( res2 != toto );
-//   bool isDiv3 = res2 != State::null;
-//   trace << "Manual diverges under cond ? : " << isDiv3 << std::endl;
-
-//   State div2 = hcond (res);
-//   trace << "testing divergence with : " <<  fixpoint ( hnext * Transition::id ) << std::endl;
-//   div2 = fixpoint ( hnext * Transition::id ) (div2);
-//   bool isDiv2 = div2 != State::null;
-//   trace << "Diverges after cond in gfp ? : " << isDiv2 << std::endl;
-//   if (isDiv2) trace << "Found a cycle of " << div2.nbStates() << " states " << std::endl; 
-//   trace << "******" << std::endl;
-//   trace << "Verifying cond in base states " << (hcond(res)).nbStates() << " / " << res.nbStates() << std::endl ;
-//   i = 0;
-//   State div4 = hcond(res);
-//   State fix = div4;
-//   do {
-//     trace << "Iteration " << ++i << " states : " << div4.nbStates() << std::endl;
-//     fix = div4 ; 
-//     div4 = hnext (div4);
-//     trace << " succs of base : " << div4.nbStates() << std::endl;
-//     div4 = fix * div4 ;
-//     trace << " succs of base in base : " << div4.nbStates() << std::endl;
-//   } while ( div4 != fix );
-
-  
-
-
-//   if (isDiv2 != isDiv) {
-//     exit(0);
-//   }
-
-//   return sat(init);
-
 }
 
 
