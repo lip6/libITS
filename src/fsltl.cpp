@@ -96,17 +96,7 @@ namespace its {
   }  
 
 
-  State fsltlModel::findSCC_owcty () {
-    trans_t nextAccs;
-    for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
-      nextAccs.push_back(accit->second);
-      trace << "For acceptance condition  :" <<  accit->first << std::endl ;
-    }
-    
-    return findSCC_owcty (getNextByAll(), nextAccs, getInitState());
-  }
-
-  State fsltlModel::findSCC_owcty (its::Transition nextAll, const trans_t & nextAccs, its::State init) {
+  State fsltlModel::findSCC_fsltl (its::Transition nextAll, const trans_t & nextAccs, its::State init, bool isOWCTY) {
 
     State reach = fixpoint (nextAll  + Transition::id, true) ( init ); 
     
@@ -128,8 +118,11 @@ namespace its {
 	sat = div;
 
 
-	// only states that allow a loop and suffixes
-	// div = fixpoint (nextAll, true) (div);
+	if (isOWCTY) {
+	  // OWCTY variant 
+	  // only states that allow a loop and suffixes
+	  div = fixpoint (nextAll, true) (div);
+	}
 
 	// trace << "After loop detection " << j << " with nbstates= " << div.nbStates()<<std::endl;
 
@@ -158,6 +151,40 @@ namespace its {
     return div;
 
   }
+
+
+
+
+  State fsltlModel::findSCC_owcty () {
+    trans_t nextAccs;
+    for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
+      nextAccs.push_back(accit->second);
+      trace << "For acceptance condition  :" <<  accit->first << std::endl ;
+    }
+    
+    return findSCC_owcty (getNextByAll(), nextAccs, getInitState());
+  }
+
+  State fsltlModel::findSCC_el () {
+    trans_t nextAccs;
+    for (accToTrans_it accit = accToTrans_.begin() ; accit != accToTrans_.end() ; ++accit ) {
+      nextAccs.push_back(accit->second);
+      trace << "For acceptance condition  :" <<  accit->first << std::endl ;
+    }
+    
+    return findSCC_el (getNextByAll(), nextAccs, getInitState());
+  }
+
+
+  State fsltlModel::findSCC_owcty (its::Transition nextAll, const trans_t & nextAccs, its::State init) {
+    return findSCC_fsltl (nextAll, nextAccs, init, true);
+  }
+
+
+  State fsltlModel::findSCC_el (its::Transition nextAll, const trans_t & nextAccs, its::State init) {
+    return findSCC_fsltl (nextAll, nextAccs, init, false);
+  }
+
 
 
   }

@@ -51,6 +51,10 @@ namespace its {
     /// calls static operation with member data.
     State findSCC_owcty();
 
+    /// calls static operation with member data.
+    State findSCC_el();
+
+
     /// to represent a set of transition relations as passed to findSCC algorithm.
     typedef std::vector<its::Transition> trans_t;
     typedef trans_t::const_iterator trans_it;
@@ -62,6 +66,19 @@ namespace its {
     /// see [Tacas2001 - Is there a best symbolic cycle detection algorithm - Fisler et al.]
     // Arguments : all: the whole transition relation, nextAccs : one transition relation per acceptance condition, init : initial states.
     static State findSCC_owcty (its::Transition nextAll, const trans_t & nextAccs, its::State init);
+
+    /// Verify whether there are accepting paths in the product.
+    /// Precondition : buildComposedSystem has been invoked.
+    /// Returns the set of accepting states + suffix.
+    /// Algorithm used is a variant of Emerson-Lei '82
+    /// see [Tacas2001 - Is there a best symbolic cycle detection algorithm - Fisler et al.]
+    // Arguments : all: the whole transition relation, nextAccs : one transition relation per acceptance condition, init : initial states.
+    static State findSCC_el (its::Transition nextAll, const trans_t & nextAccs, its::State init);
+
+
+    /** Delegate to the appropriate variant of fsltl. */
+    static State findSCC_fsltl (its::Transition nextAll, const trans_t & nextAccs, its::State init, bool isOWCTY);
+
 
   };
 
