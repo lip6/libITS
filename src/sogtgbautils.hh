@@ -18,15 +18,6 @@
 namespace sogits {
 
 
-  enum sog_product_type {
-    FS_OWCTY, // < The fully symbolic approach: One-Way catch them Young. Encode tgba as an ITS.
-    FS_EL, // < The fully symbolic approach: Emerson-Lei variant. Encode tgba as an ITS.
-    PLAIN_SOG, // < The basic algorithm with static parameters.
-    SLAP_NOFS, // < The (Symbolic) Local Obs Graph algorithm
-    SLAP_FST, // < The (Symbolic) Local Obs Graph algorithm with Terminal states FSLTL test.
-    SLAP_FSA, // < The (Symbolic) Local Obs Graph algorithm with Accepting states FSLTL test.
-    SOP // < The Symbolic Observation Product algorithm
-  } ;
 
 
 
@@ -69,7 +60,7 @@ namespace sogits {
 
     spot::timer_map timers;
 
-    bool buildTgbaFromformula ();
+    bool buildTgbaFromformula (sog_product_type sogtype);
 
     void fs_model_check(bool isOWCTY);
   public :
