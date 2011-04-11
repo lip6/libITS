@@ -21,7 +21,7 @@ my $cwd =  getcwd or die "Can't get cwd, used to decide where to do output.\n";
 
 # the list of all methods (taken from main.cpp)
 my @genType = ("SOG","SOP","SLAP",
-	       "FSEL","FSOWCTY",
+	       "FSEL","FSOWCTY", "BCZ99",
 	       "FSEL -R3f","FSOWCTY -R3f",
 	       "FSEL -dR3","FSOWCTY -dR3",
 	       "SLAP-FST","SLAP-FSA");

@@ -10,7 +10,7 @@ if test ! -d "$1"; then
   exit 1
 fi
 
-for i in SOG SOP \
+for i in SOG SOP BCZ99 \
          SLAP SLAP-FSA SLAP-FST \
          'FSEL -dR3' FSEL 'FSEL -R3f' \
          'FSOWCTY -dR3' FSOWCTY 'FSOWCTY -R3f'
