@@ -9,5 +9,7 @@ echo SLAP-FSA
 ./sum.pl -f '^SLAP-FSA,' $1/**/*.log
 echo SLAP-FST
 ./sum.pl -f '^SLAP-FST' $1/**/*.log
-echo FSLTL
-./sum.pl -f '^FSLTL' $1/**/*.log
+echo FSEL
+./sum.pl -f '^FSEL' $1/**/*.log
+echo FSOWCTY
+./sum.pl -f '^FSOWCTY' $1/**/*.log
