@@ -41,6 +41,7 @@ AM_CXXFLAGS = -g -O2 -Wall
 LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK)
 
 MYHEADER =apiterator.hh \
+	bczCSD99.hh \
 	dsog.hh \
 	fsltl.hh \
 	slap.hh \
@@ -53,6 +54,7 @@ MYHEADER =apiterator.hh \
 
 
 MYSRC = apiterator.cpp \
+	bczCSD99.cpp \
 	dsog.cpp \
 	fsltl.cpp \
 	main.cpp \
