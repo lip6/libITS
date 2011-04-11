@@ -33,7 +33,7 @@
 namespace sogits {
 
   void LTLChecker::model_check(sog_product_type sogtype) {
-    if (! buildTgbaFromformula())
+    if (! buildTgbaFromformula(sogtype))
       return;
 
     if (sogtype == FS_OWCTY || sogtype == FS_EL) {
@@ -67,6 +67,9 @@ namespace sogits {
     spot::tgba * prod = NULL;
     switch (sogtype) {
     case PLAIN_SOG :
+      prod = new spot::tgba_product(a_, systgba_);
+      break;
+    case BCZ99 :
       prod = new spot::tgba_product(a_, systgba_);
       break;
     case SLAP_NOFS :
@@ -166,7 +169,7 @@ namespace sogits {
     return;
   }
 
-  bool LTLChecker::buildTgbaFromformula () {
+  bool LTLChecker::buildTgbaFromformula (sog_product_type sogtype) {
     // find all AP in the formula
     sap_ = spot::ltl::atomic_prop_collect(f_);
 
@@ -175,7 +178,7 @@ namespace sogits {
     if (isPlaceSyntax) {
       sogModel_->setPlaceSyntax(isPlaceSyntax);
     }
-    systgba_ = new sog_tgba(*sogModel_, &dict_);
+    systgba_ = new sog_tgba(*sogModel_, &dict_, sogtype);
 
     if (sap_) {
       APIterator::varset_t vars ;
