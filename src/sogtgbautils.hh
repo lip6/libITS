@@ -48,7 +48,8 @@ namespace sogits {
 
 
   enum sog_product_type {
-    FSLTL, // < The fully symbolic approach: encode tgba as an ITS.
+    FS_OWCTY, // < The fully symbolic approach: One-Way catch them Young. Encode tgba as an ITS.
+    FS_EL, // < The fully symbolic approach: Emerson-Lei variant. Encode tgba as an ITS.
     PLAIN_SOG, // < The basic algorithm with static parameters.
     SLAP_NOFS, // < The (Symbolic) Local Obs Graph algorithm
     SLAP_FST, // < The (Symbolic) Local Obs Graph algorithm with Terminal states FSLTL test.
@@ -99,7 +100,7 @@ namespace sogits {
 
     bool buildTgbaFromformula ();
 
-    void fs_model_check();
+    void fs_model_check(bool isOWCTY);
   public :
     LTLChecker () : sap_(NULL),
 		    f_(NULL),

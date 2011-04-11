@@ -36,8 +36,8 @@ namespace sogits {
     if (! buildTgbaFromformula())
       return;
 
-    if (sogtype == FSLTL) {
-      fs_model_check();
+    if (sogtype == FS_OWCTY || sogtype == FS_EL) {
+      fs_model_check( sogtype == FS_OWCTY );
       return;
     }
 
@@ -81,7 +81,7 @@ namespace sogits {
     case SOP :
       prod = new dsog::dsog_tgba(a_, *sogModel_);
       break;
-    case FSLTL :
+    case FS_OWCTY : case FS_EL :
       // (case treated for compiler warning) should not happen, tested at top of function
       return;
     }
@@ -144,12 +144,18 @@ namespace sogits {
     delete sap_;
   }
 
-  void LTLChecker::fs_model_check() {
+  void LTLChecker::fs_model_check(bool isOWCTY) {
     its::fsltlModel * fsmodel = (its::fsltlModel *) model_;
     fsmodel->setSogModel(sogModel_);
     fsmodel->declareType (a_);
     fsmodel->buildComposedSystem();
-    its::State res = fsmodel->findSCC_owcty();
+    
+    its::State res ;
+    if (isOWCTY) {
+      res = fsmodel->findSCC_owcty();
+    } else {
+      res = fsmodel->findSCC_el();
+    }
     Statistic S = Statistic(res, ltl_string_ , CSV); // can also use LATEX instead of CSV
     S.print_table(std::cout);
 
