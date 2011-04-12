@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 
 if [ $# -le 4 ]; then
@@ -11,15 +11,29 @@ shift
 
 echo "Gathering data..."
 
-./graphdata.pl $opt "$@" >$output.data
+# set -x
+./graphdata.pl $opt "$@" > "$output.data"
+
+count=`wc -l "$output.data" | cut -f 1 -d ' ' `
+if [ $count -eq 0 ] 
+then
+    echo "Graph was empty !"
+    echo "$@"
+    exit 0
+fi
 
 [ "x$1" = "x-v" ] && shift
 
-models=`cut -f 1 -d ' ' $output.data | sort -u | tr '\n' ' '`
+models=`cut -f 1 -d ' ' "$output.data" | sort -u | tr '\n' ' '`
 
+for i in $models; do
+    echo $i;
+done;
 
-cat > $output.gnuplot  <<EOF
-set terminal postscript eps enhanced color
+# eps mode
+# set terminal postscript eps enhanced color
+cat > "$output.gnuplot"  <<EOF
+set terminal png large enhanced 
 set xlabel "$1" 0.0, 4.0
 set ylabel "$2" 12.0, 0.0
 set xtics nomirror
@@ -49,15 +63,15 @@ EOF
 echo "Plots: $models"
 x=1
 for i in $models; do
-  sed -n "s/^$i \(.*\)$/\\1/p" < $output.data > $output.$i.data
-  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype $x  title \"$i\", \\" >> $output.gnuplot
+  sed -n "s/^$i \(.*\)$/\\1/p" < "$output.data" > "$output.$i.data"
+  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype $x  title \"$i\", \\" >> "$output.gnuplot"
   x=`expr $x + 1`
 done
 
 #echo "  0.1*x notitle , \\" >> $output.gnuplot
 #echo "  10*x notitle  , \\" >> $output.gnuplot
-echo "  x notitle" >> $output.gnuplot
+echo "  x notitle" >> "$output.gnuplot"
 
 echo "Rendering graph..."
 
-gnuplot $output.gnuplot
+gnuplot "$output.gnuplot"
