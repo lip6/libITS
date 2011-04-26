@@ -18,7 +18,7 @@ count=`wc -l "$output.data" | cut -f 1 -d ' ' `
 if [ $count -eq 0 ] 
 then
     echo "Graph was empty !"
-    echo "$@"
+#    echo "$@"
     exit 0
 fi
 
