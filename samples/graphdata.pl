@@ -89,5 +89,11 @@ foreach my $key (keys %result)
 	    $model =~ s/\d+//;
 	}
 	print "$model $val1 $val2\n";
+	if ($val1 > 100 * $val2) {
+	  print STDERR "Over 2 orders of magnitude : $opt_x :$val1 > $opt_y :$val2 FOR  $key\n";
+	} elsif ( $val2 > 100 * $val1) {
+	  print STDERR "Over 2 orders of magnitude : $opt_y :$val2 > $opt_x :$val1  FOR  $key\n";
+	}
+
     }
 }
