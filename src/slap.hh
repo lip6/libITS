@@ -85,7 +85,7 @@ namespace slap
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-    slap_succ_iterator(const spot::tgba * aut, const spot::state * aut_state, spot::tgba_succ_iterator* left, const sogIts & model, const its::State& right);
+    slap_succ_iterator(const spot::tgba * aut, const spot::state * aut_state, spot::tgba_succ_iterator* left, const sogIts & model, const its::State& right, sogits::FSTYPE fsType_);
 
     virtual ~slap_succ_iterator();
 
@@ -116,6 +116,7 @@ namespace slap
     const sogIts & model_; ///< The ITS model.
     its::State right_; ///< The source state.   
     its::State dest_; ///< The current successor aggregate (could be empty).   
+    sogits::FSTYPE fsType_;
   };
 
 
@@ -208,8 +209,12 @@ namespace slap
     const sogIts & model_;
     sogits::FSTYPE fsType_;
     
-    // helper function
+    // test for fully symbolic exploration
+    bool isFullAcceptingState (spot::tgba_succ_iterator * it, spot::state * source) const ;
+    // true if all it arcs are self loops
     bool isTerminalState (spot::tgba_succ_iterator * it, spot::state * source) const ;
+    // true if it->destination == source
+    bool isSelfLoop (spot::tgba_succ_iterator * it, spot::state * source) const ;
     // Disallow copy.
     slap_tgba(const slap_tgba&);
     slap_tgba& operator=(const slap_tgba&);

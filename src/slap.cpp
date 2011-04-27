@@ -89,12 +89,13 @@ namespace slap
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-  slap_succ_iterator::slap_succ_iterator(const tgba * aut, const spot::state * aut_state, tgba_succ_iterator* left, const sogIts & model, const its::State& right)
+  slap_succ_iterator::slap_succ_iterator(const tgba * aut, const spot::state * aut_state, tgba_succ_iterator* left, const sogIts & model, const its::State& right, sogits::FSTYPE fsType)
     : aut_(aut),
       aut_state_(aut_state),
       left_(left),
       model_(model),
-      right_(right)
+      right_(right),
+      fsType_(fsType)
   {
 
     /** Test whether there is a self loop labeled with ALL acceptance conditions */
@@ -139,6 +140,7 @@ namespace slap
       dest->destroy();
     }
     delete it;
+    q2->destroy();
 
     return F;
   }
@@ -149,9 +151,14 @@ namespace slap
     // Test if this TGBA arc is a self-loop without acceptance conditions, if the TGBA has acceptance conds
     if (aut_->all_acceptance_conditions() != bddfalse) {
       bdd curacc = left_->current_acceptance_conditions();
-      if (curacc == bddfalse && left_->current_state()->compare(aut_state_) == 0) {
-	dest_ = its::State::null;
-	return;
+      if (curacc == bddfalse) {
+	const state * q2 = left_->current_state();
+	if (q2->compare(aut_state_) == 0) {
+	  dest_ = its::State::null;
+	  q2->destroy();
+	  return;
+	}
+	q2->destroy();
       }
     }
 
@@ -180,6 +187,13 @@ namespace slap
 	step_();
 
 	if (! dest_.empty() ) {
+	  if ( fsType_ == sogits::FSA 
+	       && left_->current_state()->compare(aut_state_) == 0 
+	       && dest_ - right_ == its::State::null ) {
+	    left_->next();
+	    std::cerr << "Subset !!"<< std::endl;
+	    continue;
+	  }
 	  // reached an appropriate non empty successor
 	  return ;
 	}
@@ -260,15 +274,12 @@ namespace slap
 
     tgba_succ_iterator * it = left_->succ_iter(init_tgba);
     for ( it->first() ; ! it->done() ; it->next() ) {
-      const state * dest = it->current_state();
-      // Test self loop
-      if ( dest->compare(init_tgba) == 0 ) {
+      if ( isSelfLoop(it, init_tgba) ) {
 	// Test ac=0 (empty acceptance cond arcs)
 	if (it->current_acceptance_conditions() == bddfalse && left_->all_acceptance_conditions() != it->current_acceptance_conditions()) {
 	  F |= it->current_condition();
 	}
       }
-      dest->destroy();
     }
     delete it;
 
@@ -325,8 +336,8 @@ namespace slap
 					      global_state,
 					      global_automaton);
 
-    // Test whether the tgba state is terminal
-    if ( (fsType_==sogits::FSA || fsType_==sogits::FST) && isTerminalState(li, s->left()) ) {
+    // Test whether the tgba state is "terminal", i.e. we might end it right here.
+    if ( isFullAcceptingState(li, s->left()) ) {
       trace << "could use FSLTL algo !!" << std::endl;
       its::fsltlModel::trans_t nextAccs;
       its::Transition all = its::State::null;
@@ -334,25 +345,27 @@ namespace slap
       typedef std::map<std::string,its::Transition> accToTrans_t;
       typedef accToTrans_t::iterator accToTrans_it;
       accToTrans_t accToTrans;
-
+      
       for ( li->first(); !li->done() ; li->next() ) {
-
-	// compute toadd : the transition relation corresponding to this arc
-	its::Transition apcond = model_.getSelector(li->current_condition());
-	its::Transition toadd = model_.getNextRel () & apcond;
-
-	all = all + toadd;
-
-	labels_t accs = its::TgbaType::getAcceptanceSet (li->current_acceptance_conditions(), left_);
-	for (labels_it acc = accs.begin() ; acc != accs.end() ; ++acc) {
-	  accToTrans_it accit = accToTrans.find(*acc);
-	  if (accit == accToTrans.end()) {
-	    // first occurrence
-	    accToTrans [*acc] = toadd;
-	  } else {
-	    accit->second = accit->second + toadd;
-	  }
-	}  
+	
+	if ( isSelfLoop(li,s->left())) {
+	  // compute toadd : the transition relation corresponding to this arc
+	  its::Transition apcond = model_.getSelector(li->current_condition());
+	  its::Transition toadd = model_.getNextRel () & apcond;
+	  
+	  all = all + toadd;
+	  
+	  labels_t accs = its::TgbaType::getAcceptanceSet (li->current_acceptance_conditions(), left_);
+	  for (labels_it acc = accs.begin() ; acc != accs.end() ; ++acc) {
+	    accToTrans_it accit = accToTrans.find(*acc);
+	    if (accit == accToTrans.end()) {
+	      // first occurrence
+	      accToTrans [*acc] = toadd;
+	    } else {
+	      accit->second = accit->second + toadd;
+	    }
+	  }  
+	}
       }
       
       for (accToTrans_it accit = accToTrans.begin() ; accit != accToTrans.end() ; ++accit ) {
@@ -364,25 +377,74 @@ namespace slap
       its::State scc = its::fsltlModel::findSCC_owcty (all, nextAccs, s->right());
 
       if (scc == its::State::null) {
-	return new tgba_no_succ_iterator();
+	if (fsType_ == sogits::FST  
+	    || (fsType_ == sogits::FSA &&  isTerminalState(li, s->left()) )) {
+	  return new tgba_no_succ_iterator();
+	} else if ( fsType_ == sogits::FSA ) {
+	  // default back to basic behavior
+	  return new slap_succ_iterator(left_, s->left(), li, model_, s->right(),fsType_);	  
+	}
       } else {
 	return new slap_div_succ_iterator(get_dict(), s, bddtrue, left_->all_acceptance_conditions());
       }
     }
     
     // std::cerr << "Building succ_iter from state : " << left_->format_state (s->left()) << std::endl;
-    return new slap_succ_iterator(left_, s->left(), li, model_, s->right());
+    return new slap_succ_iterator(left_, s->left(), li, model_, s->right(),fsType_);
   }
 
+  bool slap_tgba::isSelfLoop (tgba_succ_iterator * it, state * source) const { 
+    bool ret = false; 
+    state * q2 = it->current_state();
+    if (q2->compare(source) == 0) {
+      ret = true;
+    }
+    q2->destroy();
+    return ret;
+  }
+
+  // only consider a state terminal when it has no successors except themself
   bool slap_tgba::isTerminalState (tgba_succ_iterator * it, state * source) const {
     for ( it->first(); !it->done() ; it->next() ) {
-      if (it->current_state()->compare(source) != 0) {
-	trace << "State " << left_->format_state(source) << "is not terminal" << std::endl;
+	if (! isSelfLoop(it,source)) {
+	  trace << "State " << left_->format_state(source) << "is not terminal" << std::endl;
+	  return false;
+	}
+      }
+      trace << "State " << left_->format_state(source) << "IS terminal" << std::endl;
+      return true;
+  }
+
+  bool slap_tgba::isFullAcceptingState (tgba_succ_iterator * it, state * source) const {
+    // FST => only consider a state terminal when it has no successors except themself
+    if ( fsType_==sogits::FST) {
+      return isTerminalState(it,source);
+
+      // FSA => a state which carries all acceptance conditions on self loops is considered terminal
+    } else if ( fsType_==sogits::FSA ) {
+
+      // Compute in slAcc the set of acceptance conditions labeling self-loops
+      bdd slAcc = bddfalse;
+      
+      for ( it->first(); !it->done() ; it->next() ) {
+	if ( isSelfLoop(it,source) ) {
+	  // its a self loop,
+	  // store acceptance conditions
+	  slAcc |= it->current_acceptance_conditions();
+	}
+      }
+
+      if ( slAcc == left_->all_acceptance_conditions() ) {
+	trace << "State " << left_->format_state(source) << "IS FSA-terminal" << std::endl;
+	return true;
+      } else {
 	return false;
       }
+
+      // Otherwise, use plain SLAP algo, no FS search enabled.
+    } else {
+      return false;
     }
-    trace << "State " << left_->format_state(source) << "IS terminal" << std::endl;
-    return true;
   }
 
   bdd
