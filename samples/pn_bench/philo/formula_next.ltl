@@ -1,0 +1,100 @@
+F(Idle0 R XWaitLeft1)
+X(G"Fork1" M Idle1)
+(WaitLeft1 R WaitRight0) M WaitRight0
+GHasRight1 U !Idle1
+((IsEating0 M "Fork1") & !HasRight1) | (HasRight1 & (!IsEating0 W !"Fork1"))
+HasLeft1 | ((WaitLeft0 | !IsEating0) & (IsEating0 | !WaitLeft0))
+X(WaitRight1 U !HasRight0)
+F(GIdle1 | !HasRight0)
+G(!IsEating1 M !WaitRight1)
+!WaitRight1 U !HasLeft0
+G((!Idle1 & !WaitRight1) | (Idle1 & WaitRight1))
+(FWaitRight0 & !"Fork1") | ("Fork1" & G!WaitRight0)
+((IsEating0 | !HasRight1) & !"Fork1") | (HasRight1 & "Fork1" & !IsEating0)
+(F"Fork0" & XWaitLeft0) | (G!"Fork0" & X!WaitLeft0)
+X((HasLeft1 & XIdle0) | (!HasLeft1 & X!Idle0))
+F(!WaitRight0 | !HasRight0)
+WaitRight1 | (!IsEating1 & !HasRight0) | (HasRight0 & IsEating1)
+GIdle1 M F"Fork0"
+HasLeft0 W FG"Fork1"
+((!HasRight1 & !HasLeft0) | (HasLeft0 & HasRight1)) R HasLeft0
+GHasRight0 | G!"Fork0"
+("Fork0" & ((!Idle1 & !Idle0) | (Idle0 & Idle1))) | (!"Fork0" & (Idle0 | Idle1) & (!Idle1 | !Idle0))
+HasLeft0 W (HasRight1 | !WaitRight0)
+X!HasRight0 R !HasRight0
+HasLeft0 M X!"Fork0"
+Idle1 M XX"Fork0"
+XGHasLeft0 U IsEating0
+XIsEating1 M !Idle1
+("Fork0" & !Idle0) | (Idle0 & !"Fork0") | !WaitRight1
+F(!"Fork0" W !IsEating0)
+(IsEating0 & !HasLeft0) | (HasLeft0 & !IsEating0)
+X(!WaitRight0 M !HasLeft1)
+(XWaitRight1 & !WaitRight1) | (WaitRight1 & X!WaitRight1)
+G!Idle1 M HasLeft1
+FWaitLeft0 U XHasLeft0
+((WaitRight1 U Idle1) & !WaitLeft0) | (WaitLeft0 & (!WaitRight1 R !Idle1))
+WaitLeft0 | XG!"Fork0"
+X(IsEating1 & F!IsEating1)
+(((!WaitRight1 & !Idle1) | (Idle1 & WaitRight1)) & !WaitRight0) | (WaitRight0 & (Idle1 | WaitRight1) & (!WaitRight1 | !Idle1))
+!WaitLeft0 & G!WaitRight0
+(XWaitLeft0 & G!IsEating1) | (FIsEating1 & X!WaitLeft0)
+XIsEating0 W !WaitLeft0
+HasRight0 U (WaitRight0 U IsEating0)
+(!HasRight0 & G!WaitRight1) | (HasRight0 & FWaitRight1)
+(WaitLeft0 & (IsEating0 W WaitRight1)) | (!WaitLeft0 & (!IsEating0 M !WaitRight1))
+(FWaitRight0 & !HasRight0) | (HasRight0 & G!WaitRight0)
+FHasLeft1 W FHasLeft0
+X((FHasRight0 & !HasLeft0) | (HasLeft0 & G!HasRight0))
+F((Idle1 & GWaitRight0) | (!Idle1 & F!WaitRight0))
+((WaitLeft0 R WaitRight1) & !"Fork1") | ("Fork1" & (!WaitLeft0 U !WaitRight1))
+F(!IsEating0 U !Idle0)
+("Fork0" & !Idle0) | (Idle0 & !"Fork0") | !"Fork1"
+(GIsEating1 & X"Fork1") | (F!IsEating1 & X!"Fork1")
+XG((!HasLeft1 & !WaitLeft0) | (WaitLeft0 & HasLeft1))
+GWaitRight0 M !WaitLeft0
+X(WaitRight1 | X!WaitLeft1)
+F(!Idle0 | !WaitLeft0)
+F"Fork0" U X"Fork1"
+HasRight0 | (!WaitLeft0 M !IsEating0)
+WaitRight1 | !HasLeft1 | !Idle0
+X((WaitRight1 & !HasRight0) | (HasRight0 & !WaitRight1))
+F(HasLeft0 W FWaitRight1)
+HasLeft1 | (!"Fork1" & !IsEating1)
+Idle1 M ((!HasRight1 & !Idle0) | (Idle0 & HasRight1))
+("Fork1" U Idle1) M WaitRight0
+WaitRight1 U ("Fork0" M Idle0)
+(GHasLeft1 & !"Fork0") | ("Fork0" & F!HasLeft1)
+FWaitRight1 | G!WaitLeft1
+X((WaitRight0 & XHasLeft1) | (!WaitRight0 & X!HasLeft1))
+XG(HasLeft0 M Idle1)
+XXXFIdle0
+F(Idle1 W !"Fork0")
+WaitRight1 W X!Idle1
+(HasLeft1 W "Fork0") R HasRight0
+(XIsEating1 & G!HasLeft1) | (FHasLeft1 & X!IsEating1)
+(WaitLeft1 & GFHasLeft0) | (!WaitLeft1 & FG!HasLeft0)
+G(!WaitRight0 & !"Fork0")
+X((HasLeft1 & !WaitLeft0) | (WaitLeft0 & !HasLeft1))
+F(XIdle1 M HasRight0)
+WaitLeft0 M G!Idle0
+((Idle0 W "Fork1") & !WaitRight1) | (WaitRight1 & (!Idle0 M !"Fork1"))
+((HasLeft1 & !WaitLeft0) | (WaitLeft0 & !HasLeft1)) W "Fork0"
+HasLeft1 | !IsEating1 | !HasRight0
+(IsEating1 & ("Fork1" R WaitLeft1)) | (!IsEating1 & (!"Fork1" U !WaitLeft1))
+G(!HasLeft0 U WaitLeft1)
+WaitRight0 M GFWaitLeft0
+HasRight1 | (!WaitLeft1 & !IsEating0) | (IsEating0 & WaitLeft1)
+(("Fork0" & !WaitLeft0) | (WaitLeft0 & !"Fork0")) M HasRight1
+!HasLeft1 U XIdle1
+HasLeft1 R (HasRight0 R WaitRight0)
+WaitRight0 | ((WaitRight0 | !IsEating1) & (IsEating1 | !WaitRight0))
+(IsEating0 & !Idle1) | (Idle1 & !IsEating0)
+XG(HasLeft0 M "Fork1")
+XF((HasRight1 & !HasLeft0) | (HasLeft0 & !HasRight1))
+X(WaitLeft0 W GHasLeft0)
+(IsEating1 | FIsEating0) & (!IsEating1 | G!IsEating0)
+G(!HasRight0 | !"Fork1")
+((HasRight0 | !WaitLeft1) & !IsEating0) | (IsEating0 & WaitLeft1 & !HasRight0)
+FG(("Fork1" & !HasLeft0) | (HasLeft0 & !"Fork1"))
+(Idle0 | HasRight1) & (!HasRight1 | !Idle0)
