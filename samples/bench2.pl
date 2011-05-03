@@ -149,9 +149,9 @@ sub workonfile {
 	  } else {
 	    # should be a net file given the search criterion used
 	    $call .= "-t PROD ";
-	    if ($line !~ /=/) {
+#	    if ($line !~ /=/) {
 	      $call .= "--place-syntax ";
-	    }
+#	    }
 	  }
 	  $call .= "-i $ff";
 	  print STDERR $call."\n";
