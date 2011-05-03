@@ -53,7 +53,7 @@ set clip two
 # Use some jitter to distinguish points that would otherwise be equal
 # (the jitter is multiplicative because the scale is logarithmic)
 spread=10 # maximum percentage added or substracted to the real value
-jitter(x) = x*(100+2*spread*(rand(0)-0.5))/100
+# jitter(x) = x*(100+2*spread*(rand(0)-0.5))/100
 
 
 plot \\
@@ -64,7 +64,8 @@ echo "Plots: $models"
 x=1
 for i in $models; do
   sed -n "s/^$i \(.*\)$/\\1/p" < "$output.data" > "$output.$i.data"
-  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype $x  title \"$i\", \\" >> "$output.gnuplot"
+#  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype $x  title \"$i\", \\" >> "$output.gnuplot"
+  echo "'$output.$i.data' with points pointtype $x  title \"$i\", \\" >> "$output.gnuplot"
   x=`expr $x + 1`
 done
 
