@@ -67,7 +67,6 @@ my $failureanotb=0;
 my $failurebnota=0;
 my $fullfail=0;
 
-
 foreach my $key (keys %result)
 {
     my $min_ = 999999999999999999999999;
@@ -100,11 +99,13 @@ foreach my $key (keys %result)
 print "Max:\n";
 for my $meth (sort { $Max{$b} <=> $Max{$a} } (keys %Max))
 {
-    printf "  %8s  %10s", $meth, "$Max{$meth}/$total{$meth}\n";
+    (my $m = $meth) =~ s/ //g;
+    printf "%11s %10s", $m, "$Max{$meth}/$total{$meth}\n";
 }
 
 print "\nMin:\n";
 for my $meth (sort { $Min{$b} <=> $Min{$a} } (keys %Min))
 {
-    printf "  %8s  %10s", $meth, "$Min{$meth}/$total{$meth}\n";
+    (my $m = $meth) =~ s/ //g;
+    printf "%11s %10s", $m, "$Min{$meth}/$total{$meth}\n";
 }
