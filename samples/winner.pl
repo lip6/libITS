@@ -26,6 +26,10 @@ shift @head;
 
 my %result;
 
+my %Max;
+my %Min;
+my %total;
+
 while (<>)
 {
     next if ($_ =~ /^\w*$/) or ($_ eq $head);
@@ -46,6 +50,8 @@ while (<>)
     }
 
     $result{"$model,$formula"}{$meth} = [@res];
+    $Max{$meth} = 0;
+    $Min{$meth} = 0;
 }
 
 my $awin0=0;
@@ -61,9 +67,6 @@ my $failureanotb=0;
 my $failurebnota=0;
 my $fullfail=0;
 
-my %Max;
-my %Min;
-my %total;
 
 foreach my $key (keys %result)
 {
@@ -97,11 +100,11 @@ foreach my $key (keys %result)
 print "Max:\n";
 for my $meth (sort { $Max{$b} <=> $Max{$a} } (keys %Max))
 {
-    print "  $meth\t", $Max{$meth}, " / ", $total{$meth}, "\n";
+    printf "  %8s  %10s", $meth, "$Max{$meth}/$total{$meth}\n";
 }
 
 print "\nMin:\n";
 for my $meth (sort { $Min{$b} <=> $Min{$a} } (keys %Min))
 {
-    print "  $meth\t", $Min{$meth}, " / ", $total{$meth}, "\n";
+    printf "  %8s  %10s", $meth, "$Min{$meth}/$total{$meth}\n";
 }
