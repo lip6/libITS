@@ -31,9 +31,9 @@ for i in $models; do
 done;
 
 # eps mode
-# set terminal postscript eps enhanced color
+# set terminal png large enhanced 
 cat > "$output.gnuplot"  <<EOF
-set terminal png large enhanced 
+set terminal postscript eps enhanced color
 set xlabel "$1" 0.0, 4.0
 set ylabel "$2" 12.0, 0.0
 set xtics nomirror
