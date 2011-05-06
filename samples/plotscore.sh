@@ -1,4 +1,5 @@
 
+
 if [ $# -ne 2 ]; then
     echo "syntax: plotscore.sh output-prefix scorefile" >&2
     exit 2;
@@ -39,7 +40,10 @@ EOF
   gnuplot $1.gnu
 }
 
+# set -x
+
 gengraph $output-empty 0
 gengraph $output-counter 1
 
-rm -f $$.score.*
+
+# rm -f $$.score.*
