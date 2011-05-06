@@ -12,17 +12,17 @@ echo -----------------------------------------
 echo Comparaisons sur les tailles des produits
 echo -----------------------------------------
 echo
-grep -vE '(SLAP-FSA|FSOWCTY|FSEL)' $f | ./winner.pl -m 3 -
+grep -vE '(SLAP-FSA|FSOWCTY|FSEL)' $f | grep -v 'X[^W]' | ./winner.pl -m 3 -
 echo
 echo ------------------------------------------------
 echo Comparaisons sur les temps [sans les formules X]
 echo ------------------------------------------------
 echo
-grep -v SLAP-FSA $f | grep -v 'X[^W]' | ./winner.pl -m 7 -
+grep -vE SLAP-FSA $f | grep -v 'X[^W]' | ./winner.pl -m 7 -
 echo
-echo --------------------------------------------------
-echo Comparaisons sur la memoire [sans les formules -X]
-echo --------------------------------------------------
+echo -------------------------------------------------
+echo Comparaisons sur la memoire [sans les formules X]
+echo -------------------------------------------------
 echo
 grep -v SLAP-FSA $f | grep -v 'X[^W]' | ./winner.pl -m 8 -
 echo

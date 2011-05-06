@@ -9,7 +9,7 @@ fi
 f=tmp.$$
 grep -v '""' $1 > $f
 
-grep -vE '(SLAP-FSA|FSOWCTY|FSEL)' $f | ./winner.pl 3 - > $1.products
+grep -vE '(SLAP-FSA|FSOWCTY|FSEL)' $f | grep -v 'X[^W]' | ./winner.pl 3 - > $1.products
 grep -v SLAP-FSA $f | grep -v 'X[^W]' | ./winner.pl 7 - > $1.nox.time
 grep -v SLAP-FSA $f | grep -v 'X[^W]' | ./winner.pl 8 - > $1.nox.mem
 (echo Header; grep -v SLAP-FSA $f | grep 'X[^W]') |

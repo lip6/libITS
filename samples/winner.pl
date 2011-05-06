@@ -5,9 +5,11 @@ use File::Basename;
 
 if ($#ARGV <= 0)
 {
-    print STDERR "syntax: graphdata.pl [-m] column files...
+    print STDERR "syntax: graphdata.pl [-m|-l|-a] column files...
 
   -m   output min/max summary
+  -l   output min/max summary in LaTeX form
+  -l   output min/max summary in LaTeX form for ATVA
 ";
     exit(2);
 }
@@ -16,9 +18,22 @@ my %verdict = ( 0 => "empty", 1 => "non-empty", 2 => "unknown" );
 
 
 my $opt_m = 0;
+my $opt_l = 0;
+my $opt_a = 0;
 if ($ARGV[0] eq '-m')
 {
     $opt_m = 1;
+    shift @ARGV;
+} elsif ($ARGV[0] eq '-l')
+{
+    $opt_m = 1;
+    $opt_l = 1;
+    shift @ARGV;
+} elsif ($ARGV[0] eq '-a')
+{
+    $opt_m = 1;
+    $opt_l = 1;
+    $opt_a = 1;
     shift @ARGV;
 }
 
@@ -50,6 +65,10 @@ while (<>)
 
     my @res = split(',',$_);
     my $meth = shift @res;
+
+    # ignore FSOWCTY and SOP for ATVA
+    next if ($opt_a && (($meth eq 'FSOWCTY') || ($meth eq 'SOP')));
+
     my $model = basename(shift @res);
     my $formula = shift @res;
     #next if $res[3] !~ /^\s*[$opt_v]\s*$/;
@@ -70,20 +89,10 @@ while (<>)
     $total{$meth} = { 0 => 0, 1 => 0, 2 => 0};
 }
 
-my $nmeths = int(keys(%Max));
+my @allmeths = sort(keys(%Max));
 
-my $awin0=0;
-my $bwin0=0;
-my $awin1=0;
-my $bwin1=0;
-my $awin2=0;
-my $bwin2=0;
-my $nbvalues =0;
-my $faila=0;
-my $failb=0;
-my $failureanotb=0;
-my $failurebnota=0;
-my $fullfail=0;
+my $skipped = 0;
+my $read = 0;
 
 foreach my $key (keys %result)
 {
@@ -92,8 +101,18 @@ foreach my $key (keys %result)
     my $fmax_ = 0; # excluding failures
     my $verdict = 999999999999999999999999;
 
-    # Skip results for which not all methods were tried.
-    next unless int(keys %{$result{$key}}) == $nmeths;
+    $read++;
+
+    my $allhere = 1;
+    for my $meth (@allmeths)
+    {
+	next if exists $result{$key}{$meth};
+	$allhere = 0;
+	# print "skipped $key with only @{[keys %{$result{$key}}]}\n";
+	$skipped++;
+	last;
+    }
+    next unless $allhere;
 
     for my $meth (keys %{$result{$key}})
     {
@@ -136,6 +155,65 @@ foreach my $key (keys %result)
 
 exit unless $opt_m;
 
+
+@allmeths = qw(BCZ99 FSOWCTY FSEL SOG SOP SLAP SLAP-FST);
+@allmeths = qw(BCZ99 FSEL SOG SLAP SLAP-FST) if $opt_a;
+
+if ($opt_l)
+{
+    print "&&";
+    print "& \\multicolumn{2}{c}{$_} " foreach (@allmeths);
+    print "\\\\\n";
+    for my $v (0, 1)
+    {
+	print "";
+	if ($v) { printf "\\cline{2-%d}\n%-13s", 3+2*@allmeths, "& non empty "; }
+	else { printf "\\hline\n%-13s", "& empty "; }
+	print "& Win   ";
+	for my $meth (@allmeths)
+	{
+	    if (exists $Min{$meth})
+	    {
+		printf "& %6d & %6s ", $Min{$meth}{$v}, "(" . int(100*$Min{$meth}{$v}/$total{$meth}{$v}) . "\\%)";
+	    }
+	    else
+	    {
+		printf "& %6s & %6s ", "", "";
+	    }
+
+
+	}
+	print "\\\\\n";
+	printf "&%12s", "($total{SLAP}{$v} cases)";
+	print "& Loose ";
+	for my $meth (@allmeths)
+	{
+	    if (exists $Max{$meth})
+	    {
+		printf "& %6d & %6s ", $Max{$meth}{$v}, "(" . int(100*$Max{$meth}{$v}/$total{$meth}{$v}) . "\\%)";
+	    }
+	    else
+	    {
+		printf "& %6s & %6s ", "", "";
+	    }
+	}
+	print "\\\\\n&            & Fail  ";
+	for my $meth (@allmeths)
+	{
+	    if (exists $Fail{$meth})
+	    {
+		printf "& %6d & %6s ", $Fail{$meth}{$v}, "(" . int(100*$Fail{$meth}{$v}/$total{$meth}{$v}) . "\\%)";
+	    }
+	    else
+	    {
+		printf "& %6s & %6s ", "", "";
+	    }
+	}
+	print "\\\\\n";
+    }
+    exit;
+}
+
 my $meth;
 my $v;
 format TEXTOUT =
@@ -143,7 +221,13 @@ format TEXTOUT =
 $meth, $Min{$meth}{$v}, 100*$Min{$meth}{$v}/$total{$meth}{$v}, $Max{$meth}{$v}, 100*$Max{$meth}{$v}/$total{$meth}{$v}, $Fail{$meth}{$v}, 100*$Fail{$meth}{$v}/$total{$meth}{$v},$total{$meth}{$v}
 .
 
-print "No counterexamples
+print "$skipped incomplete experiments skipped, out of $read read.\n"
+  if $skipped;
+my $one = (keys %Fail)[0];
+print "$Fail{$one}{2} experiments skipped because they failed with all techniques.\n" if $Fail{$one}{2};
+
+print "
+No counterexamples
              ----Min----  ----Max----  ----Fail---    Total\n";
 
 $~ = 'TEXTOUT';
