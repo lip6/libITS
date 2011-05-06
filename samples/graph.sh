@@ -31,11 +31,12 @@ for i in $models; do
 done;
 
 # eps mode
+# set terminal postscript eps enhanced color
 # set terminal png large enhanced 
 cat > "$output.gnuplot"  <<EOF
 set terminal postscript eps enhanced color
-set xlabel "$1" 0.0, 4.0
-set ylabel "$2" 12.0, 0.0
+set xlabel "$1" offset 0.0, 4.0
+set ylabel "$2" offset 12.0, 0.0
 set xtics nomirror
 set ytics nomirror
 set logscale x
