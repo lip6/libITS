@@ -5,8 +5,7 @@ if test $# -ne 1; then
   exit 1
 fi
 
-f=tmp.$$
-grep -v '""' $1 > $f
+f=$1
 
 (echo '\begin{tabular}{cccrlrlrlrlrlrlrl}'
 grep -vE SLAP-FSA $f | grep -v 'X[^W]' | ./winner.pl -l 7 - |

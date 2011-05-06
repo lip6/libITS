@@ -5,8 +5,7 @@ if test $# -ne 1; then
   exit 1
 fi
 
-f=tmp.$$
-grep -v '""' $1 > $f
+f=$1
 
 echo -----------------------------------------
 echo Comparaisons sur les tailles des produits
@@ -37,5 +36,3 @@ echo Comparaisons sur la memoire [uniquement formules X]
 echo ---------------------------------------------------
 echo
 (echo Header; grep -v SLAP-FSA $f | grep 'X[^W]') | ./winner.pl -m 8 -
-
-rm -f $f

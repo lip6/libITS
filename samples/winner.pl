@@ -71,6 +71,10 @@ while (<>)
 
     my $model = basename(shift @res);
     my $formula = shift @res;
+
+    # Sometimes the formula is erroneously empty.  Skip it.
+    next if $formula =~ 's/^\s*("")?\s*$/';
+
     #next if $res[3] !~ /^\s*[$opt_v]\s*$/;
     if (defined $res[$opt_c] && $res[$opt_c] !~ /^\s*$/) {
 	if ($res[$opt_c] > $max) {
@@ -185,7 +189,7 @@ if ($opt_l)
 	}
 	print "\\\\\n";
 	printf "&%12s", "($total{SLAP}{$v} cases)";
-	print "& Lose ";
+	print "& Lose  ";
 	for my $meth (@allmeths)
 	{
 	    if (exists $Max{$meth})
