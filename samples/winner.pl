@@ -185,7 +185,7 @@ if ($opt_l)
 	}
 	print "\\\\\n";
 	printf "&%12s", "($total{SLAP}{$v} cases)";
-	print "& Loose ";
+	print "& Lose ";
 	for my $meth (@allmeths)
 	{
 	    if (exists $Max{$meth})
