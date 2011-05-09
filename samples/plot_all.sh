@@ -11,12 +11,12 @@ if test ! -d "$1"; then
   exit 1
 fi
 
-meth[1]=SOG
+meth[4]=SOG
 #meth[2]=SOP
 meth[2]=BCZ99
 meth[3]=SLAP
 #meth[5]=SLAP-FSA
-meth[4]=SLAP-FST
+meth[1]=SLAP-FST
 #meth[7]='FSEL -dR3'
 #meth[7]='FSEL -R3f'
 meth[5]=FSEL

@@ -61,7 +61,7 @@ plot \\
 EOF
 
 
-echo "Plots: $models"
+#echo "Plots: $models"
 x=1
 for i in $models; do
   case $i in
@@ -84,5 +84,5 @@ echo "Rendering graph..."
 
 gnuplot "$output.gnuplot"
 
-epstool --copy --bbox $output $output.tmp
+epstool --copy --bbox $output $output.tmp >/dev/null
 mv $output.tmp $output

@@ -77,13 +77,13 @@ foreach my $key (keys %result)
     {
 	my $t1 = $result{$key}{$opt_x};
 	my $val1 = $t1->[$opt_c];
-	if ((! defined $val1) || $val1 =~ /^\s*$/ || $val1 == -1 ) {
+	if ((! defined $val1) || $val1 =~ /^\s*$/ || $val1 == -1 || (2 == int($t1->[3]))) {
 	    $val1 = 3* $max;
 	    $faila=1;
 	}
 	my $t2 = $result{$key}{$opt_y};
 	my $val2 = $t2->[$opt_c];
-	if ((! defined $val2) || $val1 =~ /^\s*$/ || $val2 == -1) {
+	if ((! defined $val2) || $val1 =~ /^\s*$/ || $val2 == -1 || (2 == int($t2->[3]))) {
 	    $val2 = 3* $max;
 	    $failb=1;
 	}
@@ -105,7 +105,7 @@ foreach my $key (keys %result)
 	}
 	print "$model $val1 $val2\n";
 	$nbvalues++;
-	
+
 	if ($faila && ! $failb) {
 	  $failureanotb++;
 	} elsif (!$faila && $failb) {
