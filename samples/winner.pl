@@ -67,7 +67,7 @@ while (<>)
     my $meth = shift @res;
 
     # ignore FSOWCTY and SOP for ATVA
-    next if ($opt_a && (($meth eq 'FSOWCTY') || ($meth eq 'SOP')));
+    next if ($opt_a && ($meth eq 'SOP'));
 
     my $model = basename(shift @res);
     my $formula = shift @res;
@@ -168,8 +168,8 @@ foreach my $key (keys %result)
 exit unless $opt_m;
 
 
-@allmeths = qw(BCZ99 FSOWCTY FSEL SOG SOP SLAP SLAP-FST);
-@allmeths = qw(BCZ99 FSEL SOG SLAP SLAP-FST) if $opt_a;
+@allmeths = qw(FSOWCTY FSEL BCZ99 SOG SOP SLAP SLAP-FST);
+@allmeths = qw(FSOWCTY FSEL BCZ99 SOG SLAP SLAP-FST) if $opt_a;
 
 if ($opt_l)
 {

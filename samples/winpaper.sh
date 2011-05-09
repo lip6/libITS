@@ -15,7 +15,7 @@ grep -vE SLAP-FSA $f | (echo; grep 'X[^W]') | ./winner.pl -l 7 - |
 echo '\end{tabular}') >tablewin-tr.tex
 echo tablewin-tr.tex generated
 
-(echo '\begin{tabular}{cccrlrlrlrlrl}'
+(echo '\begin{tabular}{cccrlrlrlrlrlrl}'
 grep -vE SLAP-FSA $f | grep -v 'X[^W]' | ./winner.pl -a 7 - |
   sed 's/hline/hline\\multirow{6}{*}{\\begin{sideways}without $\\X$\\end{sideways}}/;s/FS\([OE]\)/\1/g;s/BCZ99/BCZ/g'
 grep -vE SLAP-FSA $f | (echo; grep 'X[^W]') | ./winner.pl -a 7 - |

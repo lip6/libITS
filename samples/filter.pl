@@ -57,6 +57,8 @@ my %Min;
 my %Fail;
 my %total;
 
+print "Method, Model , Formula, |S|, Ticks, |T|, verdict, Time ,Mem(kb) , peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache";
+
 while (<>)
 {
     next if ($_ =~ /^\w*$/) or ($_ eq $head);
@@ -67,7 +69,7 @@ while (<>)
     my $meth = shift @res;
 
     # ignore FSOWCTY and SOP for ATVA
-    next if ($opt_a && (($meth eq 'FSOWCTY') || ($meth eq 'SOP')));
+    next if ($opt_a && ($meth eq 'SOP'));
 
     my $model = basename(shift @res);
     my $formula = shift @res;
