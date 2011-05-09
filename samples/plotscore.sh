@@ -11,6 +11,11 @@ scorefile=$2
 IFS=,
 rm -f $$.score.*
 while read meth verdict val; do
+  case $meth in
+    FSOWCTY) meth=OWCTY;;
+    FSEL) meth=EL;;
+    BCZ99) meth=BCZ;;
+  esac
   echo $val >> "$$.score.$verdict.$meth"
 done < $2
 

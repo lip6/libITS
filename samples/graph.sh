@@ -15,7 +15,7 @@ echo "Gathering data..."
 ./graphdata.pl $opt "$@" > "$output.data"
 
 count=`wc -l "$output.data" | cut -f 1 -d ' ' `
-if [ $count -eq 0 ] 
+if [ $count -eq 0 ]
 then
     echo "Graph was empty !"
 #    echo "$@"
@@ -32,7 +32,7 @@ done;
 
 # eps mode
 # set terminal postscript eps enhanced color
-# set terminal png large enhanced 
+# set terminal png large enhanced
 cat > "$output.gnuplot"  <<EOF
 set terminal postscript eps enhanced color
 set xlabel "$1" offset 0.0, 4.0
@@ -64,9 +64,15 @@ EOF
 echo "Plots: $models"
 x=1
 for i in $models; do
-  sed -n "s/^$i \(.*\)$/\\1/p" < "$output.data" > "$output.$i.data"
-#  echo "'$output.$i.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype $x  title \"$i\", \\" >> "$output.gnuplot"
-  echo "'$output.$i.data' with points pointtype $x  title \"$i\", \\" >> "$output.gnuplot"
+  case $i in
+  FSEL) name=EL;;
+  FSOWCTY) name=OWCTY;;
+  BCZ99) name=BCZ;;
+  *) name=$i;;
+  esac
+  sed -n "s/^$i \(.*\)$/\\1/p" < "$output.data" > "$output.$name.data"
+#  echo "'$output.$name.data' using (jitter(\$1)):(jitter(\$2)) with points pointtype $x  title \"$name\", \\" >> "$output.gnuplot"
+  echo "'$output.$name.data' with points pointtype $x  title \"$name\", \\" >> "$output.gnuplot"
   x=`expr $x + 1`
 done
 
@@ -77,3 +83,6 @@ echo "  x notitle" >> "$output.gnuplot"
 echo "Rendering graph..."
 
 gnuplot "$output.gnuplot"
+
+epstool --copy --bbox $output $output.tmp
+mv $output.tmp $output
