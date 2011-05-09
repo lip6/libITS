@@ -97,6 +97,7 @@ my @allmeths = sort(keys(%Max));
 
 my $skipped = 0;
 my $read = 0;
+my $toolow = 0;
 
 foreach my $key (keys %result)
 {
@@ -133,6 +134,13 @@ foreach my $key (keys %result)
 	$max_ = $val if ($val > $max_);
 	$verdict = $v if $verdict > $v;
     }
+
+    if ($fmax_ < 0.1)
+    {
+	++$toolow;
+	next;
+    }
+
 
     for my $meth (keys %{$result{$key}})
     {
@@ -227,6 +235,8 @@ $meth, $Min{$meth}{$v}, 100*$Min{$meth}{$v}/$total{$meth}{$v}, $Max{$meth}{$v}, 
 
 print "$skipped incomplete experiments skipped, out of $read read.\n"
   if $skipped;
+print "$toolow experiments skipped because of values too low.\n"
+  if $toolow;
 my $one = (keys %Fail)[0];
 print "$Fail{$one}{2} experiments skipped because they failed with all techniques.\n" if $Fail{$one}{2};
 

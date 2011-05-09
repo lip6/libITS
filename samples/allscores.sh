@@ -9,18 +9,17 @@ fi
 
 # set -x
 
-f=tmp.$$
-grep -v '""' $1 > $f
+f=$1
 
 
-grep -v SLAP-FSA $f | grep 'FS[^AT]' | ./winner.pl 7 - > $1.fsalgos.time
-grep -v SLAP-FSA $f | grep 'FS[^AT]' | ./winner.pl 8 - > $1.fsalgos.mem
+(echo Header; grep -v SLAP-FSA $f | grep 'FS[^AT]') | ./winner.pl 7 - > $1.fsalgos.time
+(echo Header; grep -v SLAP-FSA $f | grep 'FS[^AT]') | ./winner.pl 8 - > $1.fsalgos.mem
 
-grep -v SLAP-FSA $f | grep 'SO[GP]' | ./winner.pl 7 - > $1.sogsop.time
-grep -v SLAP-FSA $f | grep 'SO[GP]' | ./winner.pl 8 - > $1.sogsop.mem
+(echo Header; grep -v SLAP-FSA $f | grep 'SO[GP]') | ./winner.pl 7 - > $1.sogsop.time
+(echo Header; grep -v SLAP-FSA $f | grep 'SO[GP]') | ./winner.pl 8 - > $1.sogsop.mem
 
-grep -v SLAP-FSA $f | grep 'SLAP' | ./winner.pl 7 - > $1.slaps.time
-grep -v SLAP-FSA $f | grep 'SLAP' | ./winner.pl 8 - > $1.slaps.mem
+(echo Header; grep -v SLAP-FSA $f | grep 'SLAP') | ./winner.pl 7 - > $1.slaps.time
+(echo Header; grep -v SLAP-FSA $f | grep 'SLAP') | ./winner.pl 8 - > $1.slaps.mem
 
 
 
@@ -38,6 +37,6 @@ for f in $1.fsalgos.time $1.fsalgos.mem $1.slaps.mem $1.slaps.time $1.sogsop.mem
   ./plotscore.sh $prefix $f
 done
 
-# rm -f *.time *.mem
-#rm -f $1.fsalgos.time $1.fsalgos.mem  $1.products $1.nox.time $1.nox.mem $1.x.time $1.x.mem
+rm -f *.time *.mem
+rm -f $1.fsalgos.time $1.fsalgos.mem  $1.products $1.nox.time $1.nox.mem $1.x.time $1.x.mem $1.sogsop.time $1.sogsop.mem $1.slaps.time $1.slaps.mem $1.fsalgos.time $1.fsalgos.mem
 

@@ -112,8 +112,25 @@ foreach my $key (keys %result)
 	$skipped++;
 	last;
     }
-    next unless $allhere;
+    #next unless $allhere;
 
+    for my $meth (keys %{$result{$key}})
+    {
+	my $t = $result{$key}{$meth};
+	my $v = int($t->[3]);
+	my $val = $t->[$opt_c];
+	if ((! defined $val) || $val =~ /^\s*$/ || $val == -1 || $v == 2) {
+	    $val = 3 * $max;
+	    $v = 2;
+	} else {
+	    $fmax_ = $val if ($val > $fmax_);
+	}
+	$min_ = $val if ($val < $min_);
+	$max_ = $val if ($val > $max_);
+	$verdict = $v if $verdict > $v;
+    }
+
+    next if ($fmax_ < 0.1);
 
     for my $meth (keys %{$result{$key}})
     {
