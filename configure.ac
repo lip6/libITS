@@ -57,6 +57,12 @@ fi
 # we make static libs (use ranlib)
 AC_PROG_RANLIB
 
+# we make shared libs (use libtool)
+LT_INIT
+AC_PROG_LIBTOOL
+AC_LIBTOOL_DLOPEN
+
+
 # we compile C++
 # set Cxx compilation flags to either the value passed in
 # ./configure --cxxflags=
