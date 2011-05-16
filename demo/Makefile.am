@@ -1,5 +1,7 @@
-noinst_PROGRAMS = philoITS
+noinst_PROGRAMS = philoITS tokenITS 
+# tokenITS2
 # ringIPN robinIPN cliservIPN simpleIPN hanoiIPN kanbanIPN
+lib_LTLIBRARIES = libtokens.la
 
 IPNLIBPATH= $(top_builddir)/lib/libITS.a
 
@@ -18,6 +20,20 @@ LDADDFLAGS = $(IPNLIBPATH)  $(LIBDDD_PATH)
 
 philoITS_SOURCES = philo.cpp
 philoITS_LDADD = $(LDADDFLAGS)  
+
+
+tokenITS_SOURCES = token.cpp
+tokenITS_LDADD = $(LDADDFLAGS)  
+
+
+#tokenITS2_SOURCES = token2.cpp
+#tokenITS2_LDADD = $(LDADDFLAGS)  
+
+
+libtokens_la_SOURCES = token2.cpp 
+libtokens_la_LDFLAGS = -module  
+# libtokens_la_LDADD = $(LDADDFLAGS)  
+
 
 #
 #ringIPN_SOURCES = ring.cpp
