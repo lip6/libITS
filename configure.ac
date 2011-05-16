@@ -55,6 +55,12 @@ AC_PROG_RANLIB
 AC_PROG_CXX
 AC_LANG(C++)
 
+# we make shared libs (use libtool)
+LT_INIT
+AC_PROG_LIBTOOL
+AC_LIBTOOL_DLOPEN
+
+
 # compile in C
 AC_PROG_CC
 # use yacc to create parsers
