@@ -4,7 +4,12 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <cstdio>
 #include <fstream>
+
+// DL sym stuff
+#include <dlfcn.h>
+
 
 #include "SDD.h"
 #include "MemoryManager.h"
@@ -37,7 +42,7 @@ namespace its {
 bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   string pathinputff = "";
-  enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF};
+  enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF,DLL,NDLL};
   InputType parse_t = NDEF;
 
   bool hasOrder=false;
@@ -45,6 +50,9 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   bool hasJson = false;
   string pathjsonff;
+
+  // For use in NDLL case
+  int Nsize = -1;
 
   std::vector<const char *> argsleft;
 
@@ -70,6 +78,10 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        parse_t = ITSXML;
      } else if ( !strcmp(argv[i],"ETF") ) {
        parse_t = ETF;
+     } else if ( !strcmp(argv[i],"DLL") ) {
+       parse_t = DLL;
+     } else if ( !strcmp(argv[i],"NDLL") ) {
+       parse_t = NDLL;
      } else {
        cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|ITSXML|ETF} is expected. " << endl; usageInputOptions() ;exit(1);
      }
@@ -155,7 +167,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     {
       model.declareETFType(pathinputff);
       model.setInstance(pathinputff,"main");
-      model.setInstanceState("init");
+      model.setInstanceState("init");      
       break;
     }
   case ITSXML : 
@@ -176,6 +188,44 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
       }
       model.setInstance(pnet->getName(),"main");
       model.setInstanceState("init");
+      break;
+    }
+  case NDLL : {
+    char buff [1024]; // should be enough hopefully for a file name
+    if (sscanf(pathinputff.c_str(),"%d:%s",&Nsize,buff) != 2) {
+      std::cerr << "When using option NDLL, provide an input formatted as : size:library.so \n For instance : -t NDLL -i 20:philos.so"<<  std::endl;
+      exit(1);
+    }
+    pathinputff = buff;
+
+    std::cerr << Nsize << ":" << pathinputff << std::endl;
+
+    // deliberately fall through to DLL case
+  }
+  case DLL :
+    {
+      void *handle;
+      void (*loadModel)(its::ITSModel &,int);
+      char *error;
+
+      
+      
+      handle = dlopen (pathinputff.c_str(), RTLD_LAZY);
+      if (!handle) {
+	fputs (dlerror(), stderr);
+	std::cerr << "\n When providing a DLL input, make sure it is in one of the LD_LIBRARY_PATH folders or in the current directory."<< std::endl;
+	return false;
+      }
+      
+      loadModel = (void (*)(its::ITSModel &,int)) dlsym(handle, "loadModel");
+      if ((error = dlerror()) != NULL)  {
+	fputs(error, stderr);
+	std::cerr << "When providing a DLL input, it should contain a function void (*loadModel)(Model &) " << std::endl;
+	return false;
+      }
+      
+      (*loadModel) (model,Nsize);
+      dlclose(handle);
       break;
     }
   case NDEF :
@@ -215,6 +265,8 @@ void usageInputOptions() {
     cerr<<  "             ROMEO : an XML format (for Time Petri nets) that is the native format of Romeo" <<endl;
     cerr<<  "             ITSXML : a native XML format (for ANY kind of ITS) for this tool. These files allow to point to other files." <<endl;
     cerr<<  "             ETF : Extended Table Format is the native format used by LTSmin, built from many front-ends." <<endl;
+    cerr<<  "             DLL : use a dynamic library that provides a function \"void loadModel (Model &,int)\" typically written using the manipulation APIs. See demo/ folder." <<endl;
+    cerr<<  "             NDLL : same as DLL, but expect input formatted as size:lib.so. See demo/ folder." <<endl;
     cerr<< "\nAdditional Options and Settings:" << endl;
     cerr << "    --load-order path : load the variable order from the file designated by path. This order file can be produced with --dump-order. Note this option is not exclusive of --json-order; the model is loaded as usual, then the provided order is applied a posteriori. \n" ;
     cerr<< "\nPetri net specific options :" << endl;
