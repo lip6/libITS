@@ -7,7 +7,7 @@ noinst_PROGRAMS = its-ltl
 
 if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
-LIBDDD_PATH=$(LIBDDD_ROOT)/libDDD.a
+LIBDDD_PATH=$(LIBDDD_ROOT)/libDDD_d.a
 else
 LIBDDD_LINK=-lddd
 endif
@@ -35,10 +35,10 @@ LIBEXPAT_LINK=-lexpat
 endif
 
 
-AM_CPPFLAGS = $(LIBSPOT_CPP) $(LIBITS_CPP) $(LIBDDD_CPP)  -g -O2 -Wall $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP)
-AM_CXXFLAGS = -g -O2 -Wall
+AM_CPPFLAGS = $(LIBSPOT_CPP) $(LIBITS_CPP) $(LIBDDD_CPP)  -g -O0 -Wall $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP)
+AM_CXXFLAGS = -g -O0 -Wall
 
-LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK)
+LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) 
 
 MYHEADER =apiterator.hh \
 	bczCSD99.hh \
@@ -69,7 +69,7 @@ MYSRC = apiterator.cpp \
 its_ltl_SOURCES = $(MYSRC) $(MYHEADER)
 
 its_ltl_LDADD = $(LDADDFLAGS) 
-
+its_ltl_LDFLAGS = -rdynamic -ldl
 
 #testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
 #testite_LDADD =  $(LDADDFLAGS)
