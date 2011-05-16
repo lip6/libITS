@@ -68,8 +68,15 @@ public :
 
     /** Set an assignment in a state.
      * Effect is, for any contained instance i : state(i) = substate
+     * This is equivalent to calling  createStateDef(state, labels_t(n,substate))
      */
   bool createStateDef (Label state, Label substate);
+
+  /** Set an assignment in a state.
+   * Effect is, for any contained instance i : state(i) = substates[i]
+   */
+  bool createStateDef (Label state, labels_t substates);
+
   /** Sets the state of n instances to the specified substate. */
   //  bool updateStateDef (Label state, int n , Label substate);
 

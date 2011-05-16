@@ -292,19 +292,9 @@ labels_t CircularSetType::getTransLabels () const {
 	Label stname = it->first;
 	// instance number
 	for (size_t i = 0; i < n ; ++i) {
-	  net.updateStateDef (stname , instanceName(i), it->second.getDefault() );
+	  net.updateStateDef (stname , instanceName(i), it->second.getState(i) );
 	}
 
-	// size_t ndefault = it->second.getDefaultStateCard( comp_.size() );
-	// for (  ; i < ndefault ; ++i) { 	  
-	//   net.updateStateDef (stname , instanceName(i), it->second.getDefault() );
-	// }
-	// for (ScalarState::assignments_it assit = it->second.begin() ; assit != it->second.end() ; ++assit ) {
-	//   for (size_t j=0 ; j < assit->second && i < n ; ++j, ++i ) {
-	//     net.updateStateDef (stname , instanceName(i), assit->first );
-	//   }
-	// }
-	// assert ( i ==  comp_.size());
       }
       // Circular set specific handling
       if (const CircularSet * ccomp = getCComp()) {

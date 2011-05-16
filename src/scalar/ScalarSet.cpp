@@ -50,16 +50,23 @@ bool ScalarSet::addDelegator (Label sname, Label slabel, bool isALL){
 }
 
   bool ScalarSet::createStateDef (Label state, Label substate) {
-    labels_t substates = comp_.getType()->getInitStates();
-    if ( find(substates.begin(), substates.end(), substate) == substates.end() ) {
-      std::cerr << "Unknown default instance state " << substate << " when attempting to create a Scalar State " << state << std::endl;
-      return false;
-    }
+    return createStateDef (state, labels_t(size_,substate));
+  }
+
+  bool ScalarSet::createStateDef (Label state, labels_t substates) {
     cstates_t::iterator it = cstates_.find(state);
     if (it == cstates_.end()) {
+
+      labels_t substates_exist = comp_.getType()->getInitStates();
+      for (labels_it substate = substates.begin() ; substate != substates.end() ; ++substate) {
+	if ( find(substates_exist.begin(), substates_exist.end(), *substate) == substates_exist.end() ) {
+	  std::cerr << "Unknown instance state " << *substate << " when attempting to create a Scalar State " << state << std::endl;
+	  return false;
+	}
+      }
       // create a new state
-      ScalarState m(substate);
-      it = cstates_.insert (cstates_t::value_type(state,m)).first;
+      ScalarState m(substates);
+      cstates_.insert (cstates_t::value_type(state,m));
       return true;
     } else {
       std::cerr << "State name " << state << " is already used by existing scalar set state :" ;
