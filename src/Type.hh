@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "Naming.hh"
+#include "Ordering.hh"
 
 #include "SDD.h"
 #include "SHom.h"
@@ -62,7 +63,10 @@ public :
   /** Optional, ok to return true.
    * updates the variable order used in this type */
   virtual bool setVarOrder (labels_t vars) const = 0;
-
+	
+	// also sets to default if currently unset.
+    virtual VarOrder * getVarOrder () const = 0;
+	
   /** Optional, ok to do nothing.
    * prints the variable order used in this type */
   virtual void printVarOrder (std::ostream & os) const = 0;

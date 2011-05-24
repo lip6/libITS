@@ -52,6 +52,10 @@ namespace its {
       locals_ = Transition(GSDD::top);
       return concrete_->setVarOrder(vars); 
     }
+    
+    VarOrder * getVarOrder () const {
+    	return concrete_->getVarOrder();
+    }
     /** Optional, ok to return true.
      * updates the variable order used in this type */
     void printVarOrder (std::ostream & os) const { return concrete_->printVarOrder(os); }

@@ -15,10 +15,10 @@ namespace its {
 	mutable VarOrder * vorder_;
 	// default state label
 	vLabel default_;
-  protected :
+  public :
     // also sets to default if currently unset.
     VarOrder * getVarOrder () const;
-
+  protected:
     // To implement : returns the set of DD variables used
     virtual labels_t getVarSet () const = 0;
   public :
