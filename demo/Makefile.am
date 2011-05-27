@@ -1,7 +1,7 @@
 noinst_PROGRAMS = philoITS tokenITS 
 # tokenITS2
 # ringIPN robinIPN cliservIPN simpleIPN hanoiIPN kanbanIPN
-lib_LTLIBRARIES = libtokens.la
+lib_LTLIBRARIES = libtokens.la libphiloSumo.la
 
 IPNLIBPATH= $(top_builddir)/lib/libITS.a
 
@@ -33,6 +33,9 @@ tokenITS_LDADD = $(LDADDFLAGS)
 libtokens_la_SOURCES = token2.cpp 
 libtokens_la_LDFLAGS = -module  
 # libtokens_la_LDADD = $(LDADDFLAGS)  
+
+libphiloSumo_la_SOURCES = philoSumo.cpp 
+libphiloSumo_la_LDFLAGS = -module  
 
 
 #
