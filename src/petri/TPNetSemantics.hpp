@@ -223,15 +223,16 @@ namespace its {
     else if(d == DDD::null)
       os << "[ " << str << "0 ]"<<std::endl;
     else{
-      if (d.nbsons() == 1 && d.begin()->first == 0) {
-	recPrintDDD(d.begin()->second,os,vo,str);
-      } else {
-	for(GDDD::const_iterator vi=d.begin();vi!=d.end();++vi){
-	  std::stringstream tmp;
-	  tmp << vo.getLabel(d.variable())<<'('<<vi->first<<") ";
-	  recPrintDDD(vi->second,os,vo,str+tmp.str());
-	}
-      }
+      
+		for(GDDD::const_iterator vi=d.begin();vi!=d.end();++vi){
+		  if (vi->first == 0) {
+			recPrintDDD(vi->second,os,vo,str);
+		  } else {
+			std::stringstream tmp;
+			tmp << vo.getLabel(d.variable())<<'('<<vi->first<<") ";
+			recPrintDDD(vi->second,os,vo,str+tmp.str());
+		  }
+		}
     }
   }
 
