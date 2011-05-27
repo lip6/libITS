@@ -29,7 +29,7 @@ public :
 
   ScalarState (labels_t substates): assignments_(substates) {}
 
-  Label getState(int i) const { return assignments_[i] ; }
+  Label getState(unsigned int i) const { if (i < assignments_.size()) return assignments_[i] ;  else return assignments_[0];}
 
   // returns the list of state labels used in this scalar state
   labels_t getSubstates () const {
