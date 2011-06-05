@@ -124,9 +124,9 @@ int main (int argc, char **argv) {
    args.push_back(argv[i]);
  }
 
+ setUsage(&usage);
  // parse command line args to get the options 
  if (! handleInputOptions (args, model) ) {
-   usage();
    return 1;
  }
  // we now should have the model defined.
@@ -135,7 +135,6 @@ int main (int argc, char **argv) {
  bool with_garbage = true;
  // Setup SDD specific settings
  if (!handleSDDOptions (args, with_garbage)) {
-   usage();
    return 1;
  }
 
