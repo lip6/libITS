@@ -96,9 +96,8 @@ void XMLLoader::loadPlaces(void * data, const XML_Char* Elt, const XML_Char** At
 
         pn->addPlace(s.str());
 	// Add place marking to "init", ignore empty markings	
-	if (initialMarking > 0) 
-	  pn->setMarking("init",s.str(),initialMarking);
-	}
+	pn->setMarking("init",s.str(),initialMarking);
+    }
 }
 
 void XMLLoader::loadArcs(void * data, const XML_Char* Elt, const XML_Char** Attr)
