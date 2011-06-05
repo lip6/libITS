@@ -32,6 +32,23 @@ using std::ifstream;
 
 namespace its {
 
+
+
+  static void showUsageBoth() {
+    usageInputOptions();
+    usageSDDOptions();
+  }
+
+  static void (*usageHelp) (void) = &showUsageBoth;
+
+  void setUsage( void (*usage) (void)) {
+    usageHelp = usage;
+  }
+
+  static void showUsageHelp () {
+    (* usageHelp) ();
+  }
+
 /** Consumes the options that are recognized in args, and treats them to build the Model.
  *  Options recognized by this options parser: 
  MANDATORY : -i Inputfile -t {CAMI|PROD|ROMEO|ITSXML|ETF} 
@@ -62,11 +79,11 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     /** INPUT FILE OPTIONS */
    if ( ! strcmp(argv[i],"-i") ) {
      if (++i > argc) 
-       { cerr << "give argument value for input file name please after " << argv[i-1]<<endl; usageInputOptions() ;exit(1);}
+       { cerr << "give argument value for input file name please after " << argv[i-1]<<endl; showUsageHelp() ;exit(1);}
      pathinputff = argv[i];
    } else if ( ! strcmp(argv[i],"-t") ) {
      if (++i > argc) 
-       { cerr << "give argument value for Prod file name please after " << argv[i-1]<<endl; usageInputOptions() ;exit(1);}
+       { cerr << "give argument value for Prod file name please after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
      
      if ( !strcmp(argv[i],"CAMI" ) ) {
        parse_t = CAMI;
@@ -83,18 +100,18 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
      } else if ( !strcmp(argv[i],"NDLL") ) {
        parse_t = NDLL;
      } else {
-       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|ITSXML|ETF} is expected. " << endl; usageInputOptions() ;exit(1);
+       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|ITSXML|ETF} is expected. " << endl;  showUsageHelp() ;exit(1);
      }
 
      /** ORDER FILE OPTIONS */
    } else if ( ! strcmp(argv[i],"--json-order") ) {
      if (++i > argc) 
-       { cerr << "Give a file name containing a JSON variable order definition please after " << argv[i-1]<<endl; usageInputOptions() ;exit(1);}
+       { cerr << "Give a file name containing a JSON variable order definition please after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
      pathjsonff = argv[i];
      hasJson = true;
    } else if ( ! strcmp(argv[i],"--load-order") ) {
      if (++i > argc) 
-       { cerr << "Give a file name containing a variable order definition please after " << argv[i-1]<<endl; usageInputOptions() ;exit(1);}
+       { cerr << "Give a file name containing a variable order definition please after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
      pathorderff = argv[i];
      hasOrder = true;
 
@@ -102,17 +119,17 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
      /** ENCODING STRATEGIES FOR SCALAR SETS */
    } else if (! strcmp(argv[i],"-ssD2") ) {
      if (++i > argc) 
-       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usageInputOptions() ; exit(1);}
+       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl;  showUsageHelp() ; exit(1);}
      int grain = atoi(argv[i]);
      model.setScalarStrategy(DEPTH1,grain);
    }else if (! strcmp(argv[i],"-ssDR") ) {
      if (++i > argc) 
-       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usageInputOptions() ; exit(1);}
+       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl;  showUsageHelp() ; exit(1);}
      int grain = atoi(argv[i]);
      model.setScalarStrategy(DEPTHREC,grain);   
    }else if (! strcmp(argv[i],"-ssDS") ) {
      if (++i > argc) 
-       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl; usageInputOptions() ; exit(1);}
+       { cerr << "give argument value for scalar strategy " << argv[i-1]<<endl;  showUsageHelp() ; exit(1);}
      int grain = atoi(argv[i]);
      model.setScalarStrategy(SHALLOWREC,grain);
 
@@ -133,7 +150,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   if (pathinputff == "") {
       std::cerr << "Please specify input problem with option -i.\n" ;
-      usageInputOptions();
+       showUsageHelp();
       exit(1);
   }
 
@@ -198,7 +215,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
     pathinputff = buff;
 
-    std::cerr << Nsize << ":" << pathinputff << std::endl;
+    //    std::cerr << Nsize << ":" << pathinputff << std::endl;
 
     // deliberately fall through to DLL case
   }
@@ -224,6 +241,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 	return false;
       }
       
+      // NSIZE shoudl simply be ignored as necessary if DLL (instead of NDLL) mode is used.
       (*loadModel) (model,Nsize);
       dlclose(handle);
       break;
@@ -292,18 +310,18 @@ bool handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) {
      with_garbage = false;  
    } else if ( ! strcmp(argv[i],"--gc-threshold") ) {
       if (++i > argc) 
-       { cerr << "give numeric value in Kb for gc-threshold option " << argv[i-1]<<endl; usageSDDOptions() ; return false;}
+       { cerr << "give numeric value in Kb for gc-threshold option " << argv[i-1]<<endl;  showUsageHelp() ; return false;}
       int threshold = atoi(argv[i]);
       MemoryManager::setGCThreshold (threshold);
    } else if ( ! strcmp(argv[i],"--fixpoint") ) {
       if (++i > argc) 
-	{ cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl; usageSDDOptions() ; return false;}
+	{ cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl;  showUsageHelp() ; return false;}
       if (  ! strcmp(argv[i],"DFS")) {
 	Shom::setFixpointStrategy(Shom::DFS);
       } else if  (  ! strcmp(argv[i],"BFS")) {
 	Shom::setFixpointStrategy(Shom::BFS);
       } else {
-	cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl; usageSDDOptions() ; return false;
+	cerr << "Expected one of {DFS|BFS} for fixpoint option :" << argv[i-1]<<endl;  showUsageHelp() ; return false;
       }
       /** LEFTOVER OPTIONS */
    } else {
@@ -319,9 +337,9 @@ bool handleSDDOptions (std::vector<const char *> & argv, bool & with_garbage) {
 
 void usageSDDOptions() {
     cerr << " SDD specific options : " <<endl;
-    cerr<<  "    --no-garbage : disable garbage collection (may be faster, more memory)" <<endl;
-    cerr<<  "    --gc-threshold INT : set the threshold for first starting to do gc [DEFAULT:13000 kB=1.3GB]" <<endl;
-    cerr<<  "    --fixpoint {BFS,DFS} : this options controls which kind of saturation algorithm is applied. Both are variants of saturation not really full DFS or BFS. [default: BFS]" <<endl;    
+    cerr <<  "    --no-garbage : disable garbage collection (may be faster, more memory)" <<endl;
+    cerr <<  "    --gc-threshold INT : set the threshold for first starting to do gc [DEFAULT:13000 kB=1.3GB]" <<endl;
+    cerr <<  "    --fixpoint {BFS,DFS} : this options controls which kind of saturation algorithm is applied. Both are variants of saturation not really full DFS or BFS. [default: BFS]" <<endl;    
 }
 
 

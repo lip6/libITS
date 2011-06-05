@@ -25,6 +25,10 @@ namespace its {
   /** Prints a message on how to use these options on stderr */
   void usageSDDOptions ();
 
+  /** Set a new usage() function for use in case of options misuse. 
+   *  Expected behavior is to print a bunch of help to stderr.
+   */
+  void setUsage( void (*usage) (void));
 }
 
 #endif
