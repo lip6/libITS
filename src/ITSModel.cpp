@@ -12,7 +12,7 @@
 #include "etf/ETFType.hh"
 
 #include "MemoryManager.h"
-//#include "util/dotExporter.h"
+#include "util/dotExporter.h"
 
 #include <iostream>
 #include <sstream>
@@ -136,6 +136,24 @@ SDD ITSModel::computeReachable (bool wGarbage) const {
   }
   return reached_ ;
 }
+
+its::Transition ITSModel::getPredRel () const
+{
+    if (predRel_ == Transition::null) {
+      State reach = computeReachable();
+      Transition rel = getNextRel().invert(reach);
+      bool isExact = ( rel(reach) - reach == State::null );
+      if (isExact) {
+	predRel_ = rel;
+	std::cout << "Reverse transition relation is exact ! Faster fixpoint algorithm enabled. \n" ;
+      } else {
+	predRel_ = rel * reach;
+	std::cout << "Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. \n" ;
+      }
+    }
+    return predRel_;
+}
+
 
 void ITSModel::print (std::ostream & os) const  {
   for (types_it it = types_.begin();
