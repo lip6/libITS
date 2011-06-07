@@ -359,19 +359,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 
 its::Transition CTLChecker::getPredRel () const
 {
-    if (predRel == Transition::null) {
-      State reach = getReachable();
-      Transition rel = model.getNextRel().invert(reach);
-      bool isExact = ( rel(reach) - reach == State::null );
-      if (isExact) {
-	predRel = rel;
-	std::cout << "Reverse transition relation is exact ! Faster fixpoint algorithm enabled. \n" ;
-      } else {
-	predRel = rel * reach;
-	std::cout << "Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. \n" ;
-      }
-    }
-    return predRel;
+  return model.getPredRel();
 }
 
 its::Transition CTLChecker::getNextRel () const
@@ -387,4 +375,8 @@ its::State CTLChecker::getReachable () const {
 its::State CTLChecker::getInitialState () const {
   // this call is cached in ITSModel
   return model.getInitialState();
+}
+
+its::State CTLChecker::getReachableDeadlocks () const {
+  return getReachable() - (getPredRel() ( getReachable()));
 }

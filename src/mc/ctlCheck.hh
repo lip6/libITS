@@ -25,10 +25,8 @@ class CTLChecker {
   typedef ctl_statecache_t::const_iterator ctl_statecache_it;
   mutable ctl_statecache_t ctl_statecache;
 
-  mutable its::Transition predRel;
-
 public :
-  CTLChecker (const its::ITSModel & model) : model(model),predRel(its::Transition::null) {}
+  CTLChecker (const its::ITSModel & model) : model(model) {}
 
   its::Transition getSelectorAP (Label apname, Label value) const;
 
@@ -44,6 +42,7 @@ public :
 
   its::State getInitialState () const;
 
+  its::State getReachableDeadlocks () const;
 };
 
 
