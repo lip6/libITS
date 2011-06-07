@@ -29,6 +29,7 @@ void usage () {
   cerr << "This tool performs CTL verification on state-space of ITS" <<endl;
   cerr << " CTL specific options for  package " << PACKAGE_STRING << endl;
   cerr<<  "    -ctl [CTL formulas file]  MANDATORY : give path to a file containing CTL formulae \n";
+  cerr<<  "    Optionally, if the [CTL formulas file] provided is the string DEADLOCK, the tool will compute and return the number of deadlocks.\n";
   cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
   cerr<<  "    [--backward] to force backward CTL model-checking (classic algorithm from 10^20 states & beyond)\n";
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
@@ -107,11 +108,16 @@ int main (int argc, char ** argv) {
   }
 
 
+  bool doDeadlocks = false;
   array_t *formulaArray = NULL;
   if (pathformff == "") {
     std::cerr << "Please provide an input file containing formulae with -ctl option. \n"<< std::endl;
     usage();
     return 1;
+  } else if ( pathformff == "DEADLOCK" ) {
+    doDeadlocks = true;
+    dofwtranslation = false;
+    dobwtranslation = false;
   } else {
     FILE * fp = fopen(pathformff.c_str(), "r");
     if (fp == NIL(FILE)) {
@@ -144,17 +150,6 @@ int main (int argc, char ** argv) {
   CTLChecker checker (model);
 
   
-  array_t *forwardExistentialArray = NULL;
-  if (dofwtranslation) {
-    std::cout << "Converting to forward existential form..." << std::flush ; 
-    forwardExistentialArray = Ctlp_FormulaArrayConvertToForward(formulaArray, 1, FALSE);
-    std::cout << "Done !" << std::endl;
-  }
-
-  array_t * convertedArray = Ctlp_FormulaArrayConvertToDAG(formulaArray);
-  array_free(formulaArray);
-  array_t * existentialConvertedArray =
-    Ctlp_FormulaDAGConvertToExistentialFormDAG(convertedArray);
   
   
   // Compute reachable states
@@ -167,9 +162,33 @@ int main (int argc, char ** argv) {
   Statistic SS3 = Statistic(reachable, "reachable" , CSV);
   SS3.print_table(std::cout);
   std::cout << "\n\n";
+
+  if (doDeadlocks) {
+    State dead = checker.getReachableDeadlocks();
+    Statistic SSdead = Statistic(dead, "dead" , CSV);
+    SSdead.print_table(std::cout);
+    std::cout << "\n";
+
+    std::cout << "System contains "<< dead.nbStates() << " deadlocks !" << std::endl;    
+    return 0;
+  }
+
   /*
    * Print each original formula and its corresponding converted formula.
    */
+  array_t *forwardExistentialArray = NULL;
+  if (dofwtranslation) {
+    std::cout << "Converting to forward existential form..." << std::flush ; 
+    forwardExistentialArray = Ctlp_FormulaArrayConvertToForward(formulaArray, 1, FALSE);
+    std::cout << "Done !" << std::endl;
+  }
+
+  array_t * convertedArray = Ctlp_FormulaArrayConvertToDAG(formulaArray);
+  array_free(formulaArray);
+  array_t * existentialConvertedArray =
+    Ctlp_FormulaDAGConvertToExistentialFormDAG(convertedArray);
+
+
   for (int i = 0; i < array_n(convertedArray); i++) {
     Ctlp_Formula_t *formula;
 
