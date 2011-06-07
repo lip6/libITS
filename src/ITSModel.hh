@@ -48,6 +48,8 @@ class ITSModel {
 
   // Reachable state space
   mutable State reached_;
+  // Predecessor relation
+  mutable Transition predRel_;
   // initial state(s) label
   vLabel initName_;
   // for memory management
@@ -64,7 +66,7 @@ protected :
   
 public :
   // default constructor
-  ITSModel () : model_(NULL),reached_(State::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1) {};
+  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1) {};
   // quite a bit of cleanup necessary given the use of pointers...
   ~ITSModel () ;
 
@@ -122,6 +124,9 @@ public :
   // returns the "Next" relation, i.e. exactly one step of the transition relation.
   // tests for presence of "elapse" transition.
   Transition getNextRel () const ;
+  // returns the predecessor relationship, i.e. exactly one step backward of the transition relation.
+  // This function uses the set of reachable states and the NextRel to compute the reverse transition relation.
+  Transition getPredRel () const ;
   // returns the full reachable state space of the system from the initial state(s)
   // also caches result. Optional parameter to deactivate garbage collection.
   State computeReachable (bool wGarbage=true) const;
@@ -132,7 +137,7 @@ public :
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   Transition getPredicate (Label predicate) const { return getInstance()->getType()->getPredicate(predicate); }
-
+  
 
   // semi private function used in Scalar sandboxes
   void cloneType (pType type) { int n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }
