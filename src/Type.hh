@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 #include "Naming.hh"
 #include "Ordering.hh"
 
@@ -77,6 +78,14 @@ public :
    *  Watch out, do not call on large its::State (>10^6). */
   virtual void printState (State s, std::ostream & os) const = 0;
 
+
+  typedef std::pair<vLabel,Transition> namedTr_t;
+  typedef std::list<namedTr_t> namedTrs_t;
+  typedef namedTrs_t::const_iterator named_Trs_it;
+  /** Return the set of local transitions, with their name, useful for diplaying.*
+   * Used in witness trace/counter example construction scenarios.
+   **/
+  virtual void getNamedLocals (namedTrs_t & ntrans) const = 0;
 };
 
 typedef const Type * pType;
