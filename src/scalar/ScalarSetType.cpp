@@ -70,7 +70,7 @@ labels_t ScalarSetType::getTransLabels () const {
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition ScalarSetType::getPredicate (Label predicate) const {
+  Transition ScalarSetType::getAPredicate (Label predicate) const {
     
     // Step 1 : parse the predicate index up to "."
     const char * pred = predicate.c_str();
