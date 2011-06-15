@@ -91,6 +91,24 @@ Transition CompositeType::getLocals () const {
     return GSDD::null;
 }
 
+
+  /** Return the set of local transitions, with their name, useful for diplaying.*
+   * Used in witness trace/counter example construction scenarios.
+   **/
+  void CompositeType::getNamedLocals (namedTrs_t & locals) const {
+    for ( Composite::syncs_it it = comp_.syncs_begin() ; it != comp_.syncs_end(); ++it ) {
+      if (it->getLabel() == "") {
+	locals.push_back(namedTr_t(it->getName(),getFullShom(*it)));
+      }
+    }
+    /** add subnet locals */
+    const VarOrder * vo =  getVarOrder();    
+    for ( Composite::comps_it it = comp_.comps_begin() ; it != comp_.comps_end() ; ++it ) {
+      locals.push_back(namedTr_t(it->getName()+".locals",  localApply(it->getType()->getLocals(), vo->getIndex(it->getName()))));
+    }
+    
+  }
+
 /** Successors synchronization function : Bag(T) -> SHom.
  * The collection represented by the iterator should be a multiset
  * of transition labels of this type (as obtained through getTransLabels()).
@@ -148,7 +166,7 @@ State CompositeType::getState(Label stateLabel) const {
 }
 
 
-Transition CompositeType::getPredicate (Label predicate) const {
+Transition CompositeType::getAPredicate (Label predicate) const {
   // The predicate should respect the grammar : varName "." .*
   // Where varName is an instance name such as found in getVariableSet(), getVarOrder()
   // "." is the namespace separator and .* represents any sequence of characters. 
