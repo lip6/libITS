@@ -137,10 +137,16 @@ SDD ITSModel::computeReachable (bool wGarbage) const {
   return reached_ ;
 }
 
-its::Transition ITSModel::getPredRel () const
+its::Transition ITSModel::getPredRel (State reach_envelope) const
 {
-    if (predRel_ == Transition::null) {
-      State reach = computeReachable();
+
+  if (predRel_ == Transition::null || reach_envelope != State::null) {
+      State reach;
+      if (reach_envelope==State::null) {
+	reach = computeReachable();
+      } else {
+	reach = reach_envelope;
+      }
       Transition rel = getNextRel().invert(reach);
       bool isExact = ( rel(reach) - reach == State::null );
       if (isExact) {
@@ -150,8 +156,86 @@ its::Transition ITSModel::getPredRel () const
 	predRel_ = rel * reach;
 	std::cout << "Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. \n" ;
       }
+      if (reach_envelope != State::null) {
+	// Don't cache !
+	Transition toret = predRel_;
+	predRel_=Transition::null;
+	return toret;
+      }
     }
     return predRel_;
+}
+
+  labels_t ITSModel::findPath (State init, State toreach, State reach) const {
+    
+    typedef std::list<State> rev_t;
+    typedef rev_t::const_iterator rev_it;
+    rev_t revcomponents;
+
+    labels_t witness;
+    State M2,M3;
+    M3 = toreach;
+
+    revcomponents.push_front(toreach);
+    // Reverse construct path to init from toreach
+    Transition revTrans = getPredRel(reach);
+    while (true) {
+      M2 = State::null;
+    
+      M2 = revTrans (M3);
+//      for (vector<Shom>::const_iterator it = reverseRelation.begin(); it != reverseRelation.end(); it++) {
+//        M2 = M2 + ( ((*it) (M3))  * ss );
+//      }
+
+    // should not happen if the states searched for are rechable by the transition relation
+      if (M2 == State::null) {
+	std::cerr << "Unexpected empty predecessor set for step : " <<std::endl;
+	getInstance()->getType()->printState(M3,std::cerr);
+	std::cerr << "returning empty witness path."<< std::endl;
+	return witness;
+      }//assert(M2 != GSDD::null);
+
+    if (init * M2 == GSDD::null) {
+      revcomponents.push_front(M2);
+//       cerr << "Backward steps : "<<  revcomponents.size() << endl ;
+//       cerr << "Current step-set size : "<< M2.nbStates() << endl;
+//       MemoryManager::garbage();
+      M3 = M2;
+    } else {
+      break;
+    }
+  } 
+    cerr << "Length of minimal path(s) :" << revcomponents.size() <<endl;
+
+  // Forward construction of witness
+
+    State Mi = init;
+    State Mi_next;
+    Type::namedTrs_t namedTrs;
+    getInstance()->getType()->getNamedLocals(namedTrs);
+
+    for ( rev_it comp= revcomponents.begin();comp != revcomponents.end(); comp++) {
+      for (Type::named_Trs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+	Mi_next = ((it->second) (Mi)) * (*comp) ;
+	if ( Mi_next != State::null) {
+	  // transition matches 
+	  witness.push_back(it->first);
+	  Mi = Mi_next;
+	  // 	cerr << "ForwardSteps : " <<witness.size() <<endl;
+	  // 	MemoryManager::garbage();
+	  break;
+	}
+      }
+    }
+
+//   cerr << "Witness path :" << endl;
+//   for (vector<int>::iterator it = witness.begin(); it != witness.end() ; it++) {
+//     cerr << "t_" <<*it << "   " ;
+//   }
+//   cerr << endl;
+
+  return witness;
+
 }
 
 
