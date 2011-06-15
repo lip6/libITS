@@ -90,6 +90,19 @@ public :
       return GShom(GSDD::null);
   }
 
+  void getNamedLocals (namedTrs_t & locals) const {
+    const VarOrder & vo = *getVarOrder();
+    for ( PNet::trans_it it = net_.transitions_begin() ; it != net_.transitions_end(); ++it ) {
+      if (it->getVisibility() == PRIVATE) {
+	Transition ht = getTransitionHom (*it,vo);
+	if (! ht.is_selector()) 
+	  ht = getResetDisabled() & ht ;
+	locals.push_back(namedTr_t(it->getName(),ht));
+      }
+    }
+  }
+
+
   virtual HomType getTransitionEnabler (const PTransition & t, const VarOrder & vo) const {
     return  Semantics::getEnablerHom(t, vo) ;
   }
@@ -141,7 +154,7 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition getPredicate (Label predicate) const {
+  Transition getAPredicate (Label predicate) const {
     // The predicate should respect the grammar : varName (=|>|<|>=|<=|<|!=) value
     // Where varName is a place or a transition (hence designating its clock) such as found in getVariableSet(), getVarOrder()
     // and value is an integer
