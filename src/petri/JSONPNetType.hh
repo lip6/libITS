@@ -39,6 +39,11 @@ public :
   /** Local transitions */
   Transition getLocals () const {  return getConcrete()->getLocals() ;}
 
+  /** Return the set of local transitions, with their name, useful for diplaying.*
+   * Used in witness trace/counter example construction scenarios.
+   **/
+  void getNamedLocals (namedTrs_t & ntrans) const { getConcrete()->getNamedLocals(ntrans); }
+
   /** Successors synchronization function : Bag(T) -> SHom.
    * The collection represented by the iterator should be a multiset
    * of transition labels of this type (as obtained through getTransLabels()).
@@ -67,7 +72,7 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition getPredicate (Label predicate) const { return getConcrete()->getPredicate(predicate); }
+  Transition getAPredicate (Label predicate) const { return getConcrete()->getPredicate(predicate); }
 
   
 };
