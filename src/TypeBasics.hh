@@ -39,6 +39,19 @@ namespace its {
     bool setDefaultState (Label def);
     
     // succs, getState, locals left pure virtual
+
+    /** The state predicate function : string p -> SHom.
+     *  returns a selector homomorphism that selects states verifying the predicate 'p'.
+     *  The syntax of the predicate is left to the concrete type realization.
+     *  The only constraint is that the character '.' is used as a namespace separator
+     *  and should not be used in the concrete predicate syntax.
+     *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
+    Transition getPredicate (Label predicate) const ;
+
+    /** Called by getPredicate above, which handles boolean conjunction and disjunction.*
+     *  Stands for getAtomicPredicate. */
+    virtual Transition getAPredicate (Label predicate) const = 0;
+
   } ;
 
 
