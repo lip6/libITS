@@ -34,8 +34,14 @@ namespace its {
     }
 
     /** This function is not relevant for TGBA implementation (afaics currently) */
-    its::Transition getPredicate(const std::string&) const 
+    its::Transition getAPredicate(const std::string&) const 
     { return its::Transition::id; }
+
+    /** Return the set of local transitions, with their name, useful for displaying.*
+     * Used in witness trace/counter example construction scenarios.
+     **/
+    void getNamedLocals (namedTrs_t & ntrans) const { return ; }
+
 
     /** the set InitStates of designated initial states */
     labels_t getInitStates () const {
