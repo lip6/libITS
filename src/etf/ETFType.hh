@@ -60,14 +60,17 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition getPredicate (Label predicate) const ;
+  Transition getAPredicate (Label predicate) const ;
 
 
   /* delegated */
   std::ostream & print (std::ostream & os) const {  return os; /* return comp_.print(os); */  }  
 
   void printState (State s, std::ostream & os) const;
-  
+    /** Return the set of local transitions, with their name, useful for diplaying.*
+   * Used in witness trace/counter example construction scenarios.
+   **/
+  void getNamedLocals (namedTrs_t & ntrans) const ;
   
   Label getName() const { return name; }
 

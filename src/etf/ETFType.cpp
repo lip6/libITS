@@ -148,7 +148,14 @@ State EtfType::getState(Label stateLabel) const {
 }
 
 
-Transition EtfType::getPredicate (Label predicate) const {
+ /** Return the set of local transitions, with their name, useful for diplaying.*
+   * Used in witness trace/counter example construction scenarios.
+   **/
+  void EtfType::getNamedLocals (namedTrs_t & ntrans) const {
+    ntrans.push_back(namedTr_t("ETF edges",getLocals()));
+  }
+
+Transition EtfType::getAPredicate (Label predicate) const {
   // The predicate should respect the grammar : varName "=" .*
   // NB : NO whitespace allowed anywhere in the predicate string, or they will be parsed as part of identifiers.
   // Where varName is an instance name such as found in getVariableSet(), getVarOrder()
