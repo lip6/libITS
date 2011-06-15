@@ -82,6 +82,7 @@ namespace its {
     
     void visit (class TypeVisitor * visitor) const { concrete_->visit(visitor); }
 
+    void getNamedLocals (namedTrs_t & ntrans) const { concrete_->getNamedLocals(ntrans); }
   };
 
 }
