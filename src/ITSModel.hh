@@ -59,6 +59,9 @@ class ITSModel {
   scalarStrategy scalarStrat_;
   int scalarParam_;
 
+  /** return the time elapse transition or Transition::id if untimed model. */
+  Transition getElapse () const ;
+
 protected :
   // add a type to the type declarations
   // returns false if the type name already exists
