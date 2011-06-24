@@ -35,7 +35,7 @@ static std::string modelName = "";
 static int BMC = -1;
 
 
-void exhibitModel (ITSModel & model) {
+State exhibitModel (ITSModel & model) {
 	// pretty print the model for inspection
   if (! beQuiet) {
     std::cout << "Model in internal textual format :" << std::endl;
@@ -79,6 +79,7 @@ void exhibitModel (ITSModel & model) {
   // Export the SDD of final states to dot : generates files final.dot and d3final.dot
   if (dodotexport)
     exportDot(reachable,pathdotff);
+  return reachable;
 }
 
 
@@ -91,6 +92,7 @@ void usage() {
   cerr<<  "    -d path : specifies the path prefix to construct dot state-space graph" <<endl;
   cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
+  cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -138,6 +140,7 @@ int main (int argc, char **argv) {
    return 1;
  }
 
+ vLabel reachExpr="";
  
  argc = args.size();
  for (int i=0;i < argc; i++) {
@@ -154,6 +157,10 @@ int main (int argc, char **argv) {
      usage(); exit(0);
    } else if (! strcmp(args[i],"--quiet")   ) {
      beQuiet = true;
+   } else if (! strcmp(args[i],"-reachable") ) {
+     if (++i > argc) 
+       { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
+     reachExpr = args[i];
    } else if (! strcmp(args[i],"--dump-order")   ) {
      if (++i > argc) 
        { cerr << "give path value for dump-order " << args[i-1]<<endl; usage() ; exit(1);}
@@ -166,7 +173,25 @@ int main (int argc, char **argv) {
  
  
 	
- exhibitModel(model);
+ State reachable = exhibitModel(model);
+
+ if (reachExpr != "") {
+   Transition predicate = model.getPredicate(reachExpr);
+   State verify = predicate (reachable);
+
+   if (verify == State::null) {
+     std::cout << "There are no reachable states that satisfy your predicate : " << reachExpr <<std::endl;
+   } else {
+     std::cout << "There are " << verify.nbStates() << " reachable states that satisfy your predicate : " << reachExpr <<std::endl;
+     std::cout << "computing trace..." <<endl;
+     labels_t path = model.findPath(model.getInitialState(), verify, reachable);
+     for (labels_it it = path.begin() ; it != path.end() ; ++it) {
+       std::cout << *it << "  ";
+     }
+     std::cout << std::endl;
+   }
+
+ }
 
  return 0;
 }
