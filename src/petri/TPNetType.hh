@@ -20,7 +20,7 @@ namespace its {
       // Add a clock for each timed transition
       labels_t cnames ;
       for (PNet::trans_it it = this->net_.transitions_begin() ; it != this->net_.transitions_end(); ++it ) {
-	if (it->isTimed())
+	if (it->isTimed() && it->getClock().lft!=0)
 	  cnames.push_back(TPNet::clockName(*it));
       }
       cnames.insert(cnames.end(),pnames.begin(),pnames.end());
@@ -34,7 +34,7 @@ namespace its {
  	for ( TPNet::trans_it it = this->net_.transitions_begin() ; it != this->net_.transitions_end(); ++it ) {
  	  // now consider local enablign conditions for public transitions
  	  if (true || it->getVisibility() == PRIVATE) {
- 	    if ( it->isTimed() ) {	      
+ 	    if ( it->isTimed() && it->getClock().lft!=0) {	      
 	      int cvar = vo->getIndex( TPNet::clockName(*it) );
  	      // Case 2 : Time step
  	      // Case 2.1 : t disabled, do a reset
@@ -102,7 +102,16 @@ namespace its {
  	for ( TPNet::trans_it it = this->net_.transitions_begin() ; it != this->net_.transitions_end(); ++it ) {
  	  // now consider local enablign conditions for public transitions
  	  if (true || it->getVisibility() == PRIVATE) {
- 	    if ( it->isTimed() ) {	      
+ 	    if (it->getClock().lft == 0) {
+	      HomType timet = ITE (Semantics::getEnablerHom(*it,*vo), 
+				   Semantics::getIncr (it->getClock(), 0),
+				   HomType::id );
+	      // Add this to the global elapse synchronization
+ 	      elapse = elapse & timet;
+ 
+// 	      std::cerr << "Added " << it->getName() << " " << timet << std::endl;
+// 	      std::cerr << "Obtained " << elapse << std::endl;
+	    } else if ( it->isTimed() ) {	      
 	      int cvar = vo->getIndex( TPNet::clockName(*it) );
  	      // Case 2 : Time step
  	      // Case 2.1 : t disabled, do a reset
