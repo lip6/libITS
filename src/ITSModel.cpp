@@ -98,20 +98,29 @@ bool ITSModel::setInstanceState (Label stateName) {
   return false;
 }
 
-  // returns the "Next" relation, i.e. exactly one step of the transition relation.
-  // tests for presence of "elapse" transition.
-  Transition ITSModel::getNextRel () const {
-    Shom trans = getInstance()->getType()->getLocals();
 
+  Transition ITSModel::getElapse () const {
     /** handle the possibility of timed models with an elapse to make private at top level instance level */
     labels_t totest = getInstance()->getType()->getTransLabels();
     if ( find(totest.begin(),totest.end(),"elapse") != totest.end() ) {
       labels_t tau;
       tau.push_back("elapse");
-      Shom elapse = getInstance()->getType()->getSuccs(tau);
+      Transition elapse = getInstance()->getType()->getSuccs(tau);
       // Huh, no time constraints ?? Forget about time then.
-      if ( elapse != Transition::id )
-	trans = trans + elapse;
+      return elapse;
+    } else { 
+      return Transition::id;
+    }
+  }
+
+  // returns the "Next" relation, i.e. exactly one step of the transition relation.
+  // tests for presence of "elapse" transition.
+  Transition ITSModel::getNextRel () const {
+    Transition trans = getInstance()->getType()->getLocals();
+
+    Transition elapse = getElapse(); 
+    if (elapse != Transition::id) {
+      return trans + elapse;
     }
     return trans;
   }
@@ -124,7 +133,20 @@ SDD ITSModel::computeReachable (bool wGarbage) const {
     
     // top-level = true for garbage collection
     Transition transrel = fixpoint(trans+GShom::id,wGarbage);
+
+
+    /** This block of commented code implements the "new" states fixpoint loop */
 //     std::cout << transrel << std::endl;
+//     State M1 = M0;
+//     State M2 = M1;
+//     while (M2 != State::null) {
+//       std::cout << "Step :" << std::endl;
+//       getInstance()->getType()->printState(M2,std::cout);
+//       State news = trans(M2);
+//       M2 = news - M1;
+//       M1 = M1 + news;
+//     }
+    
 
     reached_ = transrel (M0);
 
@@ -213,18 +235,38 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     State Mi_next;
     Type::namedTrs_t namedTrs;
     getInstance()->getType()->getNamedLocals(namedTrs);
+    
+    /** add elapse if necessary */
+    Transition elapse = getElapse(); 
+    if (elapse != Transition::id) {
+      namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
+    }
 
-    for ( rev_it comp= revcomponents.begin();comp != revcomponents.end(); comp++) {
+
+    for ( rev_it comp= revcomponents.begin();comp != revcomponents.end(); ++comp) {
+      bool ok = false;
       for (Type::named_Trs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
 	Mi_next = ((it->second) (Mi)) * (*comp) ;
 	if ( Mi_next != State::null) {
 	  // transition matches 
+// 	  std::cout << " Using : " << it->first << endl; 
+// 	  std::cout << "Reached :" ;
+// 	  getInstance()->getType()->printState(Mi_next, std::cout);
 	  witness.push_back(it->first);
 	  Mi = Mi_next;
 	  // 	cerr << "ForwardSteps : " <<witness.size() <<endl;
 	  // 	MemoryManager::garbage();
+	  ok = true;
 	  break;
 	}
+      }
+      if (! ok) {
+	std::cout << "No transition found to progress in witness path construction. Something is wrong with the transition relation extraction." <<endl;
+	std::cout << "Was trying transitions :" <<endl;
+	for (Type::named_Trs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+	  std::cout << it->first << " ,";
+	}
+	std::cout <<endl;
       }
     }
 
