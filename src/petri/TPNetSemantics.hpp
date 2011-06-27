@@ -280,6 +280,10 @@ namespace its {
   template<>
   inline void dddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
     // should have a single variable, hence a single arc with a DDD label
+    if (s==State::null) {
+      os << "EmptySet";
+      return;
+    }
     assert(s.begin() != s.end());
     assert(s.begin()->second == State::one);
     DDD state = (const DDD &) * s.begin()->first;
