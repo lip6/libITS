@@ -201,10 +201,15 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     revcomponents.push_front(toreach);
     // Reverse construct path to init from toreach
     Transition revTrans = getPredRel(reach);
+    int step =0;
     while (true) {
       M2 = State::null;
     
       M2 = revTrans (M3);
+      // USEFUL DEBUG TRACES
+//       std::cerr << "step " << step++ <<  "  nbstates " << M2.nbStates() <<  endl;
+//       getInstance()->getType()->printState(M2,std::cerr);
+
 //      for (vector<Shom>::const_iterator it = reverseRelation.begin(); it != reverseRelation.end(); it++) {
 //        M2 = M2 + ( ((*it) (M3))  * ss );
 //      }
@@ -214,6 +219,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	std::cerr << "Unexpected empty predecessor set for step : " <<std::endl;
 	getInstance()->getType()->printState(M3,std::cerr);
 	std::cerr << "returning empty witness path."<< std::endl;
+	std::cerr << "Was working with reverse transition :\n" << revTrans << endl;
+	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
 	return witness;
       }//assert(M2 != GSDD::null);
 
@@ -222,6 +229,13 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 //       cerr << "Backward steps : "<<  revcomponents.size() << endl ;
 //       cerr << "Current step-set size : "<< M2.nbStates() << endl;
 //       MemoryManager::garbage();
+      if (M3 == M2) {
+	cerr << "Error detected while attempting to build trace. Your model admits identity as single enabled transition, which should not happen since the state is reachable by forward transition." << endl;
+	std::cerr << "Returning empty witness path."<< std::endl;
+	std::cerr << "Was working with reverse transition :\n" << revTrans << endl;
+	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
+	return witness;
+      }
       M3 = M2;
     } else {
       break;
