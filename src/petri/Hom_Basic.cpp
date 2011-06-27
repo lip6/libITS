@@ -143,8 +143,9 @@ public:
     return GHom(vr, vl, GHom(this)); 
   }
 
-  GHom invert (const GDDD & pot) const { 
+  GHom invert (const GDDD & potall) const { 
     std::set<GHom> sum;
+    GDDD pot = computeDomain(var,potall);
     for (GDDD::const_iterator it = pot.begin() ; it != pot.end() ; ++it ) {
       sum.insert ( setVarConst(var,it->first) );
     }
