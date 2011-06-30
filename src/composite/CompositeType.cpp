@@ -102,10 +102,28 @@ Transition CompositeType::getLocals () const {
       }
     }
     /** add subnet locals */
+    // if detailed, recurse in nested types, else just make one event labeled "iname.locals"
+    bool detailed = true;
     const VarOrder * vo =  getVarOrder();    
-    for ( Composite::comps_it it = comp_.comps_begin() ; it != comp_.comps_end() ; ++it ) {
-      locals.push_back(namedTr_t(it->getName()+".locals",  localApply(it->getType()->getLocals(), vo->getIndex(it->getName()))));
+    
+    if (!detailed) {
+      for ( Composite::comps_it it = comp_.comps_begin() ; it != comp_.comps_end() ; ++it ) {
+	locals.push_back(namedTr_t(it->getName()+".locals",  localApply(it->getType()->getLocals(), vo->getIndex(it->getName()))));
+      }
+    } else { 
+      // detailed
+
+      for ( Composite::comps_it it = comp_.comps_begin() ; it != comp_.comps_end() ; ++it ) {
+	namedTrs_t loc_t;
+	it->getType()->getNamedLocals(loc_t);      
+	int varindex =  vo->getIndex(it->getName());
+	vLabel iname = it->getName()+".";
+	for (namedTrs_it jt=loc_t.begin() ; jt != loc_t.end() ; ++jt) {
+	  locals.push_back(namedTr_t(iname + jt->first , localApply(jt->second, varindex)));
+	}
+      }      
     }
+      
     
   }
 
