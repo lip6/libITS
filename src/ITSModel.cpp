@@ -259,7 +259,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 
     for ( rev_it comp= revcomponents.begin();comp != revcomponents.end(); ++comp) {
       bool ok = false;
-      for (Type::named_Trs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+      for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
 	Mi_next = ((it->second) (Mi)) * (*comp) ;
 	if ( Mi_next != State::null) {
 	  // transition matches 
@@ -277,7 +277,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       if (! ok) {
 	std::cout << "No transition found to progress in witness path construction. Something is wrong with the transition relation extraction." <<endl;
 	std::cout << "Was trying transitions :" <<endl;
-	for (Type::named_Trs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+	for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
 	  std::cout << it->first << " ,";
 	}
 	std::cout <<endl;

@@ -81,7 +81,7 @@ public :
 
   typedef std::pair<vLabel,Transition> namedTr_t;
   typedef std::list<namedTr_t> namedTrs_t;
-  typedef namedTrs_t::const_iterator named_Trs_it;
+  typedef namedTrs_t::const_iterator namedTrs_it;
   /** Return the set of local transitions, with their name, useful for diplaying.*
    * Used in witness trace/counter example construction scenarios.
    **/
