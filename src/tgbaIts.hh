@@ -158,6 +158,10 @@ namespace its {
       return State(DEFAULT_VAR, DDD(0, 1 ));
     }
 
+    State getPotentialStates (State reachable) const {
+      return reachable ;
+    }
+
     /** Use delegation on net_ */
     Label getName() const {
       return name_;
