@@ -51,6 +51,11 @@ public :
 	 * */
 	Transition getSuccs (const labels_t & tau) const ;
 
+  /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
+   *  Uses the provided "reachable" states to compute the variable domains. */
+  State getPotentialStates(State reachable) const;
+
+
 	/** To obtain a representation of a labeled state */
 	State getState(Label stateLabel) const ;
 

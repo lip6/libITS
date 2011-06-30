@@ -83,6 +83,10 @@ namespace its {
     void visit (class TypeVisitor * visitor) const { concrete_->visit(visitor); }
 
     void getNamedLocals (namedTrs_t & ntrans) const { concrete_->getNamedLocals(ntrans); }
+
+    /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
+     *  Uses the provided "reachable" states to compute the variable domains. */
+    State getPotentialStates(State reachable) const { return concrete_->getPotentialStates(reachable); }
   };
 
 }

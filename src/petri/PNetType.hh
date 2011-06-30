@@ -227,6 +227,10 @@ public :
     return Semantics::encapsulate( Semantics::getHom ( foo, index, value) );
   }
 
+  /** To obtain a representation of a labeled state */
+  State getPotentialStates(State reachable) const {
+    return Semantics::getPotentialStates (reachable, *getVarOrder());
+  }
 
 
   /** To obtain a representation of a labeled state */

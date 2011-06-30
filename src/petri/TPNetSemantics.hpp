@@ -160,6 +160,8 @@ namespace its {
     
     static GSDD getState (const Marking &m, const VarOrder & vo) ;
 
+    static State getPotentialStates (State reachable, const VarOrder & vo) ;
+
     static GShom encapsulate (const HomType & h);
 
     static void printState (State s, std::ostream & os, const VarOrder & vo) ;
@@ -213,6 +215,35 @@ namespace its {
     return getMarking(m,vo);
   }
 
+  template <>
+  inline State sddSemantics::getPotentialStates (State reachable, const VarOrder & vo) {
+      // converting to DDD first
+      NodeType M0 = NodeType::one;
+      // each place = one var as indicated by getPorder
+      for (size_t i=0 ; i < vo.size() ; ++i) {
+	// retrieve the appropriate place marking
+	State dom = extractPotential(i) (reachable);
+	// left concatenate to M0
+	M0 = dom ^ M0;
+      }
+      return M0;     
+  }
+
+  template <>
+  inline State dddSemantics::getPotentialStates (State reachable, const VarOrder & vo) {
+      // converting to DDD first
+      NodeType M0 = NodeType::one;
+      const DDD * reach = (const DDD * ) reachable.begin()->first ;
+      // each place = one var as indicated by getPorder
+      for (size_t i=0 ; i < vo.size() ; ++i) {
+	// retrieve the appropriate place marking
+	NodeType dom = computeDomain (i,*reach);
+	// left concatenate to M0
+	M0 = dom ^ M0;
+      }
+      return GSDD( DEFAULT_VAR , DDD(M0));         
+  }
+  
 
 
   static void recPrintDDD (const GDDD & d, std::ostream & os, const VarOrder & vo, vLabel str) {

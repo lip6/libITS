@@ -53,6 +53,13 @@ public :
   
   /** To obtain a representation of a labeled state */
   State getState(Label stateLabel) const  {  return getConcrete()->getState(stateLabel) ;};
+
+    /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
+   *  Uses the provided "reachable" states to compute the variable domains. */
+  State getPotentialStates(State reachable) const {
+    return getConcrete()->getPotentialStates(reachable);
+  }
+
   
   /* delegated */
   std::ostream & print (std::ostream & os) const { return net_.print(os); }  

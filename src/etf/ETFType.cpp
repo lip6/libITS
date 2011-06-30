@@ -147,6 +147,17 @@ State EtfType::getState(Label stateLabel) const {
   return element;
 }
 
+State EtfType::getPotentialStates(State reachable) const {
+  int N=lts_type_get_state_length(ltstype);  
+
+  GSDD element = SDD::one;
+  for (int i = 0 ; i < N ; i++)
+    element = (extractPotential(i) (reachable))  ^ element;
+  
+  return element;
+  
+}
+
 
  /** Return the set of local transitions, with their name, useful for diplaying.*
    * Used in witness trace/counter example construction scenarios.

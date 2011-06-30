@@ -184,6 +184,27 @@ State CompositeType::getState(Label stateLabel) const {
 }
 
 
+  /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
+   *  Uses the provided "reachable" states to compute the variable domains. */
+  State CompositeType::getPotentialStates(State reachable) const {
+    GSDD M0 = State::one;
+    // each place = one var as indicated by getPorder
+    for (size_t i=0 ; i < getVarOrder()->size() ; ++i) {
+      State pot = extractPotential(i) (reachable);
+      const DataSet * vals = pot.begin()->first;
+
+      Label subname = getVarOrder()->getLabel(i);
+      // retrieve the instance specification
+      Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
+
+      State edgepot = instance->getType()->getPotentialStates( * ((const SDD *) vals) );
+      // left concatenate to M0
+      M0 = GSDD(i,edgepot)  ^ M0;
+    }
+    return M0;
+  }
+
+
 Transition CompositeType::getAPredicate (Label predicate) const {
   // The predicate should respect the grammar : varName "." .*
   // Where varName is an instance name such as found in getVariableSet(), getVarOrder()

@@ -58,6 +58,10 @@ public :
 	/** To obtain a representation of a labeled state */
     virtual State getState(Label stateLabel) const = 0;
 
+  /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
+   *  Uses the provided "reachable" states to compute the variable domains. */
+  virtual State getPotentialStates(State reachable) const = 0;
+
   /** Allow to visit the underlying type definition */
   virtual void visit (class TypeVisitor * visitor) const = 0;
 

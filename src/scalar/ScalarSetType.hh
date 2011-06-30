@@ -92,6 +92,11 @@ public :
 
   virtual void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Scalar Set" << std::endl; }
 
+  /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
+   *  Uses the provided "reachable" states to compute the variable domains. */
+  State getPotentialStates(State reachable) const {
+    return getConcrete()->getPotentialStates(reachable);
+  }
     /** Allow to visit the underlying type definition */
   void visit (class TypeVisitor * visitor) const {
     visitor->visitScalar(getComp());
