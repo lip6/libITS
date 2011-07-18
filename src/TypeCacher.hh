@@ -87,6 +87,18 @@ namespace its {
     /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
      *  Uses the provided "reachable" states to compute the variable domains. */
     State getPotentialStates(State reachable) const { return concrete_->getPotentialStates(reachable); }
+
+    /** Return a Transition that maps states to their observation class.
+     *  Observation class is based on the provided set of observed variables, 
+     *  in standard "." separated qualified variable names. 
+     *  The returned Transition replaces the values of non-observed variables
+     *  by their domain.
+     **/ 
+    Transition observe (labels_t obs, State potential) const {
+      return  concrete_->observe(obs, potential);
+    }
+
+
   };
 
 }
