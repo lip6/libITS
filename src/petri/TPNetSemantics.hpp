@@ -266,6 +266,10 @@ namespace its {
    **/ 
   template <>
   inline Transition dddSemantics::observe (labels_t obs, State potential, const VarOrder & vo) {
+    if (obs.empty()) {
+      return potential;
+    }
+
     its::vars_t obs_index;
     obs_index.reserve(obs.size());
     // each place = one var as indicated by varOrder
@@ -290,6 +294,9 @@ namespace its {
    **/ 
   template <>
   inline Transition sddSemantics::observe (labels_t obs, State potential, const VarOrder & vo) {
+    if (obs.empty()) {
+      return potential ;
+    }
     GShom h = GShom::id;
 
     // each place = one var as indicated by varOrder
