@@ -7,6 +7,9 @@
 #include "Hom_Basic.hh"
 #include "Hom_PlaceArcs.hh"
 #include "PTransition.hh"
+#include "Observe_Hom.hh"
+
+#include <algorithm>
 
 namespace its {
 
@@ -160,7 +163,18 @@ namespace its {
     
     static GSDD getState (const Marking &m, const VarOrder & vo) ;
 
+    /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
+     *  Uses the provided "reachable" states to compute the variable domains. */
     static State getPotentialStates (State reachable, const VarOrder & vo) ;
+
+    /** Return a Transition that maps states to their observation class.
+     *  Observation class is based on the provided set of observed variables, 
+     *  in standard "." separated qualified variable names. 
+     *  The returned Transition replaces the values of non-observed variables
+     *  by their domain.
+     **/ 
+    static Transition observe (labels_t obs, State potential, const VarOrder & vo) ;
+    
 
     static GShom encapsulate (const HomType & h);
 
@@ -244,6 +258,59 @@ namespace its {
       return GSDD( DEFAULT_VAR , DDD(M0));         
   }
   
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  template <>
+  inline Transition dddSemantics::observe (labels_t obs, State potential, const VarOrder & vo) {
+    its::vars_t obs_index;
+    obs_index.reserve(obs.size());
+    // each place = one var as indicated by varOrder
+    for (size_t i=vo.size()-1 ; i >= 0  ; --i) {
+      Label varname = vo.getLabel(i);
+      
+      labels_it it = find(obs.begin(), obs.end(),varname);
+      if (it != obs.end()) {
+	// var is observed
+	obs_index.push_back(i);
+      } 
+    }
+    
+    return localApply ( observeVars(obs_index,* ( (const DDD *) potential.begin()->first) ), DEFAULT_VAR );
+  }
+
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  template <>
+  inline Transition sddSemantics::observe (labels_t obs, State potential, const VarOrder & vo) {
+    GShom h = GShom::id;
+
+    // each place = one var as indicated by varOrder
+    for (size_t i=vo.size()-1 ; i >= 0  ; --i) {
+      Label varname = vo.getLabel(i);
+      
+      labels_it it = find(obs.begin(), obs.end(),varname);
+      if (it == obs.end()) {
+	// var is not observed
+	
+	// Grab potential : one variable long SDD with all values on arc
+	SDD pot = extractPotential(i) (potential);
+	// Grab arc value and requalify (downcast)  to SDD Dataset type
+	SDD potval = * ((const SDD *)  pot.begin()->first); 
+	h = h & ( localApply(potval ^ GShom::id , i) ) ;
+      } 
+    }
+    
+    return h;
+  }
+
 
 
   static void recPrintDDD (const GDDD & d, std::ostream & os, const VarOrder & vo, vLabel str) {
