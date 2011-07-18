@@ -79,8 +79,26 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition getAPredicate (Label predicate) const { return getConcrete()->getPredicate(predicate); }
+  Transition getAPredicate (Label predicate) const { 
+    std::cerr << "This is not yet implemented for nets loaded with JSON hierarchy." << std::endl;
+    assert(false);
+    return getConcrete()->getPredicate(predicate); 
+  }
 
+
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition observe (labels_t obs, State potential) const {
+    std::cerr << "This is not yet implemented for nets loaded with JSON hierarchy." << std::endl;
+    assert(false);
+    return getConcrete()->observe(obs,potential); 
+  }
+
+  
   
 };
 
