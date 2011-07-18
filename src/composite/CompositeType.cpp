@@ -205,48 +205,106 @@ State CompositeType::getState(Label stateLabel) const {
   }
 
 
-Transition CompositeType::getAPredicate (Label predicate) const {
-  // The predicate should respect the grammar : varName "." .*
-  // Where varName is an instance name such as found in getVariableSet(), getVarOrder()
-  // "." is the namespace separator and .* represents any sequence of characters. 
-  // This function consumes varName"." and passes the rest of the string to the type of the instance designated
+  
+  // Returns a pair "instance name" "remains of string" by breaking on "." or resolving as nested variables.
+  CompositeType::splitvar_t CompositeType::splitVar (vLabel predicate) const {
+    // The predicate should respect the grammar : varName "." .*
+    // Where varName is an instance name such as found in getVariableSet(), getVarOrder()
+    // "." is the namespace separator and .* represents any sequence of characters. 
+    // This function consumes varName"." and passes the rest of the string to the type of the instance designated
+    // step 1 : parse the predicate
+    const char * pred = predicate.c_str();
+    vLabel remain, var;
+    for (const char * cp = pred ; *cp ; ++cp) {
+      if ( *cp == '.' ) {
+	remain = cp+1;
+	break;
+      } else if (*cp == '=' || *cp == '<' || *cp == '>' || *cp== '!') {
+	remain = cp;
+	break;
+      } else {
+	var += *cp;
+      }
+    }
     
-  // step 1 : parse the predicate
-  const char * pred = predicate.c_str();
-  vLabel remain, var;
-  for (const char * cp = pred ; *cp ; ++cp) {
-    if ( *cp == '.' ) {
-      remain = cp+1;
-      break;
-    } else if (*cp == '=' || *cp == '<' || *cp == '>' || *cp== '!') {
-      remain = cp;
-      break;
-    } else {
-      var += *cp;
+    int instindex =  getVarOrder()->getIndex ( var );
+    if (instindex == -1) {
+
+      // Try to recuperate by interpreting the variable as a nested exposed variable
+      vLabel subcomp = comp_.exposedIn (var);
+      if ( subcomp != "") {
+	// restructure input data
+	remain = var + remain;
+	// the subcomp is the var now
+	var = subcomp;
+      } else {
+	
+	std::cerr << "Error variable " + var + " cannot be resolved as an instance name or as an exposed sub variable when trying to parse predicate : "  + predicate << std::endl;
+	std::cerr << "Failing with error code 2"<< std::endl;
+	exit (2);
+      }
     }
+    
+    return std::make_pair(var, remain);
   }
 
-  int instindex =  getVarOrder()->getIndex ( var );
-  if (instindex == -1) {
 
-    // Try to recuperate by interpreting the variable as a nested exposed variable
-    vLabel subcomp = comp_.exposedIn (var);
-    if ( subcomp != "") {
-      // restructure input data
-      remain = var + remain;
-      // the varindex 
-      instindex =  getVarOrder()->getIndex (subcomp);
-      // the subcomp is the var now
-      var = subcomp;
-    } else {
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition CompositeType::observe (labels_t obs, State potential) const {
 
-      std::cerr << "Error variable " + var + " cannot be resolved as an instance name or as an exposed sub variable when trying to parse predicate : "  + predicate << std::endl;
-      std::cerr << "Failing with error code 2"<< std::endl;
-      exit (2);
+    // Map components to observed variables within them
+    typedef std::map<int, labels_t> instvars_t;
+
+    instvars_t instvars;
+    
+    for (labels_it it = obs.begin() ; it != obs.end() ; ++it ) {
+      
+      splitvar_t vv = splitVar(*it);  
+      Label var = vv.first;
+      Label remain = vv.second;
+      int instindex =  getVarOrder()->getIndex (var);      
+
+      // insert in map
+      labels_t & tab = instvars[instindex];
+      tab.push_back(remain);
+      
     }
+
+    Transition h = Transition::id;
+     // each place = one var as indicated by varOrder
+    const VarOrder & vo = *getVarOrder();
+    for (size_t i=vo.size()-1 ; i >= 0  ; --i) {
+      labels_t & tab = instvars[i];
+      // there are some observed vars inside
+      Composite::comps_it instance = findName( vo.getLabel(i), comp_.comps_begin() , comp_.comps_end() );
+      
+      // Grab potential : one variable long SDD with all values on arc
+      State pot = extractPotential(i) (potential);
+      
+      // Grab arc value and requalify (downcast)  to SDD Dataset type
+      State potval = * ((const State *)  pot.begin()->first); 
+      h = h & ( localApply( instance->getType()->observe(tab,potval) , i) ) ;
+    }  
+    
+    return h;    
   }
+
+
+Transition CompositeType::getAPredicate (Label predicate) const {
+    
 //   std::cerr << "Composite delegating predicate " << remain << " on instance :"<<var << std::endl;
- 
+  // the varindex 
+
+  splitvar_t vv = splitVar(predicate);  
+  Label var = vv.first;
+  Label remain = vv.second;
+  int instindex =  getVarOrder()->getIndex (var);
+
   Composite::comps_it instance = findName( var, comp_.comps_begin() , comp_.comps_end() );
   return localApply( instance->getType()->getPredicate(remain), instindex);
 }
