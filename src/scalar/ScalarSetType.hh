@@ -38,6 +38,13 @@ protected :
   }
   // protected constructor for use in circular set : does NOT initialize comp_
   ScalarSetType():strat_(NULL) { setStrategy(DEPTH1); }
+
+  // returns the variable name in the current representation.
+  // var is supposed to start by an integer designating an instance in the set
+  // this integer will be replaced by a qualified name half0.half1. etc... 
+  // appropriate to the represetation strategy.
+  // The end of "var" string is left unchanged
+  vLabel resolveVariableName (Label var) const;
 public :
   // factory behavior
   virtual void setStrategy (scalarStrategy strat, int parameter=1) ;
@@ -101,6 +108,16 @@ public :
   void visit (class TypeVisitor * visitor) const {
     visitor->visitScalar(getComp());
   }
+
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition observe (labels_t obs, State potential) const ;
+
+
 };
 
 
