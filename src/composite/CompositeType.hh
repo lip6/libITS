@@ -23,6 +23,11 @@ class CompositeType : public  TypeBasics {
   Transition getFullShom (const Synchronization & sync) const ;
 
   void recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const;
+
+  typedef std::pair<vLabel, vLabel> splitvar_t;
+  // Returns a pair "instance name" "remains of string" by breaking on "." or resolving as nested variables.
+  splitvar_t splitVar (vLabel predicate) const ;
+
  protected :
   // returns the set of component instance names 
   labels_t getVarSet () const;
@@ -76,6 +81,14 @@ public :
   /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
    *  Uses the provided "reachable" states to compute the variable domains. */
   State getPotentialStates(State reachable) const ;
+
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition observe (labels_t obs, State potential) const ;
   
 };
 
