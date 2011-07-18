@@ -269,6 +269,16 @@ public :
   virtual void visit (class TypeVisitor * visitor) const {
     visitor->visitPNet(net_);
   }
+  
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition observe (labels_t obs, State potential) const {
+    return Semantics::observe (obs, potential, *getVarOrder());
+  }
 
 
 };
