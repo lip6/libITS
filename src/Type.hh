@@ -90,6 +90,14 @@ public :
    * Used in witness trace/counter example construction scenarios.
    **/
   virtual void getNamedLocals (namedTrs_t & ntrans) const = 0;
+
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  virtual Transition observe (labels_t obs, State potential) const = 0;
 };
 
 typedef const Type * pType;
