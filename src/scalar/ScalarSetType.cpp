@@ -62,15 +62,29 @@ labels_t ScalarSetType::getTransLabels () const {
     void visitCircular (const class CircularSet & net) { std::cerr << "Unexpected nested scalar/circular types. Failing, sorry."<< std::endl ; assert(false); }
   };
 
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition ScalarSetType::observe (labels_t obs, State potential) const {
+    labels_t resolved_obs;
+    resolved_obs.reserve(obs.size());
 
+    for (labels_it it = obs.begin() ; it != obs.end() ; ++it ) {
+      resolved_obs.push_back( resolveVariableName(*it) );
+    }
+    
+    return getConcrete()->observe(resolved_obs, potential);
+  }
 
-    /** The state predicate function : string p -> SHom.
-   *  returns a selector homomorphism that selects states verifying the predicate 'p'.
-   *  The syntax of the predicate is left to the concrete type realization.
-   *  The only constraint is that the character '.' is used as a namespace separator
-   *  and should not be used in the concrete predicate syntax.
-   *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition ScalarSetType::getAPredicate (Label predicate) const {
+  // returns the variable name in the current representation.
+  // var is supposed to start by an integer designating an instance in the set
+  // this integer will be replaced by a qualified name half0.half1. etc... 
+  // appropriate to the represetation strategy.
+  // The end of "var" string is left unchanged
+  vLabel ScalarSetType::resolveVariableName (Label predicate) const {
     
     // Step 1 : parse the predicate index up to "."
     const char * pred = predicate.c_str();
@@ -96,12 +110,24 @@ labels_t ScalarSetType::getTransLabels () const {
     // Step 3 : resolve within concrete.
     getConcrete()->visit( & inf );
     vLabel prefix = inf.getPrefix();
+
+    return prefix + remain;
+  }
+
+
+    /** The state predicate function : string p -> SHom.
+   *  returns a selector homomorphism that selects states verifying the predicate 'p'.
+   *  The syntax of the predicate is left to the concrete type realization.
+   *  The only constraint is that the character '.' is used as a namespace separator
+   *  and should not be used in the concrete predicate syntax.
+   *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
+  Transition ScalarSetType::getAPredicate (Label predicate) const {
     
 //     std::cerr << "Found prefix : "<< prefix << std::endl;
 //     std::cerr << "When searching instance : "<< value << std::endl;
 //     std::cerr << "In model : "<< *getConcrete() << std::endl;
 
-    return getConcrete()->getPredicate(prefix + remain);
+    return getConcrete()->getPredicate(resolveVariableName(predicate));
   }
 
 
