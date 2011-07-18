@@ -76,6 +76,15 @@ public :
    * Used in witness trace/counter example construction scenarios.
    **/
   void getNamedLocals (namedTrs_t & ntrans) const ;
+
+
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition observe (labels_t obs, State potential) const { return Transition::id ; }
   
   Label getName() const { return name; }
 
