@@ -194,6 +194,22 @@ namespace its {
     void printState (State s, std::ostream & os) const {
       os << s << std::endl ;
     }
+
+
+    /** Return a Transition that maps states to their observation class.
+     *  Observation class is based on the provided set of observed variables, 
+     *  in standard "." separated qualified variable names. 
+     *  The returned Transition replaces the values of non-observed variables
+     *  by their domain.
+     **/ 
+    Transition observe (labels_t obs, State potential) const {
+      if (obs.empty()) {
+	return potential;
+      } else {
+	return Transition::id;
+      }
+    }
+
     
 
   };
