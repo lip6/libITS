@@ -26,6 +26,9 @@ class EtfType : public  TypeBasics {
   lts_type_t ltstype;
 
   vLabel name;
+  
+  // a helper function that parses the input ETF file using the primitives of LTSmin and produces the corresponding data structures.
+  void compute_transitions (std::vector<class ETFTransition> & transitions) const ;
  protected :
   // returns the set of component instance names 
   labels_t getVarSet () const;
@@ -72,7 +75,7 @@ public :
   std::ostream & print (std::ostream & os) const {  return os; /* return comp_.print(os); */  }  
 
   void printState (State s, std::ostream & os) const;
-    /** Return the set of local transitions, with their name, useful for diplaying.*
+  /** Return the set of local transitions, with their name, useful for diplaying.*
    * Used in witness trace/counter example construction scenarios.
    **/
   void getNamedLocals (namedTrs_t & ntrans) const ;
