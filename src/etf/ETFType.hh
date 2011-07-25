@@ -87,7 +87,7 @@ public :
    *  The returned Transition replaces the values of non-observed variables
    *  by their domain.
    **/ 
-  Transition observe (labels_t obs, State potential) const { return Transition::id ; }
+  Transition observe (labels_t obs, State potential) const ;
   
   Label getName() const { return name; }
 
