@@ -273,7 +273,7 @@ namespace its {
     its::vars_t obs_index;
     obs_index.reserve(obs.size());
     // each place = one var as indicated by varOrder
-    for (size_t i=vo.size()-1 ; i >= 0  ; --i) {
+    for (int i=vo.size()-1 ; i >= 0  ; --i) {
       Label varname = vo.getLabel(i);
       
       labels_it it = find(obs.begin(), obs.end(),varname);
@@ -300,7 +300,7 @@ namespace its {
     GShom h = GShom::id;
 
     // each place = one var as indicated by varOrder
-    for (size_t i=vo.size()-1 ; i >= 0  ; --i) {
+    for (int i=vo.size()-1 ; i >= 0  ; --i) {
       Label varname = vo.getLabel(i);
       
       labels_it it = find(obs.begin(), obs.end(),varname);
@@ -311,7 +311,7 @@ namespace its {
 	SDD pot = extractPotential(i) (potential);
 	// Grab arc value and requalify (downcast)  to SDD Dataset type
 	SDD potval = * ((const SDD *)  pot.begin()->first); 
-	h = h & ( localApply(potval ^ GShom::id , i) ) ;
+	h = h & ( localApply(potval, i) ) ;
       } 
     }
     
