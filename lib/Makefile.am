@@ -98,6 +98,7 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(MYSRCDIR)/Instance.hh \
 	$(MYSRCDIR)/ITSModel.hh \
 	$(MYSRCDIR)/Naming.hh \
+	$(MYSRCDIR)/Observe_Hom.hh \
 	$(MYSRCDIR)/Ordering.hh \
 	$(MYSRCDIR)/Options.hh \
 	$(MYSRCDIR)/Type.hh \
@@ -159,6 +160,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(SCALARSOURCES) \
 	$(MYSRCDIR)/ColoaneExport.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
+	$(MYSRCDIR)/Observe_Hom.cpp \
 	$(MYSRCDIR)/Ordering.cpp \
 	$(MYSRCDIR)/Options.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
