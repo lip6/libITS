@@ -29,7 +29,8 @@ void usage () {
   cerr << "This tool performs CTL verification on state-space of ITS" <<endl;
   cerr << " CTL specific options for  package " << PACKAGE_STRING << endl;
   cerr<<  "    -ctl [CTL formulas file]  MANDATORY : give path to a file containing CTL formulae \n";
-  cerr<<  "    Optionally, if the [CTL formulas file] provided is the string DEADLOCK, the tool will compute and return the number of deadlocks.\n";
+  cerr<<  " Optionally, if the [CTL formulas file] provided is the string DEADLOCK, the tool will compute and return the number of deadlocks.\n";
+  cerr<<  "    --witness to ask for a witness/counter-example path to be produced (may be much more difficult than just proving/disproving)\n";
   cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
   cerr<<  "    [--backward] to force backward CTL model-checking (classic algorithm from 10^20 states & beyond)\n";
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
@@ -79,6 +80,10 @@ int main (int argc, char ** argv) {
   bool dofwtranslation = false;
   bool dobwtranslation = false;
 
+  bool doDeadlocks = false;
+
+  bool doWitness = false;
+
   bool showlegend = false;
 
   string pathformff;
@@ -95,6 +100,8 @@ int main (int argc, char ** argv) {
      dofwtranslation = true;
    } else if (! strcmp(args[i],"--backward")   ) {
      dobwtranslation = true;
+   } else if (! strcmp(args[i],"--witness")   ) {
+     doWitness = true;
    } else if (! strcmp(args[i],"--quiet")   ) {
      bequiet = true;
    } else {
@@ -108,7 +115,6 @@ int main (int argc, char ** argv) {
   }
 
 
-  bool doDeadlocks = false;
   array_t *formulaArray = NULL;
   if (pathformff == "") {
     std::cerr << "Please provide an input file containing formulae with -ctl option. \n"<< std::endl;
@@ -170,6 +176,15 @@ int main (int argc, char ** argv) {
     std::cout << "\n";
 
     std::cout << "System contains "<< dead.nbStates() << " deadlocks !" << std::endl;    
+
+    if (doWitness &&dead.nbStates() > 0) {
+      std::cout << "Computing a witness path..."<< std::endl;
+      labels_t path = checker.findPath(checker.getInitialState(), dead, checker.getReachable());
+      for (labels_it it = path.begin() ; it != path.end() ; ++it ) {
+	std::cout << *it << ", ";
+      }
+      std::cout << "DEADLOCK"<< std::endl;
+    }
     return 0;
   }
 
