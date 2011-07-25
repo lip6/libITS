@@ -7,6 +7,8 @@ extern "C" {
 }
 #include "petri/Hom_Basic.hh"
 
+#include <algorithm>
+
 using std::vector;
 
 namespace its {
@@ -178,6 +180,42 @@ State EtfType::getPotentialStates(State reachable) const {
 }
 
 
+  /** Return a Transition that maps states to their observation class.
+   *  Observation class is based on the provided set of observed variables, 
+   *  in standard "." separated qualified variable names. 
+   *  The returned Transition replaces the values of non-observed variables
+   *  by their domain.
+   **/ 
+  Transition EtfType::observe (labels_t obs, State potential) const {
+    if (obs.empty()) {
+      return potential;
+    }
+    
+    GShom h = GShom::id;
+    const VarOrder & vo = * getVarOrder();
+    // each place = one var as indicated by varOrder
+    for (int i=vo.size()-1 ; i >= 0  ; --i) {
+      Label varname = vo.getLabel(i);
+      
+      labels_it it = find(obs.begin(), obs.end(),varname);
+      if (it == obs.end()) {
+	// var is not observed
+	
+	// Grab potential : one variable long SDD with all values on arc
+	SDD pot = extractPotential(i) (potential);
+
+//	std::cerr << "i " << i << "  pot : " << pot << std::endl;
+
+	// Grab arc value and requalify (downcast)  to SDD Dataset type
+	DDD potval = * ((const DDD *)  pot.begin()->first); 
+	h = h & ( localApply(potval , i) ) ;
+      } 
+    }
+    
+    return h;
+  }
+
+
  /** Return the set of local transitions, with their name, useful for diplaying.*
    * Used in witness trace/counter example construction scenarios.
    **/
@@ -186,7 +224,7 @@ State EtfType::getPotentialStates(State reachable) const {
     labels_t proc_names;
 
     int N=lts_type_get_state_length(ltstype);  
-    int varindex = -1;
+
     for (int i=0; i < N ; i++) {
       vLabel var2 = lts_type_get_state_name(ltstype,i);
       vLabel type = lts_type_get_state_type(ltstype,i);
@@ -237,7 +275,7 @@ State EtfType::getPotentialStates(State reachable) const {
       // Grab the SDD that represents the 2k mapping for the process state variable
       State procTr = extractPotential ( pproj ) ( it->value ) ;
 
-      std::cerr << "wroking on 2k SDD : " << procTr << std::endl;
+//      std::cerr << "wroking on 2k SDD : " << procTr << std::endl;
       
       // downcast to DDD
       const DDD * val = (const DDD *) (procTr.begin()->first) ;
@@ -251,7 +289,7 @@ State EtfType::getPotentialStates(State reachable) const {
       vLabel tname = lts_type_get_state_name(ltstype,process) ;
       tname += ".";
       
-      std::cerr << "building a transition for process : " << tname << "  " << src << "/" << dest << std::endl;
+//      std::cerr << "building a transition for process : " << tname << "  " << src << "/" << dest << std::endl;
 
 
       // find the type id for this process
