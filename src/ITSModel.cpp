@@ -201,7 +201,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     revcomponents.push_front(toreach);
     // Reverse construct path to init from toreach
     Transition revTrans = getPredRel(reach);
-    int step =0;
+//    int step =0;
     while (true) {
       M2 = State::null;
     
