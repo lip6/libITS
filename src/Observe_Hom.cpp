@@ -77,5 +77,14 @@ public:
   _GHom * clone () const {  return new _ObserveVars(*this); }
 };
 
+  /** This operation replaces values of variables out of the provided set by their values in "pot". 
+   *  We expect "observed" to be sorted in decreasing order, and that the DDD we manipulate 
+   *  (both the one we apply to and potential) are similarly arranged (0 being the last variable before 1 terminal). 
+   */
+  GHom observeVars (const vars_t & observed, GDDD potential) {
+    return _ObserveVars(observed.begin(), observed.end() , potential) ;
+  }
+
+
 
 }
