@@ -294,25 +294,43 @@ GHom varCompVar (int var, comparator c , int var2) {
 }
 
 GHom varEqVar (int var, int var2) {
+	if (var == var2) {
+		return GHom::id;
+	}
   return varCompVar(var,EQ,var2);
 }
 
 GHom varNeqVar (int var, int var2) {
+	if (var == var2) {
+		return GHom(GDDD::null);
+	}
   return varCompVar (var,NEQ,var2);
 }
 
+GHom varGeqVar (int var, int var2) {
+	if (var == var2) {
+		return GHom::id;
+	}
+	return varCompVar (var,GEQ,var2);
+}
+
 GHom varGtVar (int var, int var2) {
+	if (var == var2) {
+		return GHom(GDDD::null);
+	}
   return varCompVar (var,GT,var2);
 }
 
 GHom varLeqVar (int var, int var2) {
+	if (var == var2) {
+		return GHom::id;
+	}
  return varCompVar (var,LEQ,var2);
 }
 
 GHom varLtVar (int var, int var2) {
+	if (var == var2) {
+		return GHom(GDDD::null);
+	}
   return varCompVar (var,LT,var2);
-}
-
-GHom varGeqVar (int var, int var2) {
- return varCompVar (var,GEQ,var2);
 }
