@@ -55,7 +55,6 @@ XMLLOADERSOURCES =  $(MYCOMPSRCDIR)/CompositeXMLLoader.hh $(MYCOMPSRCDIR)/Compos
 
 PETRIHEADERS = 	$(MYPETRISRCDIR)/Arc.hh \
 	$(MYPETRISRCDIR)/Hom_PlaceArcs.hh \
-	$(MYPETRISRCDIR)/Hom_Basic.hh \
 	$(MYPETRISRCDIR)/Marking.hh \
 	$(MYPETRISRCDIR)/Modular2ITS.hh \
 	$(MYPETRISRCDIR)/Place.hh \
@@ -107,7 +106,6 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(MYSRCDIR)/TypeVisitor.hh 
 
 PETRISOURCES = 	$(MYPETRISRCDIR)/Arc.cpp \
-	$(MYPETRISRCDIR)/Hom_Basic.cpp \
 	$(MYPETRISRCDIR)/Modular2ITS.cpp \
 	$(MYPETRISRCDIR)/Place.cpp \
 	$(MYPETRISRCDIR)/PNet.cpp \

@@ -5,7 +5,7 @@ extern "C" {
 #include "etf/etf-util.h"
 #include "etf/chunk_support.h"
 }
-#include "petri/Hom_Basic.hh"
+#include "Hom_Basic.hh"
 
 #include <algorithm>
 
