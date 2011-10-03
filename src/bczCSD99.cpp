@@ -1,6 +1,5 @@
 #include <cassert>
 #include <algorithm>
-#include <ext/hash_map>
 #include <iostream>
 #include <sstream>
 #include "tgba/bddprint.hh"
