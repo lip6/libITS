@@ -9,7 +9,7 @@
 
 #include "bczCSD99.hh"
 
-//#define TRACE
+#define TRACE
 
 #ifdef TRACE
 #define trace std::cerr
@@ -78,13 +78,14 @@ bcz_succ_iterator::bcz_succ_iterator(const sogIts& m, const bcz_state& s)
 
   bcz_succ_iterator::~bcz_succ_iterator () {
     delete current_succ;
+    delete it;
   }
 
 
   void bcz_succ_iterator::step() {
     // iterate until a non empty succ is found (or end reached)
-    for (  ; ! it.done() ; it.next() ) {
-      bcz_state s (model, succstates, it.current() );
+    for (  ; ! it->done() ; it->next() ) {
+      bcz_state s (model, succstates, it->current() );
       if ( s.get_states() != SDD::null ) {
 	current_succ = new bcz_state(s);
 	break;
@@ -95,24 +96,24 @@ bcz_succ_iterator::bcz_succ_iterator(const sogIts& m, const bcz_state& s)
 void bcz_succ_iterator::first() {
 
   /// position "it" at first of ap bdd set
-  it.first();
+  it->first();
   step();
 }
 
 
 void bcz_succ_iterator::next() {
   assert(!done());
-  it.next();
+  it->next();
   step();
 } //
 
 bool bcz_succ_iterator::done() const {
-  return  it.done() ;
+  return  it->done() ;
 } //
 
 spot::state* bcz_succ_iterator::current_state() const {
   assert(!done());
-  trace << "FIRING : " << it.current() << std::endl;
+  trace << "FIRING : " << it->current() << std::endl;
   trace << "FROM " << from << std::endl;
   return new bcz_state(*current_succ);
 } //

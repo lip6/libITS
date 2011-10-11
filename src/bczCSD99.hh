@@ -66,7 +66,7 @@ private:
   const sogIts& model; ///< The petri net.
   const bcz_state & from; ///< The source state.
 
-  APIterator it;
+  APIterator * it;
   its::State succstates;
   bcz_state * current_succ;
 };
