@@ -9,7 +9,7 @@
 
 #include "bczCSD99.hh"
 
-#define TRACE
+// #define TRACE
 
 #ifdef TRACE
 #define trace std::cerr
