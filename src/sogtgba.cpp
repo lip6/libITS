@@ -70,22 +70,26 @@ sog_tgba::~sog_tgba() {
   spot::state* sog_tgba::get_init_state() const {
     its::State m0 = model.getInitialState() ;
     assert(m0 != SDD::null);
+  
     // now determine which AP are true in m0
-    APIterator it = APIteratorFactory::create();
-    for (it.first() ; ! it.done() ; it.next() ) {
-      its::Transition selector = model.getSelector( it.current() );
+    APIterator * it = APIteratorFactory::create();
+    for (it->first() ; ! it->done() ; it->next() ) {
+      its::Transition selector = model.getSelector( it->current() );
       its::State msel = selector(m0);
       if (msel != SDD::null) {
-	spot::state * init = create_state(model, m0, it.current());
-	trace << "Initial state of tgba verifies :"<< it.current()<< std::endl;
+	spot::state * init = create_state(model, m0, it->current());
+	trace << "Initial state of tgba verifies :"<< it->current()<< std::endl;
+	delete it;
 	return init;
       }
     }
-  
+    delete it;
+      
+    /** should be captured now by emptyAPITerator code */
+//     if (APIteratorFactory::empty())
+//       return create_state(model, m0, bddtrue);
     
-    if (APIteratorFactory::empty())
-      return create_state(model, m0, bddtrue);
-    
+
     // no conjunction of AP is verified by m0 ???
     assert (false);
     // for compiler happiness
