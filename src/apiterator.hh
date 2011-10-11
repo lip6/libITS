@@ -7,17 +7,33 @@
 
 namespace sogits {
 
-
-  /** This class is designed to iterate over 2^AP : provide the AP
-   *  this class provides the bdd representing each of the 2^AP
-   *  possible combinations */
+/** abstract interface for bdd iterators over AP */
 class APIterator {
 public:
   /// the set of variables
   typedef std::vector<int> varset_t;
 
+
+  virtual void first() =0;
+
+  virtual void next() = 0;
+
+  virtual bool done() const = 0;
+
+  virtual bdd current() const = 0;
+
+  virtual ~APIterator () {}
+};
+
+
+  /** This class is designed to iterate over 2^AP : provide the AP
+   *  this class provides the bdd representing each of the 2^AP
+   *  possible combinations */
+class APBDDIterator : public APIterator { 
+public:
+
   /** initialize from a set of vars */
-  APIterator(const varset_t & vars)
+  APBDDIterator(const APIterator::varset_t & vars)
     : cur(bvec_true(vars.size())), // initialze all vars to true
       size(vars.size()),  // size
       last(true)  // initially at end
@@ -60,6 +76,37 @@ private:
 };
 
 
+  class EmptyAPIterator : public APIterator {
+public:
+
+  /** initialize from a set of vars */
+  EmptyAPIterator() : last(true) {}
+
+  void first() {
+    last = false;
+  }
+
+  void next() {
+    assert(!done());
+    last = true;
+  }
+
+  bool done() const {
+    return last;
+  }
+
+  bdd current() const {
+    assert(!done());
+    return bddtrue;
+  }
+private:
+  // true iff. done
+  bool last;
+};
+
+
+
+
 class APIteratorFactory {
 public :
 
@@ -71,12 +118,15 @@ public :
     return vars_.empty();
   }
 
-  static APIterator create () {
-    return APIterator(vars_);
+  static APIterator * create () {
+    return create_new(vars_);
   }
 
   static APIterator* create_new (const APIterator::varset_t & vars) {
-    return new APIterator(vars);
+    if (! vars.empty())
+      return new APBDDIterator(vars);
+    else
+      return new EmptyAPIterator();
   }
 
 private :
