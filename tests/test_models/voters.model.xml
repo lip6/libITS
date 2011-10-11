@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model>
+<instance id='3' name='i' type='Voter.model' />
+<delegator id='4' visibility='private' label='vote' kind='ALL' />
+<arc  instance='3'  synchronization='4' />
+<size size='1000' />
+</model>
+

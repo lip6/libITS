@@ -1,0 +1,14 @@
+ CAMI input, no JSON, basic formulae :  SLAP-FST
+../src/its-ltl -i test_models/election_2.cami -t CAMI -ltl 'GF (TRUE)' -c -SSLAP-FST
+
+its-ltl command run as :
+
+../src/its-ltl  -i  test_models/election_2.cami  -t  CAMI  -ltl  GF (TRUE)  -c  -SSLAP-FST  
+2 unique states visited
+2 strongly connected components in search stack
+2 transitions explored
+2 items max in DFS search stack
+338 ticks for the emptiness check
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,0,3.42,74168,1,0,130635,6,2191,113842,12,5,800511
+an accepting run exists (use option '-e' to print it)

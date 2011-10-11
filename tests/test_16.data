@@ -1,0 +1,14 @@
+ ETF format, basic formulae :  ! GF (TRUE)
+../src/its-ltl -i test_models/peterson.4.dve.etf -t ETF -c -ltl  '! (GF (TRUE))'
+
+its-ltl command run as :
+
+../src/its-ltl  -i  test_models/peterson.4.dve.etf  -t  ETF  -c  -ltl  ! (GF (TRUE))  
+1 unique states visited
+0 strongly connected components in search stack
+0 transitions explored
+1 items max in DFS search stack
+27 ticks for the emptiness check
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,0,0.32,31080,1,0,22160,89,24,13085,1,385,0
+no accepting run found

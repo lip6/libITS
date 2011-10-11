@@ -1,0 +1,14 @@
+ PROD input, no options, FMS 10, basic formulae, : SLAP
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SSLAP -R3f -c
+
+its-ltl command run as :
+
+../src/its-ltl  -i  test_models/fms10.net  -t  PROD  -ltl  GF (TRUE)  -SSLAP  -R3f  -c  
+2 unique states visited
+2 strongly connected components in search stack
+2 transitions explored
+2 items max in DFS search stack
+16 ticks for the emptiness check
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,0,0.18,25080,1,0,6248,15,238,3577,21,77,8889
+an accepting run exists (use option '-e' to print it)

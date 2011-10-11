@@ -1,0 +1,14 @@
+ COLOANE format for ITS, basic formulae : GF (TRUE) :  flat
+cd test_models; ../../src/its-ltl -i votersMain.xml -t ITSXML -c -ltl 'GF (TRUE)'  ; cd ..
+
+its-ltl command run as :
+
+../../src/its-ltl  -i  votersMain.xml  -t  ITSXML  -c  -ltl  GF (TRUE)  
+1 unique states visited
+0 strongly connected components in search stack
+0 transitions explored
+1 items max in DFS search stack
+12228 ticks for the emptiness check
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,0,122.3,29784,1,0,3020,6,2019,9,10,5,3027
+no accepting run found
