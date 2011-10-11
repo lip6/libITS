@@ -65,13 +65,14 @@ sog_succ_iterator::sog_succ_iterator(const sogIts& m, const sog_state& s)
 
   sog_succ_iterator::~sog_succ_iterator () {
     delete current_succ;
+    delete it;
   }
 
 
   void sog_succ_iterator::step() {
     // iterate until a non empty succ is found (or end reached)
-    for (  ; ! it.done() ; it.next() ) {
-      sog_state s (model, succstates, it.current() );
+    for (  ; ! it->done() ; it->next() ) {
+      sog_state s (model, succstates, it->current() );
       if ( s.get_states() != SDD::null ) {
 	current_succ = new sog_state(s);
 	break;
@@ -85,7 +86,7 @@ void sog_succ_iterator::first() {
     div_needs_visit = true;
 
   /// position "it" at first of ap bdd set
-  it.first();
+  it->first();
   step();
 }
 
@@ -97,18 +98,18 @@ void sog_succ_iterator::next() {
     return;
   }
   // else
-  it.next();
+  it->next();
   step();
 } //
 
 bool sog_succ_iterator::done() const {
-  return  it.done() && ! div_needs_visit;
+  return  it->done() && ! div_needs_visit;
 } //
 
 spot::state* sog_succ_iterator::current_state() const {
   assert(!done());
   if (! div_needs_visit ) {
-    trace << "FIRING : " << it.current() << std::endl;
+    trace << "FIRING : " << it->current() << std::endl;
     trace << "FROM " << from << std::endl;
     return new sog_state(*current_succ);
   } else {

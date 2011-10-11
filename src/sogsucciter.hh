@@ -39,7 +39,7 @@ private:
   const sogIts& model; ///< The petri net.
   const sog_state & from; ///< The source state.
 
-  APIterator it;
+  APIterator * it;
   bool div_needs_visit;
   its::State succstates;
   sog_state * current_succ;
