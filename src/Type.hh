@@ -24,29 +24,29 @@ class Type {
 public :
   virtual ~Type () {};
 
-	virtual Label getName() const = 0;
-	/** one initial state can be designated as initial state */
-	virtual Label getDefaultState() const=0;
-	/** the setter returns false if the label provided is not in InitStates */
-	virtual bool setDefaultState (Label def) =0;
-
-	/** the set InitStates of designated initial states (a copy)*/
-	virtual labels_t getInitStates () const = 0;
-
-	/** the set T of public transition labels (a copy)*/
-	virtual labels_t getTransLabels () const = 0;
-
-	/** state and transitions representation functions */
-	/** Local transitions */
-	virtual Transition getLocals () const = 0;
-
-	/** Successors synchronization function : Bag(T) -> SHom.
-	 * The collection represented by the iterator should be a multiset
-	 * of transition labels of this type (as obtained through getTransLabels()).
-	 * Otherwise, an assertion violation will be raised !!
-	 * */
+  virtual Label getName() const = 0;
+  /** one initial state can be designated as initial state */
+  virtual Label getDefaultState() const=0;
+  /** the setter returns false if the label provided is not in InitStates */
+  virtual bool setDefaultState (Label def) =0;
+  
+  /** the set InitStates of designated initial states (a copy)*/
+  virtual labels_t getInitStates () const = 0;
+  
+  /** the set T of public transition labels (a copy)*/
+  virtual labels_t getTransLabels () const = 0;
+  
+  /** state and transitions representation functions */
+  /** Local transitions */
+  virtual Transition getLocals () const = 0;
+  
+  /** Successors synchronization function : Bag(T) -> SHom.
+   * The collection represented by the iterator should be a multiset
+   * of transition labels of this type (as obtained through getTransLabels()).
+   * Otherwise, an assertion violation will be raised !!
+   * */
   virtual Transition getSuccs (const labels_t & tau) const = 0;
-
+  
   /** The state predicate function : string p -> SHom.
    *  returns a selector homomorphism that selects states verifying the predicate 'p'.
    *  The syntax of the predicate is left to the concrete type realization.
@@ -55,8 +55,8 @@ public :
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   virtual Transition getPredicate (Label predicate) const = 0;
 
-	/** To obtain a representation of a labeled state */
-    virtual State getState(Label stateLabel) const = 0;
+  /** To obtain a representation of a labeled state */
+  virtual State getState(Label stateLabel) const = 0;
 
   /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
    *  Uses the provided "reachable" states to compute the variable domains. */
@@ -69,8 +69,8 @@ public :
    * updates the variable order used in this type */
   virtual bool setVarOrder (labels_t vars) const = 0;
 	
-	// also sets to default if currently unset.
-    virtual VarOrder * getVarOrder () const = 0;
+  // also sets to default if currently unset.
+  virtual VarOrder * getVarOrder () const = 0;
 	
   /** Optional, ok to do nothing.
    * prints the variable order used in this type */
