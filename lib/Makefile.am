@@ -9,6 +9,7 @@ MYPETRISRCDIR = $(MYSRCDIR)/petri
 MYCOMPSRCDIR = $(MYSRCDIR)/composite
 MYETFSRCDIR = $(MYSRCDIR)/etf
 MYSCALARSRCDIR = $(MYSRCDIR)/scalar
+MYGALSRCDIR = $(MYSRCDIR)/gal
 
 
 libprod_a_YFLAGS = -d 
@@ -88,10 +89,18 @@ SCALARHEADERS = $(MYSCALARSRCDIR)/CircularSet.hh \
 	$(MYSCALARSRCDIR)/ScalarSetType.hh \
 	$(MYSCALARSRCDIR)/ScalarState.hh 
 
+GALHEADERS = $(MYGALSRCDIR)/BoolExpression.hh \
+	$(MYGALSRCDIR)/ExprHom.hpp \
+	$(MYGALSRCDIR)/GAL.hh \
+	$(MYGALSRCDIR)/GALType.hh \
+	$(MYGALSRCDIR)/IntExpression.hh \
+	$(MYGALSRCDIR)/Variable.hh
+
 
 ITSHEADERS = $(PETRIHEADERS) \
 	$(COMPOSITEHEADERS) \
 	$(ETFHEADERS) \
+	$(GALHEADERS) \
 	$(SCALARHEADERS) \
 	$(MYSRCDIR)/ColoaneExport.hh \
 	$(MYSRCDIR)/Instance.hh \
@@ -138,7 +147,10 @@ ETFSOURCES = $(MYETFSRCDIR)/ETFType.cpp \
 	$(MYETFSRCDIR)/stream_fd.c \
 	$(MYETFSRCDIR)/stream_mem.c
 
-
+GALSOURCES = $(MYGALSRCDIR)/BoolExpression.cpp \
+	$(MYGALSRCDIR)/ExprHom.cpp \
+	$(MYGALSRCDIR)/GALType.cpp \
+	$(MYGALSRCDIR)/IntExpression.cpp 
 
 
 SCALARSOURCES = $(MYSCALARSRCDIR)/CircularSet.cpp \
@@ -155,6 +167,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(PETRISOURCES) \
 	$(COMPOSITESOURCES) \
 	$(ETFSOURCES) \
+	$(GALSOURCES) \
 	$(SCALARSOURCES) \
 	$(MYSRCDIR)/ColoaneExport.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
