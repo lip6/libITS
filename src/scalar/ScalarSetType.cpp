@@ -34,7 +34,8 @@ labels_t ScalarSetType::getTransLabels () const {
   }
   return ret;
 }
-  class InstanceNameFinder : public TypeVisitor {
+
+  class InstanceNameFinder : public BasicTypeVisitor {
     int n_;
     vLabel prefix_;
     RepresentationStrategy * strat_;
