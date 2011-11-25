@@ -1,0 +1,91 @@
+#ifndef ___GAL__H__
+#define ___GAL__H__
+
+#include <string>
+#include <utility>
+#include <iosfwd>
+#include <map>
+
+// hash_map from libddd, for initial state
+#include "util/configuration.hh"
+
+#include "BoolExpression.hh"
+#include "Variable.hh"
+#include "IntExpression.hh"
+
+
+namespace its {
+
+class Assignment {
+  Variable var_;
+  IntExpression expr_;
+    
+  public :
+  Assignment (Variable var, IntExpression expr) : var_(var), expr_(expr) {}
+  const Variable & getVariable () const { return var_; }
+  const IntExpression & getExpression () const { return expr_; }
+};
+
+class GuardedAction : public NamedElement {
+public :
+  typedef std::vector<Assignment> actions_t;
+  typedef actions_t::const_iterator actions_it;
+private :
+  BoolExpression guard_;
+  actions_t actions_;
+public:
+  GuardedAction (Label name):NamedElement(name),guard_(BoolExpressionFactory::createConstant(true)) {};
+  void setGuard (BoolExpression guard) { guard_ = guard; }
+  const BoolExpression & getGuard () const { return guard_; }
+  actions_it begin() const { return actions_.begin() ; }
+  actions_it end() const { return actions_.end() ; }
+  void addAction (const Assignment & ass) { actions_.push_back(ass);}
+};
+
+/** A class to represent a Guarded Action Language model. *
+ */
+  class GAL : public NamedElement {
+public :
+  typedef std::vector<Variable> vars_t;
+  typedef vars_t::const_iterator vars_it;
+
+  typedef std::vector<GuardedAction> trans_t;
+  typedef trans_t::const_iterator trans_it;
+
+  typedef hash_map<vLabel,int>::type state_t;
+  typedef state_t::const_iterator state_it;
+private :
+  vars_t variables_;
+  trans_t transitions_;
+  state_t init_;
+public :
+    GAL (Label name) : NamedElement(name) {};
+  
+  void addVariable(const Variable & var, int value) { 
+    variables_.push_back(var); 
+    state_t::accessor access;
+    init_.insert(access, var.getName());
+    access->second = value;
+  }
+  void addTransition (const GuardedAction & act) { transitions_.push_back(act); }  
+
+  vars_it vars_begin() const { return variables_.begin() ; }
+  vars_it vars_end() const { return variables_.end() ; }
+  trans_it trans_begin() const { return transitions_.begin() ; }
+  trans_it trans_end() const { return transitions_.end() ; }
+  state_it state_begin() const { return init_.begin() ; }
+  state_it state_end() const { return init_.end() ; }
+  int getVarValue (Label name) const { 
+    state_t::accessor access ; 
+    if (init_.find(access,name)) return access->second;     
+    return -1;
+  }
+};
+
+
+  std::ostream & operator<< ( std::ostream &, const GAL &); 
+
+}
+
+
+#endif // include protection
