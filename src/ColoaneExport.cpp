@@ -12,7 +12,7 @@ using namespace its;
 namespace its {
   namespace coloane  {
 
-    class TypeExporter : public TypeVisitor {
+    class TypeExporter : public BasicTypeVisitor {
       // work directory
       vLabel wd;
      public :
