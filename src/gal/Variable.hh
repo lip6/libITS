@@ -11,10 +11,10 @@
 namespace its {
 
 class Variable {
-  std::string name;
+  vLabel name;
 public:
-  Variable(const std::string & nname):name(nname){};
-  const std::string & getName () const { return name; }
+  Variable(Label nname):name(nname){};
+  Label getName () const { return name; }
   bool operator== (const Variable & v) const {
     return v.name == name;
   }
