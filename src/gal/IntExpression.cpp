@@ -67,7 +67,7 @@ class _IntExpression {
 
 
 class VarExpr : public _IntExpression {
-  const Variable & var;  
+  Variable var;  
 
 public :
   VarExpr (const Variable & vvar) : var(vvar){};
