@@ -30,23 +30,26 @@ int main (int argc, char **argv) {
   // should be : GALLoader.createGAL("philo.so")
   const GAL * philo = createGAL();
 
+  std::cout << *philo << std::endl;
+
+
   // build a GALType on top
-  pType type = new GALType(philo);
-  pType philType = new TypeCacher(const_cast<Type*>(type));
+//   pType type = new GALType(philo);
+//   pType philType = new TypeCacher(const_cast<Type*>(type));
 
-  // grab locals
-  Transition locals = philType->getLocals();
+//   // grab locals
+//   Transition locals = philType->getLocals();
 
-  // grab initial state
-  State init = philType->getState("init");
+//   // grab initial state
+//   State init = philType->getState("init");
 
-  // gen reachable
-  Transition fix = fixpoint ( locals + Transition::id);
-  State reach = fix(init);
+//   // gen reachable
+//   Transition fix = fixpoint ( locals + Transition::id);
+//   State reach = fix(init);
 
-  // print stats
-  Statistic stat (reach,"reach");
-  stat.print_table(std::cout);
+//   // print stats
+//   Statistic stat (reach,"reach");
+//   stat.print_table(std::cout);
 
 
 
