@@ -24,6 +24,7 @@ class Assignment {
   Assignment (Variable var, IntExpression expr) : var_(var), expr_(expr) {}
   const Variable & getVariable () const { return var_; }
   const IntExpression & getExpression () const { return expr_; }
+  void print (std::ostream & os) const;
 };
 
 class GuardedAction : public NamedElement {
@@ -40,6 +41,30 @@ public:
   actions_it begin() const { return actions_.begin() ; }
   actions_it end() const { return actions_.end() ; }
   void addAction (const Assignment & ass) { actions_.push_back(ass);}
+  void print (std::ostream & os) const;
+};
+
+class GALState {
+public :
+  typedef std::map<vLabel,int> state_t;
+  typedef state_t::const_iterator const_iterator;
+private :
+  state_t state_;
+
+public :
+  void setVarValue (Label var, int val) {
+    state_.insert(std::make_pair(var,val));
+  }
+
+  int getVarValue (Label var) const {
+    const_iterator access = state_.find(var);
+    if (access != state_.end()) return access->second;     
+    return -1;
+  }
+
+  const_iterator begin() const { return state_.begin() ; }
+  const_iterator end() const { return state_.end() ; }
+
 };
 
 /** A class to represent a Guarded Action Language model. *
@@ -52,20 +77,18 @@ public :
   typedef std::vector<GuardedAction> trans_t;
   typedef trans_t::const_iterator trans_it;
 
-  typedef hash_map<vLabel,int>::type state_t;
+  typedef GALState state_t;
   typedef state_t::const_iterator state_it;
 private :
   vars_t variables_;
   trans_t transitions_;
   state_t init_;
 public :
-    GAL (Label name) : NamedElement(name) {};
+  GAL (Label name) : NamedElement(name) {};
   
   void addVariable(const Variable & var, int value) { 
     variables_.push_back(var); 
-    state_t::accessor access;
-    init_.insert(access, var.getName());
-    access->second = value;
+    init_.setVarValue(var.getName(),value);
   }
   void addTransition (const GuardedAction & act) { transitions_.push_back(act); }  
 
@@ -75,10 +98,8 @@ public :
   trans_it trans_end() const { return transitions_.end() ; }
   state_it state_begin() const { return init_.begin() ; }
   state_it state_end() const { return init_.end() ; }
-  int getVarValue (Label name) const { 
-    state_t::accessor access ; 
-    if (init_.find(access,name)) return access->second;     
-    return -1;
+  int getVarValue (Label name) const {
+    return init_.getVarValue(name);
   }
 };
 
