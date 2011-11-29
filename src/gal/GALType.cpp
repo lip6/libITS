@@ -2,6 +2,8 @@
 
 #include "Observe_Hom.hh"
 
+#include <algorithm>
+
 #define DEFAULT_VAR 0
 
 namespace its {
