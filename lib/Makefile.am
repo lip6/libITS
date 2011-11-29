@@ -150,6 +150,7 @@ ETFSOURCES = $(MYETFSRCDIR)/ETFType.cpp \
 GALSOURCES = $(MYGALSRCDIR)/BoolExpression.cpp \
 	$(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/GALType.cpp \
+	$(MYGALSRCDIR)/GAL.cpp \
 	$(MYGALSRCDIR)/IntExpression.cpp 
 
 
