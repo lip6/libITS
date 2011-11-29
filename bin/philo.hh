@@ -3,10 +3,6 @@
 
 #include "gal/GAL.hh"
 
-namespace its {
-
-GAL * createGAL();
-
-}
+extern "C" its::GAL * createGAL();
 
 #endif
