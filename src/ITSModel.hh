@@ -40,12 +40,12 @@ class ITSModel {
   // To store a set of type declarations
   typedef std::vector<pType> types_t;
   typedef types_t::const_iterator types_it;
-
+protected:
   // The known type declarations
   types_t types_;
   // The model main instance (may be NULL)
   pInstance model_;
-
+private:
   // Reachable state space
   mutable State reached_;
   // Predecessor relation
@@ -65,7 +65,7 @@ class ITSModel {
 protected :
   // add a type to the type declarations
   // returns false if the type name already exists
-  bool addType (pType type);
+  virtual bool addType (pType type);
   
 public :
   // default constructor
@@ -75,7 +75,7 @@ public :
 
   // Creates an instance of the given "type" of name "name" and sets it as the main instance of the model.
   // Returns false if the type name does not exist
-  bool setInstance (Label type, Label name);
+  virtual bool setInstance (Label type, Label name);
   // defines the initial state of the main instance, should be a state label of type(main)
   // returns false in case of failure (no main instance defined, no corresponding state label)
   bool setInstanceState (Label stateName);
@@ -93,7 +93,7 @@ public :
   // Play factory role for building ITS types from other formalisms
   // Returns false and aborts if type name already exists.
   // Create a type to hold a Petri net.
-  bool declareType (const class PNet & net);
+  virtual bool declareType (const class PNet & net);
   // Create a type to hold a Petri net, with hierarchical representation based on JSON description.
   bool declareType (const class PNet & net, const class json::Hierarchie * hier);
   // Create a type to hold a Timed Petri net.
