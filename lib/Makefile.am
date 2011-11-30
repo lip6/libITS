@@ -112,6 +112,7 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(MYSRCDIR)/Type.hh \
 	$(MYSRCDIR)/TypeBasics.hh \
 	$(MYSRCDIR)/TypeCacher.hh \
+	$(MYSRCDIR)/TypeDecorator.hh \
 	$(MYSRCDIR)/TypeVisitor.hh 
 
 PETRISOURCES = 	$(MYPETRISRCDIR)/Arc.cpp \

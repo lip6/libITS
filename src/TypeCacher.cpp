@@ -11,7 +11,7 @@ namespace its {
     /** Local transitions */
   Transition TypeCacher::getLocals () const {
 	if (locals_ == GSDD::top) {
-	  locals_ = concrete_->getLocals();
+        locals_ = TypeDecorator::getLocals();
 	}
 	return locals_;
   }
@@ -30,7 +30,7 @@ namespace its {
 	if (tcit == trans_keys.end() )
 	{
 	  // cache miss
-	  Transition res = concrete_->getSuccs(ctau);
+	  Transition res = TypeDecorator::getSuccs(ctau);
 	  // Update the cache : it is stored as two congruent vector of values for keys and vals
 	  trans_keys.push_back(ctau);
 	  trans_vals.push_back(res);
@@ -48,7 +48,7 @@ namespace its {
     state_cache_t::const_iterator scit = state_cache.find(stateLabel);
     if (scit == state_cache.end()) {
       //cache miss
-      State res = concrete_->getState(stateLabel);
+      State res = TypeDecorator::getState(stateLabel);
       // update cache
       state_cache[stateLabel] = res;
       return res;
