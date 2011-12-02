@@ -155,76 +155,13 @@ public :
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   Transition getAPredicate (Label predicate) const {
-    // The predicate should respect the grammar : varName (=|>|<|>=|<=|<|!=) value
-    // Where varName is a place or a transition (hence designating its clock) such as found in getVariableSet(), getVarOrder()
-    // and value is an integer
-    
-    // step 1 : parse the predicate
-    const char * pred = predicate.c_str();
-    int mode = 0;
-    vLabel var,comp,val;
-    for (const char * cp = pred ; *cp ; ++cp) {
-      // skip ws
-      if (*cp == ' ')
-	continue;
-      switch (mode) {
-	// parsing variable
-      case 0:
-	if (*cp == '!' || *cp == '>' || *cp == '=' || *cp == '<') {
-	  mode = 1;
-	  comp += *cp;
-	} else {
-	  var += *cp;
-	}
-	break;
-      case 1:
-	if (*cp == '!' || *cp == '>' || *cp == '=' || *cp == '<') {
-	  comp += *cp;
-	} else {
-	  val += *cp;
-	}
-	mode = 2;
-	break;
-      case 2:
-	val += *cp;
-      }
-    }
-    // Check parse
-    int index = getVarOrder()->getIndex(var);
-    if ( index == -1 ) {
-      std::cerr << "Error variable " + var + " cannot be resolved when trying to parse predicate : "  + predicate << std::endl;
-      std::cerr << "Failing with error code 2"<< std::endl;
-      exit (2);
-    }
-    GHom (* foo) (int,int)  = NULL;
-    if ( comp == "=" ) {
-      foo = & varEqState;
-    } else if (comp == "!=") {
-      foo = & varNeqState;
-    } else if (comp == ">") {
-      foo = & varGtState;
-    } else if (comp == "<") {
-      foo = & varLtState;
-    } else if (comp == "<=") {
-      foo = & varLeqState;
-    } else if (comp == ">=") {
-      foo = & varGeqState;
-    } else {
-      std::cerr << "Unrecognized comparison operator : " << comp << " when parsing predicate " << predicate << std::endl;
-      std::cerr << "Error is fatal, failing with error code 2" << std::endl;
-      exit (2);
-    }
-    int value = 0;
-    if ( sscanf (val.c_str(), "%d" , &value) == 0 ) {
-      std::cerr << "Unable to parse right hand side of comparison as an integer : " << comp << " when parsing predicate " << predicate << std::endl;
-      std::cerr << "Error is fatal, failing with error code 2" << std::endl;
-      exit (2);      
-    }
+    AtomicPredicate pred = parseAtomicPredicate(predicate);
+
 
 //      std::cerr << "Petri net parsed predicate var:" << var << " comp:" << comp << " value:"<<val <<std::endl;
 //      std::cerr << "Translates to hom :" << Semantics::getHom ( foo, index, value) << std::endl;
 
-    return Semantics::encapsulate( Semantics::getHom ( foo, index, value) );
+    return Semantics::encapsulate( Semantics::getHom ( pred.comp , pred.var , pred.val) );
   }
 
   /** To obtain a representation of a labeled state */
