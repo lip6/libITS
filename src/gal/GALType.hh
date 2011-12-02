@@ -11,6 +11,9 @@ namespace its {
 class GALType : public TypeBasics {
 
   const GAL * gal_;
+
+  // support function to builda Hom from a GuardedAction (using current varOrder)
+  GHom buildHom(const GuardedAction & it) const ;
 public :
   GALType (const GAL * gal):gal_(gal){}
 
