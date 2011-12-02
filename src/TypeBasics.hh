@@ -8,8 +8,17 @@
 
 namespace its {
 
-/** A class offering some basic type support :
- *  Handles default state definition, and support for gneric variable order storage */
+  // hold the result of a parse
+  class AtomicPredicate {
+  public :
+    int var;
+    GHom (* comp) (int,int);
+    int val;
+    AtomicPredicate(int var, GHom (* comp) (int,int), int val) : var(var),comp(comp),val(val) {}
+  };
+
+  /** A class offering some basic type support :
+   *  Handles default state definition, and support for gneric variable order storage */
   class TypeBasics : public Type {
     	// mutable so that getVarOrder remains const.
 	mutable VarOrder * vorder_;
@@ -52,6 +61,8 @@ namespace its {
      *  Stands for getAtomicPredicate. */
     virtual Transition getAPredicate (Label predicate) const = 0;
 
+    // helper function
+    AtomicPredicate parseAtomicPredicate (Label predicate) const;
   } ;
 
 
