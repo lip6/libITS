@@ -8,32 +8,18 @@
 namespace its {
 
 // predeclarations
-MLHom queryExpression (const IntExpression & e);
+  MLHom queryExpression (const IntExpression & e, const VarOrder * vo);
 
-GHom assertion (const Assertion & a);
-
-
-std::map<int,Variable> Context::vars = std::map<int,Variable> ();
-
-void Context::setVariableIndex ( int index, const Variable &v) {
-  vars.insert(std::make_pair(index,v));
-}
-
-const Variable & Context::getVariable (int index) {
-  std::map<int,Variable>::const_iterator it = vars.find(index);
-  if (it != vars.end() )
-    return it->second;
-  else
-    throw "Unknown variable !!";
-}
+  GHom assertion (const Assertion & a, const VarOrder * vo);
 
 
 // assign an expression to a variable
 class _AssignExpr:public StrongHom {
   int var;
   IntExpression expr;
+  const VarOrder * vo;
 public:
-  _AssignExpr(int varr, const IntExpression & e) : var(varr), expr(e) {}
+  _AssignExpr(int varr, const IntExpression & e, const VarOrder * vo) : var(varr), expr(e), vo(vo) {}
   
   GDDD phiOne() const {
     return GDDD::one;
@@ -43,13 +29,13 @@ public:
   skip_variable(int var) const
   {
     return var != this->var 
-      && ! expr.isSupport(Context::getVariable(var));
+      && ! expr.isSupport(Variable(vo->getLabel(var)));
   }
 
   GHom phi(int vr, int vl) const {
     IntExpression e = expr ;
-    if (expr.isSupport(Context::getVariable(vr))) {
-      e = e & IntExpressionFactory::createAssertion(Context::getVariable(vr),IntExpressionFactory::createConstant(vl));
+    if (expr.isSupport(Variable(vo->getLabel(vr)))) {
+      e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(var)),IntExpressionFactory::createConstant(vl));
     }
     e = e.eval();
     if (vr == var) {
@@ -58,10 +44,10 @@ public:
 	return GHom(var, e.getValue());
       } else {
       // still need to resolve.
-	return MLHom(assignExpr(var,e),MLHom(vr,vl,queryExpression(e)));
+	return MLHom(assignExpr(var,e,vo),MLHom(vr,vl,queryExpression(e,vo)));
       }
     } else {
-      return GHom(vr,vl, assignExpr(var,e));
+      return GHom(vr,vl, assignExpr(var,e,vo));
     }
   }
   size_t hash() const {
@@ -76,8 +62,8 @@ public:
   GHom compose (const GHom & other) const ;
 };
 
-GHom assignExpr (int var,const IntExpression & val) {
-  return _AssignExpr(var,val);
+  GHom assignExpr (int var,const IntExpression & val,const VarOrder * vo) {
+  return _AssignExpr(var,val,vo);
 }
 
 // a MLHom to handle : a =? b
@@ -85,32 +71,33 @@ GHom assignExpr (int var,const IntExpression & val) {
 class _QueryMLHom : public StrongMLHom {
   IntExpression a;
   IntExpression b;
+  const VarOrder * vo;
 public :
-  _QueryMLHom (const IntExpression & aa, const IntExpression & bb) : a(aa),b(bb) {}
+  _QueryMLHom (const IntExpression & aa, const IntExpression & bb, const VarOrder * vo) : a(aa),b(bb), vo (vo) {}
 
   bool
   skip_variable(int var) const
   {
-    return ! b.isSupport(Context::getVariable(var));
+    return ! b.isSupport(Variable(vo->getLabel(var)));
   }
 
 
   HomHomMap phi (int var,int val) const {
     IntExpression e = b ;
-    if (e.isSupport(Context::getVariable(var))) {
-      e = e & IntExpressionFactory::createAssertion(Context::getVariable(var),IntExpressionFactory::createConstant(val));
+    if (e.isSupport(Variable(vo->getLabel(var)))) {
+      e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(var)),IntExpressionFactory::createConstant(val));
     }
     e= e.eval();
 
 
-    GHom homup = assertion(IntExpressionFactory::createAssertion(a,e));
+    GHom homup = assertion(IntExpressionFactory::createAssertion(a,e),vo);
     MLHom homdown = MLHom::id;
     
     if (e.getType() == CONST) {
       // Constant :
       homdown = GHom(var,val,GHom::id);
     } else {
-      homdown = MLHom (var,val,queryExpression(e));
+      homdown = MLHom (var,val,queryExpression(e,vo));
     }
     HomHomMap ret;
     ret.add(homup,homdown);
@@ -129,15 +116,16 @@ public :
 
 };
 
-MLHom queryExpression (const IntExpression & a) {
-  return _QueryMLHom(a,a);
+  MLHom queryExpression (const IntExpression & a, const VarOrder* vo) {
+  return _QueryMLHom(a,a,vo);
 }
 
 // perform varl := varr independently of variable ordering.
 class _AssertionHom:public StrongHom {
   Assertion ass;
+  const VarOrder * vo;
 public:
-  _AssertionHom(const Assertion & expr) : ass(expr) {}
+  _AssertionHom(const Assertion & expr, const VarOrder * vo) : ass(expr),vo(vo) {}
   
   GDDD phiOne() const {
     return GDDD::one;
@@ -146,7 +134,7 @@ public:
   bool
   skip_variable(int var) const
   {
-    return ! ass.isSupport(Context::getVariable(var));
+    return ! ass.isSupport(Variable(vo->getLabel(var)));
   }
 
   Assertion getAssertion () const { return ass;}
@@ -166,21 +154,21 @@ public:
   GHom compose (const GHom & other) const {
     const _GHom * c = get_concret(other);
     if (typeid(*c) == typeid(_AssertionHom)) {
-      return _AssertionHom(ass &  ((const _AssertionHom *)c)->getAssertion());
+      return _AssertionHom(ass &  ((const _AssertionHom *)c)->getAssertion(),vo);
     } else {
       return _GHom::compose(other);
     }
   }
 };
 
-GHom assertion (const Assertion & e) {
-  return _AssertionHom(e);
+GHom assertion (const Assertion & e, const VarOrder *vo) {
+  return _AssertionHom(e,vo);
 }
 
 GHom _AssignExpr::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
   if (typeid(*c) == typeid(_AssertionHom)) {
-    return assignExpr(var,(expr & ((const _AssertionHom *)c)->getAssertion()).eval());
+    return assignExpr(var,(expr & ((const _AssertionHom *)c)->getAssertion()).eval(),vo);
   } else {
     return _GHom::compose(other);
   }
@@ -189,8 +177,9 @@ GHom _AssignExpr::compose (const GHom & other) const {
 
 class _Predicate:public StrongHom {
   BoolExpression expr;
+  const VarOrder * vo;
 public:
-  _Predicate(const BoolExpression & e) : expr(e) {}
+  _Predicate(const BoolExpression & e, const VarOrder *vo) : expr(e),vo(vo) {}
   
   GDDD phiOne() const {
     return GDDD::one;
@@ -199,13 +188,13 @@ public:
   bool
   skip_variable(int var) const
   {
-    return ! expr.isSupport(Context::getVariable(var)) ;
+    return ! expr.isSupport(Variable(vo->getLabel(var))) ;
   }
   
   GHom phi(int vr, int vl) const {
     BoolExpression e = expr ;
-    if (expr.isSupport(Context::getVariable(vr))) {
-      e = e & IntExpressionFactory::createAssertion(Context::getVariable(vr),IntExpressionFactory::createConstant(vl));
+    if (expr.isSupport(Variable(vo->getLabel(vr)))) {
+      e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(vr)),IntExpressionFactory::createConstant(vl));
     }
     e = e.eval();
     if (e.getType() == BOOLCONST) {
@@ -216,7 +205,7 @@ public:
 	return GDDD::null;
     } else {
       // still need to resolve.
-      return GHom(vr,vl, predicate(e));
+      return GHom(vr,vl, predicate(e,vo));
     }
   }
   size_t hash() const {
@@ -232,14 +221,14 @@ public:
 
 };
 
-GHom predicate (const BoolExpression & e) {
-  return _Predicate(e);
+GHom predicate (const BoolExpression & e, const VarOrder * vo) {
+  return _Predicate(e,vo);
 }
 
 GHom _Predicate::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
   if (typeid(*c) == typeid(_AssertionHom)) {
-    return predicate((expr & ((const _AssertionHom *)c)->getAssertion()).eval());
+    return predicate((expr & ((const _AssertionHom *)c)->getAssertion()).eval(),vo);
   } else {
     return _GHom::compose(other);
   }

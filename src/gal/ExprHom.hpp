@@ -4,25 +4,15 @@
 #include "Hom.h"
 #include "IntExpression.hh"
 #include "BoolExpression.hh"
+#include "Ordering.hh"
 
 namespace its {
 
-class Context {
-  static std::map<int,Variable> vars;
- public :
-  /// Correspondence between variables and integers.
-  static int getVariableIndex (const Variable & v);
-  /// Return the variable corresponding to an index.
-  static const Variable & getVariable (int index);
-  /// Set a mapping Variable<->int
-  static void setVariableIndex (int index, const Variable &v);
-};
-
 /// Assigns the value of expr to variable var.
-GHom assignExpr (int var, const IntExpression & expr);
+GHom assignExpr (int var, const IntExpression & expr, const VarOrder * vo);
 
 /// Creates a predicate to select paths that verify the expression e.
-GHom predicate (const BoolExpression & e);
+GHom predicate (const BoolExpression & e, const VarOrder * vo);
 
 }
 
