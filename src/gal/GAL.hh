@@ -36,7 +36,7 @@ private :
   actions_t actions_;
 public:
   GuardedAction (Label name):NamedElement(name),guard_(BoolExpressionFactory::createConstant(true)) {};
-  void setGuard (BoolExpression guard) { guard_ = guard; }
+  void setGuard (BoolExpression guard) { guard_ = guard.eval(); }
   const BoolExpression & getGuard () const { return guard_; }
   actions_it begin() const { return actions_.begin() ; }
   actions_it end() const { return actions_.end() ; }
