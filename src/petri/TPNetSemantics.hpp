@@ -255,7 +255,7 @@ namespace its {
 	// left concatenate to M0
 	M0 = dom ^ M0;
       }
-      return GSDD( DEFAULT_VAR , DDD(M0));         
+      return State( DEFAULT_VAR , DDD(M0));         
   }
   
   /** Return a Transition that maps states to their observation class.
