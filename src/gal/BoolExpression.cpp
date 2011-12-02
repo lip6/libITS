@@ -55,17 +55,21 @@ class _BoolExpression {
 
 class NaryBoolExpr : public _BoolExpression {
 protected :
-  NaryBoolParamType params ;
+  typedef std::vector<BoolExpression> params_t;
+  typedef params_t::const_iterator params_it;
+  
+  params_t params;
 public :
   virtual const char * getOpString() const = 0;
 
-  const NaryBoolParamType & getParams () const { return params; }
+  params_it begin() const { return params.begin(); }
+  params_it end() const { return params.end(); }
 
-  NaryBoolExpr (const NaryBoolParamType & pparams):params(pparams) {};
+  NaryBoolExpr (const NaryBoolParamType & pparams):params(pparams.begin(), pparams.end()) {};
 
   BoolExpression eval () const {
     NaryBoolParamType p ;
-    for (NaryBoolParamType::const_iterator it = params.begin(); it != params.end() ; ++it ) {
+    for (params_it it = begin(); it != end() ; ++it ) {
       BoolExpression e = it->eval();
       if (e.getType() == BOOLCONST) {
 	bool val = e.getValue();
@@ -91,9 +95,9 @@ public :
 
   void print (std::ostream & os) const {
     os << "( ";
-    for (NaryBoolParamType::const_iterator it = params.begin() ;  ; ) {
+    for (params_it it = begin() ;  ; ) {
       it->print(os);
-      if (++it == params.end())
+      if (++it == end())
 	break;
       else
 	os << getOpString();
@@ -108,7 +112,7 @@ public :
 
   size_t hash () const {
     size_t res = getType();
-    for (NaryBoolParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
+    for (params_it it = begin() ; it != end()  ; ++it ) {
       res = res*(it->hash() +  10099);
     }
     return res;
@@ -116,14 +120,14 @@ public :
 
   BoolExpression setAssertion (const Assertion & a) const {
     NaryBoolParamType res ;
-    for (NaryBoolParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
+    for (params_it it = begin() ; it != end()  ; ++it ) {
       res.insert( (*it) & a );
     }
     return BoolExpressionFactory::createNary(getType(),res);    
   }
 
    bool isSupport (const Variable & v) const {
-    for (NaryBoolParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
+    for (params_it it = begin() ; it != end()  ; ++it ) {
       if (it->isSupport(v)) 
 	return true;
     }
@@ -361,15 +365,16 @@ public :
 UniqueTable<_BoolExpression>  BoolExpressionFactory::unique = UniqueTable<_BoolExpression>();
 
 BoolExpression BoolExpressionFactory::createNary (BoolExprType type, const NaryBoolParamType & params) {
-    switch (type) {
-    case OR :
-      return unique(OrExpr (params));      
-    case AND :
-      return unique(AndExpr (params));      
-    default :
-      throw "Operator is not nary";
-    }
+  switch (type) {
+  case OR :
+    return unique(OrExpr (params));
+  case AND :
+    return unique(AndExpr (params));      
+  default :
+    throw "Operator is not nary";
   }
+
+}
 
 BoolExpression BoolExpressionFactory::createNot  (const BoolExpression & e) {
   return unique(NotExpr(e));
@@ -419,14 +424,14 @@ void BoolExpressionFactory::printStats (std::ostream &os) {
 BoolExpression operator&&(const BoolExpression & a,const BoolExpression & b) {
   NaryBoolParamType p;
   if (a.getType() == AND) {
-    const NaryBoolParamType & p2 = ((const NaryBoolExpr *) a.concrete)->getParams();
-    p.insert(p2.begin(), p2.end());
+    const NaryBoolExpr * pa = (const NaryBoolExpr *) a.concrete;
+    p.insert(pa->begin(), pa->end());
   } else {
     p.insert(a);
   }
   if (b.getType() == AND) {
-    const NaryBoolParamType & p2 = ((const NaryBoolExpr *) b.concrete)->getParams();
-    p.insert(p2.begin(), p2.end());
+    const NaryBoolExpr * pb = (const NaryBoolExpr *) b.concrete;
+    p.insert(pb->begin(), pb->end());
   } else {
     p.insert (b);
   }
@@ -436,14 +441,14 @@ BoolExpression operator&&(const BoolExpression & a,const BoolExpression & b) {
 BoolExpression operator||(const BoolExpression & a,const BoolExpression & b) {
   NaryBoolParamType p;
   if (a.getType() == OR) {
-    const NaryBoolParamType & p2 = ((const NaryBoolExpr *) a.concrete)->getParams();
-    p.insert(p2.begin(), p2.end());
+    const NaryBoolExpr * pa = (const NaryBoolExpr *) a.concrete;
+    p.insert(pa->begin(), pa->end());
   } else {
     p.insert(a);
   }
   if (b.getType() == OR) {
-    const NaryBoolParamType & p2 = ((const NaryBoolExpr *) b.concrete)->getParams();
-    p.insert(p2.begin(), p2.end());
+    const NaryBoolExpr * pb = (const NaryBoolExpr *) b.concrete;
+    p.insert(pb->begin(), pb->end());
   } else {
     p.insert (b);
   }
