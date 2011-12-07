@@ -12,8 +12,9 @@ namespace its {
 
 class Variable {
   vLabel name;
+  vLabel aname;
 public:
-  Variable(Label nname):name(nname){};
+  Variable(Label nname):name(nname){ aname = name.substr(0,name.find_last_of('[')); };
   Label getName () const { return name; }
   bool operator== (const Variable & v) const {
     return v.name == name;
@@ -21,7 +22,9 @@ public:
   size_t hash () const { 
     return d3::util::hash<vLabel>()(name);
   }
-
+  Label getArrayName () const { 
+    return aname; 
+  }
 };
 
 }
