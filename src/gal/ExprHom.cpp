@@ -26,25 +26,36 @@ public:
   }                   
 
   bool
-  skip_variable(int var) const
+  skip_variable(int vr) const
   {
-    return var != this->var 
-      && ! expr.isSupport(Variable(vo->getLabel(var)));
+    bool b =  vr != this->var 
+      && ! expr.isSupport(Variable(vo->getLabel(vr)));
+//    std::cerr << "Assignment of:" << expr << std::endl
+//	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
+    return b;
   }
 
   GHom phi(int vr, int vl) const {
     IntExpression e = expr ;
     if (expr.isSupport(Variable(vo->getLabel(vr)))) {
-      e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(var)),IntExpressionFactory::createConstant(vl));
+      e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(vr)),IntExpressionFactory::createConstant(vl));
     }
     e = e.eval();
+//     if (! e.equals(expr)) 
+//       std::cerr << "Assignment: Solving : " << expr << std::endl
+// 		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+// 		<< " reduced to " << e << std::endl;
     if (vr == var) {
       if (e.getType() == CONST) {
 	// Constant :
 	return GHom(var, e.getValue());
       } else {
       // still need to resolve.
-	return MLHom(assignExpr(var,e,vo),MLHom(vr,vl,queryExpression(e,vo)));
+// 	std::cerr << "Assignment: Solving : " << expr << std::endl
+// 		  << "Still need to resolve :" << e.getFirstSubExpr() << std::endl;
+// 	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+// 	std::cerr << std::endl;
+	return MLHom(assignExpr(var,e,vo),MLHom(vr,vl,queryExpression(e.getFirstSubExpr(),vo)));
       }
     } else {
       return GHom(vr,vl, assignExpr(var,e,vo));
@@ -60,6 +71,14 @@ public:
   _GHom * clone () const {  return new _AssignExpr(*this); }
 
   GHom compose (const GHom & other) const ;
+
+  void print (std::ostream & os) const {
+    os << "Assign(" ;
+    os << vo->getLabel(var) << "=";
+    expr.print(os);
+    os << ")";
+  }
+
 };
 
   GHom assignExpr (int var,const IntExpression & val,const VarOrder * vo) {
@@ -81,6 +100,13 @@ public :
     return ! b.isSupport(Variable(vo->getLabel(var)));
   }
 
+  HomNodeMap phiOne () const {
+    HomNodeMap res;
+    // We have an array index out of bounds problem !!
+    std::cerr << "Query for expression" << a << " produced an overflow error !"<< std::endl;
+    res.add(GHom(GDDD::null), GDDD::null);
+    return res;
+  }
 
   HomHomMap phi (int var,int val) const {
     IntExpression e = b ;
@@ -159,6 +185,13 @@ public:
       return _GHom::compose(other);
     }
   }
+
+  void print (std::ostream & os) const {
+    os << "Assertion(" ;
+    ass.print(os);
+    os << ")";
+  }
+
 };
 
 GHom assertion (const Assertion & e, const VarOrder *vo) {
@@ -182,7 +215,9 @@ public:
   _Predicate(const BoolExpression & e, const VarOrder *vo) : expr(e),vo(vo) {}
   
   GDDD phiOne() const {
-    return GDDD::one;
+    std::cerr << "Overflow in Predicate when evaluating ";
+    expr.print(std::cerr);
+    return GDDD::null;
   }                   
 
   bool
@@ -197,6 +232,11 @@ public:
       e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(vr)),IntExpressionFactory::createConstant(vl));
     }
     e = e.eval();
+//     if (! ( e == expr) ) 
+//       std::cerr << "Predicate: Solving : " << expr << std::endl
+// 		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+// 		<< " reduced to " << e << std::endl;
+    
     if (e.getType() == BOOLCONST) {
       // Constant :
       if (e.getValue()) 
@@ -205,7 +245,13 @@ public:
 	return GDDD::null;
     } else {
       // still need to resolve.
-      return GHom(vr,vl, predicate(e,vo));
+      IntExpression tmp = e.getFirstSubExpr();
+      if (! tmp.equals(0)){
+//	std::cerr << "BoolExpr: Still need to resolve :" << tmp << std::endl;
+	return MLHom( predicate(e,vo), MLHom(vr,vl,queryExpression(tmp,vo)));
+      } else {
+	return GHom(vr,vl, predicate(e,vo));
+      }
     }
   }
   size_t hash() const {
@@ -219,14 +265,32 @@ public:
   GHom compose (const GHom & other) const ;
    bool is_selector() const { return true; }
 
+  void print (std::ostream & os) const {
+    os << "Predicate(" ;
+    expr.print(os);
+    os << ")";
+  }
+
+
 };
 
 GHom predicate (const BoolExpression & e, const VarOrder * vo) {
+  if (e.getType() == BOOLCONST) {
+    // Constant :
+    if (! e.getValue()) {
+      return GHom(GDDD::null);
+    } else {
+      return GHom::id;
+    }
+  }
+
   return _Predicate(e,vo);
 }
 
 GHom _Predicate::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
+ // std::cerr << "compose " << expr << " with : " ;
+ // c->print(std::cerr);
   if (typeid(*c) == typeid(_AssertionHom)) {
     return predicate((expr & ((const _AssertionHom *)c)->getAssertion()).eval(),vo);
   } else {
