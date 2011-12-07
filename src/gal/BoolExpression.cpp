@@ -50,6 +50,8 @@ class _BoolExpression {
   virtual BoolExpression setAssertion (const Assertion & a) const = 0;
 
   virtual bool isSupport (const Variable & v) const = 0;
+
+  virtual IntExpression getFirstSubExpr () const = 0;
 };
 
 
@@ -133,6 +135,18 @@ public :
     }
     return false;
   }
+
+  IntExpression getFirstSubExpr () const {
+    IntExpression zero(0);
+    for (params_it it = begin() ; it != end()  ; ++it ) {
+      IntExpression tmp = it->getFirstSubExpr();
+      if (! tmp.equals(zero)) 
+	return tmp;
+    }
+    return zero;
+  }
+
+
 };
 
 class OrExpr : public NaryBoolExpr {
@@ -193,6 +207,7 @@ public :
     res *= left.hash() *  76303 + right.hash() * 76147;
     return res;
   }
+
   void print (std::ostream & os) const {
     os << "( ";
     left.print(os);
@@ -203,6 +218,21 @@ public :
 
   bool isSupport (const Variable & v) const {
     return left.isSupport(v) || right.isSupport(v);
+  }
+
+  IntExpression getFirstSubExpr () const {
+    IntExpression zero(0);
+    {
+      IntExpression tmp = left.getFirstSubExpr();
+      if (! tmp.equals(left)) 
+	return tmp;
+    }
+    {
+      IntExpression tmp = right.getFirstSubExpr();
+      if (! tmp.equals(right)) 
+	return tmp;
+    }
+    return zero;
   }
 
 
@@ -279,8 +309,8 @@ class BoolGt : public BinaryBoolComp {
 
 public :
   BoolGt (const IntExpression & left, const IntExpression & right) : BinaryBoolComp(left,right) {};
-  BoolExprType getType() const  { return LT; }
-  const char * getOpString() const { return " < ";}
+  BoolExprType getType() const  { return GT; }
+  const char * getOpString() const { return " > ";}
 
   bool constEval (int i, int j) const {
     return i>j;
@@ -325,6 +355,10 @@ public :
     return exp.isSupport(v);
   }
 
+  IntExpression getFirstSubExpr () const {
+    return exp.getFirstSubExpr();
+  }
+
 };
 
 class BoolConstExpr : public _BoolExpression {
@@ -356,6 +390,10 @@ public :
 
   bool isSupport (const Variable&) const {
     return false;
+  }
+
+  IntExpression getFirstSubExpr () const {
+    return 0;
   }
 
 };
@@ -518,6 +556,11 @@ BoolExpression & BoolExpression::operator= (const BoolExpression & other) {
 
 bool BoolExpression::operator== (const BoolExpression & other) const {
   return concrete == other.concrete ;
+}
+
+/// To handle nested expressions (e.g. array access). Returns the constant 0 if there are no nested expressions.
+IntExpression BoolExpression::getFirstSubExpr () const {
+  return concrete->getFirstSubExpr();
 }
 
 bool BoolExpression::operator< (const BoolExpression & other) const {
