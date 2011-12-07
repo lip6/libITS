@@ -53,6 +53,7 @@ class _IntExpression {
 
   virtual bool isSupport (const Variable & v) const = 0;
 
+  virtual IntExpression getFirstSubExpr () const = 0;
 };
 
 
@@ -95,6 +96,10 @@ public :
     return var == v;
   }
 
+  IntExpression getFirstSubExpr () const {
+    return this;
+  }
+
 };
 
 class ConstExpr : public _IntExpression {
@@ -128,7 +133,64 @@ public :
     return false;
   }
 
+  IntExpression getFirstSubExpr () const {
+    return this;
+  }
+
 };
+
+
+class ArrayVarExpr : public _IntExpression {
+  Variable var;  
+  IntExpression index;
+public :
+  ArrayVarExpr (const Variable & vvar, const IntExpression & index) : var(vvar), index(index) {};
+  IntExprType getType() const  { return ARRAY; }
+
+  void print (std::ostream & os) const {
+    os << var.getName() << "[";
+    index.print(os);
+    os << "]";
+  }
+
+  IntExpression eval () const {
+    IntExpression indeval = index.eval();
+    if (indeval.getType() == CONST) {
+      int val = ((const ConstExpr &)* getConcrete(indeval)).getValue();
+      return IntExpressionFactory::createVariable(Variable(var.getName() + "[" + to_string(val)  + "]"));
+    } else if (indeval.equals(index)) {
+      return this;
+    } else {
+      return IntExpressionFactory::createArrayAccess (var, indeval);
+    }
+  }
+
+  bool operator==(const _IntExpression & e) const {
+    return var == ((const ArrayVarExpr &)e).var && (index.equals( ((const ArrayVarExpr &)e).index));
+  }
+
+  virtual size_t hash () const {
+    return (var.hash() * 70019) ^ index.hash();
+  }
+
+  _IntExpression * clone () const { return new ArrayVarExpr(*this); }
+
+  bool isSupport (const Variable & v) const {
+    return var == v || v.getArrayName() == var.getName() || index.isSupport(v);
+  }
+
+  IntExpression getFirstSubExpr () const {
+    return index;
+  }
+
+  IntExpression setAssertion (const Assertion & a) const {
+    return IntExpressionFactory::createArrayAccess(var, a.getValue(index).eval()).eval();
+  }
+
+
+};
+
+
 
 
 class NaryIntExpr : public _IntExpression {
@@ -216,6 +278,17 @@ public :
     return false;
   }
 
+  IntExpression getFirstSubExpr () const {
+    for (NaryParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
+      IntExpression tmp = it->getFirstSubExpr();
+      if (! tmp.equals(*it)) {
+	return tmp;
+      }
+    }
+    return this;
+  }
+
+
 };
 
 class PlusExpr : public NaryIntExpr {
@@ -300,6 +373,24 @@ public :
   bool isSupport (const Variable & v) const {
     return left.isSupport(v) || right.isSupport(v);
   }
+
+  IntExpression getFirstSubExpr () const {
+
+    {
+      IntExpression tmp = left.getFirstSubExpr();
+      if (! tmp.equals(left)) {
+	return tmp;
+      }
+    }
+    {
+      IntExpression tmp = right.getFirstSubExpr();
+      if (! tmp.equals(right)) {
+	return tmp;
+      }
+    }
+    return this;
+  }
+
 
 };
 
@@ -390,6 +481,11 @@ bool Assertion::isSupport (const Variable & v) const {
   return mapping.first.isSupport(v) || mapping.second.isSupport(v);
 }
 
+void Assertion::print (std::ostream & os) const {
+  os << mapping.first << ":=" << mapping.second ;
+}
+
+
 
 /*******************************************************/
 /******* Factory ***************************************/
@@ -430,6 +526,10 @@ IntExpression IntExpressionFactory::createConstant (int v) {
 
 IntExpression IntExpressionFactory::createVariable (const Variable & v) {
   return unique (VarExpr(v));
+}
+
+IntExpression IntExpressionFactory::createArrayAccess (const Variable & v, const IntExpression & index) {
+  return unique (ArrayVarExpr(v,index));
 }
 
 Assertion IntExpressionFactory::createAssertion (const Variable & v,const IntExpression & e) {
@@ -545,6 +645,11 @@ bool IntExpression::less (const IntExpression & other) const {
   return concrete < other.concrete;
 }
 
+IntExpression IntExpression::getFirstSubExpr () const {
+  return concrete->getFirstSubExpr();
+}
+
+
 
 void IntExpression::print (std::ostream & os) const {
   concrete->print(os);
@@ -594,6 +699,14 @@ size_t IntExpression::hash () const {
   return ddd::knuth32_hash(reinterpret_cast<const size_t>(concrete)); 
 }
 
+std::ostream & operator << (std::ostream & os, const its::IntExpression & e) {
+  e.print(os);
+  return os;
+}
+
+
+
+
 } // namespace its
 
 
@@ -611,12 +724,9 @@ namespace d3 { namespace util {
       return (typeid(*g1) == typeid(*g2) && *g1 == *g2);
     }
   };
-} } 
+}} // namespaces d3::util
 
 
-std::ostream & operator << (std::ostream & os, const its::IntExpression & e) {
-  e.print(os);
-  return os;
-}
+
 
 // end class IntExpression}
