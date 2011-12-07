@@ -17,7 +17,8 @@ typedef enum {
   MINUS, // binary minus
   DIV,  // binary division
   MOD, // binary modulo
-  POW // binary power of
+  POW, // binary power of
+  ARRAY // access inside an array
 } IntExprType ;
 
 class _IntExpression ;
@@ -34,8 +35,11 @@ class IntExpression {
   friend class _IntExpression;
   // access to _IntExpression* constructor
   friend class VarExpr;
+  friend class ArrayVarExpr;
   friend class ConstExpr;
+  friend class NaryIntExpr;
   friend class IntExpressionFactory;
+  friend class BinaryIntExpr;
 
   // For factory use
   IntExpression (const _IntExpression * c); 
@@ -87,6 +91,10 @@ public :
   /// To determine whether a given variable is mentioned in an expression.
   bool isSupport (const Variable & v) const;
 
+  /// To allow resolution of nested IntExpressions, e.g. array access
+  IntExpression getFirstSubExpr () const ;
+
+
   // for pretty print
   friend std::ostream & operator<< (std::ostream & os, const IntExpression & e);
 };
@@ -105,6 +113,9 @@ public :
 
   size_t hash() const;
   bool operator== (const Assertion & ) const ;
+
+  // for pretty print
+  void print (std::ostream & os) const;
 };
 
 
@@ -117,6 +128,7 @@ public :
   static IntExpression  createBinary (IntExprType type, const IntExpression & l, const IntExpression & r) ;
   static IntExpression  createConstant (int v);
   static IntExpression  createVariable (const Variable & v) ;
+  static IntExpression  createArrayAccess (const Variable & v, const IntExpression & index) ;
   
   static Assertion createAssertion (const Variable & v,const IntExpression & e);
   static Assertion createAssertion (const IntExpression & v,const IntExpression & e);
