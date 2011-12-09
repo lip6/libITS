@@ -45,45 +45,50 @@ int main (int argc, char **argv) {
 
    std::cerr << init << std::endl;
 
-//   // gen reachable
-//    State reach ;
-//    State r2 = init;
-//    int i=0;
-//    do {
-//      reach = r2;
-//      r2 = r2 + locals (r2);
-//      std::cout << " iter "<<i++ << " nbstates " << r2.nbStates() << std::endl;
-//    } while (reach != r2 ) ;
+   State reach ;
+   {
+  // gen reachable
 
-//    std::cout << reach;
-
+   State r2 = init;
+   int i=0;
+   do {
+     reach = r2;
+     r2 = r2 + locals (r2);
+     std::cout << " iter "<<i++ << " nbstates " << r2.nbStates() << std::endl;
+   } while (reach != r2  && i < 2) ;
 
    
-//    Type::namedTrs_t nlocs ;
-//    philType->getNamedLocals(nlocs);
+   philType->printState(r2-reach,std::cout);
+   std::cout << std::endl;
+   
 
-//    Transition t14;
-//    for (Type::namedTrs_it it = nlocs.begin() ; it != nlocs.end() ; ++it) {
-//      if (it->first == "t14") {
-//        t14 = it->second;
-//        break;
-//      }
-//    }
+   
+    Type::namedTrs_t nlocs ;
+    philType->getNamedLocals(nlocs);
 
-//    std::cout << "t14 : " << t14 << std::endl;
-//    State roverflow = t14 (reach);
-//    std::cout << " After t14 : " << std::endl << roverflow << std::endl;
+    Transition t14;
+    for (Type::namedTrs_it it = nlocs.begin() ; it != nlocs.end() ; ++it) {
+      if (it->first == "t4") {
+        t14 = it->second;
+        break;
+      }
+    }
+    philType->printState(r2-reach,std::cout);
+    std::cout << "t4 : " << t14 << std::endl;
+    State roverflow = t14 (r2 -reach);
+    std::cout << " After t14 : " << std::endl ;
+    philType->printState(roverflow,std::cout);
+   }
 
 
-    Transition fix = fixpoint ( locals + Transition::id);
-    State reach = fix(init);
+     Transition fix = fixpoint ( locals + Transition::id);
+     reach = fix(init);
    
    
 
 //   // print stats
    Statistic stat (reach,"reach");
    stat.print_table(std::cout);
-
 
 
  return 0;
