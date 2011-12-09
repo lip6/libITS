@@ -57,7 +57,7 @@ public :
   std::ostream & print (std::ostream & os) const { os << *gal_ ; return os ; }
 
   virtual void printState (State s, std::ostream & os) const { 
-    os << "Please implement pretty state print for GAL type" << std::endl; 
+    TypeBasics::printDDDState (s,os,*getVarOrder());
   }
 
   /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
