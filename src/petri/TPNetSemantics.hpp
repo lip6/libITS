@@ -319,81 +319,14 @@ namespace its {
   }
 
 
-
-  static void recPrintDDD (const GDDD & d, std::ostream & os, const VarOrder & vo, vLabel str) {
-    if (d == DDD::one)
-      os << "[ " << str << "]"<<std::endl;
-    else if(d == DDD::top)
-      os << "[ " << str << "T ]"<<std::endl;
-    else if(d == DDD::null)
-      os << "[ " << str << "0 ]"<<std::endl;
-    else{
-      
-		for(GDDD::const_iterator vi=d.begin();vi!=d.end();++vi){
-		  if (vi->first == 0) {
-			recPrintDDD(vi->second,os,vo,str);
-		  } else {
-			std::stringstream tmp;
-			tmp << vo.getLabel(d.variable())<<'('<<vi->first<<") ";
-			recPrintDDD(vi->second,os,vo,str+tmp.str());
-		  }
-		}
-    }
-  }
-
-  static void recPrintSDD (State s, std::ostream & os, const VarOrder & vo, vLabel str) {
-    if (s == State::one)
-      os << "[ " << str << "]";
-    else if(s ==  State::top)
-      os << "[ " << str << "T ]";
-    else if(s == State::null)
-      os << "[ " << str << "0 ]";
-    else{
-      for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
-	
-		
-	// grab the DDD on the arc	
-	DDD val = (const DDD &) * vi->first;
-	
-	if (val.nbsons() == 1 && val.begin()->first == 0) {
-	  // skip {0} values
-	  recPrintSDD(vi->second, os, vo, str);
-	} else {
-	  std::stringstream tmp;
-	  // pretty print variable names
-	  Label varname = vo.getLabel(s.variable());
-	  tmp << varname << "={";
-	
-	  for (DDD::const_iterator it = val.begin(); it != val.end() ; /**increment in loop */) {
-	    tmp << to_string(it->first) ;
-	    ++it;
-	    if (it != val.end()) tmp << ",";
-	  }
-	  tmp << "} ";
-	
-	  recPrintSDD(vi->second, os, vo, str + tmp.str());
-	}
-      }
-    }
-  }
-
   template<>
   inline void sddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
-    recPrintSDD(s, os, vo, "");
+    TypeBasics::printSDDState(s,os,vo);
   }
 
   template<>
   inline void dddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
-    // should have a single variable, hence a single arc with a DDD label
-    if (s==State::null) {
-      os << "EmptySet";
-      return;
-    }
-    assert(s.begin() != s.end());
-    assert(s.begin()->second == State::one);
-    DDD state = (const DDD &) * s.begin()->first;
-    // for now just invoke DDD print
-    recPrintDDD(state, os, vo, "");
+    TypeBasics::printDDDState(s,os,vo);
   }
 
 
