@@ -451,7 +451,7 @@ Transition EtfType::getAPredicate (Label predicate) const {
 
 
   void EtfType::printState (State s, std::ostream & os) const {
-    os << "No pretty print yet for states" << std::endl;
+    TypeBasics::printSDDState(s,os,*getVarOrder());
   }
 
 
