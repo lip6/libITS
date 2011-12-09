@@ -88,7 +88,10 @@ public :
       }
     }
     if (p.empty())
-      return BoolExpressionFactory::createConstant(false);
+      if (getType() == OR)
+	return BoolExpressionFactory::createConstant(false);
+      else
+	return BoolExpressionFactory::createConstant(true);
     else if (p.size() == 1) 
       return *p.begin();
     else 
@@ -403,6 +406,9 @@ public :
 UniqueTable<_BoolExpression>  BoolExpressionFactory::unique = UniqueTable<_BoolExpression>();
 
 BoolExpression BoolExpressionFactory::createNary (BoolExprType type, const NaryBoolParamType & params) {
+  if (params.size() == 1) {
+    return *params.begin();
+  }
   switch (type) {
   case OR :
     return unique(OrExpr (params));
@@ -497,6 +503,10 @@ BoolExpression BoolExpression::operator!() const {
   return BoolExpressionFactory::createNot(*this);
 } 
 
+BoolExpression::BoolExpression (const IntExpression & expr): concrete(NULL) {
+   *this = BoolExpressionFactory::createComparison(EQ,expr,IntExpressionFactory::createConstant(1));
+}
+
 
 // binary comparisons
 BoolExpression operator==(const IntExpression & l, const IntExpression & r) {
@@ -547,7 +557,8 @@ BoolExpression::~BoolExpression () {
 BoolExpression & BoolExpression::operator= (const BoolExpression & other) {
   if (this != &other) {
     // remove const qualifier for delete call
-    BoolExpressionFactory::destroy((_BoolExpression *) concrete);
+    if (concrete)
+      BoolExpressionFactory::destroy((_BoolExpression *) concrete);
     concrete = other.concrete;
     concrete->ref();
   }

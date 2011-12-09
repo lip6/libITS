@@ -53,6 +53,10 @@ public :
   bool operator== (const BoolExpression & other) const ;
   bool operator< (const BoolExpression & other) const ;
   size_t hash () const;
+
+  // Interpret an integer expression, as a boolean : compare to 1
+  BoolExpression (const IntExpression & expr) ;
+
   
   BoolExprType getType() const ;
   // member print
