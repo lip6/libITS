@@ -63,7 +63,15 @@ namespace its {
 
     // helper function
     AtomicPredicate parseAtomicPredicate (Label predicate) const;
+
+    // Some helper functions to print states corresponding to a VarOrder.
+    // This for a system whose variables are integer domain, coded as single level DDD
+    static void printSDDState (State s, std::ostream & os, const VarOrder & vo) ;
+    // This for a system whose variables are integer domain, coded as single level SDD bearing the state as a DDD
+    static void printDDDState (State s, std::ostream & os, const VarOrder & vo) ;
   } ;
+
+  
 
 
 } // namespace
