@@ -7,7 +7,7 @@ namespace its {
 
   /** Consumes the options that are recognized in args, and treats them to build the Model.
    *  Options recognized by this options parser: 
-   MANDATORY : -i Inputfile -t {CAMI|PROD|ROMEO|ITSXML|ETF} 
+   MANDATORY : -i Inputfile -t {CAMI|PROD|ROMEO|ITSXML|ETF|DVE} 
    OPTIONAL : --load-order {$f.json|$f.ord}      NB:extension of file is used to determine its type
    CONFIGURATION : --ddd|--sdd : privilege ddd or sdd in encoding. sdd is default
    For Scalar and circular : -ssD2, -ssDR, -ssDS   (default -ssD2 1)

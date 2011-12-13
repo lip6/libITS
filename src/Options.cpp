@@ -23,6 +23,8 @@
 #include "parser_json/parse_json.hh"
 // romeo parser
 #include "petri/XMLLoader.hh"
+// Divine interaction
+#include "divine/dveLoader.hh"
 
 
 using std::string;
@@ -59,7 +61,7 @@ namespace its {
 bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   string pathinputff = "";
-  enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF,DLL,NDLL};
+  enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF,DLL,NDLL,DVE};
   InputType parse_t = NDEF;
 
   bool hasOrder=false;
@@ -99,6 +101,8 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        parse_t = DLL;
      } else if ( !strcmp(argv[i],"NDLL") ) {
        parse_t = NDLL;
+     } else if ( !strcmp(argv[i],"DVE") ) {
+       parse_t = DVE;
      } else {
        cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|ITSXML|ETF} is expected. " << endl;  showUsageHelp() ;exit(1);
      }
@@ -204,6 +208,15 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 	model.declareType(*pnet);
       }
       model.setInstance(pnet->getName(),"main");
+      model.setInstanceState("init");
+      break;
+    }
+  case DVE :
+    {
+      const GAL * gal = loadDve2Gal(pathinputff);
+      model.declareType (*gal);
+      
+      model.setInstance(gal->getName(), "main");
       model.setInstanceState("init");
       break;
     }
