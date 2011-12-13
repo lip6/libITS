@@ -110,6 +110,9 @@ public :
   bool declareType (const class spot::tgba & tgba);
   // Create a type to represent a PINS wrapper on the ETF file format.
   bool declareETFType (Label path) ;
+  // Create a type to hold a GAL model
+  bool declareType (const class GAL & net) ;
+
 
   // Set the behavior for TPN factory from SDD to DDD strategy.
   // Affects subsequent call to declareType.

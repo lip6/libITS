@@ -10,6 +10,7 @@
 #include "scalar/ScalarSetType.hh"
 #include "scalar/CircularSetType.hh"
 #include "etf/ETFType.hh"
+#include "gal/GALType.hh"
 
 #include "MemoryManager.h"
 #include "util/dotExporter.h"
@@ -360,6 +361,13 @@ void ITSModel::print (std::ostream & os) const  {
     EtfType* newtype = new EtfType(path);
     return addType(newtype);
   }
+
+  // Create a type to hold a GAL model
+  bool ITSModel::declareType (const class GAL & net) {
+    pType newtype = new GALType(&net);
+    return addType(newtype);
+  }
+
 
 
   bool ITSModel::loadOrder (std::istream & is) {
