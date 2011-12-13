@@ -211,14 +211,12 @@ static std::vector<std::string> varnames = std::vector<std::string> ();
 
 void dve_compiler::gen_initial_state()
 {
-  char sep[2] = "";
   char buf[10];
   //  append( "DDD initial_state =  " );
   string name = "UNINITIALIZED";
   string process_name = "UNINITIALIZED";
   bool global = true;
   int value=-1;
-  int k=0;
   for (size_int_t i=0; i!=state_creators_count; ++i)
     {
       switch (state_creators[i].type)
@@ -308,7 +306,7 @@ int totalpins= 0;
 
 void dve_compiler::output_dependency_comment( ext_transition_t &ext_transition )
 {
-    int count = count_state_variables();
+  size_t count = count_state_variables();
     char buf[1024];
 
     int nbEdges = 0;
@@ -958,7 +956,7 @@ void dve_compiler::gen_ltsmin_successors()
 void dve_compiler::gen_successors()
 {
     string in = "(*in)", out = "(*out)", space = "";
-    bool some_commited_state = false;
+
 
     new_label();
     if_begin( true );
@@ -1104,9 +1102,9 @@ void dve_compiler::mark_dependency( size_int_t gid, int type, int idx, std::vect
             {
                 if (state_creators[i].array_size)
                 {
-                     for(size_int_t j=0; j<state_creators[i].array_size; j++)
+                     for(size_t j=0; j<state_creators[i].array_size; j++)
                      {
-                        if (mark && (idx == -1 || idx == j)) dep[size]=1;
+		       if (mark && (idx == -1 || (size_t)idx == j)) dep[size]=1;
                         size++;
                      }
                 }
