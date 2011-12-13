@@ -3,6 +3,7 @@
 #include <divine/wibble/string.h>
 #include <iostream>
 #include <cstdlib>
+#include <cassert>
 
 #ifndef WIBBLE_TEST_H
 #define WIBBLE_TEST_H
@@ -22,7 +23,7 @@ struct Location {
 
 #ifndef NDEBUG
 #define LOCATION_I(stmt, i) Location( __FILE__, __LINE__, stmt, i )
-#define assert(x) assert_fn( LOCATION( #x ), x )
+// #define assert(x) assert_fn( LOCATION( #x ), x )
 #define assert_pred(p, x) assert_pred_fn( \
         LOCATION( #p "( " #x " )" ), x, p( x ) )
 #define assert_eq(x, y) assert_eq_fn( LOCATION( #x " == " #y ), x, y )
