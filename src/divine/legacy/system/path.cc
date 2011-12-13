@@ -38,8 +38,8 @@ string path_t::get_trans_string(state_t s1, state_t s2, bool with_prop) {
 
 
 void path_t::write_trans(std::ostream & out) {
-  for(unsigned i=0; i<s_list.size(); i++) {
-    if (i == cycle_start_index) {
+  for(size_t i=0; i<s_list.size(); i++) {
+    if (i == (size_t)cycle_start_index) {
       out << "================"<<endl;
     }
     if (i+1 < s_list.size()) {
@@ -61,8 +61,8 @@ void path_t::write_trans(std::ostream & out) {
 }
 
 void path_t::write_states(std::ostream & out) {
-  for(unsigned i=0; i<s_list.size(); i++) {
-    if (i == cycle_start_index) {
+  for(size_t i=0; i<s_list.size(); i++) {
+    if (i == (size_t)cycle_start_index) {
       out << PATH_CYCLE_SEPARATOR <<endl<<endl;
     }
     System->print_state(s_list[i], out); out << endl;
