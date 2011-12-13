@@ -73,10 +73,10 @@ dve_parser_t::dve_parser_t(error_vector_t & evect, dve_prob_transition_t * my_tr
   dve_transition_to_fill(0), dve_expression_to_fill(0),
   dve_prob_transition_to_fill(my_transition)
 {
- mode = PROB_TRANSITION;
- set_dve_prob_transition_to_fill(dve_prob_transition_to_fill);
- accepting_groups=0;
- new_accepting_set = true;
+//  mode = PROB_TRANSITION;
+//  set_dve_prob_transition_to_fill(dve_prob_transition_to_fill);
+//  accepting_groups=0;
+//  new_accepting_set = true;
 }
 
 dve_parser_t::dve_parser_t(error_vector_t & evect, dve_expression_t * my_expression):
