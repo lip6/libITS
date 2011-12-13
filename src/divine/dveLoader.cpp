@@ -20,6 +20,8 @@ GAL * loadDve2Gal (Label inputff) {
     exit(-1);
   }  
   createGAL_t mkr = (createGAL_t) (dlsym(hndl, "createGAL") );
+  GAL * toret = (*mkr) ();
+  std::cout << "Model successfully loaded from binary object file " << objname << std::endl;
   return (*mkr) ();
 
 }
@@ -60,6 +62,7 @@ static void gplusplus( std::string in, std::string out, std::string flags = "" )
 #endif
     ;
   cmd << "g++ -O2 -shared -fPIC " << multiarch << flags << " -o " << out << " " << in;
+  std::cout << "Running compilation step :" << cmd.str() << std::endl;
   run( cmd.str() );
 }
   
@@ -72,6 +75,8 @@ void compile (Label inputff) {
   std::ofstream out( outfile.c_str() );
   compiler.setOutput( out );
   compiler.print_generator();
+
+  std::cout << "Generated GAL model file :" << outfile << std::endl;
   gplusplus( outfile, wibble::str::basename( inputff ) + ".so" , std::string("-g -I")+LIBDDD+" -I"+LIBITS);
 }
 
