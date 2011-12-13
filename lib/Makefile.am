@@ -106,6 +106,7 @@ WIBBLEHEADERS = $(MYWIBBLESRCDIR)/empty.h \
 	$(MYWIBBLESRCDIR)/test.h 
 
 DVEHEADERS = $(MYDVESRCDIR)/dvecompile.h \
+	$(MYDVESRCDIR)/dveLoader.hh \
 	$(MYDVESRCDIR)/legacy/common/array.hh \
 	$(MYDVESRCDIR)/legacy/common/array_of_abstract.hh \
 	$(MYDVESRCDIR)/legacy/common/bit_string.hh \
@@ -220,6 +221,7 @@ WIBBLESOURCES = $(MYWIBBLESRCDIR)/exception.cpp \
 	$(MYWIBBLESRCDIR)/test.cpp
 
 DVESOURCES = 	$(MYDVESRCDIR)/dvecompile.cpp \
+	$(MYDVESRCDIR)/dveLoader.cpp \
 	$(MYDVESRCDIR)/legacy/common/error.cc \
 	$(MYDVESRCDIR)/legacy/common/hash_function.cc \
 	$(MYDVESRCDIR)/legacy/common/reporter.cc \
@@ -274,7 +276,7 @@ LIBDDD_LINK=-lddd
 endif
 
 AM_CFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall
-AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS)
+AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
 AM_CXXFLAGS = -g -O2 -Wall
 
 libITSmain_a_SOURCES = $(ITSSOURCES)
