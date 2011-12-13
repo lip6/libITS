@@ -83,7 +83,7 @@ void assert_fn( Location l, X x )
     }
 }
 
-void assert_die_fn( Location l ) __attribute__((noreturn));
+void assert_die_fn( Location l ); // __attribute__((noreturn));
 
 template< typename X, typename Y >
 void assert_eq_fn( Location l, X x, Y y )
