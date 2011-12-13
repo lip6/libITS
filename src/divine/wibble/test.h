@@ -1,6 +1,6 @@
 // -*- C++ -*-
 
-#include <wibble/string.h>
+#include <divine/wibble/string.h>
 #include <iostream>
 #include <cstdlib>
 

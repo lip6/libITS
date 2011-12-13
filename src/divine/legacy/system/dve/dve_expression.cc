@@ -5,7 +5,7 @@
 #include "divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
 #include "divine/legacy/common/deb.hh"
 
-#include <wibble/string.h>
+#include <divine/wibble/string.h>
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

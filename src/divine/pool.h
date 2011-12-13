@@ -1,5 +1,5 @@
 // -*- C++ -*- (c) 2007, 2008, 2009 Petr Rockai <me@mornfall.net>
-#include <wibble/test.h> // for assert
+#include <divine/wibble/test.h> // for assert
 #include <vector>
 #include <iostream>
 

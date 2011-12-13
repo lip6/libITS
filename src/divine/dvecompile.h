@@ -4,7 +4,7 @@
 #include <math.h>
 #include <map>
 #include <vector>
-#include <wibble/string.h>
+#include <divine/wibble/string.h>
 
 namespace divine {
 

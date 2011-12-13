@@ -3,7 +3,7 @@
 // #include <cstdint> requires C++0x : - (
 #include <stdint.h>
 #include <cstring> // size_t ... d'oh
-#include <wibble/test.h> // for assert*
+#include <divine/wibble/test.h> // for assert*
 #ifndef BLOB_NO_HASH
 #include <divine/hash.h>
 #endif

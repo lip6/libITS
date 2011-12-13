@@ -27,7 +27,7 @@
 #include "divine/legacy/common/types.hh"
 #include "divine/legacy/common/deb.hh"
 
-#include <wibble/string.h>
+#include <divine/wibble/string.h>
 
 namespace divine {
 #endif //DOXYGEN_PROCESSING

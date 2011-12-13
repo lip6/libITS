@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
  */
 
-#include <wibble/string.h>
-#include <wibble/exception.h>
+#include <divine/wibble/string.h>
+#include <divine/wibble/exception.h>
 #include <stack>
 #include <cstdio>
 #include <cstdlib>
