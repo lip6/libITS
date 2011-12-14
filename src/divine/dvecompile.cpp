@@ -97,22 +97,22 @@ void dve_compiler::write_C(dve_expression_t & expr, std::ostream & ostr, std::st
     case T_ASSIGNMENT:
 
             ostr << "ga.addAction(Assignment(" ;
-	    if (expr.left()->get_operator() == T_SQUARE_BRACKETS) {
-	      ostr << "Variable(\"";
-	      if(parent_table->get_variable(expr.get_ident_gid())->get_process_gid() != NO_ID)
-		{
-		  ostr << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
-						    get_process_gid())->get_name(); //name of process
-		  ostr<<".";
-		}
-	      ostr << parent_table->get_variable(expr.left()->get_ident_gid())->get_name(); 
-//	      ostr<<"[" ; write_C(*expr.left()->left(), ostr, state_name); ostr<<"]";
-	      ostr<<"[" << expr.left()->left()->get_value() << "]";
-	      ostr << "\")," ;
-	    } else {
+// 	    if (false && expr.left()->get_operator() == T_SQUARE_BRACKETS) {
+// 	      ostr << "Variable(\"";
+// 	      if(parent_table->get_variable(expr.get_ident_gid())->get_process_gid() != NO_ID)
+// 		{
+// 		  ostr << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
+// 						    get_process_gid())->get_name(); //name of process
+// 		  ostr<<".";
+// 		}
+// 	      ostr << parent_table->get_variable(expr.left()->get_ident_gid())->get_name(); 
+// //	      ostr<<"[" ; write_C(*expr.left()->left(), ostr, state_name); ostr<<"]";
+// 	      ostr<<"[" << expr.left()->left()->get_value() << "]";
+// 	      ostr << "\")," ;
+// 	    } else {
 	      write_C( *expr.left(), ostr, state_name );
 	      ostr << ", " ;
-	    }
+//	    }
 	    write_C( *expr.right(), ostr, state_name );
 	    ostr << "))";
 	    break;
