@@ -22,7 +22,7 @@ GAL * loadDve2Gal (Label inputff) {
   createGAL_t mkr = (createGAL_t) (dlsym(hndl, "createGAL") );
   GAL * toret = (*mkr) ();
   std::cout << "Model successfully loaded from binary object file " << objname << std::endl;
-  return (*mkr) ();
+  return toret;
 
 }
 
@@ -35,19 +35,12 @@ static void die( std::string bla )
   exit( 1 );
 }
 
-static void die_help( std::string bla )
-{
-//  opts.outputHelp( std::cerr );
-  die( bla );
-}
-
 
 static void run( std::string command ) {
   int status = system( command.c_str() );
-#ifdef POSIX
   if ( status != -1 && WEXITSTATUS( status ) != 0 )
     die( "Error running external command: " + command );
-#endif
+
 }
 
 static void gplusplus( std::string in, std::string out, std::string flags = "" ) {
