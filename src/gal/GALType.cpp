@@ -38,12 +38,11 @@ labels_t GALType::getTransLabels () const {
   }
 
   GHom GALType::buildHom(const GuardedAction & it) const {
-    const VarOrder & vo = * getVarOrder();
-    
+        
     GHom guard = predicate ( it.getGuard(), getVarOrder());
     GHom action = GHom::id;
     for (GuardedAction::actions_it jt = it.begin() ; jt != it.end() ; ++ jt) {
-      action = assignExpr(vo.getIndex(jt->getVariable().getName()), jt->getExpression(),getVarOrder()) & action;
+      action = assignExpr(jt->getVariable(), jt->getExpression(),getVarOrder()) & action;
     }
     return action & guard;
   }
