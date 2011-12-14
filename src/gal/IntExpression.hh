@@ -72,10 +72,10 @@ public :
   friend IntExpression operator*(const IntExpression & l,const IntExpression & r) ;
 
   // binary
-  IntExpression operator-(const IntExpression & e) const ;
-  IntExpression operator/(const IntExpression & e) const ;
-  IntExpression operator%(const IntExpression & e) const ;
-  IntExpression operator^(const IntExpression & e) const ;
+  friend IntExpression operator-(const IntExpression & l, const IntExpression & r) ;
+  friend IntExpression operator/(const IntExpression & l, const IntExpression & r) ;
+  friend IntExpression operator%(const IntExpression & l, const IntExpression & r) ;
+  friend IntExpression operator^(const IntExpression & l, const IntExpression & r) ;
 
   IntExpression operator& (const Assertion &a) const;
 
@@ -87,6 +87,11 @@ public :
   /// use this call only in form : if (e.getType() == CONST) { int j = e.getValue() ; ...etc }
   /// Exceptions will be thrown otherwise.
   int getValue () const ;
+
+  /// only valid for VAR expressions
+  /// use this call only in form : if (e.getType() == VAR) { Label name = e.getName() ; ...etc }
+  /// Exceptions will be thrown otherwise.
+  Label getName () const ;
 
   /// To determine whether a given variable is mentioned in an expression.
   bool isSupport (const Variable & v) const;

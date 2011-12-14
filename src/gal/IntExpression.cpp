@@ -100,6 +100,9 @@ public :
     return this;
   }
 
+  Label getName () const {
+    return var.getName();
+  }
 };
 
 class ConstExpr : public _IntExpression {
@@ -184,7 +187,8 @@ public :
   }
 
   IntExpression setAssertion (const Assertion & a) const {
-    return IntExpressionFactory::createArrayAccess(var, a.getValue(index).eval()).eval();
+    IntExpression tmp = index & a;
+    return IntExpressionFactory::createArrayAccess(var, tmp.eval()).eval();
   }
 
 
@@ -670,6 +674,17 @@ int IntExpression::getValue () const {
   }
 }
 
+
+
+Label IntExpression::getName () const {
+  if (getType() != VAR) {
+    throw "Do not call getName on non Variable type int expressions.";
+  } else {
+    return ((const VarExpr *) concrete)->getName();    
+  }
+}
+
+
 bool IntExpression::isSupport(const Variable & var) const {
   return concrete->isSupport(var);
 }
@@ -682,17 +697,17 @@ IntExprType IntExpression::getType() const {
   return concrete->getType();
 }
 // binary
-IntExpression IntExpression::operator-(const IntExpression & e) const {
-  return IntExpressionFactory::createBinary(MINUS,*this,e);
+  IntExpression operator-(const IntExpression & l,const IntExpression & r)  {
+  return IntExpressionFactory::createBinary(MINUS,l,r);
 }
-IntExpression IntExpression::operator/(const IntExpression & e) const {
-  return IntExpressionFactory::createBinary(DIV,*this,e);
+IntExpression operator/(const IntExpression & l,const IntExpression & r) {
+  return IntExpressionFactory::createBinary(DIV,l,r);
 }
-IntExpression IntExpression::operator%(const IntExpression & e) const {
-  return IntExpressionFactory::createBinary(MOD,*this,e);
+IntExpression operator%(const IntExpression & l,const IntExpression & r) {
+  return IntExpressionFactory::createBinary(MOD,l,r);
 }
-IntExpression IntExpression::operator^(const IntExpression & e) const {
-  return IntExpressionFactory::createBinary(POW,*this,e);
+IntExpression operator^(const IntExpression & l,const IntExpression & r) {
+  return IntExpressionFactory::createBinary(POW,l,r);
 }
 
 size_t IntExpression::hash () const { 
