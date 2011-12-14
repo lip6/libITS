@@ -6,7 +6,8 @@ using std::endl;
 namespace its {
 
   void Assignment::print (std::ostream & os) const {
-    os << var_.getName() << " = " ;
+    var_.print(os);
+    os <<  " = " ;
     expr_.print(os);    
   }
 
