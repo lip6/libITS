@@ -9,7 +9,7 @@
 namespace its {
 
 /// Assigns the value of expr to variable var.
-GHom assignExpr (int var, const IntExpression & expr, const VarOrder * vo);
+GHom assignExpr (const IntExpression & var, const IntExpression & expr, const VarOrder * vo);
 
 /// Creates a predicate to select paths that verify the expression e.
 GHom predicate (const BoolExpression & e, const VarOrder * vo);
