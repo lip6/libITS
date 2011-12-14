@@ -17,12 +17,15 @@
 namespace its {
 
 class Assignment {
-  Variable var_;
+  // Note : the lhs should be of type Variable or ArrayAccess, ultimately resolved to a variable.
+  // It is an error if the lhs resolves to a constant value.
+  IntExpression var_;
+  // A contrario, the rhs should evaluate to a constant
   IntExpression expr_;
     
   public :
-  Assignment (Variable var, IntExpression expr) : var_(var), expr_(expr) {}
-  const Variable & getVariable () const { return var_; }
+  Assignment (const IntExpression & var, const IntExpression & expr) : var_(var), expr_(expr) {}
+  const IntExpression & getVariable () const { return var_; }
   const IntExpression & getExpression () const { return expr_; }
   void print (std::ostream & os) const;
 };
@@ -36,7 +39,7 @@ private :
   actions_t actions_;
 public:
   GuardedAction (Label name):NamedElement(name),guard_(BoolExpressionFactory::createConstant(true)) {};
-  void setGuard (BoolExpression guard) { guard_ = guard.eval(); }
+  void setGuard (const BoolExpression & guard) { guard_ = guard.eval(); }
   const BoolExpression & getGuard () const { return guard_; }
   actions_it begin() const { return actions_.begin() ; }
   actions_it end() const { return actions_.end() ; }
