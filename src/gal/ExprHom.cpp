@@ -15,11 +15,11 @@ namespace its {
 
 // assign an expression to a variable
 class _AssignExpr:public StrongHom {
-  int var;
+  IntExpression var;
   IntExpression expr;
   const VarOrder * vo;
 public:
-  _AssignExpr(int varr, const IntExpression & e, const VarOrder * vo) : var(varr), expr(e), vo(vo) {}
+  _AssignExpr(const IntExpression & varr, const IntExpression & e, const VarOrder * vo) : var(varr), expr(e), vo(vo) {}
   
   GDDD phiOne() const {
     return GDDD::one;
@@ -28,45 +28,70 @@ public:
   bool
   skip_variable(int vr) const
   {
-    bool b =  vr != this->var 
-      && ! expr.isSupport(Variable(vo->getLabel(vr)));
+    Variable curv = Variable(vo->getLabel(vr));
+    bool b =  ! var.isSupport(curv)
+      && ! expr.isSupport(curv);
 //    std::cerr << "Assignment of:" << expr << std::endl
 //	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
     return b;
   }
 
   GHom phi(int vr, int vl) const {
+    Variable curv = Variable(vo->getLabel(vr));
+
+    Assertion assertion = IntExpressionFactory::createAssertion(Variable(vo->getLabel(vr)),IntExpressionFactory::createConstant(vl));
+
     IntExpression e = expr ;
-    if (expr.isSupport(Variable(vo->getLabel(vr)))) {
-      e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(vr)),IntExpressionFactory::createConstant(vl));
+    if (expr.isSupport(curv)) {
+      e = e & assertion;
     }
     e = e.eval();
+
+    IntExpression v = var;
+    if (v.getType() != VAR && var.isSupport(curv)) {
+      v = var & assertion;
+    }
+    v = v.eval();
+
 //     if (! e.equals(expr)) 
-//       std::cerr << "Assignment: Solving : " << expr << std::endl
-// 		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
-// 		<< " reduced to " << e << std::endl;
-    if (vr == var) {
+//     std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
+// 	      << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+// 	      << " reduced to " << v << "=" << e << std::endl;
+
+    
+
+    if (v.getType() == VAR && vr == vo->getIndex(v.getName()) ) {
       if (e.getType() == CONST) {
 	// Constant :
-	return GHom(var, e.getValue());
+	return GHom(vr, e.getValue());
       } else {
       // still need to resolve.
-// 	std::cerr << "Assignment: Solving : " << expr << std::endl
-// 		  << "Still need to resolve :" << e.getFirstSubExpr() << std::endl;
-// 	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
-// 	std::cerr << std::endl;
-	return MLHom(assignExpr(var,e,vo),MLHom(vr,vl,queryExpression(e.getFirstSubExpr(),vo)));
+//  	std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
+//  		  << "Still need to resolve :" << e.getFirstSubExpr() << std::endl;
+//  	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+//  	std::cerr << std::endl;
+	return MLHom(assignExpr(v,e,vo),MLHom(vr,vl,queryExpression(e.getFirstSubExpr(),vo)));
       }
+    } else if (v.getType() != VAR) {
+//  	std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
+//  		  << "Still need to resolve :" << v << "=" << e << std::endl;
+// 	std::cerr << "Querying for  :" << v.getFirstSubExpr() << std::endl;
+//  	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+//  	std::cerr << std::endl;
+
+
+      // still need to resolve lhs
+      return MLHom(assignExpr(v,e,vo),MLHom(vr,vl,queryExpression(v.getFirstSubExpr(),vo)));
     } else {
-      return GHom(vr,vl, assignExpr(var,e,vo));
+      return GHom(vr,vl, assignExpr(v,e,vo));
     }
   }
   size_t hash() const {
-    return 6619*var^expr.hash();
+    return 6619*var.hash()^expr.hash();
   }
   bool operator==(const StrongHom &s) const {
     _AssignExpr* ps = (_AssignExpr*)&s;
-    return var == ps->var && expr.equals(ps->expr);
+    return var.equals(ps->var) && expr.equals(ps->expr);
   }
   _GHom * clone () const {  return new _AssignExpr(*this); }
 
@@ -74,14 +99,14 @@ public:
 
   void print (std::ostream & os) const {
     os << "Assign(" ;
-    os << vo->getLabel(var) << "=";
+    os << var << "=";
     expr.print(os);
     os << ")";
   }
 
 };
 
-  GHom assignExpr (int var,const IntExpression & val,const VarOrder * vo) {
+  GHom assignExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo) {
   return _AssignExpr(var,val,vo);
 }
 
@@ -201,7 +226,9 @@ GHom assertion (const Assertion & e, const VarOrder *vo) {
 GHom _AssignExpr::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
   if (typeid(*c) == typeid(_AssertionHom)) {
-    return assignExpr(var,(expr & ((const _AssertionHom *)c)->getAssertion()).eval(),vo);
+    return assignExpr((var & ((const _AssertionHom *)c)->getAssertion()).eval(),
+		      (expr & ((const _AssertionHom *)c)->getAssertion()).eval(),
+		      vo);
   } else {
     return _GHom::compose(other);
   }
@@ -233,9 +260,9 @@ public:
     }
     e = e.eval();
 //     if (! ( e == expr) ) 
-//       std::cerr << "Predicate: Solving : " << expr << std::endl
-// 		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
-// 		<< " reduced to " << e << std::endl;
+//        std::cerr << "Predicate: Solving : " << expr << std::endl
+//  		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+//  		<< " reduced to " << e << std::endl;
     
     if (e.getType() == BOOLCONST) {
       // Constant :
@@ -289,9 +316,11 @@ GHom predicate (const BoolExpression & e, const VarOrder * vo) {
 
 GHom _Predicate::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
- // std::cerr << "compose " << expr << " with : " ;
- // c->print(std::cerr);
   if (typeid(*c) == typeid(_AssertionHom)) {
+//     std::cerr << "compose " << expr << " with : " << ((const _AssertionHom *)c)->getAssertion() << std::endl;
+//     std::cerr << "results in :" << (expr & ((const _AssertionHom *)c)->getAssertion()).eval() << std::endl;
+//     c->print(std::cerr);
+
     return predicate((expr & ((const _AssertionHom *)c)->getAssertion()).eval(),vo);
   } else {
     return _GHom::compose(other);
