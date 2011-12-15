@@ -16,8 +16,9 @@
 
 #include "TypeCacher.hh"
 #include "gal/GALType.hh"
+#include "divine/dveLoader.hh"
 
-#include "philo.hh"
+// #include "philo.hh"
 
 
 using namespace its;
@@ -25,10 +26,10 @@ using namespace its;
 
 int main (int argc, char **argv) {
 
-
+  vLabel input = argv[1];
   // build a philo GAL
   // should be : GALLoader.createGAL("philo.so")
-  const GAL * philo = createGAL();
+  const GAL * philo =  loadDve2Gal(input);
 
   std::cout << *philo << std::endl;
 
