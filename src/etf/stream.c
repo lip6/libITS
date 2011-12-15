@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <zlib.h>
 
 #include "etf/unix.h"
 #include "etf/stream_object.h"
