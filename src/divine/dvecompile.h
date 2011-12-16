@@ -43,6 +43,11 @@ struct dve_compiler: public dve_explicit_system_t
     int m_indent;
     bool ltsmin;
 
+  std::string modelName;
+  void setModelName(const std::string & name) {
+    modelName = name ;
+  }
+
     void indent() { ++m_indent; }
     void deindent() { --m_indent; }
 
@@ -62,7 +67,7 @@ struct dve_compiler: public dve_explicit_system_t
     }
 
     dve_compiler(bool ltsmin, error_vector_t & evect=gerr)
-        : explicit_system_t(evect), dve_explicit_system_t(evect), current_label(0), m_indent( 0 ), ltsmin(ltsmin)
+      : explicit_system_t(evect), dve_explicit_system_t(evect), current_label(0), m_indent( 0 ), ltsmin(ltsmin), modelName("divine")
     {}
     virtual ~dve_compiler() {}
 

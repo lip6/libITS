@@ -176,10 +176,10 @@ void dve_compiler::gen_header()
     line("namespace its");
     block_begin();
 
-    line("class Philo : public GAL ");
+    line("class Divine : public GAL ");
     block_begin();
     line("public:");
-    line("Philo():GAL(\"philo\") ");
+    line("Divine():GAL(\"" +modelName  + "\") ");
     block_begin();
 
 }
@@ -194,7 +194,7 @@ void dve_compiler::gen_tail () {
 
   line("extern \"C\" its::GAL * createGAL()");
   block_begin();
-  line("return new its::Philo();");
+  line("return new its::Divine();");
   block_end();
 }
 
@@ -297,6 +297,9 @@ void dve_compiler::gen_initial_state()
   }
   fclose(vertex_out);
   fclose(vnames_out);
+  FILE * aux_out = fopen("out.aux","w");
+  fprintf (aux_out, "HGraph : out.nodes out.nets\n");
+  fclose(aux_out);
 }
 
 
