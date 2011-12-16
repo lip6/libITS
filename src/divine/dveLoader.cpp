@@ -61,6 +61,8 @@ static void gplusplus( std::string in, std::string out, std::string flags = "" )
   
 void compile (Label inputff) {
   divine::dve_compiler compiler(true);
+  std::string modelName = wibble::str::basename(inputff); 
+  compiler.setModelName(modelName);
   compiler.read( inputff.c_str() );
   compiler.analyse();
   
