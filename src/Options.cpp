@@ -51,6 +51,15 @@ namespace its {
     (* usageHelp) ();
   }
 
+  static int run_system ( std::string command ) {
+    int status = system( command.c_str() );
+    if ( status != -1 && WEXITSTATUS( status ) != 0 ) {
+      std::cerr <<  "Error running external command: \n" + command +"\n";
+      return 1;
+    }
+    return 0;
+  }
+
 /** Consumes the options that are recognized in args, and treats them to build the Model.
  *  Options recognized by this options parser: 
  MANDATORY : -i Inputfile -t {CAMI|PROD|ROMEO|ITSXML|ETF} 
@@ -72,6 +81,9 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   // For use in NDLL case
   int Nsize = -1;
+
+  // For parameters to Force tool
+  string orderHeuristic = "";
 
   std::vector<const char *> argsleft;
 
@@ -118,8 +130,10 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        { cerr << "Give a file name containing a variable order definition please after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
      pathorderff = argv[i];
      hasOrder = true;
-
-
+   } else if ( ! strcmp(argv[i],"--gen-order") ) {
+     if (++i > argc) 
+       { cerr << "Give description of the heuristic used after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
+     orderHeuristic = argv[i];
      /** ENCODING STRATEGIES FOR SCALAR SETS */
    } else if (! strcmp(argv[i],"-ssD2") ) {
      if (++i > argc) 
@@ -269,7 +283,27 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   }
 
 
- if (hasOrder) {
+  if (orderHeuristic!="" && parse_t == DVE) {
+    // Invoke the NetPlacer tool
+    string command = string(LIBITS) + "/../bin/NetPlacer " + orderHeuristic ;
+    int error = run_system ( command.c_str());
+    if (error) {
+      std::cerr << "\nCould not generate order, will use defaul ordering.\n";      
+    } else {
+      
+      command = string(LIBITS) + "/../bin/output_order.pl  out.vars out.pl out.order "+ wibble::str::basename(pathinputff);
+      error = run_system ( command.c_str());
+      
+      if (error) {
+	std::cerr << "Could not fully generate order, will use defaul ordering.\n";      
+      }else { 
+	hasOrder = true;
+	pathorderff = "out.order";
+      }
+    }
+  }
+
+  if (hasOrder) {
    ifstream is (pathorderff.c_str());
    if (! model.loadOrder(is)) {
      std::cerr << "Problem loading provided order file :" << pathorderff << "\n";
@@ -290,7 +324,7 @@ void usageInputOptions() {
 	 << " in the distribution for more details.\n"
 	 << "(see Samples dir for documentation and examples). \n \nMANDATORY Options :" << endl;
     cerr<<  "    -i path : specifies the path to input model file" <<endl;
-    cerr<<  "    -t {CAMI|PROD|ROMEO|ITSXML|ETF} : specifies format of the input model file : " <<endl;
+    cerr<<  "    -t {CAMI|PROD|ROMEO|ITSXML|ETF|DLL|NDLL|DVE} : specifies format of the input model file : " <<endl;
     cerr<<  "             CAMI : CAMI format (for P/T nets) is the native Petri net format of CPN-AMI" <<endl;
     cerr<<  "             PROD : PROD format (for P/T nets) is the native format of PROD" <<endl;
     cerr<<  "             ROMEO : an XML format (for Time Petri nets) that is the native format of Romeo" <<endl;
@@ -298,6 +332,7 @@ void usageInputOptions() {
     cerr<<  "             ETF : Extended Table Format is the native format used by LTSmin, built from many front-ends." <<endl;
     cerr<<  "             DLL : use a dynamic library that provides a function \"void loadModel (Model &,int)\" typically written using the manipulation APIs. See demo/ folder." <<endl;
     cerr<<  "             NDLL : same as DLL, but expect input formatted as size:lib.so. See demo/ folder." <<endl;
+    cerr<<  "             DVE : Divine is a modelling language similar to Promela." <<endl;
     cerr<< "\nAdditional Options and Settings:" << endl;
     cerr << "    --load-order path : load the variable order from the file designated by path. This order file can be produced with --dump-order. Note this option is not exclusive of --json-order; the model is loaded as usual, then the provided order is applied a posteriori. \n" ;
     cerr<< "\nPetri net specific options :" << endl;
@@ -308,6 +343,8 @@ void usageInputOptions() {
     cerr<<  "    -ssD2 INT : (depth 2 levels) use 2 level depth for scalar sets. Integer provided defines level 2 block size. [DEFAULT: -ssD2 1]" <<endl;
     cerr<<  "    -ssDR INT : (depth recursive) use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
     cerr<<  "    -ssDS INT : (depth shallow recursive) use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level.\n" <<endl;
+    cerr<< "\nDivine specific options:" << endl;
+    cerr<<  "    --gen-order PARAMS : Invoke ordering heuristic to compute a static ordering. PARAMS are passed directly to Fadi Aloul's Force tool (see www.aloul.net).'-c1', '-c3' or '-c6' are usually effective. Run 'NetPlacer --help' for more options.\n" <<endl;
 }
 
 /** Consumes the options that are recognized in args, and treats them to configure libDDD
