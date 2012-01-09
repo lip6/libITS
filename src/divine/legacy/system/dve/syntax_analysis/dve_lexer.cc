@@ -1856,20 +1856,17 @@ static int yy_flex_strlen (yyconst char * s )
 
 static void *yyalloc (yy_size_t  size )
 {
-    return operator new( size );
+    return malloc( size );
 }
 
 static void *yyrealloc  (void * ptr, yy_size_t  size )
 {
-  char *tmp = new char [ size ];
-  memcpy( tmp, ptr, size ); /* reads past the end of ptr : - ( */
-  delete ptr;
-  return tmp;
+  return realloc(ptr,size);
 }
 
 static void yyfree (void * ptr )
 {
-    delete ptr;
+    free( ptr );
 }
 
 #define YYTABLES_NAME "yytables"
