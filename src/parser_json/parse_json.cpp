@@ -6,7 +6,7 @@
  * \brief Module de définition du parseur d'un fichier JSON.
  * Le format JSON permet de rendre configurable l'état initial d'un SDD selon un fichier de configuration au format JSON
  * ou l'utilisateur va décrire l'ordre de la hiérarchie de chaque place.
- * Ici nous utilisons un parseur BOOST JSON de John W. Wilkinson (http://www.codeproject.com/KB/recipes/JSON_Spirit.aspx)
+ * Ici nous utilisons un parseur BOOST JSON cJSON de Dave Gamble (see readme)
  */
 
 #include <cstdio>
@@ -14,6 +14,9 @@
 #include <cstdlib>
 #include "cJSON.h"
 #include "parse_json.hh"
+#include <sys/mman.h> 
+#include <sys/types.h>
+#include <fcntl.h>
 
 namespace json {
 
@@ -43,22 +46,30 @@ void readJSONintoHierarchy(cJSON * current, Hierarchie & hh)
  */
 void json_parse(const std::string& filename,Hierarchie& h1)
 {
-  FILE *fp;
-  long len;
-  char *buf;
-  fp=fopen(filename.c_str(),"rb");
-  if (fp == NULL) {
-    perror(("Error opening JSON file "+ filename + "\n Quitting, sorry.").c_str());    
-  }
-  fseek(fp,0,SEEK_END); //go to end
-  len=ftell(fp); //get position at end (length)
-  fseek(fp,0,SEEK_SET); //go to beg.
-  buf=(char *)malloc(len); //malloc buffer
-  fread(buf,len,1,fp); //read into buffer
-  fclose(fp);
+ 
 
-  cJSON *root = cJSON_Parse(buf);
+    int fd;
+    char *map;  
 
+    fd = open(filename.c_str(), O_RDONLY);
+    if (fd == -1) {
+		perror(("Error opening JSON file "+ filename + "\n Quitting, sorry.").c_str());    
+		exit(1);
+    }
+	size_t filesize = lseek(fd, 0, SEEK_END); 
+    map = (char*) mmap(0, filesize, PROT_READ, MAP_PRIVATE, fd, 0);
+    if (map == MAP_FAILED) {
+		close(fd);
+		perror(("mmap error opening JSON file "+ filename + "\n Quitting, sorry.").c_str());		
+		exit(1);
+    }
+	
+	cJSON *root = cJSON_Parse(map);
+
+	if (munmap(map, filesize) == -1) {
+		perror("Error un-mmapping the file");
+    }
+    close(fd);
   // Debug stuff
 //   char * out = cJSON_Print(root);
 //   printf("%s\n",out);
@@ -67,7 +78,7 @@ void json_parse(const std::string& filename,Hierarchie& h1)
   readJSONintoHierarchy(root,h1);
   
   cJSON_Delete(root);
-  free(buf);
+  
 }
 
 
