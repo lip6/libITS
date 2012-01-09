@@ -25,6 +25,7 @@ libprod_a_SOURCES = $(MYPRODSRCDIR)/ProdLoader.hh \
 
 JSONSOURCES = 	$(MYJSONSRCDIR)/hierarchie.cpp	 \
 		$(MYJSONSRCDIR)/hierarchie.hh   \
+		$(MYJSONSRCDIR)/json_model.cpp   \
 		$(MYJSONSRCDIR)/parse_json.cpp   \
 		$(MYJSONSRCDIR)/parse_json.hh \
 		$(MYJSONSRCDIR)/cJSON.h \
