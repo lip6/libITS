@@ -21,6 +21,24 @@ if test "x${with_libddd}" != x; then
     AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
 fi
 
+#Options for disabling google hash
+stdhash=false
+
+AC_ARG_ENABLE(	[stdhash],
+        [AC_HELP_STRING([--enable-stdhash],[revert std lib hash map(default uses google sparse hash)])],
+        [  case "${enable_stdhash}" in
+            yes) stdhash=true
+                ;;
+            no)
+                ;;
+            *)  AC_MSG_ERROR(Bad value ${enableval})
+                ;;
+            esac])
+
+if test "x$stdhash" = "xtrue"; then
+    AC_DEFINE([USE_STD_HASH],1,[Define if you want to use std hash instead of google sparse hash.])
+fi
+
 
 # M4 macros location
 AC_CONFIG_MACRO_DIR([m4])
