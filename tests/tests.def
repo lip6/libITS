@@ -28,3 +28,9 @@ COLOANE format for ITS (scalar depth shallow)
 cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet -ssDS 5 ; cd ..
 ETF format
 ../bin/its-reach -i test_models/peterson.4.dve.etf -t ETF --quiet 
+DVE format, philos
+../bin/its-reach -i test_models/phils.4.dve -t DVE --quiet
+DVE format, peterson
+../bin/its-reach -i test_models/peterson.4.dve -t DVE --quiet
+DVE format, szymanski
+../bin/its-reach -i test_models/szymanski.2.dve -t DVE --quiet
