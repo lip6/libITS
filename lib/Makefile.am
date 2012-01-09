@@ -4,7 +4,6 @@ lib_LIBRARIES = libITSmain.a libprod.a
 MYSRCDIR= $(abs_top_srcdir)/src
 MYPRODSRCDIR= $(MYSRCDIR)/prod
 MYJSONSRCDIR= $(MYSRCDIR)/parser_json
-MYJSONSPIRITSRCDIR= $(MYJSONSRCDIR)/json_spirit
 MYPETRISRCDIR = $(MYSRCDIR)/petri
 MYCOMPSRCDIR = $(MYSRCDIR)/composite
 MYETFSRCDIR = $(MYSRCDIR)/etf
@@ -23,23 +22,13 @@ libprod_a_SOURCES = $(MYPRODSRCDIR)/ProdLoader.hh \
 		$(MYPRODSRCDIR)/ITSProdLoader_lex.ll 
 
 
-JSONSPIRITSOURCES = $(MYJSONSPIRITSRCDIR)/json_spirit.h \
-	 		 $(MYJSONSPIRITSRCDIR)/json_spirit_reader.cpp \
-			 $(MYJSONSPIRITSRCDIR)/json_spirit_reader.h  \
-			 $(MYJSONSPIRITSRCDIR)/json_spirit_utils.h \
-			 $(MYJSONSPIRITSRCDIR)/json_spirit_value.cpp \
-			 $(MYJSONSPIRITSRCDIR)/json_spirit_value.h \
-			 $(MYJSONSPIRITSRCDIR)/json_spirit_writer.cpp \
-			 $(MYJSONSPIRITSRCDIR)/json_spirit_writer.h
 
-JSONSOURCES = $(JSONSPIRITSOURCES) \
-		$(MYJSONSRCDIR)/hierarchie.cpp	 \
-		$(MYJSONSRCDIR)/json_model.cpp	 \
+JSONSOURCES = 	$(MYJSONSRCDIR)/hierarchie.cpp	 \
 		$(MYJSONSRCDIR)/hierarchie.hh   \
-		$(MYJSONSRCDIR)/JSException.cpp	 \
-		$(MYJSONSRCDIR)/JSException.hh	 \
 		$(MYJSONSRCDIR)/parse_json.cpp   \
 		$(MYJSONSRCDIR)/parse_json.hh \
+		$(MYJSONSRCDIR)/cJSON.h \
+		$(MYJSONSRCDIR)/cJSON.c \
 		$(MYPETRISRCDIR)/JSON2ITS.cpp \
 		$(MYPETRISRCDIR)/JSON2ITS.hh \
 		$(MYPETRISRCDIR)/JSONPNetType.hh \
