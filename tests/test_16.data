@@ -1,0 +1,13 @@
+DVE format, philos
+../bin/its-reach -i test_models/phils.4.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/phils.4.dve  -t  DVE  --quiet  
+Generated GAL model file :phils.4.dve.cpp
+Running compilation step :g++ -O2 -shared -fPIC -g -I/data/thierry/DDD/libddd/libddd/trunk/src -I/data/thierry/DDD/libddd/libits/trunk/src -o phils.4.dve.so phils.4.dve.cpp
+Model successfully loaded from binary object file ./phils.4.dve.so
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+phils.4.dve,340789,0.77,14312,2,8421,5,39728,6,0,230,47079,0
+ Total reachable state count : 340789
+

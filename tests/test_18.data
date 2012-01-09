@@ -1,0 +1,13 @@
+DVE format, szymanski
+../bin/its-reach -i test_models/szymanski.2.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/szymanski.2.dve  -t  DVE  --quiet  
+Generated GAL model file :szymanski.2.dve.cpp
+Running compilation step :g++ -O2 -shared -fPIC -g -I/data/thierry/DDD/libddd/libddd/trunk/src -I/data/thierry/DDD/libddd/libits/trunk/src -o szymanski.2.dve.so szymanski.2.dve.cpp
+Model successfully loaded from binary object file ./szymanski.2.dve.so
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+szymanski.2.dve,31875,0.78,7072,2,1012,5,9041,6,0,273,22098,0
+ Total reachable state count : 31875
+
