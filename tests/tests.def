@@ -34,3 +34,5 @@ DVE format, peterson
 ../bin/its-reach -i test_models/peterson.4.dve -t DVE --quiet
 DVE format, szymanski
 ../bin/its-reach -i test_models/szymanski.2.dve -t DVE --quiet
+CAMI input, with deep JSON
+../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.h11.json
