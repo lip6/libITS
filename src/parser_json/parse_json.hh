@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <fstream>
 #include "hierarchie.hh"
-#include "JSException.hh"
 
 
 
