@@ -1,6 +1,6 @@
 #include <cassert>
 #include <algorithm>
-#include <ext/hash_map>
+#include <util/configuration.hh>
 
 #include "sogstate.hh"
 
@@ -77,8 +77,7 @@ namespace sogits {
   }
 
   size_t sog_div_state::hash() const {
-    __gnu_cxx::hash<int> H;
-    return H(cond.id());
+    return ddd::wang32_hash(cond.id());
   }
 
   spot::state* sog_div_state::clone() const {
