@@ -18,7 +18,8 @@ class TPNet : public PNet {
   // If it is unused, we fall back to usual PNet case.
   // Adding a clock with bounds [0,INF] has no effect.
   // Returns false if tname is not known.
-  static const int INFINITY;
+  // \todo static const could be initialization in the header
+  static const int CLOCK_INFINITY;
   bool addClock (Label tname, int min, int max);
 
   static vLabel clockName(Label tname) { return "__clock_"+tname; }

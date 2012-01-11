@@ -8,11 +8,11 @@ class TimeConstraint {
 public :
   int eft;
   int lft;
-  static const int INFINITY=-1;
-  TimeConstraint (int eft_=0, int lft_=INFINITY) : eft(eft_), lft(lft_) {};
+  static const int CLOCK_INFINITY=-1;
+  TimeConstraint (int eft_=0, int lft_=CLOCK_INFINITY) : eft(eft_), lft(lft_) {};
 
   static vLabel infString (int time) {
-    if (time == -1) {
+    if (time == CLOCK_INFINITY) {
       return "inf";
     } else {
       // to_string from Naming.hh
@@ -21,7 +21,7 @@ public :
   }
   
 
-  bool isTimed () const { return ! (eft == 0 && lft == INFINITY) ; }
+  bool isTimed () const { return ! (eft == 0 && lft == CLOCK_INFINITY) ; }
 
   void print (std::ostream & os) const  { os << "[ " << eft << "," << infString(lft) << " ]"; }
 };
