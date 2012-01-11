@@ -62,12 +62,13 @@ private:
   /** return the time elapse transition or Transition::id if untimed model. */
   Transition getElapse () const ;
 
-protected :
+public:
   // add a type to the type declarations
   // returns false if the type name already exists
+  // public so that third party types can be defined
+  // for types defined in libits used the factory functions defined below
   virtual bool addType (pType type);
-  
-public :
+
   // default constructor
   ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1) {};
   // quite a bit of cleanup necessary given the use of pointers...
