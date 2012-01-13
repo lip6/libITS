@@ -16,6 +16,8 @@ fi
 
 
 
+AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not using tcmalloc))
+
 
 #Options for disabling google hash
 stdhash=false
