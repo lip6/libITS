@@ -55,11 +55,9 @@ AC_CONFIG_MACRO_DIR([m4])
 
 # programs used to build
 # we make static libs (use ranlib)
-AC_PROG_RANLIB
-
 # we make shared libs (use libtool)
-LT_INIT
-AC_PROG_LIBTOOL
+LT_INIT([disable-shared])
+
 AC_LIBTOOL_DLOPEN
 
 
