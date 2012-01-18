@@ -31,9 +31,14 @@ my $tmpfile = "$ARGV[0].tmp";
 # print "syscalling : $call \n";
 print "##teamcity[testStarted name='$title']\n";
 
-open IN, "($call) |";
+my @tested;
+
+my @outputs = ();
+
+open IN, "($call) |" or die "An exception was raised when attempting to run "+$call+"\n";
 while (my $line = <IN>) {
 #  print "read : $line";
+  push (@outputs,$line);
   if ($line =~ /Model ,\|S\| /) {
     $line = <IN> or die "Unexpected end of file after stats readout";
     chomp $line;
@@ -43,6 +48,7 @@ while (my $line = <IN>) {
 }
 
 if ( @nominal[1] != @tested[1] ) {
+  print "@outputs\n";
   print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='@nominal[1]' actual='@tested[1]'] \n";
 #  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
 } else {
