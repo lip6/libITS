@@ -37,7 +37,6 @@ if test "x$stdhash" = "xtrue"; then
     AC_DEFINE([USE_STD_HASH],1,[Define if you want to use std hash instead of google sparse hash.])
 fi
 
-
 # option to indicate libexpat folder
 AC_ARG_WITH([libexpat],
             [AC_HELP_STRING([--with-libexpat=/root/of/libexpat],

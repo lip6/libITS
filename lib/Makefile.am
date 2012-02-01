@@ -257,7 +257,6 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(JSONSTUFF) \
 	$(XMLLOADERSOURCES)
 
-
 if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
 LIBDDD_PATH=$(LIBDDD_ROOT)/libDDD.a
@@ -265,8 +264,15 @@ else
 LIBDDD_LINK=-lddd
 endif
 
-AM_CFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall
-AM_CPPFLAGS = $(LIBDDD_CPP)  -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
+if WITH_LIBEXPAT_PATH
+LIBEXPAT_CPP=-I$(LIBEXPAT_ROOT)/include
+LIBEXPAT_PATH=$(LIBEXPAT_ROOT)/lib/libexpat.la
+else
+LIBEXPAT_LINK=-lexpat
+endif
+
+AM_CFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall
+AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
 AM_CXXFLAGS = -g -O2 -Wall
 
 libITSmain_a_SOURCES = $(ITSSOURCES)
