@@ -211,7 +211,7 @@ static std::vector<std::string> varnames = std::vector<std::string> ();
 
 void dve_compiler::gen_initial_state()
 {
-  char buf[10];
+  char buf[2048];
   //  append( "DDD initial_state =  " );
   string name = "UNINITIALIZED";
   string process_name = "UNINITIALIZED";
