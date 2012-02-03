@@ -29,10 +29,10 @@ LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) -
 its_reach_SOURCES = main.cpp 
 
 its_reach_LDADD = $(LDADDFLAGS)  
-its_reach_LDFLAGS = -rdynamic
+its_reach_LDFLAGS = -export-dynamic
 
 gal_test_SOURCES = test-gal.cpp 
 # philo.hh philo.cpp
 
 gal_test_LDADD = $(LDADDFLAGS)  
-gal_test_LDFLAGS = -rdynamic
+gal_test_LDFLAGS = -export-dynamic
