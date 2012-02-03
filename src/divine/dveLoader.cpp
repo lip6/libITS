@@ -54,7 +54,14 @@ static void gplusplus( std::string in, std::string out, std::string flags = "" )
     ""
 #endif
     ;
-  cmd << "g++ -O2 -shared -fPIC " << multiarch << flags << " -o " << out << " " << in;
+  std::string os_dependant_flags =
+#if defined(__APPLE__)
+  "-bundle -flat_namespace -undefined suppress "
+#else
+  "-shared "
+#endif
+  ;
+  cmd << "g++ -O2 -fPIC " << os_dependant_flags << multiarch << flags << " -o " << out << " " << in;
   std::cout << "Running compilation step :" << cmd.str() << std::endl;
   run( cmd.str() );
 }
@@ -72,7 +79,7 @@ void compile (Label inputff) {
   compiler.print_generator();
 
   std::cout << "Generated GAL model file :" << outfile << std::endl;
-  gplusplus( outfile, wibble::str::basename( inputff ) + ".so" , std::string("-g -I")+LIBDDD+" -I"+LIBITS);
+  gplusplus( outfile, wibble::str::basename( inputff ) + ".so" , std::string("-g -I")+LIBDDD+" -I"+LIBITS+" ");
 }
 
 } // namespace its
