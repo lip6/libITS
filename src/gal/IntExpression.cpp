@@ -519,8 +519,16 @@ IntExpression IntExpressionFactory::createBinary (IntExprType type, const IntExp
     return unique(ModExpr (l,r));      
   case POW :
     return unique(PowExpr (l,r));      
+  case PLUS :
+  case MULT :
+    {
+      NaryParamType params;
+      params.insert(l);
+      params.insert(r);
+      return createNary (type,params);
+    }
   default :
-    throw "Operator is not binary";
+    throw "Operator " + to_string(type)  + " is not binary";
   }
 }
 
@@ -697,9 +705,15 @@ IntExprType IntExpression::getType() const {
   return concrete->getType();
 }
 // binary
-  IntExpression operator-(const IntExpression & l,const IntExpression & r)  {
+IntExpression operator-(const IntExpression & l,const IntExpression & r)  {
   return IntExpressionFactory::createBinary(MINUS,l,r);
 }
+// unary -
+IntExpression operator-(const IntExpression & l)  {
+  return IntExpressionFactory::createBinary(MINUS,  IntExpressionFactory::createConstant(0),l);
+}
+
+
 IntExpression operator/(const IntExpression & l,const IntExpression & r) {
   return IntExpressionFactory::createBinary(DIV,l,r);
 }
