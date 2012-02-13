@@ -2,28 +2,38 @@
 #include <divine/common.h>
 
 using namespace std;
-using namespace wibble::str;
-
+using wibble::str::fmt;
 
 namespace divine {
 
+
+
+  static std::map< int, const char * > op = std::map< int, const char * >();
+  static bool isOpInit = false;
+
+  static std::map< int, const char * > & getOp() {
+    if (! isOpInit) {
+      isOpInit=true;
+      op[ T_LT ] = "LT"; op[ T_LEQ ] = "LEQ";
+      op[ T_EQ ] = "EQ"; op[ T_NEQ ] = "NEQ";
+      op[ T_GT ] = "GT"; op[ T_GEQ ] = "GEQ";
+      
+      op[ T_PLUS ] = "PLUS"; op[ T_MINUS ] = "MINUS";
+      op[ T_MULT ] = "MULT"; op[ T_DIV ] = "DIV"; op[ T_MOD ] = "MOD";
+      
+      op[ T_AND ] = "&"; op[ T_OR ] = "|"; op[ T_XOR ] = "^";
+      op[ T_LSHIFT ] = "<<"; op[ T_RSHIFT ] = ">>";
+      
+      op[ T_BOOL_AND ] = "&&"; op[ T_BOOL_OR ] = "||";
+      
+      op[ T_ASSIGNMENT ] = "=";
+    }
+    return op;
+  }
+
+
 void dve_compiler::write_C(dve_expression_t & expr, std::ostream & ostr, std::string state_name)
 {
-    std::map< int, const char * > op;
-
-    op[ T_LT ] = "LT"; op[ T_LEQ ] = "LEQ";
-    op[ T_EQ ] = "EQ"; op[ T_NEQ ] = "NEQ";
-    op[ T_GT ] = "GT"; op[ T_GEQ ] = "GEQ";
-
-    op[ T_PLUS ] = "+"; op[ T_MINUS ] = "-";
-    op[ T_MULT ] = "*"; op[ T_DIV ] = "/"; op[ T_MOD ] = "%";
-
-    op[ T_AND ] = "&"; op[ T_OR ] = "|"; op[ T_XOR ] = "^";
-    op[ T_LSHIFT ] = "<<"; op[ T_RSHIFT ] = ">>";
-
-    op[ T_BOOL_AND ] = "&&"; op[ T_BOOL_OR ] = "||";
-
-    op[ T_ASSIGNMENT ] = "=";
 
     dve_symbol_table_t * parent_table = expr.get_symbol_table();
     if (!parent_table) gerr << "Writing expression: Symbol table not set" << thr();
@@ -80,17 +90,23 @@ void dve_compiler::write_C(dve_expression_t & expr, std::ostream & ostr, std::st
             break;
 
         case T_LT: case T_LEQ: case T_EQ: case T_NEQ: case T_GT: case T_GEQ:
-	  ostr << "BoolExpressionFactory::createComparison ( " <<  op[ expr.get_operator() ] <<", ";
+	  ostr << "BoolExpressionFactory::createComparison ( " <<  getOp()[ expr.get_operator() ] <<", ";
 	  write_C( *expr.left(), ostr, state_name );
 	  ostr << " , " ;
 	  write_C( *expr.right(), ostr, state_name );
 	  ostr << ")";
 	  break;
         case T_PLUS: case T_MINUS: case T_MULT: case T_DIV: case T_MOD:
+	  ostr << "IntExpressionFactory::createBinary ( " <<  getOp()[ expr.get_operator() ] <<", ";
+	  write_C( *expr.left(), ostr, state_name );
+	  ostr << " , " ;
+	  write_C( *expr.right(), ostr, state_name );
+	  ostr << ")";
+	  break;
         case T_AND: case T_OR: case T_XOR: case T_LSHIFT: case T_RSHIFT:
         case T_BOOL_AND: case T_BOOL_OR: 
             write_C(*expr.left(), ostr, state_name);
-            ostr<< " " << op[ expr.get_operator() ] << "  ";
+            ostr<< " " << getOp()[ expr.get_operator() ] << "  ";
             write_C(*expr.right(), ostr, state_name);
             break;
 	  
@@ -955,6 +971,32 @@ void dve_compiler::gen_ltsmin_successors()
     }
 }
 
+void dve_compiler::gen_transient()
+{
+  std::stringstream sstream;
+  sstream << "BoolExpressionFactory::createConstant(false) ";
+  int nbtransient = 0;
+  // for every process
+  for(size_int_t pid = 0; pid < get_process_count(); pid++) {
+    dve_process_t* proc =  dynamic_cast<dve_process_t*>(get_process(pid));
+    size_t nbstates = proc->get_state_count();
+    // for each process state
+    for(size_int_t pstate = 0; pstate < nbstates ; pstate++) {
+      std::string stname =  get_symbol_table()->get_state(proc->get_state_gid(pstate))->get_name() ;
+      // if it matches the regexp : trans_\w*
+      if ( stname.substr(0,6) == "trans_" ) {
+	// or this condition into the full predicate
+	sstream << " || " << in_state(pid,pstate,"");
+	nbtransient++;
+      }
+    }
+  }
+  if (nbtransient) {
+    line ("setTransientPredicate (" + sstream.str() + ");");
+    // set the transient predicate for the full type.
+    line("// found "+ fmt(nbtransient) + " transient states");
+  }
+}
 
 void dve_compiler::gen_successors()
 {
@@ -1043,9 +1085,14 @@ void dve_compiler::gen_successors()
                     {
 		      block_begin();		    
 		      transition_guard( &*iter_ext_transition_vector, in );
+
+		      std::string name = "t" + wibble::str::fmt(tnum++);
+		      std::string label = 
+			process_name(i) + "." + get_symbol_table()->get_state(iter_process_transition_map->first)->get_name() // + fmt(iter_process_transition_map->first) +"_" + process_name(i) 
+			+ "-" +  get_symbol_table()->get_state(iter_ext_transition_vector->first->get_state2_gid())->get_name() ;
 		      
 		      line("GuardedAction ga(\"t" + wibble::str::fmt(tnum++)  + "\");");
-
+//		      line("ga.setLabel(\""+label+"\");");
 		      line("ga.setGuard(guard && procState);");
 
 		      
@@ -1077,6 +1124,8 @@ void dve_compiler::print_generator()
     gen_initial_state();
 
     gen_successors();
+
+    gen_transient();
 
     gen_tail();
 }
