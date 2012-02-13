@@ -86,8 +86,9 @@ private :
   vars_t variables_;
   trans_t transitions_;
   state_t init_;
+  BoolExpression transient_;
 public :
-  GAL (Label name) : NamedElement(name) {};
+    GAL (Label name) : NamedElement(name), transient_(BoolExpressionFactory::createConstant(false)) {};
   
   void addVariable(const Variable & var, int value) { 
     variables_.push_back(var); 
@@ -104,6 +105,15 @@ public :
   int getVarValue (Label name) const {
     return init_.getVarValue(name);
   }
+
+  const BoolExpression & isTransientState () const {
+    return transient_;
+  }
+
+  void setTransientPredicate (const BoolExpression & expr) {
+    transient_ = expr.eval();
+  }
+
 };
 
 
