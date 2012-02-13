@@ -57,7 +57,12 @@ labels_t GALType::getTransLabels () const {
       toadd.insert(buildHom(*it) );
     }
     GHom sum = GHom::add(toadd);
-    return localApply(  sum, DEFAULT_VAR );
+
+    // so "sum" contains the successor relationship
+    // now factor in the transient states
+    GHom next = fixpoint(ITE ( predicate(gal_->isTransientState(), getVarOrder()), sum, GHom::id)) & sum;
+
+    return localApply(  next, DEFAULT_VAR );
   }
 
   /** Return the set of local transitions, with their name, useful for diplaying.*
