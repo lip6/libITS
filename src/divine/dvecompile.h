@@ -191,6 +191,7 @@ struct dve_compiler: public dve_explicit_system_t
     void gen_ltsmin_successors();
     void gen_is_accepting();
     void gen_header();
+  void gen_transient();
   void gen_tail();
     void gen_state_struct();
     void gen_initial_state();
