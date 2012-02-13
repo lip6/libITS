@@ -76,6 +76,9 @@ public :
   friend IntExpression operator/(const IntExpression & l, const IntExpression & r) ;
   friend IntExpression operator%(const IntExpression & l, const IntExpression & r) ;
   friend IntExpression operator^(const IntExpression & l, const IntExpression & r) ;
+  // unary
+  friend IntExpression operator-(const IntExpression & l) ;
+
 
   IntExpression operator& (const Assertion &a) const;
 
