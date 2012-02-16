@@ -53,7 +53,7 @@ if ( @nominal[1] != @tested[1] ) {
 #  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
 } else {
 	print "##teamcity[buildStatisticValue key='testDuration' value='@nominal[2]']\n";
-	print "##teamcity[buildStatisticValue key='testDuration' value='@nominal[3]']\n";
+	print "##teamcity[buildStatisticValue key='testMemory' value='@nominal[3]']\n";
   print "Test successful : $title \n";
 }
 
