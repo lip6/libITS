@@ -19,6 +19,9 @@ public:
   bool operator== (const Variable & v) const {
     return v.name == name;
   }
+  bool operator<(const Variable &v) const {
+    return name < v.name;
+  }
   size_t hash () const { 
     return d3::util::hash<vLabel>()(name);
   }

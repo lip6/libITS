@@ -475,6 +475,10 @@ size_t Assertion::hash() const {
 bool Assertion::operator== (const Assertion & other) const {
   return mapping.first.equals(other.mapping.first) && mapping.second.equals(other.mapping.second);
 }
+  
+bool Assertion::operator< (const Assertion & other) const {
+  return mapping.first.equals(other.mapping.first) ? mapping.second.less(other.mapping.second) : mapping.first.less(other.mapping.first);
+}
 
 Assertion Assertion::operator & (const Assertion & other) const {
   return IntExpressionFactory::createAssertion(mapping.first, (mapping.second & other).eval());

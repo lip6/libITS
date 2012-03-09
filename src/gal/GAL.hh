@@ -28,6 +28,8 @@ class Assignment {
   const IntExpression & getVariable () const { return var_; }
   const IntExpression & getExpression () const { return expr_; }
   void print (std::ostream & os) const;
+  
+  bool operator==(const Assignment &) const;
 };
 
 class GuardedAction : public NamedElement {
@@ -45,6 +47,8 @@ public:
   actions_it end() const { return actions_.end() ; }
   void addAction (const Assignment & ass) { actions_.push_back(ass);}
   void print (std::ostream & os) const;
+  
+  bool operator==(const GuardedAction &) const;
 };
 
 class GALState {

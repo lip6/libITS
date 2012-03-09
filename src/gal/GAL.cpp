@@ -5,12 +5,31 @@ using std::endl;
 
 namespace its {
 
+  bool Assignment::operator==(const Assignment &other) const {
+    return var_.equals(other.var_) && expr_.equals(other.expr_);
+  }
+  
   void Assignment::print (std::ostream & os) const {
     var_.print(os);
     os <<  " = " ;
     expr_.print(os);    
   }
 
+  bool GuardedAction::operator==(const GuardedAction &other) const {
+    bool result = guard_ == other.guard_;
+    actions_it ait, bit;
+    for (ait = begin(), bit = other.begin() ; result && ait != end() && bit!= other.end() ; ++ait, ++bit) {
+      result = (*ait) == (*bit);
+    }
+    if (ait == end() && bit != other.end()) {
+      return false;
+    }
+    if (bit == other.end() && ait != end()) {
+      return false;
+    }
+    return  result;
+  }
+  
   void  GuardedAction::print (std::ostream & os) const {
     os << "  transition " << getName() ;
     os << "  [ " ;

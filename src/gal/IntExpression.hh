@@ -121,6 +121,11 @@ public :
 
   size_t hash() const;
   bool operator== (const Assertion & ) const ;
+  bool operator<  (const Assertion & ) const;
+  
+  /// simple getters
+  IntExpression getFirst() const { return mapping.first; }
+  IntExpression getSecond() const { return mapping.second; }
 
   // for pretty print
   void print (std::ostream & os) const;
