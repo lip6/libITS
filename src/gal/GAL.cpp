@@ -14,7 +14,29 @@ namespace its {
     os <<  " = " ;
     expr_.print(os);    
   }
+  
+  Assignment Assignment::operator&(const Assertion &a) const {
+    IntExpression new_var = var_ & a;
+    IntExpression new_expr = expr_ & a;
+    return Assignment( new_var, new_expr );
+  }
+  
+  std::set<Variable> Assignment::getSupport() const {
+    std::set<Variable> result = var_.getSupport();
+    std::set<Variable> tmp = expr_.getSupport();
+    result.insert( tmp.begin(), tmp.end() );
+    return result;
+  }
 
+  std::set<Variable> GuardedAction::getSupport() const {
+    std::set<Variable> result = guard_.getSupport();
+    for (actions_it it = begin() ; it != end() ; ++it) {
+      std::set<Variable> tmp = it->getSupport();
+      result.insert( tmp.begin(), tmp.end() );
+    }
+    return result;
+  }
+  
   bool GuardedAction::operator==(const GuardedAction &other) const {
     bool result = guard_ == other.guard_;
     actions_it ait, bit;

@@ -87,6 +87,8 @@ public :
 
   /// To determine whether a given variable is mentioned in an expression.
   bool isSupport (const Variable & v) const;
+  /// To get all the variables occuring in the expression
+  std::set<Variable> getSupport() const;
 
   /// To handle nested expressions (e.g. array access). Returns the constant 0 if there are no nested expressions.
   IntExpression getFirstSubExpr () const;

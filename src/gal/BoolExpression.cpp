@@ -50,6 +50,7 @@ class _BoolExpression {
   virtual BoolExpression setAssertion (const Assertion & a) const = 0;
 
   virtual bool isSupport (const Variable & v) const = 0;
+  virtual std::set<Variable> getSupport() const = 0;
 
   virtual IntExpression getFirstSubExpr () const = 0;
 };
@@ -138,6 +139,15 @@ public :
     }
     return false;
   }
+  
+  std::set<Variable> getSupport() const {
+    std::set<Variable> result;
+    for (params_it it = begin() ; it != end() ; ++it) {
+      std::set<Variable> tmp = it->getSupport();
+      result.insert( tmp.begin(), tmp.end() );
+    }
+    return result;
+  }
 
   IntExpression getFirstSubExpr () const {
     IntExpression zero(0);
@@ -221,6 +231,13 @@ public :
 
   bool isSupport (const Variable & v) const {
     return left.isSupport(v) || right.isSupport(v);
+  }
+  
+  std::set<Variable> getSupport() const {
+    std::set<Variable> result = left.getSupport();
+    std::set<Variable> tmp = right.getSupport();
+    result.insert( tmp.begin(), tmp.end() );
+    return result;
   }
 
   IntExpression getFirstSubExpr () const {
@@ -357,6 +374,10 @@ public :
   bool isSupport (const Variable & v) const {
     return exp.isSupport(v);
   }
+  
+  std::set<Variable> getSupport() const {
+    return exp.getSupport();
+  }
 
   IntExpression getFirstSubExpr () const {
     return exp.getFirstSubExpr();
@@ -393,6 +414,9 @@ public :
 
   bool isSupport (const Variable&) const {
     return false;
+  }
+  std::set<Variable> getSupport() const {
+    return std::set<Variable>();
   }
 
   IntExpression getFirstSubExpr () const {
@@ -547,6 +571,10 @@ BoolExpression::BoolExpression (const BoolExpression & other) {
 
 bool BoolExpression::isSupport (const Variable & v) const {
   return concrete->isSupport(v);
+}
+
+std::set<Variable> BoolExpression::getSupport() const {
+  return concrete->getSupport();
 }
 
 BoolExpression::~BoolExpression () {

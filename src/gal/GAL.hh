@@ -29,6 +29,10 @@ class Assignment {
   const IntExpression & getExpression () const { return expr_; }
   void print (std::ostream & os) const;
   
+  Assignment operator&(const Assertion &) const;
+  /// To get all the variables occuring in the expression
+  std::set<Variable> getSupport() const;
+  
   bool operator==(const Assignment &) const;
 };
 
@@ -47,6 +51,8 @@ public:
   actions_it end() const { return actions_.end() ; }
   void addAction (const Assignment & ass) { actions_.push_back(ass);}
   void print (std::ostream & os) const;
+  
+  std::set<Variable> getSupport() const;
   
   bool operator==(const GuardedAction &) const;
 };

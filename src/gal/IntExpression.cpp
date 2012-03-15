@@ -52,6 +52,7 @@ class _IntExpression {
   }
 
   virtual bool isSupport (const Variable & v) const = 0;
+  virtual std::set<Variable> getSupport() const = 0;
 
   virtual IntExpression getFirstSubExpr () const = 0;
 };
@@ -95,6 +96,12 @@ public :
   bool isSupport (const Variable & v) const {
     return var == v;
   }
+  
+  std::set<Variable> getSupport() const {
+    std::set<Variable> result;
+    result.insert(var);
+    return result;
+  }
 
   IntExpression getFirstSubExpr () const {
     return this;
@@ -134,6 +141,9 @@ public :
 
   bool isSupport (const Variable&) const {
     return false;
+  }
+  std::set<Variable> getSupport() const {
+    return std::set<Variable>();
   }
 
   IntExpression getFirstSubExpr () const {
@@ -180,6 +190,13 @@ public :
 
   bool isSupport (const Variable & v) const {
     return var == v || v.getArrayName() == var.getName() || index.isSupport(v);
+  }
+  std::set<Variable> getSupport() const {
+    std::set<Variable> result;
+    result.insert( var );
+    std::set<Variable> tmp = index.getSupport();
+    result.insert( tmp.begin(), tmp.end() );
+    return result;
   }
 
   IntExpression getFirstSubExpr () const {
@@ -281,6 +298,15 @@ public :
     }
     return false;
   }
+  
+  std::set<Variable> getSupport() const {
+    std::set<Variable> result;
+    for (NaryParamType::const_iterator it = params.begin() ; it != params.end() ; ++it) {
+      std::set<Variable> tmp = it->getSupport();
+      result.insert( tmp.begin(), tmp.end() );
+    }
+    return result;
+  }
 
   IntExpression getFirstSubExpr () const {
     for (NaryParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
@@ -376,6 +402,13 @@ public :
 
   bool isSupport (const Variable & v) const {
     return left.isSupport(v) || right.isSupport(v);
+  }
+  
+  std::set<Variable> getSupport() const {
+    std::set<Variable> result = left.getSupport();
+    std::set<Variable> tmp = right.getSupport();
+    result.insert( tmp.begin(), tmp.end() );
+    return result;
   }
 
   IntExpression getFirstSubExpr () const {
@@ -699,6 +732,10 @@ Label IntExpression::getName () const {
 
 bool IntExpression::isSupport(const Variable & var) const {
   return concrete->isSupport(var);
+}
+
+std::set<Variable> IntExpression::getSupport() const {
+  return concrete->getSupport();
 }
 
 IntExpression IntExpression::operator& (const Assertion &a) const {
