@@ -174,6 +174,19 @@ public :
   State getState(Label stateLabel) const {
     PNet::markings_it it = net_.markings_find(stateLabel);
     if (it == net_.markings_end()) {
+      std::cerr << "Error while reading model : unknown state label :\"" << stateLabel << "\" in type " << getName()<< std::endl;
+      std::cerr << "State labels defined are : ";
+      for (PNet::markings_it it = net_.markings_begin() ; it != net_.markings_end() ; /* in loop */ ) {
+	std::cerr << it->first ;
+	++it;
+	if (it != net_.markings_end() ) {
+	  std::cerr << ", ";
+	} else {
+	  std::cerr << std::endl;
+	  break;
+	}
+      }
+      std::cerr << "Error is fatal, sorry."  << std::endl;
       // DO NOT MISUSE : the state must have been defined
       assert (false) ;
       // for compiler warning : no return
