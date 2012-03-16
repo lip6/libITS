@@ -192,6 +192,7 @@ int main (int argc, char **argv) {
    }
    
    Statistic Scheck = Statistic(verify, reachExpr , CSV); // can also use LATEX instead of CSV
+   cout.precision(6);
    Scheck.print_table(std::cout);
 
  }
