@@ -190,6 +190,9 @@ int main (int argc, char **argv) {
      }
      std::cout << std::endl;
    }
+   
+   Statistic Scheck = Statistic(verify, reachExpr , CSV); // can also use LATEX instead of CSV
+   Scheck.print_table(std::cout);
 
  }
 
