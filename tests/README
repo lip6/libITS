@@ -7,10 +7,12 @@ Do NOT put extra newlines at end of file.
 Then run 
 ./collect_data.pl < tests.def
 Which will build the "expected output" data files.
+test_XXX.data
 These are typically commited to svn.
+You also get a file "data.info" that describes the machine that collected the control data.
 
 To evaluate the actual tests run
-run_all.sh
+./run_all.sh
 
 NB : the syntax of the output is adapted to please teamcity continuous integration server.
 
