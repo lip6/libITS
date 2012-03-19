@@ -19,3 +19,9 @@ while (my $line = <STDIN>) {
   $tnum++;
 }
 
+system 'echo "Data collected on (machine/date):" > data.info';
+system "(uname -a ; date) >> data.info";
+system 'echo "Configure run with :" >> data.info';
+system "head -8 ../config.log >> data.info";
+system 'echo "Using revision :" >> data.info';
+system 'svn info >> data.info'
