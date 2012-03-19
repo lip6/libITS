@@ -10,14 +10,16 @@ chomp $title;
 my $call = <IN>;
 chomp $call;
 
+my $header;
 my @nominal ;
 
 while (my $line = <IN>) {
   if ($line =~ /Model ,\|S\| /) {
-    $line = <IN> or die "Unexpected end of file after stats readout";
-    chomp $line;
-    @nominal = split (/\,/,$line);
-    last;
+      $header = $line;
+      $line = <IN> or die "Unexpected end of file after stats readout";
+      chomp $line;
+      @nominal = split (/\,/,$line);
+      last;
   }
 }
 
@@ -52,9 +54,10 @@ if ( @nominal[1] != @tested[1] ) {
   print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='@nominal[1]' actual='@tested[1]'] \n";
 #  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
 } else {
-	print "##teamcity[buildStatisticValue key='testDuration' value='@nominal[2]']\n";
-	print "##teamcity[buildStatisticValue key='testMemory' value='@nominal[3]']\n";
+	print "##teamcity[buildStatisticValue key='testDuration' value='@tested[2]']\n";
+	print "##teamcity[buildStatisticValue key='testMemory' value='@tested[3]']\n";
   print "Test successful : $title \n";
+  print "Control Values/Obtained : \n$title\n@nominal\n@tested\n";
 }
 
 
