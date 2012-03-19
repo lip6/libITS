@@ -57,16 +57,31 @@ State exhibitModel (ITSModel & model) {
     Transition hnext = model.getNextRel() + Transition::id;
     reachable = model.getInitialState();
     State previous = reachable;
+//    State layer;
     for (int i=0; i < BMC ; ++i) {
+      std::cout << "Elapsed (" << process::getTotalTime() << ")";
       std::cout << "At depth " << i << " NbStates=" << reachable.nbStates() << std::endl;
       reachable = hnext (reachable);
       if (previous == reachable) {
 	std::cout << "Full state space explored, with depth of "<< i << std::endl;
 	break;
       }
+//      layer = reachable - previous;
       previous = reachable;
       MemoryManager::garbage();
     }
+
+//     Type::namedTrs_t nlocs ;
+//     model.getInstance()->getType()->getNamedLocals(nlocs);
+//     std::cout << "Successors :" << std::endl;
+//     for (Type::namedTrs_it it = nlocs.begin() ; it != nlocs.end() ; ++it) {
+//       std::cout << "By " << it->first << std::endl;
+//       std::cout << "number of succs : " << it->second(reachable).nbStates()<< std::endl;
+//     }
+
+//     std::cout << layer.nbStates() << " States at distance " << BMC << " from initial :\n" ;
+//     model.getInstance()->getType()->printState(layer, std::cout);
+    std::cout << std::endl;
   }
   if (!beQuiet && reachable.nbStates() < 10)
     std::cout << reachable << std::endl;	
@@ -107,7 +122,9 @@ void bugreport () {
 
 
 
-int main (int argc, char **argv) {
+
+
+int main_noex (int argc, char **argv) {
 
 
  // instanciate a Model
@@ -200,3 +217,16 @@ int main (int argc, char **argv) {
  return 0;
 }
 
+
+
+int main (int argc, char **argv) { 
+  try {
+    return main_noex (argc, argv);
+  } catch (const char * ex) {
+    std::cerr << "An unexpected exception occurred : " << ex << std::endl;
+    return 1;
+  } catch (std::string err) {
+    std::cerr << "An unexpected exception occurred : " << err << std::endl;
+    return 1;
+  }
+}
