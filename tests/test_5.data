@@ -4,6 +4,7 @@ CAMI input, with JSON
 its-reach command run as :
 
 ../bin/its-reach  -i  test_models/election_2.cami  -t  CAMI  --quiet  --json-order  test_models/election_2.json  
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-PNet0,11257,0.29,12612,5963,3,34792,6,409,27123,8,5,0
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+PNet0,11257,0.46,9796,5964,3,34850,6,412,27362,8,5,0
+ Total reachable state count : 11257
 

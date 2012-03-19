@@ -4,6 +4,7 @@ PROD input, philo 100
 its-reach command run as :
 
 ../bin/its-reach  -i  test_models/philo100.net  -t  PROD  --quiet  
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-NetMain,4.96926e+62,0.06,3216,418,3,3723,8,823,2022,6,8,0
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+NetMain,4.96926e+62,0.13,3472,418,3,3722,8,823,2021,6,8,0
+ Total reachable state count : 4.969264057837466763405848771617841518625e+62
 

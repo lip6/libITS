@@ -4,6 +4,7 @@ ETF format
 its-reach command run as :
 
 ../bin/its-reach  -i  test_models/peterson.4.dve.etf  -t  ETF  --quiet  
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-test\_models/peterson.4.dve.etf,1.11956e+06,2.93,70680,2556,21,240471,115,25,298033,1,763,0
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+test\_models/peterson.4.dve.etf,1.11956e+06,4.28,57892,2556,21,244209,115,25,302087,1,770,0
+ Total reachable state count : 1119560
 
