@@ -444,6 +444,14 @@ BoolExpression BoolExpressionFactory::createNary (BoolExprType type, const NaryB
 
 }
 
+BoolExpression BoolExpressionFactory::createBinary (BoolExprType type, const BoolExpression & l, const BoolExpression & r) {
+    NaryBoolParamType params;
+    params.insert(l);
+    params.insert(r);
+    return createNary (type,params);
+}
+
+
 BoolExpression BoolExpressionFactory::createNot  (const BoolExpression & e) {
   return unique(NotExpr(e));
 }

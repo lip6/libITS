@@ -110,6 +110,8 @@ class BoolExpressionFactory {
 public :
   // and and or of boolean expressions
   static BoolExpression createNary (BoolExprType type, const NaryBoolParamType &params) ;
+  // and and or, delegates call to Nary version for convenience
+  static BoolExpression  createBinary (BoolExprType type, const BoolExpression & l, const BoolExpression & r) ;
   // not !
   static BoolExpression createNot  (const BoolExpression & e) ;
   // a boolean constant T or F
