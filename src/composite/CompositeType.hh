@@ -22,6 +22,11 @@ class CompositeType : public  TypeBasics {
 
   Transition getFullShom (const Synchronization & sync) const ;
 
+
+  // to avoid nested state if only one instance
+  Transition skipLocalApply(Transition h, int index) const ;
+
+
   void recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const;
 
   typedef std::pair<vLabel, vLabel> splitvar_t;
