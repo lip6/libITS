@@ -41,6 +41,7 @@ private :
   cstates_t cstates_;
   // exposed vars
   exposedvars_t exposed_;
+
 public :
   cstates_it cstates_begin() const { return cstates_.begin() ; }
   cstates_it cstates_end() const { return cstates_.end() ; }
@@ -49,6 +50,7 @@ public :
   syncs_it syncs_begin() const { return syncs_.begin() ; }
   syncs_it syncs_end() const { return syncs_.end() ; }
 
+  size_t comps_size() const { return comps_.size() ; }
   comps_it comps_begin() const { return comps_.begin() ; }
   comps_it comps_end() const { return comps_.end() ; }
   comps_it comps_find (Label iname) const { return findName(iname,comps_); }
