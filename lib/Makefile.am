@@ -95,7 +95,7 @@ WIBBLEHEADERS = $(MYWIBBLESRCDIR)/empty.h \
 	$(MYWIBBLESRCDIR)/string.h \
 	$(MYWIBBLESRCDIR)/test.h 
 
-DVEHEADERS = $(MYDVESRCDIR)/dvecompile.h \
+DVEHEADERS = $(MYDVESRCDIR)/dve2GAL.hh \
 	$(MYDVESRCDIR)/dveLoader.hh \
 	$(MYDVESRCDIR)/legacy/common/array.hh \
 	$(MYDVESRCDIR)/legacy/common/array_of_abstract.hh \
@@ -210,7 +210,7 @@ WIBBLESOURCES = $(MYWIBBLESRCDIR)/exception.cpp \
 	$(MYWIBBLESRCDIR)/string.cpp \
 	$(MYWIBBLESRCDIR)/test.cpp
 
-DVESOURCES = 	$(MYDVESRCDIR)/dvecompile.cpp \
+DVESOURCES = 	 $(MYDVESRCDIR)/dve2GAL.cpp \
 	$(MYDVESRCDIR)/dveLoader.cpp \
 	$(MYDVESRCDIR)/legacy/common/error.cc \
 	$(MYDVESRCDIR)/legacy/common/hash_function.cc \
