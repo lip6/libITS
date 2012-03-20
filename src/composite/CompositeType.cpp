@@ -44,6 +44,14 @@ labels_t CompositeType::getVarSet () const {
   return pnames;
  }
 
+Transition CompositeType::skipLocalApply(Transition h, int index) const {
+	if (comp_.comps_size()==1) {
+		assert(index == 0);
+		return h;
+	} else {
+		return localApply(h,index);
+	}
+}
 
   Transition CompositeType::getFullShom (const Synchronization & sync) const {
     GShom hsync = GShom::id ;
@@ -59,7 +67,7 @@ labels_t CompositeType::getVarSet () const {
       Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
       labels_t tau;
       tau.push_back(subtrans);
-      hpart = localApply(instance->getType()->getSuccs(tau), instindex);
+      hpart = skipLocalApply(instance->getType()->getSuccs(tau), instindex);
       
       hsync = hpart & hsync;
     }
@@ -81,7 +89,7 @@ Transition CompositeType::getLocals () const {
   /** add subnet locals */
   const VarOrder * vo =  getVarOrder();
   for ( Composite::comps_it it = comp_.comps_begin() ; it != comp_.comps_end() ; ++it ) {
-    locals.insert(localApply(it->getType()->getLocals(), vo->getIndex(it->getName())));
+    locals.insert(skipLocalApply(it->getType()->getLocals(), vo->getIndex(it->getName())));
   }
 
 
@@ -108,7 +116,7 @@ Transition CompositeType::getLocals () const {
     
     if (!detailed) {
       for ( Composite::comps_it it = comp_.comps_begin() ; it != comp_.comps_end() ; ++it ) {
-	locals.push_back(namedTr_t(it->getName()+".locals",  localApply(it->getType()->getLocals(), vo->getIndex(it->getName()))));
+	locals.push_back(namedTr_t(it->getName()+".locals",  skipLocalApply(it->getType()->getLocals(), vo->getIndex(it->getName()))));
       }
     } else { 
       // detailed
@@ -119,7 +127,7 @@ Transition CompositeType::getLocals () const {
 	int varindex =  vo->getIndex(it->getName());
 	vLabel iname = it->getName()+".";
 	for (namedTrs_it jt=loc_t.begin() ; jt != loc_t.end() ; ++jt) {
-	  locals.push_back(namedTr_t(iname + jt->first , localApply(jt->second, varindex)));
+	  locals.push_back(namedTr_t(iname + jt->first , skipLocalApply(jt->second, varindex)));
 	}
       }      
     }
@@ -176,7 +184,10 @@ State CompositeType::getState(Label stateLabel) const {
     Label substate = s.getSubState (subname);
     // retrieve the instance specification
     Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
-    
+
+    if (comp_.comps_size()==1) {
+    	return instance->getType()->getState(substate);
+    }
     // left concatenate to M0
     M0 = GSDD(i,instance->getType()->getState(substate),M0);
   }
@@ -187,21 +198,28 @@ State CompositeType::getState(Label stateLabel) const {
   /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
    *  Uses the provided "reachable" states to compute the variable domains. */
   State CompositeType::getPotentialStates(State reachable) const {
-    GSDD M0 = State::one;
-    // each place = one var as indicated by getPorder
-    for (size_t i=0 ; i < getVarOrder()->size() ; ++i) {
-      State pot = extractPotential(i) (reachable);
-      const DataSet * vals = pot.begin()->first;
+    if (comp_.comps_size() == 1) {
+  		  Label subname = getVarOrder()->getLabel(0);
+		  // retrieve the instance specification
+		  Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
+		  return instance->getType()->getPotentialStates(reachable);
+    } else {
+	  GSDD M0 = State::one;
+	  // each place = one var as indicated by getPorder
+	  for (size_t i=0 ; i < getVarOrder()->size() ; ++i) {
+		  State pot = extractPotential(i) (reachable);
+		  const DataSet * vals = pot.begin()->first;
 
-      Label subname = getVarOrder()->getLabel(i);
-      // retrieve the instance specification
-      Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
+		  Label subname = getVarOrder()->getLabel(i);
+		  // retrieve the instance specification
+		  Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
 
-      State edgepot = instance->getType()->getPotentialStates( * ((const SDD *) vals) );
-      // left concatenate to M0
-      M0 = GSDD(i,edgepot)  ^ M0;
+		  State edgepot = instance->getType()->getPotentialStates( * ((const SDD *) vals) );
+		  // left concatenate to M0
+		  M0 = GSDD(i,edgepot)  ^ M0;
+	  }
+	  return M0;
     }
-    return M0;
   }
 
 
@@ -282,13 +300,18 @@ State CompositeType::getState(Label stateLabel) const {
       labels_t & tab = instvars[i];
       // there are some observed vars inside
       Composite::comps_it instance = findName( vo.getLabel(i), comp_.comps_begin() , comp_.comps_end() );
+
+      if (comp_.comps_size() == 1) {
+    	  h = h & instance->getType()->observe(tab,potential);
+      } else {
+    	  // Grab potential : one variable long SDD with all values on arc
       
-      // Grab potential : one variable long SDD with all values on arc
-      State pot = extractPotential(i) (potential);
+    	  State pot = extractPotential(i) (potential);
       
-      // Grab arc value and requalify (downcast)  to SDD Dataset type
-      State potval = * ((const State *)  pot.begin()->first); 
-      h = h & ( localApply( instance->getType()->observe(tab,potval) , i) ) ;
+    	  // Grab arc value and requalify (downcast)  to SDD Dataset type
+    	  State potval = * ((const State *)  pot.begin()->first);
+    	  h = h & ( localApply( instance->getType()->observe(tab,potval) , i) ) ;
+      }
     }  
     
     return h;    
@@ -306,7 +329,7 @@ Transition CompositeType::getAPredicate (Label predicate) const {
   int instindex =  getVarOrder()->getIndex (var);
 
   Composite::comps_it instance = findName( var, comp_.comps_begin() , comp_.comps_end() );
-  return localApply( instance->getType()->getPredicate(remain), instindex);
+  return skipLocalApply( instance->getType()->getPredicate(remain), instindex);
 }
 
   void CompositeType::recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const {
@@ -317,18 +340,27 @@ Transition CompositeType::getAPredicate (Label predicate) const {
     else if(s == State::null)
       os << "[ " << str << "0 ]"<<std::endl;
     else{
-      for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
-	std::stringstream tmp;
-	// Fixme  for pretty print variable names
-	Label varname = vo.getLabel(s.variable());
-	tmp << varname << "={";
-	// the variable should correspond to an instance
-	State val =  (const State &) * vi->first;
-	const Instance & inst = *comp_.comps_find(varname);
-	inst.getType()->printState(val,tmp);
-	tmp << "}";
-	recPrintState(vi->second, os, vo, str + tmp.str() + " ");
-      }
+    	if (comp_.comps_size()==1) {
+    		// Fixme  for pretty print variable names
+    		Label varname = vo.getLabel(0);
+    		os << varname << "={";
+    		const Instance & inst = *comp_.comps_find(varname);
+    		inst.getType()->printState(s,os);
+    		os << "}";
+    	} else {
+    		for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
+    			std::stringstream tmp;
+    			// Fixme  for pretty print variable names
+    			Label varname = vo.getLabel(s.variable());
+    			tmp << varname << "={";
+    			// the variable should correspond to an instance
+    			State val =  (const State &) * vi->first;
+    			const Instance & inst = *comp_.comps_find(varname);
+    			inst.getType()->printState(val,tmp);
+    			tmp << "}";
+    			recPrintState(vi->second, os, vo, str + tmp.str() + " ");
+    		}
+    	}
     }
   }
 
