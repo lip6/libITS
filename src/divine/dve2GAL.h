@@ -47,8 +47,9 @@ struct dve2GAL: public divine::dve_explicit_system_t
     dve2GAL(divine::error_vector_t & evect=divine::gerr)
       : explicit_system_t(evect), dve_explicit_system_t(evect), current_label(0),modelName("divine")
     {}
-    virtual ~dve_compiler() {}
+    virtual ~dve2GAL() {}
 
+  /** These functions inherited from LTSmin analysis of divine specifications. */
     int  count_state_variables();
     void analyse_expression( divine::dve_expression_t & expr, ext_transition_t &ext_transition, std::vector<int> &dep );
     void output_dependency_comment( ext_transition_t &ext_transition );
@@ -71,10 +72,6 @@ struct dve2GAL: public divine::dve_explicit_system_t
     // The variable representing the current number of itmes in a channel
     Variable channel_items( int i ) ;
 
-
-    std::string channel_items( int i, std::string state ) {
-        return "Variable(\"" + channel_name( i ) + ".number_of_items" + "\")";
-    }
 
     std::string channel_item_at( int i, std::string pos, int x, std::string state ) {
         return state + "." + channel_name( i ) + ".content[" + pos + "].x" + wibble::str::fmt( x ) + (ltsmin?".var":"");
