@@ -1,9 +1,8 @@
 #include <iostream>
 
-#include <divine/dvecompile.h>
+#include <divine/dve2GAL.hh>
 #include <divine/common.h>
 
-#include "gal/GAL.hh"
 
 
 using wibble::str::fmt;
@@ -11,8 +10,11 @@ using namespace its;
 using std::map;
 using std::vector;
 using std::pair;
+using std::string;
 
-namespace divine {
+using namespace divine;
+
+namespace dve2GAL {
 
 
 
@@ -39,7 +41,21 @@ namespace divine {
     return op;
   }
 
-  IntExpression convertInt (dve_expression_t & expr) {
+  Assignment dve2GAL::convertAssign (dve_expression_t & expr) {
+    dve_symbol_table_t * parent_table = expr.get_symbol_table();
+    if (!parent_table) gerr << "Writing expression: Symbol table not set" << thr();
+
+    switch (expr.get_operator())
+      {
+      case T_ASSIGNMENT:
+	return assign (*expr.left(), *expr.right() );
+      default : 
+	std::cerr << "Parse error from divine file, unexpected node \""<<  getOp()[ expr.get_operator() ] << "\" where Assignement  expected"<< std::endl;
+	throw "Parse error in divine file.";
+      }
+  }
+
+  IntExpression dve2GAL::convertInt (dve_expression_t & expr) {
     dve_symbol_table_t * parent_table = expr.get_symbol_table();
     if (!parent_table) gerr << "Writing expression: Symbol table not set" << thr();
 
@@ -122,7 +138,7 @@ namespace divine {
 
   }
 
-  BoolExpression convertBool (dve_expression_t & expr) {
+  BoolExpression dve2GAL::convertBool (dve_expression_t & expr) {
       dve_symbol_table_t * parent_table = expr.get_symbol_table();
       if (!parent_table) gerr << "Writing expression: Symbol table not set" << thr();
 
@@ -174,200 +190,11 @@ namespace divine {
       }
   }
 
-void dve_compiler::write_C(dve_expression_t & expr, std::ostream & ostr, std::string state_name)
-{
-
-    dve_symbol_table_t * parent_table = expr.get_symbol_table();
-    if (!parent_table) gerr << "Writing expression: Symbol table not set" << thr();
-    switch (expr.get_operator())
-    {
-        case T_ID:
-	  ostr << "Variable(\"";
-            if(!parent_table->get_variable(expr.get_ident_gid())->is_const())
-            {
-	      if(parent_table->get_variable(expr.get_ident_gid())->get_process_gid() != NO_ID)
-                {
-		  ostr << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
-						    get_process_gid())->get_name(); //name of process
-		  ostr<<".";
-                }
-            }
-            ostr << parent_table->get_variable(expr.get_ident_gid())->get_name();
-	  ostr << "\")";
-            break;
-        case T_FOREIGN_ID:
-            ostr << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
-                                              get_process_gid())->get_name(); //name of process
-            ostr<<"->";
-            ostr << parent_table->get_variable(expr.get_ident_gid())->get_name();
-            break;
-        case T_NAT:
-	  ostr << "IntExpressionFactory::createConstant(" << expr.get_value() << ")";
-	  break;
-        case T_PARENTHESIS:
-            ostr << "(";
-            write_C(*expr.left(), ostr, state_name);
-            ostr << ")";
-            break;
-        case T_SQUARE_BRACKETS:
-	  ostr << "IntExpressionFactory::createArrayAccess(Variable(\"";
-	  if(parent_table->get_variable(expr.get_ident_gid())->get_process_gid() != NO_ID)
-            {
-	      ostr << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
-						get_process_gid())->get_name(); //name of process
-	      ostr<<".";
-            }
-	  ostr << parent_table->get_variable(expr.get_ident_gid())->get_name(); 
-	  ostr << "\")," ;
-	  write_C(*expr.left(), ostr, state_name);
-//	  ostr<<expr.left()->get_value() ;
-	  ostr << ")";
-	  break;
-        case T_FOREIGN_SQUARE_BRACKETS:
-            ostr << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
-                                              get_process_gid())->get_name(); //name of preocess
-            ostr<<"->";
-            ostr << parent_table->get_variable(expr.get_ident_gid())->get_name();
-            ostr<<"["; write_C(*expr.left(), ostr, state_name); ostr<<"]";
-            break;
-
-        case T_LT: case T_LEQ: case T_EQ: case T_NEQ: case T_GT: case T_GEQ:
-	  ostr << "BoolExpressionFactory::createComparison ( " <<  getOp()[ expr.get_operator() ] <<", ";
-	  write_C( *expr.left(), ostr, state_name );
-	  ostr << " , " ;
-	  write_C( *expr.right(), ostr, state_name );
-	  ostr << ")";
-	  break;
-        case T_PLUS: case T_MINUS: case T_MULT: case T_DIV: case T_MOD:
-	  ostr << "IntExpressionFactory::createBinary ( " <<  getOp()[ expr.get_operator() ] <<", ";
-	  write_C( *expr.left(), ostr, state_name );
-	  ostr << " , " ;
-	  write_C( *expr.right(), ostr, state_name );
-	  ostr << ")";
-	  break;
-        case T_AND: case T_OR: case T_XOR: case T_LSHIFT: case T_RSHIFT:
-        case T_BOOL_AND: case T_BOOL_OR: 
-            write_C(*expr.left(), ostr, state_name);
-            ostr<< " " << getOp()[ expr.get_operator() ] << "  ";
-            write_C(*expr.right(), ostr, state_name);
-            break;
-	  
-    case T_ASSIGNMENT:
-
-            ostr << "ga.addAction(Assignment(" ;
-// 	    if (false && expr.left()->get_operator() == T_SQUARE_BRACKETS) {
-// 	      ostr << "Variable(\"";
-// 	      if(parent_table->get_variable(expr.get_ident_gid())->get_process_gid() != NO_ID)
-// 		{
-// 		  ostr << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
-// 						    get_process_gid())->get_name(); //name of process
-// 		  ostr<<".";
-// 		}
-// 	      ostr << parent_table->get_variable(expr.left()->get_ident_gid())->get_name(); 
-// //	      ostr<<"[" ; write_C(*expr.left()->left(), ostr, state_name); ostr<<"]";
-// 	      ostr<<"[" << expr.left()->left()->get_value() << "]";
-// 	      ostr << "\")," ;
-// 	    } else {
-	      write_C( *expr.left(), ostr, state_name );
-	      ostr << ", " ;
-//	    }
-	    write_C( *expr.right(), ostr, state_name );
-	    ostr << "))";
-	    break;
-
-        case T_DOT:
-            ostr<<state_name<<".";
-            ostr<<parent_table->get_process(parent_table->get_state(expr.get_ident_gid())->
-                                            get_process_gid())->get_name(); ostr<<".state"<<(ltsmin?".var":"")<<" == ";
-            ostr<<parent_table->get_state(expr.get_ident_gid())->get_lid();
-            break;
-
-        case T_IMPLY:
-            write_C(*expr.left(), ostr, state_name);
-            ostr<<" -> "; // FIXME this looks wrong, -> in C is dereference
-            write_C(*expr.right(), ostr, state_name);
-            break;
-        case T_UNARY_MINUS:
-            ostr<<"-";
-            write_C(*expr.right(), ostr, state_name);
-            break;
-        case T_TILDE:
-            ostr<<"~";
-            write_C(*expr.right(), ostr, state_name);
-            break;
-        case T_BOOL_NOT:
-            ostr<<" ! (";
-            write_C(*expr.right(), ostr, state_name);
-            ostr<< " )";
-            break;
-        default:
-            gerr << "Problem in expression - unknown operator"
-                 << " number " << expr.get_operator() << psh();
-    }
-}
-
-std::string dve_compiler::cexpr( dve_expression_t & expr, std::string state )
-{
-    std::stringstream str;
-    str << "(";
-    write_C( expr, str, state.c_str() );
-    str << ")";
-    return str.str();
-}
-
-namespace divine {
-extern const char *pool_h_str;
-extern const char *circular_h_str;
-extern const char *blob_h_str;
-}
-
-void dve_compiler::gen_header()
-{
-    line( "#include <stdio.h>" );
-    line( "#include <string.h>" );
-    line( "#include <stdint.h>" );
-    line();
-    line();
-    line( "#include \"gal/GAL.hh\"");
-    line();
-
-    line("namespace its");
-    block_begin();
-
-    line("class Divine : public GAL ");
-    block_begin();
-    line("public:");
-    line("Divine():GAL(\"" +modelName  + "\") ");
-    block_begin();
-
-}
-
-void dve_compiler::gen_tail () {
-  block_end(); // constructor body
-
-  block_end(); // class body
-  line(";");
-
-  block_end(); // namespace its
-
-  line("extern \"C\" its::GAL * createGAL()");
-  block_begin();
-  line("return new its::Divine();");
-  block_end();
-}
-
-
-
-
-void dve_compiler::gen_state_struct()
-{
-}
-
 
 static std::vector<std::string> varnames = std::vector<std::string> ();
 
 
-void dve_compiler::gen_initial_state(GAL & system)
+void dve2GAL::gen_initial_state(GAL & system)
 {
   char buf[2048];
   //  append( "DDD initial_state =  " );
@@ -440,90 +267,403 @@ void dve_compiler::gen_initial_state(GAL & system)
 	  break;
 	};
     }
-  line();
-
-  FILE * vertex_out = fopen("out.nodes","w");
-  FILE * vnames_out = fopen("out.vars","w");
-  fprintf(vertex_out, "UCLA nodes   1.0\n# Generated by dvecompile libDDD\nNumNodes : %zu\nNumTerminals : 0\n",varnames.size());
-  int count = 0;
-  for (std::vector<string>::const_iterator it = varnames.begin() ; it != varnames.end() ; ++it ) {
-    fprintf(vnames_out,"%s\n",it->c_str());
-    fprintf(vertex_out,"     v%d 1 1\n",++count);
-  }
-  fclose(vertex_out);
-  fclose(vnames_out);
-  FILE * aux_out = fopen("out.aux","w");
-  fprintf (aux_out, "HGraph : out.nodes out.nets\n");
-  fclose(aux_out);
 }
 
 
-static FILE * nets_out = NULL;
-long int pinspos=0;
-int totalpins= 0;
 
-void dve_compiler::output_dependency_comment( ext_transition_t &ext_transition )
+
+
+std::string dve2GAL::process_name( int i ) {
+    return get_symbol_table()->get_process( i )->get_name();
+}
+
+Variable dve2GAL::process_state( int i ) {
+  return  Variable( process_name( i ) + ".state") ;
+}
+
+
+BoolExpression dve2GAL::in_state( int process, int state) {
+  return BoolExpressionFactory::createComparison ( EQ, process_state( process ) , IntExpressionFactory::createConstant( state ) );
+}
+
+
+Variable dve2GAL::channel_items( int i ) {
+    return Variable( channel_name( i ) + ".number_of_items" );
+}
+
+
+
+BoolExpression dve2GAL::transition_guard( ext_transition_t *et )
 {
-  size_t count = count_state_variables();
-    char buf[1024];
+  BoolExpression guard = BoolExpressionFactory::createConstant(true);
 
-    int nbEdges = 0;
 
-    append("// read : " );
-    for(size_int_t i = 0; i < count; i++)
+  if (et->first->get_guard()) {
+	  guard = guard && convertBool(*et->first->get_guard());
+  }
+
+
+  if( et->synchronized )
     {
-      if (ext_transition.sv_read[i])
-	nbEdges++;
-      sprintf(buf, "%s%d", ((i==0)?"":","), ext_transition.sv_read[i]);
-      append(buf);
+	  guard = guard && in_state( et->second->get_process_gid(), et->second->get_state1_lid());
+	  if (et->second->get_guard()) {
+		  guard = guard && convertBool(*et->second->get_guard());
+	  }
     }
-    line();
-    fflush(nets_out);
-
-    append("// write: " );
-    for(size_int_t i = 0; i < count; i++)
+  else
     {
-      if (ext_transition.sv_write[i])
-	nbEdges++;
-      sprintf(buf, "%s%d", ((i==0)?"":","), ext_transition.sv_write[i]);
-      append(buf);
+      int chan = et->first->get_channel_gid();
+      if(et->first->get_sync_mode() == SYNC_EXCLAIM_BUFFER)
+    	  // check channel not full
+    	  guard = guard &&
+    	  	  ( IntExpressionFactory::createVariable(channel_items( chan )) != IntExpressionFactory::createConstant(channel_capacity( chan ) ));
+      if(et->first->get_sync_mode() == SYNC_ASK_BUFFER)
+    	  // check channel not empty
+    	  guard = guard && ( IntExpressionFactory::createVariable(channel_items( chan )) != IntExpressionFactory::createConstant(0) );
     }
-    line();
-
-    totalpins += nbEdges;
-    if (nets_out == NULL) {
-      nets_out = fopen("out.nets","w");
-      fprintf(nets_out,"UCLA nets   1.0\n# Generated by dvecompile\n# NumNets : %zu\n  NumPins : ", get_trans_count());
-      pinspos= ftell(nets_out);
-      // allow some space to write the number of pins into
-      fprintf(nets_out,"         \n");
-    }    
-    fprintf(nets_out, "NetDegree : %d\n",nbEdges);
-    // read
-    for(size_int_t i = 0; i < count; i++)
-    {
-      if (ext_transition.sv_read[i]) {
-	fprintf(nets_out, "v%zu I\n", i);
-//	fprintf(nets_out, "%s I\n", varnames[i].c_str());
-      }
-    }
-    line();
-    fflush(nets_out);
-
-    // write
-    for(size_int_t i = 0; i < count; i++)
-    {
-      if (ext_transition.sv_write[i]) {
-	fprintf(nets_out, "v%zu O\n", i);
-//	fprintf(nets_out, "%s O\n", varnames[i].c_str());
-      }
-    }
-    line();
-    
-    
+  return guard.eval();
 }
 
-void dve_compiler::analyse_expression( dve_expression_t & expr, ext_transition_t &ext_transition, std::vector<int> &dep)
+its::Assignment dve2GAL::assign( dve_expression_t &  left, dve_expression_t & right ) 
+{
+  return Assignment(convertInt(left), convertInt(right));
+}
+
+its::Variable dve2GAL::channel_item ( int i , int x) {
+  return Variable ( channel_name( i ) + ".content" + ".x" + wibble::str::fmt( x ));
+}
+
+its::IntExpression  dve2GAL::channel_item_at( int i, const IntExpression & pos, int x ) 
+{
+  return IntExpressionFactory::createArrayAccess(  channel_item( i,x ),   pos );
+}
+
+void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
+{
+  if(et->synchronized)
+    {
+      for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
+	ga.addAction( assign( *et->first->get_sync_expr_list_item(s), *et->second->get_sync_expr_list_item(s) ));
+    }
+  else
+    {
+      int chan = et->first->get_channel_gid();
+      if(et->first->get_sync_mode() == SYNC_EXCLAIM_BUFFER)
+        {
+	  // When sending message, the set expr_list assigns to each field of the struct in channel, in order
+	  for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
+            {
+	      ga.addAction( Assignment ( channel_item_at( chan, channel_items( chan ), s ),
+				    convertInt( *et->first->get_sync_expr_list_item( s ) ) ));
+            }
+	  // Add 1 to channel size
+	  ga.addAction( Assignment ( channel_items( chan ), IntExpressionFactory::createBinary (PLUS, channel_items( chan ), 1) )); 
+        }
+      if(et->first->get_sync_mode() == SYNC_ASK_BUFFER)
+        {
+	  // When reading message, the set expr_list assigns to local variables the value of each field of the struct in channel[0], in order
+	  for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
+	    ga.addAction( Assignment( convertInt( *et->first->get_sync_expr_list_item(s)), channel_item_at( chan, 0, s) ));
+	  // Subtract 1 from channel size
+	  ga.addAction( Assignment ( channel_items( chan ), IntExpressionFactory::createBinary (MINUS, channel_items( chan ), 1) )); 
+	  
+	  // Shift entries in channel down one index
+	  // For every position in channel up to n-2
+	  for(size_int_t i = 0 ; i < channel_capacity( chan ) - 1 ; i++) {
+	    // For every field in the channel message struct
+            for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
+	      {
+		// copy value in message i+1 to i
+		ga.addAction( Assignment( channel_item_at( chan, i, s), channel_item_at( chan, i+1, s) ));
+	      }
+	  }
+	  // clear content of last channel cell
+	  for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
+	    {
+	      ga.addAction( Assignment( channel_item_at( chan, channel_capacity( chan ) - 1, s), 0 ));
+	    }
+	}
+      
+      //first transition effect
+      // Update process state variable
+      ga.addAction ( Assignment( process_state( et->first->get_process_gid()), et->first->get_state2_lid() ));
+      
+      // Effects on variables of main process
+      for(size_int_t e = 0;e < et->first->get_effect_count();e++) {
+	ga.addAction( convertAssign ( *et->first->get_effect(e) ));
+      }
+
+      // process Rendez-Vous
+      if(et->synchronized) //second transiton effect
+	{
+	  // Update second process state
+	  Assignment( process_state( et->second->get_process_gid()),
+		      et->second->get_state2_lid() ) ;
+	  // actions of second process
+	  for(size_int_t e = 0;e < et->second->get_effect_count();e++)
+	    ga.addAction( convertAssign ( *et->second->get_effect(e) ));
+	}
+
+      if(have_property) //change of the property process state
+        ga.addAction( Assignment ( process_state( et->property->get_process_gid()), et->property->get_state2_lid() ) );
+
+    }
+//     // show dependency information in the source
+//     output_dependency_comment(*et);
+
+}
+
+void dve2GAL::gen_transient(GAL & gal)
+{
+  BoolExpression transient = BoolExpressionFactory::createConstant(false) ;
+  int nbtransient = 0;
+  // for every process
+  for(size_int_t pid = 0; pid < get_process_count(); pid++) {
+    dve_process_t* proc =  dynamic_cast<dve_process_t*>(get_process(pid));
+    size_t nbstates = proc->get_state_count();
+    // for each process state
+    for(size_int_t pstate = 0; pstate < nbstates ; pstate++) {
+      std::string stname =  get_symbol_table()->get_state(proc->get_state_gid(pstate))->get_name() ;
+      // if it matches the regexp : trans_\w*
+      if ( stname.substr(0,6) == "trans_" ) {
+	// or this condition into the full predicate
+	transient = transient ||  in_state(pid,pstate);
+	nbtransient++;
+      }
+    }
+  }
+  if (nbtransient) {
+    gal.setTransientPredicate (transient);
+    // set the transient predicate for the full type.
+    // line("// found "+ fmt(nbtransient) + " transient states");
+  }
+}
+
+  bool dve2GAL::has_committed_states () {
+    for(size_int_t i = 0; i < get_process_count(); i++)
+      for(size_int_t j = 0; j < dynamic_cast<dve_process_t*>(get_process(i))->get_state_count(); j++)
+	if(dynamic_cast<dve_process_t*>(get_process(i))->get_commited(j))
+	  return true; 
+    return false;
+  }
+
+  
+  
+void dve2GAL::gen_transitions(GAL & gal)
+{
+  // Build a bool expression for testing the condition : "at least a process is in a commited state"
+  BoolExpression committed_state = BoolExpressionFactory::createConstant(false);
+
+  if (has_committed_states()) {
+
+    // From Divine documentation, on the semantics of "commit" states:
+    // Committed state of a system = state of a system, where at least one process is in a committed state. 
+    // If the system is in a committed state, then only processes in committed states can transit to another state.
+    // It means that the sequence of transitions beginning with a transition leading to a committed state 
+    // and ending with a transition leading to a non-committed state cannot be interlaced with other
+    // transitions leading from non-committed states.
+
+
+    // foreach process
+    for(size_int_t i = 0; i < get_process_count(); i++)
+      // for each process state
+      for(size_int_t j = 0; j < dynamic_cast<dve_process_t*>(get_process(i))->get_state_count(); j++)
+	// if state is "commit"
+	if(dynamic_cast<dve_process_t*>(get_process(i))->get_commited(j))
+	  // Or into the condition
+	  committed_state = committed_state ||  in_state( i, j ) ;
+    // simplify
+    committed_state = committed_state.eval();
+  }
+
+  int tnum = 0;
+  // Foreach process
+  for(size_int_t i = 0; i < this->get_process_count(); i++)
+    {
+      // Foreach source state of transitions
+      if( transition_map.find(i) != transition_map.end() && !is_property( i ) )
+	for(iter_process_transition_map = transition_map.find(i)->second.begin();
+	    iter_process_transition_map != transition_map.find(i)->second.end();
+	    iter_process_transition_map++)
+	  {
+	    
+	    // Test location = source of transitions
+	    BoolExpression stateGuard = in_state( i, iter_process_transition_map->first ) ;
+	    
+	    
+	    // foreach transition with this state as source
+	    for(iter_ext_transition_vector = iter_process_transition_map->second.begin();
+		iter_ext_transition_vector != iter_process_transition_map->second.end();
+		iter_ext_transition_vector++)
+	      {
+		// First compute additional enabling conditions
+		BoolExpression guard = stateGuard;
+		
+		// If this state is NOT commited
+		if(! dynamic_cast<dve_process_t*>(get_process(i))->get_commited(iter_process_transition_map->first)) 
+		  {
+		    // Source is not committed, due to priority, we can only fire 
+		    // if we ensure no urgent transitions are available.
+		    // Thus, and the "Not In commited state" to guard of transition
+		    guard = guard && (! committed_state);
+		  } else if (
+		    // From Divine documentation :
+		    // Synchronization between processes in committed states and non-committed states is ignored. 
+		    // This test implements this condition. 
+		    // The remark in czech translates to "what about sync with commit states of the property ???"
+		    // I don't really care in our setting where the property will be fed separately to libits tools.
+		  
+		    // !! jak je to s property synchronizaci v comitted stavech !!
+		     // it is a synchronization of process
+		       iter_ext_transition_vector->synchronized 
+		       &&
+			! dynamic_cast<dve_process_t*> (
+				get_process
+				(
+				 // Source state for transition of second process of the synchronization
+				 iter_ext_transition_vector->second->get_process_gid()
+				 )
+				// is not "commited"
+				)->get_commited(iter_ext_transition_vector->second->get_state1_lid()) 
+		       ) {
+		      // Synchronization between processes in committed states and non-committed states is ignored. 
+		      // NOTE : for me this should be a syntax error. Print a warning ?
+		      continue;
+		}
+		
+
+		std::string name = "t" + wibble::str::fmt(tnum++);
+		std::string label = 
+		  process_name(i) + "." + get_symbol_table()->get_state(iter_process_transition_map->first)->get_name() // + fmt(iter_process_transition_map->first) +"_" + process_name(i) 
+		  + "-" +  get_symbol_table()->get_state(iter_ext_transition_vector->first->get_state2_gid())->get_name() ;
+		
+		GuardedAction ga(name);
+		//	    ga.setLabel(label);
+		
+		// Now add final transition guard
+		guard = guard && transition_guard( &*iter_ext_transition_vector );
+		
+		ga.setGuard(guard.eval());
+
+		// set transition effect
+		transition_effect( &*iter_ext_transition_vector, ga );
+		    
+		gal.addTransition(ga);
+
+	      } // foreach transition
+	  } // foreach process state
+    } // foreach process
+
+}
+
+GAL * dve2GAL::convertFromDve()
+{
+  GAL * gal = new GAL (modelName);
+  gen_initial_state(*gal);
+  gen_transitions(*gal);
+
+  gen_transient(*gal);
+
+  return gal;
+}
+
+
+
+
+
+
+
+/*********** Code below is courtesy of Twente team of LTSmin, and builds some structures that facilitate the definition of the semantics above. */
+
+
+void dve2GAL::mark_dependency( size_int_t gid, int type, int idx, std::vector<int> &dep )
+{
+    size_int_t size = 0;
+    bool mark = false;
+    for (size_int_t i=0; i!=state_creators_count; ++i)
+    {
+        mark = state_creators[i].gid == gid && type == state_creators[i].type;
+        switch (state_creators[i].type)
+        {
+            case state_creator_t::VARIABLE:
+            {
+                if (state_creators[i].array_size)
+                {
+                     for(size_t j=0; j<state_creators[i].array_size; j++)
+                     {
+		       if (mark && (idx == -1 || (size_t)idx == j)) dep[size]=1;
+                        size++;
+                     }
+                }
+                else
+                {
+                    if (mark) { dep[size]=1; }
+                    size++;
+                }
+            }
+            break;
+            case state_creator_t::PROCESS_STATE:
+            {
+                if (mark) { dep[size]=1; }
+                size++;
+            }
+            break;
+            case state_creator_t::CHANNEL_BUFFER:
+            {
+                // mark number of items
+                if (mark) dep[size]=1;
+                size++;
+
+                // mark channel
+                dve_symbol_t * symbol =
+                  get_symbol_table()->get_channel(state_creators[i].gid);
+                size_int_t item_count = symbol->get_channel_type_list_size();
+                size_int_t chan_size = symbol->get_channel_buffer_size();
+                for(size_int_t i=0; i < chan_size; ++i) {
+                    for (size_int_t j=0; j<item_count; ++j) {
+                        if (mark) dep[size]=1;
+                        size++;
+                    }
+                }
+            }
+            break;
+            default: gerr << "Unexpected error while marking dependency" << thr();
+                break;
+        };
+    }
+}
+
+int dve2GAL::count_state_variables() const
+{
+    size_int_t size = 0;
+    for (size_int_t i=0; i!=state_creators_count; ++i)
+    {
+        switch (state_creators[i].type)
+        {
+            case state_creator_t::VARIABLE:
+                size += (state_creators[i].array_size)?state_creators[i].array_size:1;
+                break;
+            case state_creator_t::PROCESS_STATE:
+                size++;
+                break;
+            case state_creator_t::CHANNEL_BUFFER:
+            {
+                dve_symbol_t * symbol =
+                  get_symbol_table()->get_channel(state_creators[i].gid);
+                size_int_t item_count = symbol->get_channel_type_list_size();
+                size_int_t chan_size = symbol->get_channel_buffer_size();
+                size += (chan_size * item_count) + 1;
+                break;
+            }
+            default: gerr << "Unexpected error while counting length of state" << thr();
+                break;
+        };
+    }
+    return size;
+}
+
+
+void dve2GAL::analyse_expression( dve_expression_t & expr, ext_transition_t &ext_transition, std::vector<int> &dep)
 {
     dve_symbol_table_t * parent_table = expr.get_symbol_table();
     if (!parent_table) gerr << "Writing expression: Symbol table not set" << thr();
@@ -587,11 +727,8 @@ void dve_compiler::analyse_expression( dve_expression_t & expr, ext_transition_t
     }
 }
 
-void dve_compiler::analyse_transition_dependencies( ext_transition_t &ext_transition )
+void dve2GAL::analyse_transition_dependencies( ext_transition_t &ext_transition )
 {
-    // only for ltsmin
-    if (!ltsmin)
-        return;
 
     // initialize read/write dependency vector
     int count = count_state_variables();
@@ -713,7 +850,7 @@ void dve_compiler::analyse_transition_dependencies( ext_transition_t &ext_transi
     }
 }
 
-void dve_compiler::analyse_transition(
+void dve2GAL::analyse_transition(
     dve_transition_t * transition,
     vector<ext_transition_t> &ext_transition_vector )
 {
@@ -797,7 +934,7 @@ void dve_compiler::analyse_transition(
     }
 }
 
-void dve_compiler::analyse()
+void dve2GAL::analyse()
 {
     dve_transition_t * transition;
     have_property = get_with_property();
@@ -870,523 +1007,80 @@ void dve_compiler::analyse()
     }
 }
 
-std::string dve2GAL::process_name( int i ) {
-    return get_symbol_table()->get_process( i )->get_name();
+
+/************** This code used to handle FORCE compatible hypergraph output */
+
+void dve2GAL::buildHGraphNodes () const {
+  FILE * vertex_out = fopen("out.nodes","w");
+  FILE * vnames_out = fopen("out.vars","w");
+  fprintf(vertex_out, "UCLA nodes   1.0\n# Generated by dvecompile libDDD\nNumNodes : %zu\nNumTerminals : 0\n",varnames.size());
+  int count = 0;
+  for (std::vector<string>::const_iterator it = varnames.begin() ; it != varnames.end() ; ++it ) {
+    fprintf(vnames_out,"%s\n",it->c_str());
+    fprintf(vertex_out,"     v%d 1 1\n",++count);
+  }
+  fclose(vertex_out);
+  fclose(vnames_out);
+  FILE * aux_out = fopen("out.aux","w");
+  fprintf (aux_out, "HGraph : out.nodes out.nets\n");
+  fclose(aux_out);
 }
 
-Variable process_state( int i, std::string state ) {
-    return  Variable( process_name( i ) + ".state" ;
-}
 
+static FILE * nets_out = NULL;
+long int pinspos=0;
+int totalpins= 0;
 
-BoolExpression in_state( int process, int state) {
-  return BoolExpressionFactory::createComparison ( EQ, process_state( process, from_state ) , IntExpressionFactory::createConstant(state ) );
-}
-
-
-Variable channel_items( int i ) {
-    return Variable( channel_name( i ) + ".number_of_items" );
-}
-
-
-
-BoolExpression dve_compiler::transition_guard( ext_transition_t *et )
+void dve2GAL::buildHGraphEdge ( ext_transition_t &ext_transition ) const
 {
-  BoolExpression guard = BoolExpressionFactory::createConstant(true);
+  size_t count = count_state_variables();
 
+  int nbEdges = 0;
 
-  if (et->first->get_guard()) {
-	  guard = guard && convertBool(*et->first->get_guard());
+  // Count variables impacted (read or write)
+  for(size_int_t i = 0; i < count; i++)
+    {
+      if (ext_transition.sv_read[i])
+	nbEdges++;
+      if (ext_transition.sv_write[i])
+	nbEdges++;
+    }
+  
+  totalpins += nbEdges;
+
+  // print header of file for first transition
+  if (nets_out == NULL) {
+    nets_out = fopen("out.nets","w");
+    fprintf(nets_out,"UCLA nets   1.0\n# Generated by dvecompile\n# NumNets : %zu\n  NumPins : ", get_trans_count());
+    pinspos= ftell(nets_out);
+    // allow some space to write the number of pins into
+    fprintf(nets_out,"         \n");
   }
 
+  /** Print current edge into HGraph output file */
+  fprintf(nets_out, "NetDegree : %d\n",nbEdges);
 
-  if( et->synchronized )
+  for(size_int_t i = 0; i < count; i++)
     {
-	  guard = guard && in_state( et->second->get_process_gid(), et->second->get_state1_lid());
-	  if (et->second->get_guard()) {
-		  guard = guard && convertBool(*et->second->get_guard());
-	  }
-    }
-  else
-    {
-      int chan = et->first->get_channel_gid();
-      if(et->first->get_sync_mode() == SYNC_EXCLAIM_BUFFER)
-    	  // check channel not full
-    	  guard = guard &&
-    	  	  ( IntExpressionFactory::createVariableAccess(channel_items( chan, in )) != IntExpressionFactory::createConstant(channel_capacity( chan ) ));
-      if(et->first->get_sync_mode() == SYNC_ASK_BUFFER)
-    	  // check channel not empty
-    	  guard = guard && ( IntExpressionFactory::createVariableAccess(channel_items( chan, in )) != IntExpressionFactory::createConstant(0) );
-    }
-  return guard.eval();
-}
-
-void dve_compiler::transition_effect( ext_transition_t *et, std::string in, std::string out )
-{
-    if(et->synchronized)
-    {
-        for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
-            assign( cexpr( *et->first->get_sync_expr_list_item(s), out ),
-                    cexpr( *et->second->get_sync_expr_list_item(s), in ) );
-    }
-    else
-    {
-        int chan = et->first->get_channel_gid();
-        if(et->first->get_sync_mode() == SYNC_EXCLAIM_BUFFER)
-        {
-            for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
-            {
-                assign( channel_item_at( chan, channel_items( chan, in ), s, out ),
-                        cexpr( *et->first->get_sync_expr_list_item( s ), in ) );
-            }
-            line( channel_items( chan, out ) + "++;" );
-        }
-        if(et->first->get_sync_mode() == SYNC_ASK_BUFFER)
-        {
-            for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
-                assign( cexpr( *et->first->get_sync_expr_list_item(s), out ),
-                        channel_item_at( chan, "0", s, in ) );
-            line( channel_items( chan, out ) + "--;" );
-
-            line( "for(size_int_t i = 1 ; i <= " + channel_items( chan, out ) + "; i++)" );
-            block_begin();
-            for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
-            {
-                assign( channel_item_at( chan, "i-1", s, out ), channel_item_at( chan, "i", s, in ) );
-                assign( channel_item_at( chan, "i", s, out ), "0" );
-            }
-            block_end();
-        }
-    }
-
-    //first transition effect
-    assign( process_state( et->first->get_process_gid(), out ),
-            fmt( et->first->get_state2_lid() ) );
-
-    for(size_int_t e = 0;e < et->first->get_effect_count();e++) {
-      print_cexpr( *et->first->get_effect(e), out );
-    }
-
-    if(et->synchronized) //second transiton effect
-    {
-        assign( process_state( et->second->get_process_gid(), out ),
-                fmt( et->second->get_state2_lid() ) );
-        for(size_int_t e = 0;e < et->second->get_effect_count();e++)
-            print_cexpr( *et->second->get_effect(e), out );
-    }
-
-    if(have_property) //change of the property process state
-        assign( process_state( et->property->get_process_gid(), out ),
-                fmt( et->property->get_state2_lid() ) );
-
-    // show dependency information in the source
-    output_dependency_comment(*et);
-}
-
-void dve_compiler::new_output_state() {
-    if (ltsmin) {
-            line( "*out = *in;" );
-    } else {
-        if ( many ) {
-            line( "divine::Blob blob_out( *pool, slack + state_size );" );
-            line( "state_struct_t *out = (state_struct_t *)(blob_out.data() + slack);" );
-            line( "blob_out.clear( 0, slack );" );
-            line( "*out = *in;" );
-        }
-    }
-}
-
-void dve_compiler::yield_state() {
-    if (ltsmin) {
-        if (many) {
-            line ("transition_info.group = " + fmt( current_label++) + ";");
-        }
-        line( "callback(arg, &transition_info, out);" );
-        line( "++states_emitted;" );
-    } else {
-        if ( many ) {
-            line( "if (buf_out->space() < 2) {" );
-            line( "    buf_out->unadd( states_emitted );" );
-            line( "    return;" );
-            line( "}");
-            line( "buf_out->add( (*buf_in)[ 0 ] );" );
-            line( "buf_out->add( blob_out );" );
-            line( "++states_emitted;" );
-        } else {
-            line( "return " + fmt( current_label ) + ";" );
-        }
-    }
-}
-
-void dve_compiler::gen_ltsmin_successors()
-{
-    string in = "(*in)", out = "(*out)", space = "";
-    bool some_commited_state = false;
-
-    // find some commited state
-    for(size_int_t i = 0; i < get_process_count(); i++)
-        for(size_int_t j = 0; j < dynamic_cast<dve_process_t*>(get_process(i))->get_state_count(); j++)
-            if(dynamic_cast<dve_process_t*>(get_process(i))->get_commited(j))
-                some_commited_state = true;
-
-    if (some_commited_state)
-    {
-        for(size_int_t i = 0; i < this->get_process_count(); i++)
-        {
-            if( transition_map.find(i) != transition_map.end() && !is_property( i ) )
-                for(iter_process_transition_map = transition_map.find(i)->second.begin();
-                    iter_process_transition_map != transition_map.find(i)->second.end();
-                    iter_process_transition_map++)
-                {
-                    if(dynamic_cast<dve_process_t*>(get_process(i))->get_commited(
-                           iter_process_transition_map->first))
-                    {
-                        new_label();
-
-                        // committed state
-                        if_begin( true );
-
-                        for(size_int_t p = 0; p < get_process_count(); p++)
-                            for(size_int_t c = 0; c < dynamic_cast<dve_process_t*>(get_process(p))->get_state_count(); c++)
-                                if(dynamic_cast<dve_process_t*>(get_process(p))->get_commited(c))
-                                    if_clause( in_state( p, c, in ) );
-
-                        if_end(); // otherwise this condition is disjoint with the new condition
-
-                        if_begin(true);
-                        if_clause( in_state( i, iter_process_transition_map->first, in ) );
-                        if_end(); block_begin();
-
-                        new_output_state();
-
-                        for(iter_ext_transition_vector = iter_process_transition_map->second.begin();
-                            iter_ext_transition_vector != iter_process_transition_map->second.end();
-                            iter_ext_transition_vector++)
-                        {
-                            // !! jak je to s property synchronizaci v comitted stavech !!
-                            if( !iter_ext_transition_vector->synchronized ||
-                                dynamic_cast<dve_process_t*>(
-                                    get_process(iter_ext_transition_vector->second->get_process_gid()))->
-                                get_commited(iter_ext_transition_vector->second->get_state1_lid()) )
-                            {
-                                transition_guard( &*iter_ext_transition_vector, in );
-                                block_begin();
-                                transition_effect( &*iter_ext_transition_vector, in, out );
-                                block_end();
-                            }
-                        }
-
-                        yield_state();
-                        block_end();
-                        line("return states_emitted;");
-                    }
-                }
-        }
-    }
-
-    for(size_int_t i = 0; i < get_process_count(); i++)
-    {
-        if(transition_map.find(i) != transition_map.end() && !is_property( i ))
-            for(iter_process_transition_map = transition_map.find(i)->second.begin();
-                iter_process_transition_map != transition_map.find(i)->second.end();
-                iter_process_transition_map++)
-            {
-                for(iter_ext_transition_vector = iter_process_transition_map->second.begin();
-                    iter_ext_transition_vector != iter_process_transition_map->second.end();
-                    iter_ext_transition_vector++)
-                {
-                    // make sure this transition is not a committed one
-                    if (!
-                        dynamic_cast<dve_process_t*>(
-                            get_process(iter_ext_transition_vector->first->get_process_gid()))->
-                        get_commited(iter_ext_transition_vector->first->get_state1_lid()) )
-                    {
-
-                        new_label();
-
-                        transition_guard( &*iter_ext_transition_vector, in );
-                        block_begin();
-                        if (some_commited_state)
-                        {
-                            // committed state
-                            if_begin( true );
-
-                            for(size_int_t p = 0; p < get_process_count(); p++)
-                                for(size_int_t c = 0; c < dynamic_cast<dve_process_t*>(get_process(p))->get_state_count(); c++)
-                                    if(dynamic_cast<dve_process_t*>(get_process(p))->get_commited(c))
-                                        if_clause( in_state( p, c, in ) );
-
-                            if_end();
-                            line("    return 0;"); // bail out early
-                        }
-
-
-                        new_output_state();
-                        transition_effect( &*iter_ext_transition_vector, in, out );
-                        yield_state();
-                        block_end();
-                        line("return states_emitted;");
-                    }
-                }
-            }
-    }
-}
-
-void dve_compiler::gen_transient()
-{
-  std::stringstream sstream;
-  sstream << "BoolExpressionFactory::createConstant(false) ";
-  int nbtransient = 0;
-  // for every process
-  for(size_int_t pid = 0; pid < get_process_count(); pid++) {
-    dve_process_t* proc =  dynamic_cast<dve_process_t*>(get_process(pid));
-    size_t nbstates = proc->get_state_count();
-    // for each process state
-    for(size_int_t pstate = 0; pstate < nbstates ; pstate++) {
-      std::string stname =  get_symbol_table()->get_state(proc->get_state_gid(pstate))->get_name() ;
-      // if it matches the regexp : trans_\w*
-      if ( stname.substr(0,6) == "trans_" ) {
-	// or this condition into the full predicate
-	sstream << " || " << in_state(pid,pstate,"");
-	nbtransient++;
+      // read
+      if (ext_transition.sv_read[i]) {
+	fprintf(nets_out, "v%zu I\n", i);
+      }
+      // write
+      if (ext_transition.sv_write[i]) {
+	fprintf(nets_out, "v%zu O\n", i);
       }
     }
-  }
-  if (nbtransient) {
-    line ("setTransientPredicate (" + sstream.str() + ");");
-    // set the transient predicate for the full type.
-    line("// found "+ fmt(nbtransient) + " transient states");
-  }
-}
-
-void dve_compiler::gen_successors()
-{
-    string in = "(*in)", out = "(*out)", space = "";
 
 
-    new_label();
-    if_begin( true );
-
-    for(size_int_t i = 0; i < get_process_count(); i++)
-        for(size_int_t j = 0; j < dynamic_cast<dve_process_t*>(get_process(i))->get_state_count(); j++)
-            if(dynamic_cast<dve_process_t*>(get_process(i))->get_commited(j))
-                if_clause( in_state( i, j, in ) );
-
-    if_end(); block_begin();
-
-    for(size_int_t i = 0; i < this->get_process_count(); i++)
-    {
-        if( transition_map.find(i) != transition_map.end() && !is_property( i ) )
-            for(iter_process_transition_map = transition_map.find(i)->second.begin();
-                iter_process_transition_map != transition_map.find(i)->second.end();
-                iter_process_transition_map++)
-            {
-                if(dynamic_cast<dve_process_t*>(get_process(i))->get_commited(
-                       iter_process_transition_map->first))
-                {
-                    new_label();
-
-                    if_begin( true );
-                    if_clause( in_state( i, iter_process_transition_map->first, in ) );
-                    if_end(); block_begin();
-
-                    new_output_state();
-
-                    for(iter_ext_transition_vector = iter_process_transition_map->second.begin();
-                        iter_ext_transition_vector != iter_process_transition_map->second.end();
-                        iter_ext_transition_vector++)
-                    {
-                        // !! jak je to s property synchronizaci v comitted stavech !!
-                        if( !iter_ext_transition_vector->synchronized ||
-                            dynamic_cast<dve_process_t*>(
-                                get_process(iter_ext_transition_vector->second->get_process_gid()))->
-                            get_commited(iter_ext_transition_vector->second->get_state1_lid()) )
-                        {
-                            transition_guard( &*iter_ext_transition_vector, in );
-                            block_begin();
-                            transition_effect( &*iter_ext_transition_vector, in, out );
-                            block_end();
-                        }
-                    }
-
-                    yield_state();
-                    block_end();
-                }
-            }
-    }
-
-    block_end();
-    line( "else" );
-    block_begin();
-
-    // counter to label transitions
-    int tnum = 0;
-
-    for(size_int_t i = 0; i < get_process_count(); i++)
-    {
-        if(transition_map.find(i) != transition_map.end() && !is_property( i ))
-            for(iter_process_transition_map = transition_map.find(i)->second.begin();
-                iter_process_transition_map != transition_map.find(i)->second.end();
-                iter_process_transition_map++)
-            {
-                // make sure this transition is not a committed one
-                if (!
-                    dynamic_cast<dve_process_t*>(
-                        get_process(i))->get_commited(iter_process_transition_map->first) )
-                {
-		  
-		  block_begin();		    
-
-		  line("BoolExpression procState =" + in_state( i, iter_process_transition_map->first, in ) + ";");
-
-
-		  for(iter_ext_transition_vector = iter_process_transition_map->second.begin();
-		      iter_ext_transition_vector != iter_process_transition_map->second.end();
-		      iter_ext_transition_vector++)
-                    {
-		      block_begin();		    
-		      transition_guard( &*iter_ext_transition_vector, in );
-
-		      std::string name = "t" + wibble::str::fmt(tnum++);
-		      std::string label = 
-			process_name(i) + "." + get_symbol_table()->get_state(iter_process_transition_map->first)->get_name() // + fmt(iter_process_transition_map->first) +"_" + process_name(i) 
-			+ "-" +  get_symbol_table()->get_state(iter_ext_transition_vector->first->get_state2_gid())->get_name() ;
-		      
-		      line("GuardedAction ga(\"t" + wibble::str::fmt(tnum++)  + "\");");
-//		      line("ga.setLabel(\""+label+"\");");
-		      line("ga.setGuard(guard && procState);");
-
-		      
-		      transition_effect( &*iter_ext_transition_vector, in, out );
-		      
-		      line("addTransition(ga);");
-		      block_end();
-                    }
-		  block_end();
-                }
-            }
-    }
-    block_end();
-    
+// Aftyer computing nbtransitions   
     fseek(nets_out,pinspos,SEEK_SET);
     fprintf(nets_out, "%d",totalpins);
     fclose(nets_out);
     nets_out = NULL;
+    
 }
 
-void dve_compiler::gen_is_accepting()
-{
-}
-
-void dve_compiler::print_generator()
-{
-    gen_header();
-    gen_state_struct();
-    gen_initial_state();
-
-    gen_successors();
-
-    gen_transient();
-
-    gen_tail();
-}
-
-void dve_compiler::gen_state_info()
-{
-
-}
-
-void dve_compiler::gen_transition_info()
-{
-
-}
-
-
-void dve_compiler::mark_dependency( size_int_t gid, int type, int idx, std::vector<int> &dep )
-{
-    size_int_t size = 0;
-    bool mark = false;
-    for (size_int_t i=0; i!=state_creators_count; ++i)
-    {
-        mark = state_creators[i].gid == gid && type == state_creators[i].type;
-        switch (state_creators[i].type)
-        {
-            case state_creator_t::VARIABLE:
-            {
-                if (state_creators[i].array_size)
-                {
-                     for(size_t j=0; j<state_creators[i].array_size; j++)
-                     {
-		       if (mark && (idx == -1 || (size_t)idx == j)) dep[size]=1;
-                        size++;
-                     }
-                }
-                else
-                {
-                    if (mark) { dep[size]=1; }
-                    size++;
-                }
-            }
-            break;
-            case state_creator_t::PROCESS_STATE:
-            {
-                if (mark) { dep[size]=1; }
-                size++;
-            }
-            break;
-            case state_creator_t::CHANNEL_BUFFER:
-            {
-                // mark number of items
-                if (mark) dep[size]=1;
-                size++;
-
-                // mark channel
-                dve_symbol_t * symbol =
-                  get_symbol_table()->get_channel(state_creators[i].gid);
-                size_int_t item_count = symbol->get_channel_type_list_size();
-                size_int_t chan_size = symbol->get_channel_buffer_size();
-                for(size_int_t i=0; i < chan_size; ++i) {
-                    for (size_int_t j=0; j<item_count; ++j) {
-                        if (mark) dep[size]=1;
-                        size++;
-                    }
-                }
-            }
-            break;
-            default: gerr << "Unexpected error while marking dependency" << thr();
-                break;
-        };
-    }
-}
-
-int dve_compiler::count_state_variables()
-{
-    size_int_t size = 0;
-    for (size_int_t i=0; i!=state_creators_count; ++i)
-    {
-        switch (state_creators[i].type)
-        {
-            case state_creator_t::VARIABLE:
-                size += (state_creators[i].array_size)?state_creators[i].array_size:1;
-                break;
-            case state_creator_t::PROCESS_STATE:
-                size++;
-                break;
-            case state_creator_t::CHANNEL_BUFFER:
-            {
-                dve_symbol_t * symbol =
-                  get_symbol_table()->get_channel(state_creators[i].gid);
-                size_int_t item_count = symbol->get_channel_type_list_size();
-                size_int_t chan_size = symbol->get_channel_buffer_size();
-                size += (chan_size * item_count) + 1;
-                break;
-            }
-            default: gerr << "Unexpected error while counting length of state" << thr();
-                break;
-        };
-    }
-    return size;
-}
-
+/*************FORCE OUTPUT END *******/
 
 }
