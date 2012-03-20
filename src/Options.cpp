@@ -9,7 +9,8 @@
 
 // DL sym stuff
 #include <dlfcn.h>
-
+// for wibble string
+#include "divine/wibble/string.h"
 
 #include "SDD.h"
 #include "MemoryManager.h"
