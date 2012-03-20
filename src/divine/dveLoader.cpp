@@ -61,7 +61,7 @@ static void gplusplus( std::string in, std::string out, std::string flags = "" )
   "-shared "
 #endif
   ;
-  cmd << "g++ -O2 -fPIC " << os_dependant_flags << multiarch << flags << " -o " << out << " " << in;
+  cmd << "g++ -O0 -fPIC " << os_dependant_flags << multiarch << flags << " -o " << out << " " << in;
   std::cout << "Running compilation step :" << cmd.str() << std::endl;
   run( cmd.str() );
 }
