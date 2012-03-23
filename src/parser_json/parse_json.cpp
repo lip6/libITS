@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <iostream>
 #include <cstdlib>
+#include <unistd.h>
 #include "cJSON.h"
 #include "parse_json.hh"
 #include <sys/mman.h> 
