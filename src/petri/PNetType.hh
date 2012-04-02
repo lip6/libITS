@@ -119,20 +119,20 @@ public :
    * Otherwise, an assertion violation will be raised !!
    * */
   virtual Transition getSuccs (const labels_t & tau) const {
-    HomType resultTrans = HomType::id;
+    Transition resultTrans = Transition::id;
     // use the provided order
     const VarOrder * po =  getVarOrder();
     // iterate on labels
     for (labels_t::const_iterator it = tau.begin() ; it != tau.end() ; ++it) {
-    	HomType  labelAction;
+    	Transition  labelAction;
     	bool isFirstTrWithLabel = true;
         for (PNet::trans_it t = net_.transitions_begin(); t != net_.transitions_end(); ++t ) {
         	if (t->getLabel() == *it) {
         		if (! isFirstTrWithLabel) {
-        			labelAction = labelAction +  Semantics::getFullHom(*t, *po) ;
+        			labelAction = labelAction +  getTransitionHom(*t, *po) ;
         		} else {
         			// add the effect of this action
-        			labelAction = Semantics::getFullHom(*t, *po) ;
+        			labelAction = getTransitionHom(*t, *po) ;
         			isFirstTrWithLabel = false;
         		}
         	}
@@ -144,8 +144,7 @@ public :
         resultTrans = labelAction & resultTrans ;
     }
     // The DDD state variant uses an intermediate variable called DEFAULT_VAR
-    Transition res = Semantics::encapsulate(resultTrans);
-    return res;
+    return resultTrans;
   }
 	
   /** The state predicate function : string p -> SHom.
