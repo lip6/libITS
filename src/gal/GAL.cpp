@@ -104,6 +104,9 @@ namespace its {
       os << endl;
     }
 
+    os << "  // transient predicate " << endl ;
+    os << "TRANSIENT = " << gal.isTransientState() << ";"  << std::endl;
+
     os << "\n}\n"<<endl;;
     return os;
   }
