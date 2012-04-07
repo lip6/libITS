@@ -78,13 +78,7 @@ public :
    **/ 
   Transition observe (labels_t obs, State potential) const; 
 
-  labels_t getVarSet () const {
-    labels_t vnames ;
-    for (GAL::vars_it it = gal_->vars_begin() ; it != gal_->vars_end(); ++it ) {
-      vnames.push_back(it->getName());
-    }
-    return vnames;
-  }
+  labels_t getVarSet () const ;
   
 };
 
