@@ -212,14 +212,19 @@ void dve2GAL::gen_initial_state(GAL & system)
 	      get_symbol_table()->get_variable(state_creators[i].gid)->get_name();
 	    if (state_creators[i].array_size)
 	      {
+		GAL::vals_t init;
 		for(size_int_t j=0; j < state_creators[i].array_size; ++j)
 		  {
 		    value = (initial_values_counts[state_creators[i].gid]?
 			     initial_values[state_creators[i].gid].all_values[j]:0);
+		    init.push_back(value);
+
+		    // TODO : this varnames code is not used anymore I think
 		    sprintf(buf, "%s[%zu]", name.c_str(), j);
-		    system.addVariable(Variable(buf), value);
 		    varnames.push_back(buf);
+
 		  }
+		system.addArray(name,init);
 		continue;
 	      }
 	    else 
@@ -233,14 +238,16 @@ void dve2GAL::gen_initial_state(GAL & system)
 	  }
 	case state_creator_t::PROCESS_STATE:
 	  {
-	    global = false;
-	    name = get_symbol_table()->get_process(state_creators[i].gid)->get_name();
-	    process_name = name;
+	    if (! procHasSingleState(state_creators[i].gid)) {
+	      global = false;
+	      name = get_symbol_table()->get_process(state_creators[i].gid)->get_name();
+	      process_name = name;
 	    
-	    value = initial_states[state_creators[i].gid];
-	    sprintf(buf, "%s.state", name.c_str());
-	    system.addVariable(Variable(buf), value);
-	    varnames.push_back(buf);
+	      value = initial_states[state_creators[i].gid];
+	      sprintf(buf, "%s.state", name.c_str());
+	      system.addVariable(Variable(buf), value);
+	      varnames.push_back(buf);
+	    }
 	  }
 	  break;
 	case state_creator_t::CHANNEL_BUFFER:
@@ -283,7 +290,9 @@ Variable dve2GAL::process_state( int i ) {
 
 
 BoolExpression dve2GAL::in_state( int process, int state) {
-  return BoolExpressionFactory::createComparison ( EQ, process_state( process ) , IntExpressionFactory::createConstant( state ) );
+  if ( ! procHasSingleState(process) )
+    return BoolExpressionFactory::createComparison ( EQ, process_state( process ) , IntExpressionFactory::createConstant( state ) );
+  return BoolExpressionFactory::createConstant(true);
 }
 
 
@@ -386,7 +395,8 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
       
       //first transition effect
       // Update process state variable
-      ga.addAction ( Assignment( process_state( et->first->get_process_gid()), et->first->get_state2_lid() ));
+      if (! procHasSingleState ( et->first->get_process_gid() ))
+	  ga.addAction ( Assignment( process_state( et->first->get_process_gid()), et->first->get_state2_lid() ));
       
       // Effects on variables of main process
       for(size_int_t e = 0;e < et->first->get_effect_count();e++) {
@@ -397,8 +407,9 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
       if(et->synchronized) //second transiton effect
 	{
 	  // Update second process state
-	  Assignment( process_state( et->second->get_process_gid()),
-		      et->second->get_state2_lid() ) ;
+	  if (! procHasSingleState ( et->second->get_process_gid() ))
+	      ga.addAction(Assignment( process_state( et->second->get_process_gid()),
+				       et->second->get_state2_lid() )) ;
 	  // actions of second process
 	  for(size_int_t e = 0;e < et->second->get_effect_count();e++)
 	    ga.addAction( convertAssign ( *et->second->get_effect(e) ));
@@ -447,8 +458,11 @@ void dve2GAL::gen_transient(GAL & gal)
     return false;
   }
 
-  
-  
+bool dve2GAL::procHasSingleState (int i) 
+{
+  return dynamic_cast<dve_process_t*>(get_process(i))->get_state_count() == 1;
+}
+
 void dve2GAL::gen_transitions(GAL & gal)
 {
   // Build a bool expression for testing the condition : "at least a process is in a commited state"
