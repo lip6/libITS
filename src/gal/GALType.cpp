@@ -144,5 +144,53 @@ labels_t GALType::getTransLabels () const {
     return  localApply( (*pred.comp) (pred.var , pred.val), DEFAULT_VAR );
   }
 
+  static int parseFirstInt (Label s) {
+   int val = -1 ;
+   const char * sc = s.c_str();
+    for (const char  *cp = sc ; *cp ; ++ cp ) {
+      if (*cp >= '0' && *cp <= '9'){
+	sscanf (cp, "%d" , &val);
+      }
+    }
+    return val;
+  }
+
+  static bool less_var ( Label a , Label b ) {
+    int vala = parseFirstInt(a) ;
+    int valb = parseFirstInt(b) ;
+    // Case 1 : global vars (no ints in them) are heavy, they go to top of structure.
+    if ( vala == -1 && valb >= 0 ) {
+      return false;
+    } else if ( valb == -1 && vala >= 0 ) {
+      return true;
+    } 
+    // case 2 : we have two indexed variables, same index, revert to lexico
+    else if ( vala == valb ) {
+      return a < b;
+    }
+    // case 3 : sort by value
+    else {
+      return vala < valb;
+    }
+  }
+
+  labels_t GALType::getVarSet () const 
+  {
+    labels_t vnames ;
+    for (GAL::arrays_it it = gal_->arrays_begin() ; it != gal_->arrays_end() ; ++it ) {
+      for (ArrayDeclaration::vars_it jt = it->vars_begin() ; jt != it->vars_end() ; ++ jt ) {
+	vnames.push_back(jt->getName());
+      }
+    }
+    for (GAL::vars_it it = gal_->vars_begin() ; it != gal_->vars_end(); ++it ) {
+      vnames.push_back(it->getName());
+    }
+   
+    // sort attempt to get variables closer together.
+    sort(vnames.begin(), vnames.end(), & less_var ) ;
+ 
+    return vnames;
+  }
+
 
 } // namespace
