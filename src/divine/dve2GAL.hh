@@ -73,7 +73,9 @@ struct dve2GAL: public divine::dve_explicit_system_t
     void analyse_transition( divine::dve_transition_t * transition,
                              std::vector<ext_transition_t> &ext_transition_vector );
     void analyse();
-
+  
+  // if a proc has a single state, it will be simplified away from enabling conditions/no update in firing actions/no encoding of state variable in GAL
+  bool procHasSingleState (int i) ;
 
     // a string for process name from index
     std::string process_name( int i ) ;
