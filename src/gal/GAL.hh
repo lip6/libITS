@@ -30,7 +30,7 @@ class Assignment {
     
   public :
   /// Constructor, by reference since IntExpr are by construction unique
-  Assignment (const IntExpression & var, const IntExpression & expr) : var_(var), expr_(expr) {}
+  Assignment (const IntExpression & var, const IntExpression & expr) : var_(var.eval()), expr_(expr.eval()) {}
   /// Returns the left hand side of the Assignment
   const IntExpression & getVariable () const { return var_; }
   /// Returns the right hand side of the Assignment
