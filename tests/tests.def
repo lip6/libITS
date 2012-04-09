@@ -32,7 +32,37 @@ DVE format, philos
 ../bin/its-reach -i test_models/phils.4.dve -t DVE --quiet
 DVE format, peterson
 ../bin/its-reach -i test_models/peterson.4.dve -t DVE --quiet
+DVE format, peterson, with provided order
+../bin/its-reach -i test_models/peterson.4.dve -t DVE --load-order test_models/peterson.ord --quiet
 DVE format, szymanski
 ../bin/its-reach -i test_models/szymanski.2.dve -t DVE --quiet
 CAMI input, with deep JSON
 ../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.h11.json
+DVE format, hanoi BEEM version (pole state encoded)
+../bin/its-reach -i test_models/hanoi.ori.1.dve -t DVE --quiet
+DVE format, hanoi my own version (ring state encoded)
+../bin/its-reach -i test_models/hanoi.1.dve -t DVE --quiet
+DVE format, firewire model with synchronizations
+../bin/its-reach -i test_models/firewire_link.2.dve -t DVE --quiet
+DVE format, bakery mutex protocol
+../bin/its-reach -i test_models/bakery.4.dve -t DVE --quiet
+DVE format, train-gate controller, patched e[] w.r.t. BEEM distrib
+../bin/its-reach -i test_models/train-gate.5.dve -t DVE --quiet
+DVE format, fischer mutex, with abstraction predicate and commit states
+../bin/its-reach -i test_models/fischer.1.dve -t DVE --quiet
+DVE format, fischer mutex, with original BEEM source code (bitwise or trick for clocks)
+../bin/its-reach -i test_models/fischer.1.dve -t DVE --quiet
+DVE format, lup model, with a global var "loading" to simulate access to other process state
+../bin/its-reach -i test_models/lup.1.dve -t DVE --quiet
+DVE format, brp model, with bitwise AND and OR on bytes read from channel
+../bin/its-reach -i test_models/brp.1.dve -t DVE --quiet
+DVE format, exit model, with integers in bool expr rewritten to comparisons
+../bin/its-reach -i test_models/exit.1.dve -t DVE --quiet
+DVE format, loyd model instance 1
+../bin/its-reach -i test_models/loyd.1.dve -t DVE --quiet
+DVE format, frogs model
+../bin/its-reach -i test_models/frogs.1.dve -t DVE --quiet
+DVE format, reader-writer model
+../bin/its-reach -i test_models/reader-writer.3.dve -t DVE --quiet
+DVE format, lamport model
+../bin/its-reach -i test_models/lamport.2.dve -t DVE --quiet
