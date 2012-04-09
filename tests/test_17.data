@@ -4,10 +4,7 @@ DVE format, peterson
 its-reach command run as :
 
 ../bin/its-reach  -i  test_models/peterson.4.dve  -t  DVE  --quiet  
-Generated GAL model file :peterson.4.dve.cpp
-Running compilation step :g++ -O0 -fPIC -shared -g -I/data/thierry/DDD/libddd/libddd/trunk/src -I/data/thierry/DDD/libddd/libits/trunk/src  -o peterson.4.dve.so peterson.4.dve.cpp
-Model successfully loaded from binary object file ./peterson.4.dve.so
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-peterson.4.dve,1.11956e+06,9.27,57740,2,19997,5,274564,6,0,135,393983,0
+peterson.4.dve,1.11956e+06,50.52,379456,2,4405,5,1.98822e+06,6,0,135,2.03044e+06,0
  Total reachable state count : 1119560
 

@@ -1,13 +1,11 @@
-DVE format, szymanski
-../bin/its-reach -i test_models/szymanski.2.dve -t DVE --quiet
+DVE format, peterson, with provided order
+../bin/its-reach -i test_models/peterson.4.dve -t DVE --load-order test_models/peterson.ord --quiet
 
 its-reach command run as :
 
-../bin/its-reach  -i  test_models/szymanski.2.dve  -t  DVE  --quiet  
-Generated GAL model file :szymanski.2.dve.cpp
-Running compilation step :g++ -O0 -fPIC -shared -g -I/data/thierry/DDD/libddd/libddd/trunk/src -I/data/thierry/DDD/libddd/libits/trunk/src  -o szymanski.2.dve.so szymanski.2.dve.cpp
-Model successfully loaded from binary object file ./szymanski.2.dve.so
+../bin/its-reach  -i  test_models/peterson.4.dve  -t  DVE  --load-order  test_models/peterson.ord  --quiet  
+Successfully loaded order from file test_models/peterson.ord
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-szymanski.2.dve,31875,1.29,6180,2,1012,5,8430,6,0,273,22369,0
- Total reachable state count : 31875
+peterson.4.dve,1.11956e+06,11.11,66048,2,19997,5,274275,6,0,135,392128,0
+ Total reachable state count : 1119560
 

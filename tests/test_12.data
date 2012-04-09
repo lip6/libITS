@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../../bin/its-reach  -i  votersMain.xml  -t  ITSXML  --quiet  -ssD2  5  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-voters.model,1.07151e+301,0.38,2628,417,3,634,6,217,10,6,5,0
+voters.model,1.07151e+301,0.44,2652,417,3,634,6,217,10,6,5,0
  Total reachable state count : 1.071508607186267320948425049060001810561e+301
 

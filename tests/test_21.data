@@ -1,0 +1,10 @@
+DVE format, hanoi BEEM version (pole state encoded)
+../bin/its-reach -i test_models/hanoi.ori.1.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/hanoi.ori.1.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+hanoi.ori.1.dve,6561,7.58,74388,2,3918,5,434683,6,0,48,393721,0
+ Total reachable state count : 6561
+

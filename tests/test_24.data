@@ -1,0 +1,10 @@
+DVE format, bakery mutex protocol
+../bin/its-reach -i test_models/bakery.4.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/bakery.4.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bakery.4.dve,157003,20.53,162828,2,3952,5,815437,6,0,117,883476,0
+ Total reachable state count : 157003
+

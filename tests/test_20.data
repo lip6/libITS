@@ -1,0 +1,10 @@
+CAMI input, with deep JSON
+../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.h11.json
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/election_2.cami  -t  CAMI  --quiet  --json-order  test_models/election_2.h11.json  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+PNet0,11257,0.54,10272,2263,3,30399,10,379,68523,8,12,0
+ Total reachable state count : 11257
+

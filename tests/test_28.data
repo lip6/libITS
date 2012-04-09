@@ -1,0 +1,10 @@
+DVE format, lup model, with a global var "loading" to simulate access to other process state
+../bin/its-reach -i test_models/lup.1.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/lup.1.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lup.1.dve,1404,0.13,3628,2,72,5,5031,6,0,149,7451,0
+ Total reachable state count : 1404
+

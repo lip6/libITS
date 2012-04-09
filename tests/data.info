@@ -1,6 +1,6 @@
 Data collected on (machine/date):
 Linux phoenix 2.6.31.13-server-1mnb #1 SMP Tue Apr 27 21:42:56 EDT 2010 i686 Intel(R) Core(TM)2 Quad CPU    Q9400  @ 2.66GHz GNU/Linux
-lun. mars 19 10:21:41 CET 2012
+lun. avril  9 12:42:33 CEST 2012
 Configure run with :
 This file contains any messages produced by compilers while
 running configure, to aid debugging if configure makes a mistake.
@@ -15,10 +15,10 @@ Chemin : .
 URL : https://srcdev.lip6.fr/svn/research/libddd/libits/trunk/tests
 Racine du dépôt : https://srcdev.lip6.fr/svn/research/libddd
 UUID du dépôt : ab02c66d-5113-476d-a8b6-74e7035bd63a
-Révision : 2929
+Révision : 2985
 Type de nœud : répertoire
 Tâche programmée : normale
-Auteur de la dernière modification : mcolange
-Révision de la dernière modification : 2878
-Date de la dernière modification: 2012-02-16 17:49:10 +0100 (jeu. 16 févr. 2012)
+Auteur de la dernière modification : thierry
+Révision de la dernière modification : 2985
+Date de la dernière modification: 2012-04-09 12:36:05 +0200 (lun. 09 avril 2012)
 

@@ -1,0 +1,10 @@
+DVE format, train-gate controller, patched e[] w.r.t. BEEM distrib
+../bin/its-reach -i test_models/train-gate.5.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/train-gate.5.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+train-gate.5.dve,803458,8.89,49240,2,24238,5,165884,6,0,236,260471,0
+ Total reachable state count : 803458
+

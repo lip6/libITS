@@ -1,0 +1,10 @@
+DVE format, fischer mutex, with abstraction predicate and commit states
+../bin/its-reach -i test_models/fischer.1.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/fischer.1.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+fischer.1.dve,634,0.21,3800,2,143,5,7758,6,0,106,6754,0
+ Total reachable state count : 634
+

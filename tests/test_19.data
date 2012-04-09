@@ -1,10 +1,10 @@
-CAMI input, with deep JSON
-../bin/its-reach -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.h11.json
+DVE format, szymanski
+../bin/its-reach -i test_models/szymanski.2.dve -t DVE --quiet
 
 its-reach command run as :
 
-../bin/its-reach  -i  test_models/election_2.cami  -t  CAMI  --quiet  --json-order  test_models/election_2.h11.json  
+../bin/its-reach  -i  test_models/szymanski.2.dve  -t  DVE  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-PNet0,11257,0.53,10372,2264,3,30525,10,382,70637,8,12,0
- Total reachable state count : 11257
+szymanski.2.dve,31875,3.4,26968,2,552,5,105736,6,0,258,138985,0
+ Total reachable state count : 31875
 

@@ -1,0 +1,10 @@
+DVE format, exit model, with integers in bool expr rewritten to comparisons
+../bin/its-reach -i test_models/exit.1.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/exit.1.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+exit.1.dve,3.23933e+06,2.84,37600,2,24110,5,162812,6,0,187,238737,0
+ Total reachable state count : 3239334
+

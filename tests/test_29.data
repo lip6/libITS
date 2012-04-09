@@ -1,0 +1,10 @@
+DVE format, brp model, with bitwise AND and OR on bytes read from channel
+../bin/its-reach -i test_models/brp.1.dve -t DVE --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/brp.1.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+brp.1.dve,18928,0.89,8260,2,2709,5,35641,6,0,175,32023,0
+ Total reachable state count : 18928
+
