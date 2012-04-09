@@ -17,11 +17,12 @@ using namespace divine;
 namespace dve2GAL {
 
 
-
-  static std::map< int, const char * > op = std::map< int, const char * >();
+  typedef std::map< int, const char * > opmap_t;
+  typedef opmap_t::const_iterator opmap_it;
+  static  opmap_t op = opmap_t();
   static bool isOpInit = false;
 
-  static std::map< int, const char * > & getOp() {
+  static const char * getOp (int ope) {
     if (! isOpInit) {
       isOpInit=true;
       op[ T_LT ] = "LT"; op[ T_LEQ ] = "LEQ";
@@ -38,7 +39,12 @@ namespace dve2GAL {
       
       op[ T_ASSIGNMENT ] = "=";
     }
-    return op;
+    opmap_it it = op.find(ope);
+    if (it == op.end()) {
+      std::cerr << "Error translating DVE to GAL; Unknown operator with code : " <<  ope << std::endl;
+      return "??";
+    } else 
+      return it->second;
   }
 
   Assignment dve2GAL::convertAssign (dve_expression_t & expr) {
@@ -50,7 +56,7 @@ namespace dve2GAL {
       case T_ASSIGNMENT:
 	return assign (*expr.left(), *expr.right() );
       default : 
-	std::cerr << "Parse error from divine file, unexpected node \""<<  getOp()[ expr.get_operator() ] << "\" where Assignement  expected"<< std::endl;
+	std::cerr << "Parse error from divine file, unexpected node \""<<  getOp( expr.get_operator() ) << "\" where Assignement  expected"<< std::endl;
 	throw "Parse error in divine file.";
       }
   }
@@ -123,15 +129,36 @@ namespace dve2GAL {
           	  return IntExpressionFactory::createBinary ( DIV , convertInt( *expr.left()), convertInt( *expr.right() ) );
       case T_MOD:
           	  return IntExpressionFactory::createBinary ( MOD , convertInt( *expr.left()), convertInt( *expr.right() ) );
+      case T_OR:
+          	  return IntExpressionFactory::createBinary ( BITOR , convertInt( *expr.left()), convertInt( *expr.right() ) );
+      case T_AND:
+          	  return IntExpressionFactory::createBinary ( BITAND , convertInt( *expr.left()), convertInt( *expr.right() ) );
       case T_UNARY_MINUS:
       	  return IntExpressionFactory::createBinary ( MINUS , IntExpressionFactory::createConstant(0), convertInt( *expr.right() ) );
+
+      case T_LT:
+      case T_LEQ:
+      case T_EQ:
+      case T_NEQ:
+      case T_GT:
+      case T_GEQ:
+      case T_BOOL_AND:
+      case T_BOOL_OR:
+      case T_XOR:
+      case T_IMPLY:
+      case T_BOOL_NOT:
+	// met a boolean node in an expression, interpret as 1 (if true) or 0 (if false)
+	  return IntExpressionFactory::wrapBoolExpr ( convertBool( expr ) );
+
       case T_LSHIFT: case T_RSHIFT:
       case T_TILDE:
     	  std::cerr << "Bit shift <<, >> and bitwise ~ are not supported. " << std::endl;
     	  // fall thru deliberately
       case T_DOT:
+
+
       default : 
-    	  std::cerr << "Parse error from divine file, unexpected node \""<<  getOp()[ expr.get_operator() ] << "\" where IntExpression expected"<< std::endl;
+	std::cerr << "Parse error from divine file, unexpected node \""<<  getOp(expr.get_operator()) << "\" where IntExpression expected"<< std::endl;
     	  throw "Parse error in divine file.";
       }
 
@@ -181,11 +208,11 @@ namespace dve2GAL {
     	  return BoolExpressionFactory::createBinary( OR , r , !l );
       }
       case T_BOOL_NOT:
-    	  return BoolExpressionFactory::createNot( convertBool(*expr.right() ));
+	return BoolExpressionFactory::createNot( convertBool(*expr.right() ));
 
-   	  default :
-   		  std::cerr << "Parse error from divine file, unexpected node \""<<  getOp()[ expr.get_operator() ] << "\" where BoolExpression expected"<< std::endl;
-   		  throw "Parse error in divine file.";
+      default :
+	std::cerr << "Parse error from divine file, unexpected node \""<<  getOp( expr.get_operator() ) << "\" where BoolExpression expected"<< std::endl;
+	throw "Parse error in divine file.";
 
       }
   }
@@ -238,10 +265,11 @@ void dve2GAL::gen_initial_state(GAL & system)
 	  }
 	case state_creator_t::PROCESS_STATE:
 	  {
+	    global = false;
+	    name = get_symbol_table()->get_process(state_creators[i].gid)->get_name();
+	    process_name = name;
 	    if (! procHasSingleState(state_creators[i].gid)) {
-	      global = false;
-	      name = get_symbol_table()->get_process(state_creators[i].gid)->get_name();
-	      process_name = name;
+
 	    
 	      value = initial_states[state_creators[i].gid];
 	      sprintf(buf, "%s.state", name.c_str());
@@ -392,7 +420,7 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
 	      ga.addAction( Assignment( channel_item_at( chan, channel_capacity( chan ) - 1, s), 0 ));
 	    }
 	}
-      
+    }  
       //first transition effect
       // Update process state variable
       if (! procHasSingleState ( et->first->get_process_gid() ))
@@ -418,7 +446,7 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
       if(have_property) //change of the property process state
         ga.addAction( Assignment ( process_state( et->property->get_process_gid()), et->property->get_state2_lid() ) );
 
-    }
+    
 //     // show dependency information in the source
 //     output_dependency_comment(*et);
 
