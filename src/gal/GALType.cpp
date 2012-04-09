@@ -1,6 +1,7 @@
 #include "GALType.hh"
 
 #include "Observe_Hom.hh"
+#include "Hom_Basic.hh"
 #include "ExprHom.hpp"
 
 #include <algorithm>
@@ -42,7 +43,12 @@ labels_t GALType::getTransLabels () const {
     GHom guard = predicate ( it.getGuard(), getVarOrder());
     GHom action = GHom::id;
     for (GuardedAction::actions_it jt = it.begin() ; jt != it.end() ; ++ jt) {
-      action = assignExpr(jt->getVariable(), jt->getExpression(),getVarOrder()) & action;
+      GHom todo;
+      if (jt->getVariable().getType() == VAR && jt->getExpression().getType() == CONST) 
+	todo = setVarConst ( getVarOrder()->getIndex(jt->getVariable().getName()), jt->getExpression().getValue());
+      else 
+	todo =  assignExpr(jt->getVariable(), jt->getExpression(),getVarOrder());
+      action = todo & action;
     }
     return action & guard;
   }
