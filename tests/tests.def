@@ -63,6 +63,6 @@ DVE format, loyd model instance 1
 DVE format, frogs model
 ../bin/its-reach -i test_models/frogs.1.dve -t DVE --quiet
 DVE format, reader-writer model
-../bin/its-reach -i test_models/reader-writer.3.dve -t DVE --quiet
+../bin/its-reach -i test_models/reader_writer.3.dve -t DVE --quiet
 DVE format, lamport model
 ../bin/its-reach -i test_models/lamport.2.dve -t DVE --quiet
