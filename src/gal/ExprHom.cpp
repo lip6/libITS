@@ -31,8 +31,8 @@ public:
     Variable curv = Variable(vo->getLabel(vr));
     bool b =  ! var.isSupport(curv)
       && ! expr.isSupport(curv);
-//    std::cerr << "Assignment of:" << expr << std::endl
-//	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
+//     std::cerr << "Assignment of:" << var << " = " << expr << std::endl
+// 	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
     return b;
   }
 
@@ -53,35 +53,46 @@ public:
     }
     v = v.eval();
 
-//     if (! e.equals(expr)) 
-//     std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
-// 	      << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
-// 	      << " reduced to " << v << "=" << e << std::endl;
+//     if (! e.equals(expr) || ! v.equals(var)) 
+//      std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
+//  	      << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+//  	      << " reduced to " << v << "=" << e << std::endl;
 
     
 
     if (v.getType() == VAR && vr == vo->getIndex(v.getName()) ) {
       if (e.getType() == CONST) {
+	//	std::cerr << "solved" << std::endl;
 	// Constant :
 	return GHom(vr, e.getValue());
       } else {
       // still need to resolve.
-//  	std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
-//  		  << "Still need to resolve :" << e.getFirstSubExpr() << std::endl;
-//  	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
-//  	std::cerr << std::endl;
+//   	std::cerr << "Assignment: Solving rhs of : " << var << "=" << expr << std::endl
+//   		  << "Still need to resolve :" << e.getFirstSubExpr() << std::endl;
+//   	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+//   	std::cerr << std::endl;
 	return MLHom(assignExpr(v,e,vo),MLHom(vr,vl,queryExpression(e.getFirstSubExpr(),vo)));
       }
     } else if (v.getType() != VAR) {
-//  	std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
-//  		  << "Still need to resolve :" << v << "=" << e << std::endl;
-// 	std::cerr << "Querying for  :" << v.getFirstSubExpr() << std::endl;
-//  	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
-//  	std::cerr << std::endl;
+//   	std::cerr << "Assignment: Solving nested lhs for : " << var << "=" << expr << std::endl
+//   		  << "Still need to resolve :" << v << "=" << e << std::endl;
+//  	std::cerr << "Querying for  :" << v.getFirstSubExpr() << std::endl;
+//   	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+//   	std::cerr << std::endl;
 
 
       // still need to resolve lhs
       return MLHom(assignExpr(v,e,vo),MLHom(vr,vl,queryExpression(v.getFirstSubExpr(),vo)));
+    } else if (e.isSupport(Variable(vo->getLabel(vr)))) {
+//   	std::cerr << "Assignment: Solving nested rhs for : " << var << "=" << expr << std::endl
+//   		  << "Still need to resolve :" << v << "=" << e << std::endl;
+//  	std::cerr << "Querying for  :" << e.getFirstSubExpr() << std::endl;
+//   	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+//   	std::cerr << std::endl;
+
+
+      // still need to resolve nested rhs
+      return MLHom(assignExpr(v,e,vo),MLHom(vr,vl,queryExpression(e.getFirstSubExpr(),vo)));
     } else {
       return GHom(vr,vl, assignExpr(v,e,vo));
     }
@@ -226,9 +237,15 @@ GHom assertion (const Assertion & e, const VarOrder *vo) {
 GHom _AssignExpr::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
   if (typeid(*c) == typeid(_AssertionHom)) {
-    return assignExpr((var & ((const _AssertionHom *)c)->getAssertion()).eval(),
-		      (expr & ((const _AssertionHom *)c)->getAssertion()).eval(),
-		      vo);
+    if (var.getType() != VAR)
+      return assignExpr((var & ((const _AssertionHom *)c)->getAssertion()).eval(),
+			(expr & ((const _AssertionHom *)c)->getAssertion()).eval(),
+			vo);
+    else
+      return assignExpr(var,
+			(expr & ((const _AssertionHom *)c)->getAssertion()).eval(),
+			vo);
+      
   } else {
     return _GHom::compose(other);
   }
