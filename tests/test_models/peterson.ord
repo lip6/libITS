@@ -1,0 +1,22 @@
+#TYPE peterson.4.dve
+pos[0]
+pos[1]
+pos[2]
+pos[3]
+step[0]
+step[1]
+step[2]
+step[3]
+P_0.state
+P_0.j
+P_0.k
+P_1.state
+P_1.j
+P_1.k
+P_2.state
+P_2.j
+P_2.k
+P_3.state
+P_3.j
+P_3.k
+#END
