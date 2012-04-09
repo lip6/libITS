@@ -8,6 +8,8 @@
 #include "Variable.hh"
 
 namespace its {
+  // predeclaration for cross includes
+  class BoolExpression;
 
 typedef enum { 
   CONST, // an integer constant
@@ -18,6 +20,9 @@ typedef enum {
   DIV,  // binary division
   MOD, // binary modulo
   POW, // binary power of
+  BITAND, // bitwise AND &
+  BITOR, // bitwise OR |
+  WRAPBOOL, // to evaluate a boolean as 0 or 1
   ARRAY // access inside an array
 } IntExprType ;
 
@@ -144,7 +149,9 @@ public :
   static IntExpression  createConstant (int v);
   static IntExpression  createVariable (const Variable & v) ;
   static IntExpression  createArrayAccess (const Variable & v, const IntExpression & index) ;
-  
+  /// value is 1 if true or 0 otherwise
+  static IntExpression  wrapBoolExpr (const BoolExpression & b);
+
   static Assertion createAssertion (const Variable & v,const IntExpression & e);
   static Assertion createAssertion (const IntExpression & v,const IntExpression & e);
 

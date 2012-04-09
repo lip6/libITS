@@ -1,4 +1,5 @@
 #include "IntExpression.hh"
+#include "BoolExpression.hh"
 
 #include <cmath>
 #include <cassert>
@@ -151,6 +152,61 @@ public :
   }
 
 };
+
+
+class WrapBoolExpr : public _IntExpression {
+  BoolExpression b;
+
+public :
+  WrapBoolExpr (const BoolExpression & e) : b(e) {}
+  IntExprType getType() const  { return WRAPBOOL; }
+
+  IntExpression eval () const {
+    BoolExpression bb = b.eval();
+    if (bb.getType() == BOOLCONST) {
+      if( bb.getValue() ) {
+	return IntExpressionFactory::createConstant(1);
+      } else {
+	return IntExpressionFactory::createConstant(0);
+      }
+    }
+    return IntExpressionFactory::wrapBoolExpr(bb);
+  }
+
+  bool operator==(const _IntExpression & e) const {
+    return b == ((const WrapBoolExpr &)e).b;
+  }
+
+  virtual size_t hash () const {
+    return b.hash() * 70019;
+  }
+
+  _IntExpression * clone () const { return new WrapBoolExpr(*this); }
+
+  void print (std::ostream & os) const {
+    os << b;
+  }
+
+  bool isSupport (const Variable&v) const {
+    return b.isSupport(v);
+  }
+  std::set<Variable> getSupport() const {
+    return b.getSupport();
+  }
+
+  IntExpression getFirstSubExpr () const {
+    return b.getFirstSubExpr();
+  }
+
+  IntExpression setAssertion (const Assertion & a) const {   
+    BoolExpression bb = b & a;
+    IntExpression wb = IntExpressionFactory::wrapBoolExpr(bb).eval();
+    return wb;
+  }
+
+};
+
+
 
 
 class ArrayVarExpr : public _IntExpression {
@@ -488,6 +544,32 @@ public :
 
 };
 
+class BitAndExpr : public BinaryIntExpr {
+
+public :
+  BitAndExpr (const IntExpression & left, const IntExpression & right) : BinaryIntExpr(left,right) {};
+  IntExprType getType() const  { return BITAND; }
+  const char * getOpString() const { return " & ";}
+  int constEval (int i, int j) const {
+    return i&j;
+  }
+  _IntExpression * clone () const { return new BitAndExpr(*this); }
+
+};
+
+class BitOrExpr : public BinaryIntExpr {
+
+public :
+  BitOrExpr (const IntExpression & left, const IntExpression & right) : BinaryIntExpr(left,right) {};
+  IntExprType getType() const  { return BITOR; }
+  const char * getOpString() const { return " | ";}
+  int constEval (int i, int j) const {
+    return i|j;
+  }
+  _IntExpression * clone () const { return new BitOrExpr(*this); }
+
+};
+
 
 /********************************************************/
 /***********  Assertion *********************************/
@@ -555,7 +637,11 @@ IntExpression IntExpressionFactory::createBinary (IntExprType type, const IntExp
   case MOD :
     return unique(ModExpr (l,r));      
   case POW :
-    return unique(PowExpr (l,r));      
+    return unique(PowExpr (l,r));
+  case BITAND :
+    return unique(BitAndExpr (l,r));
+  case BITOR :
+    return unique(BitOrExpr (l,r));
   case PLUS :
   case MULT :
     {
@@ -579,6 +665,10 @@ IntExpression IntExpressionFactory::createVariable (const Variable & v) {
 
 IntExpression IntExpressionFactory::createArrayAccess (const Variable & v, const IntExpression & index) {
   return unique (ArrayVarExpr(v,index));
+}
+
+IntExpression IntExpressionFactory::wrapBoolExpr (const BoolExpression &b) {
+  return unique (WrapBoolExpr(b));
 }
 
 Assertion IntExpressionFactory::createAssertion (const Variable & v,const IntExpression & e) {
