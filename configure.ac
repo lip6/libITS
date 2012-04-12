@@ -22,6 +22,7 @@ AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not u
 #Options for disabling google hash
 stdhash=false
 
+
 AC_ARG_ENABLE(	[stdhash],
         [AC_HELP_STRING([--enable-stdhash],[revert std lib hash map(default uses google sparse hash)])],
         [  case "${enable_stdhash}" in
@@ -36,6 +37,22 @@ AC_ARG_ENABLE(	[stdhash],
 if test "x$stdhash" = "xtrue"; then
     AC_DEFINE([USE_STD_HASH],1,[Define if you want to use std hash instead of google sparse hash.])
 fi
+
+
+AC_ARG_ENABLE([mingw-native],
+				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
+				[ case "${enable_mingw_native}" in
+					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
+					 LDFLAGS="-all-static $LDFLAGS"
+					 LIBS="-lPSAPI $LIBS"
+					 ;;
+					 no)
+					 ;;
+					 *) AC_MSG_ERROR(Bad value ${enableval})
+					 ;;
+				esac])
+
+
 
 # option to indicate libexpat folder
 AC_ARG_WITH([libexpat],
