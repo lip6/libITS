@@ -40,6 +40,21 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 
+AC_ARG_ENABLE([mingw-native],
+				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
+				[ case "${enable_mingw_native}" in
+					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
+					 LDFLAGS="-all-static $LDFLAGS"
+					 LIBS="-lPSAPI $LIBS"
+					 ;;
+					 no)
+					 ;;
+					 *) AC_MSG_ERROR(Bad value ${enableval})
+					 ;;
+				esac])
+
+
+
 # M4 macros location
 AC_CONFIG_MACRO_DIR([m4])
 
