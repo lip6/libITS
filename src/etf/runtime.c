@@ -3,7 +3,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <dlfcn.h>
 // #include "unix.h"
 #include <libgen.h>
 //#include <git_version.h>

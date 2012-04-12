@@ -241,7 +241,8 @@ uint32_t DSreadU32(stream_t ds){
 float DSreadF(stream_t ds){
 	float f;
 	stream_read(ds,&f,4);
-	if(ds->procs.swap & SWAP_READ) f=bswap_32(f);
+	if ( ds->procs.swap & SWAP_READ ) 
+	  f = bswap_32( (unsigned int) f );
 	return f;
 }
 
@@ -332,7 +333,7 @@ void DSwriteU32(stream_t ds,uint32_t i){
 }
 
 void DSwriteF(stream_t ds,float f){
-	if (ds->procs.swap & SWAP_WRITE) f=bswap_32(f);
+  if (ds->procs.swap & SWAP_WRITE) f=bswap_32((unsigned int)f);
 	stream_write(ds,&f,4);
 }
 
