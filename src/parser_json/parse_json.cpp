@@ -13,13 +13,56 @@
 #include <iostream>
 #include <cstdlib>
 #include <unistd.h>
-#include "cJSON.h"
-#include "parse_json.hh"
-#include <sys/mman.h> 
-#include <sys/types.h>
 #include <fcntl.h>
 
+#include "cJSON.h"
+#include "parse_json.hh"
+
+
+#if !defined(__MINGW32__) 
+    #include <sys/mman.h> 
+    #include <sys/types.h>
+#else 
+    #include <windows.h> 
+#endif 
+
+
+
 namespace json {
+
+
+static void * myMMap (void* addr, size_t len, int fd, off_t off) {
+#ifdef __MINGW32__ 
+    HANDLE handle; 
+    if(addr != NULL ) 
+        return NULL; 
+   handle = CreateFileMapping( 
+       (HANDLE)_get_osfhandle(fd),NULL, 
+       PAGE_WRITECOPY,0,0,NULL 
+   ); 
+   if(handle != NULL) 
+   { 
+       addr = MapViewOfFile(handle,FILE_MAP_COPY,0,off,len); 
+       CloseHandle(handle); 
+   } 
+   return addr; 
+#else 
+   void *toret = mmap(addr,len, PROT_READ, MAP_PRIVATE,fd,off); 
+   if (toret == MAP_FAILED) return NULL;
+#endif 
+}
+
+int MyMUnmap(void* addr, size_t size) 
+{ 
+#ifdef __MINGW32__ 
+    UnmapViewOfFile(addr); 
+    return 0; 
+#else 
+    return munmap(addr,size); 
+#endif 
+} 
+
+
 
 
 void readJSONintoHierarchy(cJSON * current, Hierarchie & hh) 
@@ -58,8 +101,8 @@ void json_parse(const std::string& filename,Hierarchie& h1)
 		exit(1);
     }
 	size_t filesize = lseek(fd, 0, SEEK_END); 
-    map = (char*) mmap(0, filesize, PROT_READ, MAP_PRIVATE, fd, 0);
-    if (map == MAP_FAILED) {
+    map = (char*) myMMap(0, filesize,  fd, 0);
+    if (map == NULL) {
 		close(fd);
 		perror(("mmap error opening JSON file "+ filename + "\n Quitting, sorry.").c_str());		
 		exit(1);
@@ -67,7 +110,7 @@ void json_parse(const std::string& filename,Hierarchie& h1)
 	
 	cJSON *root = cJSON_Parse(map);
 
-	if (munmap(map, filesize) == -1) {
+	if (MyMUnmap(map, filesize) == -1) {
 		perror("Error un-mmapping the file");
     }
     close(fd);
