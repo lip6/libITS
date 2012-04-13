@@ -54,7 +54,7 @@ namespace its {
 
   static int run_system ( std::string command ) {
     int status = system( command.c_str() );
-    if ( status != -1 && WEXITSTATUS( status ) != 0 ) {
+    if ( status != -1 &&  status != 0 ) {
       std::cerr <<  "Error running external command: \n" + command +"\n";
       return 1;
     }
