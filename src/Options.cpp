@@ -7,8 +7,12 @@
 #include <cstdio>
 #include <fstream>
 
+#if !defined(__MINGW32__) 
 // DL sym stuff
 #include <dlfcn.h>
+#endif
+
+
 // for wibble string
 #include "divine/wibble/string.h"
 
@@ -236,6 +240,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
       break;
     }
   case NDLL : {
+#if !defined(__MINGW32__) 
     char buff [1024]; // should be enough hopefully for a file name
     if (sscanf(pathinputff.c_str(),"%d:%s",&Nsize,buff) != 2) {
       std::cerr << "When using option NDLL, provide an input formatted as : size:library.so \n For instance : -t NDLL -i 20:philos.so"<<  std::endl;
@@ -273,6 +278,15 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
       (*loadModel) (model,Nsize);
       dlclose(handle);
       break;
+#else
+      // fallthru
+    }
+  case DLL :
+    {
+      std::cerr << "Input options by shared object are not available on Mingw/Win32 platform. Sorry."<<std::endl;
+      exit(0);
+    
+#endif
     }
   case NDEF :
   default : 
