@@ -1,7 +1,9 @@
 #include "dveLoader.hh"
 #include "divine/dve2GAL.hh"
 #include "divine/wibble/string.h"
-#include <dlfcn.h>
+
+// old  dlopen() style stuff
+// #include <dlfcn.h>
 
 using std::cerr;
 using std::endl;
