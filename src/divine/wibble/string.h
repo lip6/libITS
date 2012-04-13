@@ -42,9 +42,6 @@ namespace str {
 
 using namespace wibble::operators;
 
-#ifdef _WIN32
-static int vasprintf (char **, const char *, va_list);
-#endif
 
 std::string fmt( const char* f, ... ) __attribute__ ((deprecated));
 std::string fmtf( const char* f, ... );
