@@ -4,6 +4,10 @@
 #include "etf/stream_object.h"
 #include "etf/runtime.h"
 
+// This one is gnu portability layer version.
+#include "etf/byteswap.h"
+
+
 struct stream_s {
 	struct stream_obj procs;
 	FILE *f;
