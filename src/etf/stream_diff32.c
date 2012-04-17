@@ -5,6 +5,9 @@
 #include "etf/stream_object.h"
 #include "etf/runtime.h"
 
+// This one is gnu portability layer version.
+#include "etf/byteswap.h"
+
 typedef int32_t diff_t ;
 
 struct stream_s {
