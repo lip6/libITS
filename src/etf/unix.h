@@ -16,9 +16,13 @@ extern char *strsep(char **stringp, const char *delim);
 extern char *mkdtemp(char *);
 #endif
 
-// This one is gnu portability layer version.
-#include "byteswap.h"
 
+#if !defined(__MINGW32__)
+#include <byteswap.h>
+#else
+// This one is gnu portability layer version.
+#include "etf/byteswap.h"
+#endif
 
 #endif
 

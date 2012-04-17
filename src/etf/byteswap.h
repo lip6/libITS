@@ -15,8 +15,9 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#ifndef _GL_BYTESWAP_H
-#define _GL_BYTESWAP_H
+#if !defined(__MINGW32__)
+#ifndef __GL_BYTESWAP_H__
+#define __GL_BYTESWAP_H__
 
 /* Given an unsigned 16-bit argument X, return the value corresponding to
    X with reversed byte order.  */
@@ -42,3 +43,6 @@
                      (((x) & 0xFF00000000000000ULL) >> 56))
 
 #endif /* _GL_BYTESWAP_H */
+#else
+#include <byteswap.h>
+#endif /* if mingw only */
