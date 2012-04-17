@@ -571,6 +571,48 @@ public :
 };
 
 
+class BitXorExpr : public BinaryIntExpr {
+
+public :
+  BitXorExpr (const IntExpression & left, const IntExpression & right) : BinaryIntExpr(left,right) {};
+  IntExprType getType() const  { return BITXOR; }
+  const char * getOpString() const { return " ^ ";}
+  int constEval (int i, int j) const {
+    return i^j;
+  }
+  _IntExpression * clone () const { return new BitXorExpr(*this); }
+
+};
+
+
+class BitLshiftExpr : public BinaryIntExpr {
+
+public :
+  BitLshiftExpr (const IntExpression & left, const IntExpression & right) : BinaryIntExpr(left,right) {};
+  IntExprType getType() const  { return LSHIFT; }
+  const char * getOpString() const { return " << ";}
+  int constEval (int i, int j) const {
+    return i << j;
+  }
+  _IntExpression * clone () const { return new BitLshiftExpr(*this); }
+
+};
+
+
+class BitRshiftExpr : public BinaryIntExpr {
+
+public :
+  BitRshiftExpr (const IntExpression & left, const IntExpression & right) : BinaryIntExpr(left,right) {};
+  IntExprType getType() const  { return BITOR; }
+  const char * getOpString() const { return " >> ";}
+  int constEval (int i, int j) const {
+    return i>>j;
+  }
+  _IntExpression * clone () const { return new BitRshiftExpr(*this); }
+
+};
+
+
 /********************************************************/
 /***********  Assertion *********************************/
 
@@ -642,6 +684,12 @@ IntExpression IntExpressionFactory::createBinary (IntExprType type, const IntExp
     return unique(BitAndExpr (l,r));
   case BITOR :
     return unique(BitOrExpr (l,r));
+  case BITXOR :
+    return unique(BitXorExpr (l,r));
+  case LSHIFT :
+    return unique(BitLshiftExpr (l,r));
+  case RSHIFT :
+    return unique(BitRshiftExpr (l,r));
   case PLUS :
   case MULT :
     {

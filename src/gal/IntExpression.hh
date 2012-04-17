@@ -22,7 +22,10 @@ typedef enum {
   POW, // binary power of
   BITAND, // bitwise AND &
   BITOR, // bitwise OR |
+  BITXOR, // bitwise XOR ^
   WRAPBOOL, // to evaluate a boolean as 0 or 1
+  LSHIFT, // left shift bitwise operator <<
+  RSHIFT, // left shift bitwise operator <<
   ARRAY // access inside an array
 } IntExprType ;
 
