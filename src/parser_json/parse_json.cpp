@@ -49,6 +49,7 @@ static void * myMMap (void* addr, size_t len, int fd, off_t off) {
 #else 
    void *toret = mmap(addr,len, PROT_READ, MAP_PRIVATE,fd,off); 
    if (toret == MAP_FAILED) return NULL;
+   return toret;
 #endif 
 }
 
