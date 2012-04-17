@@ -133,6 +133,11 @@ namespace dve2GAL {
           	  return IntExpressionFactory::createBinary ( BITOR , convertInt( *expr.left()), convertInt( *expr.right() ) );
       case T_AND:
           	  return IntExpressionFactory::createBinary ( BITAND , convertInt( *expr.left()), convertInt( *expr.right() ) );
+      case T_LSHIFT: 
+         	  return IntExpressionFactory::createBinary ( LSHIFT , convertInt( *expr.left()), convertInt( *expr.right() ) );
+      case T_RSHIFT:
+         	  return IntExpressionFactory::createBinary ( RSHIFT , convertInt( *expr.left()), convertInt( *expr.right() ) );      
+ 
       case T_UNARY_MINUS:
       	  return IntExpressionFactory::createBinary ( MINUS , IntExpressionFactory::createConstant(0), convertInt( *expr.right() ) );
 
@@ -150,9 +155,10 @@ namespace dve2GAL {
 	// met a boolean node in an expression, interpret as 1 (if true) or 0 (if false)
 	  return IntExpressionFactory::wrapBoolExpr ( convertBool( expr ) );
 
-      case T_LSHIFT: case T_RSHIFT:
       case T_TILDE:
-    	  std::cerr << "Bit shift <<, >> and bitwise ~ are not supported. " << std::endl;
+	return IntExpressionFactory::createBinary ( BITXOR , convertInt( *expr.left()), convertInt( *expr.right() ) );
+	std::cerr << "Bit wise ~ are not supported. " << std::endl;
+
     	  // fall thru deliberately
       case T_DOT:
 
