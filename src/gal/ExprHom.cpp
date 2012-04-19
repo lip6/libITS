@@ -73,7 +73,7 @@ public:
 //   	std::cerr << std::endl;
 	return MLHom(assignExpr(v,e,vo),MLHom(vr,vl,queryExpression(e.getFirstSubExpr(),vo)));
       }
-    } else if (v.getType() != VAR) {
+    } else if (v.getType() != VAR && v.isSupport(Variable(vo->getLabel(vr)))) {
 //   	std::cerr << "Assignment: Solving nested lhs for : " << var << "=" << expr << std::endl
 //   		  << "Still need to resolve :" << v << "=" << e << std::endl;
 //  	std::cerr << "Querying for  :" << v.getFirstSubExpr() << std::endl;
