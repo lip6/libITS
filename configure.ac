@@ -6,11 +6,6 @@ AC_INIT([ctlits],
 # Automake initialisation
 AM_INIT_AUTOMAKE([1.10 -Wall foreign])
 
-# If the user didn't supplied a CFLAGS value,
-# set an empty one to prevent autoconf to stick -O2 -g here.
-test -z "$CFLAGS" && CFLAGS=
-test -z "$CXXFLAGS" && CXXFLAGS=
-
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
             [AC_HELP_STRING([--with-libddd=/root/of/libddd],
@@ -20,6 +15,13 @@ AM_CONDITIONAL([WITH_LIBDDD_PATH], [test "x${with_libddd}" != x])
 if test "x${with_libddd}" != x; then
     AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
 fi
+
+
+AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not using tcmalloc))
+
+AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. This is a real problem.))
+
+
 
 #Options for disabling google hash
 stdhash=false
@@ -44,7 +46,7 @@ AC_ARG_ENABLE([mingw-native],
 				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
 				[ case "${enable_mingw_native}" in
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
-					 LDFLAGS="-all-static $LDFLAGS"
+					 LDFLAGS="-all-static -Wl,-static $LDFLAGS"
 					 LIBS="-lPSAPI $LIBS"
 					 ;;
 					 no)
@@ -82,20 +84,29 @@ if test "x${with_libexpat}" != x; then
 fi
 
 
-AC_PROG_RANLIB
+# M4 macros location
+AC_CONFIG_MACRO_DIR([m4])
 
+# programs used to build
+# we make static libs (use ranlib)
+# we make shared libs (use libtool)
+LT_INIT([disable-shared])
+
+AC_LIBTOOL_DLOPEN
+
+
+
+# If the user didn't supplied a CFLAGS value,
+# set an empty one to prevent autoconf to stick -O2 -g here.
+test -z "$CFLAGS" && CFLAGS=
+test -z "$CXXFLAGS" && CXXFLAGS=
+
+# compile in C
+AC_PROG_CC
 # Compile in C++
 AC_PROG_CXX
 AC_LANG(C++)
 
-# we make shared libs (use libtool)
-LT_INIT
-AC_PROG_LIBTOOL
-AC_LIBTOOL_DLOPEN
-
-
-# compile in C
-AC_PROG_CC
 # use yacc to create parsers
 AM_PROG_LEX
 AC_PROG_YACC
