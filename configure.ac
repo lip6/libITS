@@ -53,6 +53,8 @@ if test "x${with_libexpat}" != x; then
 fi
 
 
+AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. This is a real problem.))
+
 #Options for disabling google hash
 stdhash=false
 
@@ -72,13 +74,28 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 
+AC_ARG_ENABLE([mingw-native],
+				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
+				[ case "${enable_mingw_native}" in
+					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
+					 LDFLAGS="-all-static  -Wl,-static $LDFLAGS"
+					 LIBS="-lPSAPI $LIBS"
+					 ;;
+					 no)
+					 ;;
+					 *) AC_MSG_ERROR(Bad value ${enableval})
+					 ;;
+				esac])
+
+
+
 # programs used to build
 # we make static libs (use ranlib)
 AC_PROG_RANLIB
 
 # we make shared libs (use libtool)
-LT_INIT
-AC_PROG_LIBTOOL
+LT_INIT([disable-shared])
+
 AC_LIBTOOL_DLOPEN
 
 
