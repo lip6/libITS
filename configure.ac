@@ -78,7 +78,7 @@ AC_ARG_ENABLE([mingw-native],
 				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
 				[ case "${enable_mingw_native}" in
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
-					 LDFLAGS="-all-static  -Wl,-static $LDFLAGS"
+					 LDFLAGS="-all-static  -static-libgcc  -Wl,-static $LDFLAGS"
 					 LIBS="-lPSAPI $LIBS"
 					 ;;
 					 no)
