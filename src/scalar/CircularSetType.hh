@@ -26,8 +26,8 @@ public :
   /** the set T of public transition labels (a copy)*/
   labels_t getTransLabels () const ;
 
- 
-  void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Circular Set" << std::endl; }
+ // use scalar set version
+//  void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for Circular Set" << std::endl; }
 };
 
 

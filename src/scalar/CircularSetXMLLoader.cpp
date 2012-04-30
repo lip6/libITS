@@ -18,6 +18,30 @@ static map_t tnames;
 
 static its::ITSModel * model=NULL;
 
+using std::string;
+
+
+static inline labels_t split (Label lab) {
+  labels_t toret;
+  std::string buff;
+  // parse the labels field 
+  for (vLabel::const_iterator it = lab.begin() ; it != lab.end() ; ++it ) {
+      if (*it == ';') {
+	// end of this label
+	toret.push_back(buff);
+	buff = "";
+      } else if ( *it == '\n' || *it == '\t' || *it == ' ') {
+	// NOP
+      } else {
+	buff += *it;
+      }
+    }
+    if (buff != "") {
+      toret.push_back(buff);
+    }
+    return toret;
+}
+
 void CircularSetXMLLoader::loadNodes (void * data, const XML_Char* Elt, const XML_Char** Attr)
 {
   int id=0;
@@ -65,6 +89,32 @@ void CircularSetXMLLoader::loadNodes (void * data, const XML_Char* Elt, const XM
     tnames[id] = label;
 
     pn->addDelegator (label, isPublic ? label : "", isALL);
+  } else if (! strcmp(Elt,"circular")) {
+    bool isPublic = false;
+    string curr, succ;
+    for(int i=0; Attr[i]; i+=2) {
+      if(!strcmp(Attr[i],"visibility")) {
+	if (! strcmp("public",Attr[i+1])) {
+	  isPublic = true;
+	}
+      } else if (!strcmp(Attr[i],"label")) {
+	label = Attr[i+1];
+      } else if (!strcmp(Attr[i],"current")) {
+	curr = Attr[i+1];
+      } else if (!strcmp(Attr[i],"successor")) {
+	succ = Attr[i+1];
+      } else if (!strcmp(Attr[i],"id")) {
+	id = atoi(Attr[i+1]);
+      }
+    }
+    tnames[id] = label;
+
+    pn->addSynchronization (label, isPublic ? label : "");
+  
+    pn->addSyncPart(label, its::CircularSet::CURRENT, split(curr));
+    pn->addSyncPart(label, its::CircularSet::NEXT, split(succ));
+  
+
   } else if (! strcmp(Elt,"size")) {
     int size = 0;
     for(int i=0; Attr[i]; i+=2) {
