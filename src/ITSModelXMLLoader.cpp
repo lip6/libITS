@@ -10,6 +10,7 @@
 #include "ITSModelXMLLoader.hh"
 #include "composite/CompositeXMLLoader.hh"
 #include "scalar/ScalarSetXMLLoader.hh"
+#include "scalar/CircularSetXMLLoader.hh"
 
 
 void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_Char** Attr)
@@ -42,6 +43,9 @@ void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_C
       model->declareType(*tcomp);
     } else if ( format == "Composite" && formalism == "Scalar Set Composite" ) {
       its::ScalarSet * tcomp = ScalarSetXMLLoader::loadXML(path,*model,true);
+      model->declareType(*tcomp);
+    } else if ( format == "Composite" && formalism == "Circular Set Composite" ) {
+      its::CircularSet * tcomp = CircularSetXMLLoader::loadXML(path,*model,true);
       model->declareType(*tcomp);
     } else if ( format == "ETF" && formalism == "PINS" ) {
       model->declareETFType(path);
