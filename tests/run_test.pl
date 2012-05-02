@@ -15,6 +15,9 @@ my @refverdicts = ();
 while (my $line = <IN>) {
   if ($line =~ /.*accepting run.*/ )  {
     chomp $line;
+	# unfortunately, chomp is not enough, because we sometimes run the script
+	# from mingW, where Perl interpretation (Unix style) is wrong.
+	$line =~ s/[\012\015]//g ; 
     my $rverdict = $line;
     push (@refverdicts,$rverdict);
   }
@@ -27,24 +30,31 @@ close IN;
 my $tmpfile = "$ARGV[0].tmp";
 
 
-# print "syscalling : $call \n";
 print "##teamcity[testStarted name='$title']\n";
 
 my @verdicts = ();
 
+# print "syscalling : $call \n";
 open IN, "($call) |";
 while (my $line = <IN>) {
+#  print $line;
   if ($line =~ /.*accepting run.*/ )  {
-    chomp $line;
+	# unfortunately, chomp is not enough, because we sometimes run the script
+	# from mingW, where Perl interpretation (Unix style) is wrong.
+	chomp $line;
+	$line =~ s/[\012\015]//g ; 
     my $verdict = $line;
     push (@verdicts,$verdict);
+#	print "added verdict : $verdict \n";
+  } else {
+#	print "NO \n";
   }
 }
 
 
 foreach my $i  (0..$#refverdicts ) {
   if ( @refverdicts[$i] ne @verdicts[$i] ) {
-    print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='formula $i : @refverdicts[$i]' actual='@verdict[$i]'] \n";
+    print "\n##teamcity[testFailed name='$title' message='regression detected' details='formula $i' expected='@refverdicts[$i]' actual='@verdicts[$i]'] \n";
   } else {
     print "Test of formula $i successful.\n";
   }
