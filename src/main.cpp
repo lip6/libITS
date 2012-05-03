@@ -1,6 +1,6 @@
-// Copyright (C) 2004, 2009, 2010, 2011 Laboratoire d'Informatique de Paris
-// 6 (LIP6), département Systèmes Répartis Coopératifs (SRC),
-// Université Pierre et Marie Curie.
+// Copyright (C) 2004, 2009, 2010, 2011, 2012 Laboratoire
+// d'Informatique de Paris 6 (LIP6), département Systèmes Répartis
+// Coopératifs (SRC), Université Pierre et Marie Curie.
 //
 // This file is part of the Spot tutorial. Spot is a model checking
 // library.
@@ -290,7 +290,7 @@ int main(int argc, const char *argv[]) {
   // Initialize spot
   spot::ltl::parse_error_list pel;
 
-  spot::ltl::formula* f = spot::ltl::parse(ltl_string, pel);
+  const spot::ltl::formula* f = spot::ltl::parse(ltl_string, pel);
   if (spot::ltl::format_parse_errors(std::cerr, ltl_string, pel)) {
     f->destroy();
     return 1;
