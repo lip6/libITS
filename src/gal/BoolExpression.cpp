@@ -4,6 +4,9 @@
 #include <typeinfo>
 
 
+#define IGNORE_THIS_FILE
+
+#ifndef IGNORE_THIS_FILE
 
 namespace its {
 
@@ -669,3 +672,5 @@ namespace d3 { namespace util {
   };
 } }
 
+
+#endif

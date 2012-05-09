@@ -5,25 +5,12 @@
 #include <iostream>
 #include <string>
 #include <UniqueTable.h>
-#include "IntExpression.hh"
+#include "gal/IntExpression.hh"
+#include "gal/PBoolExpression.hh"
 #include "Variable.hh"
 
 
 namespace its {
-
-typedef enum { 
-  BOOLCONST, // a boolean constant true or false
-  BOOLVAR,  // a variable
-  OR, // nary or
-  AND,  // nary and
-  NOT, // unary not
-  EQ,  // ==
-  NEQ, // !=
-  LT, // <
-  GT, // >
-  LEQ, // <=
-  GEQ  // >=
-} BoolExprType ;
 
 
 class _BoolExpression ;
@@ -34,12 +21,10 @@ class BoolExpression {
   const _BoolExpression * concrete;
   // access to concrete
   friend class _BoolExpression;
-  friend class BoolConstExpr;
   friend class BoolExpressionFactory;
 
   // For factory use
   BoolExpression (const _BoolExpression * c); 
-
 public :
 
   // copy constructor
@@ -57,7 +42,11 @@ public :
   // Interpret an integer expression, as a boolean : compare to 1
   BoolExpression (const IntExpression & expr) ;
 
-  
+  // return the supporting parametric expression
+  const class PBoolExpression & getExpr() const ;
+  // return the environment
+  const labels_t & getEnv() const;
+  // Type of the (root of) the boolean expression
   BoolExprType getType() const ;
   // member print
   void print (std::ostream & os) const ;
@@ -120,12 +109,14 @@ public :
   // a comparison (==,!=,<,>,<=,>=) between two integer expressions
   static BoolExpression createComparison (BoolExprType type, const IntExpression & l, const IntExpression & r) ;
 
+  // following administrative functions are not really for public usage.
+  static const _BoolExpression * createUnique(const _BoolExpression &);
   static void destroy (_BoolExpression * e);
   static void printStats (std::ostream &os);
 };
 
 
-} // namesapce its
+} // namespace its
 
 /**************  administrative trivia. *********************************/
 /******************************************************************************/

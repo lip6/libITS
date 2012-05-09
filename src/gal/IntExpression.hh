@@ -1,35 +1,13 @@
 #ifndef __INT_EXPRESSION_HH__
 #define __INT_EXPRESSION_HH__
 
-#include "util/set.hh"
-#include <iostream>
-#include <string>
-#include <UniqueTable.h>
-#include "Variable.hh"
+#include "gal/PIntExpression.hh"
 
 namespace its {
+
   // predeclaration for cross includes
   class BoolExpression;
-
-typedef enum { 
-  CONST, // an integer constant
-  VAR,  // a variable
-  PLUS, // nary add
-  MULT,  // nary multiplication
-  MINUS, // binary minus
-  DIV,  // binary division
-  MOD, // binary modulo
-  POW, // binary power of
-  BITAND, // bitwise AND &
-  BITOR, // bitwise OR |
-  BITXOR, // bitwise XOR ^
-  WRAPBOOL, // to evaluate a boolean as 0 or 1
-  LSHIFT, // left shift bitwise operator <<
-  RSHIFT, // left shift bitwise operator <<
-  ARRAY // access inside an array
-} IntExprType ;
-
-class _IntExpression ;
+  
 
 class Assertion;
 
@@ -38,17 +16,14 @@ class Assertion;
 // Use factory to build instances.
 class IntExpression {
   // concrete storage
-  const _IntExpression * concrete;
+  const class _IntExpression * concrete;
+
   // access to concrete
   friend class _IntExpression;
-  // access to _IntExpression* constructor
-  friend class VarExpr;
-  friend class ArrayVarExpr;
-  friend class ConstExpr;
-  friend class NaryIntExpr;
+  friend class _BoolExpression;
+  // for private ctor access
   friend class IntExpressionFactory;
-  friend class BinaryIntExpr;
-
+  friend class BoolExpressionFactory;
   // For factory use
   IntExpression (const _IntExpression * c); 
 public :
@@ -71,6 +46,11 @@ public :
   
   // return the type of an expression.
   IntExprType getType() const;
+  // return the supporting parametric expression
+  const class PIntExpression & getExpr() const ;
+  // return the environment
+  const labels_t & getEnv() const;
+
   // member print
   void print (std::ostream & os) const ;
   
@@ -102,7 +82,7 @@ public :
   /// only valid for VAR expressions
   /// use this call only in form : if (e.getType() == VAR) { Label name = e.getName() ; ...etc }
   /// Exceptions will be thrown otherwise.
-  Label getName () const ;
+  vLabel getName () const ;
 
   /// To determine whether a given variable is mentioned in an expression.
   bool isSupport (const Variable & v) const;
@@ -119,9 +99,11 @@ public :
 
 
 class Assertion {
-  std::pair<IntExpression,IntExpression> mapping ;
+  PAssertion assertion;
+  labels_t env;
 public :
   Assertion (const IntExpression & var, const IntExpression & val);
+  Assertion (const PAssertion & a, const labels_t & env): assertion(a), env(env) {};
   IntExpression getValue (const IntExpression & v) const ;
 
   Assertion operator & (const Assertion & other) const;
@@ -134,12 +116,14 @@ public :
   bool operator<  (const Assertion & ) const;
   
   /// simple getters
-  IntExpression getFirst() const { return mapping.first; }
-  IntExpression getSecond() const { return mapping.second; }
+  const PAssertion & getAssertion() const { return assertion; }
+  const labels_t & getEnv() const { return env ;}
 
   // for pretty print
   void print (std::ostream & os) const;
 };
+std::ostream & operator<< (std::ostream & os, const Assertion & a) ;
+
 
 
 typedef d3::multiset<IntExpression>::type NaryParamType ;
@@ -147,7 +131,7 @@ typedef d3::multiset<IntExpression>::type NaryParamType ;
 class IntExpressionFactory {
   static UniqueTable<_IntExpression> unique;
 public :
-  static IntExpression  createNary (IntExprType type, NaryParamType params) ;
+  static IntExpression  createNary (IntExprType type, const NaryParamType & params) ;
   static IntExpression  createBinary (IntExprType type, const IntExpression & l, const IntExpression & r) ;
   static IntExpression  createConstant (int v);
   static IntExpression  createVariable (const Variable & v) ;
@@ -157,6 +141,7 @@ public :
 
   static Assertion createAssertion (const Variable & v,const IntExpression & e);
   static Assertion createAssertion (const IntExpression & v,const IntExpression & e);
+  static Assertion createAssertion (const PAssertion & a,const labels_t & env);
 
   static void printStats (std::ostream &os);
 
