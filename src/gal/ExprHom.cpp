@@ -19,7 +19,9 @@ class _AssignExpr:public StrongHom {
   IntExpression expr;
   const VarOrder * vo;
 public:
-  _AssignExpr(const IntExpression & varr, const IntExpression & e, const VarOrder * vo) : var(varr), expr(e), vo(vo) {}
+  _AssignExpr(const IntExpression & varr, const IntExpression & e, const VarOrder * vo) : var(varr), expr(e), vo(vo) {
+    assert(var.getType() != CONST);
+  }
   
   GDDD phiOne() const {
     return GDDD::one;
@@ -31,8 +33,8 @@ public:
     Variable curv = Variable(vo->getLabel(vr));
     bool b =  ! var.isSupport(curv)
       && ! expr.isSupport(curv);
-//     std::cerr << "Assignment of:" << var << " = " << expr << std::endl
-// 	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
+//      std::cerr << "Assignment of:" << var << " = " << expr << std::endl
+//  	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
     return b;
   }
 
@@ -48,19 +50,21 @@ public:
     e = e.eval();
 
     IntExpression v = var;
-    if (v.getType() != VAR && var.isSupport(curv)) {
+    if (v.getType() == ARRAY && var.isSupport(curv)) {
       v = var & assertion;
     }
     v = v.eval();
 
 //     if (! e.equals(expr) || ! v.equals(var)) 
-//      std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
-//  	      << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
-//  	      << " reduced to " << v << "=" << e << std::endl;
+//       std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
+//   	      << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+// 	      << "i.e. :" << assertion << std::endl
+//   	      << " reduced to " << v << "=" << e << std::endl;
 
     
 
-    if (v.getType() == VAR && vr == vo->getIndex(v.getName()) ) {
+      if ((v.getType() == VAR && vr == vo->getIndex(v.getName())) 
+	  || (v.getType() == CONSTARRAY && v.isSupport(curv))) {
       if (e.getType() == CONST) {
 	//	std::cerr << "solved" << std::endl;
 	// Constant :
