@@ -4,9 +4,9 @@
 /* error space 35500-35599 */
 #include <string.h>
 #include <iostream>
-#include "system/dve/syntax_analysis/dve_commonparse.hh"
-#include "common/error.hh"
-#include "system/dve/syntax_analysis/dve_keywords.cci"
+#include "divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
+#include "divine/legacy/common/error.hh"
+#include "divine/legacy/system/dve/syntax_analysis/dve_keywords.cci"
 
 /* Necessary to get the definition of EOF: */
 #include <cstdio>

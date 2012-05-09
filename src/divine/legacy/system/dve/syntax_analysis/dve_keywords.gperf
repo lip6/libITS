@@ -1,4 +1,4 @@
-struct Keyword { char *name; int token; }
+struct Keyword { const char *name; int token; }
 %%
 guard,			T_GUARD
 sync,			T_SYNC

@@ -1,6 +1,6 @@
 YACC = bison
 #LEX = flex
-LEX = flex++
+LEX = flex -+
 PERF = gperf
 PERFFLAGS = -C -E -t -L C++ -c
 IPATH = .
@@ -43,11 +43,11 @@ dve_proc_grammar.cc: dve_grammar.yy
 	sed -i -e 's,^#line.*,,' $(@)
 dve_lexer.cc: dve_lexer.l
 	$(LEX) $(LEXFLAGS) -o dve_lexer.cc dve_lexer.l;
-	sed -i 's/#include <FlexLexer.h>/#include "system\/dve\/syntax_analysis\/dve_flex_lexer.hh"/' dve_lexer.cc
+	sed -i 's/#include <FlexLexer.h>/#include "divine\/legacy\/system\/dve\/syntax_analysis\/dve_flex_lexer.hh"/' dve_lexer.cc
 	sed -i -e 's,^#line.*,,' $(@)
 	cp /usr/include/FlexLexer.h $(IPATH)/dve_flex_lexer.hh
 
 clean:
-	rm dve_keywords.cci dve_grammar.cc $(IPATH)/dve_gramsymb.hh \
+	\rm -f dve_keywords.cci dve_grammar.cc $(IPATH)/dve_gramsymb.hh \
 	   dve_expr_grammar.cc dve_trans_grammar.cc dve_proc_grammar.cc\
 	   dve_lexer.cc

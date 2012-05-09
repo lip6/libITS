@@ -7,9 +7,9 @@
    #undef yylex
   #endif
   #include <iostream>
-  #include "system/dve/syntax_analysis/dve_flex_lexer.hh"
-  #include "system/dve/syntax_analysis/dve_grammar.hh"
-  #include "common/error.hh"
+  #include "divine/legacy/system/dve/syntax_analysis/dve_flex_lexer.hh"
+  #include "divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
+  #include "divine/legacy/common/error.hh"
 //  #define YY_DECL int lexer_flex(void)
 //  #define yylex lexer_flex
   #define YY_DECL static yyFlexLexer mylexer;
