@@ -52,10 +52,10 @@ while (my $line = <IN>) {
 if ( @nominal[1] != @tested[1] ) {
   print "@outputs\n";
   print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='@nominal[1]' actual='@tested[1]'] \n";
-#  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
+  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
 } else {
-	print "##teamcity[buildStatisticValue key='testDuration' value='@tested[2]']\n";
-	print "##teamcity[buildStatisticValue key='testMemory' value='@tested[3]']\n";
+  print "##teamcity[buildStatisticValue key='testDuration' value='@tested[2]']\n";
+  print "##teamcity[buildStatisticValue key='testMemory' value='@tested[3]']\n";
   print "Test successful : $title \n";
   print "Control Values/Obtained : \n$title\n@nominal\n@tested\n";
 }
