@@ -85,6 +85,8 @@ GALHEADERS = $(MYGALSRCDIR)/BoolExpression.hh \
 	$(MYGALSRCDIR)/GAL.hh \
 	$(MYGALSRCDIR)/GALType.hh \
 	$(MYGALSRCDIR)/IntExpression.hh \
+	$(MYGALSRCDIR)/PBoolExpression.hh \
+	$(MYGALSRCDIR)/PIntExpression.hh \
 	$(MYGALSRCDIR)/Variable.hh
 
 WIBBLEHEADERS = $(MYWIBBLESRCDIR)/empty.h \
@@ -195,7 +197,9 @@ GALSOURCES = $(MYGALSRCDIR)/BoolExpression.cpp \
 	$(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/GALType.cpp \
 	$(MYGALSRCDIR)/GAL.cpp \
-	$(MYGALSRCDIR)/IntExpression.cpp 
+	$(MYGALSRCDIR)/IntExpression.cpp \
+	$(MYGALSRCDIR)/PBoolExpression.cpp \
+	$(MYGALSRCDIR)/PIntExpression.cpp 
 
 
 SCALARSOURCES = $(MYSCALARSRCDIR)/CircularSet.cpp \
