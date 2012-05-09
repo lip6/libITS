@@ -28,6 +28,13 @@ public:
   Label getArrayName () const { 
     return aname; 
   }
+  int getIndex () const {
+    vLabel nstr = name.substr(name.find_last_of('[')+1, name.find_last_of(']'));
+    int n=-1;
+    sscanf(nstr.c_str(), "%d", &n);
+    return n;
+  }
+
 };
 
 }
