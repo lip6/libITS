@@ -47,13 +47,14 @@ public:
     if (expr.isSupport(curv)) {
       e = e & assertion;
     }
-    e = e.eval();
+// Eval is now included as a step of applying assertion 
+//    e = e.eval();
 
     IntExpression v = var;
     if (v.getType() == ARRAY && var.isSupport(curv)) {
       v = var & assertion;
     }
-    v = v.eval();
+//    v = v.eval();
 
 //     if (! e.equals(expr) || ! v.equals(var)) 
 //       std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
@@ -153,7 +154,8 @@ public :
     if (e.isSupport(Variable(vo->getLabel(var)))) {
       e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(var)),IntExpressionFactory::createConstant(val));
     }
-    e= e.eval();
+// Eval is now included as a step of applying assertion 
+//    e= e.eval();
 
 
     GHom homup = assertion(IntExpressionFactory::createAssertion(a,e),vo);
@@ -242,12 +244,16 @@ GHom _AssignExpr::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
   if (typeid(*c) == typeid(_AssertionHom)) {
     if (var.getType() != VAR)
-      return assignExpr((var & ((const _AssertionHom *)c)->getAssertion()).eval(),
-			(expr & ((const _AssertionHom *)c)->getAssertion()).eval(),
+// Eval is now included as a step of applying assertion 
+// used to eval the two firt parameters
+      return assignExpr((var & ((const _AssertionHom *)c)->getAssertion()),
+			(expr & ((const _AssertionHom *)c)->getAssertion()),
 			vo);
     else
+// Eval is now included as a step of applying assertion 
+// used to eval the second parameters
       return assignExpr(var,
-			(expr & ((const _AssertionHom *)c)->getAssertion()).eval(),
+			(expr & ((const _AssertionHom *)c)->getAssertion()),
 			vo);
       
   } else {
@@ -279,7 +285,9 @@ public:
     if (expr.isSupport(Variable(vo->getLabel(vr)))) {
       e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(vr)),IntExpressionFactory::createConstant(vl));
     }
-    e = e.eval();
+// Eval is now included as a step of applying assertion 
+//     e = e.eval();
+
 //     if (! ( e == expr) ) 
 //        std::cerr << "Predicate: Solving : " << expr << std::endl
 //  		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
@@ -342,7 +350,10 @@ GHom _Predicate::compose (const GHom & other) const {
 //     std::cerr << "results in :" << (expr & ((const _AssertionHom *)c)->getAssertion()).eval() << std::endl;
 //     c->print(std::cerr);
 
-    return predicate((expr & ((const _AssertionHom *)c)->getAssertion()).eval(),vo);
+    // Eval is now included as a step of applying assertion 
+    // used to eval the first parameter of "predicate"
+
+    return predicate((expr & ((const _AssertionHom *)c)->getAssertion()),vo);
   } else {
     return _GHom::compose(other);
   }
