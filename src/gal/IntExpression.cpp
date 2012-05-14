@@ -48,6 +48,34 @@ namespace its {
       return -1;
   }
 
+  // True if "a" is a superset of "b"
+  static bool supersets ( const labels_t & a, const labels_t & b) {
+    labels_it pa = a.begin();
+    labels_it pb = b.begin();
+    labels_it aend = a.end();
+    labels_it bend = b.end();
+
+    for ( ; pa !=  aend && pb != bend ; ) {
+      if (pa == aend) {
+	// b not yet empty !
+	return false;
+      } else if (pb == bend) {
+	// b exhausted, a is a superset
+	return true;
+      } else if (*pa == *pb) {
+	++pa;
+	++pb;
+      } else if (*pa > *pb) {
+	// can't matchthis b elt in a
+	return false;
+      } else {
+	// next a elt
+	++pa;
+      }
+    }
+    // a and b were equal
+    return true;
+  }
 
   static inline labels_t sorted_union ( const labels_t & a, const labels_t & b) {
     labels_t unione;
@@ -247,6 +275,11 @@ class _IntExpression {
   }
 
   IntExpression setAssertion (const Assertion & a) const {
+    // break out if "a" references variables we don't know about => no possible simplifications.
+    if (! supersets(env, a.getEnv())) {
+      return this;
+    }
+
     labels_t unione = sorted_union (a.getEnv() , env );
 
     PIntExpression ex = normalize<IntExpression,PIntExpression> (expr, env, unione);
@@ -688,6 +721,12 @@ public :
   }
 
   BoolExpression setAssertion (const Assertion & a) const {
+    // break out if "a" references variables we don't know about => no possible simplifications.
+    if (! supersets(env, a.getEnv())) {
+      return this;
+    }
+
+
     labels_t unione = sorted_union (a.getEnv() , env );
 
     PBoolExpression ex = normalize<BoolExpression,PBoolExpression> (expr, env, unione);
