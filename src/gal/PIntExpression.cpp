@@ -55,6 +55,8 @@ class _PIntExpression {
     return a.getValue(this);
   }
 
+  virtual bool operator< (const _PIntExpression & other) const = 0;
+
   virtual bool isSupport (int varIndex, int id) const = 0;
   virtual void getSupport(bool * const mark) const = 0;
 
@@ -107,6 +109,10 @@ public :
     return varIndex == ((const VarExpr &)e).varIndex;
   }
 
+  bool operator< (const _PIntExpression & e) const {
+    return varIndex < ((const VarExpr &)e).varIndex;
+  }
+
   virtual size_t hash () const {
     return ddd::wang32_hash(varIndex) * 70019;
   }
@@ -153,6 +159,10 @@ public :
   bool operator==(const _PIntExpression & e) const {
     return val == ((const ConstExpr &)e).val;
   }
+  bool operator< (const _PIntExpression & e) const {
+    return val < ((const ConstExpr &)e).val;
+  }
+
 
   virtual size_t hash () const {
     return val * 70019;
@@ -188,21 +198,14 @@ public :
   WrapBoolExpr (const PBoolExpression & e) : b(e) {}
   IntExprType getType() const  { return WRAPBOOL; }
 
-  PIntExpression eval () const {
-    PBoolExpression bb = b.eval();
-    if (bb.getType() == BOOLCONST) {
-      if( bb.getValue() ) {
-	return PIntExpressionFactory::createConstant(1);
-      } else {
-	return PIntExpressionFactory::createConstant(0);
-      }
-    }
-    return PIntExpressionFactory::wrapBoolExpr(bb);
-  }
 
   bool operator==(const _PIntExpression & e) const {
     return b == ((const WrapBoolExpr &)e).b;
   }
+  bool operator< (const _PIntExpression & e) const {
+    return b <  ((const WrapBoolExpr &)e).b;
+  }
+
 
   virtual size_t hash () const {
     return b.hash() * 70019;
@@ -229,10 +232,29 @@ public :
     return PIntExpressionFactory::wrapBoolExpr( b.reindexVariables(index));
   }
 
+  PIntExpression eval () const {
+    PBoolExpression bb = b.eval();
+    if (bb.getType() == BOOLCONST) {
+      if( bb.getValue() ) {
+	return PIntExpressionFactory::createConstant(1);
+      } else {
+	return PIntExpressionFactory::createConstant(0);
+      }
+    }
+    return PIntExpressionFactory::wrapBoolExpr(bb);
+  }
+
+
   PIntExpression setAssertion (const PAssertion & a) const {   
     PBoolExpression bb = b & a;
-    PIntExpression wb = PIntExpressionFactory::wrapBoolExpr(bb).eval();
-    return wb;
+    if (bb.getType() == BOOLCONST) {
+      if( bb.getValue() ) {
+	return PIntExpressionFactory::createConstant(1);
+      } else {
+	return PIntExpressionFactory::createConstant(0);
+      }
+    }
+    return PIntExpressionFactory::wrapBoolExpr(bb);
   }
 
 };
@@ -266,6 +288,14 @@ public :
     return var == ((const ArrayVarExpr &)e).var && (index.equals( ((const ArrayVarExpr &)e).index));
   }
 
+
+  bool operator<(const _PIntExpression & e) const {
+    return var == ((const ArrayVarExpr &)e).var 
+      ? (index.less( ((const ArrayVarExpr &)e).index))
+      : var < ((const ArrayVarExpr &)e).var ;
+  }
+
+
   virtual size_t hash () const {
     return (ddd::wang32_hash(var) * 70019) ^ index.hash();
   }
@@ -286,7 +316,7 @@ public :
 
   PIntExpression setAssertion (const PAssertion & a) const {
     PIntExpression tmp = index & a;
-    return a.getValue(PIntExpressionFactory::createArrayAccess(var, tmp.eval()).eval());
+    return a.getValue(PIntExpressionFactory::createArrayAccess(var, tmp));
   }
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
@@ -317,6 +347,14 @@ public :
   bool operator==(const _PIntExpression & e) const {
     return var == ((const ArrayConstExpr &)e).var && (index.equals( ((const ArrayConstExpr &)e).index));
   }
+
+  bool operator<(const _PIntExpression & e) const {
+    return var == ((const ArrayConstExpr &)e).var ?
+      (index.less( ((const ArrayConstExpr &)e).index))
+      : var < ((const ArrayConstExpr &)e).var ;
+  }
+
+
 
   virtual size_t hash () const {
     return (ddd::wang32_hash(var) *  34019) ^ index.hash();
@@ -372,26 +410,6 @@ public :
   virtual int getNeutralElement () const = 0;
 
 
-  PIntExpression eval () const {
-    NaryPParamType p ;
-    int constant = getNeutralElement();
-    for (NaryPParamType::const_iterator it = params.begin(); it != params.end() ; ++it ) {
-      PIntExpression e = it->eval();
-      if (e.getType() == CONST) {
-	constant = constEval(constant, e.getValue());
-      } else {
-	p.insert(e);
-      }
-    }
-    if (constant != getNeutralElement() || p.empty())
-      p.insert ( PIntExpressionFactory::createConstant(constant) );
-    if (p.size() == 1) 
-      return *p.begin();
-    else 
-      return PIntExpressionFactory::createNary(getType(),p);
-  }
-
-
   void print (std::ostream & os) const {
     os << "( ";
     for (NaryPParamType::const_iterator it = params.begin() ;  ; ) {
@@ -416,6 +434,27 @@ public :
     return true;
   }
 
+  bool operator< (const _PIntExpression & e) const {
+    const NaryIntExpr & other = (const NaryIntExpr &)e ;
+    if (params.size() < other.params.size()) 
+      return true;
+    if (params.size() > other.params.size()) 
+      return false;
+    
+    NaryPParamType::const_iterator it = params.begin();
+    NaryPParamType::const_iterator jt = other.params.begin();
+    for ( ; it != params.end()  ; ++it,++jt ) {
+      if ( it->equals(*jt))
+	continue;
+      if ( it->less(*jt))
+	return true;
+      else
+	return false;
+    }
+    return false;
+  }
+
+
   size_t hash () const {
     size_t res = getType();
     for (NaryPParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
@@ -424,14 +463,47 @@ public :
     return res;
   }
 
-  PIntExpression setAssertion (const PAssertion & a) const {
-    NaryPParamType res ;
-    for (NaryPParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
-      res.insert( (*it) & a );
+
+
+  PIntExpression eval () const {
+    NaryPParamType p ;
+    int constant = getNeutralElement();
+    for (NaryPParamType::const_iterator it = params.begin(); it != params.end() ; ++it ) {
+      PIntExpression e = it->eval();
+      if (e.getType() == CONST) {
+	constant = constEval(constant, e.getValue());
+      } else {
+	p.insert(e);
+      }
     }
-    PIntExpression e = PIntExpressionFactory::createNary(getType(),res);    
-    return a.getValue(e);
+    if (constant != getNeutralElement() || p.empty())
+      p.insert ( PIntExpressionFactory::createConstant(constant) );
+    if (p.size() == 1) 
+      return *p.begin();
+    else 
+      return PIntExpressionFactory::createNary(getType(),p);
   }
+
+
+  PIntExpression setAssertion (const PAssertion & a) const {
+    NaryPParamType p ;
+    int constant = getNeutralElement();
+    for (NaryPParamType::const_iterator it = params.begin(); it != params.end() ; ++it ) {
+      PIntExpression e = (*it) & a;
+      if (e.getType() == CONST) {
+	constant = constEval(constant, e.getValue());
+      } else {
+	p.insert(e);
+      }
+    }
+    if (constant != getNeutralElement() || p.empty())
+      p.insert ( PIntExpressionFactory::createConstant(constant) );
+    if (p.size() == 1) 
+      return *p.begin();
+    else 
+      return a.getValue(PIntExpressionFactory::createNary(getType(),p));
+  }
+
 
   bool isSupport (int v, int id) const {
     for (NaryPParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
@@ -512,21 +584,19 @@ public :
 
   virtual int constEval (int i, int j) const = 0;
 
-  PIntExpression eval () const {
-    PIntExpression  l = left.eval();
-    PIntExpression  r = right.eval();
-
-    if (l.getType() == CONST && r.getType() == CONST ) {
-      return  PIntExpressionFactory::createConstant( constEval( l.getValue(), r.getValue()) );
-    } else {
-      return  PIntExpressionFactory::createBinary( getType(), l, r );
-    }
-  }
 
   bool operator==(const _PIntExpression & e) const{
     const BinaryIntExpr & other = (const BinaryIntExpr &)e ;
     return other.left.equals(left) && other.right.equals(right);
   }
+
+  bool operator<(const _PIntExpression & e) const{
+    const BinaryIntExpr & other = (const BinaryIntExpr &)e ;
+    return left.equals(other.left) ?
+      right.less(other.right) 
+      : left.less(other.left) ;
+  }
+
  
   size_t hash () const {
     size_t res = getType();
@@ -544,9 +614,26 @@ public :
   PIntExpression setAssertion (const PAssertion & a) const {
     PIntExpression l = left & a;
     PIntExpression r = right & a;
+
+    if (l.getType() == CONST && r.getType() == CONST ) {
+      return  PIntExpressionFactory::createConstant( constEval( l.getValue(), r.getValue()) );
+    }    
+
     PIntExpression e = PIntExpressionFactory::createBinary(getType(),l,r);    
     return a.getValue(e);
   }
+
+  PIntExpression eval () const {
+    PIntExpression  l = left.eval();
+    PIntExpression  r = right.eval();
+
+    if (l.getType() == CONST && r.getType() == CONST ) {
+      return  PIntExpressionFactory::createConstant( constEval( l.getValue(), r.getValue()) );
+    } else {
+      return  PIntExpressionFactory::createBinary( getType(), l, r );
+    }
+  }
+
 
   bool isSupport (int v, int id) const {
     return left.isSupport(v,id) || right.isSupport(v,id);
@@ -906,7 +993,10 @@ bool PIntExpression::equals (const PIntExpression & other) const {
 }
 
 bool PIntExpression::less (const PIntExpression & other) const {
-  return concrete < other.concrete;
+  if (getType() == other.getType())
+    return *concrete < *other.concrete;
+  else
+    return getType() < other.getType();
 }
 
 PIntExpression PIntExpression::getFirstSubExpr () const {
