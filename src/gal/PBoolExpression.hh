@@ -32,10 +32,11 @@ class _PBoolExpression ;
 class PBoolExpression {
     // concrete storage
   const _PBoolExpression * concrete;
-  // access to concrete
+  // access to concrete or to allow return "this" from derived boolexpr
   friend class _PBoolExpression;
   friend class BoolConstExpr;
   friend class PBoolExpressionFactory;
+  friend class NaryBoolExpr;
 
   // For factory use
   PBoolExpression (const _PBoolExpression * c); 
