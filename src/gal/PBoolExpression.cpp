@@ -33,6 +33,9 @@ class _PBoolExpression {
   // for hash storage
   virtual size_t hash () const = 0 ;
   virtual bool operator==(const _PBoolExpression & e) const = 0;
+  virtual bool operator< (const _PBoolExpression & other) const = 0;
+
+
   virtual _PBoolExpression * clone () const = 0;
 
   // to avoid excessive typeid RTTI calls.
@@ -117,6 +120,13 @@ public :
     return other.params == params;
   }
 
+  bool operator< (const _PBoolExpression & e) const {
+    const NaryBoolExpr & other = (const NaryBoolExpr &)e ;
+    return params < other.params;
+  }
+
+
+
   size_t hash () const {
     size_t res = getType();
     for (params_it it = begin() ; it != end()  ; ++it ) {
@@ -127,10 +137,31 @@ public :
 
   PBoolExpression setAssertion (const PAssertion & a) const {
     NaryPBoolParamType res ;
+    bool isUpd = false;
     for (params_it it = begin() ; it != end()  ; ++it ) {
-      res.insert( (*it) & a );
+      PBoolExpression aa = (*it) & a;      
+      if (aa.getType() == BOOLCONST) {
+	bool val = aa.getValue();
+	if ( (getType() == AND && ! val) // XXX && false = false
+	     || (getType() == OR && val) // XXX || true = true
+	     )
+	  return aa;
+	else
+	  // XXX && true = XXX
+	  // XXX || false = XXX
+	  isUpd = true;
+	  continue;
+      } else {
+	res.insert( aa );
+	if (! (aa == *it)) {
+	  isUpd = true;
+	}
+      }
     }
-    return PBoolExpressionFactory::createNary(getType(),res);    
+    if (isUpd)
+      return PBoolExpressionFactory::createNary(getType(),res).eval();
+    else
+      return this;
   }
 
   bool isSupport (int v, int id) const {
@@ -213,6 +244,10 @@ public :
   PBoolExpression setAssertion (const PAssertion & a) const {
     PIntExpression l = left & a;
     PIntExpression r = right & a;
+    if (l.getType() == CONST && r.getType() == CONST ) {
+      return  PBoolExpressionFactory::createConstant( constEval( l.getValue(),
+								r.getValue()) );
+    }
     return PBoolExpressionFactory::createComparison(getType(),l,r);    
   }
 
@@ -221,6 +256,15 @@ public :
     const BinaryBoolComp & other = (const BinaryBoolComp &)e ;
     return other.left.equals(left) && other.right.equals(right);
   }
+  bool operator<(const _PBoolExpression & e) const{
+    const BinaryBoolComp & other = (const BinaryBoolComp &)e ;
+    return left.equals(other.left)
+      ? right.less(other.right)
+      : left.less(other.left) ;
+  }
+
+
+
   size_t hash () const {
     size_t res = getType();
     res *= left.hash() *  76303 + right.hash() * 76147;
@@ -363,12 +407,24 @@ public :
   }
 
   PBoolExpression setAssertion (const PAssertion & a) const {
-    return ! (exp & a);
+    PBoolExpression e = exp & a;
+    if (e.getType() == BOOLCONST)
+      return  PBoolExpressionFactory::createConstant(! e.getValue());
+
+    return PBoolExpressionFactory::createNot(e);
   }
+
   bool operator==(const _PBoolExpression & e) const{
     const NotExpr & other = (const NotExpr &)e ;
     return other.exp == exp;
   }
+
+  bool operator<(const _PBoolExpression & e) const{
+    const NotExpr & other = (const NotExpr &)e ;
+    return exp < other.exp;
+  }
+
+
   virtual _PBoolExpression * clone () const { return new NotExpr(*this);}
 
   size_t hash () const {
@@ -415,6 +471,11 @@ public :
   bool operator==(const _PBoolExpression & e) const {
     return val == ((const BoolConstExpr &)e).val;
   }
+
+  bool operator<(const _PBoolExpression & e) const {
+    return val < ((const BoolConstExpr &)e).val;
+  }
+
   virtual _PBoolExpression * clone () const { return new BoolConstExpr(*this);}
   PBoolExpression setAssertion (const PAssertion&) const {
     return this;
@@ -625,14 +686,23 @@ bool PBoolExpression::operator== (const PBoolExpression & other) const {
   return concrete == other.concrete ;
 }
 
+bool PBoolExpression::operator< (const PBoolExpression & other) const {
+
+// Address based comparison while valid is not stable across runs, which is a real pain.
+//  return concrete < other.concrete;
+
+  if (getType() != other.getType()) {
+    return getType() < other.getType();
+  }
+  return *concrete < * other.concrete ;
+}
+
+
 /// To handle nested expressions (e.g. array access). Returns the constant 0 if there are no nested expressions.
 PIntExpression PBoolExpression::getFirstSubExpr () const {
   return concrete->getFirstSubExpr();
 }
 
-bool PBoolExpression::operator< (const PBoolExpression & other) const {
-  return concrete < other.concrete;
-}
 
 void PBoolExpression::print (std::ostream & os) const {
   concrete->print(os);
