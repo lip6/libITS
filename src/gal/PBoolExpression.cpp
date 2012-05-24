@@ -45,7 +45,7 @@ class _PBoolExpression {
   static const _PBoolExpression * getConcrete ( const PBoolExpression & e) { return e.concrete ;}
 
   // pretty print
-  virtual void print (std::ostream & os) const =0 ;
+  virtual void print (std::ostream & os, const labels_t & env) const =0 ;
 
   // Evaluate an expression.
   virtual PBoolExpression eval() const = 0;
@@ -103,10 +103,10 @@ public :
       return PBoolExpressionFactory::createNary(getType(),p);
   }
 
-  void print (std::ostream & os) const {
+  void print (std::ostream & os, const labels_t & env) const {
     os << "( ";
     for (params_it it = begin() ;  ; ) {
-      it->print(os);
+      it->print(os,env);
       if (++it == end())
 	break;
       else
@@ -271,11 +271,11 @@ public :
     return res;
   }
 
-  void print (std::ostream & os) const {
+  void print (std::ostream & os, const labels_t & env) const {
     os << "( ";
-    left.print(os);
+    left.print(os,env);
     os << getOpString();
-    right.print(os);
+    right.print(os,env);
     os << " )";
   }
 
@@ -431,9 +431,9 @@ public :
     return  7829 * exp.hash();
   }
 
-  void print (std::ostream & os) const {
+  void print (std::ostream & os, const labels_t  & env) const {
     os << " ! (" ;
-    exp.print(os);
+    exp.print(os,env);
     os << " ) ";
   }
 
@@ -484,7 +484,7 @@ public :
   virtual size_t hash () const {
     return val?6829:102547;
   }
-  void print (std::ostream & os) const {
+  void print (std::ostream & os, const labels_t & env) const {
     os << val;
   }
 
@@ -641,10 +641,6 @@ PBoolExpression operator>(const PIntExpression & l, const PIntExpression & r) {
   return  PBoolExpressionFactory::createComparison (GT,l,r);
 }
 
-std::ostream & operator << (std::ostream & os, const PBoolExpression & e) {
-  e.print(os);
-  return os;
-}
 // necessary administrative trivia
 // refcounting
 PBoolExpression::PBoolExpression (const _PBoolExpression * concret): concrete(concret) {
@@ -704,8 +700,8 @@ PIntExpression PBoolExpression::getFirstSubExpr () const {
 }
 
 
-void PBoolExpression::print (std::ostream & os) const {
-  concrete->print(os);
+void PBoolExpression::print (std::ostream & os, const labels_t & env) const {
+  concrete->print(os,env);
 }
 
 

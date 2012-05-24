@@ -46,7 +46,7 @@ class _PIntExpression {
   static const _PIntExpression * getConcrete ( const PIntExpression & e) { return e.concrete ;}
 
   // pretty print
-  virtual void print (std::ostream & os) const =0 ;
+  virtual void print (std::ostream & os, const labels_t & env) const =0 ;
 
   // Evaluate an expression.
   virtual PIntExpression eval() const = 0;
@@ -69,7 +69,7 @@ class _PIntExpression {
   }
   virtual int getValue () const {
     std::cerr << "called getValue on expression : " ;
-    print(std::cerr);
+   // print(std::cerr);
     std::cerr << std::endl;
     throw "Do not call getValue on non constant int expressions.";
   }
@@ -97,8 +97,8 @@ public :
   VarExpr (int vvar) : varIndex(vvar){};
   IntExprType getType() const  { return VAR; }
 
-  void print (std::ostream & os) const {
-    os << "$" << varIndex;
+  void print (std::ostream & os, const labels_t & env) const {
+    os << env[ varIndex ];
   }
 
   PIntExpression eval () const {
@@ -170,7 +170,7 @@ public :
 
   _PIntExpression * clone () const { return new ConstExpr(*this); }
 
-  void print (std::ostream & os) const {
+  void print (std::ostream & os, const labels_t & env) const {
     os << val;
   }
 
@@ -213,8 +213,8 @@ public :
 
   _PIntExpression * clone () const { return new WrapBoolExpr(*this); }
 
-  void print (std::ostream & os) const {
-    os << b;
+  void print (std::ostream & os, const labels_t & env) const {
+    b.print(os,env);
   }
 
   bool isSupport (int v, int id) const {
@@ -269,9 +269,9 @@ public :
   ArrayVarExpr (int vvar, const PIntExpression & index) : var(vvar), index(index) {};
   IntExprType getType() const  { return ARRAY; }
 
-  void print (std::ostream & os) const {
-    os << "$" << var << "[";
-    index.print(os);
+  void print (std::ostream & os, const labels_t & env) const {
+    os << env[ var  ] << "[";
+    index.print(os,env);
     os << "]";
   }
 
@@ -334,9 +334,9 @@ public :
   ArrayConstExpr (int vvar, const PIntExpression & index) : var(vvar), index(index) {};
   IntExprType getType() const  { return CONSTARRAY; }
 
-  void print (std::ostream & os) const {
-    os << "@" << var << "[";
-    index.print(os);
+  void print (std::ostream & os, const labels_t & env) const {
+    os << env[var] << "[";
+    index.print(os,env);
     os << "]";
   }
 
@@ -410,10 +410,10 @@ public :
   virtual int getNeutralElement () const = 0;
 
 
-  void print (std::ostream & os) const {
+  void print (std::ostream & os , const labels_t & env) const {
     os << "( ";
     for (NaryPParamType::const_iterator it = params.begin() ;  ; ) {
-      it->print(os);
+      it->print(os,env);
       if (++it == params.end())
 	break;
       else
@@ -603,11 +603,11 @@ public :
     res *= left.hash() *  76303 + right.hash() * 76147;
     return res;
   }
-  void print (std::ostream & os) const {
+  void print (std::ostream & os, const labels_t & env) const {
     os << "( ";
-    left.print(os);
+    left.print(os,env);
     os << getOpString();
-    right.print(os);
+    right.print(os,env);
     os << " )";
   }
 
@@ -828,8 +828,10 @@ bool PAssertion::isSupport (int v, int id) const {
   return mapping.first.isSupport(v,id) || mapping.second.isSupport(v,id);
 }
 
-void PAssertion::print (std::ostream & os) const {
-  os << mapping.first << ":=" << mapping.second ;
+void PAssertion::print (std::ostream & os, const labels_t & env) const {
+  mapping.first.print(os,env);
+  os << ":=" ;
+  mapping.second.print(os,env) ;
 }
 
 
@@ -1013,8 +1015,8 @@ const NaryPParamType & PIntExpression::getParams() const {
 
 
 
-void PIntExpression::print (std::ostream & os) const {
-  concrete->print(os);
+void PIntExpression::print (std::ostream & os, const labels_t & env) const {
+  concrete->print(os,env);
 }
 
 PIntExpression PIntExpression::eval () const {
@@ -1073,10 +1075,6 @@ size_t PIntExpression::hash () const {
   return ddd::knuth32_hash(reinterpret_cast<const size_t>(concrete)); 
 }
 
-std::ostream & operator << (std::ostream & os, const its::PIntExpression & e) {
-  e.print(os);
-  return os;
-}
 
 
 

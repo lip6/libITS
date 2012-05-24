@@ -61,7 +61,7 @@ public :
   
   BoolExprType getType() const ;
   // member print
-  void print (std::ostream & os) const ;
+  void print (std::ostream & os, const labels_t & env) const ;
   
   // an operator to (partially) resolve expressions.
   // replace occurrences of v (if any) by e.

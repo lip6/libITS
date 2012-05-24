@@ -254,8 +254,9 @@ class _IntExpression {
 
   // pretty print
   void print (std::ostream & os) const {
-    os << "{"  << env;
-    os << "|> " << expr << "}";
+    expr.print(os,env);
+//     os << "{"  << env;
+//     os << "|> " << expr << "}";
   }
 
   // Evaluate an expression.
@@ -376,8 +377,7 @@ bool Assertion::isSupport (const Variable & v) const {
 }
 
 void Assertion::print (std::ostream & os) const {
-  os << env << " , ";
-  assertion.print(os) ;
+  assertion.print(os,env) ;
 }
 
 std::ostream & operator<< (std::ostream & os, const Assertion & a) {
@@ -699,9 +699,10 @@ public :
 
    // pretty print
   void print (std::ostream & os) const {
-    os << "{" ;
-    os << env;
-    os << "|> " << expr << "}";
+    expr.print(os,env);
+//     os << "{" ;
+//     os << env;
+//     os << "|> " << expr << "}";
   }
 
     // Evaluate an expression.
