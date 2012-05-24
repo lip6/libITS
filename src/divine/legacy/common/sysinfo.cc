@@ -271,7 +271,7 @@ long timeprofiler_t::get_global_time()
 
 int loadinfo_t::getload()
 {
-  double result;
+  double result = 0.0;
 #if defined(__linux)
   getloadavg(&result,1);
 #endif
