@@ -79,31 +79,17 @@ namespace its {
       {
 	bdd cube = bdd_satone(acc);
 	acc -= cube;
-	while (cube != bddtrue)
+	const ltl::formula* f = d->oneacc_to_formula(cube);
+	std::string s = ltl::to_string(f);
+	if (is_atomic_prop(f) && s[0] == '"')
 	  {
-	    assert(cube != bddfalse);
-	    // Display the first variable that is positive.
-	    // There should be only one per satisfaction.
-	    if (bdd_high(cube) != bddfalse)
-	      {
-		int v = bdd_var(cube);
-		spot::bdd_dict::vf_map::const_iterator vi = d->acc_formula_map.find(v);
-		assert(vi != d->acc_formula_map.end());
-		std::string s = spot::ltl::to_string(vi->second);
-		if (dynamic_cast<const spot::ltl::atomic_prop*>(vi->second)
-		    && s[0] == '"')
-		  {
-		    // Unquote atomic propositions.
-		    s.erase(s.begin());
-		    s.resize(s.size() - 1);
-		  }
-		
-		ret.push_back(spot::escape_str(s));
-		break;
-	      }
-	    cube = bdd_low(cube);
+	    // Unquote atomic propositions.
+	    s.erase(s.begin());
+	    s.resize(s.size() - 1);
 	  }
+	ret.push_back(spot::escape_str(s));
       }
+
       
     std::sort(ret.begin(), ret.end());
     return ret;
