@@ -13,6 +13,12 @@ libEXPRESS_a_CPPFLAGS = -I$(top_srcdir)/src/parser_RdPE \
 
 BUILT_SOURCES = expression_yacc.h
 
+# a small hack for automake 1.12 that builds a .hxx from .yxx
+# to be removed when compatibility with automake 1.11 will be dropped
+SUFFIXES = .h .hxx
+.hxx.h:
+	mv $< $@
+
 LYFILES =   expression_lex.ll \
             expression_yacc.yxx \
             Moteur_expression.hpp
