@@ -55,22 +55,16 @@ using namespace cami;
  extern FILE *Camiin;              
  extern ostream& yyerror(const char* s){
 	  if (s) {
-        string value=string(" (incorrect Modèl) ");
-        string err=string(s);
-        if(value != err)
-          cout<<"error line "<<Camilineno<<" : ";
-        cout<<s;
-        err.erase();
+	          cout<<"Parse error around line "<<Camilineno<<" : ";
+		  cout<<s;
+	  } else {
+		  cout<<"Unrecognized CAMI parse error."<<endl;
 	  }
-	  else {
-		    cout<<"parsing error:"<<endl;
-	  }
-	  fclose(Camiin);
-    Net.clear();
-    Immediate.clear();
-    RESET.clear();
-    value.erase();
-    return cout;
+/*	  fclose(Camiin);
+	  Net.clear();
+	  Immediate.clear();
+	  RESET.clear(); */
+	  return cout;
   }
 %}
 /*.................................Bison Declarations ................................ */
@@ -85,7 +79,7 @@ using namespace cami;
 
 %token <s> IDENT DENT 
 %token <j> ENTIER
-%token ESPACE  DB  FB  CA  CT  CN  CM CP LOSS COMMENTAIRE PO PT
+%token ESPACE  DB  FB  CA  CT  CN  CM CP LOSS COMMENTAIRE PO PT PI
 %token NET PLACE QUEUE TRANSITION IMMEDIATE  NAME DECLARATION AUTHORS CAMIVERSION TITLE PROJECT DATE CODE DOMAINE
 %token COMPONENT GUARD PRIORITY DELAY ACTION WEIGHT CAPACITY VALUATION MARKING ARC INHIBITOR
 /*......................................type..........................................*/
@@ -123,6 +117,9 @@ creation :  commande |
 ;
 commande :
 	PO '(' ENTIER ',' ENTIER ',' ENTIER ')'
+    	{  /* IGNORE GRAPHICAL POSITION INFO */ } 
+	|
+	PI '(' ENTIER ',' ENTIER ',' ENTIER ')'
     	{  /* IGNORE GRAPHICAL POSITION INFO */ } 
 	|	PT '(' ENTIER ',' ENTIER ':' tagident ',' ENTIER ',' ENTIER ')'
 	{  /* IGNORE GRAPHICAL POSITION INFO */ }

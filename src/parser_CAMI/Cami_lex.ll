@@ -68,12 +68,15 @@
 "//"						                                {return(COMMENTAIRE);}
 "DB()" 		                        	            {return(DB);}
 "FB()"				        	                        {return(FB);}
+"DE()" 		                        	            {return(DB);}
+"FE()"				        	                        {return(FB);}
 "CA"				 		                                {return(CA);}
 "CT"						                                {return(CT);}
 "CN"						                                {return(CN);}
 "CM"						                                {return(CM);}
 "PO"						                                {return(PO);}
 "PT"						                                {return(PT);}
+"PI"						                                {return(PI); /* position info */ }
 "cp"|"CP"|"Cp"|"cP"                             {return(CP);}
 "loss"|"LOSS"|"Loss"                            {return(LOSS);}
 "."					  	                                {return('.');}
