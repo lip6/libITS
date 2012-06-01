@@ -2,6 +2,8 @@
 #include <typeinfo>
 
 
+#include "DDD.h"
+#include "DED.h"
 #include "ExprHom.hpp"
 #include "MLHom.h"
 
@@ -11,6 +13,203 @@ namespace its {
   MLHom queryExpression (const IntExpression & e, const VarOrder * vo);
 
   GHom assertion (const Assertion & a, const VarOrder * vo);
+  GHom invertExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo, const GDDD & pot) ;
+
+
+
+/// Code to handle invert of IntExpression assignments
+/// Returns a two variable high DDD : f(x)->x->1
+static GDDD invertExprValues (const PIntExpression & expr, const PIntExpression & var, const GDDD & pot) {
+  d3::set<GDDD>::type toret ;
+  
+  // for each potential value : v
+  for (GDDD::const_iterator it = pot.begin() ; it != pot.end() ; ++it) {
+
+    // compute expr(v) : combine with assertion variable $0 = v
+    // A priori, expr should have a single variable as "env"
+    PIntExpression e = expr & 
+      PIntExpressionFactory::createPAssertion(var, 
+					      PIntExpressionFactory::createConstant(it->first));
+
+    // e should now be a constant.
+    assert (e.getType() == CONST);
+
+    // insert f(x)->x pair
+    toret.insert( GDDD(1, e.getValue() , GDDD(0, it->first )));
+  }
+
+  return DED::add(toret);
+}
+
+
+// assign an expression to a variable
+class _InvertExpr:public StrongHom {
+  IntExpression var;
+  IntExpression expr;
+  const VarOrder * vo;
+  GDDD potall;
+public:
+  _InvertExpr(const IntExpression & varr, const IntExpression & e, const VarOrder * vo, const GDDD & ppot) : var(varr), expr(e), vo(vo), potall(ppot) {
+    assert(var.getType() != CONST);
+  }
+  
+  GDDD phiOne() const {
+    return GDDD::one;
+  }                   
+
+  bool
+  skip_variable(int vr) const
+  {
+    Variable curv = Variable(vo->getLabel(vr));
+    bool b =  ! var.isSupport(curv)
+      && ! expr.isSupport(curv);
+//      std::cerr << "Assignment of:" << var << " = " << expr << std::endl
+//  	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
+    return b;
+  }
+
+  GHom phi(int vr, int vl) const {
+    Variable curv = Variable(vo->getLabel(vr));
+
+    Assertion assertion = IntExpressionFactory::createAssertion(curv, IntExpressionFactory::createConstant(vl));
+
+    // make sure lhs is as simplified as it can be
+    IntExpression v = var;
+    if (v.getType() == ARRAY && var.isSupport(curv)) {
+      v = var & assertion;
+    }
+
+    // if lhs is a single variable or a const array access
+    // we have resolved the target variable x
+    if ( v.getType() == CONSTARRAY || v.getType()==VAR ) {
+      
+      // if we are at target variable for assignment
+      if ( v.isSupport(curv) ) {
+
+	// If the expression is a constant
+	if ( expr.getType() == CONST ) {
+	  // Invert of  : y = cte  is   : y = {pot}   & [ y == cte ]
+	  if ( vl == expr.getValue() ) {
+	    // test [ y == cte ] is validated, return pot
+	    std::set<GHom> sum;
+	    GDDD pot = computeDomain(vr,potall);
+	    for (GDDD::const_iterator it = pot.begin() ; it != pot.end() ; ++it ) {
+	      sum.insert ( GHom (vr, it->first) );
+	    }
+	    return GHom::add(sum);
+	  } else {
+	    // test [ y == cte] is false => return 0
+	    return GDDD::null;
+	  }
+	}
+
+	// Check if expr is a function of at most "v"
+	// This is the case if expr & [v =def 0] is constant
+	IntExpression constant =  expr & assertion ;
+	
+	// Indeed, expr is only a function of at most current var
+	if (constant.getType() == CONST) {
+	  GDDD pot = computeDomain(vr,potall);
+	  GDDD inv = invertExprValues(expr.getExpr(), IntExpressionFactory::createVariable(curv).getExpr(), pot);
+	  
+	  for (GDDD::const_iterator it = inv.begin() ; it != inv.end() ; ++it ) {
+	    if (it->first == vl) {
+	      GDDD son = it->second; 
+	      std::set<GHom> sum;
+	      for (GDDD::const_iterator jt = son.begin() ; jt != son.end() ; ++jt) {
+		sum.insert (GHom (vr, jt->first));
+	      }
+	      return GHom::add(sum);
+	    }
+	  }
+	  // if we reach this point, f(x) can never produce current value
+	  return GDDD::null;
+	}
+	
+	// Now we have an expression of other variables, that needs some Query to be resolved.
+
+//   	std::cerr << "Invert Assignment: Solving for : " << var << "=" << expr << std::endl
+//   		  << "Still need to resolve :" << v << "=" << constant << std::endl;
+//   	std::cerr << std::endl;
+
+
+	if ( ! expr.isSupport(curv) ) {
+// 	  std::cerr << "RHS is not support of lhs, querying for " << expr << std::endl;
+	  // Resolve by a query the other variables
+	  return MLHom(invertExpr(v, expr, vo, potall), 
+		       MLHom(vr,vl,queryExpression(expr,vo)));
+	}
+// 	std::cerr << "RHS uses LHS in its support, using getSubExprExcept mechanism. " << std::endl;
+
+	// Try to extract a subexpression that does not concern current variable
+	IntExpression sub = expr.getSubExprExcept ( IntExpressionFactory::createVariable(curv));
+
+//  	std::cerr << "Querying for subexprexcept (" << curv.getName() << ") in rhs " << std::endl;
+//   	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+// 	std::cerr << "subexprexcept returns : " << sub  << std::endl;
+	
+
+	// Resolve by a query the other variables
+	return MLHom(invertExpr(v, expr, vo, potall), 
+		     MLHom(vr,vl,queryExpression(sub,vo)));
+
+      } else {
+	// So, we are not at lhs target variable, 
+	// Thus curv is a support for rhs
+	// simplify expr by curv assertion and propagate
+	IntExpression e = expr & assertion;
+	if (e.isSupport(curv)) {
+	  // this can only happen if e contains an unresolved array access (e.g. tab[i])
+	  // and curv is a var of that array (e.g. tab[0])
+
+	  // still need to resolve nested rhs
+	  return MLHom(invertExpr(v,e,vo,potall),MLHom(vr,vl,queryExpression(e.getFirstSubExpr(),vo)));
+	} else {
+	  // we can skip down to next variable
+	  return GHom(vr,vl, invertExpr(v, expr & assertion, vo, potall));
+	}
+
+      }
+    } else {
+      // lhs is a ARRAY variable access
+      // still need to resolve lhs
+      return MLHom(invertExpr(v, expr ,vo, potall),
+		   MLHom(vr,vl,queryExpression(v.getFirstSubExpr(),vo)));
+    }
+  }
+
+  size_t hash() const {
+    return 100787* (var.hash()^expr.hash()) + potall.hash();
+  }
+
+  bool operator==(const StrongHom &s) const {
+    _InvertExpr* ps = (_InvertExpr*)&s;
+    return var.equals(ps->var) && expr.equals(ps->expr) && potall == ps->potall ;
+  }
+
+  _GHom * clone () const {  return new _InvertExpr(*this); }
+
+  GHom compose (const GHom & other) const ;
+
+  GHom invert (const GDDD & potall) const { 
+    return assignExpr (var, expr, vo);
+  }
+
+
+  void print (std::ostream & os) const {
+    os << "Invert(" ;
+    os << var << "=";
+    expr.print(os);
+    os << ")";
+  }
+
+};
+
+GHom invertExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo, const GDDD & pot) {
+    return _InvertExpr(var,val,vo,pot);
+}
+
+
 
 
 // assign an expression to a variable
@@ -112,6 +311,10 @@ public:
   _GHom * clone () const {  return new _AssignExpr(*this); }
 
   GHom compose (const GHom & other) const ;
+
+  GHom invert (const GDDD & potall) const { 
+    return invertExpr (var, expr, vo, potall);
+  }
 
   void print (std::ostream & os) const {
     os << "Assign(" ;
@@ -260,6 +463,28 @@ GHom _AssignExpr::compose (const GHom & other) const {
     return _GHom::compose(other);
   }
 }
+
+GHom _InvertExpr::compose (const GHom & other) const {
+  const _GHom * c = get_concret(other);
+  if (typeid(*c) == typeid(_AssertionHom)) {
+    if (var.getType() != VAR)
+// Eval is now included as a step of applying assertion 
+// used to eval the two firt parameters
+      return assignExpr((var & ((const _AssertionHom *)c)->getAssertion()),
+			(expr & ((const _AssertionHom *)c)->getAssertion()),
+			vo);
+    else
+// Eval is now included as a step of applying assertion 
+// used to eval the second parameters
+      return assignExpr(var,
+			(expr & ((const _AssertionHom *)c)->getAssertion()),
+			vo);
+      
+  } else {
+    return _GHom::compose(other);
+  }
+}
+
 
 
 class _Predicate:public StrongHom {

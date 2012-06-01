@@ -53,6 +53,7 @@ class PIntExpression {
   friend class NaryIntExpr;
   friend class PIntExpressionFactory;
   friend class BinaryIntExpr;
+  friend class WrapBoolExpr;
 
   // For factory use
   PIntExpression (const _PIntExpression * c); 
@@ -128,6 +129,8 @@ public :
   /// To allow resolution of nested PIntExpressions, e.g. array access
   PIntExpression getFirstSubExpr () const ;
 
+  /// To allow partial resolution of expressions for invert computations. index -1 means any entry in the array (or a scalar var).
+  PIntExpression getSubExprExcept (int var, int index) const ;
 
 
 };

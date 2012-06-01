@@ -77,6 +77,7 @@ class _PIntExpression {
 
   virtual PIntExpression reindexVariables (const PIntExpression::indexes_t & newindexes) const = 0;
   virtual PIntExpression getFirstSubExpr () const = 0;
+  virtual PIntExpression getSubExprExcept (int,int) const = 0;
 };
 
 
@@ -130,6 +131,11 @@ public :
   PIntExpression getFirstSubExpr () const {
     return this;
   }
+
+  PIntExpression getSubExprExcept (int,int) const {    
+    return this;
+  }
+
 
   int getVariable() const { return varIndex; }
 
@@ -185,6 +191,10 @@ public :
     return this;
   }
 
+  PIntExpression getSubExprExcept (int,int) const {    
+    return this;
+  }
+
   PIntExpression reindexVariables (const PIntExpression::indexes_t & ) const {
     return this ;
   }
@@ -227,6 +237,19 @@ public :
   PIntExpression getFirstSubExpr () const {
     return b.getFirstSubExpr();
   }
+
+  PIntExpression getSubExprExcept (int v, int id) const {    
+    if (b.isSupport(v,id)) {
+      PIntExpression sub = b.getSubExprExcept(v,id) ;
+      PIntExpression me = this;
+      if (! sub.equals(me) ) {
+	return sub;
+      }
+    }
+
+    return this;
+  }
+
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & index) const {
     return PIntExpressionFactory::wrapBoolExpr( b.reindexVariables(index));
@@ -314,6 +337,21 @@ public :
     return index;
   }
 
+  PIntExpression getSubExprExcept (int v, int id) const {    
+    if (index.isSupport(v,id)) {
+      PIntExpression sub = index.getSubExprExcept(v,id) ;
+      if ( sub.equals(index) ) {
+	// Child has not found an extractible sub expression
+	return this;
+      } else {
+	return sub;
+      }
+    }
+
+    return this;
+  }
+
+
   PIntExpression setAssertion (const PAssertion & a) const {
     PIntExpression tmp = index & a;
     return a.getValue(PIntExpressionFactory::createArrayAccess(var, tmp));
@@ -372,6 +410,11 @@ public :
   PIntExpression getFirstSubExpr () const {
     return this;
   }
+
+  PIntExpression getSubExprExcept (int v, int id) const {    
+    return this;
+  }
+
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
     return PIntExpressionFactory::createArrayAccess(newindex[var],  index);
@@ -538,6 +581,40 @@ public :
     return this;
   }
 
+  PIntExpression getSubExprExcept (int v, int id) const {  
+    bool hasChildsub = false;
+  
+    for (NaryPParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
+      if (it->isSupport(v,id)) {
+	hasChildsub = true;
+	break;
+      }
+    }
+
+    
+    // So, no children concern  "var, id"
+    if (! hasChildsub) {
+      return this;
+    } 
+    
+    for (NaryPParamType::const_iterator it = params.begin() ; it != params.end()  ; ++it ) {
+       if (it->isSupport(v,id)) {
+	 PIntExpression sub = it->getSubExprExcept(v,id) ;
+	 if (!  sub.equals(*it) ) {
+	   // Child has not found an extractible sub expression
+	   return sub;
+	 }
+       } else if ( it->getType() != CONST ) {
+	 // A child formula, that does not carry var
+	 return *it; 
+       }
+    }
+
+    // Desperation move : all children are "var" or constants. 
+    // should not happen.
+    return this;
+  }
+
 
 };
 
@@ -660,6 +737,51 @@ public :
     }
     return this;
   }
+
+
+  PIntExpression getSubExprExcept (int v, int id) const {  
+    bool hasChildsub = false;
+  
+    if (left.isSupport(v,id)) {
+      hasChildsub = true;
+    } else if (right.isSupport(v,id)) {
+      hasChildsub = true;
+    }
+    
+    // So, no children concern  "var, id"
+    if (! hasChildsub) {
+      return this;
+    } 
+    
+    
+    if (left.isSupport(v,id)) {
+      PIntExpression sub = left.getSubExprExcept(v,id) ;
+      if (!  sub.equals(left) ) {
+	// Child has not found an extractible sub expression
+	return sub;
+      } else if ( left.getType() != CONST ) {
+	// A child formula, that does not carry var
+	return left; 
+      }
+    } else {
+      PIntExpression sub = right.getSubExprExcept(v,id) ;
+      // So right must be support for var
+      if (!  sub.equals(right) ) {
+	// Child has not found an extractible sub expression
+	return sub;
+      } else if ( right.getType() != CONST ) {
+	// A child formula, that does not carry var
+	return right; 
+      }
+    }
+
+    
+
+    // Desperation move : all children are "var" or constants. 
+    // should not happen.
+    return this;
+  }
+
 
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
@@ -1004,6 +1126,13 @@ bool PIntExpression::less (const PIntExpression & other) const {
 PIntExpression PIntExpression::getFirstSubExpr () const {
   return concrete->getFirstSubExpr();
 }
+
+/// To allow partial resolution of expressions for invert computations
+PIntExpression PIntExpression::getSubExprExcept (int var, int index) const {
+  return concrete->getSubExprExcept(var,index);
+}
+
+
 
 PIntExpression PIntExpression::reindexVariables (const indexes_t & newindexes) const {
   return concrete->reindexVariables (newindexes);

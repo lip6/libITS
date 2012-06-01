@@ -57,6 +57,8 @@ class _PBoolExpression {
 
   virtual PBoolExpression reindexVariables (const PIntExpression::indexes_t & newindexes) const = 0;
   virtual PIntExpression getFirstSubExpr () const = 0;
+
+  virtual PIntExpression getSubExprExcept (int , int ) const =0;
 };
 
 
@@ -188,6 +190,43 @@ public :
     return zero;
   }
 
+
+  PIntExpression getSubExprExcept (int v, int id) const {  
+    bool hasChildsub = false;
+  
+    for (params_it it = params.begin() ; it != params.end()  ; ++it ) {
+      if (it->isSupport(v,id)) {
+	hasChildsub = true;
+	break;
+      }
+    }
+
+    
+    // So, no children concern  "var, id"
+    if (! hasChildsub) {
+      return PIntExpressionFactory::wrapBoolExpr(this);
+    } 
+    
+    for (params_it it = params.begin() ; it != params.end()  ; ++it ) {
+       if (it->isSupport(v,id)) {
+	 PIntExpression sub = it->getSubExprExcept(v,id) ;
+	 if (!  ( sub.equals(PIntExpressionFactory::wrapBoolExpr(*it)) )  ) {
+	   // Child has not found an extractible sub expression
+	   return sub;
+	 }
+       } else if ( it->getType() != BOOLCONST ) {
+	 // A child formula, that does not carry var
+	 return PIntExpressionFactory::wrapBoolExpr(*it); 
+       }
+    }
+
+    // Desperation move : all children are "var" or constants. 
+    // should not happen.
+    return PIntExpressionFactory::wrapBoolExpr(this);
+
+  }
+
+
   PBoolExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
     NaryPBoolParamType res ;
     for (params_it it = params.begin() ; it != params.end()  ; ++it ) {
@@ -302,6 +341,53 @@ public :
     }
     return zero;
   }
+
+  PIntExpression getSubExprExcept (int v, int id) const {  
+    bool hasChildsub = false;
+    
+    if (left.isSupport(v,id)) {
+      hasChildsub = true;
+    } else if (right.isSupport(v,id)) {
+      hasChildsub = true;
+    }
+    
+    // So, no children concern  "var, id"
+    if (! hasChildsub) {
+      return PIntExpressionFactory::wrapBoolExpr(this);
+    } 
+    
+    
+    if (left.isSupport(v,id)) {
+      PIntExpression sub = left.getSubExprExcept(v,id) ;
+      PIntExpression lwrap = PIntExpressionFactory::wrapBoolExpr(left);
+      if (!  sub.equals(lwrap) ) {
+	// Child has not found an extractible sub expression
+	return sub;
+      } else if ( left.getType() != CONST ) {
+	// A child formula, that does not carry var
+	return lwrap; 
+      }
+    } else {
+      PIntExpression sub = right.getSubExprExcept(v,id) ;
+      PIntExpression rwrap = PIntExpressionFactory::wrapBoolExpr(right);
+      // So right must be support for var
+      if (!  sub.equals(rwrap )) {
+	// Child has not found an extractible sub expression
+	return sub;
+      } else if ( right.getType() != CONST ) {
+	// A child formula, that does not carry var
+	return rwrap; 
+      }
+    }
+
+    
+
+    // Desperation move : all children are "var" or constants. 
+    // should not happen.
+      return PIntExpressionFactory::wrapBoolExpr(this);
+  }
+
+
 
   PBoolExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
     return PBoolExpressionFactory::createComparison(getType(),left.reindexVariables(newindex), right.reindexVariables(newindex));    
@@ -449,6 +535,22 @@ public :
     return exp.getFirstSubExpr();
   }
 
+  PIntExpression getSubExprExcept (int v, int id) const {  
+    
+    if (exp.isSupport(v,id)) {
+      PIntExpression sub = exp.getSubExprExcept(v,id) ;
+      if (!  sub.equals(PIntExpressionFactory::wrapBoolExpr(exp) )) {
+	// Child has not found an extractible sub expression
+	return sub;
+      }
+    } 
+
+    // no appropriate subexpr
+    return PIntExpressionFactory::wrapBoolExpr(this);
+  
+  }
+
+
   PBoolExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
     return PBoolExpressionFactory::createNot(exp.reindexVariables(newindex));
   }
@@ -497,6 +599,10 @@ public :
 
   PIntExpression getFirstSubExpr () const {
     return 0;
+  }
+
+  PIntExpression getSubExprExcept (int , int ) const {
+    return PIntExpressionFactory::wrapBoolExpr(this);
   }
 
   PBoolExpression reindexVariables (const PIntExpression::indexes_t & ) const {
@@ -697,6 +803,12 @@ bool PBoolExpression::operator< (const PBoolExpression & other) const {
 /// To handle nested expressions (e.g. array access). Returns the constant 0 if there are no nested expressions.
 PIntExpression PBoolExpression::getFirstSubExpr () const {
   return concrete->getFirstSubExpr();
+}
+
+
+
+PIntExpression PBoolExpression::getSubExprExcept (int v, int id) const {
+  return concrete->getSubExprExcept(v,id);
 }
 
 

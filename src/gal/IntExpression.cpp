@@ -315,6 +315,39 @@ class _IntExpression {
 
     return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));    
   }
+
+  IntExpression getSubExprExcept (const IntExpression & var) const {
+    labels_t unione = sorted_union (var.getEnv() , env );
+
+    PIntExpression varx = normalize<IntExpression,PIntExpression> (var, unione);
+    
+    
+    PIntExpression newexpr = 0;
+    if (varx.getType() == VAR ) {
+      newexpr = expr.getSubExprExcept(varx.getVariable() , -1);
+    } else if (varx.getType() == CONSTARRAY ) {
+      newexpr = expr.getSubExprExcept(varx.getVariable() , varx.getValue());
+    } else {
+      std::cerr << "Unexpected target not of type VAR or CONSTARRAY within getSubExprExcept " << std::endl;
+      assert(false);
+    }
+
+    if ( expr.equals(newexpr) ) {
+      // Given the conditions for calling this function, we expect that :
+      // The expression has a support that includes varx, but is not limited to varx.
+      // Hence, te expression is not a constant
+      std::cerr << "In getSubExprExcept(" ;  var.print(std::cerr) ;  std::cerr << ") for expression " ;
+      this->print(std::cerr); std::cerr << " Unexpected return value." << std::endl;
+//      std::cerr << "this.isSupport(var) = " << this->isSupport(var) << std::endl;
+
+      assert(false);
+    }
+
+    std::pair<PIntExpression, labels_t> aftergc = gc ( newexpr, unione );
+
+    return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));    
+  }
+
 };
 
 
@@ -562,6 +595,10 @@ bool IntExpression::less (const IntExpression & other) const {
 
 IntExpression IntExpression::getFirstSubExpr () const {
   return concrete->getFirstSubExpr();
+}
+
+IntExpression IntExpression::getSubExprExcept  (const IntExpression & v) const {
+  return concrete->getSubExprExcept(v);
 }
 
 

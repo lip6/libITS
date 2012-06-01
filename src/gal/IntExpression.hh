@@ -92,6 +92,9 @@ public :
   /// To allow resolution of nested IntExpressions, e.g. array access
   IntExpression getFirstSubExpr () const ;
 
+  /// To allow resolution of nested expressions in context of partial function evaluation
+  /// Returns a (maximal) sub expression that DOES NOT contain the target expression
+  IntExpression getSubExprExcept (const IntExpression & var) const;
 
   // for pretty print
   friend std::ostream & operator<< (std::ostream & os, const IntExpression & e);

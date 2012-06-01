@@ -37,7 +37,8 @@ class PBoolExpression {
   friend class BoolConstExpr;
   friend class PBoolExpressionFactory;
   friend class NaryBoolExpr;
-
+  friend class BinaryBoolComp;
+  friend class NotExpr;
   // For factory use
   PBoolExpression (const _PBoolExpression * c); 
 
@@ -100,6 +101,9 @@ public :
 
   /// To handle nested expressions (e.g. array access). Returns the constant 0 if there are no nested expressions.
   PIntExpression getFirstSubExpr () const;
+
+  /// To handle nested expressions (resolution in invert procedure). Returns a WrapBoolExpr(this) if there are no appropriate sub expr.
+  PIntExpression getSubExprExcept (int,int) const;
 };
 
 // binary comparisons
