@@ -51,9 +51,9 @@ void Hierarchie::addPlace(const std::string& name) {
  * Add a new hierarchy
  * \param h The reference of the new hierarchy
  */
-void Hierarchie::addHierarchie(Hierarchie& h) {
-  h.level = nbplace++;
-  elts.push_back(&(h));
+void Hierarchie::addHierarchie(Hierarchie * h) {
+  h->level = nbplace++;
+  elts.push_back(h);
 }
 
 /**

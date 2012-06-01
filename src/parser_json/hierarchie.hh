@@ -115,7 +115,7 @@ class Hierarchie : public ItfElement
      * Add a new hierarchy
      * \param h The reference of the new hierarchy
      */
-    void addHierarchie(Hierarchie& h);
+    void addHierarchie(Hierarchie* h);
 
     /**
      * Print the current element

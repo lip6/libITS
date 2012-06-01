@@ -72,7 +72,7 @@ void readJSONintoHierarchy(cJSON * current, Hierarchie & hh)
     hh.addPlace(current->valuestring);
   } else {
     Hierarchie* h = new Hierarchie();
-    hh.addHierarchie((*h));
+    hh.addHierarchie(h);
     cJSON *subitem=current->child;
     while (subitem)
       {
