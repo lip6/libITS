@@ -16,7 +16,7 @@ fi
 
 
 
-AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not using tcmalloc))
+# AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not using tcmalloc))
 
 AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. This is a real problem.))
 
