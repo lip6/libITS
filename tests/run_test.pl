@@ -37,7 +37,7 @@ my @verdicts = ();
 # print "syscalling : $call \n";
 open IN, "($call) |";
 while (my $line = <IN>) {
-#  print $line;
+  print $line;
   if ($line =~ /.*accepting run.*/ )  {
 	# unfortunately, chomp is not enough, because we sometimes run the script
 	# from mingW, where Perl interpretation (Unix style) is wrong.
