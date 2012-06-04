@@ -79,8 +79,8 @@ namespace its {
       {
 	bdd cube = bdd_satone(acc);
 	acc -= cube;
-	const ltl::formula* f = d->oneacc_to_formula(cube);
-	std::string s = ltl::to_string(f);
+	const spot::ltl::formula* f = d->oneacc_to_formula(cube);
+	std::string s = spot::ltl::to_string(f);
 	if (is_atomic_prop(f) && s[0] == '"')
 	  {
 	    // Unquote atomic propositions.
