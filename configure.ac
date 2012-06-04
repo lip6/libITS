@@ -75,6 +75,9 @@ AC_CONFIG_MACRO_DIR([m4])
 # programs used to build
 # we make static libs (use ranlib)
 # we make shared libs (use libtool)
+if test GET_AUTOMAKE_VERSION >= 1.12; then
+	AM_PROG_AR
+fi
 LT_INIT([disable-shared])
 
 AC_LIBTOOL_DLOPEN
