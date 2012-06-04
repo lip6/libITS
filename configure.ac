@@ -2,7 +2,7 @@ AC_PREREQ([2.19])
 AC_INIT([ITSSDD],[0.1],[Yann.Thierry-mieg@lip6.fr])
 # We use automake to build makefiles
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror color-tests foreign])
 
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
@@ -122,6 +122,7 @@ AC_CONFIG_FILES([
   Samples/prod/Generators/Makefile			
   Samples/prod/Generators/CiardoPN2000/Makefile
   Samples/prod/Generators/Other/Makefile
+  tests/Makefile
 ])
 
 # Do it !! (mandatory)

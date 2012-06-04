@@ -13,3 +13,4 @@ clean :
 
 maintainer-clean : clean
 
+check:
