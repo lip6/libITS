@@ -686,6 +686,9 @@ BoolExpression BoolExpressionFactory::createComparison (BoolExprType type, const
   return createUnique(_BoolExpression(res, unione));
 }
 
+BoolExpression BoolExpressionFactory::createBoolExpression(const PBoolExpression & pbe, const labels_t & env) {
+  return createUnique( _BoolExpression( pbe, env ) );
+}
 
 void BoolExpressionFactory::destroy (_BoolExpression * e) {
   if (  e->deref() == 0 ){

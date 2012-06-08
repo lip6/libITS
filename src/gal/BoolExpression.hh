@@ -108,6 +108,8 @@ public :
 
   // a comparison (==,!=,<,>,<=,>=) between two integer expressions
   static BoolExpression createComparison (BoolExprType type, const IntExpression & l, const IntExpression & r) ;
+  
+  static BoolExpression createBoolExpression (const PBoolExpression &, const labels_t &);
 
   // following administrative functions are not really for public usage.
   static const _BoolExpression * createUnique(const _BoolExpression &);
