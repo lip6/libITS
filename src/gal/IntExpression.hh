@@ -141,6 +141,8 @@ public :
   static IntExpression  createArrayAccess (const Variable & v, const IntExpression & index) ;
   /// value is 1 if true or 0 otherwise
   static IntExpression  wrapBoolExpr (const BoolExpression & b);
+  
+  static IntExpression createIntExpression (const PIntExpression &, const labels_t &);
 
   static Assertion createAssertion (const Variable & v,const IntExpression & e);
   static Assertion createAssertion (const IntExpression & v,const IntExpression & e);

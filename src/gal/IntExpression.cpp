@@ -501,6 +501,10 @@ IntExpression IntExpressionFactory::wrapBoolExpr (const BoolExpression &b) {
   return createUnique (_IntExpression(PIntExpressionFactory::wrapBoolExpr(b.getExpr()),b.getEnv()));
 }
 
+IntExpression IntExpressionFactory::createIntExpression (const PIntExpression & pie, const labels_t & env) {
+  return createUnique( _IntExpression(pie,env) );
+}
+
 Assertion IntExpressionFactory::createAssertion (const Variable & v,const IntExpression & e) {
   return createAssertion (createVariable(v),e);
 }
