@@ -193,8 +193,7 @@ ETFSOURCES = $(MYETFSRCDIR)/ETFType.cpp \
 	$(MYETFSRCDIR)/stream_fd.c \
 	$(MYETFSRCDIR)/stream_mem.c
 
-GALSOURCES = $(MYGALSRCDIR)/BoolExpression.cpp \
-	$(MYGALSRCDIR)/ExprHom.cpp \
+GALSOURCES = $(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/GALType.cpp \
 	$(MYGALSRCDIR)/GAL.cpp \
 	$(MYGALSRCDIR)/IntExpression.cpp \
