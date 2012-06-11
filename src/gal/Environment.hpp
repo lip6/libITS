@@ -10,7 +10,7 @@ namespace its {
 
 typedef PIntExpression::indexes_t indexes_t;
 
-std::ostream & operator<< (std::ostream & os, const labels_t & env) {
+static std::ostream & operator<< (std::ostream & os, const labels_t & env) {
   if (! env.empty()) {
     for (labels_it it = env.begin() ; /* in loop */ ; /* in loop */ ) {
       os << *it ;
