@@ -1,1 +1,1 @@
-SUBDIRS = parser_RdPE expression parser_CAMI
+SUBDIRS = parser_RdPE expression parser_CAMI gal

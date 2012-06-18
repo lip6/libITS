@@ -30,7 +30,10 @@
 #include "petri/XMLLoader.hh"
 // Divine interaction
 #include "divine/dveLoader.hh"
-
+// GAL parser
+#include "gal/parser/exprParserLexer.h"
+#include "gal/parser/exprParserParser.h"
+#include <antlr3.h>
 
 using std::string;
 using std::cerr;
@@ -75,7 +78,7 @@ namespace its {
 bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   string pathinputff = "";
-  enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF,DLL,NDLL,DVE};
+  enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF,DLL,NDLL,DVE,GAL_T};
   InputType parse_t = NDEF;
 
   bool hasOrder=false;
@@ -120,6 +123,8 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        parse_t = NDLL;
      } else if ( !strcmp(argv[i],"DVE") ) {
        parse_t = DVE;
+     } else if ( !strcmp(argv[i],"GAL") ) {
+       parse_t = GAL_T;
      } else {
        cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|ITSXML|ETF} is expected. " << endl;  showUsageHelp() ;exit(1);
      }
@@ -239,6 +244,56 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
       model.setInstanceState("init");
       break;
     }
+  case GAL_T :
+    {
+      // opens the file as an input stream for the lexer
+      pANTLR3_INPUT_STREAM input = antlr3FileStreamNew((pANTLR3_UINT8)(pathinputff.c_str()), 0);
+      if (input == NULL) {
+	cerr << "Unable to open the file of permutations : " << pathinputff << endl;
+	exit(1);
+      }
+      
+      // the lexer
+      pexprParserLexer lexer = exprParserLexerNew(input);
+      if (lexer == NULL) {
+	cerr << "Unable to create the lexer for the GAL file" << endl;
+	exit(1);
+      }
+    
+      // the token stream produces by the lexer
+      pANTLR3_COMMON_TOKEN_STREAM tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lexer));
+      if (tstream == NULL) {
+	cerr << "Unable to allocate token stream for GAL parsing" << endl;
+	exit(1);
+      }
+    
+      // the parser
+      pexprParserParser parser = exprParserParserNew(tstream);
+      if (parser == NULL) {
+	cerr << "Unable to create the parser for the GAL" << endl;
+	exit(1);
+      }
+    
+      // do the parsing
+      GAL * result = parser->system(parser);
+      if (parser->pParser->rec->state->errorCount > 0) {
+	cerr << "The parser returned " << parser->pParser->rec->state->errorCount << " errors, parsing aborted" << endl;
+	exit(1);
+      }
+    
+      // free memory
+      parser->free(parser); parser = NULL;
+      tstream->free(tstream); tstream = NULL;
+      lexer->free(lexer); lexer = NULL;
+      input->close(input); input = NULL;
+
+      model.declareType (*result);
+      
+      model.setInstance(result->getName(), "main");
+      model.setInstanceState("init");
+      break;
+    }
+
   case NDLL : {
 #if !defined(__MINGW32__) 
     char buff [1024]; // should be enough hopefully for a file name
