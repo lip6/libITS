@@ -14,6 +14,28 @@ if test "x${with_libddd}" != x; then
     AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
 fi
 
+# option to indicate the path to the antlr jar
+AC_ARG_WITH([antlrjar],
+            [AC_HELP_STRING([--with-antlrjar=/root/of/antlrjar],
+                            [specify the path of antlr jar])])
+
+AM_CONDITIONAL([WITH_ANTLRJAR_PATH], [test "x${with_antlrjar}" != x])
+if test "x${with_antlrjar}" != x; then
+    AC_SUBST([ANTLRJAR_PATH],[${with_antlrjar}])
+fi
+
+
+# option to indicate the path to the antlr C runtime
+AC_ARG_WITH([antlrc],
+            [AC_HELP_STRING([--with-antlrc=/root/of/antlrc],
+                            [specify the path of antlr C runtime])])
+
+AM_CONDITIONAL([WITH_ANTLRC_PATH], [test "x${with_antlrc}" != x])
+if test "x${with_antlrc}" != x; then
+    AC_SUBST([ANTLRC_ROOT],[${with_antlrc}])
+fi
+
+
 
 
 # AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not using tcmalloc))
@@ -74,6 +96,9 @@ AC_CONFIG_MACRO_DIR([m4])
 
 # programs used to build
 # we make static libs (use ranlib)
+AC_PROG_RANLIB
+# programs used to build
+# we make static libs (use ranlib)
 # we make shared libs (use libtool)
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 LT_INIT([disable-shared])
@@ -116,6 +141,8 @@ AC_CONFIG_FILES([
   src/expression/Makefile
   src/parser_RdPE/Makefile
   src/parser_CAMI/Makefile
+  src/gal/Makefile
+  src/gal/parser/Makefile
   demo/Makefile
   bin/Makefile
   Samples/Makefile
