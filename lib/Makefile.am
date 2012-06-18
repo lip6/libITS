@@ -11,6 +11,16 @@ MYSCALARSRCDIR = $(MYSRCDIR)/scalar
 MYGALSRCDIR = $(MYSRCDIR)/gal
 MYWIBBLESRCDIR = $(MYSRCDIR)/divine/wibble
 MYDVESRCDIR = $(MYSRCDIR)/divine
+MYGALGRAMMARSRCDIR = $(MYGALSRCDIR)/parser
+
+
+MYANTLRHEADER = $(MYGALGRAMMARSRCDIR)/exprParserLexer.h \
+		$(MYGALGRAMMARSRCDIR)/exprParserParser.h
+
+MYANTLRSOURCES = $(MYGALGRAMMARSRCDIR)/exprParserLexer.cpp \
+		$(MYGALGRAMMARSRCDIR)/exprParserParser.cpp
+
+
 
 libprod_a_YFLAGS = -d 
 libprod_a_LFLAGS = -olex.yy.c
@@ -147,6 +157,7 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(SCALARHEADERS) \
 	$(WIBBLEHEADERS) \
 	$(DVEHEADERS) \
+	$(MYANTLRHEADER) \
 	$(MYSRCDIR)/ColoaneExport.hh \
 	$(MYSRCDIR)/Instance.hh \
 	$(MYSRCDIR)/ITSModel.hh \
@@ -250,6 +261,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(SCALARSOURCES) \
 	$(WIBBLESOURCES) \
 	$(DVESOURCES) \
+	$(MYANTLRSOURCES) \
 	$(MYSRCDIR)/ColoaneExport.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
 	$(MYSRCDIR)/Observe_Hom.cpp \
@@ -274,8 +286,16 @@ else
 LIBEXPAT_LINK=-lexpat
 endif
 
+if WITH_ANTLRC_PATH
+ANTLRC_CPP=-I$(ANTLRC_ROOT)/include
+ANTLRC_PATH=$(ANTLRC_ROOT)/lib/libantlr3c.a
+else
+ANTLRC_LINK=-lantlr3c
+endif
+
+
 AM_CFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall
-AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
+AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
 AM_CXXFLAGS = -g -O2 -Wall
 
 libITSmain_a_SOURCES = $(ITSSOURCES)
