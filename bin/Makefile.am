@@ -1,5 +1,5 @@
-noinst_PROGRAMS = its-reach gal-test
-
+noinst_PROGRAMS = its-reach 
+#gal-test
 
 LIBITS_CPP=-I$(top_srcdir)/src
 LIBITS_PATH=$(top_srcdir)/lib/libITS.a 
@@ -20,10 +20,18 @@ LIBEXPAT_LINK=-lexpat
 endif
 
 
-AM_CPPFLAGS = $(LIBDDD_CPP) $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(HAVE_BOOST_FLAG) -g -O2 -Wall 
+if WITH_ANTLRC_PATH
+ANTLRC_CPP=-I$(ANTLRC_ROOT)/include
+ANTLRC_PATH=$(ANTLRC_ROOT)/lib/libantlr3c.a
+else
+ANTLRC_LINK=-lantlr3c
+endif
+
+
+AM_CPPFLAGS = $(LIBDDD_CPP) $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(HAVE_BOOST_FLAG) -g -O2 -Wall 
 AM_CXXFLAGS = -g -O2 -Wall
 
-LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) 
+LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
 
 
 its_reach_SOURCES = main.cpp 
@@ -31,8 +39,8 @@ its_reach_SOURCES = main.cpp
 its_reach_LDADD = $(LDADDFLAGS)  
 its_reach_LDFLAGS = -export-dynamic
 
-gal_test_SOURCES = test-gal.cpp 
+#gal_test_SOURCES = test-gal.cpp 
 # philo.hh philo.cpp
 
-gal_test_LDADD = $(LDADDFLAGS)  
-gal_test_LDFLAGS = -export-dynamic
+#gal_test_LDADD = $(LDADDFLAGS)  
+#gal_test_LDFLAGS = -export-dynamic
