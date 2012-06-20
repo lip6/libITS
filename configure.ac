@@ -52,6 +52,17 @@ if test "x${with_libexpat}" != x; then
     AC_SUBST([LIBEXPAT_ROOT],[${with_libexpat}])
 fi
 
+# option to indicate the path to the antlr C runtime
+AC_ARG_WITH([antlrc],
+            [AC_HELP_STRING([--with-antlrc=/root/of/antlrc],
+                            [specify the path of antlr C runtime])])
+
+AM_CONDITIONAL([WITH_ANTLRC_PATH], [test "x${with_antlrc}" != x])
+if test "x${with_antlrc}" != x; then
+    AC_SUBST([ANTLRC_ROOT],[${with_antlrc}])
+fi
+
+
 
 AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. This is a real problem.))
 
