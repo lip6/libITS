@@ -23,14 +23,23 @@ else
 LIBITS_LINK=-lITS
 endif
 
-AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(LIBDDD_CPP) $(LIBEXPAT_CPP)
+
+if WITH_ANTLRC_PATH
+ANTLRC_CPP=-I$(ANTLRC_ROOT)/include
+ANTLRC_PATH=$(ANTLRC_ROOT)/lib/libantlr3c.a
+else
+ANTLRC_LINK=-lantlr3c
+endif
+
+
+AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src/ctlp/ $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(LIBDDD_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP)
 #
 #libmcctl_a_SOURCES = mcCmd.c  mcCover.c  mcDbg.c  mcDnC.c  mcGFP.c  mc.h  mcInt.h  mcMc.c  mcSCC.c  mcUtil.c  mcVacuum.c
 
 libctlits_a_SOURCES = ctlCheck.hh ctlCheck.cpp
 
 its_ctl_SOURCES = test_ctl.cpp
-its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) -lm
+its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) -lm
 
 # LDFLAGS used to have '-rdynamic' for DLL mode
 
