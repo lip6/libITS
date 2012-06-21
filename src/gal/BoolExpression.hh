@@ -26,7 +26,8 @@ class BoolExpression {
   // For factory use
   BoolExpression (const _BoolExpression * c); 
 public :
-
+  // default constructor
+    BoolExpression (bool value=false);
   // copy constructor
   BoolExpression (const BoolExpression & other);
   // assignment

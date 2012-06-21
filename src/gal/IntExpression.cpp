@@ -725,6 +725,11 @@ BoolExpression::BoolExpression (const IntExpression & expr): concrete(NULL) {
    *this = BoolExpressionFactory::createComparison(EQ,expr,IntExpressionFactory::createConstant(1));
 }
 
+BoolExpression::BoolExpression (bool val) {
+	concrete = BoolExpressionFactory::createUnique(_BoolExpression(PBoolExpressionFactory::createConstant(val), labels_t()));
+	concrete->ref();
+}
+
 
 /// only valid for CONST expressions
 /// use this call only in form : if (e.getType() == CONST) { int j = e.getValue() ; ...etc }

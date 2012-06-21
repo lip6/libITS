@@ -28,7 +28,7 @@ class IntExpression {
   IntExpression (const _IntExpression * c); 
 public :
 
-  IntExpression (int cst);
+  IntExpression (int cst=0);
   IntExpression (const Variable &var);
   // copy constructor
   IntExpression (const IntExpression & other);
