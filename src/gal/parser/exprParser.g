@@ -106,7 +106,7 @@ arrayDeclaration :
 
 //TODO
 listDeclaration :
-  'list' name=qualifiedName ';'
+  'list' name=qualifiedName ('=' '(' inits=initValues ')' )? ';'
   ;
 
 transition 
@@ -123,12 +123,22 @@ transition
   ('label' label=STRING)?
   
   '{'
-  (currentAction=action 
-  {
-  ptrAction = $currentAction.as ;
-  current_ga->addAction(*ptrAction);
-  delete ptrAction ;
-  }  
+  (
+    // Normal actions (assignments)
+	  (
+		  currentAction=action 
+		  {
+		  ptrAction = $currentAction.as ;
+		  current_ga->addAction(*ptrAction);
+		  delete ptrAction ;
+		  }
+	  )
+	  |
+	  // Actions on List. Theses are not implemented in C++, 
+	  // but just for compatibility with all Gal files 
+	  (
+	    listPop | listPush
+	  )
   )*
   '}'
   {
@@ -145,6 +155,14 @@ action returns [its::Assignment* as = NULL]:
 transient :
   'TRANSIENT' '=' value=boolOr ';'
   {result->setTransientPredicate($value.bres);}
+;
+
+listPop :
+  qualifiedName '.pop' '(' ')' ';'
+;
+
+listPush :
+  qualifiedName '.push' '(' bit_or ')' ';'
 ;
 
 //////////////////// Boolean Expressions
@@ -322,7 +340,12 @@ intPrimary returns [its::IntExpression ires] :
       toInt($intconst));})
   |
   (current=varAccess
-  {$ires = $current.ires;})
+  {$ires = $current.ires;}
+  )
+  |
+  (listPeek
+   {$ires = its::IntExpressionFactory::createConstant(0); }
+  )
   |
   (
     (
@@ -334,6 +357,11 @@ intPrimary returns [its::IntExpression ires] :
     ('(' current=wrapBool {$ires = $current.ires;} ')'  )
   )
  
+;
+
+// Should return intExpression if used in C++.
+listPeek : 
+  qualifiedName '.peek' '(' ')'  
 ;
 
 varAccess returns [its::IntExpression ires]:
