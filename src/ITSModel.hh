@@ -130,7 +130,7 @@ public:
 
   // returns the "Next" relation, i.e. exactly one step of the transition relation.
   // tests for presence of "elapse" transition.
-  Transition getNextRel () const ;
+  virtual Transition getNextRel () const ;
   // returns the predecessor relationship, i.e. exactly one step backward of the transition relation.
   // This function uses the NextRel to compute the reverse transition relation.
   // If reach is left to its default value "null", all reachable states are used as envelope.
