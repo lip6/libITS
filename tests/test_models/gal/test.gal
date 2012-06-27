@@ -1,0 +1,12 @@
+GAL a {
+	int a = -4 ;
+	int b = 10;
+
+	array[2] tabf = (1,50);
+	
+	transition t1 [True && False]
+	{
+		a = a-1; 
+		tabf[0] = tabf[0];
+	} 
+}
