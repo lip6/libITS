@@ -1,5 +1,8 @@
 grammar exprParser;
 
+/* 
+ * GAL Antlr Grammar for C++
+ */
 options {
   language = C;
 }
@@ -12,19 +15,25 @@ options {
 }
 
 @members {
+
+  // "result" is the root of GAL elements.
   its::GAL* result;
-  
+  // pointer on the current transition (GuardedAction) found
   its::GuardedAction* current_ga = NULL ;
-  /// gets the text of a token and returns it as a string
+  
+  
+  /// Gets the text of a token and returns it as a string
   static std::string toString(pANTLR3_COMMON_TOKEN i) {
     return std::string((const char *)i->getText(i)->chars);
   }
   
+  // Returns an integer from a token, expected as a string of int.
   static int toInt(pANTLR3_COMMON_TOKEN i) {
     int n = atoi((const char *)i->getText(i)->chars);
     return n;
   }
-
+  
+  // Check if there is a variable named "str" in GAL system.  
   void checkVariableExistance(std::string str)
   {
     int found = 0 ; 
@@ -40,12 +49,12 @@ options {
     }
     if (!found)
     {
-      std::cerr << "Variable '" << str << "' inexistante" << std::endl ;
+      std::cerr << "Variable '" << str << "' does not exists." << std::endl ;
       exit(1) ; 
     }
    }
   
-  
+  // Check if there is an array named "str" in GAL system.  
   void checkArrayExistance(std::string str)
   {
     int found = 0 ; 
@@ -61,11 +70,12 @@ options {
     }
     if (!found)
     {
-      std::cerr << "Tableau '" << str << "' inexistante" << std::endl ;
+      std::cerr << "Array named '" << str << "' does not exist" << std::endl ;
       exit(1) ; 
     }
   }
 }
+
 
 system returns [its::GAL* r] :
   'GAL' name=qualifiedName
@@ -75,7 +85,9 @@ system returns [its::GAL* r] :
     // Variable declarations
     (variableDeclaration
     | arrayDeclaration 
+/*------------ NOT IMPLEMENTED SECTION --------------
     | listDeclaration 
+ ---------------------------------------------------*/
     )*
     
     // Transitions
@@ -88,10 +100,10 @@ system returns [its::GAL* r] :
 ;
 
 variableDeclaration :
-  'int' name=qualifiedName '=' initVal=INT ';'
+  'int' name=qualifiedName '=' initVal=integer ';'
   {
     its::Variable var ($name.res);
-    int val = toInt($initVal);
+    int val = $initVal.res;
     
     result->addVariable(var, val);
   }
@@ -104,10 +116,14 @@ arrayDeclaration :
   }
   ;
 
-//TODO
-listDeclaration :
-  'list' name=qualifiedName ('=' '(' inits=initValues ')' )? ';'
+
+/* --------------------- NOT IMPLEMENTED SECTION   ------------------
+  //List declaration not implemented in C++
+  listDeclaration :
+   'list' name=qualifiedName ('=' '(' inits=initValues ')' )? ';'
   ;
+ -------------------------------------------------------------------*/
+
 
 transition 
 @init {
@@ -133,12 +149,12 @@ transition
 		  delete ptrAction ;
 		  }
 	  )
+/* --------------- NOT IMPLEMENTED SECTION -------------------------
 	  |
-	  // Actions on List. Theses are not implemented in C++, 
-	  // but just for compatibility with all Gal files 
 	  (
 	    listPop | listPush
 	  )
+------------------------------------------------------------------*/
   )*
   '}'
   {
@@ -157,6 +173,9 @@ transient :
   {result->setTransientPredicate($value.bres);}
 ;
 
+
+/*-------------------  NOT IMPLEMENTED SECTION ------------------*
+//List actions not implemented in C++
 listPop :
   qualifiedName '.pop' '(' ')' ';'
 ;
@@ -164,6 +183,8 @@ listPop :
 listPush :
   qualifiedName '.push' '(' bit_or ')' ';'
 ;
+----------------------------------------------------------------*/
+
 
 //////////////////// Boolean Expressions
 boolOr returns [its::BoolExpression bres] :
@@ -304,11 +325,11 @@ addition returns [its::IntExpression ires]
 multiplication returns [its::IntExpression ires]
 @init{its::IntExprType op;}
 :
-  left = power
+  left = unaryMinus
   {$ires = $left.ires;}
   
   (('*' {op = its::MULT;} | '/' {op = its::DIV;} | '%' {op = its::MOD;})
-    right = power
+    right = unaryMinus
     {$ires = its::IntExpressionFactory::createBinary(
       op,
       $ires,
@@ -317,6 +338,19 @@ multiplication returns [its::IntExpression ires]
   )*
 ;
 
+
+unaryMinus returns [its::IntExpression ires] :
+  (sign='-' value=power
+   {$ires = its::IntExpressionFactory::createBinary(
+      its::MINUS,
+      0,
+      $value.ires);}
+  )
+  |
+  (value=power
+  { $ires = $value.ires ;}
+  )
+; 
 power returns [its::IntExpression ires]
 @init{its::IntExprType op;}
 :
@@ -335,17 +369,19 @@ power returns [its::IntExpression ires]
 
 intPrimary returns [its::IntExpression ires] :
   (intconst=INT
-  {$ires = 
-    its::IntExpressionFactory::createConstant(
-      toInt($intconst));})
+  {$ires = its::IntExpressionFactory::createConstant(toInt($intconst));}
+  )
   |
   (current=varAccess
   {$ires = $current.ires;}
   )
+/* ---------------- NOT IMPLEMENTED SECTION ----------------------
+//Peek on lists
   |
   (listPeek
    {$ires = its::IntExpressionFactory::createConstant(0); }
   )
+-----------------------------------------------------------------*/
   |
   (
     (
@@ -359,10 +395,13 @@ intPrimary returns [its::IntExpression ires] :
  
 ;
 
+/* ---------------- NOT IMPLEMENTED SECTION ------------------
 // Should return intExpression if used in C++.
 listPeek : 
   qualifiedName '.peek' '(' ')'  
 ;
+--------------------------------------------------------------*/
+
 
 varAccess returns [its::IntExpression ires]:
   (
@@ -403,10 +442,10 @@ wrapBool returns [its::IntExpression ires] :
 
 /////////////////// utils & tokens
 initValues returns [std::vector<int> vres] :
-    val=INT 
-    {vres.push_back(toInt($val));}
-    (',' valSuite=INT
-    {vres.push_back(toInt($valSuite));}
+    val=integer 
+    {vres.push_back($val.res);}
+    (',' valSuite=integer
+    {vres.push_back($valSuite.res);}
     )*
 ;
 
@@ -439,6 +478,15 @@ qualifiedName returns [std::string res]:
   |('.'next=INT
   {$res=$res + "." + toString($next);})
   )*
+;
+
+
+integer returns [int res = 1] :
+  (
+  '-' { $res = -1 ;}
+  )?
+  value=INT
+  { $res = $res * toInt($value); }
 ;
 
 ID :
