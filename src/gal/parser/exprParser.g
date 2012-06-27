@@ -211,7 +211,7 @@ boolNot returns [its::BoolExpression bres] :
   ('!'
     current = boolPrimary
     {
-    $bres = $current.bres;
+    $bres = its::BoolExpressionFactory::createNot($current.bres);
     }
   ) 
   |
