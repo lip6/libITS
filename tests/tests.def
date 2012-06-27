@@ -70,8 +70,6 @@ GAL format, file : bakery.gal
 ../bin/its-reach -i test_models/gal/bakery.gal -t GAL --quiet
 GAL format, file : brp.gal
 ../bin/its-reach -i test_models/gal/brp.gal -t GAL --quiet
-GAL format, file : hanoi.gal
-../bin/its-reach -i test_models/gal/hanoi.gal -t GAL --quiet
 GAL format, file : loyd.gal
 ../bin/its-reach -i test_models/gal/loyd.gal -t GAL --quiet
 GAL format, file : lup.gal
