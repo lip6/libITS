@@ -1,6 +1,0 @@
-GAL format, file : reader_writer.gal
-../bin/its-reach -i test_models/gal/reader_writer.gal -t GAL
-
-its-reach command run as :
-
-../bin/its-reach  -i  test_models/gal/reader_writer.gal  -t  GAL  
