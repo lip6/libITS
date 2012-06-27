@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/train4.xml  -t  ROMEO  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-train4,28895,1.56,23608,2693,10,74891,31,243,65391,42,178,0
+train4,28895,1.57,23648,2693,10,74891,31,243,65391,42,179,0
  Total reachable state count : 28895
 

@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/gal/lup.gal  -t  GAL  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-lup.1.dve,4,0.29,2424,2,7,5,24,6,0,137,17,0
+lup.1.dve,4,0.3,2420,2,7,5,24,6,0,137,17,0
  Total reachable state count : 4
 
