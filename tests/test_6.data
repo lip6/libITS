@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/philo100.net  -t  PROD  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-NetMain,4.96926e+62,0.14,3644,418,3,3723,8,823,2022,6,8,0
- Total reachable state count : 4.969264057837466763405848771617841518625e+62
+NetMain,4.96926e+62,0.13,3636,418,3,3722,8,823,2021,6,8,0
+ Total reachable state count : 4.969264057837466763851863675588453981456e+62
 

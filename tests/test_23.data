@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/firewire_link.2.dve  -t  DVE  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-firewire\_link.2.dve,55887,8.22,32256,2,7301,5,144167,6,0,1547,129322,0
+firewire\_link.2.dve,55887,6.32,26076,2,7301,5,113245,6,0,1547,105465,0
  Total reachable state count : 55887
 

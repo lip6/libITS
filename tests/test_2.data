@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/fms10.net  --quiet  -t  PROD  --ddd  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-NetMain,2.50141e+09,0.05,3252,2,580,5,7040,6,0,135,6832,0
+NetMain,2.50141e+09,0.05,3284,2,580,5,7040,6,0,135,6832,0
  Total reachable state count : 2501413200
 

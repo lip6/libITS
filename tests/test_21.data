@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/hanoi.ori.1.dve  -t  DVE  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-hanoi.ori.1.dve,6561,8.52,72244,2,3918,5,430301,6,0,48,392850,0
+hanoi.ori.1.dve,6561,8.24,72316,2,3918,5,430301,6,0,48,392850,0
  Total reachable state count : 6561
 

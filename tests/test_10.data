@@ -6,6 +6,6 @@ its-reach command run as :
 ../bin/its-reach  -i  test_models/train4.xml  -t  ROMEO  --quiet  --load-order  test_models/train4.ord  --fixpoint  DFS  
 Successfully loaded order from file test_models/train4.ord
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-train4,28895,1.85,27656,2693,10,104110,66,243,84472,42,1281,0
+train4,28895,1.79,27664,2693,10,103954,66,243,83815,42,1288,0
  Total reachable state count : 28895
 

@@ -1,10 +1,10 @@
-GAL format, file : phils.gal
-../bin/its-reach -i test_models/gal/phils.gal -t GAL --quiet
+GAL format, file : reader_writer.gal
+../bin/its-reach -i test_models/gal/reader_writer.gal -t GAL --quiet
 
 its-reach command run as :
 
-../bin/its-reach  -i  test_models/gal/phils.gal  -t  GAL  --quiet  
+../bin/its-reach  -i  test_models/gal/reader_writer.gal  -t  GAL  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-phils.4.dve,340789,0.22,3056,2,328,5,4818,6,0,230,4722,0
- Total reachable state count : 340789
+reader\_writer.3.dve,604498,1.01,10528,2,420,5,48945,6,0,403,46992,0
+ Total reachable state count : 604498
 

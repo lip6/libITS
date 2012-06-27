@@ -1,10 +1,10 @@
-GAL format, file : lup.gal
-../bin/its-reach -i test_models/gal/lup.gal -t GAL --quiet
+GAL format, file : phils.gal
+../bin/its-reach -i test_models/gal/phils.gal -t GAL --quiet
 
 its-reach command run as :
 
-../bin/its-reach  -i  test_models/gal/lup.gal  -t  GAL  --quiet  
+../bin/its-reach  -i  test_models/gal/phils.gal  -t  GAL  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-lup.1.dve,4,0.3,2420,2,7,5,24,6,0,137,17,0
- Total reachable state count : 4
+phils.4.dve,340789,0.22,3044,2,328,5,4735,6,0,230,4637,0
+ Total reachable state count : 340789
 
