@@ -66,3 +66,17 @@ DVE format, reader-writer model
 ../bin/its-reach -i test_models/reader_writer.3.dve -t DVE --quiet
 DVE format, lamport model
 ../bin/its-reach -i test_models/lamport.2.dve -t DVE --quiet
+GAL format, file : bakery.gal
+../bin/its-reach -i test_models/gal/bakery.gal -t GAL --quiet
+GAL format, file : brp.gal
+../bin/its-reach -i test_models/gal/brp.gal -t GAL --quiet
+GAL format, file : hanoi.gal
+../bin/its-reach -i test_models/gal/hanoi.gal -t GAL --quiet
+GAL format, file : loyd.gal
+../bin/its-reach -i test_models/gal/loyd.gal -t GAL --quiet
+GAL format, file : lup.gal
+../bin/its-reach -i test_models/gal/lup.gal -t GAL --quiet
+GAL format, file : phils.gal
+../bin/its-reach -i test_models/gal/phils.gal -t GAL --quiet
+GAL format, file : reader_writer.gal
+../bin/its-reach -i test_models/gal/reader_writer.gal -t GAL --quiet

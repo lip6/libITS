@@ -6,6 +6,6 @@ its-reach command run as :
 ../bin/its-reach  -i  test_models/peterson.4.dve  -t  DVE  --load-order  test_models/peterson.ord  --quiet  
 Successfully loaded order from file test_models/peterson.ord
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-peterson.4.dve,1.11956e+06,11.11,66048,2,19997,5,274275,6,0,135,392128,0
+peterson.4.dve,1.11956e+06,14.76,73416,2,19997,5,300427,6,0,135,435296,0
  Total reachable state count : 1119560
 

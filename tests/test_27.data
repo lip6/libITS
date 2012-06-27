@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/fischer.1.dve  -t  DVE  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-fischer.1.dve,634,0.22,3808,2,143,5,7758,6,0,106,6754,0
+fischer.1.dve,634,0.24,4108,2,143,5,8289,6,0,109,6696,0
  Total reachable state count : 634
 

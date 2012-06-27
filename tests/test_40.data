@@ -1,0 +1,10 @@
+GAL format, file : phils.gal
+../bin/its-reach -i test_models/gal/phils.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/gal/phils.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+phils.4.dve,340789,0.21,3060,2,328,5,4807,6,0,230,4730,0
+ Total reachable state count : 340789
+

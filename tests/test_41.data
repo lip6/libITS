@@ -1,0 +1,10 @@
+GAL format, file : reader_writer.gal
+../bin/its-reach -i test_models/gal/reader_writer.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/gal/reader_writer.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reader\_writer.3.dve,604498,1.06,11808,2,420,5,59719,6,0,403,57906,0
+ Total reachable state count : 604498
+

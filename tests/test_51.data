@@ -1,0 +1,6 @@
+GAL format, file : train_gate.gal
+../bin/its-reach -i test_models/gal/train_gate.gal -t GAL
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/gal/train_gate.gal  -t  GAL  
