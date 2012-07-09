@@ -3,6 +3,7 @@
 #include <cassert>
 #include <typeinfo>
 
+#include "PIntExprVisitor.hh"
 
 
 namespace its {
@@ -59,6 +60,8 @@ class _PBoolExpression {
   virtual PIntExpression getFirstSubExpr () const = 0;
 
   virtual PIntExpression getSubExprExcept (int , int ) const =0;
+  
+  virtual void accept(PBoolExprVisitor *) const = 0;
 };
 
 
@@ -235,6 +238,9 @@ public :
     return PBoolExpressionFactory::createNary(getType(),res);    
   }
 
+  void accept (PBoolExprVisitor * v) const {
+    v->visitNaryBoolExpr (getType(), params);
+  }
 
 };
 
@@ -393,7 +399,9 @@ public :
     return PBoolExpressionFactory::createComparison(getType(),left.reindexVariables(newindex), right.reindexVariables(newindex));    
   }
 
-
+  void accept (PBoolExprVisitor * v) const {
+    v->visitBinaryBoolComp (getType(), left, right);
+  }
 
 };
 
@@ -555,7 +563,9 @@ public :
     return PBoolExpressionFactory::createNot(exp.reindexVariables(newindex));
   }
 
-
+  void accept (PBoolExprVisitor * v) const {
+    v->visitNotBoolExpr (exp);
+  }
 };
 
 class BoolConstExpr : public _PBoolExpression {
@@ -609,6 +619,9 @@ public :
     return this ;
   }
 
+  void accept (PBoolExprVisitor * v) const {
+    v->visitBoolConstExpr (val);
+  }
 
 };
 
@@ -846,6 +859,9 @@ BoolExprType PBoolExpression::getType() const {
   return concrete->getType();
 }
 
+void PBoolExpression::accept(PBoolExprVisitor * v) const {
+  concrete->accept(v);
+}
 
 size_t PBoolExpression::hash () const { 
   return ddd::knuth32_hash(reinterpret_cast<const size_t>(concrete)); 

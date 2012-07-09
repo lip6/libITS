@@ -104,6 +104,8 @@ public :
 
   /// To handle nested expressions (resolution in invert procedure). Returns a WrapBoolExpr(this) if there are no appropriate sub expr.
   PIntExpression getSubExprExcept (int,int) const;
+  
+  void accept(class PBoolExprVisitor *) const;
 };
 
 // binary comparisons

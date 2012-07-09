@@ -1204,6 +1204,11 @@ PIntExpression PIntExpression::operator& (const PAssertion &a) const {
 IntExprType PIntExpression::getType() const {
   return concrete->getType();
 }
+
+void PIntExpression::accept(PIntExprVisitor * v) const {
+  concrete->accept(v);
+}
+
 // binary
 PIntExpression operator-(const PIntExpression & l,const PIntExpression & r)  {
   return PIntExpressionFactory::createBinary(MINUS,l,r);

@@ -16,6 +16,16 @@ public:
   virtual void visitBinaryIntExpr (IntExprType, const class PIntExpression &, const class PIntExpression &) = 0;
 };
 
+class PBoolExprVisitor {
+public:
+  virtual ~PBoolExprVisitor() {}
+  
+  virtual void visitNaryBoolExpr (BoolExprType, const std::vector<class PBoolExpression> &) = 0;
+  virtual void visitBinaryBoolComp (BoolExprType, const class PIntExpression &, const class PIntExpression &) = 0;
+  virtual void visitNotBoolExpr (const class PBoolExpression &) = 0;
+  virtual void visitBoolConstExpr (bool) = 0;
+};
+
 } // namespace sym
 
 #endif /// ! PINTEXPR_VISITOR_HH_
