@@ -770,6 +770,10 @@ bool BoolExpression::operator== (const BoolExpression & other) const {
   return concrete == other.concrete ;
 }
 
+bool BoolExpression::operator< (const BoolExpression & other) const {
+  return concrete < other.concrete;
+}
+
 void BoolExpression::print (std::ostream & os) const {
   concrete->print(os);
 }
