@@ -6,6 +6,7 @@
 #include "hashfunc.hh"
 #include <typeinfo>
 
+#include "PIntExprVisitor.hh"
 
 namespace its {
 
@@ -78,6 +79,8 @@ class _PIntExpression {
   virtual PIntExpression reindexVariables (const PIntExpression::indexes_t & newindexes) const = 0;
   virtual PIntExpression getFirstSubExpr () const = 0;
   virtual PIntExpression getSubExprExcept (int,int) const = 0;
+  
+  virtual void accept (class PIntExprVisitor * visitor) const = 0;
 };
 
 
@@ -147,6 +150,10 @@ public :
     }
     return this;
   }
+  
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitVarExpr(varIndex);
+  }
 };
 
 class ConstExpr : public _PIntExpression {
@@ -197,6 +204,10 @@ public :
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & ) const {
     return this ;
+  }
+  
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitConstExpr(val);
   }
 };
 
@@ -280,6 +291,10 @@ public :
     return PIntExpressionFactory::wrapBoolExpr(bb);
   }
 
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitWrapBoolExpr(b);
+  }
+  
 };
 
 
@@ -361,7 +376,9 @@ public :
     return PIntExpressionFactory::createArrayAccess( newindex[var], index.reindexVariables(newindex));
   }
 
-
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitArrayVarExpr(var, index);
+  }
 };
 
 
@@ -431,6 +448,9 @@ public :
   // fall back on default a.getValue(this)
 //   PIntExpression setAssertion (const Assertion & a) const {   }
 
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitArrayConstExpr(var, index);
+  }
 
 };
 
@@ -615,7 +635,9 @@ public :
     return this;
   }
 
-
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitNaryIntExpr(getType(), params);
+  }
 };
 
 class PlusExpr : public NaryIntExpr {
@@ -788,7 +810,9 @@ public :
     return PIntExpressionFactory::createBinary(getType(),left.reindexVariables(newindex), right.reindexVariables(newindex));    
   }
 
-
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitBinaryIntExpr(getType(), left, right);
+  }
 };
 
 class MinusExpr : public BinaryIntExpr {

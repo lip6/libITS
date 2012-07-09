@@ -132,7 +132,7 @@ public :
   /// To allow partial resolution of expressions for invert computations. index -1 means any entry in the array (or a scalar var).
   PIntExpression getSubExprExcept (int var, int index) const ;
 
-
+  void accept(const class PIntExprVisitor *) const;
 };
 
 class PAssertion {
