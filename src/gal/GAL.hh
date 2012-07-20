@@ -59,8 +59,9 @@ public :
 private :
   BoolExpression guard_;
   actions_t actions_;
+  vLabel label_;
 public:
-  GuardedAction (Label name):NamedElement(name),guard_(BoolExpressionFactory::createConstant(true)) {};
+  GuardedAction (Label name):NamedElement(name),guard_(BoolExpressionFactory::createConstant(true)),label_("") {};
   void setGuard (const BoolExpression & guard) { guard_ = guard.eval(); }
   const BoolExpression & getGuard () const { return guard_; }
   actions_it begin() const { return actions_.begin() ; }
@@ -70,6 +71,9 @@ public:
   
   /// To get all the variables occuring in the guard expression or the actions
   std::set<Variable> getSupport() const;
+
+  Label getLabel () const { return label_ ;}
+  void setLabel (Label lab) { label_ = lab ; }
   
   bool operator==(const GuardedAction &) const;
 };
