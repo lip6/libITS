@@ -11,7 +11,7 @@
 #include "composite/CompositeXMLLoader.hh"
 #include "scalar/ScalarSetXMLLoader.hh"
 #include "scalar/CircularSetXMLLoader.hh"
-
+#include "gal/parser/GALParser.hh"
 
 void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_Char** Attr)
 {
@@ -49,6 +49,10 @@ void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_C
       model->declareType(*tcomp);
     } else if ( format == "ETF" && formalism == "PINS" ) {
       model->declareETFType(path);
+    } else if ( format == "GAL" && formalism == "GAL" ) {
+      // do the parsing
+      its::GAL * result = its::GALParser::loadGAL(path);
+      model->declareType (*result);
     } else {
       std::cerr << "Unrecognized format/formalism pair :" << format << "/" << formalism << std::endl;
       std::cerr << "When parsing type :" << name << std::endl;
