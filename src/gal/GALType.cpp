@@ -60,7 +60,8 @@ labels_t GALType::getTransLabels () const {
     d3::set<GHom>::type toadd;
 
     for (GAL::trans_it it = gal_->trans_begin() ; it != gal_->trans_end() ; ++it) {
-      toadd.insert(buildHom(*it) );
+      if (it->getLabel() == "")
+	toadd.insert(buildHom(*it) );
     }
     GHom sum = GHom::add(toadd);
 
@@ -71,12 +72,46 @@ labels_t GALType::getTransLabels () const {
     return localApply(  next, DEFAULT_VAR );
   }
 
+  /** Successors synchronization function : Bag(T) -> SHom.
+   * The collection represented by the iterator should be a multiset
+   * of transition labels of this type (as obtained through getTransLabels()).
+   * Otherwise, an assertion violation will be raised !!
+   * */
+  Transition GALType::getSuccs (const labels_t & tau) const {
+    Hom resultTrans = Hom::id;
+
+    // iterate on labels
+    for (labels_t::const_iterator it = tau.begin() ; it != tau.end() ; ++it) {
+      Hom labelAction;
+      bool isFirstTrWithLabel = true;
+      for (GAL::trans_it t = gal_->trans_begin() ; t != gal_->trans_end() ; ++t) {
+	if (t->getLabel() == *it) {
+	  if (! isFirstTrWithLabel) {
+	    labelAction = labelAction +  buildHom(*t) ;
+	  } else {
+	    // add the effect of this action
+	    labelAction =  buildHom(*t) ;
+	    isFirstTrWithLabel = false;
+	  }
+	}
+      }
+      if (isFirstTrWithLabel) {
+	std::cerr << "Asked for succ by transition "<< *it << " but no such transition label exists in type " << gal_->getName() << std::endl ;
+	assert(false);
+      }
+      resultTrans = labelAction & resultTrans ;
+    }
+    // The DDD state variant uses an intermediate variable called DEFAULT_VAR
+    return localApply(  resultTrans, DEFAULT_VAR );
+  }
+
   /** Return the set of local transitions, with their name, useful for diplaying.*
    * Used in witness trace/counter example construction scenarios.
    **/
   void GALType::getNamedLocals (namedTrs_t & ntrans) const {
     for (GAL::trans_it it = gal_->trans_begin() ; it != gal_->trans_end() ; ++it) {
-      ntrans.push_back(std::make_pair(it->getName() , localApply(buildHom(*it),DEFAULT_VAR)) );
+      if (it->getLabel() == "" )
+	ntrans.push_back(std::make_pair(it->getName() , localApply(buildHom(*it),DEFAULT_VAR)) );
     }
   }
 
