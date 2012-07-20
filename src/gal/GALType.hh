@@ -40,7 +40,7 @@ public :
    * of transition labels of this type (as obtained through getTransLabels()).
    * Otherwise, an assertion violation will be raised !!
    * */
-  Transition getSuccs (const labels_t & tau) const { return Transition::id; }
+  Transition getSuccs (const labels_t & tau) const ;
 
   /** To obtain a representation of a labeled state */
   State getState(Label stateLabel) const ;
