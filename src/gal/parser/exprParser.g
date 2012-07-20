@@ -26,6 +26,14 @@ options {
   static std::string toString(pANTLR3_COMMON_TOKEN i) {
     return std::string((const char *)i->getText(i)->chars);
   }
+
+  static std::string toStringTok(pANTLR3_COMMON_TOKEN i) {
+    char buff [2048];
+    strncpy(buff,((const char *)i->getText(i)->chars) + 1,2047);
+    buff[2047] = '\0';
+    buff[strlen(buff)-1]='\0';
+    return std::string(buff);
+  }
   
   // Returns an integer from a token, expected as a string of int.
   static int toInt(pANTLR3_COMMON_TOKEN i) {
@@ -136,7 +144,11 @@ transition
   current_ga->setGuard($gard.bres);
   }
   
-  ('label' label=STRING)?
+  ('label' label=STRING
+  {
+   current_ga->setLabel( toStringTok($label) );
+  }
+  )?
   
   '{'
   (
