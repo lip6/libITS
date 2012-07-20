@@ -57,6 +57,8 @@ namespace its {
     os << "  [ " ;
     guard_.print(os);
     os << " ] \n";
+    if (label_ != "") 
+      os << "label \"" << label_ << "\"" ;
     os << "     { " ;
     for (actions_it it = begin(); it != end() ; /*done in loop */ ) {
       it->print(os) ;
