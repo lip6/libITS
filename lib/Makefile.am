@@ -15,10 +15,12 @@ MYGALGRAMMARSRCDIR = $(MYGALSRCDIR)/parser
 
 
 MYANTLRHEADER = $(MYGALGRAMMARSRCDIR)/exprParserLexer.h \
-		$(MYGALGRAMMARSRCDIR)/exprParserParser.h
+		$(MYGALGRAMMARSRCDIR)/exprParserParser.h \
+		$(MYGALGRAMMARSRCDIR)/GALParser.hh
 
 MYANTLRSOURCES = $(MYGALGRAMMARSRCDIR)/exprParserLexer.cpp \
-		$(MYGALGRAMMARSRCDIR)/exprParserParser.cpp
+		$(MYGALGRAMMARSRCDIR)/exprParserParser.cpp \
+		$(MYGALGRAMMARSRCDIR)/GALParser.cpp
 
 
 
