@@ -71,6 +71,10 @@ bool Composite::addSyncPart (Label sname, Label subnetname, Label tname) {
 	const labels_t & sublabs = subnet->getType()->getTransLabels();
 	labels_it subtrans = find(sublabs.begin(), sublabs.end(), tname);
 	if (subtrans == sublabs.end()) {
+	  // Special case to avoid complaining about untimed components in a timed composition.
+	  if (tname == "elapse") {
+	    return false;
+	  }
 	  std::cerr << "Unknown event " << tname << " when handling addSyncPart("
 		    << sname << ","
 		    << subnetname << ","
