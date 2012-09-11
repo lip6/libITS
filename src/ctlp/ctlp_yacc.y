@@ -61,7 +61,7 @@ extern char * CtlpYytext;
 }
 
 %type <sf> error stateformula formula
-%type <str> name name_vector name_union name_or macro ax_mult ex_mult
+%type <str> name name_vector name_union name_or macro ax_mult ex_mult comparator
 
 %error_verbose 
 
@@ -91,6 +91,10 @@ extern char * CtlpYytext;
 %token TOK_OR
 %token TOK_NOT
 %token TOK_ASSIGN
+%token TOK_LT
+%token TOK_GT
+%token TOK_LEQ
+%token TOK_GEQ
 %token TOK_TRUE
 %token TOK_FALSE
 
@@ -210,33 +214,38 @@ stateformula : '(' stateformula ')'
      | stateformula TOK_XOR stateformula
        { $$ = Ctlp_FormulaCreate(Ctlp_XOR_c, $1, $3);
 	 CtlpGlobalFormula= $$; }
-     | name TOK_ASSIGN name
-       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, $3);
+     | name comparator name
+       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strcat3($2,"",$3));
+       FREE($3);
+       FREE($2);
 	 CtlpGlobalFormula= $$; }
-     | name TOK_ASSIGN name_union
-       { $$ = Ctlp_FormulaCreateOr($1, $3);
+     | name comparator name_union
+       { $$ = Ctlp_FormulaCreateOr($1, util_strcat3($2,"",$3));
 	 FREE($1);
+	 FREE($2);
 	 FREE($3);
 	 CtlpGlobalFormula= $$; }
-     | name_vector TOK_ASSIGN name
-       { $$ = Ctlp_FormulaCreateVectorAnd($1, $3);
+     | name_vector comparator name
+       { $$ = Ctlp_FormulaCreateVectorAnd($1, util_strcat3($2,"",$3));
 	 if ($$ == NIL(Ctlp_Formula_t)){
 	    CtlpYyerror("** ctl error : Matching ERROR");
 	    (void) fprintf(vis_stderr,"LHS token is not matched to RHS token, line %d.\n\n", CtlpYylineno);
 	    Ctlp_FormulaFree(CtlpGlobalFormula);
 	 }
 	 FREE($1);
+	 FREE($2);
 	 FREE($3);
 	 CtlpGlobalFormula= $$;
        }
-     | name_vector TOK_ASSIGN name_union
-       { $$ = Ctlp_FormulaCreateVectorOr($1, $3);
+     | name_vector comparator name_union
+       { $$ = Ctlp_FormulaCreateVectorOr($1, util_strcat3($2,"",$3));
 	 if ($$ == NIL(Ctlp_Formula_t)){
 	    CtlpYyerror("** ctl error : Matching ERROR");
 	    (void) fprintf(vis_stderr,"LHS token is not matched to RHS token, line %d\n\n", CtlpYylineno);
 	    Ctlp_FormulaFree(CtlpGlobalFormula);
 	 }
 	 FREE($1);
+	 FREE($2);
 	 FREE($3);
 	 CtlpGlobalFormula= $$; }
      | name TOK_EQIV name
@@ -255,23 +264,32 @@ stateformula : '(' stateformula ')'
 	 FREE($1);
 	 FREE($3);
 	 CtlpGlobalFormula= $$; }
-     | name TOK_ASSIGN TOK_FORALL
-       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strsav("A"));
+     | name comparator TOK_FORALL
+       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strcat3($2,"","A"));
+	 FREE($2);
 	 CtlpGlobalFormula= $$; }
-     | name TOK_ASSIGN TOK_EXISTS
-       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strsav("E"));
+     | name comparator TOK_EXISTS
+       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strcat3($2,"","E"));
+	 FREE($2);
 	 CtlpGlobalFormula= $$; }
-     | name TOK_ASSIGN TOK_UNTIL
-       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strsav("U"));
+     | name comparator TOK_UNTIL
+       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strcat3($2,"","U"));
+	 FREE($2);
 	 CtlpGlobalFormula= $$; }
-     | TOK_FORALL TOK_ASSIGN name
-       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav("A"), $3);
+     | TOK_FORALL comparator name
+       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav("A"), util_strcat3($2,"",$3));
+	 FREE($2);
+	 FREE($3);
 	 CtlpGlobalFormula= $$; }
-     | TOK_EXISTS TOK_ASSIGN name
-       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav("E"), $3);
+     | TOK_EXISTS comparator name
+       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav("E"), util_strcat3($2,"",$3));
+	 FREE($2);
+	 FREE($3);
 	 CtlpGlobalFormula= $$; }
-     | TOK_UNTIL TOK_ASSIGN name
-       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav("U"), $3);
+     | TOK_UNTIL comparator name
+       { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav("U"), util_strcat3($2,"",$3));
+	 FREE($2);
+	 FREE($3);
 	 CtlpGlobalFormula= $$; }
      | TOK_TRUE
        { $$ = Ctlp_FormulaCreate(Ctlp_TRUE_c, NIL(Ctlp_Formula_t), NIL(Ctlp_Formula_t));
@@ -294,6 +312,15 @@ name:  TOK_ID
      | TOK_ID2
        { (void) CtlpChangeBracket(CtlpYytext);
 	 $$ = util_strsav(CtlpYytext); };
+
+comparator : TOK_ASSIGN 
+       { $$ = util_strsav(CtlpYytext); }
+             | TOK_GT
+       { $$ = util_strsav(CtlpYytext); }
+             | TOK_LT { $$ = util_strsav(CtlpYytext); } 
+             | TOK_GEQ { $$ = util_strsav(CtlpYytext); } 
+             | TOK_LEQ { $$ = util_strsav(CtlpYytext); }
+;
 
 name_vector: TOK_ID_VECTOR
        { $$ = util_strsav(CtlpYytext); };

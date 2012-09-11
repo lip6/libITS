@@ -156,6 +156,10 @@ FALSE   { return(TOK_FALSE); }
 "->"	{ return(TOK_THEN); }
 "<->"	{ return(TOK_EQ); }
 =       { return(TOK_ASSIGN); }
+"<"     { return(TOK_LT); }
+">"     { return(TOK_GT); }
+">="    { return(TOK_LEQ); }
+"<="    { return(TOK_GEQ); }
 ==      { return(TOK_EQIV); }
 \,      { return(TOK_COMMA); }
 \\      { return(TOK_MACRO); }

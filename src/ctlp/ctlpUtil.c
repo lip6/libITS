@@ -200,7 +200,7 @@ Ctlp_FormulaConvertToString(
 
   /* The formula is a leaf. */
   if (formula->type == Ctlp_ID_c){
-    return util_strcat3((char *)(formula->left), "=",(char *)(formula->right));
+    return util_strcat3((char *)(formula->left), "",(char *)(formula->right));
   }
 
   /* If the formula is a non-leaf, the function is called recursively */
@@ -1921,9 +1921,10 @@ Ctlp_FormulaCreateVectorAnd(
   (void) sprintf(name,"%s[%d]",varName,startValue);
   (void) CtlpChangeBracket(name);
 
-  bitValue = ALLOC(char,2);
-  bitValue[0] = binValueStr[0];
-  bitValue[1] = '\0';
+  bitValue = ALLOC(char,3);
+  bitValue[0] = '=';
+  bitValue[1] = binValueStr[0];
+  bitValue[2] = '\0';
 
   formula = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav(name),
 			       util_strsav(bitValue));
@@ -1934,7 +1935,7 @@ Ctlp_FormulaCreateVectorAnd(
     j++;
     (void) sprintf(name,"%s[%d]",varName,startInd);
     (void) CtlpChangeBracket(name);
-    bitValue[0] = binValueStr[j];
+    bitValue[1] = binValueStr[j];
     tempFormula = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav(name),
 				     util_strsav(bitValue));
     formula = Ctlp_FormulaCreate(Ctlp_AND_c,formula,tempFormula);
@@ -2009,8 +2010,8 @@ Ctlp_FormulaCreateEquiv(
    char *one;
    char *zero;
 
-   one = "1";
-   zero = "0";
+   one = "=1";
+   zero = "=0";
 
    formula1 = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav(left),
 				 util_strsav(one));
