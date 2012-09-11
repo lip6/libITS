@@ -325,9 +325,9 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 
   its::Transition CTLChecker::getSelectorAP (Label apname, Label val) const {
 
-  vLabel predicate = apname + "=" + val;
+  vLabel predicate = apname +  val;
   its::Transition pred = model.getPredicate(predicate);
-  //  std::cout << pred << std::endl;
+//  std::cout << pred << std::endl;
   return pred;
 
 // BEFORE PREDICATE API INTRODUCED WAS :
