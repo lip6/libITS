@@ -4,16 +4,405 @@
 
 #include "DDD.h"
 #include "DED.h"
+#include "AdditiveMap.hpp"
+#include "IntExpression.hh"
 #include "ExprHom.hpp"
-#include "MLHom.h"
 
 namespace its {
 
-// predeclarations
-  MLHom queryExpression (const IntExpression & e, const VarOrder * vo);
 
-  GHom assertion (const Assertion & a, const VarOrder * vo);
+  typedef AdditiveMap<Assertion, GDDD> InfoNode;
+  typedef InfoNode::const_iterator InfoNode_it;
+
+
+// predeclarations
   GHom invertExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo, const GDDD & pot) ;
+
+
+  static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
+    // shortcuts
+    int vr = d.variable();
+    Variable curv = Variable(vo->getLabel(vr));    
+    // The final result
+    InfoNode res;
+    // To hold elements curently being treated
+    InfoNode tosolve;
+    // To hold potentially partially solved elements for next iteration
+    InfoNode remain;
+
+    // Initialize with the assertion that e=e
+    remain.add(IntExpressionFactory::createAssertion(e,e),d);
+
+    std::cerr << " Query for : " << e << std::endl ;
+
+    // As long as there are elements to treat
+    while (remain.begin() != remain.end()) {
+      // Put remain in "tosolve" and clear remain
+      tosolve = remain;
+      remain = InfoNode();
+      
+      // Solve (at least partially) all elements in "tosolve"
+      for (InfoNode_it in=tosolve.begin() ; in != tosolve.end() ; ++in ){
+	const Assertion & ass = in->first;
+	const GDDD & node = in->second;
+
+	std::cerr << "Solving element : " << ass << std::endl;
+	std::cerr << "curv : " << curv.getName() << std::endl;
+
+	// For each edge of the DDD
+	for (GDDD::const_iterator it = node.begin() ; it != node.end() ; ++it ) {
+	  // shortcut to edge value
+	  int vl = it->first;
+	  // An assertion representing this edge information
+	  Assertion assertion = IntExpressionFactory::createAssertion(curv, IntExpressionFactory::createConstant(vl));
+	  // Simplify the rhs of the current assertion by the info
+	  IntExpression r = ass.getRightHandSide() & assertion ;
+	  
+	  // If RHS is now a constant, we have finished solving
+	  if (r.getType() == CONST) {
+	    // add result to final res
+	    res.add(IntExpressionFactory::createAssertion(e,r), GDDD(vr,vl,it->second));
+	  
+	  // Otherwise more resolution of rhs is needed
+	  } else {
+	    
+	    // Do we need to do more resolution at this level of the structure ?
+	    // Because we first simplified r by the current edge assertion, 
+	    // This can only be true if current var is an array, and r has unresolved ARRAY access to it.
+	    if ( r.isSupport(curv) ) {
+	      
+	      std::cerr << "Iterating to solve nested expression" << std::endl;
+
+	      // Extract a subexpr from r and query for its value.
+	      // TODO : get a nested expression that concerns the current array
+	      InfoNode rhssolved = query (r.getFirstSubExpr(), vo, GDDD(vr,vl,it->second));
+	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+		// Add to remain for the next iteration of outer loop 
+		// The next iteration will work with a more resolved expression
+		remain.add(  IntExpressionFactory::createAssertion(e, r & jt->first), jt->second );
+	      }
+	     
+	    // If curv is no longer a target of the queried expression, propagate "r" as is to child
+	    } else {
+
+	      std::cerr << "Propagating query :" << r << std::endl;
+	      
+	      InfoNode rhssolved = query (r, vo, it->second);
+	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+		// Upgrade child result to refer to source expression as LHS, 
+		// reconstruct missing edge from child result
+		// and add to final result.
+		res.add(  IntExpressionFactory::createAssertion(e, r & jt->first), GDDD(vr, vl, jt->second ));
+	      }
+	      
+
+	    }
+
+	  }
+	  
+	}
+	
+      }
+      
+    }
+    std::cerr << " Query for : " << e << " Finished" << std::endl ;
+    return res;
+    
+  }
+
+
+  class _Assign : public _GHom {
+    IntExpression var;
+    IntExpression expr;
+    const VarOrder * vo;
+    public:
+    _Assign(const IntExpression & varr, const IntExpression & e, const VarOrder * vo) : var(varr), expr(e), vo(vo) {
+      assert(var.getType() == VAR || var.getType() == ARRAY || var.getType() == CONSTARRAY  );
+    }
+
+    
+    /* Eval */
+    GDDD
+    eval(const GDDD &d) const
+    {
+      if( d== GDDD::null)
+	{ return GDDD::null; }
+      else if( d == GDDD::one)
+	{ 
+	  std::cerr << "Assignment ";
+	  print(std::cerr);
+	  std::cerr << " produced an overflow error !"<< std::endl;
+	  return GDDD::null; 
+	}
+      else if( d== GDDD::top)
+	{ return GDDD::top; }
+      else
+	{
+	  int vr = d.variable();
+	  Variable curv = Variable(vo->getLabel(vr));
+	  std::set<GDDD> res;
+	  for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
+	    // current value
+	    int vl = it->first;
+	    // An assertion describing info on current arc: var = val
+	    Assertion assertion = IntExpressionFactory::createAssertion(curv,IntExpressionFactory::createConstant(it->first));
+	    
+	    // Simplify expr by current info
+	    IntExpression e = expr ;
+	    if (expr.isSupport(curv)) {
+	      e = e & assertion;
+	    }
+	    // If necessary (array access) try to simplify also lhs
+	    IntExpression v = var;
+	    if (v.getType() == ARRAY && var.isSupport(curv)) {
+	      v = var & assertion;
+	    }
+
+	    if (! e.equals(expr) || ! v.equals(var)) 
+	             std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
+			       << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+//			       << "i.e. :" << assertion << std::endl
+			       << " reduced to " << v << "=" << e << std::endl;
+
+	    // If the lhs is fully resolved to signify the current variable.
+	    // This can be a CONSTARRAY or plain VAR
+	    if ((v.getType() == VAR && vr == vo->getIndex(v.getName())) 
+		|| (v.getType() == CONSTARRAY && v.isSupport(curv))) {
+
+	      // Constant case
+	      if (e.getType() == CONST) {
+		// If the RHS is also resolved (to a constant)
+
+			std::cerr << "solved" << std::endl;
+		res.insert(GDDD(vr, e.getValue(), it->second));
+	      } else {
+		
+		// So LHS is resolved, but RHS still needs some work.
+		// Query for its resolved value, provide current variable value
+		// This (current) value may be necessary to solve tab[tab[i]] expressions.
+		InfoNode rhssolved = query (e, vo, GDDD(vr,vl,it->second));
+		for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+		  res.insert( assignExpr(v, e & jt->first, vo) ( jt->second ));
+		}
+	      }
+	    
+	    // The lhs is an unresolved ARRAY access that (may) use the current variable
+	    } else if (v.getType() == ARRAY && v.isSupport(curv)) {
+	      
+	      // Query for the value of a nested expression of lhs
+	      // TODO : get a nested expression that concerns the current array
+	      InfoNode rhssolved = query (v.getFirstSubExpr(), vo, GDDD(vr,vl,it->second));
+	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+		// Note that we also attempt to simplify rhs with the same subexpr result if possible
+		// The recursion works with a more resolved expression
+		res.insert( assignExpr(v & jt->first, e & jt->first, vo) ( jt->second ));
+	      }
+
+	    // The LHS does not concern the current variable
+	    // If the RHS still concerns the current variable, 
+	    // it is an unresolved array access to current array
+	    } else if (e.isSupport(curv)) {
+
+	      // Query for the value of a nested expression of rhs
+	      // TODO : get a nested expression that concerns the current array
+	      InfoNode rhssolved = query (e.getFirstSubExpr(), vo, GDDD(vr,vl,it->second));
+	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+
+		// The recursion works with a more resolved RHS expression
+		res.insert( assignExpr(v, e & jt->first, vo) ( jt->second ));
+	      }
+
+	    // Pure propagation of simplified expressions
+	    } else {
+	      // Neither lhs nor rhs concern current variable 
+	      // (anymore, they were simplified or skip would have taken effect)
+	      
+	      res.insert(GDDD(vr,vl, assignExpr(v,e,vo) (it->second) ));
+	    }
+
+	  } // end foreach arc of current node
+
+	  return DED::add(res);
+
+	} // end non terminal DDD case
+    }
+    
+    
+    
+    bool
+    skip_variable(int vr) const
+    {
+      Variable curv = Variable(vo->getLabel(vr));
+      bool b =  ! var.isSupport(curv)
+	&& ! expr.isSupport(curv);
+      //      std::cerr << "Assignment of:" << var << " = " << expr << std::endl
+      //  	      << "skips ? "<< b << " var " << vo->getLabel(vr) << std::endl;
+      return b;
+    }
+
+    _GHom * clone () const {  return new _Assign(*this); }
+
+    GHom invert (const GDDD & potall) const { 
+      std::cerr << "ERROR : invert not implemented !"<< std::endl;
+      return GHom::id;
+      //  TODO
+      // return invertExpr (var, expr, vo, potall);
+    }
+    
+    size_t hash() const {
+      return 6619*var.hash()^expr.hash();
+    }
+
+    /* Compare */
+    bool operator==(const _GHom &h) const {
+      if (const _Assign * other = dynamic_cast<const _Assign *> (&h)) {
+	return other->vo == vo && other->var.equals(this->var) && other->expr.equals(expr);
+      }
+      return false;
+    }
+
+    void print (std::ostream & os) const {
+      os << "Assign(" ;
+      os << var << "=";
+      expr.print(os);
+      os << ")";
+    }
+  };
+
+
+
+class _Predicate:public _GHom {
+  BoolExpression expr;
+  const VarOrder * vo;
+public:
+  _Predicate(const BoolExpression & e, const VarOrder *vo) : expr(e),vo(vo) {}
+  
+  GDDD phiOne() const {
+    std::cerr << "Overflow in Predicate when evaluating ";
+    expr.print(std::cerr);
+    return GDDD::null;
+  }                   
+
+  bool
+  skip_variable(int var) const
+  {
+    return ! expr.isSupport(Variable(vo->getLabel(var))) ;
+  }
+  
+  GDDD eval(const GDDD &d) const {
+    if( d== GDDD::null)
+      { return GDDD::null; }
+    else if( d == GDDD::one)
+      { 
+	std::cerr << "Predicate ";
+	print(std::cerr);
+	std::cerr << " produced an overflow error !"<< std::endl;
+	return GDDD::null; 
+      }
+    else if( d== GDDD::top)
+      { return GDDD::top; }
+    else
+      {
+	// current variable 
+	int vr = d.variable();
+	Variable curv = Variable(vo->getLabel(vr));
+	
+	// To hold result
+	std::set<GDDD> res;
+	
+	for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
+	  // current value
+	  int vl = it->first;
+	  // An assertion describing info on current arc: var = val
+	  Assertion assertion = IntExpressionFactory::createAssertion(curv,IntExpressionFactory::createConstant(it->first));
+	  	    
+	  // Simplify current expression by current edge.
+	  BoolExpression e = expr ;
+	  if (expr.isSupport(curv)) {
+	    e = e & assertion;
+	  }
+
+    //     if (! ( e == expr) ) 
+    //        std::cerr << "Predicate: Solving : " << expr << std::endl
+    //  		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+    //  		<< " reduced to " << e << std::endl;
+
+	  
+	  // Check if we now have a constant : Terminal case.
+	  if (e.getType() == BOOLCONST) {
+	    // Constant :
+	    if (e.getValue()) 
+	      // True : return current path
+	      res.insert(GDDD(vr,vl,it->second));
+	    // else
+	    // False : Cut current path from result
+	    // Not adding edge to res produces this effect
+	  } else {
+
+	    // If we still need current variable : 
+	    // this means current var is an array and that expr has nested access to it.
+	    if (e.isSupport(curv)) {
+
+	      // still need to resolve.
+	      // Extract a subexpr from e and query for its value.
+	      // TODO : get a nested expression that concerns the current array
+	      InfoNode rhssolved = query (e.getFirstSubExpr(), vo, GDDD(vr,vl, it->second));
+	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+		
+		// Allow to recurse with the simplified expression
+		res.insert ( predicate (e & jt->first, vo) (jt->second) );
+	      }
+	    
+	    // If RHS no longer targets curv, we can propagate to child
+	    } else {
+	      res.insert( GDDD(vr,vl, predicate ( e, vo) (it->second)));
+	    }
+	  } 
+	} // end foreach edge of node
+
+	return DED::add(res);
+      } // end non terminal case
+  }
+    
+  size_t hash() const {
+    return 16363*expr.hash();
+  }
+
+  bool operator==(const _GHom &s) const {
+    if (const _Predicate * other = dynamic_cast<const _Predicate *> (&s)) {
+      return other->vo == vo && other->expr==this->expr;
+    }
+    return false;
+  }
+
+  _GHom * clone () const {  return new _Predicate(*this); }
+  
+  bool is_selector() const { return true; }
+
+  void print (std::ostream & os) const {
+    os << "Predicate(" ;
+    expr.print(os);
+    os << ")";
+  }
+
+};
+
+GHom predicate (const BoolExpression & e, const VarOrder * vo) {
+  if (e.getType() == BOOLCONST) {
+    // Constant :
+    if (! e.getValue()) {
+      return GHom(GDDD::null);
+    } else {
+      return GHom::id;
+    }
+  }
+
+  return _Predicate(e,vo);
+}
+  
+GHom assignExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo) {
+  return _Assign(var,val,vo);
+}
 
 
 
@@ -41,6 +430,8 @@ static GDDD invertExprValues (const PIntExpression & expr, const PIntExpression 
   return DED::add(toret);
 }
 
+
+/**
 
 // assign an expression to a variable
 class _InvertExpr:public StrongHom {
@@ -486,88 +877,6 @@ GHom _InvertExpr::compose (const GHom & other) const {
 }
 
 
-
-class _Predicate:public StrongHom {
-  BoolExpression expr;
-  const VarOrder * vo;
-public:
-  _Predicate(const BoolExpression & e, const VarOrder *vo) : expr(e),vo(vo) {}
-  
-  GDDD phiOne() const {
-    std::cerr << "Overflow in Predicate when evaluating ";
-    expr.print(std::cerr);
-    return GDDD::null;
-  }                   
-
-  bool
-  skip_variable(int var) const
-  {
-    return ! expr.isSupport(Variable(vo->getLabel(var))) ;
-  }
-  
-  GHom phi(int vr, int vl) const {
-    BoolExpression e = expr ;
-    if (expr.isSupport(Variable(vo->getLabel(vr)))) {
-      e = e & IntExpressionFactory::createAssertion(Variable(vo->getLabel(vr)),IntExpressionFactory::createConstant(vl));
-    }
-// Eval is now included as a step of applying assertion 
-//     e = e.eval();
-
-//     if (! ( e == expr) ) 
-//        std::cerr << "Predicate: Solving : " << expr << std::endl
-//  		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
-//  		<< " reduced to " << e << std::endl;
-    
-    if (e.getType() == BOOLCONST) {
-      // Constant :
-      if (e.getValue()) 
-	return GHom(vr,vl);
-      else
-	return GDDD::null;
-    } else {
-      // still need to resolve.
-      IntExpression tmp = e.getFirstSubExpr();
-      if (! tmp.equals(0)){
-//	std::cerr << "BoolExpr: Still need to resolve :" << tmp << std::endl;
-	return MLHom( predicate(e,vo), MLHom(vr,vl,queryExpression(tmp,vo)));
-      } else {
-	return GHom(vr,vl, predicate(e,vo));
-      }
-    }
-  }
-  size_t hash() const {
-    return 16363*expr.hash();
-  }
-  bool operator==(const StrongHom &s) const {
-    _Predicate* ps = (_Predicate*)&s;
-    return expr == ps->expr;
-  }
-  _GHom * clone () const {  return new _Predicate(*this); }
-  GHom compose (const GHom & other) const ;
-   bool is_selector() const { return true; }
-
-  void print (std::ostream & os) const {
-    os << "Predicate(" ;
-    expr.print(os);
-    os << ")";
-  }
-
-
-};
-
-GHom predicate (const BoolExpression & e, const VarOrder * vo) {
-  if (e.getType() == BOOLCONST) {
-    // Constant :
-    if (! e.getValue()) {
-      return GHom(GDDD::null);
-    } else {
-      return GHom::id;
-    }
-  }
-
-  return _Predicate(e,vo);
-}
-
 GHom _Predicate::compose (const GHom & other) const {
   const _GHom * c = get_concret(other);
   if (typeid(*c) == typeid(_AssertionHom)) {
@@ -583,5 +892,7 @@ GHom _Predicate::compose (const GHom & other) const {
     return _GHom::compose(other);
   }
 }
+
+*/
 
 }
