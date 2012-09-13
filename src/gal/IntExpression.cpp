@@ -188,6 +188,19 @@ class _IntExpression {
 
 }
 
+  IntExpression Assertion::getLeftHandSide () const {
+    std::pair<PIntExpression, labels_t> aftergc = gc ( assertion.getFirst(), env );
+
+    return IntExpressionFactory::createIntExpression(aftergc.first, aftergc.second );    
+  }
+
+  IntExpression Assertion::getRightHandSide () const {
+    std::pair<PIntExpression, labels_t> aftergc = gc ( assertion.getSecond(), env );
+
+    return IntExpressionFactory::createIntExpression(aftergc.first, aftergc.second );    
+  }
+
+
 size_t Assertion::hash() const {
   size_t toret = 37459 ^ assertion.hash();
   for (labels_it it = env.begin() ; it != env.end() ; ++it ) {

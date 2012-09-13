@@ -122,6 +122,12 @@ public :
   const PAssertion & getAssertion() const { return assertion; }
   const labels_t & getEnv() const { return env ;}
 
+  /// More involved accessor to extract the lhs and rhs
+  IntExpression getLeftHandSide () const;
+  IntExpression getRightHandSide () const;
+
+
+
   // for pretty print
   void print (std::ostream & os) const;
 };
