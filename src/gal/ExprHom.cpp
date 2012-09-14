@@ -7,19 +7,100 @@
 #include "AdditiveMap.hpp"
 #include "IntExpression.hh"
 #include "ExprHom.hpp"
+// For hash maps
+#include "util/configuration.hh"
 
 namespace its {
 
-
+// Useful Typedefs : for cache values = pair<Info=Assertion,node>
   typedef AdditiveMap<Assertion, GDDD> InfoNode;
   typedef InfoNode::const_iterator InfoNode_it;
+// For cache keys : pair <expression to query,node>
+  typedef std::pair<IntExpression,GDDD> map_key_type;
 
-
-// predeclarations
+  // predeclaration: to invert Expressions
   GHom invertExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo, const GDDD & pot) ;
+  // predeclaration: a function to compute queries (no cache)
+  static InfoNode queryEval (const IntExpression & e, const VarOrder * vo, const GDDD & d) ;
+  // Caches calls to previous function
+  static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) ;
 
 
+  // A Cache to hold Queries
+  class QueryCache
+  {
+  private:
+    mutable size_t peak_;
+  
+    typedef hash_map< std::pair<IntExpression, GDDD>, InfoNode >::type hash_map; 
+    hash_map cache_;
+    
+  public:
+    QueryCache () : peak_ (0) {};
+    
+    /// clear the cache, discarding all values. 
+    void clear (bool keepstats = false) {
+      peak();
+      cache_.clear();
+    }
+
+    size_t peak () const {
+      size_t s = size();
+      if ( peak_ < s )
+	peak_ = s;
+      return peak_;
+    }
+    
+    
+    size_t size () const {
+      return cache_.size();
+    }
+
+    std::pair<bool,InfoNode>
+    insert(const IntExpression& expr, const GDDD& node, const VarOrder * vo)
+    {
+      bool found;
+      map_key_type key= std::make_pair(expr,node);
+      { // lock on current bucket
+	hash_map::const_accessor access;
+	found = cache_.find ( access, key);
+	if (found)
+	  return std::make_pair(false, access->second);
+      } // end of lock on the current bucket
+      
+      // wasn't in cache
+      InfoNode result = queryEval(expr, vo, node);
+      // lock on current bucket
+      hash_map::accessor access;
+      bool insertion = cache_.insert ( access, key);
+      if (insertion) {
+	// should happen except in MT case
+	access->second = result;
+      }
+      return std::make_pair(insertion,result);
+    }
+    
+#ifdef HASH_STAT
+    std::map<std::string, size_t> get_hits() const { return cache_.get_hits(); }
+    std::map<std::string, size_t> get_misses() const { return cache_.get_misses(); }
+    std::map<std::string, size_t> get_bounces() const { return cache_.get_bounces(); }
+#endif // HASH_STAT    
+  };
+  
+
+
+
+
+  
   static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
+  // The actual cache instance used
+    static QueryCache queryCache_ = QueryCache();
+//    return queryEval(e,vo,d);
+    return queryCache_.insert(e,d,vo).second;
+  }
+
+
+  static InfoNode queryEval (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
     // shortcuts
     int vr = d.variable();
     Variable curv = Variable(vo->getLabel(vr));    
@@ -33,7 +114,7 @@ namespace its {
     // Initialize with the assertion that e=e
     remain.add(IntExpressionFactory::createAssertion(e,e),d);
 
-    std::cerr << " Query for : " << e << std::endl ;
+//    std::cerr << " Query for : " << e << std::endl ;
 
     // As long as there are elements to treat
     while (remain.begin() != remain.end()) {
@@ -46,8 +127,8 @@ namespace its {
 	const Assertion & ass = in->first;
 	const GDDD & node = in->second;
 
-	std::cerr << "Solving element : " << ass << std::endl;
-	std::cerr << "curv : " << curv.getName() << std::endl;
+//	std::cerr << "Solving element : " << ass << std::endl;
+//	std::cerr << "curv : " << curv.getName() << std::endl;
 
 	// For each edge of the DDD
 	for (GDDD::const_iterator it = node.begin() ; it != node.end() ; ++it ) {
@@ -85,7 +166,7 @@ namespace its {
 	    // If curv is no longer a target of the queried expression, propagate "r" as is to child
 	    } else {
 
-	      std::cerr << "Propagating query :" << r << std::endl;
+//	      std::cerr << "Propagating query :" << r << std::endl;
 	      
 	      InfoNode rhssolved = query (r, vo, it->second);
 	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
@@ -105,7 +186,7 @@ namespace its {
       }
       
     }
-    std::cerr << " Query for : " << e << " Finished" << std::endl ;
+//    std::cerr << " Query for : " << e << " Finished" << std::endl ;
     return res;
     
   }
@@ -158,11 +239,11 @@ namespace its {
 	      v = var & assertion;
 	    }
 
-	    if (! e.equals(expr) || ! v.equals(var)) 
-	             std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
-			       << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+//	    if (! e.equals(expr) || ! v.equals(var)) 
+//	             std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
+//			       << "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
 //			       << "i.e. :" << assertion << std::endl
-			       << " reduced to " << v << "=" << e << std::endl;
+//			       << " reduced to " << v << "=" << e << std::endl;
 
 	    // If the lhs is fully resolved to signify the current variable.
 	    // This can be a CONSTARRAY or plain VAR
@@ -173,7 +254,7 @@ namespace its {
 	      if (e.getType() == CONST) {
 		// If the RHS is also resolved (to a constant)
 
-			std::cerr << "solved" << std::endl;
+//			std::cerr << "solved" << std::endl;
 		res.insert(GDDD(vr, e.getValue(), it->second));
 	      } else {
 		
