@@ -212,8 +212,7 @@ void dve_parser_t::done()
       }
      else
       {
-       terr << "There are stored" << subexpr_stack.size() << " expression "
-            << " instead of the single one" << thr();
+	terr << "There are " << ((long int)subexpr_stack.size()) << " stored expressions instead of the single one"  << thr();
       }
    else
      dve_expression_to_fill->swap(*subexpr_stack.top());
@@ -317,7 +316,7 @@ void dve_parser_t::var_decl_array_size(const int bound)
  if (current_bound<=0)
    SYN_ERR("Error: Array bound can't be less than 1." << thr());
  if (current_bound>=DVE_MAX_ARRAY_SIZE)
-   SYN_ERR("Error: Array bound can't be more than " << DVE_MAX_ARRAY_SIZE <<
+   SYN_ERR("Error: Array bound can't be more than " << ((long int)DVE_MAX_ARRAY_SIZE) <<
            thr());
 }
 
@@ -897,9 +896,9 @@ void dve_parser_t::trans_sync(const char * name, const int sync,
      if (p_symbol->get_channel_typed() &&
          current_sync_expr_list.size()!=p_symbol->get_channel_type_list_size())
        SYN_ERR("Channel " << name << " requires exactly "
-               << p_symbol->get_channel_type_list_size()
+               << ((long int)p_symbol->get_channel_type_list_size())
                << " values to transmit simultaneously (only "
-               << current_sync_expr_list.size() << " values given)." << thr());
+               << ((long int)current_sync_expr_list.size()) << " values given)." << thr());
      if (sync==2) //=>receive
       {
        for (std::list<dve_expression_t*>::iterator i =
@@ -951,8 +950,8 @@ void dve_parser_t::trans_sync(const char * name, const int sync,
      p_symbol->set_channel_item_count(current_sync_expr_list.size());
    else if (p_symbol->get_channel_item_count()!=current_sync_expr_list.size())
      SYN_ERR("Untyped channel " << name << " have been used to transmit " <<
-             p_symbol->get_channel_item_count() << " values in past. " <<
-             "But here it transmits " << current_sync_expr_list.size() <<
+             ((long int)p_symbol->get_channel_item_count()) << " values in past. " <<
+             "But here it transmits " << ((long int)current_sync_expr_list.size()) <<
              " values." << thr());
    //else everything is all right
   }
@@ -1056,12 +1055,11 @@ void dve_parser_t::check_restrictions_put_on_property()
                       psymbol_table->get_variable(assign_to->get_ident_gid());
      if (var->get_process_gid() == NO_ID) //if a variable is global...
       {
-       SYN_ERR("Property process cannot assign to global variables "
-               "(but is does here: " <<
-               effect->get_source_first_line() << ":" <<
-               effect->get_source_first_col() << "-" <<
-               effect->get_source_last_line() << ":" <<
-               effect->get_source_last_col() << ")" << thr());
+       SYN_ERR("Property process cannot assign to global variables (but is does here: " <<
+	       ((const char *)  effect->get_source_first_line()) << ":" <<
+               ((long int)effect->get_source_first_col()) << "-" <<
+               ((long int)effect->get_source_last_line()) << ":" <<
+               ((long int)effect->get_source_last_col()) << ")" << thr());
       }
     }
   }
@@ -1365,7 +1363,7 @@ dve_expression_t * dve_parser_t::get_expression() const
     }
    else
     {
-     terr << "There are stored" << subexpr_stack.size() << " expression "
+      terr << "There are stored" << ((long int)subexpr_stack.size()) << " expression "
           << " instead of the single one" << thr();
      return 0;
     }
