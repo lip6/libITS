@@ -80,7 +80,9 @@ namespace dve2GAL {
 						  get_process_gid())->get_name(); //name of process
 		vname <<".";
 	      }
-	  }
+	  } else {
+	  return convertInt (* parent_table->get_variable(expr.get_ident_gid())->get_init_expr());
+	}
 	vname << parent_table->get_variable(expr.get_ident_gid())->get_name();
 	// ostr << "\")";
 	return IntExpressionFactory::createVariable(Variable(vname.str()));
