@@ -137,8 +137,6 @@ class error_string_t
    { return *errstr.s; }
  error_string_t & operator<<(const unsigned long int i)
    { return plus<unsigned long int>(i); }
- error_string_t & operator<<(const size_t i)
-   { return plus<size_t>(i); }
  error_string_t & operator<<(const signed long int i)
    { return plus<signed long int>(i); }
  error_string_t & operator<<(const unsigned int i)
