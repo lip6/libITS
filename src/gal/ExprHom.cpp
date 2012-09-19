@@ -3,6 +3,7 @@
 
 
 #include "DDD.h"
+#include "MemoryManager.h"
 #include "DED.h"
 #include "AdditiveMap.hpp"
 #include "IntExpression.hh"
@@ -87,16 +88,37 @@ namespace its {
 #endif // HASH_STAT    
   };
   
+  static QueryCache & getQueryCache();
+
+  class CacheHook : public GCHook {
+  public :
+    void preGarbageCollect() {
+      getQueryCache().clear();
+    }
+    void postGarbageCollect() {};
+
+  };
+
+
+  // the cache
+  static QueryCache & getQueryCache() {
+    static QueryCache queryCache = QueryCache();
+    static bool first = true;
+    if (first) {
+      MemoryManager::addHook(new CacheHook());
+      first = false;
+    }
+    return queryCache;
+  }
 
 
 
 
   
   static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
-  // The actual cache instance used
-    static QueryCache queryCache_ = QueryCache();
+   
 //    return queryEval(e,vo,d);
-    return queryCache_.insert(e,d,vo).second;
+    return getQueryCache().insert(e,d,vo).second;
   }
 
 
