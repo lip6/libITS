@@ -218,7 +218,13 @@ namespace dve2GAL {
       case T_BOOL_NOT:
 	return BoolExpressionFactory::createNot( convertBool(*expr.right() ));
 
+	
+      case T_DOT :
+	return in_state(parent_table->get_state(expr.get_ident_gid())->get_process_gid(),parent_table->get_state(expr.get_ident_gid())->get_lid());
+	
+
       default :
+	return BoolExpressionFactory::createComparison(NEQ, convertInt(expr), IntExpressionFactory::createConstant(0));
 	std::cerr << "Parse error from divine file, unexpected node \""<<  getOp( expr.get_operator() ) << "\" where BoolExpression expected"<< std::endl;
 	throw "Parse error in divine file.";
 
