@@ -266,21 +266,17 @@ labels_t GALType::getTransLabels () const {
       std::string proc = predicate.substr (0, dot_pos);
       // get state name
       std::string state = predicate.substr (dot_pos+1, predicate.size()-dot_pos-1);
-      std::cerr << proc << " : " << state << std::endl;
       int nb_state = -1;
       // look for the index of the state name in process
       for (size_t i = 0 ; i < dve->get_process_count () && nb_state == -1; ++i)
       {
-        std::cerr << dve->get_symbol_table ()->get_process (i)->get_name () << std::endl;
         if (! proc.compare (dve->get_symbol_table ()->get_process (i)->get_name ()))
         {
-          std::cerr << "enter the if" << std::endl;
           divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (i));
           assert (current_process);
           for (size_t j = 0 ; j < current_process->get_state_count () ; ++j)
           {
             size_t sgid = current_process->get_state_gid (j);
-            std::cerr << current_process->get_symbol_table ()->get_state (sgid)->get_name () << std::endl;
             if (! state.compare (current_process->get_symbol_table ()->get_state (sgid)->get_name ()))
             {
               nb_state = j;
