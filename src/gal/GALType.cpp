@@ -4,6 +4,8 @@
 #include "Hom_Basic.hh"
 #include "ExprHom.hpp"
 
+#include "divine/dve2GAL.hh"
+
 #include <algorithm>
 
 #define DEFAULT_VAR 0
@@ -21,7 +23,7 @@ labels_t GALType::getTransLabels () const {
 }
 
   /** To obtain a representation of a labeled state */
-  State GALType::getState(Label stateLabel) const {
+  State GALType::getState(Label) const {
     // converting to DDD first
     DDD M0 = DDD::one;
     const VarOrder & vo = *getVarOrder();
@@ -233,5 +235,86 @@ labels_t GALType::getTransLabels () const {
     return vnames;
   }
 
+  /********* class GALDVEType ************/
+  
+  GALDVEType::GALDVEType (const GAL * g, dve2GAL::dve2GAL * d): GALType (g)
+  {
+    setDVE2GAL (d);
+  }
+  
+  GALDVEType::GALDVEType (const GAL * g): GALType (g) {}
+  
+  void GALDVEType::setDVE2GAL (dve2GAL::dve2GAL * d)
+  {
+    dve = d;
+  }
+  
+  Transition GALDVEType::getAPredicate (Label predicate) const
+  {
+    std::string new_pred;
+    // if the given predicate is of the form "P.CS"
+    // turn it into "P.state=0" (if 0 is the index of CS
+    // this happens only if the predicate does have (=|<|>|<=|>=|!=) in it
+    if (    (predicate.find_first_of ('=') == std::string::npos)
+        &&  (predicate.find_first_of ('<') == std::string::npos)
+        &&  (predicate.find_first_of ('>') == std::string::npos))
+    {
+      // look for the '.' that separates between process' name and state's name
+      size_t dot_pos = predicate.find_first_of ('.');
+      assert (dot_pos != std::string::npos);
+      // get process name
+      Label proc = predicate.substr (0, dot_pos);
+      // get state name
+      Label state = predicate.substr (dot_pos+1, predicate.size()-dot_pos-1);
+      int nb_state = -1;
+      // look for the index of the state name in process
+      for (size_t i = 0 ; i < dve->get_process_count () && nb_state == -1; ++i)
+      {
+        if (predicate == dve->get_symbol_table ()->get_process (i)->get_name ())
+        {
+          divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (i));
+          assert (current_process);
+          for (size_t j = 0 ; j < current_process->get_state_count () ; ++j)
+          {
+            size_t sgid = current_process->get_state_gid (j);
+            if (state == current_process->get_symbol_table ()->get_state (sgid)->get_name ())
+            {
+              nb_state = j;
+              break;
+            }
+          }
+        }
+      }
+      assert (nb_state >= 0);
+      // build the new string
+      std::stringstream tmp;
+      tmp << proc << ".state=" << nb_state;
+      new_pred = tmp.str ();
+    }
+    else
+    {
+      // nothing to do
+      new_pred = predicate;
+    }
+    
+    return GALType::getAPredicate (new_pred);
+  }
+  
+  /******** class GALDVETypeFactory **************/
+  
+  GALType * GALTypeFactory::createGALType (const GAL * g)
+  {
+    return new GALType (g);
+  }
+  
+  GALType * GALTypeFactory::createGALDVEType (Label path)
+  {
+    struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
+    std::string modelName = wibble::str::basename(path); 
+    loader->setModelName(modelName);
+    loader->read( path.c_str() );
+    loader->analyse();
+    return new GALDVEType (loader->convertFromDve(), loader);
+  }
 
 } // namespace

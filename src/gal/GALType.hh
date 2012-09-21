@@ -5,6 +5,11 @@
 #include "GAL.hh"
 #include "TypeVisitor.hh"
 
+// forward declaration
+namespace dve2GAL {
+  class dve2GAL;
+}
+
 namespace its {
 
   
@@ -51,7 +56,7 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition getAPredicate (Label predicate) const ;
+  virtual Transition getAPredicate (Label predicate) const ;
 
   /* delegated */
   std::ostream & print (std::ostream & os) const { os << *gal_ ; return os ; }
@@ -82,6 +87,27 @@ public :
   
 };
 
+class GALDVEType : public GALType {
+  struct dve2GAL::dve2GAL * dve;
+public:
+  GALDVEType (const GAL *, dve2GAL::dve2GAL *);
+  GALDVEType (const GAL *);
+  
+  void setDVE2GAL (dve2GAL::dve2GAL *);
+  
+  /** The state predicate function : string p -> SHom.
+   *  returns a selector homomorphism that selects states verifying the predicate 'p'.
+   *  This class supports the original LTL syntax from DVE/BEEM.
+   *  Especially, it interprets correctly "P0.CS" as "P0.state='index of CS'".
+   */
+  Transition getAPredicate (Label predicate) const ;
+};
+
+class GALTypeFactory {
+public:
+  static GALType * createGALType (const GAL *);
+  static GALType * createGALDVEType (Label);
+};
 
 }
 

@@ -33,6 +33,8 @@
 // GAL parser
 #include "gal/parser/GALParser.hh"
 
+#include "gal/GALType.hh"
+
 using std::string;
 using std::cerr;
 using std::endl;
@@ -235,10 +237,10 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case DVE :
     {
-      const GAL * gal = loadDve2Gal(pathinputff);
-      model.declareType (*gal);
+      pType newtype = GALTypeFactory::createGALDVEType (pathinputff);
+      model.addType (newtype);
       
-      model.setInstance(gal->getName(), "main");
+      model.setInstance(newtype->getName(), "main");
       model.setInstanceState("init");
       break;
     }
