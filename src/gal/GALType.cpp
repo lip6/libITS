@@ -41,14 +41,14 @@ labels_t GALType::getTransLabels () const {
   }
 
   GHom GALType::buildHom(const GuardedAction & it) const {
-        
+
     GHom guard = predicate ( it.getGuard(), getVarOrder());
     GHom action = GHom::id;
     for (GuardedAction::actions_it jt = it.begin() ; jt != it.end() ; ++ jt) {
       GHom todo;
-      if (jt->getVariable().getType() == VAR && jt->getExpression().getType() == CONST) 
+      if (jt->getVariable().getType() == VAR && jt->getExpression().getType() == CONST)
 	todo = setVarConst ( getVarOrder()->getIndex(jt->getVariable().getName()), jt->getExpression().getValue());
-      else 
+      else
 	todo =  assignExpr(jt->getVariable(), jt->getExpression(),getVarOrder());
       action = todo & action;
     }
@@ -117,7 +117,7 @@ labels_t GALType::getTransLabels () const {
     }
   }
 
-  
+
 
   /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
    *  Uses the provided "reachable" states to compute the variable domains. */
@@ -140,11 +140,11 @@ labels_t GALType::getTransLabels () const {
 
 
   /** Return a Transition that maps states to their observation class.
-   *  Observation class is based on the provided set of observed variables, 
-   *  in standard "." separated qualified variable names. 
+   *  Observation class is based on the provided set of observed variables,
+   *  in standard "." separated qualified variable names.
    *  The returned Transition replaces the values of non-observed variables
    *  by their domain.
-   **/ 
+   **/
   Transition GALType::observe (labels_t obs, State potential) const {
     if (obs.empty()) {
       return potential;
@@ -157,14 +157,14 @@ labels_t GALType::getTransLabels () const {
     // each place = one var as indicated by varOrder
     for (int i=vo.size()-1 ; i >= 0  ; --i) {
       Label varname = vo.getLabel(i);
-      
+
       labels_it it = find(obs.begin(), obs.end(),varname);
       if (it != obs.end()) {
 	// var is observed
 	obs_index.push_back(i);
-      } 
+      }
     }
-    
+
     return localApply ( observeVars(obs_index,* ( (const DDD *) potential.begin()->first) ), DEFAULT_VAR );
   }
 
@@ -176,14 +176,14 @@ labels_t GALType::getTransLabels () const {
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   Transition GALType::getAPredicate (Label predicate) const {
-  
-    
+
+
     AtomicPredicate pred = parseAtomicPredicate(predicate);
-    
-    
+
+
     //      std::cerr << "Petri net parsed predicate var:" << var << " comp:" << comp << " value:"<<val <<std::endl;
     //      std::cerr << "Translates to hom :" << Semantics::getHom ( foo, index, value) << std::endl;
-    
+
     return  localApply( (*pred.comp) (pred.var , pred.val), DEFAULT_VAR );
   }
 
@@ -206,7 +206,7 @@ labels_t GALType::getTransLabels () const {
       return false;
     } else if ( valb == -1 && vala >= 0 ) {
       return true;
-    } 
+    }
     // case 2 : we have two indexed variables, same index, revert to lexico
     else if ( vala == valb ) {
       return a < b;
@@ -217,7 +217,7 @@ labels_t GALType::getTransLabels () const {
     }
   }
 
-  labels_t GALType::getVarSet () const 
+  labels_t GALType::getVarSet () const
   {
     labels_t vnames ;
     for (GAL::arrays_it it = gal_->arrays_begin() ; it != gal_->arrays_end() ; ++it ) {
@@ -228,27 +228,27 @@ labels_t GALType::getTransLabels () const {
     for (GAL::vars_it it = gal_->vars_begin() ; it != gal_->vars_end(); ++it ) {
       vnames.push_back(it->getName());
     }
-   
+
     // sort attempt to get variables closer together.
     sort(vnames.begin(), vnames.end(), & less_var ) ;
- 
+
     return vnames;
   }
 
   /********* class GALDVEType ************/
-  
+
   GALDVEType::GALDVEType (const GAL * g, dve2GAL::dve2GAL * d): GALType (g)
   {
     setDVE2GAL (d);
   }
-  
+
   GALDVEType::GALDVEType (const GAL * g): GALType (g) {}
-  
+
   void GALDVEType::setDVE2GAL (dve2GAL::dve2GAL * d)
   {
     dve = d;
   }
-  
+
   Transition GALDVEType::getAPredicate (Label predicate) const
   {
     std::string new_pred;
@@ -256,8 +256,8 @@ labels_t GALType::getTransLabels () const {
     // turn it into "P.state=0" (if 0 is the index of CS
     // this happens only if the predicate does have (=|<|>|<=|>=|!=) in it
     if (    (predicate.find_first_of ('=') == std::string::npos)
-        &&  (predicate.find_first_of ('<') == std::string::npos)
-        &&  (predicate.find_first_of ('>') == std::string::npos))
+	&&  (predicate.find_first_of ('<') == std::string::npos)
+	&&  (predicate.find_first_of ('>') == std::string::npos))
     {
       // look for the '.' that separates between process' name and state's name
       size_t dot_pos = predicate.find_first_of ('.');
@@ -270,20 +270,28 @@ labels_t GALType::getTransLabels () const {
       // look for the index of the state name in process
       for (size_t i = 0 ; i < dve->get_process_count () && nb_state == -1; ++i)
       {
-        if (! proc.compare (dve->get_symbol_table ()->get_process (i)->get_name ()))
-        {
-          divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (i));
-          assert (current_process);
-          for (size_t j = 0 ; j < current_process->get_state_count () ; ++j)
-          {
-            size_t sgid = current_process->get_state_gid (j);
-            if (! state.compare (current_process->get_symbol_table ()->get_state (sgid)->get_name ()))
-            {
-              nb_state = j;
-              break;
-            }
-          }
-        }
+	if (! proc.compare (dve->get_symbol_table ()->get_process (i)->get_name ()))
+	{
+	  divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (i));
+	  assert (current_process);
+	  for (size_t j = 0 ; j < current_process->get_state_count () ; ++j)
+	  {
+	    size_t sgid = current_process->get_state_gid (j);
+	    if (! state.compare (current_process->get_symbol_table ()->get_state (sgid)->get_name ()))
+	    {
+
+	      // This piece of code track question on a single state
+	      // inside of a Process
+	      if ( current_process->get_state_count () == 1)
+		{
+		  return Transition::id;
+		}
+
+	      nb_state = j;
+	      break;
+	    }
+	  }
+	}
       }
       assert (nb_state >= 0);
       // build the new string
@@ -296,21 +304,21 @@ labels_t GALType::getTransLabels () const {
       // nothing to do
       new_pred = predicate;
     }
-    
+
     return GALType::getAPredicate (new_pred);
   }
-  
+
   /******** class GALDVETypeFactory **************/
-  
+
   GALType * GALTypeFactory::createGALType (const GAL * g)
   {
     return new GALType (g);
   }
-  
+
   GALType * GALTypeFactory::createGALDVEType (Label path)
   {
     struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
-    std::string modelName = wibble::str::basename(path); 
+    std::string modelName = wibble::str::basename(path);
     loader->setModelName(modelName);
     loader->read( path.c_str() );
     loader->analyse();
