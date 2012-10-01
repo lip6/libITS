@@ -92,6 +92,8 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   // For parameters to Force tool
   string orderHeuristic = "";
+  
+  bool stutterOnDeadlock = false;
 
   std::vector<const char *> argsleft;
 
@@ -167,6 +169,11 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
    } else if (! strcmp(argv[i],"--sdd")   ) {
      model.setStorage(sdd_storage);
 
+     /** STUTTERING ON DEADLOCKS STRATEGIES
+      ** \warning only valid for GAL and DVE */
+   } else if (! strcmp(argv[i],"--stutter")   ) {
+     stutterOnDeadlock = true;
+
      /** LEFTOVER OPTIONS */
    } else {
      argsleft.push_back(argv[i]);
@@ -237,7 +244,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case DVE :
     {
-      pType newtype = GALTypeFactory::createGALDVEType (pathinputff);
+      pType newtype = GALTypeFactory::createGALDVEType (pathinputff, stutterOnDeadlock);
       model.addType (newtype);
       
       model.setInstance(newtype->getName(), "main");
@@ -249,7 +256,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     
       // do the parsing
       GAL * result = GALParser::loadGAL(pathinputff);
-      model.declareType (*result);
+      model.declareType (*result, stutterOnDeadlock);
       
       model.setInstance(result->getName(), "main");
       model.setInstanceState("init");
@@ -356,7 +363,7 @@ void usageInputOptions() {
 	 << " in the distribution for more details.\n"
 	 << "(see Samples dir for documentation and examples). \n \nMANDATORY Options :" << endl;
     cerr<<  "    -i path : specifies the path to input model file" <<endl;
-    cerr<<  "    -t {CAMI|PROD|ROMEO|ITSXML|ETF|DLL|NDLL|DVE} : specifies format of the input model file : " <<endl;
+    cerr<<  "    -t {CAMI|PROD|ROMEO|ITSXML|ETF|DLL|NDLL|DVE|GAL} : specifies format of the input model file : " <<endl;
     cerr<<  "             CAMI : CAMI format (for P/T nets) is the native Petri net format of CPN-AMI" <<endl;
     cerr<<  "             PROD : PROD format (for P/T nets) is the native format of PROD" <<endl;
     cerr<<  "             ROMEO : an XML format (for Time Petri nets) that is the native format of Romeo" <<endl;
@@ -365,6 +372,7 @@ void usageInputOptions() {
     cerr<<  "             DLL : use a dynamic library that provides a function \"void loadModel (Model &,int)\" typically written using the manipulation APIs. See demo/ folder." <<endl;
     cerr<<  "             NDLL : same as DLL, but expect input formatted as size:lib.so. See demo/ folder." <<endl;
     cerr<<  "             DVE : Divine is a modelling language similar to Promela." <<endl;
+    cerr<<  "             GAL : Guarded Action Language." << endl;
     cerr<< "\nAdditional Options and Settings:" << endl;
     cerr << "    --load-order path : load the variable order from the file designated by path. This order file can be produced with --dump-order. Note this option is not exclusive of --json-order; the model is loaded as usual, then the provided order is applied a posteriori. \n" ;
     cerr<< "\nPetri net specific options :" << endl;
@@ -377,6 +385,8 @@ void usageInputOptions() {
     cerr<<  "    -ssDS INT : (depth shallow recursive) use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level.\n" <<endl;
     cerr<< "\nDivine specific options:" << endl;
     cerr<<  "    --gen-order PARAMS : Invoke ordering heuristic to compute a static ordering. PARAMS are passed directly to Fadi Aloul's Force tool (see www.aloul.net).'-c1', '-c3' or '-c6' are usually effective. Run 'NetPlacer --help' for more options.\n" <<endl;
+    cerr<< "\nGAL-based specific options (DVE and GAL):" << endl;
+    cerr<<  "    --stutter : add a self-loop on deadlocks. This is useful when checking LTL formulae, to turn a finite path to an infinite one. Not activated by default.\n" << endl;
 }
 
 /** Consumes the options that are recognized in args, and treats them to configure libDDD

@@ -60,11 +60,17 @@ labels_t GALType::getTransLabels () const {
   Transition GALType::getLocals () const {
 
     d3::set<GHom>::type toadd;
-
+    NaryBoolParamType stutter_trans;
     for (GAL::trans_it it = gal_->trans_begin() ; it != gal_->trans_end() ; ++it) {
       if (it->getLabel() == "")
-	toadd.insert(buildHom(*it) );
+      {
+        toadd.insert(buildHom(*it) );
+        stutter_trans.insert(! it->getGuard ());
+      }
     }
+    if (stutterOnDeadlock)
+      toadd.insert (predicate (BoolExpressionFactory::createNary (AND, stutter_trans), getVarOrder ()));
+    
     GHom sum = GHom::add(toadd);
 
     // so "sum" contains the successor relationship
@@ -315,14 +321,16 @@ labels_t GALType::getTransLabels () const {
     return new GALType (g);
   }
 
-  GALType * GALTypeFactory::createGALDVEType (Label path)
+  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock)
   {
     struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
     std::string modelName = wibble::str::basename(path);
     loader->setModelName(modelName);
     loader->read( path.c_str() );
     loader->analyse();
-    return new GALDVEType (loader->convertFromDve(), loader);
+    GALType * res = new GALDVEType (loader->convertFromDve(), loader);
+    res->setStutterOnDeadlock (stutterOnDeadlock);
+    return res;
   }
 
 } // namespace

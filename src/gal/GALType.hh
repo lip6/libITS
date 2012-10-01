@@ -16,12 +16,17 @@ namespace its {
 class GALType : public TypeBasics {
 
   const GAL * gal_;
+  /** if true, add a transition /\_{t \in trans} (! t.guard)
+   ** this transition makes a self-loop on deadlocks, allowing to have the same LTL semantics as divine */
+  bool stutterOnDeadlock;
 
   // support function to builda Hom from a GuardedAction (using current varOrder)
   GHom buildHom(const GuardedAction & it) const ;
 public :
   GALType (const GAL * gal):gal_(gal){}
 
+  void setStutterOnDeadlock (bool s) { stutterOnDeadlock = s; }
+  
   Label getName() const { return gal_->getName(); }
 
   /** the set InitStates of designated initial states (a copy)*/
@@ -106,7 +111,7 @@ public:
 class GALTypeFactory {
 public:
   static GALType * createGALType (const GAL *);
-  static GALType * createGALDVEType (Label);
+  static GALType * createGALDVEType (Label, bool stutterOnDeadlock);
 };
 
 }
