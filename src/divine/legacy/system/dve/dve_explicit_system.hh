@@ -834,8 +834,9 @@ public:
     case VAR_BYTE: return byte_t(value); break;
     case VAR_INT: return sshort_int_t(value); break;
     default: gerr << "Unexpected error: dve_explicit_system_t::retype: "
-                     "unknown type" << thr(); return 0; break;
+                     "unknown type" << thr(); break;
    };
+  return 0;
  }
 }; //END of class dve_explicit_system_t
 
