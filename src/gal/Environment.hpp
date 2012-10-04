@@ -132,7 +132,7 @@ static inline std::pair<T,labels_t> gc (const T & expr, const labels_t env) {
   exprenv_t toret (expr, labels_t());
   indexes_t perm;
   size_t pos = 0;
-  bool shouldreindex;
+  bool shouldreindex=false;
   
   for (size_t i = 0 ; i < oldsize ; ++i) {
     // label is kept
