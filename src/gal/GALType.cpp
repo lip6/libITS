@@ -8,6 +8,9 @@
 
 #include <algorithm>
 
+#include "force.hh"
+#include "PIntExprVisitor.hh"
+
 #define DEFAULT_VAR 0
 
 namespace its {
@@ -223,15 +226,17 @@ labels_t GALType::getTransLabels () const {
     }
   }
 
-  labels_t GALType::getVarSet () const
+  static
+  labels_t
+  lex_heuristic (const GAL * const g)
   {
     labels_t vnames ;
-    for (GAL::arrays_it it = gal_->arrays_begin() ; it != gal_->arrays_end() ; ++it ) {
+    for (GAL::arrays_it it = g->arrays_begin() ; it != g->arrays_end() ; ++it ) {
       for (ArrayDeclaration::vars_it jt = it->vars_begin() ; jt != it->vars_end() ; ++ jt ) {
 	vnames.push_back(jt->getName());
       }
     }
-    for (GAL::vars_it it = gal_->vars_begin() ; it != gal_->vars_end(); ++it ) {
+    for (GAL::vars_it it = g->vars_begin() ; it != g->vars_end(); ++it ) {
       vnames.push_back(it->getName());
     }
 
@@ -241,6 +246,193 @@ labels_t GALType::getTransLabels () const {
     return vnames;
   }
 
+  class ArrayVisitor : public PIntExprVisitor {
+    int res;
+  public:
+    ArrayVisitor(): res(-1) {}
+    
+    // nothing to do
+    void visitVarExpr (int) {}
+    // nothing to do
+    void visitConstExpr (int) {}
+    // nothing to do
+    void visitWrapBoolExpr (const class PBoolExpression &) {}
+    // get Array name
+    void visitArrayVarExpr (int i, const class PIntExpression &) { res = i; }
+    // get Array name
+    void visitArrayConstExpr (int i, const class PIntExpression &) { res = i; }
+    // nothing to do
+    void visitNaryIntExpr (IntExprType, const NaryPParamType &) {}
+    // nothing to do
+    void visitBinaryIntExpr (IntExprType, const class PIntExpression &, const class PIntExpression &) {}
+    
+    int getResult () const { return res; }
+  };
+  
+  static
+  labels_t
+  force_heuristic (const GAL * const g)
+  {
+    std::set< edge > constraint;
+    std::set< std::string > non_const_array;
+    // walk the transitions of the GAL
+    for (GAL::trans_it it = g->trans_begin ();
+         it != g->trans_end (); ++it)
+    {
+      // walk the actions of the transition
+      for (GuardedAction::actions_it ai = it->begin ();
+           ai != it->end (); ++ai)
+      {
+        IntExpression var = ai->getVariable ();
+        std::string lhs;
+        
+        // if var is a variable
+        if (var.getType () == VAR)
+        {
+          lhs = var.getName ();
+        }
+        // else, var is an array access
+        else
+        {
+          // if var is a const array access, it can be seen as a single variable
+          if (var.getType () == CONSTARRAY)
+          {
+            lhs = ai->getVariable ().getName ();
+          }
+          // else, the array should remain contiguous
+          else
+          {
+            ArrayVisitor av;
+            ai->getVariable ().getExpr ().accept (&av);
+            lhs = var.getEnv () [av.getResult ()];
+            // remember that this array has a non-const access
+            non_const_array.insert (lhs);
+            // \todo add the index constraints
+          }
+        }
+        
+        // fill the constraints
+        labels_t env = ai->getExpression ().getEnv ();
+        for (labels_t::const_iterator ei = env.begin (); ei != env.end (); ++ei)
+        {
+          // \todo check the const and non-const array accesses
+          if (ei->find_first_of ('[') == std::string::npos)
+          {
+            constraint.insert (std::make_pair (lhs, *ei));
+          }
+        }
+      }
+    }
+    
+    // if we have found a non-const array 'tab',
+    // remove the constraints with a const access to 'tab'
+    {
+      std::set< edge > c_tmp;
+      for (std::set< edge >::const_iterator it = constraint.begin ();
+           it != constraint.end (); ++it)
+      {
+        std::string e1 = it->first.substr (0, it->first.find_first_of ('['));
+        std::string e2 = it->second.substr (0, it->second.find_first_of ('['));
+        if (    (non_const_array.find (e1) == non_const_array.end ())
+            &&  (non_const_array.find (e2) == non_const_array.end ()))
+        {
+          c_tmp.insert (*it);
+        }
+      }
+      constraint = c_tmp;
+    }
+    
+    // pathological case: if no constraints have been found (ex: phils)
+    // the use the lexicographical heuristic
+    if (constraint.empty ())
+      return lex_heuristic (g);
+    
+    // build the initial order
+    // first get all the variables
+    // the tab names for those that have non-const accesses
+    // and tab variables for the others
+    labels_t vnames ;
+    for (GAL::arrays_it it = g->arrays_begin() ; it != g->arrays_end() ; ++it )
+    {
+      if ( non_const_array.find (it->getName()) != non_const_array.end () )
+      {
+        vnames.push_back (it->getName ());
+      }
+      else
+      {
+        for (ArrayDeclaration::vars_it jt = it->vars_begin ();
+             jt != it->vars_end (); ++jt)
+        {
+          vnames.push_back (jt->getName ());
+        }
+      }
+    }
+    for (GAL::vars_it it = g->vars_begin() ; it != g->vars_end(); ++it )
+    {
+      vnames.push_back (it->getName ());
+    }
+    
+    // build the initial ordering
+    // arbitrarily from vnames
+    // \todo randomize this initial ordering ??
+    order init_order;
+    int i = 0;
+    for (labels_t::const_iterator it = vnames.begin ();
+         it != vnames.end (); ++it)
+    {
+      init_order [*it] = i++;
+    }
+    
+    // call the force algorithm
+    order n_order = force (constraint, init_order);
+    
+    // build a labels_t according to the order given by force
+    labels_t tmp = labels_t (n_order.size ());
+    for (order::const_iterator it = n_order.begin ();
+         it != n_order.end (); ++it)
+    {
+      tmp[it->second] = it->first;
+    }
+    labels_t result;
+    for (labels_t::const_iterator it = tmp.begin ();
+         it != tmp.end (); ++it)
+    {
+      bool is_array = false;
+      for (GAL::arrays_it ai = g->arrays_begin() ; ai != g->arrays_end() ; ++ai )
+      {
+        if (*it == ai->getName ())
+        {
+          is_array = true;
+          for (ArrayDeclaration::vars_it jt = ai->vars_begin() ; jt != ai->vars_end() ; ++ jt )
+          {
+            result.push_back (jt->getName ());
+          }
+          break;
+        }
+      }
+      if (! is_array)
+      {
+        result.push_back (*it);
+      }
+    }
+    
+    std::cerr << "order found by force " << std::endl;
+    for (labels_t::const_iterator it = result.begin ();
+         it != result.end (); ++it)
+    {
+      std::cerr << *it << ",";
+    }
+    std::cerr << std::endl;
+    
+    return result;
+  }
+  
+  labels_t GALType::getVarSet () const
+  {
+    //return force_heuristic (gal_);
+    return lex_heuristic (gal_);
+  }
+  
   /********* class GALDVEType ************/
 
   GALDVEType::GALDVEType (const GAL * g, dve2GAL::dve2GAL * d): GALType (g)

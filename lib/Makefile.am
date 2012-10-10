@@ -94,6 +94,7 @@ SCALARHEADERS = $(MYSCALARSRCDIR)/CircularSet.hh \
 
 GALHEADERS = $(MYGALSRCDIR)/BoolExpression.hh \
 	$(MYGALSRCDIR)/ExprHom.hpp \
+	$(MYGALSRCDIR)/force.hh \
 	$(MYGALSRCDIR)/GAL.hh \
 	$(MYGALSRCDIR)/GALType.hh \
 	$(MYGALSRCDIR)/IntExpression.hh \
@@ -207,6 +208,7 @@ ETFSOURCES = $(MYETFSRCDIR)/ETFType.cpp \
 	$(MYETFSRCDIR)/stream_mem.c
 
 GALSOURCES = $(MYGALSRCDIR)/ExprHom.cpp \
+	$(MYGALSRCDIR)/force.cpp \
 	$(MYGALSRCDIR)/GALType.cpp \
 	$(MYGALSRCDIR)/GAL.cpp \
 	$(MYGALSRCDIR)/IntExpression.cpp \
