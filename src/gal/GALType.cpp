@@ -333,10 +333,13 @@ labels_t GALType::getTransLabels () const {
       {
         std::string e1 = it->first.substr (0, it->first.find_first_of ('['));
         std::string e2 = it->second.substr (0, it->second.find_first_of ('['));
-        if (    (non_const_array.find (e1) == non_const_array.end ())
+        // avoid the self constraint (x < x): stupid case
+        if (    (it->first != it->second)
+            &&  (non_const_array.find (e1) == non_const_array.end ())
             &&  (non_const_array.find (e2) == non_const_array.end ()))
         {
           c_tmp.insert (*it);
+          std::cerr << "constraint added " << it->first << " , " << it->second << std::endl;
         }
       }
       constraint = c_tmp;
@@ -345,8 +348,9 @@ labels_t GALType::getTransLabels () const {
     // pathological case: if no constraints have been found (ex: phils)
     // the use the lexicographical heuristic
     if (constraint.empty ())
+    {
       return lex_heuristic (g);
-    
+    }
     // build the initial order
     // first get all the variables
     // the tab names for those that have non-const accesses
@@ -416,21 +420,22 @@ labels_t GALType::getTransLabels () const {
       }
     }
     
-    std::cerr << "order found by force " << std::endl;
-    for (labels_t::const_iterator it = result.begin ();
-         it != result.end (); ++it)
-    {
-      std::cerr << *it << ",";
-    }
-    std::cerr << std::endl;
-    
     return result;
   }
   
   labels_t GALType::getVarSet () const
   {
-    //return force_heuristic (gal_);
-    return lex_heuristic (gal_);
+    //labels_t res = force_heuristic (gal_);
+    labels_t res = lex_heuristic (gal_);
+    
+    for (labels_t::const_iterator it = res.begin ();
+         it != res.end (); ++it)
+    {
+      std::cerr << (*it) << ",";
+    }
+    std::cerr << std::endl;
+    
+    return res;
   }
   
   /********* class GALDVEType ************/
