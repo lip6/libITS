@@ -198,6 +198,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     labels_t witness;
     State M2,M3;
     M3 = toreach;
+    State seen;
+    seen = M3;
 
     revcomponents.push_front(toreach);
     // Reverse construct path to init from toreach
@@ -206,7 +208,9 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     while (true) {
       M2 = State::null;
     
-      M2 = revTrans (M3);
+      // Remove states from previous step, they cannot be nearer to the goal.
+      M2 = revTrans (M3) - seen;
+      seen = seen + M2;
       // USEFUL DEBUG TRACES
 //       std::cerr << "step " << step++ <<  "  nbstates " << M2.nbStates() <<  endl;
 //       getInstance()->getType()->printState(M2,std::cerr);
