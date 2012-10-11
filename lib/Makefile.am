@@ -97,6 +97,7 @@ GALHEADERS = $(MYGALSRCDIR)/BoolExpression.hh \
 	$(MYGALSRCDIR)/force.hh \
 	$(MYGALSRCDIR)/GAL.hh \
 	$(MYGALSRCDIR)/GALType.hh \
+	$(MYGALSRCDIR)/GALVarOrderHeuristic.hh \
 	$(MYGALSRCDIR)/IntExpression.hh \
 	$(MYGALSRCDIR)/PBoolExpression.hh \
 	$(MYGALSRCDIR)/PIntExpression.hh \
@@ -210,6 +211,7 @@ ETFSOURCES = $(MYETFSRCDIR)/ETFType.cpp \
 GALSOURCES = $(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/force.cpp \
 	$(MYGALSRCDIR)/GALType.cpp \
+	$(MYGALSRCDIR)/GALVarOrderHeuristic.cpp \
 	$(MYGALSRCDIR)/GAL.cpp \
 	$(MYGALSRCDIR)/IntExpression.cpp \
 	$(MYGALSRCDIR)/PBoolExpression.cpp \
