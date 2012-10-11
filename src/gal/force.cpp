@@ -28,7 +28,7 @@ cost (const std::set<edge> & c, const order & o)
   {
     int e1 = o.find (it->first)->second;
     int e2 = o.find (it->second)->second;
-    res += (e1 < e2) ? 0 : 1;
+    res += (e1 < e2) ? 0 : (e1-e2);
   }
   return res;
 }
