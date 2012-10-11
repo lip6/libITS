@@ -316,7 +316,8 @@ labels_t GALType::getTransLabels () const {
         for (labels_t::const_iterator ei = env.begin (); ei != env.end (); ++ei)
         {
           // \todo check the const and non-const array accesses
-          if (ei->find_first_of ('[') == std::string::npos)
+          if (ei->find_first_of ('[') == std::string::npos
+              &&  *ei != lhs.substr (0, lhs.find_first_of ('[')))
           {
             constraint.insert (std::make_pair (lhs, *ei));
           }
@@ -335,6 +336,7 @@ labels_t GALType::getTransLabels () const {
         std::string e2 = it->second.substr (0, it->second.find_first_of ('['));
         // avoid the self constraint (x < x): stupid case
         if (    (it->first != it->second)
+            // remove the constraints about the non_const array
             &&  (non_const_array.find (e1) == non_const_array.end ())
             &&  (non_const_array.find (e2) == non_const_array.end ()))
         {
@@ -425,8 +427,15 @@ labels_t GALType::getTransLabels () const {
   
   labels_t GALType::getVarSet () const
   {
-    //labels_t res = force_heuristic (gal_);
-    labels_t res = lex_heuristic (gal_);
+    labels_t res;
+    if (useForce)
+    {
+      res = force_heuristic (gal_);
+    }
+    else
+    {
+      res = lex_heuristic (gal_);
+    }
     
     for (labels_t::const_iterator it = res.begin ();
          it != res.end (); ++it)
@@ -518,7 +527,7 @@ labels_t GALType::getTransLabels () const {
     return new GALType (g);
   }
 
-  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock)
+  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock, bool useForce)
   {
     struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
     std::string modelName = wibble::str::basename(path);
@@ -527,6 +536,7 @@ labels_t GALType::getTransLabels () const {
     loader->analyse();
     GALType * res = new GALDVEType (loader->convertFromDve(), loader);
     res->setStutterOnDeadlock (stutterOnDeadlock);
+    res->setUseForce (useForce);
     return res;
   }
 

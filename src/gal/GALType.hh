@@ -19,6 +19,9 @@ class GALType : public TypeBasics {
   /** if true, add a transition /\_{t \in trans} (! t.guard)
    ** this transition makes a self-loop on deadlocks, allowing to have the same LTL semantics as divine */
   bool stutterOnDeadlock;
+  /** if true, use my implementation of Fadi Aloul's force order heuristic
+   ** to determine an order for the variables */
+  bool useForce;
 
   // support function to builda Hom from a GuardedAction (using current varOrder)
   GHom buildHom(const GuardedAction & it) const ;
@@ -26,6 +29,7 @@ public :
   GALType (const GAL * gal):gal_(gal){}
 
   void setStutterOnDeadlock (bool s) { stutterOnDeadlock = s; }
+  void setUseForce (bool u) { useForce = u; }
   
   Label getName() const { return gal_->getName(); }
 
@@ -111,7 +115,7 @@ public:
 class GALTypeFactory {
 public:
   static GALType * createGALType (const GAL *);
-  static GALType * createGALDVEType (Label, bool stutterOnDeadlock);
+  static GALType * createGALDVEType (Label, bool stutterOnDeadlock, bool useForce);
 };
 
 }

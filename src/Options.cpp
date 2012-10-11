@@ -244,7 +244,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case DVE :
     {
-      pType newtype = GALTypeFactory::createGALDVEType (pathinputff, stutterOnDeadlock);
+      pType newtype = GALTypeFactory::createGALDVEType (pathinputff, stutterOnDeadlock, orderHeuristic == "force");
       model.addType (newtype);
       
       model.setInstance(newtype->getName(), "main");
@@ -323,23 +323,30 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
 
   if (orderHeuristic!="" && parse_t == DVE) {
-    // Invoke the NetPlacer tool
-    string command = string(LIBITS) + "/../bin/NetPlacer " + orderHeuristic ;
-    int error = run_system ( command.c_str());
-    if (error) {
-      std::cerr << "\nCould not generate order, will use defaul ordering.\n";      
-    } else {
-      
-      command = string(LIBITS) + "/../bin/output_order.pl  out.vars out.pl out.order "+ wibble::str::basename(pathinputff);
-      error = run_system ( command.c_str());
-      
+    // use the NetPlacer tool
+    // \todo is it still used ??
+    if (orderHeuristic != "force")
+    {
+      // Invoke the NetPlacer tool
+      string command = string(LIBITS) + "/../bin/NetPlacer " + orderHeuristic ;
+      int error = run_system ( command.c_str());
       if (error) {
-	std::cerr << "Could not fully generate order, will use defaul ordering.\n";      
-      }else { 
-	hasOrder = true;
-	pathorderff = "out.order";
+        std::cerr << "\nCould not generate order, will use defaul ordering.\n";      
+      } else {
+        
+        command = string(LIBITS) + "/../bin/output_order.pl  out.vars out.pl out.order "+ wibble::str::basename(pathinputff);
+        error = run_system ( command.c_str());
+        
+        if (error) {
+          std::cerr << "Could not fully generate order, will use defaul ordering.\n";      
+        }else { 
+          hasOrder = true;
+          pathorderff = "out.order";
+        }
       }
     }
+    // else use my own implementation of the force tool (see GALType.cpp and force.cpp)
+    // see construction of the model above
   }
 
   if (hasOrder) {
@@ -384,7 +391,7 @@ void usageInputOptions() {
     cerr<<  "    -ssDR INT : (depth recursive) use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
     cerr<<  "    -ssDS INT : (depth shallow recursive) use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level.\n" <<endl;
     cerr<< "\nDivine specific options:" << endl;
-    cerr<<  "    --gen-order PARAMS : Invoke ordering heuristic to compute a static ordering. PARAMS are passed directly to Fadi Aloul's Force tool (see www.aloul.net).'-c1', '-c3' or '-c6' are usually effective. Run 'NetPlacer --help' for more options.\n" <<endl;
+    cerr<<  "    --gen-order PARAMS : Invoke ordering heuristic to compute a static ordering. PARAMS are passed directly to Fadi Aloul's Force tool (see www.aloul.net).'-c1', '-c3' or '-c6' are usually effective. Run 'NetPlacer --help' for more options. If PARAMS is \"force\", use our own implementation with our own heuristic.\n" <<endl;
     cerr<< "\nGAL-based specific options (DVE and GAL):" << endl;
     cerr<<  "    --stutter : add a self-loop on deadlocks. This is useful when checking LTL formulae, to turn a finite path to an infinite one. Not activated by default.\n" << endl;
 }
