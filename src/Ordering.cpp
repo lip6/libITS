@@ -21,10 +21,11 @@ void VarOrder::setFromCollection (const labels_t & vars) {
 	int i=0;
 	for ( labels_it it = vars.begin(); it != vars.end() ; ++it ) {
 		bool insert = indexes_.insert(make_pair(*it,i++)).second;
-		if (! insert)
-			/** Your collection is not a set !! Variables are not unique.
-			 */
-			assert(false);
+		if (! insert) {
+		  std::cerr<< "Your collection of variable names is not a set !! Variables are not unique." 
+			   << "Found duplicate variable " << *it << std::endl;
+		  assert(false);
+		}
 	}
 }
 
