@@ -7,14 +7,16 @@
 
 // \todo parameterize \a force by passing the cog function as a parameter
 
-int
+/** the force of the constraint is not symmetrical
+ ** return the pair <COG for first, COG for second> */
+std::pair<int,int>
 edge_cog (const edge & e, const order & o)
 {
   int e1 = o.find (e.first)->second;
   int e2 = o.find (e.second)->second;
   if (e1 < e2)
-    return e1;
-  return e2;
+    return std::make_pair (e1, e2);
+  return std::make_pair (e2, e1);
 }
 
 int
@@ -47,9 +49,9 @@ new_order (const std::set<edge> & c, const order & o, const nb_edge & n)
   for (std::set<edge>::const_iterator it = c.begin ();
        it != c.end (); ++it)
   {
-    int cog = edge_cog (*it, o);
-    new_loc[it->first] += cog;
-    new_loc[it->second] += cog;
+    std::pair<int,int> cog = edge_cog (*it, o);
+    new_loc[it->first] += cog.first;
+    new_loc[it->second] += cog.second;
   }
   // ensure that all the variables have been visited
   for (order::const_iterator it = o.begin ();
@@ -104,13 +106,12 @@ force (const std::set<edge> & c, const order & o)
   }
   
   order res = o;
-  order old = o;
+  order no;
   // arbitrarily fixed maximal number of iterations
   size_t limit = o.size ();
-  do
+  while ( (limit-- != 0) && cost (c, (no = new_order (c, res, n))) < cost (c, res) )
   {
-    old = res;
-    res = new_order (c, old, n);
-  } while ( (limit-- != 0) && (cost (c, res) < cost (c, old)) );
+    res = no;
+  }
   return res;
 }

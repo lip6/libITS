@@ -246,10 +246,76 @@ labels_t GALType::getTransLabels () const {
     return vnames;
   }
 
+  class GetArrayVisitor : public PIntExprVisitor, public PBoolExprVisitor {
+    std::vector< std::pair<int,PIntExpression> > res;
+  public:
+    GetArrayVisitor () {}
+    
+    // nothing to do
+    void visitVarExpr (int) {}
+    void visitConstExpr (int) {}
+    void visitArrayConstExpr (int, const PIntExpression &) {}
+    void visitBoolConstExpr (bool) {}
+    
+    // recursive calls
+    void visitWrapBoolExpr (const PBoolExpression & e) { e.accept (this); }
+    void visitNaryIntExpr (IntExprType, const NaryPParamType & n)
+    {
+      for (NaryPParamType::const_iterator it = n.begin ();
+           it != n.end (); ++it)
+      {
+        it->accept (this);
+      }
+    }
+    void visitBinaryIntExpr (IntExprType, const PIntExpression & l, const PIntExpression & r)
+    {
+      l.accept (this);
+      r.accept (this);
+    }
+    void visitNaryBoolExpr (BoolExprType, const std::vector<PBoolExpression> & n)
+    {
+      for (std::vector<PBoolExpression>::const_iterator it = n.begin ();
+           it != n.end (); ++it)
+      {
+        it->accept (this);
+      }
+    }
+    void visitBinaryBoolComp (BoolExprType, const PIntExpression & l, const PIntExpression & r)
+    {
+      l.accept (this);
+      r.accept (this);
+    }
+    void visitNotBoolExpr (const PBoolExpression & e) { e.accept (this); }
+    
+    // base case
+    void visitArrayVarExpr (int a, const PIntExpression & i)
+    {
+      std::vector<std::pair<int,PIntExpression> >::const_iterator it;
+      for (it = res.begin ();
+           it != res.end (); ++it)
+      {
+        if (it->first == a && it->second.equals (i))
+        {
+          break;
+        }
+      }
+      // if the pair is not already in the vector
+      if (it == res.end ())
+      {
+        res.push_back (std::make_pair (a, i));
+      }
+      i.accept (this);
+    }
+    
+    // accessor
+    const std::vector< std::pair<int,PIntExpression> > & getResult () const { return res; }
+  };
+  
   class ArrayVisitor : public PIntExprVisitor {
     int res;
+    PIntExpression index;
   public:
-    ArrayVisitor(): res(-1) {}
+    ArrayVisitor(): res(-1), index(PIntExpressionFactory::createConstant (0)) {}
     
     // nothing to do
     void visitVarExpr (int) {}
@@ -258,125 +324,211 @@ labels_t GALType::getTransLabels () const {
     // nothing to do
     void visitWrapBoolExpr (const class PBoolExpression &) {}
     // get Array name
-    void visitArrayVarExpr (int i, const class PIntExpression &) { res = i; }
-    // get Array name
-    void visitArrayConstExpr (int i, const class PIntExpression &) { res = i; }
+    void visitArrayVarExpr (int i, const PIntExpression & e)
+    {
+      res = i;
+      index = e;
+    }
+    // nothing to do
+    void visitArrayConstExpr (int, const class PIntExpression &) {}
     // nothing to do
     void visitNaryIntExpr (IntExprType, const NaryPParamType &) {}
     // nothing to do
     void visitBinaryIntExpr (IntExprType, const class PIntExpression &, const class PIntExpression &) {}
     
     int getResult () const { return res; }
+    PIntExpression getIndex () const { return index; }
   };
+  
+  class GetVariableVisitor : public PIntExprVisitor, public PBoolExprVisitor {
+    labels_t env;
+    std::set< std::string > res;
+  public:
+    GetVariableVisitor(const labels_t & l): env(l) {}
+    
+    // base case
+    void visitVarExpr (int v) { res.insert (env[v]); }
+    void visitArrayConstExpr (int i, const PIntExpression & e)
+    {
+      std::stringstream tmp;
+      tmp << env[i] << "[" << e.getValue () << "]";
+      res.insert (tmp.str ());
+    }
+    
+    // nothing to do
+    void visitConstExpr (int) {}
+    void visitBoolConstExpr (bool) {}
+
+    // recursive call
+    void visitWrapBoolExpr (const PBoolExpression & e) { e.accept (this); }
+    void visitArrayVarExpr (int i, const PIntExpression & e) { e.accept (this); }
+    void visitNaryIntExpr (IntExprType, const NaryPParamType & n)
+    {
+      for (NaryPParamType::const_iterator it = n.begin ();
+           it != n.end (); ++it)
+      {
+        it->accept (this);
+      }
+    }
+    void visitBinaryIntExpr (IntExprType, const PIntExpression & l, const PIntExpression & r)
+    {
+      l.accept (this);
+      r.accept (this);
+    }
+    void visitNaryBoolExpr (BoolExprType, const std::vector<PBoolExpression> & n)
+    {
+      for (std::vector<PBoolExpression>::const_iterator it = n.begin ();
+           it != n.end (); ++it)
+      {
+        it->accept (this);
+      }
+    }
+    void visitBinaryBoolComp (BoolExprType, const PIntExpression & l, const PIntExpression & r)
+    {
+      l.accept (this);
+      r.accept (this);
+    }
+    void visitNotBoolExpr (const PBoolExpression & e) { e.accept (this); }
+    
+    // accessor
+    std::set< std::string > getResult () const { return res; }
+  };
+
+  namespace {
+
+  template<class Expr>
+  void
+  add_constraint (std::set< edge > & c, const Expr & g, const GAL & gal)
+  {
+    GetArrayVisitor gav;
+    g.getExpr ().accept (&gav);
+    
+    labels_t env = g.getEnv ();
+    for (std::vector< std::pair<int, PIntExpression> >::const_iterator it = gav.getResult ().begin ();
+         it != gav.getResult ().end (); ++it)
+    {
+      std::set< std::string > lhs, rhs;
+      std::string current_array = env [it->first];
+      // walk the GAL looking for the current_array
+      for (GAL::arrays_it ai = gal.arrays_begin ();
+           ai != gal.arrays_end (); ++ai)
+      {
+        if (ai->getName () == current_array)
+        {
+          for (ArrayDeclaration::vars_it vi = ai->vars_begin ();
+               vi != ai->vars_end (); ++vi)
+          {
+            lhs.insert (vi->getName ());
+          }
+          break;
+        }
+      }
+      
+      GetVariableVisitor vv (env);
+      it->second.accept (&vv);
+      rhs = vv.getResult ();
+      
+      for (std::set<std::string>::const_iterator li = lhs.begin ();
+           li != lhs.end (); ++li)
+      {
+        for (std::set<std::string>::const_iterator ri = rhs.begin ();
+             ri != rhs.end (); ++ri)
+        {
+          std::string e1 = li->substr (0, li->find_first_of ('['));
+          std::string e2 = ri->substr (0, ri->find_first_of ('['));
+          if (e1 != e2)
+          {
+            c.insert (std::make_pair (*li, *ri));
+          }
+        }
+      }
+    }
+  }
+    
+  } // anonymous namespace
   
   static
   labels_t
   force_heuristic (const GAL * const g)
   {
+    // get the array names
+    std::set< std::string > arrays;
+    for (GAL::arrays_it it = g->arrays_begin() ; it != g->arrays_end() ; ++it)
+    {
+      arrays.insert (it->getName ());
+    }
+    
+    // get the constraints
     std::set< edge > constraint;
-    std::set< std::string > non_const_array;
     // walk the transitions of the GAL
     for (GAL::trans_it it = g->trans_begin ();
          it != g->trans_end (); ++it)
     {
+      // add the arrays constraints for the guard
+      add_constraint (constraint, it->getGuard (), *g);
+      
       // walk the actions of the transition
       for (GuardedAction::actions_it ai = it->begin ();
            ai != it->end (); ++ai)
       {
+        add_constraint (constraint, ai->getVariable (), *g);
+        add_constraint (constraint, ai->getExpression (), *g);
+        
         IntExpression var = ai->getVariable ();
-        std::string lhs;
+        std::set< std::string > lhs;
         
         // if var is a variable
-        if (var.getType () == VAR)
+        if (var.getType () == VAR || var.getType () == CONSTARRAY)
         {
-          lhs = var.getName ();
+          lhs.insert (var.getName ());
         }
-        // else, var is an array access
+        // else, var is a non-const array access
         else
         {
-          // if var is a const array access, it can be seen as a single variable
-          if (var.getType () == CONSTARRAY)
+          // find the array in the GAL
+          ArrayVisitor av;
+          ai->getVariable ().getExpr ().accept (&av);
+          std::string current_array = var.getEnv () [av.getResult ()];
+          // find the array in the GAL
+          for (GAL::arrays_it ari = g->arrays_begin ();
+               ari != g->arrays_end (); ++ari)
           {
-            lhs = ai->getVariable ().getName ();
-          }
-          // else, the array should remain contiguous
-          else
-          {
-            ArrayVisitor av;
-            ai->getVariable ().getExpr ().accept (&av);
-            lhs = var.getEnv () [av.getResult ()];
-            // remember that this array has a non-const access
-            non_const_array.insert (lhs);
-            // \todo add the index constraints
+            if (current_array == it->getName ())
+            {
+              // add the variables of the array to lhs
+              for (ArrayDeclaration::vars_it vi = ari->vars_begin ();
+                   vi != ari->vars_end (); ++vi)
+              {
+                lhs.insert (vi->getName ());
+              }
+              // leave the loop
+              break;
+            }
           }
         }
         
         // fill the constraints
-        labels_t env = ai->getExpression ().getEnv ();
-        for (labels_t::const_iterator ei = env.begin (); ei != env.end (); ++ei)
+        GetVariableVisitor vv (ai->getExpression ().getEnv ());
+        ai->getExpression ().getExpr ().accept (&vv);
+        std::set< std::string > rhs = vv.getResult ();
+        
+        for (std::set< std::string >::const_iterator li = lhs.begin ();
+             li != lhs.end (); ++li)
         {
-          // \todo check the const and non-const array accesses
-          if (ei->find_first_of ('[') == std::string::npos
-              &&  *ei != lhs.substr (0, lhs.find_first_of ('[')))
+          for (std::set< std::string >::const_iterator ri = rhs.begin ();
+               ri != rhs.end (); ++ri)
           {
-            constraint.insert (std::make_pair (lhs, *ei));
+            if (*li != *ri)
+            {
+              constraint.insert (std::make_pair (*li, *ri));
+            }
           }
         }
       }
     }
     
-    // if we have found a non-const array 'tab',
-    // remove the constraints with a const access to 'tab'
-    {
-      std::set< edge > c_tmp;
-      for (std::set< edge >::const_iterator it = constraint.begin ();
-           it != constraint.end (); ++it)
-      {
-        std::string e1 = it->first.substr (0, it->first.find_first_of ('['));
-        std::string e2 = it->second.substr (0, it->second.find_first_of ('['));
-        // avoid the self constraint (x < x): stupid case
-        if (    (it->first != it->second)
-            // remove the constraints about the non_const array
-            &&  (non_const_array.find (e1) == non_const_array.end ())
-            &&  (non_const_array.find (e2) == non_const_array.end ()))
-        {
-          c_tmp.insert (*it);
-          std::cerr << "constraint added " << it->first << " , " << it->second << std::endl;
-        }
-      }
-      constraint = c_tmp;
-    }
-    
-    // pathological case: if no constraints have been found (ex: phils)
-    // the use the lexicographical heuristic
-    if (constraint.empty ())
-    {
-      return lex_heuristic (g);
-    }
-    // build the initial order
-    // first get all the variables
-    // the tab names for those that have non-const accesses
-    // and tab variables for the others
-    labels_t vnames ;
-    for (GAL::arrays_it it = g->arrays_begin() ; it != g->arrays_end() ; ++it )
-    {
-      if ( non_const_array.find (it->getName()) != non_const_array.end () )
-      {
-        vnames.push_back (it->getName ());
-      }
-      else
-      {
-        for (ArrayDeclaration::vars_it jt = it->vars_begin ();
-             jt != it->vars_end (); ++jt)
-        {
-          vnames.push_back (jt->getName ());
-        }
-      }
-    }
-    for (GAL::vars_it it = g->vars_begin() ; it != g->vars_end(); ++it )
-    {
-      vnames.push_back (it->getName ());
-    }
+    // use the lexicographical heuristic to get initial order
+    labels_t vnames = lex_heuristic (g);
     
     // build the initial ordering
     // arbitrarily from vnames
