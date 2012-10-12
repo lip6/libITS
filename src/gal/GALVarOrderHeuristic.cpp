@@ -200,7 +200,7 @@ public:
   void visitNotBoolExpr (const PBoolExpression & e) { e.accept (this); }
   
   // accessor
-  std::set< std::string > getResult () const { return res; }
+  const std::set< std::string > & getResult () const { return res; }
 };
 
 class QueryEdge : public edge_t {
@@ -285,24 +285,36 @@ public:
   }
 };
 
+class StateEdge : public edge_t {
+public:
+  StateEdge (const std::string & c)
+  {
+    data_.push_back (c);
+  }
+  
+  int
+  cost (const order_t & o) const
+  {
+    int e = o.find (data_[0])->second;
+    return o.size () - e;
+  }
+  
+  cog_t
+  cog (const order_t & o) const
+  {
+    cog_t res;
+    res [data_ [0]] = o.size ();
+    return res;
+  }
+};
+
 namespace {
 
 template<class Expr>
 void
-add_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL & gal)
+add_query_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL & gal)
 {
-  std::set<std::string> local_edge;
-  GetVariableVisitor v(g.getEnv ());
-  g.getExpr ().accept (&v);
-  std::set<std::string> tmp = v.getResult ();
-  for (std::set<std::string>::const_iterator it = tmp.begin ();
-       it != tmp.end (); ++it)
-  {
-    local_edge.insert (*it);
-  }
-  std::vector<std::string> tmp2 (tmp.begin(), tmp.end ());
-  c.push_back (new LocalityEdge (tmp2));
-  
+  // query constraints
   GetArrayVisitor gav;
   g.getExpr ().accept (&gav);
   
@@ -349,6 +361,36 @@ add_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL & gal
   }
 }
 
+void
+add_locality_constraint (std::vector<const edge_t *> & c, const BoolExpression & g, const GAL & gal)
+{
+  // locality constraints
+  std::set<std::string> local_edge;
+  GetVariableVisitor v(g.getEnv ());
+  g.getExpr ().accept (&v);
+  std::vector<std::string> tmp2 (v.getResult ().begin(), v.getResult ().end ());
+  if (tmp2.size () > 1)
+    c.push_back (new LocalityEdge (tmp2));
+}
+
+void
+add_locality_constraint (std::vector<const edge_t *> & c, const Assignment & g, const GAL & gal)
+{
+  // locality constraints
+  GetVariableVisitor v1(g.getVariable ().getEnv ());
+  g.getVariable ().getExpr ().accept (&v1);
+  
+  GetVariableVisitor v2(g.getExpression ().getEnv ());
+  g.getExpression ().getExpr ().accept (&v2);
+  
+  std::set<std::string> local_edge = v1.getResult ();
+  local_edge.insert (v2.getResult ().begin (), v2.getResult ().end ());
+  
+  std::vector<std::string> tmp2 (local_edge.begin(), local_edge.end ());
+  if (tmp2.size () > 1)
+    c.push_back (new LocalityEdge (tmp2));
+}
+
 } // anonymous namespace
 
 labels_t
@@ -368,14 +410,16 @@ force_heuristic (const GAL * const g)
        it != g->trans_end (); ++it)
   {
     // add the arrays constraints for the guard
-    add_constraint (constraint, it->getGuard (), *g);
+    add_query_constraint (constraint, it->getGuard (), *g);
+    add_locality_constraint (constraint, it->getGuard (), *g);
     
     // walk the actions of the transition
     for (GuardedAction::actions_it ai = it->begin ();
          ai != it->end (); ++ai)
     {
-      add_constraint (constraint, ai->getVariable (), *g);
-      add_constraint (constraint, ai->getExpression (), *g);
+      add_query_constraint (constraint, ai->getVariable (), *g);
+      add_query_constraint (constraint, ai->getExpression (), *g);
+      add_locality_constraint (constraint, *ai, *g);
       
       IntExpression var = ai->getVariable ();
       std::set< std::string > lhs;
@@ -442,6 +486,17 @@ force_heuristic (const GAL * const g)
   for (labels_t::const_iterator it = vnames.begin ();
        it != vnames.end (); ++it)
   {
+    // add state constraints
+    size_t pos = it->find_last_of ('.');
+    if (pos != std::string::npos)
+    {
+      std::string tail = it->substr (pos+1, it->size () - pos - 1);
+      if (tail == "state")
+      {
+        constraint.push_back (new StateEdge (*it));
+      }
+    }
+    
     init_order [*it] = i++;
   }
   
