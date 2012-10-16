@@ -19,7 +19,7 @@ labels_t GALType::getTransLabels () const {
   labels_t ret;
 
   for (GAL::trans_it it = gal_->trans_begin() ; it != gal_->trans_end() ; ++it) {
-    ret.push_back(it->getName());
+    ret.push_back(it->getLabel());
   }
   return ret;
 }
