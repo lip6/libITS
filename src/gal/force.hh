@@ -27,9 +27,6 @@ protected:
   std::vector< std::string > data_;
 };
 
-//typedef cog_t (*cog_fun_t) (const edge_t *, const order_t &);
-//typedef int (*cost_edge_fun_t) (const edge_t &, const order_t &);
-
 /// the main function of the force heuristic
 /// takes a set of constraints (edge_t)
 /// an initial ordering

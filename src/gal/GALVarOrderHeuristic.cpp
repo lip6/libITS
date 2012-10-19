@@ -362,39 +362,121 @@ add_query_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL
 }
 
 void
-add_locality_constraint (std::vector<const edge_t *> & c, const BoolExpression & g, const GAL & gal)
+add_query_constraint (std::vector<const edge_t *> & c, const GuardedAction & g, const GAL & gal)
 {
-  // locality constraints
+  // add the array constraints for the guard
+  add_query_constraint (c, g.getGuard (), gal);
+  
+  // walk the actions of the transition
+  for (GuardedAction::actions_it ai = g.begin ();
+       ai != g.end (); ++ai)
+  {
+    // add the array constraints for the lhs
+    add_query_constraint (c, ai->getVariable (), gal);
+    // add the array constraints for the rhs
+    add_query_constraint (c, ai->getExpression (), gal);
+    
+    IntExpression var = ai->getVariable ();
+    // add the assignment constraints
+    std::set<std::string> lhs;
+    // if var is a variable
+    if (var.getType () == VAR || var.getType () == CONSTARRAY)
+    {
+      lhs.insert (var.getName ());
+    }
+    // else, var is a non-const array access
+    else
+    {
+      // find the array in the GAL
+      ArrayVisitor av;
+      var.getExpr ().accept (&av);
+      std::string current_array = var.getEnv () [av.getResult ()];
+      // find the array in the GAL
+      for (GAL::arrays_it ari = gal.arrays_begin ();
+           ari != gal.arrays_end (); ++ari)
+      {
+        if (current_array == g.getName ())
+        {
+          // add the variables of the array to lhs
+          for (ArrayDeclaration::vars_it vi = ari->vars_begin ();
+               vi != ari->vars_end (); ++vi)
+          {
+            lhs.insert (vi->getName ());
+          }
+          // leave the loop
+          break;
+        }
+      }
+    }
+    
+    // fill the constraints
+    GetVariableVisitor vv (ai->getExpression ().getEnv ());
+    ai->getExpression ().getExpr ().accept (&vv);
+    std::set< std::string > rhs = vv.getResult ();
+    
+    for (std::set< std::string >::const_iterator li = lhs.begin ();
+         li != lhs.end (); ++li)
+    {
+      for (std::set< std::string >::const_iterator ri = rhs.begin ();
+           ri != rhs.end (); ++ri)
+      {
+        if (*li != *ri)
+        {
+          edge_t * tmp = new QueryEdge (*li, *ri);
+          c.push_back (tmp);
+        }
+      }
+    }
+  }
+}
+
+void
+add_locality_constraint (std::vector<const edge_t *> & c, const GuardedAction & g)
+{
   std::set<std::string> local_edge;
-  GetVariableVisitor v(g.getEnv ());
-  g.getExpr ().accept (&v);
-  std::vector<std::string> tmp2 (v.getResult ().begin(), v.getResult ().end ());
+  
+  GetVariableVisitor v (g.getGuard ().getEnv ());
+  g.getGuard ().getExpr ().accept (&v);
+  local_edge.insert (v.getResult ().begin (), v.getResult ().end ());
+  
+  for (GuardedAction::actions_it it = g.begin ();
+       it != g.end (); ++it)
+  {
+    GetVariableVisitor v1 (it->getVariable ().getEnv ());
+    it->getVariable ().getExpr ().accept (&v1);
+    GetVariableVisitor v2 (it->getExpression ().getEnv ());
+    it->getExpression ().getExpr ().accept (&v2);
+    
+    local_edge.insert (v1.getResult ().begin (), v1.getResult ().end ());
+    local_edge.insert (v2.getResult ().begin (), v2.getResult ().end ());
+  }
+  
+  std::vector<std::string> tmp2 (local_edge.begin (), local_edge.end ());
   if (tmp2.size () > 1)
     c.push_back (new LocalityEdge (tmp2));
 }
 
 void
-add_locality_constraint (std::vector<const edge_t *> & c, const Assignment & g, const GAL & gal)
+add_state_constraint (std::vector<const edge_t *> & c, const std::string & v)
 {
-  // locality constraints
-  GetVariableVisitor v1(g.getVariable ().getEnv ());
-  g.getVariable ().getExpr ().accept (&v1);
-  
-  GetVariableVisitor v2(g.getExpression ().getEnv ());
-  g.getExpression ().getExpr ().accept (&v2);
-  
-  std::set<std::string> local_edge = v1.getResult ();
-  local_edge.insert (v2.getResult ().begin (), v2.getResult ().end ());
-  
-  std::vector<std::string> tmp2 (local_edge.begin(), local_edge.end ());
-  if (tmp2.size () > 1)
-    c.push_back (new LocalityEdge (tmp2));
+  size_t pos = v.find_last_of ('.');
+  if (pos != std::string::npos)
+  {
+    std::string tail = v.substr (pos+1, v.size () - pos - 1);
+    if (tail == "state")
+    {
+      c.push_back (new StateEdge (v));
+    }
+  }
 }
 
 } // anonymous namespace
 
 labels_t
-force_heuristic (const GAL * const g)
+force_heuristic (const GAL * const g,
+                 bool voLocal,
+                 bool voQuery,
+                 bool voState)
 {
   // get the array names
   std::set< std::string > arrays;
@@ -409,70 +491,12 @@ force_heuristic (const GAL * const g)
   for (GAL::trans_it it = g->trans_begin ();
        it != g->trans_end (); ++it)
   {
-    // add the arrays constraints for the guard
-    add_query_constraint (constraint, it->getGuard (), *g);
-    add_locality_constraint (constraint, it->getGuard (), *g);
-    
-    // walk the actions of the transition
-    for (GuardedAction::actions_it ai = it->begin ();
-         ai != it->end (); ++ai)
-    {
-      add_query_constraint (constraint, ai->getVariable (), *g);
-      add_query_constraint (constraint, ai->getExpression (), *g);
-      add_locality_constraint (constraint, *ai, *g);
-      
-      IntExpression var = ai->getVariable ();
-      std::set< std::string > lhs;
-      
-      // if var is a variable
-      if (var.getType () == VAR || var.getType () == CONSTARRAY)
-      {
-        lhs.insert (var.getName ());
-      }
-      // else, var is a non-const array access
-      else
-      {
-        // find the array in the GAL
-        ArrayVisitor av;
-        ai->getVariable ().getExpr ().accept (&av);
-        std::string current_array = var.getEnv () [av.getResult ()];
-        // find the array in the GAL
-        for (GAL::arrays_it ari = g->arrays_begin ();
-             ari != g->arrays_end (); ++ari)
-        {
-          if (current_array == it->getName ())
-          {
-            // add the variables of the array to lhs
-            for (ArrayDeclaration::vars_it vi = ari->vars_begin ();
-                 vi != ari->vars_end (); ++vi)
-            {
-              lhs.insert (vi->getName ());
-            }
-            // leave the loop
-            break;
-          }
-        }
-      }
-      
-      // fill the constraints
-      GetVariableVisitor vv (ai->getExpression ().getEnv ());
-      ai->getExpression ().getExpr ().accept (&vv);
-      std::set< std::string > rhs = vv.getResult ();
-      
-      for (std::set< std::string >::const_iterator li = lhs.begin ();
-           li != lhs.end (); ++li)
-      {
-        for (std::set< std::string >::const_iterator ri = rhs.begin ();
-             ri != rhs.end (); ++ri)
-        {
-          if (*li != *ri)
-          {
-            edge_t * tmp = new QueryEdge (*li, *ri);
-            constraint.push_back (tmp);
-          }
-        }
-      }
-    }
+    // add locality constraint
+    if (voLocal)
+      add_locality_constraint (constraint, *it);
+    // add query constraints
+    if (voQuery)
+      add_query_constraint (constraint, *it, *g);
   }
   
   // use the lexicographical heuristic to get initial order
@@ -487,16 +511,9 @@ force_heuristic (const GAL * const g)
        it != vnames.end (); ++it)
   {
     // add state constraints
-    size_t pos = it->find_last_of ('.');
-    if (pos != std::string::npos)
-    {
-      std::string tail = it->substr (pos+1, it->size () - pos - 1);
-      if (tail == "state")
-      {
-        constraint.push_back (new StateEdge (*it));
-      }
-    }
-    
+    if (voState)
+      add_state_constraint (constraint, *it);
+    // add to the initial order
     init_order [*it] = i++;
   }
   

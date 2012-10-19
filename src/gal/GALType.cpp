@@ -198,14 +198,7 @@ labels_t GALType::getTransLabels () const {
   labels_t GALType::getVarSet () const
   {
     labels_t res;
-    if (useForce)
-    {
-      res = force_heuristic (gal_);
-    }
-    else
-    {
-      res = lex_heuristic (gal_);
-    }
+    res = force_heuristic (gal_, voLocal, voQuery, voState);
     
     for (labels_t::const_iterator it = res.begin ();
          it != res.end (); ++it)
@@ -341,14 +334,43 @@ labels_t GALType::getTransLabels () const {
     return GALType::getAPredicate (new_pred);
   }
 
-  /******** class GALDVETypeFactory **************/
+  /******** class GALTypeFactory **************/
 
+  std::set< GALTypeFactory::voStrat >
+  GALTypeFactory::parseHeuristicOptions (const std::string & v)
+  {
+    assert (v.size () < 4);
+    assert (v.size () > 0);
+    
+    std::set< voStrat > res;
+    for (size_t i = 0 ; i < v.size () ; ++i)
+    {
+      switch (v[i])
+      {
+        case 'L':
+          res.insert (VO_LOCAL);
+          break;
+        case 'Q':
+          res.insert (VO_QUERY);
+          break;
+        case 'S':
+          res.insert (VO_STATE);
+          break;
+        default:
+          // not valid
+          std::cerr << "invalid VarOrder heuristic option " << v[i] << std::endl;
+          assert(false);
+      }
+    }
+    return res;
+  }
+  
   GALType * GALTypeFactory::createGALType (const GAL * g)
   {
     return new GALType (g);
   }
 
-  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock, bool useForce)
+  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock, const std::string & varOrderHeuristic)
   {
     struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
     std::string modelName = wibble::str::basename(path);
@@ -357,7 +379,25 @@ labels_t GALType::getTransLabels () const {
     loader->analyse();
     GALType * res = new GALDVEType (loader->convertFromDve(), loader);
     res->setStutterOnDeadlock (stutterOnDeadlock);
-    res->setUseForce (useForce);
+    
+    std::set<voStrat> vo_strats = parseHeuristicOptions (varOrderHeuristic);
+    for (std::set<voStrat>::const_iterator it = vo_strats.begin ();
+         it != vo_strats.end (); ++it)
+    {
+      switch (*it)
+      {
+        case VO_LOCAL:
+          res->setVoLocal (true);
+          break;
+        case VO_QUERY:
+          res->setVoQuery (true);
+          break;
+        case VO_STATE:
+          res->setVoState (true);
+          break;
+        // no need for default
+      }
+    }
     return res;
   }
 

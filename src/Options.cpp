@@ -91,7 +91,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   int Nsize = -1;
 
   // For parameters to Force tool
-  string orderHeuristic = "";
+  string orderHeuristic = "LQ";
   
   bool stutterOnDeadlock = false;
 
@@ -244,7 +244,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case DVE :
     {
-      pType newtype = GALTypeFactory::createGALDVEType (pathinputff, stutterOnDeadlock, orderHeuristic == "force");
+      pType newtype = GALTypeFactory::createGALDVEType (pathinputff, stutterOnDeadlock, orderHeuristic);
       model.addType (newtype);
       
       model.setInstance(newtype->getName(), "main");
@@ -253,7 +253,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case GAL_T :
     {
-    
+      // \todo the orderHeuristic is also valid for GAL
       // do the parsing
       GAL * result = GALParser::loadGAL(pathinputff);
       model.declareType (*result, stutterOnDeadlock);
@@ -321,34 +321,6 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   }
 
-
-  if (orderHeuristic!="" && parse_t == DVE) {
-    // use the NetPlacer tool
-    // \todo is it still used ??
-    if (orderHeuristic != "force")
-    {
-      // Invoke the NetPlacer tool
-      string command = string(LIBITS) + "/../bin/NetPlacer " + orderHeuristic ;
-      int error = run_system ( command.c_str());
-      if (error) {
-        std::cerr << "\nCould not generate order, will use defaul ordering.\n";      
-      } else {
-        
-        command = string(LIBITS) + "/../bin/output_order.pl  out.vars out.pl out.order "+ wibble::str::basename(pathinputff);
-        error = run_system ( command.c_str());
-        
-        if (error) {
-          std::cerr << "Could not fully generate order, will use defaul ordering.\n";      
-        }else { 
-          hasOrder = true;
-          pathorderff = "out.order";
-        }
-      }
-    }
-    // else use my own implementation of the force tool (see GALType.cpp and force.cpp)
-    // see construction of the model above
-  }
-
   if (hasOrder) {
    ifstream is (pathorderff.c_str());
    if (! model.loadOrder(is)) {
@@ -390,10 +362,13 @@ void usageInputOptions() {
     cerr<<  "    -ssD2 INT : (depth 2 levels) use 2 level depth for scalar sets. Integer provided defines level 2 block size. [DEFAULT: -ssD2 1]" <<endl;
     cerr<<  "    -ssDR INT : (depth recursive) use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
     cerr<<  "    -ssDS INT : (depth shallow recursive) use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level.\n" <<endl;
-    cerr<< "\nDivine specific options:" << endl;
-    cerr<<  "    --gen-order PARAMS : Invoke ordering heuristic to compute a static ordering. PARAMS are passed directly to Fadi Aloul's Force tool (see www.aloul.net).'-c1', '-c3' or '-c6' are usually effective. Run 'NetPlacer --help' for more options. If PARAMS is \"force\", use our own implementation with our own heuristic.\n" <<endl;
     cerr<< "\nGAL-based specific options (DVE and GAL):" << endl;
-    cerr<<  "    --stutter : add a self-loop on deadlocks. This is useful when checking LTL formulae, to turn a finite path to an infinite one. Not activated by default.\n" << endl;
+    cerr<<  "    --gen-order L?Q?S? : Invoke ordering heuristic to compute a static ordering. Three types of constraints can be specified:" << endl;
+    cerr<<  "       L   try to improve locality of transitions." << endl;
+    cerr<<  "       Q   try to reduce the number of queries." << endl;
+    cerr<<  "       S   try get the state variables higher in the structure." << endl;
+    cerr<<  "       It defaults to LQ, a fair compromise between improving locality and reducing the need to query the lower part of the structure when resolving the actions." <<endl;
+    cerr<<  "       If you want to use the default (lexicographical) ordering, use --gen-order \"\" to deactivate all the constraints\n." <<endl;
 }
 
 /** Consumes the options that are recognized in args, and treats them to configure libDDD

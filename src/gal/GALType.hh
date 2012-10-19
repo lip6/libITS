@@ -19,17 +19,25 @@ class GALType : public TypeBasics {
   /** if true, add a transition /\_{t \in trans} (! t.guard)
    ** this transition makes a self-loop on deadlocks, allowing to have the same LTL semantics as divine */
   bool stutterOnDeadlock;
-  /** if true, use my implementation of Fadi Aloul's force order heuristic
-   ** to determine an order for the variables */
-  bool useForce;
+  /** the constraints to be used in the determination of the var order
+   ** these constraints are fed to my implementation of Fadi Aloul's force algorithm
+   **   voLocal   try to improve locality
+   **   voQuery   try to minimize the number of queries
+   **   voState   try to put the state variables higher
+   */
+  bool voLocal;
+  bool voQuery;
+  bool voState;
 
   // support function to builda Hom from a GuardedAction (using current varOrder)
   GHom buildHom(const GuardedAction & it) const ;
 public :
-  GALType (const GAL * gal):gal_(gal){}
+  GALType (const GAL * gal):gal_(gal), voLocal(false), voQuery(false), voState(false) {}
 
   void setStutterOnDeadlock (bool s) { stutterOnDeadlock = s; }
-  void setUseForce (bool u) { useForce = u; }
+  void setVoLocal (bool a) { voLocal = a; }
+  void setVoQuery (bool a) { voQuery = a; }
+  void setVoState (bool a) { voState = a; }
   
   Label getName() const { return gal_->getName(); }
 
@@ -115,9 +123,12 @@ public:
 };
 
 class GALTypeFactory {
+  typedef enum { VO_LOCAL, VO_QUERY, VO_STATE } voStrat;
+  // a helper function to parse the varOrderHeuristic
+  static std::set< voStrat > parseHeuristicOptions (const std::string &);
 public:
   static GALType * createGALType (const GAL *);
-  static GALType * createGALDVEType (Label, bool stutterOnDeadlock, bool useForce);
+  static GALType * createGALDVEType (Label, bool stutterOnDeadlock, const std::string & varOrderHeuristic);
 };
 
 }

@@ -5,7 +5,7 @@
 
 namespace its {
 
-labels_t force_heuristic (const GAL * const);
+labels_t force_heuristic (const GAL * const, bool, bool, bool);
 labels_t lex_heuristic (const GAL * const);
 
 } // namespace its
