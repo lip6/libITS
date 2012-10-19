@@ -231,12 +231,63 @@ labels_t GALType::getTransLabels () const {
     dve = d;
   }
 
+  bool
+  GALDVEType::setVarOrder (labels_t v) const
+  {
+    // first remove the state variables for the processes with only one state
+    labels_t new_v;
+    for (labels_t::const_iterator it = v.begin ();
+         it != v.end (); ++it)
+    {
+      // if the order is produced by ETF, the state variable of process P is named P
+      // we want to remove such states variables for processes with only one state
+      
+      // whether the current label is a state variable
+      bool is_state_var = false;
+      // whether we keep the current label
+      bool keepit = true;
+      
+      // walk the processes of the DVE model
+      for (size_t i = 0 ; i < dve->get_process_count () ; ++i)
+      {
+        // if the current variable is the name of a process
+        // then it is a state variable
+        if (! it->compare (dve->get_symbol_table ()->get_process (i)->get_name ()))
+        {
+          is_state_var = true;
+          divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (i));
+          if (current_process->get_state_count () == 1)
+          {
+            keepit = false;
+          }
+          break;
+        }
+      }
+      
+      if (keepit)
+      {
+        if (is_state_var)
+        {
+          std::stringstream tmp;
+          tmp << *it << ".state";
+          new_v.push_back (tmp.str ());
+        }
+        else
+        {
+          new_v.push_back (*it);
+        }
+      }
+    }
+    
+    return TypeBasics::setVarOrder (new_v);
+  }
+  
   Transition GALDVEType::getAPredicate (Label predicate) const
   {
     std::string new_pred;
     // if the given predicate is of the form "P.CS"
     // turn it into "P.state=0" (if 0 is the index of CS
-    // this happens only if the predicate does have (=|<|>|<=|>=|!=) in it
+    // this happens only if the predicate does not have (=|<|>|<=|>=|!=) in it
     if (    (predicate.find_first_of ('=') == std::string::npos)
 	&&  (predicate.find_first_of ('<') == std::string::npos)
 	&&  (predicate.find_first_of ('>') == std::string::npos))

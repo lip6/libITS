@@ -104,6 +104,8 @@ public:
   
   void setDVE2GAL (dve2GAL::dve2GAL *);
   
+  bool setVarOrder (labels_t) const;
+  
   /** The state predicate function : string p -> SHom.
    *  returns a selector homomorphism that selects states verifying the predicate 'p'.
    *  This class supports the original LTL syntax from DVE/BEEM.

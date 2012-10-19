@@ -39,7 +39,7 @@ namespace its {
      * The construction through "addXXX" order is used by default.
      * Returns true if the update was successful or false if "vars" is malformed.
      * NOTE : do not modify order between calls to getLocals or getSuccs or cache mixup could occur !! */
-    bool setVarOrder (labels_t vars) const;
+    virtual bool setVarOrder (labels_t vars) const;
     void printVarOrder (std::ostream & os) const { getVarOrder()->print(os); }
 
     /** one initial state can be designated as initial state */
