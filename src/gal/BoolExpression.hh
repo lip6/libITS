@@ -55,6 +55,7 @@ public :
   // an operator to (partially) resolve expressions.
   // replace occurrences of v (if any) by e.
   BoolExpression operator& (const Assertion &a) const;
+  BoolExpression assert_eval (const Assertion &a) const;
   // basic operators between two expressions.
   // and
   friend BoolExpression operator&&(const BoolExpression & l,const BoolExpression & r);

@@ -8,6 +8,7 @@
 #include <cassert>
 #include "hashfunc.hh"
 #include <typeinfo>
+#include "MemoryManager.h"
 
 
 namespace its {
@@ -480,7 +481,65 @@ std::set<Variable> IntExpression::getSupport() const {
   return concrete->getSupport();
 }
 
+} // namespace its
+
+// \todo use partial specialization, but is it even possible ?
+
+// specialization for Assertion cache with IntExpression
+template<>
+its::IntExpression
+Cache<its::IntExpression, its::Assertion, its::IntExpression>::eval
+(const its::IntExpression & func,
+ const its::Assertion & param) const
+{
+  return func.assert_eval (param);
+}
+
+// specialization for Assertion cache with BoolExpression
+template<>
+its::BoolExpression
+Cache<its::BoolExpression, its::Assertion, its::BoolExpression>::eval
+(const its::BoolExpression & func,
+ const its::Assertion & param) const
+{
+  return func.assert_eval (param);
+}
+
+namespace its {
+
+// forward declaration
+template<class Expr>
+Cache<Expr, its::Assertion, Expr> & getAssertionCache ();
+
+template<class Expr>
+class CacheHook : public GCHook {
+  public :
+  void preGarbageCollect () {
+    getAssertionCache<Expr> ().clear ();
+  }
+  void postGarbageCollect() {};
+  
+};
+
+// the cache
+template<class Expr>
+Cache<Expr, Assertion, Expr> &
+getAssertionCache ()
+{
+  static Cache<Expr, Assertion, Expr>  assertionCache = Cache<Expr, Assertion, Expr>  ();
+  static bool first = true;
+  if (first) {
+    MemoryManager::addHook (new CacheHook<Expr> ());
+    first = false;
+  }
+  return assertionCache;
+}
+
 IntExpression IntExpression::operator& (const Assertion &a) const {
+  return getAssertionCache<IntExpression> ().insert (*this, a).second;
+}
+
+IntExpression IntExpression::assert_eval (const Assertion &a) const {
   return concrete->setAssertion(a);
 }
 
@@ -776,6 +835,10 @@ BoolExpression BoolExpression::eval () const {
 }
 
 BoolExpression BoolExpression::operator& (const Assertion & a) const {
+  return getAssertionCache<BoolExpression> ().insert (*this, a).second;
+}
+
+BoolExpression BoolExpression::assert_eval (const Assertion & a) const {
   return concrete->setAssertion(a);
 }
 

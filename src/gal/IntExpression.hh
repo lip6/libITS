@@ -69,6 +69,7 @@ public :
 
 
   IntExpression operator& (const Assertion &a) const;
+  IntExpression assert_eval (const Assertion &a) const;
 
   // resolve what can be resolved at this stage. 
   // Result is a constant expression iff. the expression has no more variables.
@@ -105,7 +106,7 @@ class Assertion {
   PAssertion assertion;
   labels_t env;
 public :
-  Assertion (const IntExpression & var, const IntExpression & val);
+  Assertion (const IntExpression & var = IntExpression (), const IntExpression & val = IntExpression ());
   Assertion (const PAssertion & a, const labels_t & env): assertion(a), env(env) {};
   IntExpression getValue (const IntExpression & v) const ;
 
