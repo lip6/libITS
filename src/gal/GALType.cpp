@@ -340,7 +340,6 @@ labels_t GALType::getTransLabels () const {
   GALTypeFactory::parseHeuristicOptions (const std::string & v)
   {
     assert (v.size () < 4);
-    assert (v.size () > 0);
     
     std::set< voStrat > res;
     for (size_t i = 0 ; i < v.size () ; ++i)
