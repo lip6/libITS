@@ -11,12 +11,43 @@
 // For hash maps
 #include "util/configuration.hh"
 
+
+
 namespace its {
 
-// Useful Typedefs : for cache values = pair<Info=Assertion,node>
+  typedef std::pair<its::IntExpression, const its::VarOrder *> CacheKey_t;
+
+}
+
+namespace d3 { namespace util {
+
+  // For keys in caches
+  // Specialized version for std::pair of hashable objects.
+  template <>
+  struct hash<its::CacheKey_t> {
+    size_t operator() (const its::CacheKey_t &p)const {
+      return p.first.hash() ^ ddd::wang32_hash((size_t)p.second);
+    };
+  };
+
+  // Specialize template to avoid deep comparing VarOrder instances.
+  // Mostly we expect only a few different VarOrder instances throughout the program.
+  template <>
+  struct equal<const its::VarOrder *> {
+    bool operator() (const its::VarOrder *a, const its::VarOrder * b)const {
+      return a == b;
+    };
+  };
+  
+}}
+
+namespace its {
+
+  // Useful Typedefs : for cache values = pair<Info=Assertion,node>
   typedef AdditiveMap<Assertion, GDDD> InfoNode;
   typedef InfoNode::const_iterator InfoNode_it;
-// For cache keys : pair <expression to query,node>
+
+  // For cache keys : pair <expression to query,node>
   typedef std::pair<IntExpression,GDDD> map_key_type;
 
   // predeclaration: to invert Expressions
@@ -27,68 +58,22 @@ namespace its {
   static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) ;
 
 
-  // A Cache to hold Queries
-  class QueryCache
-  {
-  private:
-    mutable size_t peak_;
-  
-    typedef hash_map< std::pair<IntExpression, GDDD>, InfoNode >::type hash_map; 
-    hash_map cache_;
-    
-  public:
-    QueryCache () : peak_ (0) {};
-    
-    /// clear the cache, discarding all values. 
-    void clear (bool keepstats = false) {
-      peak();
-      cache_.clear();
-    }
 
-    size_t peak () const {
-      size_t s = size();
-      if ( peak_ < s )
-	peak_ = s;
-      return peak_;
-    }
-    
-    
-    size_t size () const {
-      return cache_.size();
-    }
+  typedef Cache<CacheKey_t, GDDD, InfoNode> QueryCache_t;
 
-    std::pair<bool,InfoNode>
-    insert(const IntExpression& expr, const GDDD& node, const VarOrder * vo)
-    {
-      bool found;
-      map_key_type key= std::make_pair(expr,node);
-      { // lock on current bucket
-	hash_map::const_accessor access;
-	found = cache_.find ( access, key);
-	if (found)
-	  return std::make_pair(false, access->second);
-      } // end of lock on the current bucket
-      
-      // wasn't in cache
-      InfoNode result = queryEval(expr, vo, node);
-      // lock on current bucket
-      hash_map::accessor access;
-      bool insertion = cache_.insert ( access, key);
-      if (insertion) {
-	// should happen except in MT case
-	access->second = result;
-      }
-      return std::make_pair(insertion,result);
-    }
-    
-#ifdef HASH_STAT
-    std::map<std::string, size_t> get_hits() const { return cache_.get_hits(); }
-    std::map<std::string, size_t> get_misses() const { return cache_.get_misses(); }
-    std::map<std::string, size_t> get_bounces() const { return cache_.get_bounces(); }
-#endif // HASH_STAT    
-  };
-  
-  static QueryCache & getQueryCache();
+} // namespace its
+
+template <>
+its::InfoNode 
+its::QueryCache_t::eval (const its::CacheKey_t & key, const GDDD & param) const {
+  return  queryEval(key.first, key.second, param);
+}
+
+
+namespace its {
+
+
+  static QueryCache_t & getQueryCache();
 
   class CacheHook : public GCHook {
   public :
@@ -101,8 +86,8 @@ namespace its {
 
 
   // the cache
-  static QueryCache & getQueryCache() {
-    static QueryCache queryCache = QueryCache();
+  static QueryCache_t & getQueryCache() {
+    static QueryCache_t queryCache = QueryCache_t();
     static bool first = true;
     if (first) {
       MemoryManager::addHook(new CacheHook());
@@ -118,7 +103,7 @@ namespace its {
   static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
    
 //    return queryEval(e,vo,d);
-    return getQueryCache().insert(e,d,vo).second;
+    return getQueryCache().insert(CacheKey_t(e,vo), d).second;
   }
 
 
