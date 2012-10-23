@@ -1,9 +1,11 @@
 # this section defines the rules to build .cpp from .g with ANTLR
 SUFFIXES = .c .cpp
 
-exprParserLexer.c exprParserParser.c : exprParser.g
+exprParserLexer.c : exprParserParser.c
+
+exprParserParser.c : exprParser.g
 	/usr/bin/java -jar $(ANTLRJAR_PATH) $<
-	
+
 .c.cpp:
 	cp $*.c $*.cpp
 
