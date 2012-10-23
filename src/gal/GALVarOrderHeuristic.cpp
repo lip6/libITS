@@ -150,17 +150,17 @@ public:
 };
 
 class GetVariableVisitor : public PIntExprVisitor, public PBoolExprVisitor {
-  labels_t env;
+  env_t env;
   std::set< std::string > res;
 public:
-  GetVariableVisitor(const labels_t & l): env(l) {}
+  GetVariableVisitor(const env_t & l): env(l) {}
   
   // base case
-  void visitVarExpr (int v) { res.insert (env[v]); }
+  void visitVarExpr (int v) { res.insert (IntExpressionFactory::getVar (env[v])); }
   void visitArrayConstExpr (int i, const PIntExpression & e)
   {
     std::stringstream tmp;
-    tmp << env[i] << "[" << e.getValue () << "]";
+    tmp << IntExpressionFactory::getVar (env[i]) << "[" << e.getValue () << "]";
     res.insert (tmp.str ());
   }
   
@@ -318,12 +318,12 @@ add_query_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL
   GetArrayVisitor gav;
   g.getExpr ().accept (&gav);
   
-  labels_t env = g.getEnv ();
+  env_t env = g.getEnv ();
   for (std::vector< std::pair<int, PIntExpression> >::const_iterator it = gav.getResult ().begin ();
        it != gav.getResult ().end (); ++it)
   {
     std::set< std::string > lhs, rhs;
-    std::string current_array = env [it->first];
+    std::string current_array = IntExpressionFactory::getVar (env [it->first]);
     // walk the GAL looking for the current_array
     for (GAL::arrays_it ai = gal.arrays_begin ();
          ai != gal.arrays_end (); ++ai)
@@ -390,7 +390,7 @@ add_query_constraint (std::vector<const edge_t *> & c, const GuardedAction & g, 
       // find the array in the GAL
       ArrayVisitor av;
       var.getExpr ().accept (&av);
-      std::string current_array = var.getEnv () [av.getResult ()];
+      std::string current_array = IntExpressionFactory::getVar (var.getEnv () [av.getResult ()]);
       // find the array in the GAL
       for (GAL::arrays_it ari = gal.arrays_begin ();
            ari != gal.arrays_end (); ++ari)

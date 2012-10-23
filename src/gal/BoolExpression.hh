@@ -46,7 +46,7 @@ public :
   // return the supporting parametric expression
   const class PBoolExpression & getExpr() const ;
   // return the environment
-  const labels_t & getEnv() const;
+  const env_t & getEnv() const;
   // Type of the (root of) the boolean expression
   BoolExprType getType() const ;
   // member print
@@ -111,7 +111,7 @@ public :
   // a comparison (==,!=,<,>,<=,>=) between two integer expressions
   static BoolExpression createComparison (BoolExprType type, const IntExpression & l, const IntExpression & r) ;
   
-  static BoolExpression createBoolExpression (const PBoolExpression &, const labels_t &);
+  static BoolExpression createBoolExpression (const PBoolExpression &, const env_t &);
 
   // following administrative functions are not really for public usage.
   static const _BoolExpression * createUnique(const _BoolExpression &);

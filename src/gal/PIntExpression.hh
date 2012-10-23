@@ -35,6 +35,7 @@ class _PIntExpression ;
 class PAssertion;
 typedef d3::multiset<class PIntExpression>::type NaryPParamType ;
 
+typedef std::vector<int> env_t;
 
 // A class to handle integer expressions.
 // Relies on concrete a pointer into unique table.
@@ -42,7 +43,6 @@ typedef d3::multiset<class PIntExpression>::type NaryPParamType ;
 class PIntExpression {
   // concrete storage
   const _PIntExpression * concrete;
-  labels_t variables;
   // access to concrete
   friend class _PIntExpression;
   // access to _PIntExpression* constructor
@@ -78,7 +78,7 @@ public :
   // return the type of an expression.
   IntExprType getType() const;
   // member print
-  void print (std::ostream & os, const labels_t & env) const ;
+  void print (std::ostream & os, const env_t & env) const ;
   
   // basic operators between two expressions.
   // nary
@@ -155,7 +155,7 @@ public :
   PIntExpression getSecond() const { return mapping.second; }
 
   // for pretty print
-  void print (std::ostream & os, const labels_t & env) const;
+  void print (std::ostream & os, const env_t & env) const;
 };
 
 

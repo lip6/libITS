@@ -31,7 +31,6 @@ class _IntExpression {
   // The actual 'formal' expression with parameters
   PIntExpression expr;
   // The parameters expansion to variable names
-  typedef labels_t env_t;
   env_t env;
 
  public :
@@ -50,7 +49,7 @@ class _IntExpression {
     return --refCount;
   }
   // default constructor
-  _IntExpression (const PIntExpression & expr, const labels_t & env): refCount(0),expr(expr),env(env) {}
+  _IntExpression (const PIntExpression & expr, const env_t & env): refCount(0),expr(expr),env(env) {}
   // reclaim memory
   virtual ~_IntExpression () { assert (refCount==0); };
   
@@ -58,8 +57,8 @@ class _IntExpression {
   // for hash storage
   size_t hash () const {
     size_t toret = 103843;
-    for (labels_it it = env.begin() ; it != env.end() ; ++it ) {
-      toret ^= d3::util::hash<std::string> () (*it)+ 103399;
+    for (env_t::const_iterator it = env.begin() ; it != env.end() ; ++it ) {
+      toret ^= (*it)+ 103399;
     }
     return toret ^ expr.hash();
   }
@@ -94,7 +93,7 @@ class _IntExpression {
       return this;
     }
 
-    std::pair<PIntExpression, labels_t> aftergc = gc ( newexpr, env );
+    std::pair<PIntExpression, env_t> aftergc = gc ( newexpr, env );
 
     return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));
   }
@@ -105,7 +104,7 @@ class _IntExpression {
       return this;
     }
 
-    labels_t unione = sorted_union (a.getEnv() , env );
+    env_t unione = sorted_union (a.getEnv() , env );
 
     PIntExpression ex = normalize<IntExpression,PIntExpression> (expr, env, unione);
 
@@ -114,7 +113,7 @@ class _IntExpression {
 
     ex = ex & PIntExpressionFactory::createPAssertion(aa,aaprime);
 
-    std::pair<PIntExpression, labels_t> aftergc = gc ( ex, unione );
+    std::pair<PIntExpression, env_t> aftergc = gc ( ex, unione );
 
     return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));
   }
@@ -127,7 +126,13 @@ class _IntExpression {
   }
 
   std::set<Variable> getSupport() const {
-    return std::set<Variable> (env.begin(), env.end());
+    std::set<Variable> res;
+    for (env_t::const_iterator it = env.begin ();
+         it != env.end (); ++it)
+    {
+      res.insert (IntExpressionFactory::getVar (*it));
+    }
+    return res;
   }
 
   IntExpression getFirstSubExpr () const {
@@ -135,13 +140,13 @@ class _IntExpression {
     if ( expr.equals(newexpr) ) {
       return this;
     } 
-    std::pair<PIntExpression, labels_t> aftergc = gc ( newexpr, env );
+    std::pair<PIntExpression, env_t> aftergc = gc ( newexpr, env );
 
     return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));    
   }
 
   IntExpression getSubExprExcept (const IntExpression & var) const {
-    labels_t unione = sorted_union (var.getEnv() , env );
+    env_t unione = sorted_union (var.getEnv() , env );
 
     PIntExpression varx = normalize<IntExpression,PIntExpression> (var, unione);
     
@@ -167,7 +172,7 @@ class _IntExpression {
       assert(false);
     }
 
-    std::pair<PIntExpression, labels_t> aftergc = gc ( newexpr, unione );
+    std::pair<PIntExpression, env_t> aftergc = gc ( newexpr, unione );
 
     return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));    
   }
@@ -190,13 +195,13 @@ class _IntExpression {
 }
 
   IntExpression Assertion::getLeftHandSide () const {
-    std::pair<PIntExpression, labels_t> aftergc = gc ( assertion.getFirst(), env );
+    std::pair<PIntExpression, env_t> aftergc = gc ( assertion.getFirst(), env );
 
     return IntExpressionFactory::createIntExpression(aftergc.first, aftergc.second );    
   }
 
   IntExpression Assertion::getRightHandSide () const {
-    std::pair<PIntExpression, labels_t> aftergc = gc ( assertion.getSecond(), env );
+    std::pair<PIntExpression, env_t> aftergc = gc ( assertion.getSecond(), env );
 
     return IntExpressionFactory::createIntExpression(aftergc.first, aftergc.second );    
   }
@@ -204,8 +209,8 @@ class _IntExpression {
 
 size_t Assertion::hash() const {
   size_t toret = 37459 ^ assertion.hash();
-  for (labels_it it = env.begin() ; it != env.end() ; ++it ) {
-    toret ^= d3::util::hash<std::string> () (*it) + 12397;
+  for (env_t::const_iterator it = env.begin() ; it != env.end() ; ++it ) {
+    toret ^= (*it) + 12397;
   }
   return toret ;
 
@@ -224,7 +229,7 @@ bool Assertion::operator< (const Assertion & other) const {
 }
 
 Assertion Assertion::operator & (const Assertion & other) const {
-  labels_t unione = sorted_union (env, other.env);
+  env_t unione = sorted_union (env, other.env);
 
   PIntExpression a = normalize<IntExpression,PIntExpression> (assertion.getFirst(), env, unione);
   PIntExpression aprime = normalize<IntExpression,PIntExpression> (assertion.getSecond(), env, unione);
@@ -265,20 +270,39 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
   // return the supporting parametric expression
   const class PIntExpression & IntExpression::getExpr() const { return concrete->getExpr(); }
   // return the environment
-  const labels_t & IntExpression::getEnv() const { return concrete->getEnv() ; }
+  const env_t & IntExpression::getEnv() const { return concrete->getEnv() ; }
 
 
 
 
 UniqueTable<_IntExpression>  IntExpressionFactory::unique = UniqueTable<_IntExpression>();
+std::map<int,std::string> IntExpressionFactory::var_names = std::map<int,std::string> ();
 
+int IntExpressionFactory::getVarIndex (const std::string & v) {
+  for (std::map<int, std::string>::const_iterator it = var_names.begin ();
+       it != var_names.end (); ++it)
+  {
+    if (it->second == v)
+      return it->first;
+  }
+  // variable not found, add it to the table
+  int res = (int)var_names.size ();
+  var_names[res] = v;
+  return res;
+}
 
+std::string IntExpressionFactory::getVar (int i) {
+  // do it properly
+  std::map<int, std::string>::const_iterator it = var_names.find (i);
+  assert (it != var_names.end ());
+  return it->second;
+}
 
 IntExpression IntExpressionFactory::createNary (IntExprType type, const NaryParamType & params) {
   
   // build the union of both envs, sorted on var names
   // eg. unione = {"a","b"}
-  labels_t unione ;
+  env_t unione ;
   for (NaryParamType::const_iterator it = params.begin(); it != params.end(); ++it ){
     unione = sorted_union (unione, it->concrete->getEnv() );
   }
@@ -297,7 +321,7 @@ IntExpression IntExpressionFactory::createBinary (IntExprType type, const IntExp
 
   // build the union of both envs, sorted on var names
   // eg. unione = {"a","b"}
-  labels_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
+  env_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
   
   // now that the alphabets are compatible, build a parametric expression
   // e.g.   res = Add(Var(x0), Var(x1))
@@ -307,14 +331,15 @@ IntExpression IntExpressionFactory::createBinary (IntExprType type, const IntExp
 }
 
 IntExpression IntExpressionFactory::createConstant (int v) {
-  return createUnique (_IntExpression(PIntExpressionFactory::createConstant(v),labels_t()));
+  return createUnique (_IntExpression(PIntExpressionFactory::createConstant(v),env_t()));
 }
 
 IntExpression IntExpressionFactory::createVariable (const Variable & v) {
   if (v.getArrayName() != v.getName()) {
     return createArrayAccess(v.getArrayName(), v.getIndex());
   }
-  return createUnique (_IntExpression(PIntExpressionFactory::createVariable(0),labels_t(1,v.getName())));
+  int vari = getVarIndex (v.getName ());
+  return createUnique (_IntExpression(PIntExpressionFactory::createVariable(0),env_t(1,vari)));
 }
 
 
@@ -323,7 +348,7 @@ IntExpression IntExpressionFactory::createArrayAccess (const Variable & v, const
 
   // build the union of both envs, sorted on var names
   // eg. unione = {"a","b"}
-  labels_t unione = sorted_union ( var.getEnv(), index.getEnv());
+  env_t unione = sorted_union ( var.getEnv(), index.getEnv());
 
   
   // now that the alphabets are compatible, build a parametric expression
@@ -338,7 +363,7 @@ IntExpression IntExpressionFactory::wrapBoolExpr (const BoolExpression &b) {
   return createUnique (_IntExpression(PIntExpressionFactory::wrapBoolExpr(b.getExpr()),b.getEnv()));
 }
 
-IntExpression IntExpressionFactory::createIntExpression (const PIntExpression & pie, const labels_t & env) {
+IntExpression IntExpressionFactory::createIntExpression (const PIntExpression & pie, const env_t & env) {
   return createUnique( _IntExpression(pie,env) );
 }
 
@@ -346,7 +371,7 @@ Assertion IntExpressionFactory::createAssertion (const Variable & v,const IntExp
   return createAssertion (createVariable(v),e);
 }
 
-Assertion IntExpressionFactory::createAssertion (const PAssertion & a,const labels_t & env) {
+Assertion IntExpressionFactory::createAssertion (const PAssertion & a,const env_t & env) {
   return Assertion(a,env);
 }
 
@@ -402,12 +427,12 @@ IntExpression::IntExpression (const IntExpression & other) {
 
 
 IntExpression::IntExpression (int cst) {
-  concrete = IntExpressionFactory::createUnique(_IntExpression(PIntExpressionFactory::createConstant(cst), labels_t()));
+  concrete = IntExpressionFactory::createUnique(_IntExpression(PIntExpressionFactory::createConstant(cst), env_t()));
   concrete->ref();
 }
 
 IntExpression::IntExpression (const Variable & var) {
-  concrete = IntExpressionFactory::createUnique(_IntExpression(PIntExpressionFactory::createVariable(0), labels_t(1, var.getName())));
+  concrete = IntExpressionFactory::createUnique(_IntExpression(PIntExpressionFactory::createVariable(0), env_t(1, IntExpressionFactory::getVarIndex (var.getName()))));
   concrete->ref();
 }
 
@@ -462,9 +487,9 @@ int IntExpression::getValue () const {
 
 vLabel IntExpression::getName () const {
   if (getType() == VAR) {
-    return concrete->getEnv() [concrete->getExpr().getVariable() ];    
+    return IntExpressionFactory::getVar (concrete->getEnv() [concrete->getExpr().getVariable() ]);
   } else if (getType() == CONSTARRAY) {
-    return concrete->getEnv() [concrete->getExpr().getVariable() ] + "[" + to_string(concrete->getExpr().getValue()) + "]" ;    
+    return IntExpressionFactory::getVar (concrete->getEnv() [concrete->getExpr().getVariable() ]) + "[" + to_string(concrete->getExpr().getValue()) + "]" ;    
   } else {
     std::cerr << "Calling getName on an a expression : " << *this << std::endl;
     throw "Do not call getName on non Variable type int expressions.";
@@ -588,7 +613,7 @@ class _BoolExpression {
   // The actual 'formal' expression with parameters
   PBoolExpression expr;
   // The parameters expansion to variable names
-  labels_t env;
+  env_t env;
 
 public : 
   // add a ref
@@ -602,20 +627,20 @@ public :
   }
 
   // default constructor
-  _BoolExpression (const PBoolExpression & expr, const labels_t & env): refCount(0),expr(expr),env(env) {}
+  _BoolExpression (const PBoolExpression & expr, const env_t & env): refCount(0),expr(expr),env(env) {}
 
   // reclaim memory
   ~_BoolExpression () { assert (refCount==0); };
  
-  const labels_t & getEnv() const { return env ; }
+  const env_t & getEnv() const { return env ; }
   const PBoolExpression & getExpr() const { return expr ; }
   
   ///////// Interface functions
   // for hash storage
   size_t hash () const {
     size_t toret = 104459 ^ expr.hash();
-    for (labels_it it = env.begin() ; it != env.end() ; ++it ) {
-      toret ^= d3::util::hash<std::string> () (*it) + 102397;
+    for (env_t::const_iterator it = env.begin() ; it != env.end() ; ++it ) {
+      toret ^= (*it) + 102397;
     }
     return toret ;
   }
@@ -652,7 +677,7 @@ public :
       return this;
     }
 
-    std::pair<PBoolExpression, labels_t> aftergc = gc ( newexpr, env );
+    std::pair<PBoolExpression, env_t> aftergc = gc ( newexpr, env );
 
     return BoolExpressionFactory::createUnique(_BoolExpression(aftergc.first, aftergc.second ));
   }
@@ -664,7 +689,7 @@ public :
     }
 
 
-    labels_t unione = sorted_union (a.getEnv() , env );
+    env_t unione = sorted_union (a.getEnv() , env );
 
     PBoolExpression ex = normalize<BoolExpression,PBoolExpression> (expr, env, unione);
 
@@ -673,7 +698,7 @@ public :
 
     ex = ex & PIntExpressionFactory::createPAssertion(aa,aaprime);
 
-    std::pair<PBoolExpression, labels_t> aftergc = gc ( ex, unione );
+    std::pair<PBoolExpression, env_t> aftergc = gc ( ex, unione );
 
     return BoolExpressionFactory::createUnique(_BoolExpression(aftergc.first, aftergc.second ));
   }
@@ -688,12 +713,18 @@ public :
   }
 
   std::set<Variable> getSupport() const {
-    return std::set<Variable> (env.begin(), env.end());
+    std::set<Variable> res;
+    for (env_t::const_iterator it = env.begin ();
+         it != env.end (); ++it)
+    {
+      res.insert (IntExpressionFactory::getVar (*it));
+    }
+    return res;
   }
   
    IntExpression getFirstSubExpr () const {
     PIntExpression newexpr = expr.getFirstSubExpr();
-    std::pair<PIntExpression, labels_t> aftergc = gc ( newexpr, env );
+    std::pair<PIntExpression, env_t> aftergc = gc ( newexpr, env );
 
     return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));    
   }
@@ -710,7 +741,7 @@ BoolExpression BoolExpressionFactory::createNary (BoolExprType type, const NaryB
   
   // build the union of both envs, sorted on var names
   // eg. unione = {"a","b"}
-  labels_t unione ;
+  env_t unione ;
   for (NaryBoolParamType::const_iterator it = params.begin(); it != params.end(); ++it ){
     unione = sorted_union (unione, it->concrete->getEnv() );
   }
@@ -724,7 +755,7 @@ BoolExpression BoolExpressionFactory::createNary (BoolExprType type, const NaryB
 }
 
 BoolExpression BoolExpressionFactory::createBinary (BoolExprType type, const BoolExpression & l, const BoolExpression & r) {
-  labels_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
+  env_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
 
   // now that the alphabets are compatible, build a parametric expression
   // e.g.   res = Add(Var(x0), Var(x1))
@@ -744,12 +775,12 @@ BoolExpression BoolExpressionFactory::createNot  (const BoolExpression & e) {
 
 
 BoolExpression BoolExpressionFactory::createConstant (bool b) {
-  return createUnique(_BoolExpression(PBoolExpressionFactory::createConstant(b),labels_t()));
+  return createUnique(_BoolExpression(PBoolExpressionFactory::createConstant(b),env_t()));
 }
 
 // a comparison (==,!=,<,>,<=,>=) between two integer expressions
 BoolExpression BoolExpressionFactory::createComparison (BoolExprType type, const IntExpression & l, const IntExpression & r) {
-  labels_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
+  env_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
 
   // now that the alphabets are compatible, build a parametric expression
   // e.g.   res = Add(Var(x0), Var(x1))
@@ -758,7 +789,7 @@ BoolExpression BoolExpressionFactory::createComparison (BoolExprType type, const
   return createUnique(_BoolExpression(res, unione));
 }
 
-BoolExpression BoolExpressionFactory::createBoolExpression(const PBoolExpression & pbe, const labels_t & env) {
+BoolExpression BoolExpressionFactory::createBoolExpression(const PBoolExpression & pbe, const env_t & env) {
   return createUnique( _BoolExpression( pbe, env ) );
 }
 
@@ -798,7 +829,7 @@ BoolExpression::BoolExpression (const IntExpression & expr): concrete(NULL) {
 }
 
 BoolExpression::BoolExpression (bool val) {
-	concrete = BoolExpressionFactory::createUnique(_BoolExpression(PBoolExpressionFactory::createConstant(val), labels_t()));
+	concrete = BoolExpressionFactory::createUnique(_BoolExpression(PBoolExpressionFactory::createConstant(val), env_t()));
 	concrete->ref();
 }
 
@@ -819,7 +850,7 @@ BoolExprType BoolExpression::getType () const {
 /// only valid for CONST expressions
 /// use this call only in form : if (e.getType() == CONST) { int j = e.getValue() ; ...etc }
 /// Exceptions will be thrown otherwise.
-const labels_t & BoolExpression::getEnv () const { 
+const env_t & BoolExpression::getEnv () const { 
   return  concrete->getEnv();
 }
 

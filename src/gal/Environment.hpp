@@ -10,10 +10,10 @@ namespace its {
 
 typedef PIntExpression::indexes_t indexes_t;
 
-static std::ostream & operator<< (std::ostream & os, const labels_t & env) {
+static std::ostream & operator<< (std::ostream & os, const env_t & env) {
   if (! env.empty()) {
-    for (labels_it it = env.begin() ; /* in loop */ ; /* in loop */ ) {
-      os << *it ;
+    for (env_t::const_iterator it = env.begin() ; /* in loop */ ; /* in loop */ ) {
+      os << IntExpressionFactory::getVar (*it) ;
       ++it;
       if (it != env.end())
         os << ", ";
@@ -24,9 +24,22 @@ static std::ostream & operator<< (std::ostream & os, const labels_t & env) {
   return os;
 }
 
-static inline int indexOf (Label name, const labels_it & begin, const labels_it & end) {
+static inline int indexOf (Label name, const env_t::const_iterator & begin, const env_t::const_iterator & end) {
   int index = 0;
-  for (labels_it it = begin;
+  int name_index = IntExpressionFactory::getVarIndex (name);
+  for (env_t::const_iterator it = begin;
+       it != end;
+       ++it,++index ) {
+    if (*it == name_index) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+static inline int indexOf (int name, const env_t::const_iterator & begin, const env_t::const_iterator & end) {
+  int index = 0;
+  for (env_t::const_iterator it = begin;
        it != end;
        ++it,++index ) {
     if (*it == name) {
@@ -37,11 +50,11 @@ static inline int indexOf (Label name, const labels_it & begin, const labels_it 
 }
 
 // True if "a" is a superset of "b"
-static bool supersets ( const labels_t & a, const labels_t & b) {
-  labels_it pa = a.begin();
-  labels_it pb = b.begin();
-  labels_it aend = a.end();
-  labels_it bend = b.end();
+static bool supersets ( const env_t & a, const env_t & b) {
+  env_t::const_iterator pa = a.begin();
+  env_t::const_iterator pb = b.begin();
+  env_t::const_iterator aend = a.end();
+  env_t::const_iterator bend = b.end();
   
   for ( ; pa !=  aend && pb != bend ; ) {
     if (pa == aend) {
@@ -65,12 +78,12 @@ static bool supersets ( const labels_t & a, const labels_t & b) {
   return true;
 }
 
-static inline labels_t sorted_union ( const labels_t & a, const labels_t & b) {
-  labels_t unione;
-  labels_it pa = a.begin();
-  labels_it pb = b.begin();
-  labels_it aend = a.end();
-  labels_it bend = b.end();
+static inline env_t sorted_union ( const env_t & a, const env_t & b) {
+  env_t unione;
+  env_t::const_iterator pa = a.begin();
+  env_t::const_iterator pb = b.begin();
+  env_t::const_iterator aend = a.end();
+  env_t::const_iterator bend = b.end();
   
   // Quit when both a and b are exhausted
   while ( pa != aend || pb != bend ) {
@@ -96,10 +109,10 @@ static inline labels_t sorted_union ( const labels_t & a, const labels_t & b) {
   return unione;
 }
 
-static inline indexes_t reindex ( const labels_t & oldenv, const labels_t & newenv, bool * shouldRewrite ) {
+static inline indexes_t reindex ( const env_t & oldenv, const env_t & newenv, bool * shouldRewrite ) {
   indexes_t res ( oldenv.size() , 0);
   int count = 0;
-  for (labels_it it = oldenv.begin() ; it != oldenv.end() ; ++it, ++count ) {
+  for (env_t::const_iterator it = oldenv.begin() ; it != oldenv.end() ; ++it, ++count ) {
     int i = indexOf(*it,newenv.begin(), newenv.end());
     if (i == -1) {
       std::cerr << "Error : While reindexing : new environment is not a superset of old one" << std::endl;
@@ -116,8 +129,8 @@ static inline indexes_t reindex ( const labels_t & oldenv, const labels_t & newe
 
 /** shrinks environment to fit expression. If needed cleanup holes and reindex expression. */
 template <typename T>
-static inline std::pair<T,labels_t> gc (const T & expr, const labels_t env) {
-  typedef std::pair<T, labels_t> exprenv_t;
+static inline std::pair<T,env_t> gc (const T & expr, const env_t env) {
+  typedef std::pair<T, env_t> exprenv_t;
   // prepare new (possibly reduced environment
   size_t oldsize = env.size();
   // for gc : unmarked entries will be cleared
@@ -129,7 +142,7 @@ static inline std::pair<T,labels_t> gc (const T & expr, const labels_t env) {
   expr.getSupport(mark);
   
   // build new environment and permutation
-  exprenv_t toret (expr, labels_t());
+  exprenv_t toret (expr, env_t());
   indexes_t perm;
   size_t pos = 0;
   bool shouldreindex=false;
@@ -154,7 +167,7 @@ static inline std::pair<T,labels_t> gc (const T & expr, const labels_t env) {
 }
 
 template <typename Expr, typename PExpr>
-static inline PExpr normalize (const PExpr & expr, const labels_t & env, const labels_t & unione) {
+static inline PExpr normalize (const PExpr & expr, const env_t & env, const env_t & unione) {
   // to store whether reindex is necessary
   bool rwl=false;
   // compute possible reindexing of formulas in l.expr
@@ -172,7 +185,7 @@ static inline PExpr normalize (const PExpr & expr, const labels_t & env, const l
 }
 
 template <typename Expr, typename PExpr>
-static inline PExpr normalize (const Expr & expr, const labels_t & unione) {
+static inline PExpr normalize (const Expr & expr, const env_t & unione) {
   
   return normalize<Expr,PExpr> (expr.getExpr(), expr.getEnv(), unione);
 }

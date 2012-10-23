@@ -2,6 +2,7 @@
 #define __INT_EXPRESSION_HH__
 
 #include "gal/PIntExpression.hh"
+#include <map>
 
 namespace its {
 
@@ -49,7 +50,7 @@ public :
   // return the supporting parametric expression
   const class PIntExpression & getExpr() const ;
   // return the environment
-  const labels_t & getEnv() const;
+  const env_t & getEnv() const;
 
   // member print
   void print (std::ostream & os) const ;
@@ -104,10 +105,10 @@ public :
 
 class Assertion {
   PAssertion assertion;
-  labels_t env;
+  env_t env;
 public :
   Assertion (const IntExpression & var = IntExpression (), const IntExpression & val = IntExpression ());
-  Assertion (const PAssertion & a, const labels_t & env): assertion(a), env(env) {};
+  Assertion (const PAssertion & a, const env_t & env): assertion(a), env(env) {};
   IntExpression getValue (const IntExpression & v) const ;
 
   Assertion operator & (const Assertion & other) const;
@@ -121,7 +122,7 @@ public :
   
   /// simple getters
   const PAssertion & getAssertion() const { return assertion; }
-  const labels_t & getEnv() const { return env ;}
+  const env_t & getEnv() const { return env ;}
 
   /// More involved accessor to extract the lhs and rhs
   IntExpression getLeftHandSide () const;
@@ -140,6 +141,8 @@ typedef d3::multiset<IntExpression>::type NaryParamType ;
 
 class IntExpressionFactory {
   static UniqueTable<_IntExpression> unique;
+  
+  static std::map<int, std::string> var_names;
 public :
   static IntExpression  createNary (IntExprType type, const NaryParamType & params) ;
   static IntExpression  createBinary (IntExprType type, const IntExpression & l, const IntExpression & r) ;
@@ -149,11 +152,14 @@ public :
   /// value is 1 if true or 0 otherwise
   static IntExpression  wrapBoolExpr (const BoolExpression & b);
   
-  static IntExpression createIntExpression (const PIntExpression &, const labels_t &);
+  static IntExpression createIntExpression (const PIntExpression &, const env_t &);
 
   static Assertion createAssertion (const Variable & v,const IntExpression & e);
   static Assertion createAssertion (const IntExpression & v,const IntExpression & e);
-  static Assertion createAssertion (const PAssertion & a,const labels_t & env);
+  static Assertion createAssertion (const PAssertion & a,const env_t & env);
+  
+  static int getVarIndex (const std::string &);
+  static std::string getVar (int);
 
   static void printStats (std::ostream &os);
 
