@@ -13,8 +13,15 @@ namespace its {
 class Variable {
   vLabel name;
   vLabel aname;
+  int index;
 public:
-  Variable(Label nname):name(nname){ aname = name.substr(0,name.find_last_of('[')); };
+  Variable(Label nname):name(nname) {
+    size_t pos = name.find_last_of('[');
+    aname = name.substr(0,pos);
+    vLabel nstr = name.substr(pos+1, name.find_last_of(']'));
+    index=-1;
+    sscanf(nstr.c_str(), "%d", &index);
+  }
   Label getName () const { return name; }
   bool operator== (const Variable & v) const {
     return v.name == name;
@@ -29,10 +36,7 @@ public:
     return aname; 
   }
   int getIndex () const {
-    vLabel nstr = name.substr(name.find_last_of('[')+1, name.find_last_of(']'));
-    int n=-1;
-    sscanf(nstr.c_str(), "%d", &n);
-    return n;
+    return index;
   }
 
 };
