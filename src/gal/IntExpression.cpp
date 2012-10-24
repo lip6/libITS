@@ -56,11 +56,12 @@ class _IntExpression {
   ///////// Interface functions
   // for hash storage
   size_t hash () const {
-    size_t toret = 103843;
+    size_t toret = 5381;
     for (env_t::const_iterator it = env.begin() ; it != env.end() ; ++it ) {
-      toret ^= (*it)+ 103399;
+      toret = ((toret << 5) + toret) + (*it); /* toret * 33 + (*it) */
     }
-    return toret ^ expr.hash();
+    toret = ((toret << 5) + toret) + expr.hash ();
+    return toret;
   }
 
   bool operator==(const _IntExpression & e) const {
@@ -277,6 +278,13 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
 
 UniqueTable<_IntExpression>  IntExpressionFactory::unique = UniqueTable<_IntExpression>();
 std::map<int,std::string> IntExpressionFactory::var_names = std::map<int,std::string> ();
+  
+void IntExpressionFactory::pstats () {
+#ifdef HASH_STAT
+  std::cout << std::endl << "IntExpression Unicity table stats :" << std::endl;
+  print_hash_stats(unique.get_hits(), unique.get_misses(), unique.get_bounces());
+#endif // HASH_STAT
+}
 
 int IntExpressionFactory::getVarIndex (const std::string & v) {
   for (std::map<int, std::string>::const_iterator it = var_names.begin ();

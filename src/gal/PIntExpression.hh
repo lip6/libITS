@@ -179,6 +179,8 @@ public :
   // following administrative functions are not really for public usage.
   static const _PIntExpression * createUnique(const _PIntExpression &);
   static void destroy (_PIntExpression * e);
+  
+  static void pstats ();
 };
 
 

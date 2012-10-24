@@ -120,7 +120,7 @@ public :
   }
 
   virtual size_t hash () const {
-    return ddd::wang32_hash(varIndex) * 70019;
+    return ddd::wang32_hash((varIndex+3)*1987);
   }
 
   _PIntExpression * clone () const { return new VarExpr(*this); }
@@ -180,7 +180,7 @@ public :
 
 
   virtual size_t hash () const {
-    return val * 70019;
+    return ddd::wang32_hash((val+2)*3517);
   }
 
   _PIntExpression * clone () const { return new ConstExpr(*this); }
@@ -990,6 +990,12 @@ void PAssertion::print (std::ostream & os, const env_t & env) const {
 
 UniqueTable<_PIntExpression>  PIntExpressionFactory::unique = UniqueTable<_PIntExpression>();
 
+void PIntExpressionFactory::pstats () {
+#ifdef HASH_STAT
+  std::cout << std::endl << "PIntExpression Unicity table stats :" << std::endl;
+  print_hash_stats(unique.get_hits(), unique.get_misses(), unique.get_bounces());
+#endif // HASH_STAT
+}
 
 PIntExpression PIntExpressionFactory::createNary (IntExprType type, const NaryPParamType & params) {
   NaryPParamType pp;
