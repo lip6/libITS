@@ -277,7 +277,7 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
 
 
 UniqueTable<_IntExpression>  IntExpressionFactory::unique = UniqueTable<_IntExpression>();
-std::map<int,std::string> IntExpressionFactory::var_names = std::map<int,std::string> ();
+std::map<std::string,int> IntExpressionFactory::var_names = std::map<std::string,int> ();
   
 void IntExpressionFactory::pstats () {
 #ifdef HASH_STAT
@@ -287,23 +287,19 @@ void IntExpressionFactory::pstats () {
 }
 
 int IntExpressionFactory::getVarIndex (const std::string & v) {
-  for (std::map<int, std::string>::const_iterator it = var_names.begin ();
-       it != var_names.end (); ++it)
-  {
-    if (it->second == v)
-      return it->first;
-  }
-  // variable not found, add it to the table
-  int res = (int)var_names.size ();
-  var_names[res] = v;
-  return res;
+  return var_names.insert (std::make_pair (v, var_names.size ())).first->second;
 }
 
 std::string IntExpressionFactory::getVar (int i) {
-  // do it properly
-  std::map<int, std::string>::const_iterator it = var_names.find (i);
-  assert (it != var_names.end ());
-  return it->second;
+  std::map<std::string,int>::const_iterator it;
+  for (it = var_names.begin (); it != var_names.end (); ++it)
+  {
+    if (it->second == i)
+      return it->first;
+  }
+  // index not found: should not happen
+  assert (false);
+  return "";
 }
 
 IntExpression IntExpressionFactory::createNary (IntExprType type, const NaryParamType & params) {

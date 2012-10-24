@@ -142,7 +142,7 @@ typedef d3::multiset<IntExpression>::type NaryParamType ;
 class IntExpressionFactory {
   static UniqueTable<_IntExpression> unique;
   
-  static std::map<int, std::string> var_names;
+  static std::map<std::string, int> var_names;
 public :
   static IntExpression  createNary (IntExprType type, const NaryParamType & params) ;
   static IntExpression  createBinary (IntExprType type, const IntExpression & l, const IntExpression & r) ;
