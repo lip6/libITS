@@ -2,6 +2,8 @@
 
 #include "util/hash_support.hh"
 
+#include <stdio.h>
+
 namespace its {
 
 Variable::Variable(Label nname):name(nname) {
