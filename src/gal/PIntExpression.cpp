@@ -989,6 +989,8 @@ void PAssertion::print (std::ostream & os, const env_t & env) const {
 // namespace PIntExpressionFactory {
 
 UniqueTable<_PIntExpression>  PIntExpressionFactory::unique = UniqueTable<_PIntExpression>();
+// static initialization here to avoid static initialization order fiasco
+std::map<Variable, IntExpression> IntExpressionFactory::var_expr = std::map<Variable, IntExpression> ();
 
 void PIntExpressionFactory::pstats () {
 #ifdef HASH_STAT

@@ -209,11 +209,13 @@ class _IntExpression {
 
 
 size_t Assertion::hash() const {
-  size_t toret = 37459 ^ assertion.hash();
-  for (env_t::const_iterator it = env.begin() ; it != env.end() ; ++it ) {
-    toret ^= (*it) + 12397;
+  size_t hash = 5381;
+  for (env_t::const_iterator it = env.begin (); it != env.end (); ++it)
+  {
+    hash = ((hash << 5) + hash) + (*it); /* hash * 33 + env[i] */
   }
-  return toret ;
+  hash = ((hash << 5) + hash) + assertion.hash ();
+  return hash;
 
 }
 
@@ -278,13 +280,6 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
 
 UniqueTable<_IntExpression>  IntExpressionFactory::unique = UniqueTable<_IntExpression>();
 std::map<std::string,int> IntExpressionFactory::var_names = std::map<std::string,int> ();
-  
-void IntExpressionFactory::pstats () {
-#ifdef HASH_STAT
-  std::cout << std::endl << "IntExpression Unicity table stats :" << std::endl;
-  print_hash_stats(unique.get_hits(), unique.get_misses(), unique.get_bounces());
-#endif // HASH_STAT
-}
 
 int IntExpressionFactory::getVarIndex (const std::string & v) {
   return var_names.insert (std::make_pair (v, var_names.size ())).first->second;
@@ -339,11 +334,19 @@ IntExpression IntExpressionFactory::createConstant (int v) {
 }
 
 IntExpression IntExpressionFactory::createVariable (const Variable & v) {
+  std::map<Variable, IntExpression>::const_iterator it = var_expr.find (v);
+  if (it != var_expr.end ())
+    return it->second;
+  
+  IntExpression res = createConstant (0);
   if (v.getArrayName() != v.getName()) {
-    return createArrayAccess(v.getArrayName(), v.getIndex());
+    res = createArrayAccess(v.getArrayName(), v.getIndex());
+  } else {
+    int vari = getVarIndex (v.getName ());
+    res = createUnique (_IntExpression(PIntExpressionFactory::createVariable(0),env_t(1,vari)));
   }
-  int vari = getVarIndex (v.getName ());
-  return createUnique (_IntExpression(PIntExpressionFactory::createVariable(0),env_t(1,vari)));
+  var_expr[v] = IntExpression (res);
+  return res;
 }
 
 
@@ -604,7 +607,17 @@ std::ostream & operator << (std::ostream & os, const its::IntExpression & e) {
   return os;
 }
 
-
+void IntExpressionFactory::pstats () {
+#ifdef HASH_STAT
+  std::cout << std::endl << "IntExpression Unicity table stats :" << std::endl;
+  print_hash_stats (unique.get_hits(), unique.get_misses(), unique.get_bounces());
+  
+  std::cout << std::endl;
+  
+  std::cout << std::endl << "IntAssertion Cache stats :" << std::endl;
+  print_hash_stats (getAssertionCache<IntExpression> ().get_hits (), getAssertionCache<IntExpression> ().get_misses (), getAssertionCache<IntExpression> ().get_bounces ());
+#endif // HASH_STAT
+}
 
   /******************************* THIS SECTION : BOOL EXPR ************************/
   
