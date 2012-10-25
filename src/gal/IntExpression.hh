@@ -167,8 +167,6 @@ public :
   // following administrative functions are not really for public usage.
   static const _IntExpression * createUnique(const _IntExpression &);
   static void destroy (_IntExpression * e);
-  
-  static void pstats ();
 };
 
 

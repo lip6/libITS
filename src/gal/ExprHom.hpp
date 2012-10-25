@@ -14,6 +14,9 @@ GHom assignExpr (const IntExpression & var, const IntExpression & expr, const Va
 /// Creates a predicate to select paths that verify the expression e.
 GHom predicate (const BoolExpression & e, const VarOrder * vo);
 
+#ifdef HASH_STAT
+void query_stats ();
+#endif // HASH_STAT
 }
 
 #endif

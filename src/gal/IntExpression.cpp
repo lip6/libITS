@@ -400,8 +400,19 @@ void IntExpressionFactory::destroy (_IntExpression * e) {
   }
 }
 
+// forward declaration
+template<class Expr>
+Cache<Expr, its::Assertion, Expr> & getAssertionCache ();
+
 void IntExpressionFactory::printStats (std::ostream &os) {
   os << "Integer expression entries :" << unique.size() << std::endl;
+#ifdef HASH_STAT
+  std::cout << std::endl << "IntExpression Unicity table stats :" << std::endl;
+  print_hash_stats (unique.get_hits(), unique.get_misses(), unique.get_bounces());
+  
+  std::cout << std::endl << "IntAssertion Cache stats :" << std::endl;
+  print_hash_stats (getAssertionCache<IntExpression> ().get_hits (), getAssertionCache<IntExpression> ().get_misses (), getAssertionCache<IntExpression> ().get_bounces ());
+#endif // HASH_STAT
 }
 
 // } end namespace IntExpressionFactory
@@ -539,10 +550,6 @@ Cache<its::BoolExpression, its::Assertion, its::BoolExpression>::eval
 
 namespace its {
 
-// forward declaration
-template<class Expr>
-Cache<Expr, its::Assertion, Expr> & getAssertionCache ();
-
 template<class Expr>
 class CacheHook : public GCHook {
   public :
@@ -605,18 +612,6 @@ size_t IntExpression::hash () const {
 std::ostream & operator << (std::ostream & os, const its::IntExpression & e) {
   e.print(os);
   return os;
-}
-
-void IntExpressionFactory::pstats () {
-#ifdef HASH_STAT
-  std::cout << std::endl << "IntExpression Unicity table stats :" << std::endl;
-  print_hash_stats (unique.get_hits(), unique.get_misses(), unique.get_bounces());
-  
-  std::cout << std::endl;
-  
-  std::cout << std::endl << "IntAssertion Cache stats :" << std::endl;
-  print_hash_stats (getAssertionCache<IntExpression> ().get_hits (), getAssertionCache<IntExpression> ().get_misses (), getAssertionCache<IntExpression> ().get_bounces ());
-#endif // HASH_STAT
 }
 
   /******************************* THIS SECTION : BOOL EXPR ************************/
@@ -827,6 +822,13 @@ const _BoolExpression * BoolExpressionFactory::createUnique(const _BoolExpressio
 
 void BoolExpressionFactory::printStats (std::ostream &os) {
   os << "Boolean expression entries :" << unique.size() << std::endl;
+#ifdef HASH_STAT
+  std::cout << std::endl << "BoolExpression Unicity table stats :" << std::endl;
+  print_hash_stats (unique.get_hits (), unique.get_misses (), unique.get_bounces ());
+
+  std::cout << std::endl << "BoolAssertion Cache stats :" << std::endl;
+  print_hash_stats (getAssertionCache<BoolExpression> ().get_hits (), getAssertionCache<BoolExpression> ().get_misses (), getAssertionCache<BoolExpression> ().get_bounces ());
+#endif // HASH_STAT
 }
 
 // nary constructions

@@ -525,6 +525,10 @@ static GDDD invertExprValues (const PIntExpression & expr, const PIntExpression 
   return DED::add(toret);
 }
 
+void query_stats () {
+  std::cout << std::endl << "Query Cache stats:" << std::endl;
+  print_hash_stats (getQueryCache ().get_hits (), getQueryCache ().get_misses (), getQueryCache ().get_bounces ());
+}
 
 /**
 

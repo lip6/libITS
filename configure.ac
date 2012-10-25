@@ -114,6 +114,19 @@ AC_LIBTOOL_DLOPEN
 test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
+# Option to enable hash stats
+AC_ARG_ENABLE([hash-stat],
+				[AC_HELP_STRING([--enable-hash-stat],[collect stats on hash])],
+				[ case "${enable_hash_stat}" in
+					 yes) CFLAGS="-DHASH_STAT $CFLAGS"
+					 CXXFLAGS="-DHASH_STAT $CXXFLAGS"
+					 ;;
+					 no)
+					 ;;
+					 *) AC_MSG_ERROR(Bad value ${enableval})
+					 ;;
+				esac])
+
 #compile in C++
 AC_PROG_CC
 AC_PROG_CXX

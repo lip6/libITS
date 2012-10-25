@@ -22,6 +22,10 @@
 #include "util/dotExporter.h"
 #include "statistic.hpp"
 
+#ifdef HASH_STAT
+#include "gal/ExprHom.hpp"
+#endif // HASH_STAT
+
 using namespace its;
 
 static bool beQuiet = false;
@@ -91,6 +95,13 @@ State exhibitModel (ITSModel & model) {
   cout.precision(40);
   std::cout << " Total reachable state count : " << S.getNbStates() << std::endl;
   std::cout << std::endl;
+
+#ifdef HASH_STAT  
+  its::IntExpressionFactory::printStats (std::cout);
+  its::BoolExpressionFactory::printStats (std::cout);
+  its::query_stats ();
+#endif // HASH_STAT
+
   // Export the SDD of final states to dot : generates files final.dot and d3final.dot
   if (dodotexport)
     exportDot(reachable,pathdotff);
