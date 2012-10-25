@@ -37,9 +37,9 @@ int VarOrder::getIndex (Label l) const {
 		return it->second;
 }
 
-static vLabel empty = "";
+static Variable empty ("");
 /** return the label asociated to an index */
-Label VarOrder::getLabel (int index) const {
+const Variable & VarOrder::getLabel (int index) const {
 	for (map_t::const_iterator it = indexes_.begin() ; it != indexes_.end(); ++it) {
 		if (it->second == index)
 			return it->first;
@@ -76,7 +76,7 @@ bool VarOrder::updateOrder (const labels_t & vars) {
 
   std::ostream &  VarOrder::print (std::ostream & os) const {
     for (size_t i=0 ; i < size() ; ++i) {
-      os << getLabel(i) << "\n";
+      os << getLabel(i).getName () << "\n";
     }
     return os;
   }

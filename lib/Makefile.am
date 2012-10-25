@@ -275,6 +275,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/Options.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
 	$(MYSRCDIR)/TypeCacher.cpp \
+	$(MYSRCDIR)/Variable.cpp \
 	$(JSONSTUFF) \
 	$(XMLLOADERSOURCES)
 

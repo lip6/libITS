@@ -97,20 +97,14 @@ namespace its {
   }
 
 
-
-
-  
   static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
-   
-//    return queryEval(e,vo,d);
     return getQueryCache().insert(CacheKey_t(e,vo), d).second;
   }
-
 
   static InfoNode queryEval (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
     // shortcuts
     int vr = d.variable();
-    Variable curv = Variable(vo->getLabel(vr));    
+    const Variable & curv = vo->getLabel(vr);    
     // The final result
     InfoNode res;
     // To hold elements curently being treated
@@ -227,7 +221,7 @@ namespace its {
       else
 	{
 	  int vr = d.variable();
-	  Variable curv = Variable(vo->getLabel(vr));
+	  const Variable & curv = vo->getLabel(vr);
 	  std::set<GDDD> res;
 	  for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
 	    // current value
@@ -320,7 +314,7 @@ namespace its {
     bool
     skip_variable(int vr) const
     {
-      Variable curv = Variable(vo->getLabel(vr));
+      const Variable & curv = vo->getLabel(vr);
       bool b =  ! var.isSupport(curv)
 	&& ! expr.isSupport(curv);
       //      std::cerr << "Assignment of:" << var << " = " << expr << std::endl
@@ -374,7 +368,7 @@ public:
   bool
   skip_variable(int var) const
   {
-    return ! expr.isSupport(Variable(vo->getLabel(var))) ;
+    return ! expr.isSupport(vo->getLabel(var)) ;
   }
   
   GDDD eval(const GDDD &d) const {
@@ -393,7 +387,7 @@ public:
       {
 	// current variable 
 	int vr = d.variable();
-	Variable curv = Variable(vo->getLabel(vr));
+	const Variable & curv = vo->getLabel(vr);
 	
 	// To hold result
 	std::set<GDDD> res;
