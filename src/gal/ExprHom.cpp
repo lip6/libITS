@@ -135,11 +135,17 @@ namespace its {
 	for (GDDD::const_iterator it = node.begin() ; it != node.end() ; ++it ) {
 	  // shortcut to edge value
 	  int vl = it->first;
-	  // An assertion representing this edge information
-	  Assertion assertion = IntExpressionFactory::createAssertion(curv, IntExpressionFactory::createConstant(vl));
-	  // Simplify the rhs of the current assertion by the info
-	  IntExpression r = ass.getRightHandSide() & assertion ;
-	  
+    bool r_support = ass.getRightHandSide ().isSupport (curv);
+
+    // Simplify the rhs of the current assertion by the info
+    IntExpression r = ass.getRightHandSide ();
+    // only if necessary
+    if (r_support) {
+      // An assertion representing this edge information
+      Assertion assertion = IntExpressionFactory::createAssertion(curv, IntExpressionFactory::createConstant(vl));
+      r = r & assertion ;
+    }
+
 	  // If RHS is now a constant, we have finished solving
 	  if (r.getType() == CONST) {
 	    // add result to final res
@@ -226,19 +232,23 @@ namespace its {
 	  for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
 	    // current value
 	    int vl = it->first;
-	    // An assertion describing info on current arc: var = val
-	    Assertion assertion = IntExpressionFactory::createAssertion(curv,IntExpressionFactory::createConstant(it->first));
-	    
-	    // Simplify expr by current info
-	    IntExpression e = expr ;
-	    if (expr.isSupport(curv)) {
-	      e = e & assertion;
-	    }
-	    // If necessary (array access) try to simplify also lhs
+      
+      bool expr_support = expr.isSupport(curv);
+      bool var_support = var.getType() == ARRAY && var.isSupport(curv);
+
+      // Simplify expr by current info
+	    IntExpression e = expr;
+      // If necessary (array access) try to simplify also lhs
 	    IntExpression v = var;
-	    if (v.getType() == ARRAY && var.isSupport(curv)) {
-	      v = var & assertion;
-	    }
+      // only if necessary
+      if (expr_support || var_support) {
+        // An assertion describing info on current arc: var = val
+        Assertion assertion = IntExpressionFactory::createAssertion(curv,IntExpressionFactory::createConstant(it->first));
+        if (expr_support)
+          e = e & assertion;
+        if (var_support)
+          v = v & assertion;
+      }
 
 //	    if (! e.equals(expr) || ! v.equals(var)) 
 //	             std::cerr << "Assignment: Solving : " << var << "=" << expr << std::endl
@@ -395,14 +405,17 @@ public:
 	for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
 	  // current value
 	  int vl = it->first;
-	  // An assertion describing info on current arc: var = val
-	  Assertion assertion = IntExpressionFactory::createAssertion(curv,IntExpressionFactory::createConstant(it->first));
-	  	    
-	  // Simplify current expression by current edge.
+    bool expr_support = expr.isSupport(curv);
+
+    // Simplify current expression by current edge.
 	  BoolExpression e = expr ;
-	  if (expr.isSupport(curv)) {
-	    e = e & assertion;
-	  }
+    // only if necessary
+    if (expr_support) {
+      // An assertion describing info on current arc: var = val
+      Assertion assertion = IntExpressionFactory::createAssertion(curv,IntExpressionFactory::createConstant(it->first));
+      if (expr_support)
+        e = e & assertion;
+    }
 
     //     if (! ( e == expr) ) 
     //        std::cerr << "Predicate: Solving : " << expr << std::endl
