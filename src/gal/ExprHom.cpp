@@ -39,13 +39,23 @@ namespace d3 { namespace util {
     };
   };
   
+  template <>
+  struct equal<std::pair<its::IntExpression,its::IntExpression> > {
+    bool operator() (const std::pair<its::IntExpression,its::IntExpression> & a,
+                     const std::pair<its::IntExpression,its::IntExpression> & b) {
+      return a.first.equals (b.first) && a.second.equals (b.second);
+    }
+  };
+  
 }}
 
 namespace its {
 
   // Useful Typedefs : for cache values = pair<Info=Assertion,node>
   typedef AdditiveMap<Assertion, GDDD> InfoNode;
+  typedef AdditiveMap<std::pair<its::IntExpression,its::IntExpression>, GDDD> TmpInfoNode;
   typedef InfoNode::const_iterator InfoNode_it;
+  typedef TmpInfoNode::const_iterator TmpInfoNode_it;
 
   // For cache keys : pair <expression to query,node>
   typedef std::pair<IntExpression,GDDD> map_key_type;
@@ -108,12 +118,12 @@ namespace its {
     // The final result
     InfoNode res;
     // To hold elements curently being treated
-    InfoNode tosolve;
+    TmpInfoNode tosolve;
     // To hold potentially partially solved elements for next iteration
-    InfoNode remain;
+    TmpInfoNode remain;
 
     // Initialize with the assertion that e=e
-    remain.add(IntExpressionFactory::createAssertion(e,e),d);
+    remain.add(std::make_pair (e,e),d);
 
 //    std::cerr << " Query for : " << e << std::endl ;
 
@@ -121,24 +131,25 @@ namespace its {
     while (remain.begin() != remain.end()) {
       // Put remain in "tosolve" and clear remain
       tosolve = remain;
-      remain = InfoNode();
+      remain = TmpInfoNode();
       
       // Solve (at least partially) all elements in "tosolve"
-      for (InfoNode_it in=tosolve.begin() ; in != tosolve.end() ; ++in ){
-	const Assertion & ass = in->first;
+      for (TmpInfoNode_it in=tosolve.begin() ; in != tosolve.end() ; ++in ){
+  const std::pair<IntExpression,IntExpression> & ass = in->first;
 	const GDDD & node = in->second;
 
 //	std::cerr << "Solving element : " << ass << std::endl;
 //	std::cerr << "curv : " << curv.getName() << std::endl;
 
+  IntExpression rr = ass.second;
 	// For each edge of the DDD
 	for (GDDD::const_iterator it = node.begin() ; it != node.end() ; ++it ) {
 	  // shortcut to edge value
 	  int vl = it->first;
-    bool r_support = ass.getRightHandSide ().isSupport (curv);
+    IntExpression r = rr;
+    bool r_support = r.isSupport (curv);
 
     // Simplify the rhs of the current assertion by the info
-    IntExpression r = ass.getRightHandSide ();
     // only if necessary
     if (r_support) {
       // An assertion representing this edge information
@@ -167,7 +178,7 @@ namespace its {
 	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
 		// Add to remain for the next iteration of outer loop 
 		// The next iteration will work with a more resolved expression
-		remain.add(  IntExpressionFactory::createAssertion(e, r & jt->first), jt->second );
+    remain.add(std::make_pair(e, r & jt->first), jt->second );
 	      }
 	     
 	    // If curv is no longer a target of the queried expression, propagate "r" as is to child
