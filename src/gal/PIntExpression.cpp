@@ -143,7 +143,7 @@ public :
 
 
   int getVariable() const { return varIndex; }
-
+  int getValue() const { return -1; }
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & newindexes) const {
     int newind = newindexes[varIndex];
@@ -386,14 +386,14 @@ public :
 
 class ArrayConstExpr : public _PIntExpression {
   int var;  
-  PIntExpression index;
+  int index;
 public :
-  ArrayConstExpr (int vvar, const PIntExpression & index) : var(vvar), index(index) {};
+  ArrayConstExpr (int vvar, int index) : var(vvar), index(index) {};
   IntExprType getType() const  { return CONSTARRAY; }
 
   void print (std::ostream & os, const env_t & env) const {
     os << IntExpressionFactory::getVar (env[var]) << "[";
-    index.print(os,env);
+    os << index ;
     os << "]";
   }
 
@@ -402,25 +402,25 @@ public :
   }
 
   bool operator==(const _PIntExpression & e) const {
-    return var == ((const ArrayConstExpr &)e).var && (index.equals( ((const ArrayConstExpr &)e).index));
+    return var == ((const ArrayConstExpr &)e).var && (index == ((const ArrayConstExpr &)e).index);
   }
 
   bool operator<(const _PIntExpression & e) const {
     return var == ((const ArrayConstExpr &)e).var ?
-      (index.less( ((const ArrayConstExpr &)e).index))
+      (index < ((const ArrayConstExpr &)e).index)
       : var < ((const ArrayConstExpr &)e).var ;
   }
 
 
 
   virtual size_t hash () const {
-    return (ddd::wang32_hash(var) *  34019) ^ index.hash();
+    return (ddd::wang32_hash(var) *  34019) ^ ddd::wang32_hash(index);
   }
 
   _PIntExpression * clone () const { return new ArrayConstExpr(*this); }
 
   bool isSupport (int v, int id) const {
-    return var == v && id == index.getValue();
+    return var == v && id == index;
   }
   void getSupport(bool * const mark) const {
     mark[var] = true;
@@ -444,7 +444,7 @@ public :
   }
 
   int getValue () const {
-    return index.getValue();
+    return index;
   }
 
   // fall back on default a.getValue(this)
@@ -1067,7 +1067,7 @@ PIntExpression PIntExpressionFactory::createArrayAccess (int v, const PIntExpres
   if (index.getType() != CONST) 
     return unique (ArrayVarExpr(v,index));
   else
-    return unique (ArrayConstExpr(v,index));
+    return unique (ArrayConstExpr(v,index.getValue()));
 }
 
 PIntExpression PIntExpressionFactory::wrapBoolExpr (const PBoolExpression &b) {
