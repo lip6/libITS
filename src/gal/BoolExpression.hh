@@ -77,7 +77,9 @@ public :
   friend std::ostream & operator<< (std::ostream & os, const BoolExpression & e);
 
   /// To determine whether a given variable is mentioned in an expression.
-  bool isSupport (const Variable & v) const;
+  /// The same, but with a full IntExpression (allowing to carry also array accesses). 
+  bool isSupport (const IntExpression & v) const;
+
   /// To get all the variables occuring in the expression
   std::set<Variable> getSupport() const;
 

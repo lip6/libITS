@@ -15,7 +15,9 @@
 
 namespace its {
 
-  typedef std::pair<its::IntExpression, const its::VarOrder *> CacheKey_t;
+
+  typedef std::pair<its::IntExpression, const its::GalOrder *> CacheKey_t;
+
 
 }
 
@@ -33,8 +35,8 @@ namespace d3 { namespace util {
   // Specialize template to avoid deep comparing VarOrder instances.
   // Mostly we expect only a few different VarOrder instances throughout the program.
   template <>
-  struct equal<const its::VarOrder *> {
-    bool operator() (const its::VarOrder *a, const its::VarOrder * b)const {
+  struct equal<const its::GalOrder *> {
+    bool operator() (const its::GalOrder *a, const its::GalOrder * b)const {
       return a == b;
     };
   };
@@ -61,13 +63,11 @@ namespace its {
   typedef std::pair<IntExpression,GDDD> map_key_type;
 
   // predeclaration: to invert Expressions
-  GHom invertExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo, const GDDD & pot) ;
+  GHom invertExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo, const GDDD & pot) ;
   // predeclaration: a function to compute queries (no cache)
-  static InfoNode queryEval (const IntExpression & e, const VarOrder * vo, const GDDD & d) ;
+  static InfoNode queryEval (const IntExpression & e, const GalOrder * vo, const GDDD & d) ;
   // Caches calls to previous function
-  static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) ;
-
-
+  static InfoNode query (const IntExpression & e, const GalOrder * vo, const GDDD & d) ;
 
   typedef Cache<CacheKey_t, GDDD, InfoNode> QueryCache_t;
 
@@ -107,14 +107,14 @@ namespace its {
   }
 
 
-  static InfoNode query (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
+  static InfoNode query (const IntExpression & e, const GalOrder * vo, const GDDD & d) {
     return getQueryCache().insert(CacheKey_t(e,vo), d).second;
   }
 
-  static InfoNode queryEval (const IntExpression & e, const VarOrder * vo, const GDDD & d) {
+  static InfoNode queryEval (const IntExpression & e, const GalOrder * vo, const GDDD & d) {
     // shortcuts
     int vr = d.variable();
-    const Variable & curv = vo->getLabel(vr);    
+    const IntExpression & curv = vo->getVar(vr);    
     // The final result
     InfoNode res;
     // To hold elements curently being treated
@@ -153,7 +153,9 @@ namespace its {
     // only if necessary
     if (r_support) {
       // An assertion representing this edge information
-      Assertion assertion = IntExpressionFactory::createAssertion(curv, IntExpressionFactory::createConstant(vl));
+      Assertion assertion = IntExpressionFactory::createAssertion(
+								  curv,
+								  IntExpressionFactory::createConstant(vl));
       r = r & assertion ;
     }
 
@@ -213,9 +215,9 @@ namespace its {
   class _Assign : public _GHom {
     IntExpression var;
     IntExpression expr;
-    const VarOrder * vo;
+    const GalOrder * vo;
     public:
-    _Assign(const IntExpression & varr, const IntExpression & e, const VarOrder * vo) : var(varr), expr(e), vo(vo) {
+    _Assign(const IntExpression & varr, const IntExpression & e, const GalOrder * vo) : var(varr), expr(e), vo(vo) {
       assert(var.getType() == VAR || var.getType() == ARRAY || var.getType() == CONSTARRAY  );
     }
 
@@ -238,7 +240,7 @@ namespace its {
       else
 	{
 	  int vr = d.variable();
-	  const Variable & curv = vo->getLabel(vr);
+	  const IntExpression & curv = vo->getVar(vr);
 	  std::set<GDDD> res;
 	  for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
 	    // current value
@@ -269,8 +271,9 @@ namespace its {
 
 	    // If the lhs is fully resolved to signify the current variable.
 	    // This can be a CONSTARRAY or plain VAR
-	    if ((v.getType() == VAR && vr == vo->getIndex(v.getName())) 
-		|| (v.getType() == CONSTARRAY && v.isSupport(curv))) {
+      if ( v.equals(curv) ) {
+// (v.getType() == VAR && vr == vo->getIndex(v.getName())) 
+//		|| (v.getType() == CONSTARRAY && v.isSupport(curv))) {
 
 	      // Constant case
 	      if (e.getType() == CONST) {
@@ -335,7 +338,7 @@ namespace its {
     bool
     skip_variable(int vr) const
     {
-      const Variable & curv = vo->getLabel(vr);
+      const IntExpression & curv = vo->getVar(vr);
       bool b =  ! var.isSupport(curv)
 	&& ! expr.isSupport(curv);
       //      std::cerr << "Assignment of:" << var << " = " << expr << std::endl
@@ -376,9 +379,9 @@ namespace its {
 
 class _Predicate:public _GHom {
   BoolExpression expr;
-  const VarOrder * vo;
+  const GalOrder * vo;
 public:
-  _Predicate(const BoolExpression & e, const VarOrder *vo) : expr(e),vo(vo) {}
+  _Predicate(const BoolExpression & e, const GalOrder *vo) : expr(e),vo(vo) {}
   
   GDDD phiOne() const {
     std::cerr << "Overflow in Predicate when evaluating ";
@@ -389,7 +392,9 @@ public:
   bool
   skip_variable(int var) const
   {
-    return ! expr.isSupport(vo->getLabel(var)) ;
+//   expr.print(std::cerr); 
+//   std::cerr << "Skips " << vo->getVar(var) << " ? " << ! expr.isSupport(vo->getVar(var)) << std::endl;
+   return ! expr.isSupport(vo->getVar(var)) ;
   }
   
   GDDD eval(const GDDD &d) const {
@@ -408,7 +413,7 @@ public:
       {
 	// current variable 
 	int vr = d.variable();
-	const Variable & curv = vo->getLabel(vr);
+	const IntExpression & curv = vo->getVar(vr);
 	
 	// To hold result
 	std::set<GDDD> res;
@@ -493,7 +498,7 @@ public:
 
 };
 
-GHom predicate (const BoolExpression & e, const VarOrder * vo) {
+GHom predicate (const BoolExpression & e, const GalOrder * vo) {
   if (e.getType() == BOOLCONST) {
     // Constant :
     if (! e.getValue()) {
@@ -506,7 +511,7 @@ GHom predicate (const BoolExpression & e, const VarOrder * vo) {
   return _Predicate(e,vo);
 }
   
-GHom assignExpr (const IntExpression & var,const IntExpression & val,const VarOrder * vo) {
+GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo) {
   return _Assign(var,val,vo);
 }
 
