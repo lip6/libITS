@@ -87,7 +87,8 @@ public :
   vLabel getName () const ;
 
   /// To determine whether a given variable is mentioned in an expression.
-  bool isSupport (const Variable & v) const;
+  /// The same, but with a full IntExpression (allowing to carry also array accesses). 
+  bool isSupport (const IntExpression & v) const;
   /// To get all the variables occuring in the expression
   std::set<Variable> getSupport() const;
 
@@ -113,8 +114,6 @@ public :
 
   Assertion operator & (const Assertion & other) const;
   
-  /// To determine whether a given variable is mentioned in an expression.
-  bool isSupport (const Variable & v) const;
 
   size_t hash() const;
   bool operator== (const Assertion & ) const ;
@@ -150,6 +149,12 @@ public :
   static IntExpression  createConstant (int v);
   static IntExpression  createVariable (const Variable & v) ;
   static IntExpression  createArrayAccess (const Variable & v, const IntExpression & index) ;
+  // More low level version, give an int for the variable index in global names (see getVarIndex)
+  // and an int for an array access, -1 means simple var access.
+  static IntExpression  createVarAccess (int vindex, int index=-1) ;
+
+
+
   /// value is 1 if true or 0 otherwise
   static IntExpression  wrapBoolExpr (const BoolExpression & b);
   
@@ -159,8 +164,8 @@ public :
   static Assertion createAssertion (const IntExpression & v,const IntExpression & e);
   static Assertion createAssertion (const PAssertion & a,const env_t & env);
   
-  static int getVarIndex (const std::string &);
-  static std::string getVar (int);
+  static int getVarIndex (Label);
+  static Label getVar (int);
 
   static void printStats (std::ostream &os);
 
