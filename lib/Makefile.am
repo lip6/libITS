@@ -215,7 +215,8 @@ GALSOURCES = $(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/GAL.cpp \
 	$(MYGALSRCDIR)/IntExpression.cpp \
 	$(MYGALSRCDIR)/PBoolExpression.cpp \
-	$(MYGALSRCDIR)/PIntExpression.cpp 
+	$(MYGALSRCDIR)/PIntExpression.cpp \
+	$(MYGALSRCDIR)/Variable.cpp 
 
 
 SCALARSOURCES = $(MYSCALARSRCDIR)/CircularSet.cpp \
@@ -275,7 +276,6 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/Options.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
 	$(MYSRCDIR)/TypeCacher.cpp \
-	$(MYSRCDIR)/Variable.cpp \
 	$(JSONSTUFF) \
 	$(XMLLOADERSOURCES)
 
