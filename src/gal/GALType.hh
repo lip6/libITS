@@ -3,6 +3,7 @@
 
 #include "TypeBasics.hh"
 #include "GAL.hh"
+#include "GALOrder.hh"
 #include "TypeVisitor.hh"
 
 // forward declaration
@@ -29,15 +30,24 @@ class GALType : public TypeBasics {
   bool voQuery;
   bool voState;
 
+  mutable GalOrder * go_;
   // support function to builda Hom from a GuardedAction (using current varOrder)
   GHom buildHom(const GuardedAction & it) const ;
 public :
-  GALType (const GAL * gal):gal_(gal), voLocal(false), voQuery(false), voState(false) {}
+  GALType (const GAL * gal):gal_(gal), voLocal(false), voQuery(false), voState(false),go_(NULL) {}
 
   void setStutterOnDeadlock (bool s) { stutterOnDeadlock = s; }
   void setVoLocal (bool a) { voLocal = a; }
   void setVoQuery (bool a) { voQuery = a; }
   void setVoState (bool a) { voState = a; }
+
+  // For Gal order
+  const GalOrder * getGalOrder() const {
+    if (go_ == NULL) {
+      go_ = new GalOrder (getVarOrder());
+    }
+    return go_;
+  }
   
   Label getName() const { return gal_->getName(); }
 
@@ -101,6 +111,12 @@ public :
   Transition observe (labels_t obs, State potential) const; 
 
   labels_t getVarSet () const ;
+
+
+  virtual bool setVarOrder (labels_t ord) const {
+    go_ = NULL;
+    return TypeBasics::setVarOrder(ord);
+  }
   
 };
 

@@ -44,14 +44,14 @@ labels_t GALType::getTransLabels () const {
 
   GHom GALType::buildHom(const GuardedAction & it) const {
 
-    GHom guard = predicate ( it.getGuard(), getVarOrder());
+    GHom guard = predicate ( it.getGuard(), getGalOrder());
     GHom action = GHom::id;
     for (GuardedAction::actions_it jt = it.begin() ; jt != it.end() ; ++ jt) {
       GHom todo;
       if (jt->getVariable().getType() == VAR && jt->getExpression().getType() == CONST)
 	todo = setVarConst ( getVarOrder()->getIndex(jt->getVariable().getName()), jt->getExpression().getValue());
       else
-	todo =  assignExpr(jt->getVariable(), jt->getExpression(),getVarOrder());
+	todo =  assignExpr(jt->getVariable(), jt->getExpression(),getGalOrder());
       action = todo & action;
     }
     return action & guard;
@@ -71,13 +71,13 @@ labels_t GALType::getTransLabels () const {
       }
     }
     if (stutterOnDeadlock)
-      toadd.insert (predicate (BoolExpressionFactory::createNary (AND, stutter_trans), getVarOrder ()));
+      toadd.insert (predicate (BoolExpressionFactory::createNary (AND, stutter_trans), getGalOrder ()));
     
     GHom sum = GHom::add(toadd);
 
     // so "sum" contains the successor relationship
     // now factor in the transient states
-    GHom next = fixpoint(ITE ( predicate(gal_->isTransientState(), getVarOrder()), sum, GHom::id)) & sum;
+    GHom next = fixpoint(ITE ( predicate(gal_->isTransientState(), getGalOrder()), sum, GHom::id)) & sum;
 
     return localApply(  next, DEFAULT_VAR );
   }
@@ -272,7 +272,7 @@ labels_t GALType::getTransLabels () const {
       }
     }
     
-    return TypeBasics::setVarOrder (new_v);
+    return GALType::setVarOrder (new_v);
   }
   
   Transition GALDVEType::getAPredicate (Label predicate) const
