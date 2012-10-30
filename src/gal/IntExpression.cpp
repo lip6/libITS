@@ -119,11 +119,12 @@ class _IntExpression {
     return IntExpressionFactory::createUnique(_IntExpression(aftergc.first, aftergc.second ));
   }
 
-  bool isSupport (const Variable & v) const {
-    int id = indexOf(v.getArrayName(),env.begin(),env.end());
+  bool isSupport (const IntExpression & v) const {
+    assert ( v.getType() == VAR || v.getType() == CONSTARRAY);
+    int id = indexOf(v.getEnv()[v.getExpr().getVariable()],env.begin(),env.end());
     if (id==-1)
       return false;
-    return expr.isSupport( id, v.getIndex() ) ;
+    return expr.isSupport( id, v.getExpr().getValue() ) ;
   }
 
   std::set<Variable> getSupport() const {
@@ -246,13 +247,6 @@ Assertion Assertion::operator & (const Assertion & other) const {
 	    , unione);
 }
 
-/// To determine whether a given variable is mentioned in an expression.
-bool Assertion::isSupport (const Variable & v) const {
-  int id = indexOf(v.getArrayName(),env.begin(),env.end());
-  if (id==-1)
-    return false;
-  return assertion.isSupport(id, v.getIndex());
-}
 
 void Assertion::print (std::ostream & os) const {
   assertion.print(os,env) ;
@@ -281,11 +275,12 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
 UniqueTable<_IntExpression>  IntExpressionFactory::unique = UniqueTable<_IntExpression>();
 std::map<std::string,int> IntExpressionFactory::var_names = std::map<std::string,int> ();
 
-int IntExpressionFactory::getVarIndex (const std::string & v) {
+int IntExpressionFactory::getVarIndex (Label v) {
   return var_names.insert (std::make_pair (v, var_names.size ())).first->second;
 }
 
-std::string IntExpressionFactory::getVar (int i) {
+static std::string empty="";
+Label IntExpressionFactory::getVar (int i) {
   std::map<std::string,int>::const_iterator it;
   for (it = var_names.begin (); it != var_names.end (); ++it)
   {
@@ -294,7 +289,7 @@ std::string IntExpressionFactory::getVar (int i) {
   }
   // index not found: should not happen
   assert (false);
-  return "";
+  return empty;
 }
 
 IntExpression IntExpressionFactory::createNary (IntExprType type, const NaryParamType & params) {
@@ -515,10 +510,10 @@ vLabel IntExpression::getName () const {
 
 }
 
-
-bool IntExpression::isSupport(const Variable & var) const {
+bool IntExpression::isSupport(const IntExpression & var) const {
   return concrete->isSupport(var);
 }
+
 
 std::set<Variable> IntExpression::getSupport() const {
   return concrete->getSupport();
@@ -715,13 +710,12 @@ public :
     return BoolExpressionFactory::createUnique(_BoolExpression(aftergc.first, aftergc.second ));
   }
 
-  
-
-  bool isSupport (const Variable & v) const {
-    int id = indexOf(v.getArrayName(),env.begin(),env.end());
+  bool isSupport (const IntExpression & v) const {
+    assert ( v.getType() == VAR || v.getType() == CONSTARRAY);
+    int id = indexOf(v.getEnv()[v.getExpr().getVariable()],env.begin(),env.end());
     if (id==-1)
       return false;
-    return expr.isSupport(id, v.getIndex());
+    return expr.isSupport( id, v.getExpr().getValue() ) ;
   }
 
   std::set<Variable> getSupport() const {
@@ -967,10 +961,10 @@ BoolExpression::~BoolExpression () {
 }
 
 
-
-bool BoolExpression::isSupport (const Variable & v) const {
+bool BoolExpression::isSupport (const IntExpression & v) const {
   return concrete->isSupport(v);
 }
+
 
 std::set<Variable> BoolExpression::getSupport() const {
   return concrete->getSupport();
