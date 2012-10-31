@@ -1,0 +1,474 @@
+adding.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/adding.1.dve
+adding.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/adding.2.dve
+adding.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/adding.3.dve
+anderson.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/anderson.2.dve
+anderson.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/anderson.4.dve
+anderson.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/anderson.6.dve
+anderson.8.dve
+../bin/its-reach -t DVE --quiet -i test_models/anderson.8.dve
+at.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/at.1.dve
+at.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/at.2.dve
+at.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/at.3.dve
+at.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/at.4.dve
+at.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/at.5.dve
+at.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/at.6.dve
+at.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/at.7.dve
+bakery.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/bakery.1.dve
+bakery.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/bakery.2.dve
+bakery.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/bakery.3.dve
+bakery.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/bakery.4.dve
+blocks.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/blocks.2.dve
+blocks.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/blocks.3.dve
+bopdp.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/bopdp.1.dve
+bopdp.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/bopdp.2.dve
+bopdp.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/bopdp.3.dve
+bridge.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/bridge.1.dve
+bridge.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/bridge.2.dve
+bridge.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/bridge.3.dve
+brp.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.1.dve
+brp.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.2.dve
+brp.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.3.dve
+brp.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.4.dve
+brp.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.5.dve
+brp.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.6.dve
+brp2.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp2.1.dve
+brp2.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp2.2.dve
+brp2.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp2.3.dve
+brp2.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp2.4.dve
+brp2.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp2.5.dve
+brp2.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp2.6.dve
+cambridge.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.1.dve
+cambridge.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.2.dve
+cambridge.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.3.dve
+cambridge.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.4.dve
+cambridge.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.5.dve
+collision.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.1.dve
+collision.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.2.dve
+collision.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.3.dve
+collision.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.4.dve
+collision.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.5.dve
+collision.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.6.dve
+cyclic_scheduler.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/cyclic_scheduler.1.dve
+cyclic_scheduler.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/cyclic_scheduler.2.dve
+cyclic_scheduler.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/cyclic_scheduler.3.dve
+cyclic_scheduler.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/cyclic_scheduler.4.dve
+driving_phils.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/driving_phils.1.dve
+driving_phils.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/driving_phils.2.dve
+elevator_planning.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator_planning.1.dve
+elevator_planning.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator_planning.2.dve
+elevator_planning.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator_planning.3.dve
+elevator.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator.1.dve
+elevator.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator.2.dve
+elevator.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator.3.dve
+elevator.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator.4.dve
+elevator2.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator2.1.dve
+elevator2.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator2.2.dve
+elevator2.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator2.3.dve
+exit.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/exit.1.dve
+exit.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/exit.2.dve
+exit.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/exit.3.dve
+exit.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/exit.5.dve
+extinction.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/extinction.1.dve
+extinction.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/extinction.2.dve
+extinction.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/extinction.3.dve
+extinction.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/extinction.4.dve
+firewire_link.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_link.1.dve
+firewire_link.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_link.2.dve
+firewire_link.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_link.3.dve
+firewire_link.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_link.4.dve
+firewire_link.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_link.5.dve
+firewire_link.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_link.7.dve
+firewire_tree.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.1.dve
+firewire_tree.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.2.dve
+firewire_tree.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.3.dve
+firewire_tree.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.4.dve
+firewire_tree.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.5.dve
+fischer.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.1.dve
+fischer.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.2.dve
+fischer.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.3.dve
+fischer.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.4.dve
+fischer.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.5.dve
+fischer.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.6.dve
+fischer.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.7.dve
+frogs.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/frogs.1.dve
+frogs.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/frogs.2.dve
+frogs.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/frogs.3.dve
+gear.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/gear.1.dve
+gear.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/gear.2.dve
+hanoi.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/hanoi.1.dve
+iprotocol.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.1.dve
+iprotocol.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.2.dve
+iprotocol.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.3.dve
+iprotocol.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.4.dve
+iprotocol.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.5.dve
+iprotocol.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.6.dve
+iprotocol.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.7.dve
+krebs.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.1.dve
+krebs.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.2.dve
+krebs.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.3.dve
+krebs.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.4.dve
+lamport_nonatomic.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport_nonatomic.1.dve
+lamport_nonatomic.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport_nonatomic.2.dve
+lamport_nonatomic.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport_nonatomic.3.dve
+lamport_nonatomic.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport_nonatomic.4.dve
+lamport_nonatomic.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport_nonatomic.5.dve
+lamport.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.1.dve
+lamport.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.2.dve
+lamport.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.3.dve
+lamport.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.5.dve
+lamport.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.6.dve
+lamport.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.7.dve
+lamport.8.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.8.dve
+lann.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.1.dve
+lann.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.2.dve
+lann.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.3.dve
+lann.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.4.dve
+lann.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.5.dve
+lann.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.7.dve
+leader_election.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.1.dve
+leader_election.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.2.dve
+leader_election.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.3.dve
+leader_election.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.4.dve
+leader_election.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.5.dve
+leader_election.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.6.dve
+leader_filters.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.1.dve
+leader_filters.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.2.dve
+leader_filters.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.3.dve
+leader_filters.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.4.dve
+leader_filters.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.5.dve
+lifts.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/lifts.1.dve
+lifts.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/lifts.2.dve
+loyd.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/loyd.1.dve
+loyd.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/loyd.2.dve
+lup.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/lup.1.dve
+lup.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/lup.2.dve
+lup.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/lup.3.dve
+lup.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/lup.4.dve
+mcs.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/mcs.1.dve
+mcs.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/mcs.2.dve
+mcs.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/mcs.3.dve
+mcs.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/mcs.4.dve
+mcs.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/mcs.5.dve
+mcs.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/mcs.6.dve
+msmie.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/msmie.1.dve
+msmie.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/msmie.2.dve
+msmie.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/msmie.3.dve
+msmie.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/msmie.4.dve
+needham.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/needham.1.dve
+needham.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/needham.2.dve
+needham.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/needham.3.dve
+needham.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/needham.4.dve
+peg_solitaire.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/peg_solitaire.1.dve
+peg_solitaire.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/peg_solitaire.4.dve
+peg_solitaire.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/peg_solitaire.5.dve
+peterson.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.1.dve
+peterson.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.2.dve
+peterson.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.3.dve
+peterson.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.4.dve
+peterson.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.5.dve
+peterson.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.6.dve
+pgm_protocol.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.1.dve
+pgm_protocol.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.2.dve
+pgm_protocol.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.3.dve
+pgm_protocol.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.4.dve
+pgm_protocol.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.7.dve
+phils.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.1.dve
+phils.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.2.dve
+phils.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.3.dve
+phils.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.4.dve
+phils.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.5.dve
+phils.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.6.dve
+phils.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.7.dve
+phils.8.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.8.dve
+plc.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/plc.1.dve
+plc.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/plc.2.dve
+plc.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/plc.3.dve
+plc.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/plc.4.dve
+pouring.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/pouring.1.dve
+pouring.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/pouring.2.dve
+production_cell.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.1.dve
+production_cell.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.2.dve
+production_cell.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.3.dve
+production_cell.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.4.dve
+production_cell.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.5.dve
+production_cell.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.6.dve
+protocols.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/protocols.1.dve
+protocols.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/protocols.2.dve
+protocols.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/protocols.3.dve
+protocols.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/protocols.4.dve
+protocols.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/protocols.5.dve
+public_subscribe.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/public_subscribe.1.dve
+public_subscribe.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/public_subscribe.2.dve
+public_subscribe.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/public_subscribe.3.dve
+public_subscribe.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/public_subscribe.4.dve
+reader_writer.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/reader_writer.1.dve
+reader_writer.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/reader_writer.2.dve
+reader_writer.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/reader_writer.3.dve
+rether.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/rether.1.dve
+rether.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/rether.2.dve
+rether.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/rether.3.dve
+rether.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/rether.4.dve
+rushhour.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/rushhour.1.dve
+rushhour.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/rushhour.2.dve
+schedule_world.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/schedule_world.1.dve
+schedule_world.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/schedule_world.2.dve
+schedule_world.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/schedule_world.3.dve
+sokoban.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/sokoban.1.dve
+sokoban.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/sokoban.2.dve
+sorter.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/sorter.1.dve
+sorter.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/sorter.2.dve
+sorter.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/sorter.3.dve
+sorter.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/sorter.5.dve
+synapse.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.1.dve
+synapse.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.2.dve
+synapse.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.3.dve
+synapse.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.4.dve
+synapse.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.5.dve
+synapse.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.6.dve
+synapse.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.7.dve
+szymanski.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/szymanski.1.dve
+szymanski.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/szymanski.2.dve
+szymanski.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/szymanski.3.dve
+szymanski.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/szymanski.4.dve
+szymanski.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/szymanski.5.dve
+telephony.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/telephony.1.dve
+telephony.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/telephony.2.dve
+telephony.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/telephony.3.dve
+telephony.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/telephony.4.dve
+telephony.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/telephony.7.dve
