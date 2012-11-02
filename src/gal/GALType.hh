@@ -139,11 +139,10 @@ public:
 };
 
 class GALTypeFactory {
-  typedef enum { VO_LOCAL, VO_QUERY, VO_STATE } voStrat;
   // a helper function to parse the varOrderHeuristic
-  static std::set< voStrat > parseHeuristicOptions (const std::string &);
+  static void parseHeuristicOptions (const std::string &, GALType *);
 public:
-  static GALType * createGALType (const GAL *);
+  static GALType * createGALType (const GAL *, bool stutterOnDeadlock, const std::string & varOrderHeuristic);
   static GALType * createGALDVEType (Label, bool stutterOnDeadlock, const std::string & varOrderHeuristic);
 };
 

@@ -253,12 +253,12 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case GAL_T :
     {
-      // \todo the orderHeuristic is also valid for GAL
       // do the parsing
       GAL * result = GALParser::loadGAL(pathinputff);
-      model.declareType (*result, stutterOnDeadlock);
+      pType newtype = GALTypeFactory::createGALType (result, stutterOnDeadlock, orderHeuristic);
+      model.addType (newtype);
       
-      model.setInstance(result->getName(), "main");
+      model.setInstance(newtype->getName(), "main");
       model.setInstanceState("init");
       break;
     }

@@ -336,24 +336,22 @@ labels_t GALType::getTransLabels () const {
 
   /******** class GALTypeFactory **************/
 
-  std::set< GALTypeFactory::voStrat >
-  GALTypeFactory::parseHeuristicOptions (const std::string & v)
+  void
+  GALTypeFactory::parseHeuristicOptions (const std::string & v, GALType * gt)
   {
     assert (v.size () < 4);
-    
-    std::set< voStrat > res;
     for (size_t i = 0 ; i < v.size () ; ++i)
     {
       switch (v[i])
       {
         case 'L':
-          res.insert (VO_LOCAL);
+          gt->setVoLocal (true);
           break;
         case 'Q':
-          res.insert (VO_QUERY);
+          gt->setVoQuery (true);
           break;
         case 'S':
-          res.insert (VO_STATE);
+          gt->setVoState (true);
           break;
         default:
           // not valid
@@ -361,12 +359,14 @@ labels_t GALType::getTransLabels () const {
           assert(false);
       }
     }
-    return res;
   }
   
-  GALType * GALTypeFactory::createGALType (const GAL * g)
+  GALType * GALTypeFactory::createGALType (const GAL * g, bool stutterOnDeadlock, const std::string & varOrderHeuristic)
   {
-    return new GALType (g);
+    GALType * res = new GALType (g);
+    res->setStutterOnDeadlock (stutterOnDeadlock);
+    parseHeuristicOptions (varOrderHeuristic, res);
+    return res;
   }
 
   GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock, const std::string & varOrderHeuristic)
@@ -379,24 +379,7 @@ labels_t GALType::getTransLabels () const {
     GALType * res = new GALDVEType (loader->convertFromDve(), loader);
     res->setStutterOnDeadlock (stutterOnDeadlock);
     
-    std::set<voStrat> vo_strats = parseHeuristicOptions (varOrderHeuristic);
-    for (std::set<voStrat>::const_iterator it = vo_strats.begin ();
-         it != vo_strats.end (); ++it)
-    {
-      switch (*it)
-      {
-        case VO_LOCAL:
-          res->setVoLocal (true);
-          break;
-        case VO_QUERY:
-          res->setVoQuery (true);
-          break;
-        case VO_STATE:
-          res->setVoState (true);
-          break;
-        // no need for default
-      }
-    }
+    parseHeuristicOptions (varOrderHeuristic, res);
     return res;
   }
 
