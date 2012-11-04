@@ -186,6 +186,8 @@ class _IntExpression {
 /********************************************************/
 /***********  Assertion *********************************/
 
+  Assertion::Assertion (): assertion(0,0) {}
+
   Assertion::Assertion (const IntExpression & var, const IntExpression & val) : assertion(0,0){
   env = sorted_union (var.getEnv(), val.getEnv());
 

@@ -108,7 +108,8 @@ class Assertion {
   PAssertion assertion;
   env_t env;
 public :
-  Assertion (const IntExpression & var = IntExpression (), const IntExpression & val = IntExpression ());
+  Assertion ();
+  Assertion (const IntExpression & var, const IntExpression & val);
   Assertion (const PAssertion & a, const env_t & env): assertion(a), env(env) {};
   IntExpression getValue (const IntExpression & v) const ;
 
