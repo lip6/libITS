@@ -54,7 +54,7 @@ namespace d3 { namespace util {
 namespace its {
 
   // Useful Typedefs : for cache values = pair<Info=Assertion,node>
-  typedef AdditiveMap<Assertion, GDDD> InfoNode;
+  typedef AdditiveMap<IntExpression, GDDD> InfoNode;
   typedef AdditiveMap<std::pair<its::IntExpression,its::IntExpression>, GDDD> TmpInfoNode;
   typedef InfoNode::const_iterator InfoNode_it;
   typedef TmpInfoNode::const_iterator TmpInfoNode_it;
@@ -162,7 +162,7 @@ namespace its {
 	  // If RHS is now a constant, we have finished solving
 	  if (r.getType() == CONST) {
 	    // add result to final res
-	    res.add(IntExpressionFactory::createAssertion(e,r), GDDD(vr,vl,it->second));
+	    res.add(r, GDDD(vr,vl,it->second));
 	  
 	  // Otherwise more resolution of rhs is needed
 	  } else {
@@ -176,11 +176,12 @@ namespace its {
 
 	      // Extract a subexpr from r and query for its value.
 	      // TODO : get a nested expression that concerns the current array
-	      InfoNode rhssolved = query (r.getFirstSubExpr(), vo, GDDD(vr,vl,it->second));
+        IntExpression sub_expr = r.getFirstSubExpr();
+	      InfoNode rhssolved = query (sub_expr, vo, GDDD(vr,vl,it->second));
 	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
 		// Add to remain for the next iteration of outer loop 
 		// The next iteration will work with a more resolved expression
-    remain.add(std::make_pair(e, r & jt->first), jt->second );
+    remain.add(std::make_pair(e, r & IntExpressionFactory::createAssertion (sub_expr, jt->first)), jt->second );
 	      }
 	     
 	    // If curv is no longer a target of the queried expression, propagate "r" as is to child
@@ -193,7 +194,7 @@ namespace its {
 		// Upgrade child result to refer to source expression as LHS, 
 		// reconstruct missing edge from child result
 		// and add to final result.
-		res.add(  IntExpressionFactory::createAssertion(e, r & jt->first), GDDD(vr, vl, jt->second ));
+		res.add(jt->first, GDDD(vr, vl, jt->second ));
 	      }
 	      
 
@@ -288,7 +289,7 @@ namespace its {
 		// This (current) value may be necessary to solve tab[tab[i]] expressions.
 		InfoNode rhssolved = query (e, vo, GDDD(vr,vl,it->second));
 		for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
-		  res.insert( assignExpr(v, e & jt->first, vo) ( jt->second ));
+		  res.insert( assignExpr(v, jt->first, vo) ( jt->second ));
 		}
 	      }
 	    
@@ -297,11 +298,13 @@ namespace its {
 	      
 	      // Query for the value of a nested expression of lhs
 	      // TODO : get a nested expression that concerns the current array
-	      InfoNode rhssolved = query (v.getFirstSubExpr(), vo, GDDD(vr,vl,it->second));
+        IntExpression sub_expr = v.getFirstSubExpr();
+	      InfoNode rhssolved = query (sub_expr, vo, GDDD(vr,vl,it->second));
 	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
 		// Note that we also attempt to simplify rhs with the same subexpr result if possible
 		// The recursion works with a more resolved expression
-		res.insert( assignExpr(v & jt->first, e & jt->first, vo) ( jt->second ));
+    Assertion ass_tmp = IntExpressionFactory::createAssertion (sub_expr, jt->first);
+		res.insert( assignExpr(v & ass_tmp, e & ass_tmp, vo) ( jt->second ));
 	      }
 
 	    // The LHS does not concern the current variable
@@ -311,11 +314,12 @@ namespace its {
 
 	      // Query for the value of a nested expression of rhs
 	      // TODO : get a nested expression that concerns the current array
-	      InfoNode rhssolved = query (e.getFirstSubExpr(), vo, GDDD(vr,vl,it->second));
+        IntExpression sub_expr = e.getFirstSubExpr();
+	      InfoNode rhssolved = query (sub_expr, vo, GDDD(vr,vl,it->second));
 	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
 
 		// The recursion works with a more resolved RHS expression
-		res.insert( assignExpr(v, e & jt->first, vo) ( jt->second ));
+    res.insert( assignExpr(v, e & IntExpressionFactory::createAssertion(sub_expr,jt->first), vo) ( jt->second ));
 	      }
 
 	    // Pure propagation of simplified expressions
@@ -332,9 +336,7 @@ namespace its {
 
 	} // end non terminal DDD case
     }
-    
-    
-    
+
     bool
     skip_variable(int vr) const
     {
@@ -457,11 +459,12 @@ public:
 	      // still need to resolve.
 	      // Extract a subexpr from e and query for its value.
 	      // TODO : get a nested expression that concerns the current array
-	      InfoNode rhssolved = query (e.getFirstSubExpr(), vo, GDDD(vr,vl, it->second));
+        IntExpression sub_expr = e.getFirstSubExpr();
+	      InfoNode rhssolved = query (sub_expr, vo, GDDD(vr,vl, it->second));
 	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
 		
 		// Allow to recurse with the simplified expression
-		res.insert ( predicate (e & jt->first, vo) (jt->second) );
+    res.insert ( predicate (e & IntExpressionFactory::createAssertion (sub_expr,jt->first), vo) (jt->second) );
 	      }
 	    
 	    // If RHS no longer targets curv, we can propagate to child
