@@ -17,10 +17,9 @@ options {
 @members {
 
   // "result" is the root of GAL elements.
-  its::GAL* result;
+  its::GAL* result = NULL;
   // pointer on the current transition (GuardedAction) found
   its::GuardedAction* current_ga = NULL ;
-  
   
   /// Gets the text of a token and returns it as a string
   static std::string toString(pANTLR3_COMMON_TOKEN i) {
@@ -44,6 +43,7 @@ options {
   // Check if there is a variable named "str" in GAL system.  
   void checkVariableExistance(std::string str)
   {
+	  assert (result != NULL);
     int found = 0 ; 
     for (its::GAL::vars_it v = result->vars_begin() ; 
                            v != result->vars_end() ; 
@@ -65,6 +65,7 @@ options {
   // Check if there is an array named "str" in GAL system.  
   void checkArrayExistance(std::string str)
   {
+  	assert (result != NULL);
     int found = 0 ; 
     for (its::GAL::arrays_it v = result->arrays_begin() ; 
                            v != result->arrays_end() ; 
@@ -84,6 +85,10 @@ options {
   }
 }
 
+/// This is a hack to get around the ANTLR hiding all "members" inside the .cpp
+/// Sets the result
+/// It allows to set a context (an already built GAL) in order to parse a single IntExpr or BoolExpr in that context
+setGAL[const its::GAL * g]: { result = const_cast<its::GAL *> (g); } ;
 
 system returns [its::GAL* r] :
   'GAL' name=qualifiedName

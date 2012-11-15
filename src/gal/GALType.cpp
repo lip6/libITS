@@ -10,6 +10,11 @@
 
 #include "GALVarOrderHeuristic.hh"
 
+// GAL parser
+#include "gal/parser/exprParserLexer.h"
+#include "gal/parser/exprParserParser.h"
+#include <antlr3.h>
+
 #define DEFAULT_VAR 0
 
 namespace its {
@@ -183,16 +188,67 @@ labels_t GALType::getTransLabels () const {
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition GALType::getAPredicate (Label predicate) const {
-
-
-    AtomicPredicate pred = parseAtomicPredicate(predicate);
-
-
-    //      std::cerr << "Petri net parsed predicate var:" << var << " comp:" << comp << " value:"<<val <<std::endl;
-    //      std::cerr << "Translates to hom :" << Semantics::getHom ( foo, index, value) << std::endl;
-
-    return  localApply( (*pred.comp) (pred.var , pred.val), DEFAULT_VAR );
+  Transition GALType::getPredicate (Label pred) const {
+    // to support old-fashioned syntax, first turn the '=' into '=='
+    std::stringstream tmp;
+    size_t i = 0;
+    while (i != pred.size ())
+    {
+      // '=' cannot be the first or last character of 'pred'
+      // so that accessing pred[i+1] or pred[i-1] would fail only if 'pred' is not well-formed
+      // if current character is a single '=', turn it into '=='
+      if (pred[i] == '=' && pred[i+1] != '=' && pred[i-1] != '=')
+        tmp << "==";
+      else
+        tmp << pred[i];
+      ++i;
+    }
+    std::string predicate = tmp.str ();
+    
+    // reads the string as an input stream for the lexer
+    pANTLR3_INPUT_STREAM input = antlr3StringStreamNew((pANTLR3_UINT8)(predicate.c_str()), 0, predicate.size (), (pANTLR3_UINT8)"predicate");
+    if (input == NULL) {
+      std::cerr << "Unable to read predicate: " << predicate << std::endl;
+      exit(1);
+    }
+    
+    // the lexer
+    pexprParserLexer lexer = exprParserLexerNew(input);
+    if (lexer == NULL) {
+      std::cerr << "Unable to create the lexer for the predicate" << std::endl;
+      exit(1);
+    }
+    
+    // the token stream produced by the lexer
+    pANTLR3_COMMON_TOKEN_STREAM tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lexer));
+    if (tstream == NULL) {
+      std::cerr << "Unable to allocate token stream for predicate parsing" << std::endl;
+      exit(1);
+    }
+    
+    // the parser
+    pexprParserParser parser = exprParserParserNew(tstream);
+    if (parser == NULL) {
+      std::cerr << "Unable to create the parser for the predicate" << std::endl;
+      exit(1);
+    }
+    
+    // set the parsing context
+    parser->setGAL (parser, gal_);
+    // do the parsing
+    BoolExpression result = parser->boolOr (parser);
+    if (parser->pParser->rec->state->errorCount > 0) {
+      std::cerr << "The parser returned " << parser->pParser->rec->state->errorCount << " errors, parsing aborted" << std::endl;
+      exit(1);
+    }
+    
+    // free memory
+    parser->free(parser); parser = NULL;
+    tstream->free(tstream); tstream = NULL;
+    lexer->free(lexer); lexer = NULL;
+    input->close(input); input = NULL;
+    
+    return localApply (its::predicate (result, getGalOrder ()), DEFAULT_VAR);
   }
   
   labels_t GALType::getVarSet () const
@@ -275,63 +331,91 @@ labels_t GALType::getTransLabels () const {
     return GALType::setVarOrder (new_v);
   }
   
-  Transition GALDVEType::getAPredicate (Label predicate) const
+  vLabel
+  GALDVEType::predicate_dve2gal (Label predicate) const
   {
-    std::string new_pred;
-    // if the given predicate is of the form "P.CS"
-    // turn it into "P.state=0" (if 0 is the index of CS
-    // this happens only if the predicate does not have (=|<|>|<=|>=|!=) in it
-    if (    (predicate.find_first_of ('=') == std::string::npos)
-	&&  (predicate.find_first_of ('<') == std::string::npos)
-	&&  (predicate.find_first_of ('>') == std::string::npos))
+    std::stringstream new_pred;
+    
+    size_t i = 0;
+    while (i != predicate.size ())
     {
-      // look for the '.' that separates between process' name and state's name
-      size_t dot_pos = predicate.find_first_of ('.');
-      assert (dot_pos != std::string::npos);
-      // get process name
-      std::string proc = predicate.substr (0, dot_pos);
-      // get state name
-      std::string state = predicate.substr (dot_pos+1, predicate.size()-dot_pos-1);
-      int nb_state = -1;
-      // look for the index of the state name in process
-      for (size_t i = 0 ; i < dve->get_process_count () && nb_state == -1; ++i)
+      if (predicate[i] == '.')
       {
-	if (! proc.compare (dve->get_symbol_table ()->get_process (i)->get_name ()))
-	{
-	  divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (i));
-	  assert (current_process);
-	  for (size_t j = 0 ; j < current_process->get_state_count () ; ++j)
-	  {
-	    size_t sgid = current_process->get_state_gid (j);
-	    if (! state.compare (current_process->get_symbol_table ()->get_state (sgid)->get_name ()))
-	    {
-
-	      // This piece of code track question on a single state
-	      // inside of a Process
-	      if ( current_process->get_state_count () == 1)
-		{
-		  return Transition::id;
-		}
-
-	      nb_state = j;
-	      break;
-	    }
-	  }
-	}
+        // get the name of the process
+        int p_begin = i-1;
+        while (p_begin >= 0 && (isalnum (predicate[p_begin]) || predicate[p_begin] == '_'))
+          --p_begin;
+        std::string process = predicate.substr (p_begin+1, i-p_begin-1);
+        // get the name of the state
+        size_t s_end = i+1;
+        while (s_end < predicate.size () && (isalnum (predicate[s_end]) || predicate[s_end] == '_'))
+          ++s_end;
+        std::string state = predicate.substr (i+1, s_end-i-1);
+        
+        // for this variable:
+        // -1 means "unitiliazed", i.e. the state index has not been found yet
+        // -2 means that the corresponding process has a single state, so "P.state" is to be replaced by "true"
+        // any other value is positive and corresponds to the state index
+        int nb_state = -1;
+        // look for the index of the state name in process
+        for (size_t j = 0 ; j < dve->get_process_count () && nb_state == -1; ++j)
+        {
+          if (! process.compare (dve->get_symbol_table ()->get_process (j)->get_name ()))
+          {
+            divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (j));
+            assert (current_process);
+            for (size_t k = 0 ; k < current_process->get_state_count () ; ++k)
+            {
+              size_t sgid = current_process->get_state_gid (k);
+              if (! state.compare (current_process->get_symbol_table ()->get_state (sgid)->get_name ()))
+              {
+                // This piece of code track question on a single state
+                // inside of a Process
+                if ( current_process->get_state_count () == 1)
+                  nb_state = -2;
+                else
+                  nb_state = k;
+                // done, early cut of the loop
+                break;
+              }
+            }
+          }
+        }
+        assert (nb_state != -1);
+        // if the process has a single state
+        if (nb_state == -2)
+        {
+          // get the string in buffer
+          std::string new_pred_tmp = new_pred.str ();
+          // remove the process name
+          new_pred_tmp = new_pred_tmp.substr (0, new_pred_tmp.size () - process.size ());
+          // reset the stream with the new string
+          new_pred.str (new_pred_tmp);
+          // reset the put pointer
+          new_pred.seekp (new_pred_tmp.size ());
+          // append 'True'
+          new_pred << "True";
+        }
+        else
+        {
+          new_pred << ".state==" << nb_state;
+        }
+        i = s_end;
       }
-      assert (nb_state >= 0);
-      // build the new string
-      std::stringstream tmp;
-      tmp << proc << ".state=" << nb_state;
-      new_pred = tmp.str ();
+      else
+      {
+        new_pred << predicate[i];
+        ++i;
+      }
     }
-    else
-    {
-      // nothing to do
-      new_pred = predicate;
-    }
-
-    return GALType::getAPredicate (new_pred);
+    return new_pred.str ();
+  }
+  
+  Transition
+  GALDVEType::getPredicate (Label predicate) const
+  {
+    vLabel new_pred = predicate_dve2gal (predicate);
+    return GALType::getPredicate (new_pred);
   }
 
   /******** class GALTypeFactory **************/

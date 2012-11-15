@@ -76,14 +76,17 @@ public :
 
   /** To obtain a representation of a labeled state */
   State getState(Label stateLabel) const ;
-
+  
   /** The state predicate function : string p -> SHom.
    *  returns a selector homomorphism that selects states verifying the predicate 'p'.
    *  The syntax of the predicate is left to the concrete type realization.
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  virtual Transition getAPredicate (Label predicate) const ;
+  virtual Transition getPredicate (Label predicate) const;
+  /// implement a pure virtual function to please the compiler
+  /// but make it produce an error since it is not supposed to be used in this case
+  Transition getAPredicate (Label) const { assert(false); }
 
   /* delegated */
   std::ostream & print (std::ostream & os) const { os << *gal_ ; return os ; }
@@ -122,6 +125,10 @@ public :
 
 class GALDVEType : public GALType {
   struct dve2GAL::dve2GAL * dve;
+  
+  /// a helper function that turns the atomic propositions in dve syntax to gal syntax
+  /// Especially, it turns "P0.CS" into "P0.state='index of CS'".
+  vLabel predicate_dve2gal (Label) const;
 public:
   GALDVEType (const GAL *, dve2GAL::dve2GAL *);
   GALDVEType (const GAL *);
@@ -129,13 +136,12 @@ public:
   void setDVE2GAL (dve2GAL::dve2GAL *);
   
   bool setVarOrder (labels_t) const;
-  
   /** The state predicate function : string p -> SHom.
    *  returns a selector homomorphism that selects states verifying the predicate 'p'.
    *  This class supports the original LTL syntax from DVE/BEEM.
    *  Especially, it interprets correctly "P0.CS" as "P0.state='index of CS'".
    */
-  Transition getAPredicate (Label predicate) const ;
+  Transition getPredicate (Label predicate) const ;
 };
 
 class GALTypeFactory {
