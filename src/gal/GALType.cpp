@@ -382,24 +382,28 @@ labels_t GALType::getTransLabels () const {
           }
         }
         assert (nb_state != -1);
+        
+        // get the string in the bugger
+        std::string new_pred_tmp = new_pred.str ();
+        // remove the process name
+        new_pred_tmp = new_pred_tmp.substr (0, new_pred_tmp.size () - process.size ());
+        // reset the stream with the new string
+        new_pred.str (new_pred_tmp);
+        // reset the put pointer
+        new_pred.seekp (new_pred_tmp.size ());
+        // open '('
+        new_pred << "(";
+        
         // if the process has a single state
         if (nb_state == -2)
-        {
-          // get the string in buffer
-          std::string new_pred_tmp = new_pred.str ();
-          // remove the process name
-          new_pred_tmp = new_pred_tmp.substr (0, new_pred_tmp.size () - process.size ());
-          // reset the stream with the new string
-          new_pred.str (new_pred_tmp);
-          // reset the put pointer
-          new_pred.seekp (new_pred_tmp.size ());
-          // append 'True'
           new_pred << "True";
-        }
         else
-        {
-          new_pred << ".state==" << nb_state;
-        }
+          new_pred << process << ".state == " << nb_state;
+        
+        // close ')'
+        new_pred << ")";
+        
+        // increment position
         i = s_end;
       }
       else
