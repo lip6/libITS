@@ -10,11 +10,6 @@
 
 #include "GALVarOrderHeuristic.hh"
 
-// GAL parser
-#include "gal/parser/exprParserLexer.h"
-#include "gal/parser/exprParserParser.h"
-#include <antlr3.h>
-
 #define DEFAULT_VAR 0
 
 namespace its {
@@ -53,7 +48,7 @@ labels_t GALType::getTransLabels () const {
     GHom action = GHom::id;
     for (GuardedAction::actions_it jt = it.begin() ; jt != it.end() ; ++ jt) {
       GHom todo;
-      if (jt->getVariable().getType() == VAR && jt->getExpression().getType() == CONST)
+      if (jt->getVariable().getType() == VAR && (jt->getExpression().getType() == CONST) )
 	todo = setVarConst ( getVarOrder()->getIndex(jt->getVariable().getName()), jt->getExpression().getValue());
       else
 	todo =  assignExpr(jt->getVariable(), jt->getExpression(),getGalOrder());
@@ -179,76 +174,6 @@ labels_t GALType::getTransLabels () const {
     }
 
     return localApply ( observeVars(obs_index,* ( (const DDD *) potential.begin()->first) ), DEFAULT_VAR );
-  }
-
-
-  /** The state predicate function : string p -> SHom.
-   *  returns a selector homomorphism that selects states verifying the predicate 'p'.
-   *  The syntax of the predicate is left to the concrete type realization.
-   *  The only constraint is that the character '.' is used as a namespace separator
-   *  and should not be used in the concrete predicate syntax.
-   *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition GALType::getPredicate (Label pred) const {
-    // to support old-fashioned syntax, first turn the '=' into '=='
-    std::stringstream tmp;
-    size_t i = 0;
-    while (i != pred.size ())
-    {
-      // '=' cannot be the first or last character of 'pred'
-      // so that accessing pred[i+1] or pred[i-1] would fail only if 'pred' is not well-formed
-      // if current character is a single '=', turn it into '=='
-      if (pred[i] == '=' && pred[i+1] != '=' && pred[i-1] != '=')
-        tmp << "==";
-      else
-        tmp << pred[i];
-      ++i;
-    }
-    std::string predicate = tmp.str ();
-    
-    // reads the string as an input stream for the lexer
-    pANTLR3_INPUT_STREAM input = antlr3StringStreamNew((pANTLR3_UINT8)(predicate.c_str()), 0, predicate.size (), (pANTLR3_UINT8)"predicate");
-    if (input == NULL) {
-      std::cerr << "Unable to read predicate: " << predicate << std::endl;
-      exit(1);
-    }
-    
-    // the lexer
-    pexprParserLexer lexer = exprParserLexerNew(input);
-    if (lexer == NULL) {
-      std::cerr << "Unable to create the lexer for the predicate" << std::endl;
-      exit(1);
-    }
-    
-    // the token stream produced by the lexer
-    pANTLR3_COMMON_TOKEN_STREAM tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lexer));
-    if (tstream == NULL) {
-      std::cerr << "Unable to allocate token stream for predicate parsing" << std::endl;
-      exit(1);
-    }
-    
-    // the parser
-    pexprParserParser parser = exprParserParserNew(tstream);
-    if (parser == NULL) {
-      std::cerr << "Unable to create the parser for the predicate" << std::endl;
-      exit(1);
-    }
-    
-    // set the parsing context
-    parser->setGAL (parser, gal_);
-    // do the parsing
-    BoolExpression result = parser->boolOr (parser);
-    if (parser->pParser->rec->state->errorCount > 0) {
-      std::cerr << "The parser returned " << parser->pParser->rec->state->errorCount << " errors, parsing aborted" << std::endl;
-      exit(1);
-    }
-    
-    // free memory
-    parser->free(parser); parser = NULL;
-    tstream->free(tstream); tstream = NULL;
-    lexer->free(lexer); lexer = NULL;
-    input->close(input); input = NULL;
-    
-    return localApply (its::predicate (result, getGalOrder ()), DEFAULT_VAR);
   }
   
   labels_t GALType::getVarSet () const
@@ -472,3 +397,83 @@ labels_t GALType::getTransLabels () const {
   }
 
 } // namespace
+
+// GAL parser
+// moved includes here because on MingW some includes derived from antlr dependencies # define as a macro the string CONST
+// This messes with CONST, the enum value in a PIntExpression
+#include "gal/parser/exprParserLexer.h"
+#include "gal/parser/exprParserParser.h"
+#include <antlr3.h>
+
+namespace its {
+
+  /** The state predicate function : string p -> SHom.
+   *  returns a selector homomorphism that selects states verifying the predicate 'p'.
+   *  The syntax of the predicate is left to the concrete type realization.
+   *  The only constraint is that the character '.' is used as a namespace separator
+   *  and should not be used in the concrete predicate syntax.
+   *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
+  Transition GALType::getPredicate (Label pred) const {
+    // to support old-fashioned syntax, first turn the '=' into '=='
+    std::stringstream tmp;
+    size_t i = 0;
+    while (i != pred.size ())
+    {
+      // '=' cannot be the first or last character of 'pred'
+      // so that accessing pred[i+1] or pred[i-1] would fail only if 'pred' is not well-formed
+      // if current character is a single '=', turn it into '=='
+      if (pred[i] == '=' && pred[i+1] != '=' && pred[i-1] != '=')
+        tmp << "==";
+      else
+        tmp << pred[i];
+      ++i;
+    }
+    std::string predicate = tmp.str ();
+    
+    // reads the string as an input stream for the lexer
+    pANTLR3_INPUT_STREAM input = antlr3StringStreamNew((pANTLR3_UINT8)(predicate.c_str()), 0, predicate.size (), (pANTLR3_UINT8)"predicate");
+    if (input == NULL) {
+      std::cerr << "Unable to read predicate: " << predicate << std::endl;
+      exit(1);
+    }
+    
+    // the lexer
+    pexprParserLexer lexer = exprParserLexerNew(input);
+    if (lexer == NULL) {
+      std::cerr << "Unable to create the lexer for the predicate" << std::endl;
+      exit(1);
+    }
+    
+    // the token stream produced by the lexer
+    pANTLR3_COMMON_TOKEN_STREAM tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lexer));
+    if (tstream == NULL) {
+      std::cerr << "Unable to allocate token stream for predicate parsing" << std::endl;
+      exit(1);
+    }
+    
+    // the parser
+    pexprParserParser parser = exprParserParserNew(tstream);
+    if (parser == NULL) {
+      std::cerr << "Unable to create the parser for the predicate" << std::endl;
+      exit(1);
+    }
+    
+    // set the parsing context
+    parser->setGAL (parser, gal_);
+    // do the parsing
+    BoolExpression result = parser->boolOr (parser);
+    if (parser->pParser->rec->state->errorCount > 0) {
+      std::cerr << "The parser returned " << parser->pParser->rec->state->errorCount << " errors, parsing aborted" << std::endl;
+      exit(1);
+    }
+    
+    // free memory
+    parser->free(parser); parser = NULL;
+    tstream->free(tstream); tstream = NULL;
+    lexer->free(lexer); lexer = NULL;
+    input->close(input); input = NULL;
+    
+    return localApply (its::predicate (result, getGalOrder ()), DEFAULT_VAR);
+  }
+
+}
