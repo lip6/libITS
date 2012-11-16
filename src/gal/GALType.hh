@@ -86,7 +86,7 @@ public :
   virtual Transition getPredicate (Label predicate) const;
   /// implement a pure virtual function to please the compiler
   /// but make it produce an error since it is not supposed to be used in this case
-  Transition getAPredicate (Label) const { assert(false); }
+  Transition getAPredicate (Label predicate) const { return getPredicate (predicate); }
 
   /* delegated */
   std::ostream & print (std::ostream & os) const { os << *gal_ ; return os ; }
