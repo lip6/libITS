@@ -988,14 +988,15 @@ void PAssertion::print (std::ostream & os, const env_t & env) const {
 /******* Factory ***************************************/
 // namespace PIntExpressionFactory {
 
-UniqueTable<_PIntExpression>  PIntExpressionFactory::unique = UniqueTable<_PIntExpression>();
-// static initialization here to avoid static initialization order fiasco
-std::map<Variable, IntExpression> IntExpressionFactory::var_expr = std::map<Variable, IntExpression> ();
+UniqueTable<_PIntExpression> & PIntExpressionFactory::unique () {
+  static UniqueTable<_PIntExpression> unique = UniqueTable<_PIntExpression>();
+  return unique;
+}
 
 void PIntExpressionFactory::pstats () {
 #ifdef HASH_STAT
   std::cout << std::endl << "PIntExpression Unicity table stats :" << std::endl;
-  print_hash_stats(unique.get_hits(), unique.get_misses(), unique.get_bounces());
+  print_hash_stats(unique().get_hits(), unique().get_misses(), unique().get_bounces());
 #endif // HASH_STAT
 }
 
@@ -1014,9 +1015,9 @@ PIntExpression PIntExpressionFactory::createNary (IntExprType type, const NaryPP
 
   switch (type) {
   case PLUS :
-    return unique(PlusExpr (params));      
+    return unique()(PlusExpr (params));      
   case MULT :
-    return unique(MultExpr (params));      
+    return unique()(MultExpr (params));      
   default :
     throw "Operator " + to_string(type)  + " is not N-ary";
   }
@@ -1025,23 +1026,23 @@ PIntExpression PIntExpressionFactory::createNary (IntExprType type, const NaryPP
 PIntExpression PIntExpressionFactory::createBinary (IntExprType type, const PIntExpression & l, const PIntExpression & r) {
   switch (type) {
   case MINUS :
-    return unique(MinusExpr (l,r));      
+    return unique()(MinusExpr (l,r));      
   case DIV :
-    return unique(DivExpr (l,r));      
+    return unique()(DivExpr (l,r));      
   case MOD :
-    return unique(ModExpr (l,r));      
+    return unique()(ModExpr (l,r));      
   case POW :
-    return unique(PowExpr (l,r));
+    return unique()(PowExpr (l,r));
   case BITAND :
-    return unique(BitAndExpr (l,r));
+    return unique()(BitAndExpr (l,r));
   case BITOR :
-    return unique(BitOrExpr (l,r));
+    return unique()(BitOrExpr (l,r));
   case BITXOR :
-    return unique(BitXorExpr (l,r));
+    return unique()(BitXorExpr (l,r));
   case LSHIFT :
-    return unique(BitLshiftExpr (l,r));
+    return unique()(BitLshiftExpr (l,r));
   case RSHIFT :
-    return unique(BitRshiftExpr (l,r));
+    return unique()(BitRshiftExpr (l,r));
   case PLUS :
   case MULT :
     {
@@ -1056,22 +1057,22 @@ PIntExpression PIntExpressionFactory::createBinary (IntExprType type, const PInt
 }
 
 PIntExpression PIntExpressionFactory::createConstant (int v) {
-  return unique (ConstExpr(v));
+  return unique () (ConstExpr(v));
 }
 
 PIntExpression PIntExpressionFactory::createVariable (int  v) {
-  return unique (VarExpr(v));
+  return unique () (VarExpr(v));
 }
 
 PIntExpression PIntExpressionFactory::createArrayAccess (int v, const PIntExpression & index) {
   if (index.getType() != CONST) 
-    return unique (ArrayVarExpr(v,index));
+    return unique () (ArrayVarExpr(v,index));
   else
-    return unique (ArrayConstExpr(v,index.getValue()));
+    return unique () (ArrayConstExpr(v,index.getValue()));
 }
 
 PIntExpression PIntExpressionFactory::wrapBoolExpr (const PBoolExpression &b) {
-  return unique (WrapBoolExpr(b));
+  return unique () (WrapBoolExpr(b));
 }
 
 
@@ -1080,20 +1081,20 @@ PAssertion PIntExpressionFactory::createPAssertion (const PIntExpression & v,con
 }
 
 const _PIntExpression * PIntExpressionFactory::createUnique(const _PIntExpression &e) {
-  return unique(e);
+  return unique () (e);
 }
 
 void PIntExpressionFactory::destroy (_PIntExpression * e) {
   if (  e->deref() == 0 ){
-    UniqueTable<_PIntExpression>::Table::iterator ci = unique.table.find(e);
-    assert (ci != unique.table.end());
-    unique.table.erase(ci);
+    UniqueTable<_PIntExpression>::Table::iterator ci = unique().table.find(e);
+    assert (ci != unique().table.end());
+    unique().table.erase(ci);
     delete e;
   }
 }
 
 void PIntExpressionFactory::printStats (std::ostream &os) {
-  os << "Integer expression entries :" << unique.size() << std::endl;
+  os << "Integer expression entries :" << unique().size() << std::endl;
 }
 
 // } end namespace PIntExpressionFactory

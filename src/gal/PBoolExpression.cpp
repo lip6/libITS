@@ -627,7 +627,10 @@ public :
 
 
 // namespace PBoolExpressionFactory {
-UniqueTable<_PBoolExpression>  PBoolExpressionFactory::unique = UniqueTable<_PBoolExpression>();
+UniqueTable<_PBoolExpression> &  PBoolExpressionFactory::unique () {
+  static UniqueTable<_PBoolExpression> unique = UniqueTable<_PBoolExpression>();
+  return unique;
+}
 
 PBoolExpression PBoolExpressionFactory::createNary (BoolExprType type, const NaryPBoolParamType & params) {
   if (params.size() == 1) {
@@ -635,9 +638,9 @@ PBoolExpression PBoolExpressionFactory::createNary (BoolExprType type, const Nar
   }
   switch (type) {
   case OR :
-    return unique(OrExpr (params));
+    return unique()(OrExpr (params));
   case AND :
-    return unique(AndExpr (params));      
+    return unique()(AndExpr (params));      
   default :
     throw "Operator " + to_string(type) +" is not an N-ary bool op";
   }
@@ -653,28 +656,28 @@ PBoolExpression PBoolExpressionFactory::createBinary (BoolExprType type, const P
 
 
 PBoolExpression PBoolExpressionFactory::createNot  (const PBoolExpression & e) {
-  return unique(NotExpr(e));
+  return unique()(NotExpr(e));
 }
 
 PBoolExpression PBoolExpressionFactory::createConstant (bool b) {
-  return unique(BoolConstExpr(b));
+  return unique()(BoolConstExpr(b));
 }
 
 // a comparison (==,!=,<,>,<=,>=) between two integer expressions
 PBoolExpression PBoolExpressionFactory::createComparison (BoolExprType type, const PIntExpression & l, const PIntExpression & r) {
   switch (type) {
   case EQ :
-    return unique(BoolEq (l,r));
+    return unique()(BoolEq (l,r));
   case NEQ :
-    return unique(BoolNeq (l,r));
+    return unique()(BoolNeq (l,r));
   case GEQ :
-    return unique(BoolGeq (l,r));
+    return unique()(BoolGeq (l,r));
   case LEQ :
-    return unique(BoolLeq (l,r));
+    return unique()(BoolLeq (l,r));
   case LT :
-    return unique(BoolLt (l,r));
+    return unique()(BoolLt (l,r));
   case GT :
-    return unique(BoolGt (l,r));      
+    return unique()(BoolGt (l,r));      
   default :
     throw "not a binary comparison operator !";
   }
@@ -683,16 +686,16 @@ PBoolExpression PBoolExpressionFactory::createComparison (BoolExprType type, con
 
 void PBoolExpressionFactory::destroy (_PBoolExpression * e) {
   if (  e->deref() == 0 ){
-    UniqueTable<_PBoolExpression>::Table::iterator ci = unique.table.find(e);
-    assert (ci != unique.table.end());
-    unique.table.erase(ci);
+    UniqueTable<_PBoolExpression>::Table::iterator ci = unique().table.find(e);
+    assert (ci != unique().table.end());
+    unique().table.erase(ci);
     delete e;
   }
 }
 
 
 void PBoolExpressionFactory::printStats (std::ostream &os) {
-  os << "Boolean expression entries :" << unique.size() << std::endl;
+  os << "Boolean expression entries :" << unique().size() << std::endl;
 }
 
 

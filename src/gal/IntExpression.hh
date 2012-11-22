@@ -140,10 +140,10 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) ;
 typedef d3::multiset<IntExpression>::type NaryParamType ;
 
 class IntExpressionFactory {
-  static UniqueTable<_IntExpression> unique;
+  static UniqueTable<_IntExpression> & unique();
   
-  static std::map<std::string, int> var_names;
-  static std::map<Variable, IntExpression> var_expr;
+  static std::map<std::string, int> & var_names();
+  static std::map<Variable, IntExpression> & var_expr();
 public :
   static IntExpression  createNary (IntExprType type, const NaryParamType & params) ;
   static IntExpression  createBinary (IntExprType type, const IntExpression & l, const IntExpression & r) ;

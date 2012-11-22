@@ -99,7 +99,7 @@ BoolExpression  operator<=(const IntExpression & l, const IntExpression & r) ;
 typedef d3::set<BoolExpression>::type NaryBoolParamType ;
 
 class BoolExpressionFactory {
-  static UniqueTable<_BoolExpression> unique;
+  static UniqueTable<_BoolExpression> & unique ();
 public :
   // and and or of boolean expressions
   static BoolExpression createNary (BoolExprType type, const NaryBoolParamType &params) ;

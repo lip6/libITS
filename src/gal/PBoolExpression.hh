@@ -120,7 +120,7 @@ PBoolExpression  operator<=(const PIntExpression & l, const PIntExpression & r) 
 typedef d3::set<PBoolExpression>::type NaryPBoolParamType ;
 
 class PBoolExpressionFactory {
-  static UniqueTable<_PBoolExpression> unique;
+  static UniqueTable<_PBoolExpression> & unique ();
 public :
   // and and or of boolean expressions
   static PBoolExpression createNary (BoolExprType type, const NaryPBoolParamType &params) ;

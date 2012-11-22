@@ -161,7 +161,7 @@ public :
 
 
 class PIntExpressionFactory {
-  static UniqueTable<_PIntExpression> unique;
+  static UniqueTable<_PIntExpression> & unique();
 public :
   static PIntExpression  createNary (IntExprType type, const NaryPParamType & params) ;
   static PIntExpression  createBinary (IntExprType type, const PIntExpression & l, const PIntExpression & r) ;
