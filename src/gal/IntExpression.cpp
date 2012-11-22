@@ -274,17 +274,30 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
 
 
 
-UniqueTable<_IntExpression>  IntExpressionFactory::unique = UniqueTable<_IntExpression>();
-std::map<std::string,int> IntExpressionFactory::var_names = std::map<std::string,int> ();
+UniqueTable<_IntExpression> &  IntExpressionFactory::unique () {
+  static UniqueTable<_IntExpression> unique = UniqueTable<_IntExpression>();
+  return unique;
+}
+
+std::map<std::string,int> & IntExpressionFactory::var_names () {
+  static std::map<std::string,int> var_names = std::map<std::string,int> ();
+  return var_names;
+}
+
+std::map<Variable, IntExpression> & IntExpressionFactory::var_expr () {
+  static std::map<Variable, IntExpression> var_expr = std::map<Variable, IntExpression> ();
+  return var_expr;
+}
 
 int IntExpressionFactory::getVarIndex (Label v) {
-  return var_names.insert (std::make_pair (v, var_names.size ())).first->second;
+  int nb = var_names ().size ();
+  return var_names ().insert (std::make_pair (v, nb)).first->second;
 }
 
 static std::string empty="";
 Label IntExpressionFactory::getVar (int i) {
   std::map<std::string,int>::const_iterator it;
-  for (it = var_names.begin (); it != var_names.end (); ++it)
+  for (it = var_names ().begin (); it != var_names ().end (); ++it)
   {
     if (it->second == i)
       return it->first;
@@ -331,8 +344,8 @@ IntExpression IntExpressionFactory::createConstant (int v) {
 }
 
 IntExpression IntExpressionFactory::createVariable (const Variable & v) {
-  std::map<Variable, IntExpression>::const_iterator it = var_expr.find (v);
-  if (it != var_expr.end ())
+  std::map<Variable, IntExpression>::const_iterator it = var_expr ().find (v);
+  if (it != var_expr ().end ())
     return it->second;
   
   IntExpression res = createConstant (0);
@@ -342,7 +355,7 @@ IntExpression IntExpressionFactory::createVariable (const Variable & v) {
     int vari = getVarIndex (v.getName ());
     res = createUnique (_IntExpression(PIntExpressionFactory::createVariable(0),env_t(1,vari)));
   }
-  var_expr[v] = IntExpression (res);
+  var_expr ()[v] = IntExpression (res);
   return res;
 }
 
@@ -385,14 +398,14 @@ Assertion IntExpressionFactory::createAssertion (const IntExpression & v,const I
 }
 
 const _IntExpression * IntExpressionFactory::createUnique(const _IntExpression &e) {
-  return unique(e);
+  return unique()(e);
 }
 
 void IntExpressionFactory::destroy (_IntExpression * e) {
   if (  e->deref() == 0 ){
-    UniqueTable<_IntExpression>::Table::iterator ci = unique.table.find(e);
-    assert (ci != unique.table.end());
-    unique.table.erase(ci);
+    UniqueTable<_IntExpression>::Table::iterator ci = unique().table.find(e);
+    assert (ci != unique().table.end());
+    unique().table.erase(ci);
     delete e;
   }
 }
@@ -402,10 +415,10 @@ template<class Expr>
 Cache<Expr, its::Assertion, Expr> & getAssertionCache ();
 
 void IntExpressionFactory::printStats (std::ostream &os) {
-  os << "Integer expression entries :" << unique.size() << std::endl;
+  os << "Integer expression entries :" << unique().size() << std::endl;
 #ifdef HASH_STAT
   std::cout << std::endl << "IntExpression Unicity table stats :" << std::endl;
-  print_hash_stats (unique.get_hits(), unique.get_misses(), unique.get_bounces());
+  print_hash_stats (unique().get_hits(), unique().get_misses(), unique().get_bounces());
   
   std::cout << std::endl << "IntAssertion Cache stats :" << std::endl;
   print_hash_stats (getAssertionCache<IntExpression> ().get_hits (), getAssertionCache<IntExpression> ().get_misses (), getAssertionCache<IntExpression> ().get_bounces ());
@@ -743,7 +756,11 @@ public :
 
 
 
-UniqueTable<_BoolExpression>  BoolExpressionFactory::unique = UniqueTable<_BoolExpression>();
+UniqueTable<_BoolExpression> &  BoolExpressionFactory::unique ()
+{
+  static UniqueTable<_BoolExpression> unique = UniqueTable<_BoolExpression> ();
+  return unique;
+}
 
 BoolExpression BoolExpressionFactory::createNary (BoolExprType type, const NaryBoolParamType & params) {
   
@@ -803,24 +820,24 @@ BoolExpression BoolExpressionFactory::createBoolExpression(const PBoolExpression
 
 void BoolExpressionFactory::destroy (_BoolExpression * e) {
   if (  e->deref() == 0 ){
-    UniqueTable<_BoolExpression>::Table::iterator ci = unique.table.find(e);
-    assert (ci != unique.table.end());
-    unique.table.erase(ci);
+    UniqueTable<_BoolExpression>::Table::iterator ci = unique().table.find(e);
+    assert (ci != unique().table.end());
+    unique().table.erase(ci);
     delete e;
   }
 }
 
 const _BoolExpression * BoolExpressionFactory::createUnique(const _BoolExpression &e) {
-  return unique(e);
+  return unique()(e);
 }
 
 
 
 void BoolExpressionFactory::printStats (std::ostream &os) {
-  os << "Boolean expression entries :" << unique.size() << std::endl;
+  os << "Boolean expression entries :" << unique().size() << std::endl;
 #ifdef HASH_STAT
   std::cout << std::endl << "BoolExpression Unicity table stats :" << std::endl;
-  print_hash_stats (unique.get_hits (), unique.get_misses (), unique.get_bounces ());
+  print_hash_stats (unique().get_hits (), unique().get_misses (), unique().get_bounces ());
 
   std::cout << std::endl << "BoolAssertion Cache stats :" << std::endl;
   print_hash_stats (getAssertionCache<BoolExpression> ().get_hits (), getAssertionCache<BoolExpression> ().get_misses (), getAssertionCache<BoolExpression> ().get_bounces ());
