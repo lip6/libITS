@@ -306,7 +306,15 @@ labels_t GALType::getTransLabels () const {
             }
           }
         }
-        assert (nb_state != -1);
+        
+        // if no state has been found, then it was not a state variable, do nothing
+        if (nb_state == -1)
+        {
+          new_pred << ".";
+          ++i;
+          continue;
+        }
+        assert (nb_state < -2 || nb_state >= 0);
         
         // get the string in the bugger
         std::string new_pred_tmp = new_pred.str ();
