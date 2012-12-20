@@ -78,3 +78,5 @@ GAL format, file : phils.gal
 ../bin/its-reach -i test_models/gal/phils.gal -t GAL --quiet
 GAL format, file : reader_writer.gal
 ../bin/its-reach -i test_models/gal/reader_writer.gal -t GAL --quiet
+DVE format, adding model 
+../bin/its-reach -i test_models/adding.1.5.dve -t DVE --quiet 

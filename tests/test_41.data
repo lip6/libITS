@@ -1,0 +1,104 @@
+DVE format, adding model 
+../bin/its-reach -i test_models/adding.1.5.dve -t DVE --quiet 
+
+its-reach command run as :
+
+C:\DDD\libits\bin\its-reach.exe  -i  test_models/adding.1.5.dve  -t  DVE  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+adding.1.5.dve,206310,18.205,44516,2,1264,5,147659,6,0,33,69661,0
+ Total reachable state count : 206310
+
+ Some stats on unique table and cache :
+Integer expression entries :10
+
+IntExpression Unicity table stats :
+N3its14_IntExpressionE : 1200542 hits, 1220 misses, 438951 bounces, hit ratio 99 %, 36 b. per h.(%)
+Hits : 1200542 , Misses : 1220 , Bounces : 438951
+
+
+IntAssertion Cache stats :
+pair N3its13IntExpressionE,N3its9AssertionE : 492711 hits, 46071 misses, 163742 bounces, hit ratio 91 %, 30 b. per h.(%)
+Hits : 492711 , Misses : 46071 , Bounces : 163742
+
+Boolean expression entries :7
+
+BoolExpression Unicity table stats :
+N3its15_BoolExpressionE : 1275 hits, 95 misses, 57 bounces, hit ratio 92 %, 4 b. per h.(%)
+Hits : 1275 , Misses : 95 , Bounces : 57
+
+
+BoolAssertion Cache stats :
+pair N3its14BoolExpressionE,N3its9AssertionE : 638071 hits, 1223 misses, 231789 bounces, hit ratio 99 %, 36 b. per h.(%)
+Hits : 638071 , Misses : 1223 , Bounces : 231789
+
+
+Query Cache stats:
+pair pair N3its13IntExpressionE,N3its8GalOrderE,4GDDD : 139225 hits, 19766 misses, 230159 bounces, hit ratio 87 %, 144 b. per h.(%)
+Hits : 139225 , Misses : 19766 , Bounces : 230159
+
+*
+Cache Stats : size=0   --- Peak size=0
+Cache hit ratio : 0% (0/0)
+*
+GSHom Stats : size unicity table = 6
+sizeof(_GShom):16
+sizeof(SIdentity):16
+
+GShom Unicity table stats :
+N3sns10LocalApplyE : 0 hits, 6 misses, 0 bounces, hit ratio 0 %, 0 b. per h.(%)
+N3sns3AddE : 0 hits, 2 misses, 2 bounces, hit ratio 0 %, 66 b. per h.(%)
+N3sns8ConstantE : 2 hits, 3 misses, 0 bounces, hit ratio 33 %, 0 b. per h.(%)
+N3sns8FixpointE : 0 hits, 2 misses, 0 bounces, hit ratio 0 %, 0 b. per h.(%)
+N3sns8IdentityE : 0 hits, 2 misses, 0 bounces, hit ratio 0 %, 0 b. per h.(%)
+Hits : 2 , Misses : 15 , Bounces : 2
+
+GShom cache stats : 
+pair 5GShom,4GSDD : 0 hits, 2 misses, 0 bounces, hit ratio 0 %, 0 b. per h.(%)
+Hits : 0 , Misses : 2 , Bounces : 0
+
+Current/Peak number of SDD nodes in unicity table :5/5
+sizeof(_GSDD):48
+
+SDD Unicity table stats :
+5_GSDD : 0 hits, 9 misses, 2 bounces, hit ratio 0 %, 20 b. per h.(%)
+Hits : 0 , Misses : 9 , Bounces : 2
+
+*
+Cache Stats : size=0
+
+Cache hit ratio : 91.57823218072309146009502001106739044189%
+
+DED Unicity table stats :
+3DED : 757504 hits, 139321 misses, 1884819 bounces, hit ratio 84 %, 210 b. per h.(%)
+Hits : 757504 , Misses : 139321 , Bounces : 1884819
+
+*
+GHom Stats : size unicity table = 33
+
+GHom Unicity table stats :
+10LeftConcat : 53 hits, 12 misses, 38 bounces, hit ratio 80 %, 57 b. per h.(%)
+12_setVarConst : 0 hits, 12 misses, 14 bounces, hit ratio 0 %, 107 b. per h.(%)
+3Add : 2 hits, 6 misses, 0 bounces, hit ratio 22 %, 0 b. per h.(%)
+7Compose : 12 hits, 24 misses, 44 bounces, hit ratio 32 %, 118 b. per h.(%)
+8Constant : 45 hits, 2 misses, 0 bounces, hit ratio 93 %, 0 b. per h.(%)
+8Fixpoint : 0 hits, 4 misses, 2 bounces, hit ratio 0 %, 40 b. per h.(%)
+8Identity : 0 hits, 1 misses, 0 bounces, hit ratio 0 %, 0 b. per h.(%)
+N3its10_PredicateE : 203861 hits, 16 misses, 77 bounces, hit ratio 99 %, 0 b. per h.(%)
+N3its7_AssignE : 896632 hits, 1792 misses, 249455 bounces, hit ratio 99 %, 27 b. per h.(%)
+Hits : 1100605 , Misses : 1869 , Bounces : 249630
+
+GHom cache stats : 
+pair 4GHom,4GDDD : 3505543 hits, 267837 misses, 3646943 bounces, hit ratio 92 %, 96 b. per h.(%)
+Hits : 3505543 , Misses : 267837 , Bounces : 3646943
+
+sizeof(_GHom):24
+sizeof(Identity):24
+Peak number of DDD nodes in unicity table :147659
+sizeof(_GDDD):8
+sizeof(DDD::edge_t):8
+sizeof(DDD::val_t):2
+
+DDD Unicity table stats :
+j : 1310350 hits, 295317 misses, 1395969 bounces, hit ratio 81 %, 86 b. per h.(%)
+Hits : 1310350 , Misses : 295317 , Bounces : 1395969
+
