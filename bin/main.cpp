@@ -96,10 +96,12 @@ State exhibitModel (ITSModel & model) {
   std::cout << " Total reachable state count : " << S.getNbStates() << std::endl;
   std::cout << std::endl;
 
-#ifdef HASH_STAT  
+#ifdef HASH_STAT
+  std::cout << " Some stats on unique table and cache :" << std::endl;
   its::IntExpressionFactory::printStats (std::cout);
   its::BoolExpressionFactory::printStats (std::cout);
   its::query_stats ();
+  MemoryManager::pstats();
 #endif // HASH_STAT
 
   // Export the SDD of final states to dot : generates files final.dot and d3final.dot
