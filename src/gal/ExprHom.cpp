@@ -143,9 +143,10 @@ namespace its {
 
   IntExpression rr = ass.second;
 	// For each edge of the DDD
-	for (GDDD::const_iterator it = node.begin() ; it != node.end() ; ++it ) {
-	  // shortcut to edge value
-	  int vl = it->first;
+  GDDD::const_iterator end = node.end();
+  for (GDDD::const_iterator it = node.begin() ; it != end ; ++it ) {
+    // shortcut to edge value
+    int vl = it->first;
     IntExpression r = rr;
     bool r_support = r.isSupport (curv);
 
@@ -243,7 +244,8 @@ namespace its {
 	  int vr = d.variable();
 	  const IntExpression & curv = vo->getVar(vr);
 	  std::set<GDDD> res;
-	  for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
+	  GDDD::const_iterator dend = d.end();
+	  for (GDDD::const_iterator it = d.begin() ; it != dend ; ++it ) {
 	    // current value
 	    int vl = it->first;
       
@@ -419,8 +421,8 @@ public:
 	
 	// To hold result
 	std::set<GDDD> res;
-	
-	for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
+	GDDD::const_iterator dend = d.end();
+	for (GDDD::const_iterator it = d.begin() ; it != dend ; ++it ) {
 	  // current value
 	  int vl = it->first;
     bool expr_support = expr.isSupport(curv);
@@ -526,7 +528,8 @@ static GDDD invertExprValues (const PIntExpression & expr, const PIntExpression 
   d3::set<GDDD>::type toret ;
   
   // for each potential value : v
-  for (GDDD::const_iterator it = pot.begin() ; it != pot.end() ; ++it) {
+  GDDD::const_iterator potend = pot.end();
+  for (GDDD::const_iterator it = pot.begin() ; it != potend ; ++it) {
 
     // compute expr(v) : combine with assertion variable $0 = v
     // A priori, expr should have a single variable as "env"
@@ -600,7 +603,8 @@ public:
 	  int vr = d.variable();
 	  const IntExpression & curv = vo->getVar(vr);
 	  std::set<GDDD> res;
-	  for (GDDD::const_iterator it = d.begin() ; it != d.end() ; ++it ) {
+	  GDDD::const_iterator dend = d.end();
+	  for (GDDD::const_iterator it = d.begin() ; it != dend ; ++it ) {
 	    // current value
 	    int vl = it->first;
 
