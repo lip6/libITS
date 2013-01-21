@@ -35,7 +35,7 @@ protected :
 	markings_t markings_;
 public :
 	// Any Petri net type has a name
-	PNet (Label name) : NamedElement(name) {};
+  PNet (Label name) : NamedElement(name) { markings_.insert(markings_t::value_type("init",Marking())); };
 
 	// Add a place to this net, returns false if place name already exists.
 	bool addPlace (Label pname) ;
