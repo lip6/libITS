@@ -122,6 +122,7 @@ bool ITSModel::setInstanceState (Label stateName) {
     Transition elapse = getElapse(); 
     if (elapse != Transition::id) {
       return trans + elapse;
+//      return trans + fixpoint(elapse + Transition::id);
     }
     return trans;
   }
@@ -189,13 +190,24 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     return predRel_;
 }
 
-  labels_t ITSModel::findPath (State init, State toreach, State reach) const {
+  path_t ITSModel::findPath (State init, State toreach, State reach, bool precise) const {
     
     typedef std::list<State> rev_t;
-    typedef rev_t::const_iterator rev_it;
+    typedef rev_t::iterator rev_it;
+    typedef rev_t::reverse_iterator rev_rit;
     rev_t revcomponents;
 
     labels_t witness;
+
+    {
+      State inter = init * toreach;
+      if (inter != State::null) {
+	// minimal path is length 0 !
+	return path_t(witness,inter,inter);
+      } 
+
+    }
+
     State M2,M3;
     M3 = toreach;
     State seen;
@@ -226,7 +238,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	std::cerr << "returning empty witness path."<< std::endl;
 	std::cerr << "Was working with reverse transition :\n" << revTrans << endl;
 	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
-	return witness;
+	return path_t(witness,init,toreach) ;
       }//assert(M2 != GSDD::null);
 
     if (init * M2 == GSDD::null) {
@@ -239,7 +251,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	std::cerr << "Returning empty witness path."<< std::endl;
 	std::cerr << "Was working with reverse transition :\n" << revTrans << endl;
 	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
-	return witness;
+	return path_t(witness, init, toreach);
       }
       M3 = M2;
     } else {
@@ -248,8 +260,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
   } 
     cerr << "Length of minimal path(s) :" << revcomponents.size() <<endl;
 
-  // Forward construction of witness
-
+    // Forward construction of witness
+    
     State Mi = init;
     State Mi_next;
     Type::namedTrs_t namedTrs;
@@ -272,6 +284,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 // 	  std::cout << "Reached :" ;
 // 	  getInstance()->getType()->printState(Mi_next, std::cout);
 	  witness.push_back(it->first);
+	  *comp = Mi_next;
 	  Mi = Mi_next;
 	  // 	cerr << "ForwardSteps : " <<witness.size() <<endl;
 	  // 	MemoryManager::garbage();
@@ -289,14 +302,44 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       }
     }
 
+    if (!precise) {
+      return path_t(witness,init,toreach);
+    }
+
+    // one more pass, executing witness backward
+    if (! revcomponents.empty()) {
+      State M_i = *revcomponents.rbegin();
+      labels_t::const_reverse_iterator wit = witness.rbegin();
+      for (rev_rit rit= revcomponents.rbegin(); rit != revcomponents.rend() ; ++rit, ++wit) {
+	*rit = M_i * (*rit);
+	M_i = *rit;
+	Transition revt ;
+	for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+	  if (it->first == * wit) {
+	    revt = it->second.invert(reach);
+	    break;
+	  }
+	}
+	if (revt == Transition::id) {
+	  std::cerr << "Unexpectedly did not find transition of witness when performing back-step phase of witness construction." << std::endl;
+	  assert(false);
+	}
+	M_i = revt ( M_i ) ; 
+      }
+    }
+    
+
+
 //   cerr << "Witness path :" << endl;
 //   for (vector<int>::iterator it = witness.begin(); it != witness.end() ; it++) {
 //     cerr << "t_" <<*it << "   " ;
 //   }
 //   cerr << endl;
-
-  return witness;
-
+    if (!witness.empty()) {
+      return path_t(witness, *revcomponents.begin(), *revcomponents.rbegin());
+    } else {
+      return path_t(witness, init, toreach);
+    }
 }
 
 
