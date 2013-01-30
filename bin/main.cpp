@@ -214,8 +214,8 @@ int main_noex (int argc, char **argv) {
    } else {
      std::cout << "There are " << verify.nbStates() << " reachable states that satisfy your predicate : " << reachExpr <<std::endl;
      std::cout << "computing trace..." <<endl;
-     labels_t path = model.findPath(model.getInitialState(), verify, reachable);
-     for (labels_it it = path.begin() ; it != path.end() ; ++it) {
+     path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
+     for (labels_it it = path.getPath().begin() ; it != path.getPath().end() ; ++it) {
        std::cout << *it << "  ";
      }
      std::cout << std::endl;
