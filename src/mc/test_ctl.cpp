@@ -179,8 +179,8 @@ int main (int argc, char ** argv) {
 
     if (doWitness &&dead.nbStates() > 0) {
       std::cout << "Computing a witness path..."<< std::endl;
-      labels_t path = checker.findPath(checker.getInitialState(), dead, checker.getReachable());
-      for (labels_it it = path.begin() ; it != path.end() ; ++it ) {
+      its::path_t path = checker.findPath(checker.getInitialState(), dead, checker.getReachable());
+      for (labels_it it = path.getPath().begin() ; it != path.getPath().end() ; ++it ) {
 	std::cout << *it << ", ";
       }
       std::cout << "DEADLOCK"<< std::endl;
