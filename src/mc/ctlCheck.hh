@@ -47,6 +47,13 @@ public :
   /** Returns a shortest witness trace expressed in transition names leading from a state of init to a state in final. */
   its::path_t findPath (its::State init, its::State toreach, its::State reach) const { return model.findPath(init,toreach,reach); }
 
+  // Explain the truth value of formula in given states.
+  // Formula is true if at least some input states satify it.
+  // Writes to out a diagnosis.
+  // Returns states that were actually explained, a subset of the input states.
+  its::State explain (its::State sat, Ctlp_Formula_t *ctlFormula, std::ostream & out) const ;
+
+
   labels_t buildWitness (Ctlp_Formula_t *formula) const;
 };
 
