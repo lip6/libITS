@@ -35,6 +35,18 @@ namespace its {
   // representation strategies
   enum scalarStrategy {DEPTH1, SHALLOWREC, RECFOLD, DEPTHREC, DEPTHPROG};
 
+  // A path of transition names leading from states in init to states in final.
+  class path_t {
+    labels_t path;
+    its::State init;
+    its::State final;
+  public :
+    path_t (const labels_t & path, const State & init, const State & final) : path(path), init(init), final(final) {}
+    const labels_t & getPath() const { return path; }
+    const State & getInit() const { return init; }
+    const State & getFinal() const { return final; }
+  };
+
 
 class ITSModel {
   // To store a set of type declarations
@@ -147,8 +159,9 @@ public:
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   Transition getPredicate (Label predicate) const { return getInstance()->getType()->getPredicate(predicate); }
   
-  /** Returns a shortest witness trace expressed in transition names leading from a state of init to a state in final. */
-  labels_t findPath (State init, State toreach, State reach) const;  
+  /** Returns a shortest witness trace expressed in transition names path.path() leading from a state of path.init() (subset of init) to a state in path.final() (a subset of final). 
+   ** if precise is false, the input sets are returned as path init/final (faster). Precise ensures the path actually works on ALL of its init states, otherwise it may work only on some. */
+  path_t findPath (State init, State toreach, State reach, bool precise=false) const;  
 
   // semi private function used in Scalar sandboxes
   void cloneType (pType type) { int n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }
