@@ -45,7 +45,7 @@ public :
   its::State getReachableDeadlocks () const;
 
   /** Returns a shortest witness trace expressed in transition names leading from a state of init to a state in final. */
-  labels_t findPath (its::State init, its::State toreach, its::State reach) const { return model.findPath(init,toreach,reach); }
+  its::path_t findPath (its::State init, its::State toreach, its::State reach) const { return model.findPath(init,toreach,reach); }
 
   labels_t buildWitness (Ctlp_Formula_t *formula) const;
 };
