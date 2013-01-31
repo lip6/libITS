@@ -235,6 +235,13 @@ int main (int argc, char ** argv) {
       } else {
 	std::cout << "Formula is FALSE !" << std::endl;
       }
+      if (doWitness) {
+	its::State explained = checker.explain(checker.getInitialState(),formula,std::cout);
+	Statistic SS4 = Statistic(explained, "witness stats ", CSV); // can also use LATEX instead of CSV
+	SS4.print_line(std::cout);
+      }
+
+
       //    std::cout << verif2 << std::endl;
       //   exportDot(verif2,"form.dot");
     }
@@ -253,7 +260,11 @@ int main (int argc, char ** argv) {
       } else {
 	std::cout << "Formula is FALSE !" << std::endl;
       }
-
+      if (doWitness) {
+	its::State explained = checker.explain(checker.getInitialState(),formula,std::cout);
+	Statistic SS4 = Statistic(explained, "witness stats ", CSV); // can also use LATEX instead of CSV
+	SS4.print_line(std::cout);
+      }
     }
 
     std::cout << "\n *************************************** \n\n";

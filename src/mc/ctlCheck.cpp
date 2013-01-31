@@ -167,11 +167,17 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
   its::State trueF = getStateVerifying(ctlFormula);
   // Testing with subsets would be stronger, requiring all states satisfy p.
   its::State satF = sat * trueF ; 
-  bool formIsTrue = ( sat != State::null ) ;
+  bool formIsTrue = ( satF != State::null ) ;
   if (formIsTrue) {
-    out << "is true in "<< sat.nbStates() <<  " state(s) out of "<< sat << " input state(s).";
+    out << " is true in ";
+    if (sat.nbStates()==1) {
+      out << "the single input state :\n" ;
+      model.printSomeStates(sat,out);
+    } else {
+      out << satF.nbStates() <<  " state(s) out of "<< sat.nbStates() << " input state(s).\n";
+    }
   } else {
-    out << "is false in all " << sat.nbStates() << " input state(s)."  ;
+    out << " is false in all " << sat.nbStates() << " input state(s).\n"  ;
   }
   // Handle left child
   Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
@@ -239,7 +245,7 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
       Ctlp_FormulaPrint(vis_stdout,leftChild) ;
       out << " and " ;
       Ctlp_FormulaPrint(vis_stdout,rightChild);
-      out<< " simultaneously." ;
+      out<< " simultaneously.\n" ;
       if (leftChild && rightChild) {
 	its::State leftStates = getStateVerifying (leftChild) * sat ;
 	its::State rightStates = getStateVerifying (rightChild) * sat ;
@@ -253,27 +259,27 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	  Ctlp_FormulaPrint(vis_stdout,leftChild);
 	  out << " OR " ;
 	  Ctlp_FormulaPrint(vis_stdout,rightChild) ;
-	  out << " is false in all input states." ;
-	  out << " for instance " ;
+	  out << " is false in all input states.\n" ;
+	  out << " For instance " ;
 	  Ctlp_FormulaPrint(vis_stdout,leftChild);
 	  out << " is not satisfied in input states.";
 	  return explain(sat,leftChild,out);
 	} else if (leftStates == its::State::null) {
 	  out << "First conjunct  " ;
 	  Ctlp_FormulaPrint(vis_stdout,leftChild) ;
-	  out << " is not satisfied in any input states. So AND conjunction is false .";
+	  out << " is not satisfied in any input states. So AND conjunction is false.\n";
 	  return explain(sat,leftChild,out);
 	} else if (rightStates == its::State::null) {
 	  out << "Second conjunct  " ;
 	  Ctlp_FormulaPrint(vis_stdout,rightChild) ;
-	  out << " is not satisfied in any input states. So AND conjunction is false .";
+	  out << " is not satisfied in any input states. So AND conjunction is false.\n";
 	  return explain(sat,rightChild,out);
 	} else {
 	  out << "Some " << leftStates.nbStates() << " of your " << sat.nbStates() << " input states do satisfy " ;
 	  Ctlp_FormulaPrint(vis_stdout,leftChild);
-	  out << "AND some " << rightStates.nbStates() << " of your " << sat.nbStates() << " input states do satisfy " ;
+	  out << " AND some " << rightStates.nbStates() << " of your " << sat.nbStates() << " input states do satisfy " ;
 	  Ctlp_FormulaPrint(vis_stdout,leftChild);
-	  out << "But these sets have an empty intersection.";
+	  out << ".\nBut these sets (explained below) have an empty intersection.\n";
 	  explain(sat, leftChild, out);
 	  explain(sat, rightChild, out);
 	  return sat;
@@ -395,6 +401,83 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
       // start from states satisfying g, then add predescessors verifying f in a fixpoint.
       // f U g <-> ( f & pred + Id )^* & g
       //      result = fixpoint ( (leftStates * getPredRel()) + its::Transition::id )  (rightStates) ;
+      if (formIsTrue) {
+	if (leftChild && rightChild) {
+	  its::State leftStates = getStateVerifying (leftChild) ;
+	  its::State rightStates = getStateVerifying (rightChild) ;
+	  its::State satB = satF * rightStates ;
+	  if (satB != State::null) {
+	    out << "E a U b is true because some input states immediately satisfy b. \n";
+	    explain(satB,rightChild,out);
+	  } else {
+
+	    its::path_t path = model.findPath(satF,rightStates, leftStates, true);
+	    out << "E a U b is true Because there are paths through states verifying a to states verifying b. \n";
+	    out << "A minimal path of length " << path.getPath().size() << " from input states to states satisfying b is:\n" ;
+	    labels_it end = path.getPath().end();
+	    for (labels_it it=path.getPath().begin(); it != end ; /*in loop*/) {
+	      out << *it;
+	      if (++it != end) {
+		out << ", " ;
+	      }
+	    }
+	    out << "\n, justification follows for subformulas.\n";
+	    its::State toret = explain(path.getInit(),leftChild,out);
+	    explain(path.getFinal(),rightChild,out);
+	    return toret;
+	  }
+	} else {
+	  std::cerr << "ERROR : EU has no children" << std::endl; 
+	  assert(false);
+	}
+      } else {
+	if (leftChild && rightChild) {
+	  its::State leftStates = getStateVerifying (leftChild) ;
+	  its::State rightStates = getStateVerifying (rightChild) ;
+	  its::State satA = sat * leftStates ;
+	  if (satA == State::null) {
+	    out << "E a U b is false because none of your input states satisfies either a or b. \n";
+	    return explain(sat,leftChild,out);
+	  } else if (rightStates == its::State::null) {
+	    out << "E a U b is false because no reachable states satisfy b. \n";
+	    return explain(sat,rightChild,out);
+	  } else {
+
+	    its::Transition hasEG = fixpoint(getNextRel()*its::Transition::id,true);
+	    its::Transition reachA = fixpoint(getNextRel()*leftStates + Transition::id,true);
+	    its::State reachableA = reachA (satA);
+	    its::State EGa = hasEG(reachableA);
+	    if (EGa == its::State::null) {
+	      out << "There are no cycles of the form EGa on your input states. \n";
+	    } else {
+	      out << "There are cycles of the form EGa reachable from input states such as: \n";
+	      model.printSomeStates(satA,out);
+	      out << "TODO : report on lasso witness of SCC \n";
+	      return satA;
+	    }
+	    its::State notAnotB = ( getNextRel() (reachableA) - leftStates ) - rightStates ;
+	    if (notAnotB != State::null) {
+	      its::path_t path = model.findPath(satA, notAnotB, reachableA, true);
+	      out << "E a U b is false because all input states satisfying *a* lead to futures satisfying *not a* and *not b*. So formula : A a U !a&!b is true. \n";
+	      out << "A minimal path of length " << path.getPath().size() << " from input states satisfying a to states satisfying !a and !b is:\n" ;
+	      labels_it end = path.getPath().end();
+	      for (labels_it it=path.getPath().begin(); it != end ; /*in loop*/) {
+		out << *it;
+		if (++it != end) {
+		  out << ", " ;
+		}
+	      }
+	      
+	    } else {
+	      out << "All paths satisfying a are finite and never traverse states satisfying b. \n";
+	      return explain(satA,leftChild,out);
+	    }
+	  }
+	} else {
+	  std::cerr << "ERROR : EU has no children" << std::endl; 
+	  assert(false);
+	}
+      }
       break;
     }
   case Ctlp_EG_c: 
