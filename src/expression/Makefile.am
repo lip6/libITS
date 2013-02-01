@@ -1,7 +1,6 @@
 lib_LIBRARIES = libEXPRESS.a
 
 AM_YFLAGS = -d 
-
 AM_LFLAGS = -olex.yy.c
 
 if WITH_LIBDDD_PATH
@@ -17,7 +16,7 @@ BUILT_SOURCES = expression_yacc.h
 # to be removed when compatibility with automake 1.11 will be dropped
 SUFFIXES = .h .hxx
 .hxx.h:
-	mv $< $@
+	cp $< $@
 
 LYFILES =   expression_lex.ll \
             expression_yacc.yxx \
