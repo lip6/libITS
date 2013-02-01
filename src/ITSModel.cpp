@@ -504,9 +504,10 @@ void ITSModel::print (std::ostream & os) const  {
 	out << ", " ;
       }
     }
+    out << std::endl;
     if (withStates) {
       out << "Leads to final states :\n" ;
-      printSomeStates(path.getInit(),out);
+      printSomeStates(path.getFinal(),out);
     }
   }
  
