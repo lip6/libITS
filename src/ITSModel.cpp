@@ -486,7 +486,30 @@ void ITSModel::print (std::ostream & os) const  {
       out << "[ " << states.nbStates() << " states ]" ;
     }
   }
-
+  
+  /** Prints a path. The printing invokes the main instance's type's printing mechanism.
+   ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. 
+   ** The boolean "withStates" controls if only transitions are shown or states as well 
+   **/
+  void ITSModel::printPath (const path_t &path, std::ostream & out, bool withStates) const {
+    if (withStates) {
+      out << "From initial states :\n" ;
+      printSomeStates(path.getInit(),out);
+    }
+    out << "This transition sequence  :\n";
+    labels_it end = path.getPath().end();
+    for (labels_it it=path.getPath().begin(); it != end ; /*in loop*/) {
+      out << *it;
+      if (++it != end) {
+	out << ", " ;
+      }
+    }
+    if (withStates) {
+      out << "Leads to final states :\n" ;
+      printSomeStates(path.getInit(),out);
+    }
+  }
+ 
 
   // Visitor pattern to work on the underlying types
   void ITSModel::visitTypes (class TypeVisitor * visitor) const {
