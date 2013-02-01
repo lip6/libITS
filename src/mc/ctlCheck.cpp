@@ -262,7 +262,7 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	  out << " is false in all input states.\n" ;
 	  out << " For instance " ;
 	  Ctlp_FormulaPrint(vis_stdout,leftChild);
-	  out << " is not satisfied in input states.";
+	  out << " is not satisfied in input states.\n";
 	  return explain(sat,leftChild,out);
 	} else if (leftStates == its::State::null) {
 	  out << "First conjunct  " ;
@@ -376,11 +376,8 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	// EX => should be exactly one transition
 	assert(path.getPath().size() == 1);
 	out << "EX p is true Because there are immediate successors of input states that satisfy p.\n";
-	out << "Firing transition :" << * path.getPath().begin() << " from input states " ;
-	model.printSomeStates(path.getInit(),out);
-	out << "Leads to states " ;
-	model.printSomeStates(path.getFinal(),out);
-	out << "That satisfy p."<< std::endl ;
+	out << "Following path leads from initial states to states satisfying p.\n";
+	model.printPath(path,out,true);
 	explain (path.getFinal(),leftChild,out);
 	return path.getInit();
       } else {
@@ -413,14 +410,8 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 
 	    its::path_t path = model.findPath(satF,rightStates, leftStates, true);
 	    out << "E a U b is true Because there are paths through states verifying a to states verifying b. \n";
-	    out << "A minimal path of length " << path.getPath().size() << " from input states to states satisfying b is:\n" ;
-	    labels_it end = path.getPath().end();
-	    for (labels_it it=path.getPath().begin(); it != end ; /*in loop*/) {
-	      out << *it;
-	      if (++it != end) {
-		out << ", " ;
-	      }
-	    }
+	    out << "Such a minimal path of length " << path.getPath().size() << " is:\n" ;
+	    model.printPath(path,out,true);
 	    out << "\n, justification follows for subformulas.\n";
 	    its::State toret = explain(path.getInit(),leftChild,out);
 	    explain(path.getFinal(),rightChild,out);
@@ -443,9 +434,9 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	    return explain(sat,rightChild,out);
 	  } else {
 
-	    its::Transition hasEG = fixpoint(getNextRel()*its::Transition::id,true);
 	    its::Transition reachA = fixpoint(getNextRel()*leftStates + Transition::id,true);
 	    its::State reachableA = reachA (satA);
+	    its::Transition hasEG = fixpoint(getNextRel()*its::Transition::id,true);
 	    its::State EGa = hasEG(reachableA);
 	    if (EGa == its::State::null) {
 	      out << "There are no cycles of the form EGa on your input states. \n";
@@ -488,9 +479,68 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 // 			   ( getPredRel()   
 // 			     + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
 // 			     ) * its::Transition::id ) (leftStates) ; 
+    if (formIsTrue && leftChild) {
+      its::State leftStates = getStateVerifying (leftChild) ;
+      
+      its::Transition reachA = fixpoint(getNextRel()*leftStates + Transition::id,true);
+      its::State reachableA = reachA (satF);
+      // This lockstep algorithm identifies SCCs (w/o prefix or suffix) with a good overall complexity.
+      // See papers on "A best symbolic SCC algorithm" by M. Vardi et. al. 
+      its::Transition hasEG = fixpoint( (getNextRel()*its::Transition::id) &  (getNextRel()*its::Transition::id),true);
+      its::State SCCa = hasEG(reachableA);
+      
+      its::path_t path = model.findPath(satF,SCCa, getReachable(), true);
+      // length of path is a prefix to the lasso, a shortest path to an SCC.
+      // compute SCCs really reachable from witness arrival states.
+      reachableA = reachA (path.getFinal());
+      SCCa = hasEG(reachableA);
+      
+      out << " EG a is true because following path leads from input states satisfying a to states satisfying a that belong to cycle(s) of a:\n ";
+      model.printPath(path,out,true);
+      out << "Some states of an SCC reachable from these final states :\n";
+      model.printSomeStates(SCCa,out);
+      
+      return path.getInit();
+    } else if (leftChild) {
+      its::State leftStates = getStateVerifying (leftChild) ;
+      
+      its::State satA = sat * leftStates ;
+      if (leftStates == its::State::null) {
+	out << "EG a  is false because no reachable states satisfy a. \n";
+	return explain(sat,leftChild,out);
+      } else if (satA == State::null) {
+	out << "EG a is false because none of your input states satisfies a. \n";
+	return explain(sat,leftChild,out);
+      } else {
+	// either there are finite paths of a
+	// or all behaviors reach !a
+	its::Transition reachA = fixpoint(getNextRel()*leftStates + Transition::id,true);
+	its::State reachableA = reachA (satA);
+	
+	its::State deadlocks =  getReachable() - getPredRel() ( getReachable());
+	its::State deadA = deadlocks * reachableA;
+	
+	if (deadA != its::State::null) {
+	  out << "EG a is false; However, there are reachable deadlocks along paths satisfying a continuously.";
+	  its::path_t path = model.findPath(satA, deadA, reachableA, true);
+	  model.printPath(path,out);
+	} else {
+	  out << "EGa is false, since AF!a is true. From input states satisfying a, an example shortest trace to states satisfying !a is:";
+	  its::State notA = getReachable() - leftStates;
+	  
+	  its::path_t path = model.findPath(satA, notA, reachableA, true);
+	  labels_it end = path.getPath().end();
+	  model.printPath(path,out);	  
+	} 
+      }
+    } else {
+      std::cerr << "ERROR : EG has no children" << std::endl; 
+      assert(false);
+    }
+
     break;
-			   
-  case Ctlp_Cmp_c: {
+      
+    case Ctlp_Cmp_c: {
       // Forward CTL specific : compare a formula to false or true
       // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
 //       if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
