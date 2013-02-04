@@ -168,17 +168,19 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
   // Testing with subsets would be stronger, requiring all states satisfy p.
   its::State satF = sat * trueF ; 
   bool formIsTrue = ( satF != State::null ) ;
-  if (formIsTrue) {
-    out << " is true in ";
-    if (sat.nbStates()==1) {
-      out << "the single input state :\n" ;
-      model.printSomeStates(sat,out);
+  if (trueF != State::one) {
+    if (formIsTrue) {
+      out << " is true in ";
+      if (sat.nbStates()==1) {
+	out << "the single input state :\n" ;
+	model.printSomeStates(sat,out);
+      } else {
+	out << satF.nbStates() <<  " state(s) out of "<< sat.nbStates() << " input state(s).\n";
+      }
     } else {
-      out << satF.nbStates() <<  " state(s) out of "<< sat.nbStates() << " input state(s).\n";
+      out << " is false in all " << sat.nbStates() << " input state(s).\n"  ;
     }
-  } else {
-    out << " is false in all " << sat.nbStates() << " input state(s).\n"  ;
-  }
+  } // End of Forward CTL State::one case.
   // Handle left child
   Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
   // Handle right child
@@ -190,9 +192,10 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
   case Ctlp_ID_c:
       {
 	if (formIsTrue) {
-	  out << "Because atomic predicate " << Ctlp_FormulaReadVariableName(ctlFormula) << Ctlp_FormulaReadValueName(ctlFormula) << " is true in " << satF.nbStates() << " states out of "  << sat.nbStates()  << " input states. \n" <<  std::endl ;
-	  out << "For instance predicate is true in this state :\n";
-	  model.printSomeStates(satF, out);
+	  if (satF.nbStates() > 1) {
+	    out << "For instance predicate is true in these states :\n";
+	    model.printSomeStates(satF, out);
+	  }
 	  return satF;
 	} else {
 	  out << "Because atomic predicate " << Ctlp_FormulaReadVariableName(ctlFormula) << Ctlp_FormulaReadValueName(ctlFormula) << " is false in all " << sat.nbStates()  << " input states. \n" <<  std::endl ;
@@ -203,14 +206,12 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	break;
       }
   case Ctlp_TRUE_c:
-    out << "Because TRUE is true in any state, such as " << std::endl;
-    model.printSomeStates(sat, out);
+    out << "Because TRUE holds true in any state.\n";
     return sat;
     break;
     
   case Ctlp_FALSE_c:
-    out << "Because FALSE is false in any state, such as " << std::endl;
-    model.printSomeStates(sat, out);
+    out << "Because FALSE is false in any state.\n";
     return sat;
     break;
     
@@ -412,7 +413,7 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	    out << "E a U b is true Because there are paths through states verifying a to states verifying b. \n";
 	    out << "Such a minimal path of length " << path.getPath().size() << " is:\n" ;
 	    model.printPath(path,out,true);
-	    out << "\n, justification follows for subformulas.\n";
+	    out << "Justification follows for subformulas.\n";
 	    its::State toret = explain(path.getInit(),leftChild,out);
 	    explain(path.getFinal(),rightChild,out);
 	    return toret;
@@ -438,10 +439,11 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	    its::State reachableA = reachA (satA);
 	    its::Transition hasEG = fixpoint(getNextRel()*its::Transition::id,true);
 	    its::State EGa = hasEG(reachableA);
+	    out << "E a U b is false; \n";
 	    if (EGa == its::State::null) {
-	      out << "There are no cycles of the form EGa on your input states. \n";
+	      out << "Although there are no cycles of the form EGa on your input states. \n";
 	    } else {
-	      out << "There are cycles of the form EGa reachable from input states such as: \n";
+	      out << "Because there exist cycles of the form EGa reachable from input states such as: \n";
 	      model.printSomeStates(satA,out);
 	      out << "TODO : report on lasso witness of SCC \n";
 	      return satA;
@@ -451,16 +453,10 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	      its::path_t path = model.findPath(satA, notAnotB, reachableA, true);
 	      out << "E a U b is false because all input states satisfying *a* lead to futures satisfying *not a* and *not b*. So formula : A a U !a&!b is true. \n";
 	      out << "A minimal path of length " << path.getPath().size() << " from input states satisfying a to states satisfying !a and !b is:\n" ;
-	      labels_it end = path.getPath().end();
-	      for (labels_it it=path.getPath().begin(); it != end ; /*in loop*/) {
-		out << *it;
-		if (++it != end) {
-		  out << ", " ;
-		}
-	      }
-	      
+	      model.printPath(path,out);
+	        
 	    } else {
-	      out << "All paths satisfying a are finite and never traverse states satisfying b. \n";
+	      out << "E a U b is false because all paths satisfying a are finite (potential deadlocks !) and never traverse states satisfying b. \n";
 	      return explain(satA,leftChild,out);
 	    }
 	  }
@@ -524,13 +520,14 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	  out << "EG a is false; However, there are reachable deadlocks along paths satisfying a continuously.";
 	  its::path_t path = model.findPath(satA, deadA, reachableA, true);
 	  model.printPath(path,out);
+	  return path.getInit();
 	} else {
 	  out << "EGa is false, since AF!a is true. From input states satisfying a, an example shortest trace to states satisfying !a is:";
 	  its::State notA = getReachable() - leftStates;
 	  
 	  its::path_t path = model.findPath(satA, notA, reachableA, true);
-	  labels_it end = path.getPath().end();
 	  model.printPath(path,out);	  
+	  return path.getInit();
 	} 
       }
     } else {
@@ -540,18 +537,39 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 
     break;
       
-    case Ctlp_Cmp_c: {
-      // Forward CTL specific : compare a formula to false or true
-      // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
-//       if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
-//  	result = (leftStates == State::null ? State::one : State::null);
-//       else
-// 	result = (leftStates == State::null ? State::null : State::one);
-    break;
-  }
+    case Ctlp_Cmp_c: 
+      {
+	// Forward CTL specific : compare a formula to false or true
+	// i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
+	bool invertVerdict = false;
+	its::State leftStates = getStateVerifying (leftChild) ;
+	if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
+	  invertVerdict =true;
+	formIsTrue = (invertVerdict && leftStates == State::null) || (!invertVerdict && leftStates!=State::null);
+	if (formIsTrue) {
+	  out << " is true in ";
+	  if (sat.nbStates()==1) {
+	    out << "the single input state :\n" ;
+	    model.printSomeStates(sat,out);
+	  } else {
+	    out << satF.nbStates() <<  " state(s) out of "<< sat.nbStates() << " input state(s).\n";
+	  }
+	} else {
+	  out << " is false in all " << sat.nbStates() << " input state(s).\n"  ;
+	}
+	return explain(getReachable(),leftChild,out);
+	
+	break;
+      }
   case Ctlp_Init_c:
       // cast to constant homomorphism
-//       result = getInitialState() ;
+    if (formIsTrue) {
+      out << "Because some input states are initial states.\n";
+      return satF;
+    } else {
+      out << "Because none of the input states are initial states.\n";
+      return sat;
+    }
     break;
   case Ctlp_FwdU_c:
       /** From Vis source documentation :
@@ -564,26 +582,51 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
        * FwdUntil(p,q) =  ( q & Next  + Id)^* & p
        */
       // test for trivial reachability case
-//       if (Ctlp_FormulaReadLeftChild(ctlFormula) &&
-// 	  Ctlp_FormulaReadType(Ctlp_FormulaReadLeftChild(ctlFormula)) ==
-// 	  Ctlp_Init_c &&
-// 	  Ctlp_FormulaReadRightChild(ctlFormula) &&
-// 	  Ctlp_FormulaReadType(Ctlp_FormulaReadRightChild(ctlFormula)) ==
-// 	  Ctlp_TRUE_c ) {
+if (Ctlp_FormulaReadLeftChild(ctlFormula) &&
+    Ctlp_FormulaReadType(Ctlp_FormulaReadLeftChild(ctlFormula)) ==
+ 	  Ctlp_Init_c &&
+	   Ctlp_FormulaReadRightChild(ctlFormula) &&
+ 	  Ctlp_FormulaReadType(Ctlp_FormulaReadRightChild(ctlFormula)) ==
+ 	  Ctlp_TRUE_c ) {
 // 	// cast to constant hom
 // 	result = getReachable() ;
-//     break;
-//   }
+	 if (formIsTrue) {
+	   out << "This subformula computes all reachable states, and there are reachable states satisfying your other criteria.\n";
+	   out << "A shortest path from an initial state to a state satisfying your property is\n";
+	   its::path_t path = model.findPath(getInitialState(), sat, trueF, true);
+	   model.printPath(path,out,true);	  
+	   return path.getFinal();
+	 } else {
+	   out << "This subformula computes all reachable states, and there are no reachable states satisfying your other criteria.\n";
+	   out << "No counter-example trace can be provided.\n";
+	   return sat;
+	 }
+	 break;
+       }
       // the real case
       // FwdUntil(p,q) holds at any state "t", such that there exists a path through "t" from some state at which
       // p holds, and q holds at all states before "t" on the path.
-      
+       if (formIsTrue) {
+	 out << "This subformula computes reachability under FwdU constraint, and there are reachable states satisfying your other criteria.\n";
+	 out << "A shortest path satisfying FwdU from an input initial state to a state satisfying your property is\n";
+	 its::State leftStates = getStateVerifying (leftChild) ;
+	 its::path_t path = model.findPath(leftStates, sat, trueF, true);
+	 model.printPath(path,out,true);
+	 explain(path.getInit(),leftChild,out);	   
+	 return path.getFinal();
+       } else {
+	 out << "This subformula computes reachable states under FwdU, and there are no such reachable states satisfying your other criteria.\n";
+	 out << "No counter-example trace can be provided.\n";
+	 return sat;
+       }
+
 //       result = (getNextRel() +Transition::id) (fixpoint ( (rightStates * getNextRel()) + its::Transition::id ) ( leftStates )) ;
-    break;
+break;
   case Ctlp_FwdG_c:
    {
 	// EH (p) is the subset of states verifying "p" that are reachable through a cycle in p
-	// EH = fixpoint ( p * getNextRel() ) (getReachable);
+        // i.e. forward SCC hull of p states (keep p suffixes).
+	// EH = fixpoint ( id * getNextRel() ) (p);
 
 	// Reachable (p,q) : states that verify "q" reachable from states verifying "p and q" 
 	// (while constantly verifying "q")
