@@ -7,28 +7,28 @@ its-ctl command run as :
 Successfully loaded order from file test_models/train4.ord
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,28895,0.9,45128,2693,10,75302,31,243,66682,42,177,0
+
+
 Converting to forward existential form...Done !
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,28895,1.3,40544,2693,10,114868,38,304,56778,42,234,0
-
-
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,1.31,40604,1,0,114868,38,522,56778,48,234,1500
+(forward)formula 0,1,0.9,44204,1,0,75302,31,496,66682,48,177,1081
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,1.31,40604,1,0,114868,38,522,56778,48,234,1500
+(forward)formula 1,0,0.9,44212,1,0,75302,31,496,66682,48,177,1081
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,1.31,40604,1,0,114868,38,522,56778,48,234,1500
+(forward)formula 2,0,0.9,44212,1,0,75302,31,496,66682,48,177,1081
 Formula is FALSE !
 
  *************************************** 
@@ -36,7 +36,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. 
-(forward)formula 3,1,1.5,40608,1,0,114868,38,1262,56778,84,234,124397
+(forward)formula 3,1,0.99,44212,1,0,75302,39,1284,66682,85,199,88775
 Formula is TRUE !
 
  *************************************** 

@@ -6,28 +6,28 @@ its-ctl command run as :
 ../src/mc/its-ctl  -i  test_models/train4.xml  -t  ROMEO  --quiet  -ctl  test_models/basic.ctl  
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,28895,0.87,43380,2693,10,73670,31,243,63711,42,181,0
+
+
 Converting to forward existential form...Done !
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,28895,1.36,42072,2960,10,119316,38,304,61641,42,234,0
-
-
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,1.36,42132,1,0,119316,38,522,61641,48,234,1594
+(forward)formula 0,1,0.87,43392,1,0,73670,31,496,63711,48,181,1081
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,1.36,42132,1,0,119316,38,522,61641,48,234,1594
+(forward)formula 1,0,0.87,43484,1,0,73670,31,496,63711,48,181,1081
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,1.36,42132,1,0,119316,38,522,61641,48,234,1594
+(forward)formula 2,0,0.87,43484,1,0,73670,31,496,63711,48,181,1081
 Formula is FALSE !
 
  *************************************** 
@@ -35,7 +35,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. 
-(forward)formula 3,1,1.57,42136,1,0,119316,38,1262,61641,84,234,129610
+(forward)formula 3,1,0.97,43484,1,0,73670,39,1284,63711,85,203,88775
 Formula is TRUE !
 
  *************************************** 

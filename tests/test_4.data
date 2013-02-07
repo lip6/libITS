@@ -6,28 +6,28 @@ its-ctl command run as :
 ../src/mc/its-ctl  -i  test_models/election_2.cami  -t  CAMI  --quiet  -ctl  test_models/basic.ctl  
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,11257,1.19,68204,11361,3,111150,6,409,91981,8,5,0
+
+
 Converting to forward existential form...Done !
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,11257,1.3,46028,11362,3,111815,6,412,91904,8,5,0
-
-
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,1.31,46084,1,0,111815,6,847,91904,11,5,1895
+(forward)formula 0,1,1.2,68220,1,0,111150,6,980,91981,11,5,1894
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,1.31,46084,1,0,111815,6,847,91904,11,5,1895
+(forward)formula 1,0,1.2,68304,1,0,111150,6,980,91981,11,5,1894
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,1.31,46084,1,0,111815,6,847,91904,11,5,1895
+(forward)formula 2,0,1.2,68304,1,0,111150,6,980,91981,11,5,1894
 Formula is FALSE !
 
  *************************************** 
@@ -35,7 +35,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. 
-(forward)formula 3,0,1.84,46084,1,0,111815,7,2095,91904,14,10,807726
+(forward)formula 3,0,1.94,68304,1,0,111150,7,2935,91981,14,10,807723
 Formula is FALSE !
 
  *************************************** 

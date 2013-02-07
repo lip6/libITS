@@ -6,28 +6,28 @@ its-ctl command run as :
 ../../src/mc/its-ctl  -i  votersMain.xml  -t  ITSXML  --quiet  -ssDR  5  -ctl  ./basic.ctl  
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,1.07151e+301,0,2352,51,3,82,6,37,12,6,5,0
+
+
 Converting to forward existential form...Done !
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,1.07151e+301,0.01,1768,51,3,82,6,37,12,6,5,0
-
-
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,0.01,1828,1,0,82,6,50,12,8,5,66
+(forward)formula 0,1,0,2368,1,0,82,6,51,12,8,5,66
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,0.01,1828,1,0,82,6,50,12,8,5,66
+(forward)formula 1,0,0,2460,1,0,82,6,51,12,8,5,66
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,0.01,1828,1,0,82,6,50,12,8,5,66
+(forward)formula 2,0,0,2460,1,0,82,6,51,12,8,5,66
 Formula is FALSE !
 
  *************************************** 
@@ -35,7 +35,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is exact ! Faster fixpoint algorithm enabled. 
-(forward)formula 3,0,0.01,1848,1,0,163,6,112,43,9,6,258
+(forward)formula 3,0,0,2484,1,0,163,6,132,43,9,6,258
 Formula is FALSE !
 
  *************************************** 

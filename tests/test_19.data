@@ -6,28 +6,28 @@ its-ctl command run as :
 ../src/mc/its-ctl  -i  test_models/fms5.net  -t  PROD  --quiet  --json-order  test_models/fms5.json  -ctl  test_models/basic.ctl  
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,2.89502e+06,0.01,3004,229,7,1675,32,70,1944,8,84,0
+
+
 Converting to forward existential form...Done !
-Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache ,DDD Hom ,DDD cache,SHom cache
-reachable,2.89502e+06,0.01,2296,229,7,1653,28,70,1895,8,68,0
-
-
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,0.01,2348,1,0,1653,28,87,1895,16,68,135
+(forward)formula 0,1,0.01,3016,1,0,1675,32,103,1944,16,84,135
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,0.01,2348,1,0,1653,28,87,1895,16,68,135
+(forward)formula 1,0,0.01,3104,1,0,1675,32,103,1944,16,84,135
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,0.01,2348,1,0,1653,28,87,1895,16,68,135
+(forward)formula 2,0,0.01,3104,1,0,1675,32,103,1944,16,84,135
 Formula is FALSE !
 
  *************************************** 
@@ -35,7 +35,7 @@ Formula is FALSE !
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
 Reverse transition relation is exact ! Faster fixpoint algorithm enabled. 
-(forward)formula 3,1,0.02,2456,1,0,1886,49,153,3254,18,189,2486
+(forward)formula 3,1,0.02,3104,1,0,1910,59,197,3155,18,223,2486
 Formula is TRUE !
 
  *************************************** 
