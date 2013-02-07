@@ -80,3 +80,5 @@ GAL format, file : reader_writer.gal
 ../bin/its-reach -i test_models/gal/reader_writer.gal -t GAL --quiet
 DVE format, adding model 
 ../bin/its-reach -i test_models/adding.1.5.dve -t DVE --quiet 
+DVE format, hanoi my own version (with solution trace)
+../bin/its-reach -i test_models/hanoi.1.dve -t DVE -reachable 'pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1'
