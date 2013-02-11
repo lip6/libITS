@@ -78,7 +78,7 @@ namespace its {
 bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   string pathinputff = "";
-  enum InputType {NDEF,CAMI,PROD,ROMEO,ITSXML,ETF,DLL,NDLL,DVE,GAL_T};
+  enum InputType {NDEF,CAMI,PROD,ROMEO,UROMEO,ITSXML,ETF,DLL,NDLL,DVE,GAL_T};
   InputType parse_t = NDEF;
 
   bool hasOrder=false;
@@ -115,6 +115,8 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        parse_t = PROD;
      } else if ( !strcmp(argv[i],"ROMEO") ) {
        parse_t = ROMEO;
+     } else if ( !strcmp(argv[i],"UROMEO") ) {
+       parse_t = UROMEO;
      } else if ( !strcmp(argv[i],"ITSXML") ) {
        parse_t = ITSXML;
      } else if ( !strcmp(argv[i],"ETF") ) {
@@ -128,7 +130,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
      } else if ( !strcmp(argv[i],"GAL") ) {
        parse_t = GAL_T;
      } else {
-       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|ITSXML|ETF} is expected. " << endl;  showUsageHelp() ;exit(1);
+       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|UROMEO|ITSXML|ETF|DVE|DLL|NDLL|GAL} is expected. " << endl;  showUsageHelp() ;exit(1);
      }
 
      /** ORDER FILE OPTIONS */
@@ -227,10 +229,16 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
       ITSModelXMLLoader::loadXML(pathinputff, model);
       break;
     }
-  case ROMEO : 
+  case ROMEO :
+  case UROMEO :
     {
-      TPNet * pnet = XMLLoader::loadXML(pathinputff, hasJson);
       
+      TPNet * pnet ;
+      if (parse_t == ROMEO) {
+	pnet = XMLLoader::loadXML(pathinputff, hasJson);
+      } else {
+	pnet = XMLLoader::loadXML(pathinputff, true);
+      }
       if (hasJson) {
 	json::Hierarchie * hier = new json::Hierarchie();
 	json::json_parse(pathjsonff, *hier);
@@ -315,7 +323,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   case NDEF :
   default : 
     {
-      std::cerr << "Please specify input problem type with option -t. Supported types are :  {CAMI|PROD|ROMEO|ITSXML|ETF} \n" ;
+      std::cerr << "Please specify input problem type with option -t. Supported types are :  {CAMI|PROD|ROMEO|ITSXML|ETF...} \n" ;
       return false;
       break;
     }
@@ -346,6 +354,7 @@ void usageInputOptions() {
     cerr<<  "             CAMI : CAMI format (for P/T nets) is the native Petri net format of CPN-AMI" <<endl;
     cerr<<  "             PROD : PROD format (for P/T nets) is the native format of PROD" <<endl;
     cerr<<  "             ROMEO : an XML format (for Time Petri nets) that is the native format of Romeo" <<endl;
+    cerr<<  "             UROMEO : Romeo format with additional constraints: all places named, with different names." <<endl;
     cerr<<  "             ITSXML : a native XML format (for ANY kind of ITS) for this tool. These files allow to point to other files." <<endl;
     cerr<<  "             ETF : Extended Table Format is the native format used by LTSmin, built from many front-ends." <<endl;
     cerr<<  "             DLL : use a dynamic library that provides a function \"void loadModel (Model &,int)\" typically written using the manipulation APIs. See demo/ folder." <<endl;
