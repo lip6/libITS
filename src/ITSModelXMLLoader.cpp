@@ -38,6 +38,9 @@ void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_C
     if ( format == "Romeo" && formalism == "Time Petri Net" ) {
       its::TPNet * pnet = XMLLoader::loadXML(path);
       model->declareType(*pnet);
+    } else if ( format == "URomeo" && formalism == "Time Petri Net" ) {
+      its::TPNet * pnet = XMLLoader::loadXML(path,true);
+      model->declareType(*pnet);
     } else if ( format == "Composite" && formalism == "ITSComposite" ) {
       its::Composite * tcomp = CompositeXMLLoader::loadXML(path,*model,true);
       model->declareType(*tcomp);
