@@ -40,7 +40,8 @@ void CompositeXMLLoader::loadNodes (void * data, const XML_Char* Elt, const XML_
     }
     // I do not use the label to make it easier to reference the
     // transition when creating arcs
-    s << "i_" << id << "_" << name ;
+//    s << "i_" << id << "_" << name ;
+    s << name;
     tnames[id] = s.str();
 
     pn->addInstance (s.str(), type, *model);
@@ -57,7 +58,8 @@ void CompositeXMLLoader::loadNodes (void * data, const XML_Char* Elt, const XML_
     }
     // I do not use the label to make it easier to reference the
     // transition when creating arcs
-    s << "T_" << id << "_" << name ;
+//    s << "T_" << id << "_" << name ;
+    s << name;
     tnames[id] = s.str();
 
     pn->addSynchronization (s.str(), label);
