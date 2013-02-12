@@ -175,10 +175,10 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       bool isExact = ( rel(reach) - reach == State::null );
       if (isExact) {
 	predRel_ = rel;
-	std::cout << "Reverse transition relation is exact ! Faster fixpoint algorithm enabled. \n" ;
+	std::cerr << "Reverse transition relation is exact ! Faster fixpoint algorithm enabled. \n" ;
       } else {
 	predRel_ = rel * reach;
-	std::cout << "Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. \n" ;
+	std::cerr << "Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. \n" ;
       }
       if (reach_envelope != State::null) {
 	// Don't cache !
@@ -258,7 +258,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       break;
     }
   } 
-    cerr << "Length of minimal path(s) :" << revcomponents.size() <<endl;
+
+//    cerr << "Length of minimal path(s) :" << revcomponents.size() <<endl;
 
     // Forward construction of witness
     
@@ -496,7 +497,7 @@ void ITSModel::print (std::ostream & os) const  {
       out << "From initial states :\n" ;
       printSomeStates(path.getInit(),out);
     }
-    out << "This transition sequence  :\n";
+    out << "This shortest transition sequence of length " << path.getPath().size() << " :\n";
     labels_it end = path.getPath().end();
     for (labels_it it=path.getPath().begin(); it != end ; /*in loop*/) {
       out << *it;
