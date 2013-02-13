@@ -71,9 +71,6 @@ private:
   scalarStrategy scalarStrat_;
   int scalarParam_;
 
-  /** return the time elapse transition or Transition::id if untimed model. */
-  Transition getElapse () const ;
-
 public:
   // add a type to the type declarations
   // returns false if the type name already exists
@@ -148,6 +145,8 @@ public:
   // If reach is left to its default value "null", all reachable states are used as envelope.
   // Else the the transition relation is constrained to stay within "reach".
   Transition getPredRel (State reach=State::null) const ;
+  /** return the time elapse transition or Transition::id if untimed model. */
+  Transition getElapse () const ;
   // returns the full reachable state space of the system from the initial state(s)
   // also caches result. Optional parameter to deactivate garbage collection.
   State computeReachable (bool wGarbage=true) const;
