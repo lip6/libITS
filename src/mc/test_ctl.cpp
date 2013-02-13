@@ -31,6 +31,8 @@ void usage () {
   cerr<<  "    -ctl [CTL formulas file]  MANDATORY : give path to a file containing CTL formulae \n";
   cerr<<  " Optionally, if the [CTL formulas file] provided is the string DEADLOCK, the tool will compute and return the number of deadlocks.\n";
   cerr<<  "    --witness to ask for a witness/counter-example path to be produced (may be much more difficult than just proving/disproving)\n";
+  cerr<<  "    --fair-time to disallow infinite loops over elapse. More precisely, with this option, time elapse is applied directly after each discrete transition firing (and on initial state).\n";
+  cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
   cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
   cerr<<  "    [--backward] to force backward CTL model-checking (classic algorithm from 10^20 states & beyond)\n";
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
@@ -86,6 +88,8 @@ int main (int argc, char ** argv) {
 
   bool showlegend = false;
 
+  bool befairtime = false;
+
   string pathformff;
   
   argc = args.size();
@@ -104,6 +108,8 @@ int main (int argc, char ** argv) {
      doWitness = true;
    } else if (! strcmp(args[i],"--quiet")   ) {
      bequiet = true;
+   } else if (! strcmp(args[i],"--fair-time")   ) {
+     befairtime = true;
    } else {
      cerr << "Error : incorrect Argument : "<<args[i] <<endl ; usage(); exit(1);
    }
@@ -155,7 +161,9 @@ int main (int argc, char ** argv) {
   // Build CTL context
   CTLChecker checker (model);
 
-  
+  if (befairtime) {
+    checker.setFairTime(befairtime);
+  }
   
   
   // Compute reachable states

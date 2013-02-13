@@ -873,12 +873,39 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 
 its::Transition CTLChecker::getPredRel () const
 {
-  return model.getPredRel();
+  if (isfairtime) {
+    if (predRel_ == Transition::id) {
+      State reach = getReachable();
+      Transition inv = getNextRel ().invert(reach);
+      bool isExact = ( inv(reach) - reach == State::null );
+      if (isExact) {
+	predRel_ = inv;
+	std::cerr << "Reverse transition relation is exact ! Faster fixpoint algorithm enabled. \n" ;
+      } else {
+	predRel_ = inv * reach;
+	std::cerr << "Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. \n" ;
+      }
+    }
+    return predRel_;
+  } else {
+    return model.getPredRel();
+  }
 }
 
 its::Transition CTLChecker::getNextRel () const
 {
-  return model.getNextRel() ;
+  if (isfairtime) {
+    Transition trans = model.getInstance()->getType()->getLocals();
+
+    Transition elapse = model.getElapse(); 
+    if (elapse != Transition::id) {
+//      return trans + elapse;
+      return  fixpoint(elapse + Transition::id) & trans;
+    }
+    return trans;
+  } else {
+    return model.getNextRel();
+  }
 }
 
 its::State CTLChecker::getReachable () const {
@@ -888,7 +915,12 @@ its::State CTLChecker::getReachable () const {
 
 its::State CTLChecker::getInitialState () const {
   // this call is cached in ITSModel
-  return model.getInitialState();
+
+  if (isfairtime) {
+    return fixpoint(model.getElapse() + Transition::id) ( model.getInitialState() );
+  } else {
+    return model.getInitialState();
+  }
 }
 
 its::State CTLChecker::getReachableDeadlocks () const {

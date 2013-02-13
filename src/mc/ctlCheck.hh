@@ -25,8 +25,14 @@ class CTLChecker {
   typedef ctl_statecache_t::const_iterator ctl_statecache_it;
   mutable ctl_statecache_t ctl_statecache;
 
+  mutable its::Transition predRel_;
+
+  bool isfairtime;
+
 public :
-  CTLChecker (const its::ITSModel & model) : model(model) {}
+  CTLChecker (const its::ITSModel & model) : model(model), isfairtime(false) {}
+
+  void setFairTime(bool befairtime) { isfairtime = befairtime; }
 
   its::Transition getSelectorAP (Label apname, Label value) const;
 
