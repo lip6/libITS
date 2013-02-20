@@ -121,6 +121,8 @@ typedef d3::set<PBoolExpression>::type NaryPBoolParamType ;
 
 class PBoolExpressionFactory {
   static UniqueTable<_PBoolExpression> & unique ();
+  // helper function to fuse internal AND/OR
+  static NaryPBoolParamType fuse_internals (BoolExprType, const NaryPBoolParamType &);
 public :
   // and and or of boolean expressions
   static PBoolExpression createNary (BoolExprType type, const NaryPBoolParamType &params) ;

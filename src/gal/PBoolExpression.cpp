@@ -632,15 +632,37 @@ UniqueTable<_PBoolExpression> &  PBoolExpressionFactory::unique () {
   return unique;
 }
 
+NaryPBoolParamType
+PBoolExpressionFactory::fuse_internals (BoolExprType type, const NaryPBoolParamType & params)
+{
+  NaryPBoolParamType tmp;
+  for (NaryPBoolParamType::const_iterator it = params.begin ();
+       it != params.end (); ++it)
+  {
+    if (it->getType () == type)
+    {
+      // fuse
+      const NaryBoolExpr * t = (const NaryBoolExpr *)it->concrete;
+      tmp.insert (t->begin (), t->end ());
+    }
+    else
+    {
+      // simply insert
+      tmp.insert (*it);
+    }
+  }
+  return tmp;
+}
+
 PBoolExpression PBoolExpressionFactory::createNary (BoolExprType type, const NaryPBoolParamType & params) {
   if (params.size() == 1) {
     return *params.begin();
   }
   switch (type) {
   case OR :
-    return unique()(OrExpr (params));
+    return unique()(OrExpr (fuse_internals (type, params)));
   case AND :
-    return unique()(AndExpr (params));      
+    return unique()(AndExpr (fuse_internals (type, params)));
   default :
     throw "Operator " + to_string(type) +" is not an N-ary bool op";
   }
