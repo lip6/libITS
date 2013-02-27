@@ -9,6 +9,10 @@ namespace its {
     return var_.equals(other.var_) && expr_.equals(other.expr_);
   }
   
+  bool Assignment::operator< (const Assignment &other) const {
+    return var_.equals(other.var_) ? expr_.less(other.expr_) : var_.less(other.var_);
+  }
+  
   void Assignment::print (std::ostream & os) const {
     var_.print(os);
     os <<  " = " ;

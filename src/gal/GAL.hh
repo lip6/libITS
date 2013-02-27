@@ -44,6 +44,8 @@ class Assignment {
   std::set<Variable> getSupport() const;
   /// equality comparison
   bool operator==(const Assignment &) const;
+  /// ordering (for use with sets and maps)
+  bool operator< (const Assignment &) const;
 };
 
 /**
