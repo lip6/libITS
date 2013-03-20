@@ -2,9 +2,11 @@
 #include "hashfunc.hh"
 #include <cassert>
 #include <typeinfo>
+#include <climits>
 
 #include "PIntExprVisitor.hh"
 
+#define TOP INT_MAX
 
 namespace its {
 
@@ -413,6 +415,8 @@ public :
   const char * getOpString() const { return " == ";}
 
   bool constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return false;
     return i==j;
   }
   virtual _PBoolExpression * clone () const { return new BoolEq(*this);}
@@ -426,6 +430,8 @@ public :
   const char * getOpString() const { return " != ";}
 
   bool constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return false;
     return i!=j;
   }
 
@@ -440,6 +446,8 @@ public :
   const char * getOpString() const { return " >= ";}
 
   bool constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return false;
     return i>=j;
   }
   virtual _PBoolExpression * clone () const { return new BoolGeq(*this);}
@@ -454,6 +462,8 @@ public :
   const char * getOpString() const { return " <= ";}
 
   bool constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return false;
     return i<=j;
   }
   virtual _PBoolExpression * clone () const { return new BoolLeq(*this);}
@@ -467,6 +477,8 @@ public :
   const char * getOpString() const { return " < ";}
 
   bool constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return false;
     return i<j;
   }
   virtual _PBoolExpression * clone () const { return new BoolLt(*this);}
@@ -480,6 +492,8 @@ public :
   const char * getOpString() const { return " > ";}
 
   bool constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return false;
     return i>j;
   }
   virtual _PBoolExpression * clone () const { return new BoolGt(*this);}

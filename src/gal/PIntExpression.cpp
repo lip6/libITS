@@ -1,6 +1,7 @@
 #include "PIntExpression.hh"
 #include "PBoolExpression.hh"
 
+#include <climits>
 #include <cmath>
 #include <cassert>
 #include "hashfunc.hh"
@@ -9,6 +10,8 @@
 #include "IntExpression.hh"
 
 #include "PIntExprVisitor.hh"
+
+#define TOP INT_MAX
 
 namespace its {
 
@@ -650,6 +653,8 @@ public :
   const char * getOpString() const { return " + ";}
   
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i+j;
   }
   int getNeutralElement () const {
@@ -667,6 +672,8 @@ public :
   const char * getOpString() const { return " * ";}
 
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i*j;
   }
   int getNeutralElement () const {
@@ -824,6 +831,8 @@ public :
   IntExprType getType() const  { return MINUS; }
   const char * getOpString() const { return " - ";}
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i-j;
   }
   _PIntExpression * clone () const { return new MinusExpr(*this); }
@@ -838,6 +847,8 @@ public :
   const char * getOpString() const { return " / ";}
 
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP || j == 0)
+      return TOP;
     return i/j;
   }
 
@@ -853,6 +864,8 @@ public :
   const char * getOpString() const { return " % ";}
 
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP || j == 0)
+      return TOP;
     return i % j;
   }
 
@@ -868,6 +881,8 @@ public :
   const char * getOpString() const { return " ** ";}
 
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return int(pow(i,j));
   }
   _PIntExpression * clone () const { return new PowExpr(*this); }
@@ -881,6 +896,8 @@ public :
   IntExprType getType() const  { return BITAND; }
   const char * getOpString() const { return " & ";}
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i&j;
   }
   _PIntExpression * clone () const { return new BitAndExpr(*this); }
@@ -894,6 +911,8 @@ public :
   IntExprType getType() const  { return BITOR; }
   const char * getOpString() const { return " | ";}
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i|j;
   }
   _PIntExpression * clone () const { return new BitOrExpr(*this); }
@@ -908,6 +927,8 @@ public :
   IntExprType getType() const  { return BITXOR; }
   const char * getOpString() const { return " ^ ";}
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i^j;
   }
   _PIntExpression * clone () const { return new BitXorExpr(*this); }
@@ -922,6 +943,8 @@ public :
   IntExprType getType() const  { return LSHIFT; }
   const char * getOpString() const { return " << ";}
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i << j;
   }
   _PIntExpression * clone () const { return new BitLshiftExpr(*this); }
@@ -936,6 +959,8 @@ public :
   IntExprType getType() const  { return BITOR; }
   const char * getOpString() const { return " >> ";}
   int constEval (int i, int j) const {
+    if (i == TOP || j == TOP)
+      return TOP;
     return i>>j;
   }
   _PIntExpression * clone () const { return new BitRshiftExpr(*this); }
