@@ -22,6 +22,8 @@
 #include "util/dotExporter.h"
 #include "statistic.hpp"
 
+#include "FixObserver.hh"
+
 #ifdef HASH_STAT
 #include "gal/ExprHom.hpp"
 #endif // HASH_STAT
@@ -37,7 +39,47 @@ static bool with_garbage=true;
 static std::string modelName = "";
 // if BMC use is wanted, will be >0
 static int BMC = -1;
+static size_t fixobs_passes = 1000;
 
+class EarlyBreakObserver : public fobs::FixObserver {
+  size_t n;
+  size_t max;
+  Transition pred;
+public:
+  EarlyBreakObserver (size_t m, Transition p): n(0), max(m), pred(p) {}
+  
+  bool was_interrupted () const { return n > max; }
+  bool should_interrupt ()
+  {
+    return ++n > max;
+  }
+  void update (const GSDD & after, const GSDD & before)
+  {
+    if (pred (after) != State::null)
+    {
+      std::cerr << "SDD computation interrupted after " << n << " fixpoint passes" << std::endl;
+    }
+    else
+    {
+      n = 0;
+      max += max/2;
+      std::cerr << "SDD proceeding with computation, new max is " << max << std::endl;
+    }
+  }
+  void update (const GDDD & after, const GDDD & before)
+  {
+    if (pred (State(0,DDD(after))) != State::null)
+    {
+      std::cerr << "DDD computation interrupted after " << n << " fixpoint passes" << std::endl;
+    }
+    else
+    {
+      n = 0;
+      max += max/2;
+      std::cerr << "DDD proceeding with computation, new max is " << max << std::endl;
+    }
+  }
+};
 
 State exhibitModel (ITSModel & model) {
 	// pretty print the model for inspection
@@ -56,7 +98,7 @@ State exhibitModel (ITSModel & model) {
   State reachable;
   if (BMC <0) {
     // Compute reachable states
-    reachable = model.computeReachable(with_garbage);
+      reachable = model.computeReachable(with_garbage);
   } else {
     Transition hnext = model.getNextRel() + Transition::id;
     reachable = model.getInitialState();
@@ -121,6 +163,7 @@ void usage() {
   cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
+  cerr<<  "    --fixpass XXX : breaks after XXX passes of fixpoint (default: " << fixobs_passes << ")" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -196,11 +239,20 @@ int main_noex (int argc, char **argv) {
        { cerr << "give path value for dump-order " << args[i-1]<<endl; usage() ; exit(1);}
      pathorderff = args[i];     
      dodumporder = true;
+   } else if (! strcmp(args[i],"--fixpasses") ) {
+     if (++i > argc)
+     { cerr << "give number of passes in fixpoint after " << args[i-1] << endl; usage(); exit(1); }
+     fixobs_passes = atoi(args[i]);
    } else {
      cerr << "Error : incorrect Argument : "<<args[i] <<endl ; usage(); return 1;
    }
  }
  
+  if (reachExpr != "")
+  {
+    Transition predicate = model.getPredicate(reachExpr);
+    fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate));
+  }
  
 	
  State reachable = exhibitModel(model);
