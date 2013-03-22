@@ -28,6 +28,9 @@
 #include "gal/ExprHom.hpp"
 #endif // HASH_STAT
 
+#define trace if(0) std::cerr
+//#define trace std::cerr
+
 using namespace its;
 
 static bool beQuiet = false;
@@ -57,13 +60,13 @@ public:
   {
     if (pred (after) != State::null)
     {
-      std::cerr << "SDD computation interrupted after " << n << " fixpoint passes" << std::endl;
+      trace << "SDD computation interrupted after " << n << " fixpoint passes" << std::endl;
     }
     else
     {
       n = 0;
       max += max/2;
-      std::cerr << "SDD proceeding with computation, new max is " << max << std::endl;
+      trace << "SDD proceeding with computation, new max is " << max << std::endl;
     }
   }
   void update (const GDDD & after, const GDDD & before)
