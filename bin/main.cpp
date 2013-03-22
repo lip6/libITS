@@ -65,7 +65,7 @@ public:
     else
     {
       n = 0;
-      max += max/2;
+      max += max;
       trace << "SDD proceeding with computation, new max is " << max << std::endl;
     }
   }
@@ -78,7 +78,7 @@ public:
     else
     {
       n = 0;
-      max += max/2;
+      max += max;
       trace << "DDD proceeding with computation, new max is " << max << std::endl;
     }
   }
@@ -166,7 +166,7 @@ void usage() {
   cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
-  cerr<<  "    --fixpass XXX : breaks after XXX passes of fixpoint (default: 5000)" <<endl;
+  cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -251,7 +251,7 @@ int main_noex (int argc, char **argv) {
    }
  }
  
-  if (reachExpr != "")
+  if (fixobs_passes != 0 && reachExpr != "")
   {
     Transition predicate = model.getPredicate(reachExpr);
     fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate));
