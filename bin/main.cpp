@@ -73,13 +73,13 @@ public:
   {
     if (pred (State(0,DDD(after))) != State::null)
     {
-      std::cerr << "DDD computation interrupted after " << n << " fixpoint passes" << std::endl;
+      trace << "DDD computation interrupted after " << n << " fixpoint passes" << std::endl;
     }
     else
     {
       n = 0;
       max += max/2;
-      std::cerr << "DDD proceeding with computation, new max is " << max << std::endl;
+      trace << "DDD proceeding with computation, new max is " << max << std::endl;
     }
   }
 };
