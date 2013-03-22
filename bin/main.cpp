@@ -28,7 +28,7 @@
 #include "gal/ExprHom.hpp"
 #endif // HASH_STAT
 
-#define trace if(0) std::cerr
+#define trace if(!beQuiet) std::cerr
 //#define trace std::cerr
 
 using namespace its;
@@ -42,7 +42,7 @@ static bool with_garbage=true;
 static std::string modelName = "";
 // if BMC use is wanted, will be >0
 static int BMC = -1;
-static size_t fixobs_passes = 1000;
+static size_t fixobs_passes = 5000;
 
 class EarlyBreakObserver : public fobs::FixObserver {
   size_t n;
@@ -166,7 +166,7 @@ void usage() {
   cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
-  cerr<<  "    --fixpass XXX : breaks after XXX passes of fixpoint (default: " << fixobs_passes << ")" <<endl;
+  cerr<<  "    --fixpass XXX : breaks after XXX passes of fixpoint (default: 5000)" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -242,7 +242,7 @@ int main_noex (int argc, char **argv) {
        { cerr << "give path value for dump-order " << args[i-1]<<endl; usage() ; exit(1);}
      pathorderff = args[i];     
      dodumporder = true;
-   } else if (! strcmp(args[i],"--fixpasses") ) {
+   } else if (! strcmp(args[i],"--fixpass") ) {
      if (++i > argc)
      { cerr << "give number of passes in fixpoint after " << args[i-1] << endl; usage(); exit(1); }
      fixobs_passes = atoi(args[i]);
