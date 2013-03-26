@@ -564,14 +564,6 @@ firewire_tree.5-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.5.dve -reachable "elected_num == 2"
 fischer.1-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/fischer.1.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
-fischer.2-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/fischer.2.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1"
-fischer.3-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/fischer.3.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS + P_5.CS > 1"
-fischer.4-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/fischer.4.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS + P_5.CS + P_6.CS > 1"
-fischer.7-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/fischer.7.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS + P_5.CS + P_6.CS + P_7.CS > 1"
 frogs.1-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/frogs.1.dve -reachable "Check.done"
 frogs.2-reach.dve
@@ -766,8 +758,6 @@ synapse.3-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/synapse.3.dve -reachable "Cache_0.error_st"
 synapse.4-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/synapse.4.dve -reachable "Cache_0.error_st"
-synapse.5-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/synapse.5.dve -reachable "Cache_0.error_st"
 synapse.6-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/synapse.6.dve -reachable "Cache_0.error_st"
 szymanski.1-reach.dve
