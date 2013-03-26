@@ -486,16 +486,6 @@ anderson.6-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/anderson.6.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS + P_5.CS > 1"
 at.1-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/at.1.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
-at.2-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/at.2.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
-at.3-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/at.3.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1"
-at.4-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/at.4.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS > 1"
-at.5-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/at.5.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS > 1"
-at.6-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/at.6.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS > 1"
 bakery.1-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/bakery.1.dve -reachable "P_0.CS + P_1.CS > 1"
 bakery.2-reach.dve
