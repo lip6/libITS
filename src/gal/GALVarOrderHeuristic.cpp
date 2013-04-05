@@ -395,7 +395,7 @@ add_query_constraint (std::vector<const edge_t *> & c, const GuardedAction & g, 
       for (GAL::arrays_it ari = gal.arrays_begin ();
            ari != gal.arrays_end (); ++ari)
       {
-        if (current_array == g.getName ())
+        if (current_array == ari->getName ())
         {
           // add the variables of the array to lhs
           for (ArrayDeclaration::vars_it vi = ari->vars_begin ();
