@@ -394,7 +394,7 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
   if(et->synchronized)
     {
       for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
-	ga.addAction( assign( *et->first->get_sync_expr_list_item(s), *et->second->get_sync_expr_list_item(s) ));
+	ga.getAction().add( assign( *et->first->get_sync_expr_list_item(s), *et->second->get_sync_expr_list_item(s) ));
     }
   else
     {
@@ -404,19 +404,19 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
 	  // When sending message, the set expr_list assigns to each field of the struct in channel, in order
 	  for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
             {
-	      ga.addAction( Assignment ( channel_item_at( chan, channel_items( chan ), s ),
+	      ga.getAction().add( Assignment ( channel_item_at( chan, channel_items( chan ), s ),
 				    convertInt( *et->first->get_sync_expr_list_item( s ) ) ));
             }
 	  // Add 1 to channel size
-	  ga.addAction( Assignment ( channel_items( chan ), IntExpressionFactory::createBinary (PLUS, channel_items( chan ), 1) )); 
+	  ga.getAction().add( Assignment ( channel_items( chan ), IntExpressionFactory::createBinary (PLUS, channel_items( chan ), 1) )); 
         }
       if(et->first->get_sync_mode() == SYNC_ASK_BUFFER)
         {
 	  // When reading message, the set expr_list assigns to local variables the value of each field of the struct in channel[0], in order
 	  for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
-	    ga.addAction( Assignment( convertInt( *et->first->get_sync_expr_list_item(s)), channel_item_at( chan, 0, s) ));
+	    ga.getAction().add( Assignment( convertInt( *et->first->get_sync_expr_list_item(s)), channel_item_at( chan, 0, s) ));
 	  // Subtract 1 from channel size
-	  ga.addAction( Assignment ( channel_items( chan ), IntExpressionFactory::createBinary (MINUS, channel_items( chan ), 1) )); 
+	  ga.getAction().add( Assignment ( channel_items( chan ), IntExpressionFactory::createBinary (MINUS, channel_items( chan ), 1) )); 
 	  
 	  // Shift entries in channel down one index
 	  // For every position in channel up to n-2
@@ -425,24 +425,24 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
             for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
 	      {
 		// copy value in message i+1 to i
-		ga.addAction( Assignment( channel_item_at( chan, i, s), channel_item_at( chan, i+1, s) ));
+		ga.getAction().add( Assignment( channel_item_at( chan, i, s), channel_item_at( chan, i+1, s) ));
 	      }
 	  }
 	  // clear content of last channel cell
 	  for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
 	    {
-	      ga.addAction( Assignment( channel_item_at( chan, channel_capacity( chan ) - 1, s), 0 ));
+	      ga.getAction().add( Assignment( channel_item_at( chan, channel_capacity( chan ) - 1, s), 0 ));
 	    }
 	}
     }  
       //first transition effect
       // Update process state variable
       if (! procHasSingleState ( et->first->get_process_gid() ))
-	  ga.addAction ( Assignment( process_state( et->first->get_process_gid()), et->first->get_state2_lid() ));
+	  ga.getAction().add ( Assignment( process_state( et->first->get_process_gid()), et->first->get_state2_lid() ));
       
       // Effects on variables of main process
       for(size_int_t e = 0;e < et->first->get_effect_count();e++) {
-	ga.addAction( convertAssign ( *et->first->get_effect(e) ));
+	ga.getAction().add( convertAssign ( *et->first->get_effect(e) ));
       }
 
       // process Rendez-Vous
@@ -450,15 +450,15 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
 	{
 	  // Update second process state
 	  if (! procHasSingleState ( et->second->get_process_gid() ))
-	      ga.addAction(Assignment( process_state( et->second->get_process_gid()),
+	      ga.getAction().add(Assignment( process_state( et->second->get_process_gid()),
 				       et->second->get_state2_lid() )) ;
 	  // actions of second process
 	  for(size_int_t e = 0;e < et->second->get_effect_count();e++)
-	    ga.addAction( convertAssign ( *et->second->get_effect(e) ));
+	    ga.getAction().add( convertAssign ( *et->second->get_effect(e) ));
 	}
 
       if(have_property) //change of the property process state
-        ga.addAction( Assignment ( process_state( et->property->get_process_gid()), et->property->get_state2_lid() ) );
+        ga.getAction().add( Assignment ( process_state( et->property->get_process_gid()), et->property->get_state2_lid() ) );
 
     
 //     // show dependency information in the source
