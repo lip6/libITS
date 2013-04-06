@@ -33,6 +33,9 @@ class GALType : public TypeBasics {
   mutable GalOrder * go_;
   // support function to builda Hom from a GuardedAction (using current varOrder)
   GHom buildHom(const GuardedAction & it) const ;
+  GHom buildHom(const Statement & it) const ;
+  GHom getSuccsHom (const labels_t & tau) const ;
+  friend class HomBuilder;
 public :
   GALType (const GAL * gal):gal_(gal), voLocal(false), voQuery(false), voState(false),go_(NULL) {}
 

@@ -361,97 +361,176 @@ add_query_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL
   }
 }
 
+  class ConstraintBuilder : public StatementVisitor {
+  public :
+    std::vector<const edge_t *> & c;
+    const GAL & gal;
+
+    ConstraintBuilder(std::vector<const edge_t *> & cc, const GAL & gal): c(cc), gal(gal) {}
+
+    ~ConstraintBuilder() {} 
+    
+    void visitAssign (const class Assignment & ai) {
+      // add the array constraints for the lhs
+      add_query_constraint (c, ai.getVariable (), gal);
+      // add the array constraints for the rhs
+      add_query_constraint (c, ai.getExpression (), gal);
+
+      IntExpression var = ai.getVariable ();
+      // add the assignment constraints
+      std::set<std::string> lhs;
+      // if var is a variable
+      if (var.getType () == VAR || var.getType () == CONSTARRAY)
+	{
+	  lhs.insert (var.getName ());
+	}
+      // else, var is a non-const array access
+      else
+	{
+	  // find the array in the GAL
+	  ArrayVisitor av;
+	  var.getExpr ().accept (&av);
+	  std::string current_array = IntExpressionFactory::getVar (var.getEnv () [av.getResult ()]);
+	  // find the array in the GAL
+	  for (GAL::arrays_it ari = gal.arrays_begin ();
+	       ari != gal.arrays_end (); ++ari)
+	    {
+	      if (current_array == ari->getName ())
+		{
+		  // add the variables of the array to lhs
+		  for (ArrayDeclaration::vars_it vi = ari->vars_begin ();
+		       vi != ari->vars_end (); ++vi)
+		    {
+		      lhs.insert (vi->getName ());
+		    }
+		  // leave the loop
+		  break;
+		}
+	    }
+	}
+      
+      // fill the constraints
+      GetVariableVisitor vv (ai.getExpression ().getEnv ());
+      ai.getExpression ().getExpr ().accept (&vv);
+      std::set< std::string > rhs = vv.getResult ();
+      
+      for (std::set< std::string >::const_iterator li = lhs.begin ();
+	   li != lhs.end (); ++li)
+	{
+	  for (std::set< std::string >::const_iterator ri = rhs.begin ();
+	       ri != rhs.end (); ++ri)
+	    {
+	      if (*li != *ri)
+		{
+		  edge_t * tmp = new QueryEdge (*li, *ri);
+		  c.push_back (tmp);
+		}
+	    }
+	}
+      
+    } 
+    
+    void visitSequence (const class Sequence & seq) {
+      for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
+	(*it)->acceptVisitor(*this);
+      }
+    } 
+
+    void visitIte (const class Ite & ite) {
+      add_query_constraint (c, ite.getCondition(), gal);      
+      ite.getIfTrue().acceptVisitor(*this);
+      ite.getIfFalse().acceptVisitor(*this);
+    }
+
+    void visitWhile (const class While & loop) {
+      add_query_constraint (c, loop.getCondition(), gal);      
+      loop.getAction().acceptVisitor(*this);
+    }
+
+    void visitCall (const class Call & call) {
+      // Calls are not followed currently => no additional constraints
+    } 
+
+  };
+
+
 void
 add_query_constraint (std::vector<const edge_t *> & c, const GuardedAction & g, const GAL & gal)
 {
   // add the array constraints for the guard
   add_query_constraint (c, g.getGuard (), gal);
-  
-  // walk the actions of the transition
-  for (GuardedAction::actions_it ai = g.begin ();
-       ai != g.end (); ++ai)
-  {
-    // add the array constraints for the lhs
-    add_query_constraint (c, ai->getVariable (), gal);
-    // add the array constraints for the rhs
-    add_query_constraint (c, ai->getExpression (), gal);
-    
-    IntExpression var = ai->getVariable ();
-    // add the assignment constraints
-    std::set<std::string> lhs;
-    // if var is a variable
-    if (var.getType () == VAR || var.getType () == CONSTARRAY)
-    {
-      lhs.insert (var.getName ());
-    }
-    // else, var is a non-const array access
-    else
-    {
-      // find the array in the GAL
-      ArrayVisitor av;
-      var.getExpr ().accept (&av);
-      std::string current_array = IntExpressionFactory::getVar (var.getEnv () [av.getResult ()]);
-      // find the array in the GAL
-      for (GAL::arrays_it ari = gal.arrays_begin ();
-           ari != gal.arrays_end (); ++ari)
-      {
-        if (current_array == ari->getName ())
-        {
-          // add the variables of the array to lhs
-          for (ArrayDeclaration::vars_it vi = ari->vars_begin ();
-               vi != ari->vars_end (); ++vi)
-          {
-            lhs.insert (vi->getName ());
-          }
-          // leave the loop
-          break;
-        }
-      }
-    }
-    
-    // fill the constraints
-    GetVariableVisitor vv (ai->getExpression ().getEnv ());
-    ai->getExpression ().getExpr ().accept (&vv);
-    std::set< std::string > rhs = vv.getResult ();
-    
-    for (std::set< std::string >::const_iterator li = lhs.begin ();
-         li != lhs.end (); ++li)
-    {
-      for (std::set< std::string >::const_iterator ri = rhs.begin ();
-           ri != rhs.end (); ++ri)
-      {
-        if (*li != *ri)
-        {
-          edge_t * tmp = new QueryEdge (*li, *ri);
-          c.push_back (tmp);
-        }
-      }
-    }
-  }
+
+
+  ConstraintBuilder cb (c, gal);
+  // This call will update c appropriately based on expressions encountered in statements.
+  g.getAction().acceptVisitor(cb);
+
 }
+
+
+
+
+  class LocalConstraintBuilder : public StatementVisitor {
+  public :
+    std::set<std::string> res;
+
+    LocalConstraintBuilder() {}
+
+    ~LocalConstraintBuilder() {} 
+    
+    void visitAssign (const class Assignment & ai) {
+      GetVariableVisitor v1 (ai.getVariable ().getEnv ());
+      ai.getVariable ().getExpr ().accept (&v1);
+      GetVariableVisitor v2 (ai.getExpression ().getEnv ());
+      ai.getExpression ().getExpr ().accept (&v2);
+      
+      res.insert (v1.getResult ().begin (), v1.getResult ().end ());
+      res.insert (v2.getResult ().begin (), v2.getResult ().end ());
+    } 
+    
+    void visitSequence (const class Sequence & seq) {
+      for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
+	(*it)->acceptVisitor(*this);
+      }
+    } 
+
+    void visitIte (const class Ite & ite) {
+      handleBoolExpr(ite.getCondition());      
+      ite.getIfTrue().acceptVisitor(*this);
+      ite.getIfFalse().acceptVisitor(*this);
+    }
+
+    void visitWhile (const class While & loop) {
+      handleBoolExpr(loop.getCondition());      
+      loop.getAction().acceptVisitor(*this);
+    }
+
+    void visitCall (const class Call & call) {
+      // Calls are not followed currently => no additional constraints
+    } 
+
+    void handleBoolExpr (const BoolExpression & be) {
+      GetVariableVisitor v (be.getEnv ());
+      be.getExpr().accept (&v);
+      res.insert (v.getResult ().begin (), v.getResult ().end ());
+    }
+
+  };
+
+
 
 void
 add_locality_constraint (std::vector<const edge_t *> & c, const GuardedAction & g)
 {
   std::set<std::string> local_edge;
+
+  LocalConstraintBuilder lcb;
+  lcb.handleBoolExpr(g.getGuard());
   
-  GetVariableVisitor v (g.getGuard ().getEnv ());
-  g.getGuard ().getExpr ().accept (&v);
-  local_edge.insert (v.getResult ().begin (), v.getResult ().end ());
+  g.getAction().acceptVisitor(lcb);
   
-  for (GuardedAction::actions_it it = g.begin ();
-       it != g.end (); ++it)
-  {
-    GetVariableVisitor v1 (it->getVariable ().getEnv ());
-    it->getVariable ().getExpr ().accept (&v1);
-    GetVariableVisitor v2 (it->getExpression ().getEnv ());
-    it->getExpression ().getExpr ().accept (&v2);
-    
-    local_edge.insert (v1.getResult ().begin (), v1.getResult ().end ());
-    local_edge.insert (v2.getResult ().begin (), v2.getResult ().end ());
-  }
   
-  std::vector<std::string> tmp2 (local_edge.begin (), local_edge.end ());
+  std::vector<std::string> tmp2 (lcb.res.begin (), lcb.res.end ());
   if (tmp2.size () > 1)
     c.push_back (new LocalityEdge (tmp2));
 }

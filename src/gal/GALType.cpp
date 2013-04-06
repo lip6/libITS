@@ -42,18 +42,53 @@ labels_t GALType::getTransLabels () const {
     return State(DEFAULT_VAR, M0);
   }
 
-  GHom GALType::buildHom(const GuardedAction & it) const {
 
-    GHom guard = predicate ( it.getGuard(), getGalOrder());
-    GHom action = GHom::id;
-    for (GuardedAction::actions_it jt = it.begin() ; jt != it.end() ; ++ jt) {
-      GHom todo;
-      if (jt->getVariable().getType() == VAR && (jt->getExpression().getType() == CONST) )
-	todo = setVarConst ( getVarOrder()->getIndex(jt->getVariable().getName()), jt->getExpression().getValue());
+  class HomBuilder : public StatementVisitor {
+  public :
+    Hom res;
+    const GALType & context;
+
+    HomBuilder(const GALType & c): res(GHom::id), context(c) {}
+
+    ~HomBuilder() {} 
+    
+    void visitAssign (const class Assignment & ass) {
+      if (ass.getVariable().getType() == VAR && ass.getExpression().getType() == CONST)
+	res = setVarConst ( context.getVarOrder()->getIndex(ass.getVariable().getName()), ass.getExpression().getValue());
       else
-	todo =  assignExpr(jt->getVariable(), jt->getExpression(),getGalOrder());
-      action = todo & action;
+	res =  assignExpr( ass.getVariable(), ass.getExpression(), context.getGalOrder());
+    } 
+
+    void visitSequence (const class Sequence & seq) {
+      for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
+	res = context.buildHom(**it) & res ;
+      }
+    } 
+
+    void visitIte (const class Ite & ite) {
+      res = ITE( predicate(ite.getCondition(), context.getGalOrder()), context.buildHom(ite.getIfTrue()), context.buildHom(ite.getIfFalse()));
     }
+
+    void visitWhile (const class While & loop) {
+      res = fixpoint ( ITE( predicate(loop.getCondition(), context.getGalOrder()), context.buildHom(loop.getAction()), GHom::id) ) ;
+    }
+
+    void visitCall (const class Call & call) {
+      labels_t tau = labels_t(1, call.getLabel());
+      res = context.getSuccsHom(tau);
+    } 
+
+  };
+
+  GHom GALType::buildHom(const Statement & s) const {
+    HomBuilder hb (*this);
+    s.acceptVisitor(hb);
+    return hb.res;
+  }
+
+  GHom GALType::buildHom(const GuardedAction & ga) const {
+    GHom guard = predicate ( ga.getGuard(), getGalOrder());
+    GHom action = buildHom( ga.getAction());
     return action & guard;
   }
 
@@ -82,13 +117,8 @@ labels_t GALType::getTransLabels () const {
     return localApply(  next, DEFAULT_VAR );
   }
 
-  /** Successors synchronization function : Bag(T) -> SHom.
-   * The collection represented by the iterator should be a multiset
-   * of transition labels of this type (as obtained through getTransLabels()).
-   * Otherwise, an assertion violation will be raised !!
-   * */
-  Transition GALType::getSuccs (const labels_t & tau) const {
-    Hom resultTrans = Hom::id;
+  GHom GALType::getSuccsHom (const labels_t & tau) const {
+   Hom resultTrans = Hom::id;
 
     // iterate on labels
     for (labels_t::const_iterator it = tau.begin() ; it != tau.end() ; ++it) {
@@ -111,6 +141,16 @@ labels_t GALType::getTransLabels () const {
       }
       resultTrans = labelAction & resultTrans ;
     }
+    return resultTrans;
+  }
+
+  /** Successors synchronization function : Bag(T) -> SHom.
+   * The collection represented by the iterator should be a multiset
+   * of transition labels of this type (as obtained through getTransLabels()).
+   * Otherwise, an assertion violation will be raised !!
+   * */
+  Transition GALType::getSuccs (const labels_t & tau) const {
+    GHom resultTrans = getSuccsHom(tau);
     // The DDD state variant uses an intermediate variable called DEFAULT_VAR
     return localApply(  resultTrans, DEFAULT_VAR );
   }
@@ -424,18 +464,17 @@ namespace its {
   Transition GALType::getPredicate (Label pred) const {
     // to support old-fashioned syntax, first turn the '=' into '=='
     std::stringstream tmp;
-    size_t i = 0;
-    while (i != pred.size ())
-    {
+    tmp << pred[0];
+    for (int i=1 ; i < pred.size() -1; i++) {
       // '=' cannot be the first or last character of 'pred'
       // so that accessing pred[i+1] or pred[i-1] would fail only if 'pred' is not well-formed
       // if current character is a single '=', turn it into '=='
-      if (pred[i] == '=' && pred[i+1] != '=' && pred[i-1] != '=')
+      if (pred[i] == '=' && pred[i+1] != '=' && pred[i-1] != '=' && pred[i-1] != '<' && pred[i-1] != '!' && pred[i-1] != '>')
         tmp << "==";
       else
         tmp << pred[i];
-      ++i;
-    }
+     }
+    tmp << pred[pred.size()-1];
     std::string predicate = tmp.str ();
     
     // reads the string as an input stream for the lexer

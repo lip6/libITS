@@ -13,40 +13,10 @@
 #include "Variable.hh"
 #include "IntExpression.hh"
 
+#include "Statements.hh"
 
 namespace its {
 
-/** 
- * An assignment is a basic atomic action that updates a single variable of the GAL 
- * based on an expression on the current variable states.
- * e.g. X = Y + ( 2 * X )
-*/ 
-class Assignment {
-  // Note : the lhs should be of type Variable or ArrayAccess, ultimately resolved to a variable.
-  // It is an error if the lhs resolves to a constant value.
-  IntExpression var_;
-  // A contrario, the rhs should evaluate to a constant
-  IntExpression expr_;
-    
-  public :
-  /// Constructor, by reference since IntExpr are by construction unique
-  Assignment (const IntExpression & var, const IntExpression & expr) : var_(var.eval()), expr_(expr.eval()) {}
-  /// Returns the left hand side of the Assignment
-  const IntExpression & getVariable () const { return var_; }
-  /// Returns the right hand side of the Assignment
-  const IntExpression & getExpression () const { return expr_; }
-  /// pretty print
-  void print (std::ostream & os) const;
-  
-  /// simplifies the current expression by asserting the value of a variable.
-  Assignment operator&(const Assertion &) const;
-  /// To get all the variables occuring in the expression
-  std::set<Variable> getSupport() const;
-  /// equality comparison
-  bool operator==(const Assignment &) const;
-  /// ordering (for use with sets and maps)
-  bool operator< (const Assignment &) const;
-};
 
 /**
  * A guarded action can occur in any state where its guard evaluates to true.
@@ -55,20 +25,16 @@ class Assignment {
  * Swapping two variable values thus requires a temporary space. 
 */
 class GuardedAction : public NamedElement {
-public :
-  typedef std::vector<Assignment> actions_t;
-  typedef actions_t::const_iterator actions_it;
 private :
   BoolExpression guard_;
-  actions_t actions_;
+  Sequence actions_;
   vLabel label_;
 public:
   GuardedAction (Label name):NamedElement(name),guard_(BoolExpressionFactory::createConstant(true)),label_("") {};
   void setGuard (const BoolExpression & guard) { guard_ = guard.eval(); }
   const BoolExpression & getGuard () const { return guard_; }
-  actions_it begin() const { return actions_.begin() ; }
-  actions_it end() const { return actions_.end() ; }
-  void addAction (const Assignment & ass) { actions_.push_back(ass);}
+  Sequence & getAction () { return actions_ ; }
+  const Sequence & getAction () const { return actions_ ; }
   void print (std::ostream & os) const;
   
   /// To get all the variables occuring in the guard expression or the actions

@@ -13,18 +13,8 @@ namespace its {
     return var_.equals(other.var_) ? expr_.less(other.expr_) : var_.less(other.var_);
   }
   
-  void Assignment::print (std::ostream & os) const {
-    var_.print(os);
-    os <<  " = " ;
-    expr_.print(os);    
-  }
-  
-  Assignment Assignment::operator&(const Assertion &a) const {
-    IntExpression new_var = var_ & a;
-    IntExpression new_expr = expr_ & a;
-    return Assignment( new_var, new_expr );
-  }
-  
+
+    
   std::set<Variable> Assignment::getSupport() const {
     std::set<Variable> result = var_.getSupport();
     std::set<Variable> tmp = expr_.getSupport();
@@ -34,26 +24,13 @@ namespace its {
 
   std::set<Variable> GuardedAction::getSupport() const {
     std::set<Variable> result = guard_.getSupport();
-    for (actions_it it = begin() ; it != end() ; ++it) {
-      std::set<Variable> tmp = it->getSupport();
-      result.insert( tmp.begin(), tmp.end() );
-    }
+    std::set<Variable> tmp = actions_.getSupport();
+    result.insert( tmp.begin(), tmp.end() );
     return result;
   }
   
   bool GuardedAction::operator==(const GuardedAction &other) const {
-    bool result = guard_ == other.guard_;
-    actions_it ait, bit;
-    for (ait = begin(), bit = other.begin() ; result && ait != end() && bit!= other.end() ; ++ait, ++bit) {
-      result = (*ait) == (*bit);
-    }
-    if (ait == end() && bit != other.end()) {
-      return false;
-    }
-    if (bit == other.end() && ait != end()) {
-      return false;
-    }
-    return  result;
+    return guard_==other.guard_ && actions_ == other.actions_;
   }
   
   void  GuardedAction::print (std::ostream & os) const {
@@ -64,13 +41,8 @@ namespace its {
     if (label_ != "") 
       os << "label \"" << label_ << "\"" ;
     os << "     { " ;
-    for (actions_it it = begin(); it != end() ; /*done in loop */ ) {
-      it->print(os) ;
-      os << ";";
-      if (++it != end() ) {
-	os << "\n       ";
-      }
-    }
+    // starting indent is 2 : model.transition
+    actions_.print(os, 2);
     os << "    }" << endl;
   }
 

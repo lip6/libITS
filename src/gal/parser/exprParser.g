@@ -162,7 +162,7 @@ transition
 		  currentAction=action 
 		  {
 		  ptrAction = $currentAction.as ;
-		  current_ga->addAction(*ptrAction);
+		  current_ga->getAction().add(*ptrAction);
 		  delete ptrAction ;
 		  }
 	  )
