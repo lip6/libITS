@@ -101,6 +101,7 @@ GALHEADERS = $(MYGALSRCDIR)/BoolExpression.hh \
 	$(MYGALSRCDIR)/IntExpression.hh \
 	$(MYGALSRCDIR)/PBoolExpression.hh \
 	$(MYGALSRCDIR)/PIntExpression.hh \
+	$(MYGALSRCDIR)/Statements.hh \
 	$(MYGALSRCDIR)/Variable.hh
 
 WIBBLEHEADERS = $(MYWIBBLESRCDIR)/empty.h \
