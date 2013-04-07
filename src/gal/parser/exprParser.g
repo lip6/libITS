@@ -490,10 +490,15 @@ qualifiedName returns [std::string res]:
   start=ID 
   {$res = toString($start);}
   
-  (('.'next=ID
-  {$res=$res + "."+ toString($next);})
-  |('.'next=INT
-  {$res=$res + "." + toString($next);})
+  (
+  '.'
+  ((next=ID
+  {$res=$res + "."+ toString($next);}
+  )
+  |
+  (next=INT
+  {$res=$res + "." + toString($next);}
+  ))
   )*
 ;
 
