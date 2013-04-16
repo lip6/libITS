@@ -42,6 +42,7 @@ protected :
   } 
   
 public : 
+  virtual ~Statement() {}
   virtual StatementType getType() const = 0;  
   
   virtual Statement * clone () const = 0;
