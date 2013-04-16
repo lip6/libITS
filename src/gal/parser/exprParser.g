@@ -5,6 +5,7 @@ grammar exprParser;
  */
 options {
   language = C;
+  memoize = true;
 }
 
 @parser::header {
