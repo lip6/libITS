@@ -56,12 +56,18 @@ class _IntExpression {
   ///////// Interface functions
   // for hash storage
   size_t hash () const {
-    size_t toret = 5381;
-    for (env_t::const_iterator it = env.begin() ; it != env.end() ; ++it ) {
-      toret = ((toret << 5) + toret) + (*it); /* toret * 33 + (*it) */
-    }
-    toret = ((toret << 5) + toret) + expr.hash ();
-    return toret;
+    size_t res = expr.hash();
+    for(env_t::const_iterator vi = env.begin (); vi != env.end (); ++vi)
+      res += (size_t)(ddd::int32_hash(*vi)+1011) ;
+//      res ^= ddd::int32_hash(vi->first+1011*i++) ^ ddd::int32_hash(vi->second.hash());
+    return res;
+    
+
+//     for (env_t::const_iterator it = env.begin() ; it != env.end() ; ++it ) {
+//       toret = ((toret << 5) + toret) + (*it); /* toret * 33 + (*it) */
+//     }
+//     toret = ((toret << 5) + toret) + expr.hash ();
+//     return toret;
   }
 
   bool operator==(const _IntExpression & e) const {
@@ -447,10 +453,8 @@ IntExpression::IntExpression (const _IntExpression * concret): concrete(concret)
 }
 
 IntExpression::IntExpression (const IntExpression & other) {
-  if (this != &other) {
-    concrete = other.concrete;
-    concrete->ref();
-  }
+  concrete = other.concrete;
+  concrete->ref();
 }
 
 
