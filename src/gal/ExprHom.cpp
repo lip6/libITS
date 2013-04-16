@@ -754,7 +754,7 @@ public:
 	      } else {
 		// So lhs does not depend in any way on current variable
 		IntExpression e = expr & assertion;
-		if (e.isSupport(v)) {
+		if (e.isSupport(curv)) {
 		  // this can only happen if e contains an unresolved array access (e.g. tab[i])
 		  // and curv is a var of that array (e.g. tab[0])
 		  // Query for the value of a nested expression of lhs
@@ -810,7 +810,9 @@ public:
 
 
 GHom invertExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo, const GDDD & pot) {
-    return _InvertExpr(var,val,vo,pot);
+  if (var.getType () == CONSTARRAY && ! vo->isValidAddress (IntExpressionFactory::getVar (var.getEnv ()[var.getExpr ().getVariable ()]), var.getValue ()))
+    return GDDD::null;
+  return _InvertExpr(var,val,vo,pot);
 }
 
 /**
