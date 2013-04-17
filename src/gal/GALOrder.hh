@@ -48,6 +48,18 @@ namespace its {
 //      std::cerr << "compare " << it->second << " and " << index << std::endl;
       return it->second >= index && index >= 0;
     }
+    
+    int getIndex (const IntExpression & vname) const
+    {
+      for (map_t::const_iterator it = map_.begin ();
+           it != map_.end (); ++it)
+      {
+        if (it->second.equals (vname))
+          return it->first;
+      }
+      assert (false);
+      return -1;
+    }
   };
 
 

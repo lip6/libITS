@@ -709,16 +709,34 @@ public:
 		  // We need to resolve other variables first to fall back on x=f(x) case.
 
 		  IntExpression sub;
-		  // 	std::cerr << "RHS uses LHS in its support, using getSubExprExcept mechanism. " << std::endl;
+//		   	std::cerr << "RHS uses LHS in its support, using getSubExprExcept mechanism. " << std::endl;
+//        std::cerr << "Invert Assignment: Solving for : " << var << "=" << expr << std::endl
+//        << "current variable is " << curv << std::endl;
 		  if (expr.isSupport(var)) {
 		    // Try to extract a subexpression that does not concern current variable
 		    sub = expr.getSubExprExcept (var);
+        if (sub.equals (expr))
+        {
+//          std::cerr << "subexprexcept (" << var << " on " << expr << " has returned this" << std::endl;
+//          std::cerr << "on variable " << curv << std::endl;
+          GDDD pot = computeDomain (vo->getIndex (var),potall);
+          for (GDDD::const_iterator jjt = pot.begin() ; jjt != pot.end() ; ++jjt ) {
+            Assertion asstmp = IntExpressionFactory::createAssertion(var,IntExpressionFactory::createConstant(jjt->first));
+            IntExpression e_tmp = expr & asstmp;
+            InfoNode rhssolved = query (e_tmp, vo, it->second);
+            for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+              if (it->first == jt->first.getValue ())
+                res.insert (invertExpr (var, jt->first, vo, potall) (GDDD (vr, vl, jt->second)));
+            }
+		      }
+          continue;
+        }
 		  } else {
 		    sub = expr;
 		  }
-		  //  	std::cerr << "Querying for subexprexcept (" << curv.getName() << ") in rhs " << std::endl;
-		  //   	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
-		  // 	std::cerr << "subexprexcept returns : " << sub  << std::endl;
+//		    	std::cerr << "Querying for subexprexcept (" << curv.getName() << ") in rhs " << std::endl;
+//		     	std::cerr << "Current var : " << vr  << " Var order : " << vo->getLabel(vr)<< std::endl;
+//		   	std::cerr << "subexprexcept returns : " << sub  << std::endl;
 		    
 		  // Query values of sub
 		  InfoNode rhssolved = query (sub, vo, it->second);
@@ -754,19 +772,27 @@ public:
 	      } else {
 		// So lhs does not depend in any way on current variable
 		IntExpression e = expr & assertion;
+//          std::cerr << "Invert Assignment: Solving for : " << v << "=" << e << std::endl
+//          << "current variable is " << curv << std::endl;
 		if (e.isSupport(curv)) {
 		  // this can only happen if e contains an unresolved array access (e.g. tab[i])
 		  // and curv is a var of that array (e.g. tab[0])
 		  // Query for the value of a nested expression of lhs
-		  
-		  IntExpression sub_expr = e.getSubExprExcept(v);
-		  InfoNode rhssolved = query (sub_expr, vo, GDDD(vr,vl,it->second));
-		  for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
+      
+      IntExpression tosolve = e;
+      if (e.isSupport (v))
+      {
+        tosolve = e.getSubExprExcept(v);
+      }
+      
+      InfoNode rhssolved = query (tosolve, vo, GDDD(vr,vl,it->second));
+      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
 		    // Note that we also attempt to simplify rhs with the same subexpr result if possible
 		    // The recursion works with a more resolved expression
-		    Assertion ass_tmp = IntExpressionFactory::createAssertion (sub_expr, jt->first);
+		    Assertion ass_tmp = IntExpressionFactory::createAssertion (tosolve, jt->first);
 		    res.insert( invertExpr(v, e & ass_tmp, vo, potall) ( jt->second ));
-		  }
+      }
+      
 		  continue;
 		} else {
 		  // we can skip down to next variable

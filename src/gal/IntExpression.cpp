@@ -170,6 +170,10 @@ class _IntExpression {
     }
 
     if ( expr.equals(newexpr) ) {
+      // this only happens if index expression is the target 'except' variable
+      return this;
+      
+      
       // Given the conditions for calling this function, we expect that :
       // The expression has a support that includes varx, but is not limited to varx.
       // Hence, te expression is not a constant
