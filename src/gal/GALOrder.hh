@@ -46,7 +46,7 @@ namespace its {
 //      std::cerr << "calling isvalid for " << aname << "," << index << std::endl;
       assert (it != array_size.end ());
 //      std::cerr << "compare " << it->second << " and " << index << std::endl;
-      return it->second >= index;
+      return it->second >= index && index >= 0;
     }
   };
 
