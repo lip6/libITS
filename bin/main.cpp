@@ -22,7 +22,9 @@
 #include "util/dotExporter.h"
 #include "statistic.hpp"
 
-#include "FixObserver.hh"
+#include "EarlyBreakObserver.hh"
+#include "Property.hh"
+
 
 #ifdef HASH_STAT
 #include "gal/ExprHom.hpp"
@@ -38,96 +40,13 @@ static string pathdotff = "final";
 static string pathorderff = "order";
 static bool dodotexport=false;
 static bool dodumporder = false;
+static bool dowitness = true; 
 static bool with_garbage=true;
 static std::string modelName = "";
 // if BMC use is wanted, will be >0
 static int BMC = -1;
 static size_t fixobs_passes = 5000;
 
-class EarlyBreakObserver : public fobs::FixObserver {
-  bool interrupted;
-  size_t n;
-  size_t max;
-  Transition pred;
-public:
-  EarlyBreakObserver (size_t m, Transition p)
-  : interrupted(false)
-  , n(0)
-  , max(m)
-  , pred(p)
-  {}
-  
-  bool was_interrupted () const { return interrupted; }
-  
-  bool
-  should_interrupt (const GSDD & after, const GSDD & before)
-  {
-    if (interrupted)
-      return true;
-    if (n > max)
-    {
-      if (after != before)
-      {
-        interrupted = true;
-        return true;
-      }
-    }
-    else
-    {
-      ++n;
-    }
-    return false;
-  }
-  
-  bool
-  should_interrupt (const GDDD & after, const GDDD & before)
-  {
-    if (interrupted)
-      return true;
-    if (n > max)
-    {
-      if (after != before)
-      {
-        interrupted = true;
-        return true;
-      }
-    }
-    else
-    {
-      ++n;
-    }
-    return false;
-  }
-
-  void update (const GSDD & after, const GSDD & before)
-  {
-    if (pred (after) != State::null)
-    {
-      trace << "SDD computation interrupted after " << n << " fixpoint passes" << std::endl;
-    }
-    else
-    {
-      n = 0;
-      max += max;
-      interrupted = false;
-      trace << "SDD proceeding with computation, new max is " << max << std::endl;
-    }
-  }
-  void update (const GDDD & after, const GDDD & before)
-  {
-    if (pred (State(0,DDD(after))) != State::null)
-    {
-      trace << "DDD computation interrupted after " << n << " fixpoint passes" << std::endl;
-    }
-    else
-    {
-      n = 0;
-      max += max;
-      interrupted = false;
-      trace << "DDD proceeding with computation, new max is " << max << std::endl;
-    }
-  }
-};
 
 State exhibitModel (ITSModel & model) {
 	// pretty print the model for inspection
@@ -211,6 +130,8 @@ void usage() {
   cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
+  cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
+  cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
   cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
@@ -262,6 +183,7 @@ int main_noex (int argc, char **argv) {
  }
 
  vLabel reachExpr="";
+ vLabel reachFile="";
  
  argc = args.size();
  for (int i=0;i < argc; i++) {
@@ -278,10 +200,16 @@ int main_noex (int argc, char **argv) {
      usage(); exit(0);
    } else if (! strcmp(args[i],"--quiet")   ) {
      beQuiet = true;
+   } else if (! strcmp(args[i],"--nowitness")   ) {
+     dowitness = false;
    } else if (! strcmp(args[i],"-reachable") ) {
      if (++i > argc) 
        { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
      reachExpr = args[i];
+   } else if (! strcmp(args[i],"-reachable-file") ) {
+     if (++i > argc) 
+       { cerr << "Give a file name containing reachability queries. " << args[i-1]<<endl; usage() ; exit(1);}
+     reachFile = args[i];
    } else if (! strcmp(args[i],"--dump-order")   ) {
      if (++i > argc) 
        { cerr << "give path value for dump-order " << args[i-1]<<endl; usage() ; exit(1);}
@@ -299,24 +227,54 @@ int main_noex (int argc, char **argv) {
   if (fixobs_passes != 0 && reachExpr != "")
   {
     Transition predicate = model.getPredicate(reachExpr);
-    fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate));
+    fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate, ! beQuiet));
   }
  
 	
  State reachable = exhibitModel(model);
 
+ std::vector<Property> props;
+
+ if (reachFile != "") {
+   loadProps(reachFile,props);
+ }
+
  if (reachExpr != "") {
-   Transition predicate = model.getPredicate(reachExpr);
+   props.push_back(Property(reachExpr,reachExpr,false));
+ }
+
+ for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
+   
+   Transition predicate = model.getPredicate(it->getPred());
    State verify = predicate (reachable);
 
-   if (verify == State::null) {
-     std::cout << "There are no reachable states that satisfy your predicate : " << reachExpr <<std::endl;
+   if (it->isInvariant()) {
+     if (verify == reachable) {
+       std::cout << "Invariant property " << it->getName() << " is true." << std::endl;
+     } else {
+       std::cout << "Invariant property " << it->getName() << " does not hold." << std::endl;
+       std::cout << "Reachable states that do not respect the invariant will be exhibited." << std::endl;
+     }
+     // to build a trace.
+     verify = reachable - verify;
    } else {
-     std::cout << "There are " << verify.nbStates() << " reachable states that satisfy your predicate : " << reachExpr <<std::endl;
-     std::cout << "computing trace..." <<endl;
-     path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
-     for (labels_it it = path.getPath().begin() ; it != path.getPath().end() ; ++it) {
-       std::cout << *it << "  ";
+     if (verify == State::null) {
+       std::cout << "Never property " << it->getName() << " is true." << std::endl;
+     } else {
+       std::cout << "Never property " << it->getName() << " does not hold." << std::endl;
+       std::cout << "Reachable states that satisfy the never predicate will be exhibited." << std::endl;
+     }
+   }
+   
+   if (verify != State::null) {
+     std::cout << "There are " << verify.nbStates() << " reachable states that exhibit your property : " << it->getName() <<std::endl;
+     
+     if (dowitness) {
+       std::cout << "computing trace..." <<endl;
+       path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
+       for (labels_it it = path.getPath().begin() ; it != path.getPath().end() ; ++it) {
+	 std::cout << *it << "  ";
+       }
      }
      std::cout << std::endl;
    }

@@ -34,7 +34,7 @@ AM_CXXFLAGS = -g -O2 -Wall
 LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
 
 
-its_reach_SOURCES = main.cpp 
+its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp
 
 its_reach_LDADD = $(LDADDFLAGS)  
 its_reach_LDFLAGS = -export-dynamic
