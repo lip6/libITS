@@ -238,10 +238,10 @@ boolNot returns [its::BoolExpression bres] :
 ;
 
 boolPrimary returns [its::BoolExpression bres] : 
-  'False'
+  'false'
   {$bres = its::BoolExpressionFactory::createConstant(false);}
   | 
-  'True'
+  'true'
   {$bres = its::BoolExpressionFactory::createConstant(true);}
   |
   ((comparison) =>
