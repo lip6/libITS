@@ -23,9 +23,11 @@ namespace its {
 
     while ((read = getline(&line, &len, file)) != -1) {
       int n ;
-      if ( 2 == sscanf(line, "reach %s: %c %n",name, &type, &n) ) {
+      if ( 2 == sscanf(line, "reach %s : %c %n",name, &type, &n) ) {
 	props.push_back(Property(name, line+n , type=='I'));	
 	std::cerr << "Read property : " << name << " with value :" << line+n << std::endl;
+      } else {
+	std::cerr << "Unable to read property (skipping this line): " << line << std::endl;
       }
 
 //       printf("Retrieved line of length %zu :\n", read);
