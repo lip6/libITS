@@ -321,7 +321,7 @@ Transition CompositeType::getAPredicate (Label predicate) const {
     
 //   std::cerr << "Composite delegating predicate " << remain << " on instance :"<<var << std::endl;
   // the varindex 
-  std::cerr << "pred:"<<predicate<<":\n"<<std::flush;
+  //  std::cerr << "pred:"<<predicate<<":\n"<<std::flush;
   if (predicate == "true") {
     return Transition::id;
   } else if (predicate == "false") {
