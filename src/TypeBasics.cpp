@@ -54,6 +54,12 @@ bool TypeBasics::setDefaultState (Label def) {
     char  pred [predicate.size()+1];
     strcpy(pred,predicate.c_str());
 
+    if (predicate == "true") {
+      return Transition::id;
+    } else if (predicate == "false") {
+      return Transition::null;
+    }
+
     // Test for nesting
     if (* pred == '(') {
       // scan ahead for closing paren.

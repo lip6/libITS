@@ -244,7 +244,6 @@ State CompositeType::getState(Label stateLabel) const {
 	var += *cp;
       }
     }
-    
     int instindex =  getVarOrder()->getIndex ( var );
     if (instindex == -1) {
 
@@ -257,7 +256,7 @@ State CompositeType::getState(Label stateLabel) const {
 	var = subcomp;
       } else {
 	
-	std::cerr << "Error variable " + var + " cannot be resolved as an instance name or as an exposed sub variable when trying to parse predicate : "  + predicate << std::endl;
+	std::cerr << "Error variable " << var << " cannot be resolved as an instance name or as an exposed sub variable when trying to parse predicate :'"  <<  predicate << "'" << std::endl;
 	std::cerr << "Failing with error code 2"<< std::endl;
 	exit (2);
       }
@@ -322,6 +321,12 @@ Transition CompositeType::getAPredicate (Label predicate) const {
     
 //   std::cerr << "Composite delegating predicate " << remain << " on instance :"<<var << std::endl;
   // the varindex 
+  std::cerr << "pred:"<<predicate<<":\n"<<std::flush;
+  if (predicate == "true") {
+    return Transition::id;
+  } else if (predicate == "false") {
+    return Transition::null;
+  }
 
   splitvar_t vv = splitVar(predicate);  
   Label var = vv.first;
