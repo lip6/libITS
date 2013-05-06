@@ -17,16 +17,15 @@ namespace its {
     }
 
     char name [1024] ;
-    char pred [16536] ;
     char type;
     // kill first line 
     read = getline(&line, &len, file);
 
     while ((read = getline(&line, &len, file)) != -1) {
       int n ;
-      if ( 2 == sscanf(line, "reach %s : %c %n",name, &type, &n) ) {
+      if ( 2 == sscanf(line, "reach %s: %c %n",name, &type, &n) ) {
 	props.push_back(Property(name, line+n , type=='I'));	
-	std::cerr << "Read property : " << name << " with value :" << pred << std::endl;
+	std::cerr << "Read property : " << name << " with value :" << line+n << std::endl;
       }
 
 //       printf("Retrieved line of length %zu :\n", read);

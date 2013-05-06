@@ -236,11 +236,16 @@ int main_noex (int argc, char **argv) {
  std::vector<Property> props;
 
  if (reachFile != "") {
+   std::cout << "Loading property file " << reachFile << "."<< std::endl; 
    loadProps(reachFile,props);
  }
 
  if (reachExpr != "") {
    props.push_back(Property(reachExpr,reachExpr,false));
+ }
+ 
+ if (props.size() > 0) {
+   std::cout << "Verifying " << props.size() << " reachability properties."<< std::endl; 
  }
 
  for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
