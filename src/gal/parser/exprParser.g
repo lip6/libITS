@@ -167,6 +167,13 @@ transition
 		  delete ptrAction ;
 		  }
 	  )
+	|
+	 (
+		'self' '.' lab=STRING ';'
+		{
+		  current_ga->getAction().add(  its::Call(toStringTok($lab)) );
+		}
+	)
 /* --------------- NOT IMPLEMENTED SECTION -------------------------
 	  |
 	  (
