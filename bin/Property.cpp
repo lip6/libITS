@@ -31,6 +31,7 @@ namespace its {
 			const char * line = sline.c_str();
 			char name [1024] ;
 			char type;
+			int n;
 			if ( 2 == sscanf(line, "reach %s : %c %n",name, &type, &n) ) {
 				props.push_back(Property(name, line+n , type=='I'));	
 				std::cerr << "Read property : " << name << " with value :" << line+n << std::endl;
