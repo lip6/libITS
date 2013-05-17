@@ -301,7 +301,7 @@ public :
 
 
 /** 
- * An if (condition) { actionTrue } else { action false } statement
+ * A call statement
  * */ 
 class Call : public Statement {
 private :
