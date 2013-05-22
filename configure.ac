@@ -64,14 +64,17 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 
+LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
+
+
 AC_ARG_ENABLE([mingw-native],
 				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
 				[ case "${enable_mingw_native}" in
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
-					 LDFLAGS="-all-static -static-libgcc -Wl,-static,--stack,16777216 $LDFLAGS"
+					 LDFLAGS="-Wl,-static,--stack,16777216 $LDFLAGS"
 					 LIBS="-lPSAPI $LIBS"
 					 ;;
-					 no)
+					 no) 
 					 ;;
 					 *) AC_MSG_ERROR(Bad value ${enableval})
 					 ;;
