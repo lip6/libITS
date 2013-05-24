@@ -14,3 +14,6 @@ clean :
 maintainer-clean : clean
 
 check:
+
+distdir :
+
