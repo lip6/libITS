@@ -84,12 +84,13 @@ if test "x$stdhash" = "xtrue"; then
     AC_DEFINE([USE_STD_HASH],1,[Define if you want to use std hash instead of google sparse hash.])
 fi
 
+LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
 
 AC_ARG_ENABLE([mingw-native],
 				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
 				[ case "${enable_mingw_native}" in
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
-					 LDFLAGS="-all-static  -static-libgcc  -Wl,-static,--stack,16777216 $LDFLAGS"
+					 LDFLAGS=" -Wl,-static,--stack,16777216 $LDFLAGS"
 					 LIBS="-lPSAPI $LIBS"
 					 ;;
 					 no)
