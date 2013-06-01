@@ -1,0 +1,419 @@
+GAL model {
+	int in = 0 ;
+	int far = 4 ;
+	int coming = 0 ;
+	int leaving = 0 ;
+	int open = 1 ;
+	int lowering = 0 ;
+	int raising = 0 ;
+	int closed = 0 ;
+	int close_1 = 0 ;
+	int on_1 = 0 ;
+	int left_1 = 0 ;
+	int far_1 = 1 ;
+	int close_2_c = 0 ;
+	int close_2 = 0 ;
+	int on_2 = 0 ;
+	int left_2 = 0 ;
+	int far_2 = 1 ;
+	int on_2_c = 0 ;
+	int left_2_c = 0 ;
+	int far_2_c = 1 ;
+	int close_2_c_c = 0 ;
+	int on_2_c_c = 0 ;
+	int left_2_c_c = 0 ;
+	int far_2_c_c = 1 ;
+	int R.clock = 0 ;
+	int L.clock = 0 ;
+	int In_1.clock = 0 ;
+	int Ex_1.clock = 0 ;
+	int In_2.clock = 0 ;
+	int Ex_2.clock = 0 ;
+	int Ex_2_c.clock = 0 ;
+	int In_3.clock = 0 ;
+	int Ex_2_c_c.clock = 0 ;
+	int In_3_c.clock = 0 ;
+
+	transition App0 [far_1 >= 1 && far >= 4] {
+		far_1 = far_1 - 1 ;
+		far = far - 4 ;
+		in = in + 1 ;
+		coming = coming + 1 ;
+		far = far + 3 ;
+		close_1 = close_1 + 1 ;
+		self."reset" ;
+	}
+
+	transition App1 [far >= 1 && in >= 1 && far_1 >= 1] {
+		far = far - 1 ;
+		in = in - 1 ;
+		far_1 = far_1 - 1 ;
+		in = in + 2 ;
+		close_1 = close_1 + 1 ;
+		self."reset" ;
+	}
+
+	transition Exit0 [left_1 >= 1 && in >= 2] {
+		left_1 = left_1 - 1 ;
+		in = in - 2 ;
+		in = in + 1 ;
+		far = far + 1 ;
+		far_1 = far_1 + 1 ;
+		self."reset" ;
+	}
+
+	transition Exit1 [in >= 1 && left_1 >= 1 && far >= 3] {
+		in = in - 1 ;
+		left_1 = left_1 - 1 ;
+		far = far - 3 ;
+		leaving = leaving + 1 ;
+		far_1 = far_1 + 1 ;
+		far = far + 4 ;
+		self."reset" ;
+	}
+
+	transition Down0 [open >= 1 && coming >= 1] {
+		open = open - 1 ;
+		coming = coming - 1 ;
+		lowering = lowering + 1 ;
+		self."reset" ;
+	}
+
+	transition R [raising >= 1 && R.clock >= 1] {
+		raising = raising - 1 ;
+		open = open + 1 ;
+		R.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition Down [coming >= 1 && raising >= 1] {
+		coming = coming - 1 ;
+		raising = raising - 1 ;
+		lowering = lowering + 1 ;
+		self."reset" ;
+	}
+
+	transition L [lowering >= 1 && L.clock >= 1] {
+		lowering = lowering - 1 ;
+		closed = closed + 1 ;
+		L.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition up [leaving >= 1 && closed >= 1] {
+		leaving = leaving - 1 ;
+		closed = closed - 1 ;
+		raising = raising + 1 ;
+		self."reset" ;
+	}
+
+	transition In_1 [close_1 >= 1 && In_1.clock >= 3] {
+		close_1 = close_1 - 1 ;
+		on_1 = on_1 + 1 ;
+		In_1.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition Ex_1 [on_1 >= 1 && Ex_1.clock >= 2] {
+		on_1 = on_1 - 1 ;
+		left_1 = left_1 + 1 ;
+		Ex_1.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition In_2 [close_2 >= 1 && In_2.clock >= 3] {
+		close_2 = close_2 - 1 ;
+		on_2 = on_2 + 1 ;
+		In_2.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition Ex_2 [on_2 >= 1 && Ex_2.clock >= 2] {
+		on_2 = on_2 - 1 ;
+		left_2 = left_2 + 1 ;
+		Ex_2.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition App_c0 [far_2 >= 1 && far >= 4] {
+		far_2 = far_2 - 1 ;
+		far = far - 4 ;
+		in = in + 1 ;
+		far = far + 3 ;
+		coming = coming + 1 ;
+		close_2 = close_2 + 1 ;
+		self."reset" ;
+	}
+
+	transition App_c1 [far >= 1 && far_2 >= 1 && in >= 1] {
+		far = far - 1 ;
+		far_2 = far_2 - 1 ;
+		in = in - 1 ;
+		in = in + 2 ;
+		close_2 = close_2 + 1 ;
+		self."reset" ;
+	}
+
+	transition Exit_c0 [in >= 2 && left_2 >= 1] {
+		in = in - 2 ;
+		left_2 = left_2 - 1 ;
+		far_2 = far_2 + 1 ;
+		far = far + 1 ;
+		in = in + 1 ;
+		self."reset" ;
+	}
+
+	transition Exit_c1 [left_2 >= 1 && far >= 3 && in >= 1] {
+		left_2 = left_2 - 1 ;
+		far = far - 3 ;
+		in = in - 1 ;
+		leaving = leaving + 1 ;
+		far = far + 4 ;
+		far_2 = far_2 + 1 ;
+		self."reset" ;
+	}
+
+	transition Ex_2_c [on_2_c >= 1 && Ex_2_c.clock >= 2] {
+		on_2_c = on_2_c - 1 ;
+		left_2_c = left_2_c + 1 ;
+		Ex_2_c.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition App_c_c0 [far_2_c >= 1 && far >= 4] {
+		far_2_c = far_2_c - 1 ;
+		far = far - 4 ;
+		far = far + 3 ;
+		in = in + 1 ;
+		coming = coming + 1 ;
+		close_2_c = close_2_c + 1 ;
+		self."reset" ;
+	}
+
+	transition App_c_c1 [in >= 1 && far_2_c >= 1 && far >= 1] {
+		in = in - 1 ;
+		far_2_c = far_2_c - 1 ;
+		far = far - 1 ;
+		close_2_c = close_2_c + 1 ;
+		in = in + 2 ;
+		self."reset" ;
+	}
+
+	transition Exit_c_c0 [left_2_c >= 1 && in >= 2] {
+		left_2_c = left_2_c - 1 ;
+		in = in - 2 ;
+		far = far + 1 ;
+		in = in + 1 ;
+		far_2_c = far_2_c + 1 ;
+		self."reset" ;
+	}
+
+	transition Exit_c_c1 [in >= 1 && left_2_c >= 1 && far >= 3] {
+		in = in - 1 ;
+		left_2_c = left_2_c - 1 ;
+		far = far - 3 ;
+		leaving = leaving + 1 ;
+		far = far + 4 ;
+		far_2_c = far_2_c + 1 ;
+		self."reset" ;
+	}
+
+	transition In_3 [close_2_c >= 1 && In_3.clock >= 3] {
+		close_2_c = close_2_c - 1 ;
+		on_2_c = on_2_c + 1 ;
+		In_3.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition Ex_2_c_c [on_2_c_c >= 1 && Ex_2_c_c.clock >= 2] {
+		on_2_c_c = on_2_c_c - 1 ;
+		left_2_c_c = left_2_c_c + 1 ;
+		Ex_2_c_c.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition App_c_c_c0 [far >= 4 && far_2_c_c >= 1] {
+		far = far - 4 ;
+		far_2_c_c = far_2_c_c - 1 ;
+		in = in + 1 ;
+		far = far + 3 ;
+		close_2_c_c = close_2_c_c + 1 ;
+		coming = coming + 1 ;
+		self."reset" ;
+	}
+
+	transition App_c_c_c1 [in >= 1 && far >= 1 && far_2_c_c >= 1] {
+		in = in - 1 ;
+		far = far - 1 ;
+		far_2_c_c = far_2_c_c - 1 ;
+		in = in + 2 ;
+		close_2_c_c = close_2_c_c + 1 ;
+		self."reset" ;
+	}
+
+	transition Exit_c_c_c0 [left_2_c_c >= 1 && in >= 2] {
+		left_2_c_c = left_2_c_c - 1 ;
+		in = in - 2 ;
+		far = far + 1 ;
+		in = in + 1 ;
+		far_2_c_c = far_2_c_c + 1 ;
+		self."reset" ;
+	}
+
+	transition Exit_c_c_c1 [left_2_c_c >= 1 && far >= 3 && in >= 1] {
+		left_2_c_c = left_2_c_c - 1 ;
+		far = far - 3 ;
+		in = in - 1 ;
+		far_2_c_c = far_2_c_c + 1 ;
+		leaving = leaving + 1 ;
+		far = far + 4 ;
+		self."reset" ;
+	}
+
+	transition In_3_c [close_2_c_c >= 1 && In_3_c.clock >= 3] {
+		close_2_c_c = close_2_c_c - 1 ;
+		on_2_c_c = on_2_c_c + 1 ;
+		In_3_c.clock = 0 ;
+		self."reset" ;
+	}
+
+	transition elapse [true] label "elapse" {
+		if (left_1 >= 1 && in >= 2) {
+			abort ;
+		}
+		if (in >= 1 && left_1 >= 1 && far >= 3) {
+			abort ;
+		}
+		if (open >= 1 && coming >= 1) {
+			abort ;
+		}
+		if (raising >= 1) {
+			if (R.clock < 2) {
+				R.clock = R.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (coming >= 1 && raising >= 1) {
+			abort ;
+		}
+		if (lowering >= 1) {
+			if (L.clock < 2) {
+				L.clock = L.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (leaving >= 1 && closed >= 1) {
+			abort ;
+		}
+		if (close_1 >= 1) {
+			if (In_1.clock < 5) {
+				In_1.clock = In_1.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (on_1 >= 1) {
+			if (Ex_1.clock < 4) {
+				Ex_1.clock = Ex_1.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (close_2 >= 1) {
+			if (In_2.clock < 5) {
+				In_2.clock = In_2.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (on_2 >= 1) {
+			if (Ex_2.clock < 4) {
+				Ex_2.clock = Ex_2.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (in >= 2 && left_2 >= 1) {
+			abort ;
+		}
+		if (left_2 >= 1 && far >= 3 && in >= 1) {
+			abort ;
+		}
+		if (on_2_c >= 1) {
+			if (Ex_2_c.clock < 4) {
+				Ex_2_c.clock = Ex_2_c.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (left_2_c >= 1 && in >= 2) {
+			abort ;
+		}
+		if (in >= 1 && left_2_c >= 1 && far >= 3) {
+			abort ;
+		}
+		if (close_2_c >= 1) {
+			if (In_3.clock < 5) {
+				In_3.clock = In_3.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (on_2_c_c >= 1) {
+			if (Ex_2_c_c.clock < 4) {
+				Ex_2_c_c.clock = Ex_2_c_c.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (left_2_c_c >= 1 && in >= 2) {
+			abort ;
+		}
+		if (left_2_c_c >= 1 && far >= 3 && in >= 1) {
+			abort ;
+		}
+		if (close_2_c_c >= 1) {
+			if (In_3_c.clock < 5) {
+				In_3_c.clock = In_3_c.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+
+	transition reset [true] label "reset" {
+		if (! raising >= 1) {
+			R.clock = 0 ;
+		}
+		if (! lowering >= 1) {
+			L.clock = 0 ;
+		}
+		if (! close_1 >= 1) {
+			In_1.clock = 0 ;
+		}
+		if (! on_1 >= 1) {
+			Ex_1.clock = 0 ;
+		}
+		if (! close_2 >= 1) {
+			In_2.clock = 0 ;
+		}
+		if (! on_2 >= 1) {
+			Ex_2.clock = 0 ;
+		}
+		if (! on_2_c >= 1) {
+			Ex_2_c.clock = 0 ;
+		}
+		if (! close_2_c >= 1) {
+			In_3.clock = 0 ;
+		}
+		if (! on_2_c_c >= 1) {
+			Ex_2_c_c.clock = 0 ;
+		}
+		if (! close_2_c_c >= 1) {
+			In_3_c.clock = 0 ;
+		}
+	}
+	TRANSIENT = false ;
+}
