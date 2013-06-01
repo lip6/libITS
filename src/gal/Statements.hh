@@ -16,7 +16,8 @@ enum StatementType {
     IfThenElse,
     WHILE,
     CHOICE,
-    CALL 
+    CALL,
+    ABORT
 };
 
 
@@ -30,6 +31,7 @@ public :
   virtual void visitIte (const class Ite & ite)=0; 
   virtual void visitWhile (const class While & loop)=0; 
   virtual void visitCall (const class Call & call)=0; 
+  virtual void visitAbort ()=0; 
 };
 
 
@@ -112,6 +114,20 @@ private :
 public :
   /// Constructor, by reference since IntExpr are by construction unique
   Sequence () {}
+  
+  void operator= (const Sequence & o) {
+    if ( &o != this ) {
+    for (actions_t::iterator it = actions.begin(); it != actions.end() ; ++it) {
+      delete *it;
+    }
+    actions = actions_t();
+    actions.reserve(o.actions.size());
+    for (const_iterator it =  o.begin(); it != o.end() ; ++it) {
+      actions.push_back( (*it)->clone());
+    }
+
+    } 
+  }
 
   Sequence (const Sequence & o) {
     actions.reserve(o.actions.size());
@@ -180,6 +196,7 @@ private :
 public :
   /// Constructor, by reference since IntExpr are by construction unique
   Ite () {}
+  Ite (const BoolExpression & ccond, const Sequence & iifTrue, const Sequence & iifFalse=Sequence() ) : cond(ccond), ifTrue(iifTrue), ifFalse(iifFalse) {}
 
   const BoolExpression & getCondition() const { return cond; }
   Sequence & getIfTrue() { return ifTrue; }
@@ -340,6 +357,44 @@ public :
   void acceptVisitor (class StatementVisitor & vis) const { vis.visitCall(*this) ; }    
 };
 
+
+/** 
+ * An abort kills the exploration : it returns an empty set of successors.
+ * */ 
+class AbortStatement : public Statement {
+public :
+  /// Constructor, by reference since IntExpr are by construction unique
+  AbortStatement () {}
+  
+
+  /// pretty print
+  void print (std::ostream & os, int ind) const {
+    indent(os,ind);
+    os << "abort ;" << std::endl;
+  }
+  
+  /// simplifies the current expression by asserting the value of a variable.
+ // Assignment operator&(const Assertion &) const;
+  /// To get all the variables occuring in the expression
+  std::set<Variable> getSupport() const {
+    return std::set<Variable>();
+  }
+
+  /// equality comparison
+  bool operator==(const Statement &s) const {
+    return true;
+  }
+  /// ordering (for use with sets and maps)
+  bool operator< (const Statement &s) const {
+    return false;
+  }
+
+  StatementType getType() const { return ABORT; }
+  
+  Statement * clone () const { return new AbortStatement(); }
+
+  void acceptVisitor (class StatementVisitor & vis) const { vis.visitAbort() ; }    
+};
 
 
 

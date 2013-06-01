@@ -78,6 +78,10 @@ labels_t GALType::getTransLabels () const {
       res = context.getSuccsHom(tau);
     } 
 
+    void visitAbort () {
+      res = res & GDDD::null;
+    } 
+
   };
 
   GHom GALType::buildHom(const Statement & s) const {

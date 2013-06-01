@@ -450,6 +450,9 @@ add_query_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL
     void visitCall (const class Call & call) {
       // Calls are not followed currently => no additional constraints
     } 
+    void visitAbort () {
+      // ignore
+    }
 
   };
 
@@ -507,6 +510,9 @@ add_query_constraint (std::vector<const edge_t *> & c, const GuardedAction & g, 
 
     void visitCall (const class Call & call) {
       // Calls are not followed currently => no additional constraints
+    } 
+    void visitAbort () {
+      // ignore
     } 
 
     void handleBoolExpr (const BoolExpression & be) {

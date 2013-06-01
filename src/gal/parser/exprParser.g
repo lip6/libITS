@@ -156,42 +156,71 @@ transition
   }
   )?
   
-  '{'
-  (
-    // Normal actions (assignments)
-	  (
-		  currentAction=action 
-		  {
-		  ptrAction = $currentAction.as ;
-		  current_ga->getAction().add(*ptrAction);
-		  delete ptrAction ;
-		  }
-	  )
-	|
-	 (
-		'self' '.' lab=STRING ';'
-		{
-		  current_ga->getAction().add(  its::Call(toStringTok($lab)) );
-		}
-	)
-/* --------------- NOT IMPLEMENTED SECTION -------------------------
-	  |
-	  (
-	    listPop | listPush
-	  )
-------------------------------------------------------------------*/
-  )*
-  '}'
-  {
-    result->addTransition(*current_ga);
-    delete current_ga ; 
+  trbody=body
+	{
+	  current_ga->getAction() = $trbody.seq ;
+		
+	  result->addTransition(*current_ga);
+	  delete current_ga ; 
   }
+
   ;
 
-action returns [its::Assignment* as = NULL]:
+body returns [its::Sequence seq ] :	
+'{'
+(
+ // Normal actions (assignments)
+ (
   var=varAccess  '=' val=bit_or ';'
-  {as = new its::Assignment($var.ires, $val.ires);}
+ {
+   $seq.add(its::Assignment($var.ires, $val.ires));
+ }
+  )
+ |
+ (
+  'self' '.' lab=STRING ';'
+ {
+   $seq.add(  its::Call(toStringTok($lab)) );
+ }
+  )
+ |
+ (
+  'abort' ';'
+ {
+   $seq.add(  its::AbortStatement() );
+ }
+  )
+ |
+ (
+  ifthenelse=iteAction
+ {
+   $seq.add($ifthenelse.ite);
+ }
+  )
+ )*
+'}'
 ;
+
+iteAction returns  [ its::Ite ite ] :
+  'if' '(' cond=boolOr ')' iftrue=body
+ {
+   $ite = its::Ite($cond.bres, $iftrue.seq );
+ }
+  ( 'else' iffalse=body 
+  {
+    $ite.getIfFalse() = $iffalse.seq;
+  }
+    )? 
+;
+
+/* --------------- NOT IMPLEMENTED SECTION -------------------------
+   |
+   (
+   listPop | listPush
+   )
+   ------------------------------------------------------------------*/
+
+
 
 transient :
   'TRANSIENT' '=' value=boolOr ';'
