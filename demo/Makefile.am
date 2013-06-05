@@ -12,11 +12,18 @@ else
 LIBDDD_LINK=-lddd
 endif
 
+if WITH_ANTLRC_PATH
+ANTLRC_CPP=-I$(ANTLRC_ROOT)/include
+ANTLRC_PATH=$(ANTLRC_ROOT)/lib/libantlr3c.a
+else
+ANTLRC_LINK=-lantlr3c
+endif
 
-AM_CPPFLAGS = $(LIBDDD_CPP) -I $(top_srcdir)/src/ -g -O2 -Wall
+
+AM_CPPFLAGS = $(LIBDDD_CPP)  $(ANTLRC_CPP) -I $(top_srcdir)/src/ -g -O2 -Wall
 AM_CXXFLAGS = -g -O2 -Wall
 
-LDADDFLAGS = $(IPNLIBPATH)  $(LIBDDD_PATH)
+LDADDFLAGS = $(IPNLIBPATH)  $(LIBDDD_PATH) $(ANTLRC_PATH) $(ANTLRC_LINK)
 
 philoITS_SOURCES = philo.cpp
 philoITS_LDADD = $(LDADDFLAGS)  
