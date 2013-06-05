@@ -442,8 +442,7 @@ add_query_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL
       ite.getIfFalse().acceptVisitor(*this);
     }
 
-    void visitWhile (const class While & loop) {
-      add_query_constraint (c, loop.getCondition(), gal);      
+    void visitFix (const class FixStatement & loop) {
       loop.getAction().acceptVisitor(*this);
     }
 
@@ -503,8 +502,7 @@ add_query_constraint (std::vector<const edge_t *> & c, const GuardedAction & g, 
       ite.getIfFalse().acceptVisitor(*this);
     }
 
-    void visitWhile (const class While & loop) {
-      handleBoolExpr(loop.getCondition());      
+    void visitFix (const class FixStatement & loop) {
       loop.getAction().acceptVisitor(*this);
     }
 

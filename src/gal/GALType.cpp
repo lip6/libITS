@@ -69,8 +69,8 @@ labels_t GALType::getTransLabels () const {
       res = ITE( predicate(ite.getCondition(), context.getGalOrder()), context.buildHom(ite.getIfTrue()), context.buildHom(ite.getIfFalse()));
     }
 
-    void visitWhile (const class While & loop) {
-      res = fixpoint ( ITE( predicate(loop.getCondition(), context.getGalOrder()), context.buildHom(loop.getAction()), GHom::id) ) ;
+    void visitFix (const class FixStatement & loop) {
+      res = fixpoint (  context.buildHom(loop.getAction())) ;
     }
 
     void visitCall (const class Call & call) {
@@ -469,7 +469,7 @@ namespace its {
     // to support old-fashioned syntax, first turn the '=' into '=='
     std::stringstream tmp;
     tmp << pred[0];
-    for (int i=1 ; i < pred.size() -1; i++) {
+    for (size_t i=1 ; i < pred.size() -1; i++) {
       // '=' cannot be the first or last character of 'pred'
       // so that accessing pred[i+1] or pred[i-1] would fail only if 'pred' is not well-formed
       // if current character is a single '=', turn it into '=='

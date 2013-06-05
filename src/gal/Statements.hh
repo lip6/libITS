@@ -14,7 +14,7 @@ enum StatementType {
     ASSIGN,
     SEQ,
     IfThenElse,
-    WHILE,
+    FIXPOINT,
     CHOICE,
     CALL,
     ABORT
@@ -29,7 +29,7 @@ public :
   virtual void visitAssign (const class Assignment & ass)=0; 
   virtual void visitSequence (const class Sequence & seq)=0; 
   virtual void visitIte (const class Ite & ite)=0; 
-  virtual void visitWhile (const class While & loop)=0; 
+  virtual void visitFix (const class FixStatement & loop)=0; 
   virtual void visitCall (const class Call & call)=0; 
   virtual void visitAbort ()=0; 
 };
@@ -260,16 +260,12 @@ public :
 /** 
  * A While(condition) { action }  statement
  * */ 
-class While : public Statement {
+class FixStatement : public Statement {
 private :
-  BoolExpression cond;
   Sequence action;
 public :
   /// Constructor, by reference since IntExpr are by construction unique
-  While() {}
-
-  const BoolExpression & getCondition() const { return cond; }
-  void setCondition (const BoolExpression & e) { cond = e; }
+  FixStatement(const Sequence & s=Sequence()) : action(s) {}
 
   Sequence & getAction() { return action; }
   const Sequence & getAction() const { return action; }
@@ -277,9 +273,7 @@ public :
   /// pretty print
   void print (std::ostream & os, int ind) const {
     indent(os,ind);
-    os << "while (";
-    cond.print(os);
-    os << ") {" << std::endl;
+    os << "fixpoint {" << std::endl;
     action.print(os, ind+1);
     indent(os,ind);
     os << "}" ;
@@ -288,31 +282,23 @@ public :
   
   /// To get all the variables occuring in the expression
   std::set<Variable> getSupport() const {
-    std::set<Variable> toret;
-    {
-      std::set<Variable> tmp = cond.getSupport();
-      toret.insert(tmp.begin(), tmp.end());
-
-      tmp = action.getSupport();
-      toret.insert(tmp.begin(), tmp.end());
-    }
-    return toret;
+    return action.getSupport();
   }
 
   /// equality comparison
   bool operator==(const Statement &s) const {
-    return cond == ( (const While  &) s ).cond ;
+    return action == ( (const FixStatement  &) s ).action ;
   }
   /// ordering (for use with sets and maps)
   bool operator< (const Statement &s) const {
-    return cond < ( (const While &) s ).cond ;
+    return action < ( (const FixStatement &) s ).action ;
   }
 
-  StatementType getType() const { return WHILE; }
+  StatementType getType() const { return FIXPOINT; }
   
-  Statement * clone () const { return new While(*this); }
+  Statement * clone () const { return new FixStatement(*this); }
 
-  void acceptVisitor (class StatementVisitor & vis) const { vis.visitWhile(*this) ; }    
+  void acceptVisitor (class StatementVisitor & vis) const { vis.visitFix(*this) ; }    
 };
 
 
