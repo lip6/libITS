@@ -1,5 +1,5 @@
 AC_PREREQ([2.19])
-AC_INIT([ITSSDD],[0.1],[Yann.Thierry-mieg@lip6.fr])
+AC_INIT([ITSREACH],[0.2],[Yann.Thierry-mieg@lip6.fr])
 # We use automake to build makefiles
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
@@ -40,7 +40,6 @@ fi
 
 # AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not using tcmalloc))
 
-AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. This is a real problem.))
 
 
 
@@ -64,7 +63,7 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 
-LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
+LDFLAGS="-static -static-libgcc -static-libstdc++ $LDFLAGS"
 
 
 AC_ARG_ENABLE([mingw-native],
@@ -73,6 +72,19 @@ AC_ARG_ENABLE([mingw-native],
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
 					 LDFLAGS="-Wl,-static,--stack,16777216 $LDFLAGS"
 					 LIBS="-lPSAPI $LIBS"
+					 ;;
+					 no) 
+					 ;;
+					 *) AC_MSG_ERROR(Bad value ${enableval})
+					 ;;
+				esac])
+
+
+AC_ARG_ENABLE([dll],
+				[AC_HELP_STRING([--enable-dll],[Activate dynamic library loading input options -t DLL and -t NDLL (not available on Win)])],
+				[ case "${enable_dll}" in
+					 yes) CXXFLAGS="-DENABLE_DLL=1  $CXXFLAGS"
+					 AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. This is a real problem.))
 					 ;;
 					 no) 
 					 ;;
