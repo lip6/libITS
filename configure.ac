@@ -63,7 +63,7 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 
-LDFLAGS="-static -static-libgcc -static-libstdc++ $LDFLAGS"
+LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
 
 
 AC_ARG_ENABLE([mingw-native],
