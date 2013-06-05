@@ -197,6 +197,13 @@ body returns [its::Sequence seq ] :
    $seq.add($ifthenelse.ite);
  }
   )
+ |
+ (
+  'fixpoint' fixBody=body
+ {
+   $seq.add(its::FixStatement( $fixBody.seq));
+ }
+  )
  )*
 '}'
 ;
