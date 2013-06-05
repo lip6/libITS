@@ -1,6 +1,7 @@
 SUBDIRS = bringBack
 lib_LIBRARIES = libITSmain.a libprod.a
 
+
 MYSRCDIR= $(abs_top_srcdir)/src
 MYPRODSRCDIR= $(MYSRCDIR)/prod
 MYJSONSRCDIR= $(MYSRCDIR)/parser_json
@@ -12,6 +13,8 @@ MYGALSRCDIR = $(MYSRCDIR)/gal
 MYWIBBLESRCDIR = $(MYSRCDIR)/divine/wibble
 MYDVESRCDIR = $(MYSRCDIR)/divine
 MYGALGRAMMARSRCDIR = $(MYGALSRCDIR)/parser
+
+EXTRA_DIST= bringBack/Makefile 
 
 
 MYANTLRHEADER = $(MYGALGRAMMARSRCDIR)/exprParserLexer.h \
