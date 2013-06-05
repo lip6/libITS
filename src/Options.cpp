@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <fstream>
 
-#if !defined(__MINGW32__) 
+#if defined(ENABLE_DLL) 
 // DL sym stuff
 #include <dlfcn.h>
 #endif
@@ -272,7 +272,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
 
   case NDLL : {
-#if !defined(__MINGW32__) 
+#if defined(ENABLE_DLL) 
     char buff [1024]; // should be enough hopefully for a file name
     if (sscanf(pathinputff.c_str(),"%d:%s",&Nsize,buff) != 2) {
       std::cerr << "When using option NDLL, provide an input formatted as : size:library.so \n For instance : -t NDLL -i 20:philos.so"<<  std::endl;
@@ -315,7 +315,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case DLL :
     {
-      std::cerr << "Input options by shared object are not available on Mingw/Win32 platform. Sorry."<<std::endl;
+      std::cerr << "Input options by shared object are not available on Mingw/Win32 platform. Make sure you have activated --enable-dll in configure to have this input option available. Sorry."<<std::endl;
       exit(0);
     
 #endif
