@@ -780,29 +780,51 @@ telephony.7-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/telephony.7.dve -reachable "User_0.error_state"
 telephony.8-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/telephony.8.dve -reachable "User_0.error_state"
-csRepeat-2-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/csRepeat-2-col.flat.gal
-dotsBoxes-2-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/dotsBoxes-2-col.flat.gal
-drink-vending-2-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/drink-vending-2-col.flat.gal
-globalresalloc-3-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/globalresalloc-3-col.flat.gal
-lamport-fast-2-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/lamport-fast-2-col.flat.gal
-neo-election-2-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/neo-election-2-col.flat.gal
-permadmit-2-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/permadmit-2-col.flat.gal
-peterson-3-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/peterson-3-col.flat.gal
-philo-5-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/philo-5-col.flat.gal
-philo-dyn-3-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/philo-dyn-3-col.flat.gal
-shared-mem-5-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/shared-mem-5-col.flat.gal
-simple-loadB-5-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/simple-loadB-5-col.flat.gal
-token-ring-5-col.flat.gal 
-../bin/its-reach -t GAL --quiet -i cpn_test/token-ring-5-col.flat.gal
+CPN to GAL example cpn_test/csRepeat-2-col.inst.gal
+../bin/its-reach -i cpn_test/csRepeat-2-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/dotsBoxes-2-col.inst.gal
+../bin/its-reach -i cpn_test/dotsBoxes-2-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/drink-vending-2-col.inst.gal
+../bin/its-reach -i cpn_test/drink-vending-2-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/globalresalloc-3-col.inst.gal
+../bin/its-reach -i cpn_test/globalresalloc-3-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/lamport-fast-2-col.inst.gal
+../bin/its-reach -i cpn_test/lamport-fast-2-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/neo-election-2-col.inst.gal
+../bin/its-reach -i cpn_test/neo-election-2-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/permadmit-2-col.inst.gal
+../bin/its-reach -i cpn_test/permadmit-2-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/peterson-3-col.inst.gal
+../bin/its-reach -i cpn_test/peterson-3-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/philo-5-col.inst.gal
+../bin/its-reach -i cpn_test/philo-5-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/shared-mem-5-col.inst.gal
+../bin/its-reach -i cpn_test/shared-mem-5-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/simple-loadB-5-col.inst.gal
+../bin/its-reach -i cpn_test/simple-loadB-5-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/token-ring-5-col.inst.gal
+../bin/its-reach -i cpn_test/token-ring-5-col.inst.gal -t GAL --quiet
+CPN to GAL example cpn_test/csRepeat-2-col.sep.flat.gal
+../bin/its-reach -i cpn_test/csRepeat-2-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/dotsBoxes-2-col.sep.flat.gal
+../bin/its-reach -i cpn_test/dotsBoxes-2-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/drink-vending-2-col.sep.flat.gal
+../bin/its-reach -i cpn_test/drink-vending-2-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/globalresalloc-3-col.sep.flat.gal
+../bin/its-reach -i cpn_test/globalresalloc-3-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/lamport-fast-2-col.sep.flat.gal
+../bin/its-reach -i cpn_test/lamport-fast-2-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/neo-election-2-col.sep.flat.gal
+../bin/its-reach -i cpn_test/neo-election-2-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/permadmit-2-col.sep.flat.gal
+../bin/its-reach -i cpn_test/permadmit-2-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/peterson-3-col.sep.flat.gal
+../bin/its-reach -i cpn_test/peterson-3-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/philo-5-col.sep.flat.gal
+../bin/its-reach -i cpn_test/philo-5-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/shared-mem-5-col.sep.flat.gal
+../bin/its-reach -i cpn_test/shared-mem-5-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/simple-loadB-5-col.sep.flat.gal
+../bin/its-reach -i cpn_test/simple-loadB-5-col.sep.flat.gal -t GAL --quiet
+CPN to GAL example cpn_test/token-ring-5-col.sep.flat.gal
+../bin/its-reach -i cpn_test/token-ring-5-col.sep.flat.gal -t GAL --quiet
