@@ -1,0 +1,183 @@
+GAL Philosophers_sep_inst {
+	array [5] Think = (1, 1, 1, 1, 1) ;
+	array [5] Fork = (1, 1, 1, 1, 1) ;
+	array [5] Catch1 = (0, 0, 0, 0, 0) ;
+	array [5] Catch2 = (0, 0, 0, 0, 0) ;
+	array [5] Eat = (0, 0, 0, 0, 0) ;
+
+	transition FF1a [true] {
+		self."FF1ax" ;
+	}
+
+	transition FF1b [true] {
+		self."FF1bx" ;
+	}
+
+	transition FF2a [true] {
+		self."FF2ax" ;
+	}
+
+	transition FF2b [true] {
+		self."FF2bx" ;
+	}
+
+	transition End [true] {
+		self."Endx" ;
+	}
+
+	transition FF1ax_0 [Think [0] >= 1 && Fork [4] >= 1] label "FF1ax" {
+		Fork [4] = Fork [4] - 1 ;
+		Catch1 [0] = Catch1 [0] + 1 ;
+		Think [0] = Think [0] - 1 ;
+	}
+
+	transition FF1ax_1 [Think [1] >= 1 && Fork [0] >= 1] label "FF1ax" {
+		Fork [0] = Fork [0] - 1 ;
+		Catch1 [1] = Catch1 [1] + 1 ;
+		Think [1] = Think [1] - 1 ;
+	}
+
+	transition FF1ax_2 [Think [2] >= 1 && Fork [1] >= 1] label "FF1ax" {
+		Fork [1] = Fork [1] - 1 ;
+		Catch1 [2] = Catch1 [2] + 1 ;
+		Think [2] = Think [2] - 1 ;
+	}
+
+	transition FF1ax_3 [Think [3] >= 1 && Fork [2] >= 1] label "FF1ax" {
+		Fork [2] = Fork [2] - 1 ;
+		Catch1 [3] = Catch1 [3] + 1 ;
+		Think [3] = Think [3] - 1 ;
+	}
+
+	transition FF1ax_4 [Think [4] >= 1 && Fork [3] >= 1] label "FF1ax" {
+		Fork [3] = Fork [3] - 1 ;
+		Catch1 [4] = Catch1 [4] + 1 ;
+		Think [4] = Think [4] - 1 ;
+	}
+
+	transition FF1bx_0 [Think [0] >= 1 && Fork [0] >= 1] label "FF1bx" {
+		Fork [0] = Fork [0] - 1 ;
+		Catch2 [0] = Catch2 [0] + 1 ;
+		Think [0] = Think [0] - 1 ;
+	}
+
+	transition FF1bx_1 [Think [1] >= 1 && Fork [1] >= 1] label "FF1bx" {
+		Fork [1] = Fork [1] - 1 ;
+		Catch2 [1] = Catch2 [1] + 1 ;
+		Think [1] = Think [1] - 1 ;
+	}
+
+	transition FF1bx_2 [Think [2] >= 1 && Fork [2] >= 1] label "FF1bx" {
+		Fork [2] = Fork [2] - 1 ;
+		Catch2 [2] = Catch2 [2] + 1 ;
+		Think [2] = Think [2] - 1 ;
+	}
+
+	transition FF1bx_3 [Think [3] >= 1 && Fork [3] >= 1] label "FF1bx" {
+		Fork [3] = Fork [3] - 1 ;
+		Catch2 [3] = Catch2 [3] + 1 ;
+		Think [3] = Think [3] - 1 ;
+	}
+
+	transition FF1bx_4 [Think [4] >= 1 && Fork [4] >= 1] label "FF1bx" {
+		Fork [4] = Fork [4] - 1 ;
+		Catch2 [4] = Catch2 [4] + 1 ;
+		Think [4] = Think [4] - 1 ;
+	}
+
+	transition FF2ax_0 [Fork [0] >= 1 && Catch1 [0] >= 1] label "FF2ax" {
+		Fork [0] = Fork [0] - 1 ;
+		Eat [0] = Eat [0] + 1 ;
+		Catch1 [0] = Catch1 [0] - 1 ;
+	}
+
+	transition FF2ax_1 [Fork [1] >= 1 && Catch1 [1] >= 1] label "FF2ax" {
+		Fork [1] = Fork [1] - 1 ;
+		Eat [1] = Eat [1] + 1 ;
+		Catch1 [1] = Catch1 [1] - 1 ;
+	}
+
+	transition FF2ax_2 [Fork [2] >= 1 && Catch1 [2] >= 1] label "FF2ax" {
+		Fork [2] = Fork [2] - 1 ;
+		Eat [2] = Eat [2] + 1 ;
+		Catch1 [2] = Catch1 [2] - 1 ;
+	}
+
+	transition FF2ax_3 [Fork [3] >= 1 && Catch1 [3] >= 1] label "FF2ax" {
+		Fork [3] = Fork [3] - 1 ;
+		Eat [3] = Eat [3] + 1 ;
+		Catch1 [3] = Catch1 [3] - 1 ;
+	}
+
+	transition FF2ax_4 [Fork [4] >= 1 && Catch1 [4] >= 1] label "FF2ax" {
+		Fork [4] = Fork [4] - 1 ;
+		Eat [4] = Eat [4] + 1 ;
+		Catch1 [4] = Catch1 [4] - 1 ;
+	}
+
+	transition FF2bx_0 [Catch2 [0] >= 1 && Fork [4] >= 1] label "FF2bx" {
+		Fork [4] = Fork [4] - 1 ;
+		Eat [0] = Eat [0] + 1 ;
+		Catch2 [0] = Catch2 [0] - 1 ;
+	}
+
+	transition FF2bx_1 [Catch2 [1] >= 1 && Fork [0] >= 1] label "FF2bx" {
+		Fork [0] = Fork [0] - 1 ;
+		Eat [1] = Eat [1] + 1 ;
+		Catch2 [1] = Catch2 [1] - 1 ;
+	}
+
+	transition FF2bx_2 [Catch2 [2] >= 1 && Fork [1] >= 1] label "FF2bx" {
+		Fork [1] = Fork [1] - 1 ;
+		Eat [2] = Eat [2] + 1 ;
+		Catch2 [2] = Catch2 [2] - 1 ;
+	}
+
+	transition FF2bx_3 [Catch2 [3] >= 1 && Fork [2] >= 1] label "FF2bx" {
+		Fork [2] = Fork [2] - 1 ;
+		Eat [3] = Eat [3] + 1 ;
+		Catch2 [3] = Catch2 [3] - 1 ;
+	}
+
+	transition FF2bx_4 [Catch2 [4] >= 1 && Fork [3] >= 1] label "FF2bx" {
+		Fork [3] = Fork [3] - 1 ;
+		Eat [4] = Eat [4] + 1 ;
+		Catch2 [4] = Catch2 [4] - 1 ;
+	}
+
+	transition Endx_0 [Eat [0] >= 1] label "Endx" {
+		Fork [4] = Fork [4] + 1 ;
+		Fork [0] = Fork [0] + 1 ;
+		Eat [0] = Eat [0] - 1 ;
+		Think [0] = Think [0] + 1 ;
+	}
+
+	transition Endx_1 [Eat [1] >= 1] label "Endx" {
+		Fork [1] = Fork [1] + 1 ;
+		Fork [0] = Fork [0] + 1 ;
+		Eat [1] = Eat [1] - 1 ;
+		Think [1] = Think [1] + 1 ;
+	}
+
+	transition Endx_2 [Eat [2] >= 1] label "Endx" {
+		Fork [2] = Fork [2] + 1 ;
+		Fork [1] = Fork [1] + 1 ;
+		Eat [2] = Eat [2] - 1 ;
+		Think [2] = Think [2] + 1 ;
+	}
+
+	transition Endx_3 [Eat [3] >= 1] label "Endx" {
+		Fork [2] = Fork [2] + 1 ;
+		Fork [3] = Fork [3] + 1 ;
+		Eat [3] = Eat [3] - 1 ;
+		Think [3] = Think [3] + 1 ;
+	}
+
+	transition Endx_4 [Eat [4] >= 1] label "Endx" {
+		Fork [4] = Fork [4] + 1 ;
+		Fork [3] = Fork [3] + 1 ;
+		Eat [4] = Eat [4] - 1 ;
+		Think [4] = Think [4] + 1 ;
+	}
+	TRANSIENT = false ;
+}

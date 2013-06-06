@@ -1,0 +1,541 @@
+GAL lamport_2_sep_inst {
+	array [3] start_1 = (0, 1, 1) ;
+	array [3] x = (1, 0, 0) ;
+	array [3] y = (1, 0, 0) ;
+	array [6] b = (0, 0, 1, 0, 1, 0) ;
+	array [3] setx_3 = (0, 0, 0) ;
+	array [3] setbi_5 = (0, 0, 0) ;
+	array [3] ify0_4 = (0, 0, 0) ;
+	array [3] sety_9 = (0, 0, 0) ;
+	array [3] ifxi_10 = (0, 0, 0) ;
+	array [3] setbi_11 = (0, 0, 0) ;
+	array [3] fordo_12 = (0, 0, 0) ;
+	array [9] wait = (0, 0, 0, 0, 0, 0, 0, 0, 0) ;
+	array [3] await_13 = (0, 0, 0) ;
+	array [9] done = (0, 0, 0, 0, 0, 0, 0, 0, 0) ;
+	array [3] ifyi_15 = (0, 0, 0) ;
+	array [3] awaity = (0, 0, 0) ;
+	array [3] CS_21 = (0, 0, 0) ;
+	array [3] setbi_24 = (0, 0, 0) ;
+
+	transition setbi_2 [true] {
+		self."setbi_2i" ;
+	}
+
+	transition setx_3 [true] {
+		self."setx_3i" ;
+		self."setx_3x" ;
+	}
+
+	transition yne0_4 [true] {
+		self."yne0_4i" ;
+		self."yne0_4y" ;
+	}
+
+	transition setbi_5 [true] {
+		self."setbi_5i" ;
+	}
+
+	transition awaity [y [0] >= 1] {
+		self."awaityi" ;
+	}
+
+	transition yeq0_4 [y [0] >= 1] {
+		self."yeq0_4i" ;
+	}
+
+	transition sety_9 [true] {
+		self."sety_9i" ;
+		self."sety_9y" ;
+	}
+
+	transition xnei_10 [true] {
+		self."xnei_10x" ;
+	}
+
+	transition setbi_11 [true] {
+		self."setbi_11i" ;
+	}
+
+	transition fordo_12 [true] {
+		self."fordo_12i" ;
+	}
+
+	transition await_13 [true] {
+		self."await_13i" ;
+	}
+
+	transition forod_13 [true] {
+		self."forod_13i" ;
+	}
+
+	transition ynei_15 [true] {
+		self."ynei_15y" ;
+	}
+
+	transition yeqi_15 [true] {
+		self."yeqi_15i" ;
+	}
+
+	transition xeqi_10 [true] {
+		self."xeqi_10i" ;
+	}
+
+	transition sety0_23 [true] {
+		y [0] = y [0] + 1 ;
+		self."sety0_23i" ;
+		self."sety_9y" ;
+	}
+
+	transition setbi_24 [true] {
+		self."setbi_24i" ;
+	}
+
+	transition setbi_2bi_0_0 [b [0] >= 1] label "setbi_2bi_0" {
+		b [0] = b [0] - 1 ;
+	}
+
+	transition setbi_2bi_0_1 [b [2] >= 1] label "setbi_2bi_1" {
+		b [2] = b [2] - 1 ;
+	}
+
+	transition setbi_2bi_0_2 [b [4] >= 1] label "setbi_2bi_2" {
+		b [4] = b [4] - 1 ;
+	}
+
+	transition setbi_2bi_1_0 [b [1] >= 1] label "setbi_2bi_0" {
+		b [1] = b [1] - 1 ;
+	}
+
+	transition setbi_2bi_1_1 [b [3] >= 1] label "setbi_2bi_1" {
+		b [3] = b [3] - 1 ;
+	}
+
+	transition setbi_2bi_1_2 [b [5] >= 1] label "setbi_2bi_2" {
+		b [5] = b [5] - 1 ;
+	}
+
+	transition setbi_2i_0 [start_1 [0] >= 1] label "setbi_2i" {
+		b [1] = b [1] + 1 ;
+		start_1 [0] = start_1 [0] - 1 ;
+		setx_3 [0] = setx_3 [0] + 1 ;
+		self."setbi_2bi_0" ;
+	}
+
+	transition setbi_2i_1 [start_1 [1] >= 1] label "setbi_2i" {
+		b [3] = b [3] + 1 ;
+		start_1 [1] = start_1 [1] - 1 ;
+		setx_3 [1] = setx_3 [1] + 1 ;
+		self."setbi_2bi_1" ;
+	}
+
+	transition setbi_2i_2 [start_1 [2] >= 1] label "setbi_2i" {
+		b [5] = b [5] + 1 ;
+		start_1 [2] = start_1 [2] - 1 ;
+		setx_3 [2] = setx_3 [2] + 1 ;
+		self."setbi_2bi_2" ;
+	}
+
+	transition setx_3i_0 [setx_3 [0] >= 1] label "setx_3i" {
+		ify0_4 [0] = ify0_4 [0] + 1 ;
+		setx_3 [0] = setx_3 [0] - 1 ;
+		x [0] = x [0] + 1 ;
+	}
+
+	transition setx_3i_1 [setx_3 [1] >= 1] label "setx_3i" {
+		ify0_4 [1] = ify0_4 [1] + 1 ;
+		setx_3 [1] = setx_3 [1] - 1 ;
+		x [1] = x [1] + 1 ;
+	}
+
+	transition setx_3i_2 [setx_3 [2] >= 1] label "setx_3i" {
+		ify0_4 [2] = ify0_4 [2] + 1 ;
+		setx_3 [2] = setx_3 [2] - 1 ;
+		x [2] = x [2] + 1 ;
+	}
+
+	transition setx_3x_0 [x [0] >= 1] label "setx_3x" {
+		x [0] = x [0] - 1 ;
+	}
+
+	transition setx_3x_1 [x [1] >= 1] label "setx_3x" {
+		x [1] = x [1] - 1 ;
+	}
+
+	transition setx_3x_2 [x [2] >= 1] label "setx_3x" {
+		x [2] = x [2] - 1 ;
+	}
+
+	transition yne0_4i_0 [ify0_4 [0] >= 1] label "yne0_4i" {
+		ify0_4 [0] = ify0_4 [0] - 1 ;
+		setbi_5 [0] = setbi_5 [0] + 1 ;
+	}
+
+	transition yne0_4i_1 [ify0_4 [1] >= 1] label "yne0_4i" {
+		ify0_4 [1] = ify0_4 [1] - 1 ;
+		setbi_5 [1] = setbi_5 [1] + 1 ;
+	}
+
+	transition yne0_4i_2 [ify0_4 [2] >= 1] label "yne0_4i" {
+		ify0_4 [2] = ify0_4 [2] - 1 ;
+		setbi_5 [2] = setbi_5 [2] + 1 ;
+	}
+
+	transition yne0_4y_1 [y [1] >= 1] label "yne0_4y" {
+	}
+
+	transition yne0_4y_2 [y [2] >= 1] label "yne0_4y" {
+	}
+
+	transition setbi_5i_0 [setbi_5 [0] >= 1] label "setbi_5i" {
+		awaity [0] = awaity [0] + 1 ;
+		setbi_5 [0] = setbi_5 [0] - 1 ;
+		b [0] = b [0] + 1 ;
+		self."setbi_2bi_0" ;
+	}
+
+	transition setbi_5i_1 [setbi_5 [1] >= 1] label "setbi_5i" {
+		awaity [1] = awaity [1] + 1 ;
+		setbi_5 [1] = setbi_5 [1] - 1 ;
+		b [2] = b [2] + 1 ;
+		self."setbi_2bi_1" ;
+	}
+
+	transition setbi_5i_2 [setbi_5 [2] >= 1] label "setbi_5i" {
+		awaity [2] = awaity [2] + 1 ;
+		setbi_5 [2] = setbi_5 [2] - 1 ;
+		b [4] = b [4] + 1 ;
+		self."setbi_2bi_2" ;
+	}
+
+	transition awaityi_0 [awaity [0] >= 1] label "awaityi" {
+		awaity [0] = awaity [0] - 1 ;
+		start_1 [0] = start_1 [0] + 1 ;
+	}
+
+	transition awaityi_1 [awaity [1] >= 1] label "awaityi" {
+		awaity [1] = awaity [1] - 1 ;
+		start_1 [1] = start_1 [1] + 1 ;
+	}
+
+	transition awaityi_2 [awaity [2] >= 1] label "awaityi" {
+		awaity [2] = awaity [2] - 1 ;
+		start_1 [2] = start_1 [2] + 1 ;
+	}
+
+	transition yeq0_4i_0 [ify0_4 [0] >= 1] label "yeq0_4i" {
+		ify0_4 [0] = ify0_4 [0] - 1 ;
+		sety_9 [0] = sety_9 [0] + 1 ;
+	}
+
+	transition yeq0_4i_1 [ify0_4 [1] >= 1] label "yeq0_4i" {
+		ify0_4 [1] = ify0_4 [1] - 1 ;
+		sety_9 [1] = sety_9 [1] + 1 ;
+	}
+
+	transition yeq0_4i_2 [ify0_4 [2] >= 1] label "yeq0_4i" {
+		ify0_4 [2] = ify0_4 [2] - 1 ;
+		sety_9 [2] = sety_9 [2] + 1 ;
+	}
+
+	transition sety_9i_0 [sety_9 [0] >= 1] label "sety_9i" {
+		sety_9 [0] = sety_9 [0] - 1 ;
+		y [0] = y [0] + 1 ;
+		ifxi_10 [0] = ifxi_10 [0] + 1 ;
+	}
+
+	transition sety_9i_1 [sety_9 [1] >= 1] label "sety_9i" {
+		sety_9 [1] = sety_9 [1] - 1 ;
+		y [1] = y [1] + 1 ;
+		ifxi_10 [1] = ifxi_10 [1] + 1 ;
+	}
+
+	transition sety_9i_2 [sety_9 [2] >= 1] label "sety_9i" {
+		sety_9 [2] = sety_9 [2] - 1 ;
+		y [2] = y [2] + 1 ;
+		ifxi_10 [2] = ifxi_10 [2] + 1 ;
+	}
+
+	transition sety_9y_0 [y [0] >= 1] label "sety_9y" {
+		y [0] = y [0] - 1 ;
+	}
+
+	transition sety_9y_1 [y [1] >= 1] label "sety_9y" {
+		y [1] = y [1] - 1 ;
+	}
+
+	transition sety_9y_2 [y [2] >= 1] label "sety_9y" {
+		y [2] = y [2] - 1 ;
+	}
+
+	transition xnei_10i_0_1 [ifxi_10 [0] >= 1] label "xnei_10i_1" {
+		setbi_11 [0] = setbi_11 [0] + 1 ;
+		ifxi_10 [0] = ifxi_10 [0] - 1 ;
+	}
+
+	transition xnei_10i_0_2 [ifxi_10 [0] >= 1] label "xnei_10i_2" {
+		setbi_11 [0] = setbi_11 [0] + 1 ;
+		ifxi_10 [0] = ifxi_10 [0] - 1 ;
+	}
+
+	transition xnei_10i_1_0 [ifxi_10 [1] >= 1] label "xnei_10i_0" {
+		setbi_11 [1] = setbi_11 [1] + 1 ;
+		ifxi_10 [1] = ifxi_10 [1] - 1 ;
+	}
+
+	transition xnei_10i_1_2 [ifxi_10 [1] >= 1] label "xnei_10i_2" {
+		setbi_11 [1] = setbi_11 [1] + 1 ;
+		ifxi_10 [1] = ifxi_10 [1] - 1 ;
+	}
+
+	transition xnei_10i_2_0 [ifxi_10 [2] >= 1] label "xnei_10i_0" {
+		setbi_11 [2] = setbi_11 [2] + 1 ;
+		ifxi_10 [2] = ifxi_10 [2] - 1 ;
+	}
+
+	transition xnei_10i_2_1 [ifxi_10 [2] >= 1] label "xnei_10i_1" {
+		setbi_11 [2] = setbi_11 [2] + 1 ;
+		ifxi_10 [2] = ifxi_10 [2] - 1 ;
+	}
+
+	transition xnei_10x_0 [x [0] >= 1] label "xnei_10x" {
+		self."xnei_10i_0" ;
+	}
+
+	transition xnei_10x_1 [x [1] >= 1] label "xnei_10x" {
+		self."xnei_10i_1" ;
+	}
+
+	transition xnei_10x_2 [x [2] >= 1] label "xnei_10x" {
+		self."xnei_10i_2" ;
+	}
+
+	transition setbi_11i_0 [setbi_11 [0] >= 1] label "setbi_11i" {
+		b [0] = b [0] + 1 ;
+		fordo_12 [0] = fordo_12 [0] + 1 ;
+		setbi_11 [0] = setbi_11 [0] - 1 ;
+		self."setbi_2bi_0" ;
+	}
+
+	transition setbi_11i_1 [setbi_11 [1] >= 1] label "setbi_11i" {
+		b [2] = b [2] + 1 ;
+		fordo_12 [1] = fordo_12 [1] + 1 ;
+		setbi_11 [1] = setbi_11 [1] - 1 ;
+		self."setbi_2bi_1" ;
+	}
+
+	transition setbi_11i_2 [setbi_11 [2] >= 1] label "setbi_11i" {
+		b [4] = b [4] + 1 ;
+		fordo_12 [2] = fordo_12 [2] + 1 ;
+		setbi_11 [2] = setbi_11 [2] - 1 ;
+		self."setbi_2bi_2" ;
+	}
+
+	transition fordo_12i_0 [fordo_12 [0] >= 1] label "fordo_12i" {
+		await_13 [0] = await_13 [0] + 1 ;
+		fordo_12 [0] = fordo_12 [0] - 1 ;
+		wait [2] = wait [2] + 1 ;
+		wait [1] = wait [1] + 1 ;
+	}
+
+	transition fordo_12i_1 [fordo_12 [1] >= 1] label "fordo_12i" {
+		await_13 [1] = await_13 [1] + 1 ;
+		fordo_12 [1] = fordo_12 [1] - 1 ;
+		wait [4] = wait [4] + 1 ;
+		wait [5] = wait [5] + 1 ;
+	}
+
+	transition fordo_12i_2 [fordo_12 [2] >= 1] label "fordo_12i" {
+		await_13 [2] = await_13 [2] + 1 ;
+		fordo_12 [2] = fordo_12 [2] - 1 ;
+		wait [7] = wait [7] + 1 ;
+		wait [8] = wait [8] + 1 ;
+	}
+
+	transition await_13j_0_0 [wait [0] >= 1 && b [0] >= 1] label "await_13j_0" {
+		done [0] = done [0] + 1 ;
+		wait [0] = wait [0] - 1 ;
+	}
+
+	transition await_13j_0_1 [wait [1] >= 1 && b [2] >= 1] label "await_13j_0" {
+		done [1] = done [1] + 1 ;
+		wait [1] = wait [1] - 1 ;
+	}
+
+	transition await_13j_0_2 [wait [2] >= 1 && b [4] >= 1] label "await_13j_0" {
+		done [2] = done [2] + 1 ;
+		wait [2] = wait [2] - 1 ;
+	}
+
+	transition await_13j_1_0 [wait [3] >= 1 && b [0] >= 1] label "await_13j_1" {
+		done [3] = done [3] + 1 ;
+		wait [3] = wait [3] - 1 ;
+	}
+
+	transition await_13j_1_1 [wait [4] >= 1 && b [2] >= 1] label "await_13j_1" {
+		done [4] = done [4] + 1 ;
+		wait [4] = wait [4] - 1 ;
+	}
+
+	transition await_13j_1_2 [wait [5] >= 1 && b [4] >= 1] label "await_13j_1" {
+		done [5] = done [5] + 1 ;
+		wait [5] = wait [5] - 1 ;
+	}
+
+	transition await_13j_2_0 [wait [6] >= 1 && b [0] >= 1] label "await_13j_2" {
+		done [6] = done [6] + 1 ;
+		wait [6] = wait [6] - 1 ;
+	}
+
+	transition await_13j_2_1 [wait [7] >= 1 && b [2] >= 1] label "await_13j_2" {
+		done [7] = done [7] + 1 ;
+		wait [7] = wait [7] - 1 ;
+	}
+
+	transition await_13j_2_2 [wait [8] >= 1 && b [4] >= 1] label "await_13j_2" {
+		done [8] = done [8] + 1 ;
+		wait [8] = wait [8] - 1 ;
+	}
+
+	transition await_13i_0 [await_13 [0] >= 1] label "await_13i" {
+		self."await_13j_0" ;
+	}
+
+	transition await_13i_1 [await_13 [1] >= 1] label "await_13i" {
+		self."await_13j_1" ;
+	}
+
+	transition await_13i_2 [await_13 [2] >= 1] label "await_13i" {
+		self."await_13j_2" ;
+	}
+
+	transition forod_13i_0 [done [2] >= 1 && await_13 [0] >= 1 && done [1] >= 1] label "forod_13i" {
+		await_13 [0] = await_13 [0] - 1 ;
+		done [1] = done [1] - 1 ;
+		done [2] = done [2] - 1 ;
+		ifyi_15 [0] = ifyi_15 [0] + 1 ;
+	}
+
+	transition forod_13i_1 [done [5] >= 1 && await_13 [1] >= 1 && done [4] >= 1] label "forod_13i" {
+		await_13 [1] = await_13 [1] - 1 ;
+		done [4] = done [4] - 1 ;
+		done [5] = done [5] - 1 ;
+		ifyi_15 [1] = ifyi_15 [1] + 1 ;
+	}
+
+	transition forod_13i_2 [done [8] >= 1 && await_13 [2] >= 1 && done [7] >= 1] label "forod_13i" {
+		await_13 [2] = await_13 [2] - 1 ;
+		done [7] = done [7] - 1 ;
+		done [8] = done [8] - 1 ;
+		ifyi_15 [2] = ifyi_15 [2] + 1 ;
+	}
+
+	transition ynei_15i_0_1 [ifyi_15 [0] >= 1] label "ynei_15i_1" {
+		awaity [0] = awaity [0] + 1 ;
+		ifyi_15 [0] = ifyi_15 [0] - 1 ;
+	}
+
+	transition ynei_15i_0_2 [ifyi_15 [0] >= 1] label "ynei_15i_2" {
+		awaity [0] = awaity [0] + 1 ;
+		ifyi_15 [0] = ifyi_15 [0] - 1 ;
+	}
+
+	transition ynei_15i_1_0 [ifyi_15 [1] >= 1] label "ynei_15i_0" {
+		awaity [1] = awaity [1] + 1 ;
+		ifyi_15 [1] = ifyi_15 [1] - 1 ;
+	}
+
+	transition ynei_15i_1_2 [ifyi_15 [1] >= 1] label "ynei_15i_2" {
+		awaity [1] = awaity [1] + 1 ;
+		ifyi_15 [1] = ifyi_15 [1] - 1 ;
+	}
+
+	transition ynei_15i_2_0 [ifyi_15 [2] >= 1] label "ynei_15i_0" {
+		awaity [2] = awaity [2] + 1 ;
+		ifyi_15 [2] = ifyi_15 [2] - 1 ;
+	}
+
+	transition ynei_15i_2_1 [ifyi_15 [2] >= 1] label "ynei_15i_1" {
+		awaity [2] = awaity [2] + 1 ;
+		ifyi_15 [2] = ifyi_15 [2] - 1 ;
+	}
+
+	transition ynei_15y_0 [y [0] >= 1] label "ynei_15y" {
+		self."ynei_15i_0" ;
+	}
+
+	transition ynei_15y_1 [y [1] >= 1] label "ynei_15y" {
+		self."ynei_15i_1" ;
+	}
+
+	transition ynei_15y_2 [y [2] >= 1] label "ynei_15y" {
+		self."ynei_15i_2" ;
+	}
+
+	transition yeqi_15i_0 [true] label "yeqi_15i" {
+		CS_21 [0] = CS_21 [0] + 1 ;
+		ifyi_15 [0] = ifyi_15 [0] - 1 ;
+	}
+
+	transition yeqi_15i_1 [true] label "yeqi_15i" {
+		CS_21 [1] = CS_21 [1] + 1 ;
+		ifyi_15 [1] = ifyi_15 [1] - 1 ;
+	}
+
+	transition yeqi_15i_2 [true] label "yeqi_15i" {
+		CS_21 [2] = CS_21 [2] + 1 ;
+		ifyi_15 [2] = ifyi_15 [2] - 1 ;
+	}
+
+	transition xeqi_10i_0 [true] label "xeqi_10i" {
+		CS_21 [0] = CS_21 [0] + 1 ;
+		ifxi_10 [0] = ifxi_10 [0] - 1 ;
+	}
+
+	transition xeqi_10i_1 [true] label "xeqi_10i" {
+		CS_21 [1] = CS_21 [1] + 1 ;
+		ifxi_10 [1] = ifxi_10 [1] - 1 ;
+	}
+
+	transition xeqi_10i_2 [true] label "xeqi_10i" {
+		CS_21 [2] = CS_21 [2] + 1 ;
+		ifxi_10 [2] = ifxi_10 [2] - 1 ;
+	}
+
+	transition sety0_23i_0 [CS_21 [0] >= 1] label "sety0_23i" {
+		CS_21 [0] = CS_21 [0] - 1 ;
+		setbi_24 [0] = setbi_24 [0] + 1 ;
+	}
+
+	transition sety0_23i_1 [CS_21 [1] >= 1] label "sety0_23i" {
+		CS_21 [1] = CS_21 [1] - 1 ;
+		setbi_24 [1] = setbi_24 [1] + 1 ;
+	}
+
+	transition sety0_23i_2 [CS_21 [2] >= 1] label "sety0_23i" {
+		CS_21 [2] = CS_21 [2] - 1 ;
+		setbi_24 [2] = setbi_24 [2] + 1 ;
+	}
+
+	transition setbi_24i_0 [setbi_24 [0] >= 1] label "setbi_24i" {
+		b [0] = b [0] + 1 ;
+		start_1 [0] = start_1 [0] + 1 ;
+		setbi_24 [0] = setbi_24 [0] - 1 ;
+		self."setbi_2bi_0" ;
+	}
+
+	transition setbi_24i_1 [setbi_24 [1] >= 1] label "setbi_24i" {
+		b [2] = b [2] + 1 ;
+		start_1 [1] = start_1 [1] + 1 ;
+		setbi_24 [1] = setbi_24 [1] - 1 ;
+		self."setbi_2bi_1" ;
+	}
+
+	transition setbi_24i_2 [setbi_24 [2] >= 1] label "setbi_24i" {
+		b [4] = b [4] + 1 ;
+		start_1 [2] = start_1 [2] + 1 ;
+		setbi_24 [2] = setbi_24 [2] - 1 ;
+		self."setbi_2bi_2" ;
+	}
+	TRANSIENT = false ;
+}

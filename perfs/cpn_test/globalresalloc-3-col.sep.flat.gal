@@ -1,0 +1,608 @@
+GAL Global_Allocation_Resource_Management_sep_inst {
+	array [3] Processes = (1, 1, 1) ;
+	array [6] Resources = (1, 1, 1, 1, 1, 1) ;
+	array [3] pr_in = (0, 0, 0) ;
+	array [18] in_critical_s = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) ;
+	array [3] pr_released = (0, 0, 0) ;
+
+	transition enter1 [true] {
+		self."enter1r1" ;
+	}
+
+	transition enter2_0 [Processes [0] >= 1] {
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 2 ;
+		pr_released [0] = pr_released [0] + 2 ;
+		self."enter2r2_0" ;
+		self."enter2r2_0" ;
+	}
+
+	transition enter2_1 [Processes [1] >= 1] {
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 2 ;
+		pr_released [1] = pr_released [1] + 2 ;
+		self."enter2r2_1" ;
+		self."enter2r2_1" ;
+	}
+
+	transition enter2_2 [Processes [2] >= 1] {
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 2 ;
+		pr_released [2] = pr_released [2] + 2 ;
+		self."enter2r2_2" ;
+		self."enter2r2_2" ;
+	}
+
+	transition enter3_0 [Processes [0] >= 1] {
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 3 ;
+		pr_released [0] = pr_released [0] + 1 ;
+		self."enter2r2_0" ;
+		self."enter2r2_0" ;
+		self."enter2r2_0" ;
+	}
+
+	transition enter3_1 [Processes [1] >= 1] {
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 3 ;
+		pr_released [1] = pr_released [1] + 1 ;
+		self."enter2r2_1" ;
+		self."enter2r2_1" ;
+		self."enter2r2_1" ;
+	}
+
+	transition enter3_2 [Processes [2] >= 1] {
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 3 ;
+		pr_released [2] = pr_released [2] + 1 ;
+		self."enter2r2_2" ;
+		self."enter2r2_2" ;
+		self."enter2r2_2" ;
+	}
+
+	transition enter4_0 [Processes [0] >= 1] {
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 4 ;
+		self."enter2r2_0" ;
+		self."enter2r2_0" ;
+		self."enter2r2_0" ;
+		self."enter2r2_0" ;
+	}
+
+	transition enter4_1 [Processes [1] >= 1] {
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 4 ;
+		self."enter2r2_1" ;
+		self."enter2r2_1" ;
+		self."enter2r2_1" ;
+		self."enter2r2_1" ;
+	}
+
+	transition enter4_2 [Processes [2] >= 1] {
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 4 ;
+		self."enter2r2_2" ;
+		self."enter2r2_2" ;
+		self."enter2r2_2" ;
+		self."enter2r2_2" ;
+	}
+
+	transition exit [true] {
+		self."exitp" ;
+	}
+
+	transition release1 [true] {
+		self."release1r1" ;
+	}
+
+	transition release2_0 [pr_in [0] >= 2] {
+		pr_in [0] = pr_in [0] - 2 ;
+		pr_released [0] = pr_released [0] + 2 ;
+		self."release2r2_0" ;
+		self."release2r2_0" ;
+	}
+
+	transition release2_1 [pr_in [1] >= 2] {
+		pr_in [1] = pr_in [1] - 2 ;
+		pr_released [1] = pr_released [1] + 2 ;
+		self."release2r2_1" ;
+		self."release2r2_1" ;
+	}
+
+	transition release2_2 [pr_in [2] >= 2] {
+		pr_in [2] = pr_in [2] - 2 ;
+		pr_released [2] = pr_released [2] + 2 ;
+		self."release2r2_2" ;
+		self."release2r2_2" ;
+	}
+
+	transition enter1p_0_0 [Processes [0] >= 1] label "enter1p_0" {
+		in_critical_s [0] = in_critical_s [0] + 1 ;
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 1 ;
+		pr_released [0] = pr_released [0] + 3 ;
+	}
+
+	transition enter1p_0_1 [Processes [0] >= 1] label "enter1p_1" {
+		in_critical_s [1] = in_critical_s [1] + 1 ;
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 1 ;
+		pr_released [0] = pr_released [0] + 3 ;
+	}
+
+	transition enter1p_0_2 [Processes [0] >= 1] label "enter1p_2" {
+		in_critical_s [2] = in_critical_s [2] + 1 ;
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 1 ;
+		pr_released [0] = pr_released [0] + 3 ;
+	}
+
+	transition enter1p_0_3 [Processes [0] >= 1] label "enter1p_3" {
+		in_critical_s [3] = in_critical_s [3] + 1 ;
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 1 ;
+		pr_released [0] = pr_released [0] + 3 ;
+	}
+
+	transition enter1p_0_4 [Processes [0] >= 1] label "enter1p_4" {
+		in_critical_s [4] = in_critical_s [4] + 1 ;
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 1 ;
+		pr_released [0] = pr_released [0] + 3 ;
+	}
+
+	transition enter1p_0_5 [Processes [0] >= 1] label "enter1p_5" {
+		in_critical_s [5] = in_critical_s [5] + 1 ;
+		Processes [0] = Processes [0] - 1 ;
+		pr_in [0] = pr_in [0] + 1 ;
+		pr_released [0] = pr_released [0] + 3 ;
+	}
+
+	transition enter1p_1_0 [Processes [1] >= 1] label "enter1p_0" {
+		in_critical_s [6] = in_critical_s [6] + 1 ;
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 1 ;
+		pr_released [1] = pr_released [1] + 3 ;
+	}
+
+	transition enter1p_1_1 [Processes [1] >= 1] label "enter1p_1" {
+		in_critical_s [7] = in_critical_s [7] + 1 ;
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 1 ;
+		pr_released [1] = pr_released [1] + 3 ;
+	}
+
+	transition enter1p_1_2 [Processes [1] >= 1] label "enter1p_2" {
+		in_critical_s [8] = in_critical_s [8] + 1 ;
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 1 ;
+		pr_released [1] = pr_released [1] + 3 ;
+	}
+
+	transition enter1p_1_3 [Processes [1] >= 1] label "enter1p_3" {
+		in_critical_s [9] = in_critical_s [9] + 1 ;
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 1 ;
+		pr_released [1] = pr_released [1] + 3 ;
+	}
+
+	transition enter1p_1_4 [Processes [1] >= 1] label "enter1p_4" {
+		in_critical_s [10] = in_critical_s [10] + 1 ;
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 1 ;
+		pr_released [1] = pr_released [1] + 3 ;
+	}
+
+	transition enter1p_1_5 [Processes [1] >= 1] label "enter1p_5" {
+		in_critical_s [11] = in_critical_s [11] + 1 ;
+		Processes [1] = Processes [1] - 1 ;
+		pr_in [1] = pr_in [1] + 1 ;
+		pr_released [1] = pr_released [1] + 3 ;
+	}
+
+	transition enter1p_2_0 [Processes [2] >= 1] label "enter1p_0" {
+		in_critical_s [12] = in_critical_s [12] + 1 ;
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 1 ;
+		pr_released [2] = pr_released [2] + 3 ;
+	}
+
+	transition enter1p_2_1 [Processes [2] >= 1] label "enter1p_1" {
+		in_critical_s [13] = in_critical_s [13] + 1 ;
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 1 ;
+		pr_released [2] = pr_released [2] + 3 ;
+	}
+
+	transition enter1p_2_2 [Processes [2] >= 1] label "enter1p_2" {
+		in_critical_s [14] = in_critical_s [14] + 1 ;
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 1 ;
+		pr_released [2] = pr_released [2] + 3 ;
+	}
+
+	transition enter1p_2_3 [Processes [2] >= 1] label "enter1p_3" {
+		in_critical_s [15] = in_critical_s [15] + 1 ;
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 1 ;
+		pr_released [2] = pr_released [2] + 3 ;
+	}
+
+	transition enter1p_2_4 [Processes [2] >= 1] label "enter1p_4" {
+		in_critical_s [16] = in_critical_s [16] + 1 ;
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 1 ;
+		pr_released [2] = pr_released [2] + 3 ;
+	}
+
+	transition enter1p_2_5 [Processes [2] >= 1] label "enter1p_5" {
+		in_critical_s [17] = in_critical_s [17] + 1 ;
+		Processes [2] = Processes [2] - 1 ;
+		pr_in [2] = pr_in [2] + 1 ;
+		pr_released [2] = pr_released [2] + 3 ;
+	}
+
+	transition enter1r1_0 [Resources [0] >= 1] label "enter1r1" {
+		Resources [0] = Resources [0] - 1 ;
+		self."enter1p_0" ;
+	}
+
+	transition enter1r1_1 [Resources [1] >= 1] label "enter1r1" {
+		Resources [1] = Resources [1] - 1 ;
+		self."enter1p_1" ;
+	}
+
+	transition enter1r1_2 [Resources [2] >= 1] label "enter1r1" {
+		Resources [2] = Resources [2] - 1 ;
+		self."enter1p_2" ;
+	}
+
+	transition enter1r1_3 [Resources [3] >= 1] label "enter1r1" {
+		Resources [3] = Resources [3] - 1 ;
+		self."enter1p_3" ;
+	}
+
+	transition enter1r1_4 [Resources [4] >= 1] label "enter1r1" {
+		Resources [4] = Resources [4] - 1 ;
+		self."enter1p_4" ;
+	}
+
+	transition enter1r1_5 [Resources [5] >= 1] label "enter1r1" {
+		Resources [5] = Resources [5] - 1 ;
+		self."enter1p_5" ;
+	}
+
+	transition enter2r2_0_0 [Resources [0] >= 1] label "enter2r2_0" {
+		in_critical_s [0] = in_critical_s [0] + 1 ;
+		Resources [0] = Resources [0] - 1 ;
+	}
+
+	transition enter2r2_0_1 [Resources [1] >= 1] label "enter2r2_0" {
+		in_critical_s [1] = in_critical_s [1] + 1 ;
+		Resources [1] = Resources [1] - 1 ;
+	}
+
+	transition enter2r2_0_2 [Resources [2] >= 1] label "enter2r2_0" {
+		in_critical_s [2] = in_critical_s [2] + 1 ;
+		Resources [2] = Resources [2] - 1 ;
+	}
+
+	transition enter2r2_0_3 [Resources [3] >= 1] label "enter2r2_0" {
+		in_critical_s [3] = in_critical_s [3] + 1 ;
+		Resources [3] = Resources [3] - 1 ;
+	}
+
+	transition enter2r2_0_4 [Resources [4] >= 1] label "enter2r2_0" {
+		in_critical_s [4] = in_critical_s [4] + 1 ;
+		Resources [4] = Resources [4] - 1 ;
+	}
+
+	transition enter2r2_0_5 [Resources [5] >= 1] label "enter2r2_0" {
+		in_critical_s [5] = in_critical_s [5] + 1 ;
+		Resources [5] = Resources [5] - 1 ;
+	}
+
+	transition enter2r2_1_0 [Resources [0] >= 1] label "enter2r2_1" {
+		in_critical_s [6] = in_critical_s [6] + 1 ;
+		Resources [0] = Resources [0] - 1 ;
+	}
+
+	transition enter2r2_1_1 [Resources [1] >= 1] label "enter2r2_1" {
+		in_critical_s [7] = in_critical_s [7] + 1 ;
+		Resources [1] = Resources [1] - 1 ;
+	}
+
+	transition enter2r2_1_2 [Resources [2] >= 1] label "enter2r2_1" {
+		in_critical_s [8] = in_critical_s [8] + 1 ;
+		Resources [2] = Resources [2] - 1 ;
+	}
+
+	transition enter2r2_1_3 [Resources [3] >= 1] label "enter2r2_1" {
+		in_critical_s [9] = in_critical_s [9] + 1 ;
+		Resources [3] = Resources [3] - 1 ;
+	}
+
+	transition enter2r2_1_4 [Resources [4] >= 1] label "enter2r2_1" {
+		in_critical_s [10] = in_critical_s [10] + 1 ;
+		Resources [4] = Resources [4] - 1 ;
+	}
+
+	transition enter2r2_1_5 [Resources [5] >= 1] label "enter2r2_1" {
+		in_critical_s [11] = in_critical_s [11] + 1 ;
+		Resources [5] = Resources [5] - 1 ;
+	}
+
+	transition enter2r2_2_0 [Resources [0] >= 1] label "enter2r2_2" {
+		in_critical_s [12] = in_critical_s [12] + 1 ;
+		Resources [0] = Resources [0] - 1 ;
+	}
+
+	transition enter2r2_2_1 [Resources [1] >= 1] label "enter2r2_2" {
+		in_critical_s [13] = in_critical_s [13] + 1 ;
+		Resources [1] = Resources [1] - 1 ;
+	}
+
+	transition enter2r2_2_2 [Resources [2] >= 1] label "enter2r2_2" {
+		in_critical_s [14] = in_critical_s [14] + 1 ;
+		Resources [2] = Resources [2] - 1 ;
+	}
+
+	transition enter2r2_2_3 [Resources [3] >= 1] label "enter2r2_2" {
+		in_critical_s [15] = in_critical_s [15] + 1 ;
+		Resources [3] = Resources [3] - 1 ;
+	}
+
+	transition enter2r2_2_4 [Resources [4] >= 1] label "enter2r2_2" {
+		in_critical_s [16] = in_critical_s [16] + 1 ;
+		Resources [4] = Resources [4] - 1 ;
+	}
+
+	transition enter2r2_2_5 [Resources [5] >= 1] label "enter2r2_2" {
+		in_critical_s [17] = in_critical_s [17] + 1 ;
+		Resources [5] = Resources [5] - 1 ;
+	}
+
+	transition exitp_0 [pr_released [0] >= 4] label "exitp" {
+		Processes [0] = Processes [0] + 1 ;
+		pr_released [0] = pr_released [0] - 4 ;
+	}
+
+	transition exitp_1 [pr_released [1] >= 4] label "exitp" {
+		Processes [1] = Processes [1] + 1 ;
+		pr_released [1] = pr_released [1] - 4 ;
+	}
+
+	transition exitp_2 [pr_released [2] >= 4] label "exitp" {
+		Processes [2] = Processes [2] + 1 ;
+		pr_released [2] = pr_released [2] - 4 ;
+	}
+
+	transition release1p_0_0 [in_critical_s [0] >= 1 && pr_in [0] >= 1] label "release1p_0" {
+		in_critical_s [0] = in_critical_s [0] - 1 ;
+		pr_in [0] = pr_in [0] - 1 ;
+		pr_released [0] = pr_released [0] + 1 ;
+	}
+
+	transition release1p_0_1 [in_critical_s [1] >= 1 && pr_in [0] >= 1] label "release1p_1" {
+		in_critical_s [1] = in_critical_s [1] - 1 ;
+		pr_in [0] = pr_in [0] - 1 ;
+		pr_released [0] = pr_released [0] + 1 ;
+	}
+
+	transition release1p_0_2 [in_critical_s [2] >= 1 && pr_in [0] >= 1] label "release1p_2" {
+		in_critical_s [2] = in_critical_s [2] - 1 ;
+		pr_in [0] = pr_in [0] - 1 ;
+		pr_released [0] = pr_released [0] + 1 ;
+	}
+
+	transition release1p_0_3 [in_critical_s [3] >= 1 && pr_in [0] >= 1] label "release1p_3" {
+		in_critical_s [3] = in_critical_s [3] - 1 ;
+		pr_in [0] = pr_in [0] - 1 ;
+		pr_released [0] = pr_released [0] + 1 ;
+	}
+
+	transition release1p_0_4 [in_critical_s [4] >= 1 && pr_in [0] >= 1] label "release1p_4" {
+		in_critical_s [4] = in_critical_s [4] - 1 ;
+		pr_in [0] = pr_in [0] - 1 ;
+		pr_released [0] = pr_released [0] + 1 ;
+	}
+
+	transition release1p_0_5 [in_critical_s [5] >= 1 && pr_in [0] >= 1] label "release1p_5" {
+		in_critical_s [5] = in_critical_s [5] - 1 ;
+		pr_in [0] = pr_in [0] - 1 ;
+		pr_released [0] = pr_released [0] + 1 ;
+	}
+
+	transition release1p_1_0 [in_critical_s [6] >= 1 && pr_in [1] >= 1] label "release1p_0" {
+		in_critical_s [6] = in_critical_s [6] - 1 ;
+		pr_in [1] = pr_in [1] - 1 ;
+		pr_released [1] = pr_released [1] + 1 ;
+	}
+
+	transition release1p_1_1 [in_critical_s [7] >= 1 && pr_in [1] >= 1] label "release1p_1" {
+		in_critical_s [7] = in_critical_s [7] - 1 ;
+		pr_in [1] = pr_in [1] - 1 ;
+		pr_released [1] = pr_released [1] + 1 ;
+	}
+
+	transition release1p_1_2 [in_critical_s [8] >= 1 && pr_in [1] >= 1] label "release1p_2" {
+		in_critical_s [8] = in_critical_s [8] - 1 ;
+		pr_in [1] = pr_in [1] - 1 ;
+		pr_released [1] = pr_released [1] + 1 ;
+	}
+
+	transition release1p_1_3 [in_critical_s [9] >= 1 && pr_in [1] >= 1] label "release1p_3" {
+		in_critical_s [9] = in_critical_s [9] - 1 ;
+		pr_in [1] = pr_in [1] - 1 ;
+		pr_released [1] = pr_released [1] + 1 ;
+	}
+
+	transition release1p_1_4 [in_critical_s [10] >= 1 && pr_in [1] >= 1] label "release1p_4" {
+		in_critical_s [10] = in_critical_s [10] - 1 ;
+		pr_in [1] = pr_in [1] - 1 ;
+		pr_released [1] = pr_released [1] + 1 ;
+	}
+
+	transition release1p_1_5 [in_critical_s [11] >= 1 && pr_in [1] >= 1] label "release1p_5" {
+		in_critical_s [11] = in_critical_s [11] - 1 ;
+		pr_in [1] = pr_in [1] - 1 ;
+		pr_released [1] = pr_released [1] + 1 ;
+	}
+
+	transition release1p_2_0 [in_critical_s [12] >= 1 && pr_in [2] >= 1] label "release1p_0" {
+		in_critical_s [12] = in_critical_s [12] - 1 ;
+		pr_in [2] = pr_in [2] - 1 ;
+		pr_released [2] = pr_released [2] + 1 ;
+	}
+
+	transition release1p_2_1 [in_critical_s [13] >= 1 && pr_in [2] >= 1] label "release1p_1" {
+		in_critical_s [13] = in_critical_s [13] - 1 ;
+		pr_in [2] = pr_in [2] - 1 ;
+		pr_released [2] = pr_released [2] + 1 ;
+	}
+
+	transition release1p_2_2 [in_critical_s [14] >= 1 && pr_in [2] >= 1] label "release1p_2" {
+		in_critical_s [14] = in_critical_s [14] - 1 ;
+		pr_in [2] = pr_in [2] - 1 ;
+		pr_released [2] = pr_released [2] + 1 ;
+	}
+
+	transition release1p_2_3 [in_critical_s [15] >= 1 && pr_in [2] >= 1] label "release1p_3" {
+		in_critical_s [15] = in_critical_s [15] - 1 ;
+		pr_in [2] = pr_in [2] - 1 ;
+		pr_released [2] = pr_released [2] + 1 ;
+	}
+
+	transition release1p_2_4 [in_critical_s [16] >= 1 && pr_in [2] >= 1] label "release1p_4" {
+		in_critical_s [16] = in_critical_s [16] - 1 ;
+		pr_in [2] = pr_in [2] - 1 ;
+		pr_released [2] = pr_released [2] + 1 ;
+	}
+
+	transition release1p_2_5 [in_critical_s [17] >= 1 && pr_in [2] >= 1] label "release1p_5" {
+		in_critical_s [17] = in_critical_s [17] - 1 ;
+		pr_in [2] = pr_in [2] - 1 ;
+		pr_released [2] = pr_released [2] + 1 ;
+	}
+
+	transition release1r1_0 [true] label "release1r1" {
+		Resources [0] = Resources [0] + 1 ;
+		self."release1p_0" ;
+	}
+
+	transition release1r1_1 [true] label "release1r1" {
+		Resources [1] = Resources [1] + 1 ;
+		self."release1p_1" ;
+	}
+
+	transition release1r1_2 [true] label "release1r1" {
+		Resources [2] = Resources [2] + 1 ;
+		self."release1p_2" ;
+	}
+
+	transition release1r1_3 [true] label "release1r1" {
+		Resources [3] = Resources [3] + 1 ;
+		self."release1p_3" ;
+	}
+
+	transition release1r1_4 [true] label "release1r1" {
+		Resources [4] = Resources [4] + 1 ;
+		self."release1p_4" ;
+	}
+
+	transition release1r1_5 [true] label "release1r1" {
+		Resources [5] = Resources [5] + 1 ;
+		self."release1p_5" ;
+	}
+
+	transition release2r2_0_0 [in_critical_s [0] >= 1] label "release2r2_0" {
+		in_critical_s [0] = in_critical_s [0] - 1 ;
+		Resources [0] = Resources [0] + 1 ;
+	}
+
+	transition release2r2_0_1 [in_critical_s [1] >= 1] label "release2r2_0" {
+		in_critical_s [1] = in_critical_s [1] - 1 ;
+		Resources [1] = Resources [1] + 1 ;
+	}
+
+	transition release2r2_0_2 [in_critical_s [2] >= 1] label "release2r2_0" {
+		in_critical_s [2] = in_critical_s [2] - 1 ;
+		Resources [2] = Resources [2] + 1 ;
+	}
+
+	transition release2r2_0_3 [in_critical_s [3] >= 1] label "release2r2_0" {
+		in_critical_s [3] = in_critical_s [3] - 1 ;
+		Resources [3] = Resources [3] + 1 ;
+	}
+
+	transition release2r2_0_4 [in_critical_s [4] >= 1] label "release2r2_0" {
+		in_critical_s [4] = in_critical_s [4] - 1 ;
+		Resources [4] = Resources [4] + 1 ;
+	}
+
+	transition release2r2_0_5 [in_critical_s [5] >= 1] label "release2r2_0" {
+		in_critical_s [5] = in_critical_s [5] - 1 ;
+		Resources [5] = Resources [5] + 1 ;
+	}
+
+	transition release2r2_1_0 [in_critical_s [6] >= 1] label "release2r2_1" {
+		in_critical_s [6] = in_critical_s [6] - 1 ;
+		Resources [0] = Resources [0] + 1 ;
+	}
+
+	transition release2r2_1_1 [in_critical_s [7] >= 1] label "release2r2_1" {
+		in_critical_s [7] = in_critical_s [7] - 1 ;
+		Resources [1] = Resources [1] + 1 ;
+	}
+
+	transition release2r2_1_2 [in_critical_s [8] >= 1] label "release2r2_1" {
+		in_critical_s [8] = in_critical_s [8] - 1 ;
+		Resources [2] = Resources [2] + 1 ;
+	}
+
+	transition release2r2_1_3 [in_critical_s [9] >= 1] label "release2r2_1" {
+		in_critical_s [9] = in_critical_s [9] - 1 ;
+		Resources [3] = Resources [3] + 1 ;
+	}
+
+	transition release2r2_1_4 [in_critical_s [10] >= 1] label "release2r2_1" {
+		in_critical_s [10] = in_critical_s [10] - 1 ;
+		Resources [4] = Resources [4] + 1 ;
+	}
+
+	transition release2r2_1_5 [in_critical_s [11] >= 1] label "release2r2_1" {
+		in_critical_s [11] = in_critical_s [11] - 1 ;
+		Resources [5] = Resources [5] + 1 ;
+	}
+
+	transition release2r2_2_0 [in_critical_s [12] >= 1] label "release2r2_2" {
+		in_critical_s [12] = in_critical_s [12] - 1 ;
+		Resources [0] = Resources [0] + 1 ;
+	}
+
+	transition release2r2_2_1 [in_critical_s [13] >= 1] label "release2r2_2" {
+		in_critical_s [13] = in_critical_s [13] - 1 ;
+		Resources [1] = Resources [1] + 1 ;
+	}
+
+	transition release2r2_2_2 [in_critical_s [14] >= 1] label "release2r2_2" {
+		in_critical_s [14] = in_critical_s [14] - 1 ;
+		Resources [2] = Resources [2] + 1 ;
+	}
+
+	transition release2r2_2_3 [in_critical_s [15] >= 1] label "release2r2_2" {
+		in_critical_s [15] = in_critical_s [15] - 1 ;
+		Resources [3] = Resources [3] + 1 ;
+	}
+
+	transition release2r2_2_4 [in_critical_s [16] >= 1] label "release2r2_2" {
+		in_critical_s [16] = in_critical_s [16] - 1 ;
+		Resources [4] = Resources [4] + 1 ;
+	}
+
+	transition release2r2_2_5 [in_critical_s [17] >= 1] label "release2r2_2" {
+		in_critical_s [17] = in_critical_s [17] - 1 ;
+		Resources [5] = Resources [5] + 1 ;
+	}
+	TRANSIENT = false ;
+}

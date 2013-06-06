@@ -1,0 +1,429 @@
+GAL Token_Ring_5_inst {
+	array [25] State = (1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1) ;
+
+	transition MainProcess_0 [State [20] >= 1 && State [0] >= 1] {
+		State [1] = State [1] + 1 ;
+		State [0] = State [0] - 1 ;
+	}
+
+	transition MainProcess_1 [State [21] >= 1 && State [1] >= 1] {
+		State [2] = State [2] + 1 ;
+		State [1] = State [1] - 1 ;
+	}
+
+	transition MainProcess_2 [State [22] >= 1 && State [2] >= 1] {
+		State [2] = State [2] - 1 ;
+		State [3] = State [3] + 1 ;
+	}
+
+	transition MainProcess_3 [State [23] >= 1 && State [3] >= 1] {
+		State [4] = State [4] + 1 ;
+		State [3] = State [3] - 1 ;
+	}
+
+	transition MainProcess_4 [State [24] >= 1 && State [4] >= 1] {
+		State [4] = State [4] - 1 ;
+		State [0] = State [0] + 1 ;
+	}
+
+	transition OtherProcess_0_1_1 [State [1] >= 1 && State [5] >= 1] {
+		State [6] = State [6] + 1 ;
+		State [5] = State [5] - 1 ;
+	}
+
+	transition OtherProcess_0_1_2 [State [2] >= 1 && State [5] >= 1] {
+		State [7] = State [7] + 1 ;
+		State [5] = State [5] - 1 ;
+	}
+
+	transition OtherProcess_0_1_3 [State [3] >= 1 && State [5] >= 1] {
+		State [5] = State [5] - 1 ;
+		State [8] = State [8] + 1 ;
+	}
+
+	transition OtherProcess_0_1_4 [State [4] >= 1 && State [5] >= 1] {
+		State [9] = State [9] + 1 ;
+		State [5] = State [5] - 1 ;
+	}
+
+	transition OtherProcess_0_2_1 [State [6] >= 1 && State [10] >= 1] {
+		State [11] = State [11] + 1 ;
+		State [10] = State [10] - 1 ;
+	}
+
+	transition OtherProcess_0_2_2 [State [7] >= 1 && State [10] >= 1] {
+		State [10] = State [10] - 1 ;
+		State [12] = State [12] + 1 ;
+	}
+
+	transition OtherProcess_0_2_3 [State [8] >= 1 && State [10] >= 1] {
+		State [10] = State [10] - 1 ;
+		State [13] = State [13] + 1 ;
+	}
+
+	transition OtherProcess_0_2_4 [State [9] >= 1 && State [10] >= 1] {
+		State [14] = State [14] + 1 ;
+		State [10] = State [10] - 1 ;
+	}
+
+	transition OtherProcess_0_3_1 [State [11] >= 1 && State [15] >= 1] {
+		State [16] = State [16] + 1 ;
+		State [15] = State [15] - 1 ;
+	}
+
+	transition OtherProcess_0_3_2 [State [12] >= 1 && State [15] >= 1] {
+		State [17] = State [17] + 1 ;
+		State [15] = State [15] - 1 ;
+	}
+
+	transition OtherProcess_0_3_3 [State [13] >= 1 && State [15] >= 1] {
+		State [15] = State [15] - 1 ;
+		State [18] = State [18] + 1 ;
+	}
+
+	transition OtherProcess_0_3_4 [State [14] >= 1 && State [15] >= 1] {
+		State [15] = State [15] - 1 ;
+		State [19] = State [19] + 1 ;
+	}
+
+	transition OtherProcess_0_4_1 [State [16] >= 1 && State [20] >= 1] {
+		State [21] = State [21] + 1 ;
+		State [20] = State [20] - 1 ;
+	}
+
+	transition OtherProcess_0_4_2 [State [17] >= 1 && State [20] >= 1] {
+		State [22] = State [22] + 1 ;
+		State [20] = State [20] - 1 ;
+	}
+
+	transition OtherProcess_0_4_3 [State [18] >= 1 && State [20] >= 1] {
+		State [20] = State [20] - 1 ;
+		State [23] = State [23] + 1 ;
+	}
+
+	transition OtherProcess_0_4_4 [State [19] >= 1 && State [20] >= 1] {
+		State [24] = State [24] + 1 ;
+		State [20] = State [20] - 1 ;
+	}
+
+	transition OtherProcess_1_1_0 [State [0] >= 1 && State [6] >= 1] {
+		State [5] = State [5] + 1 ;
+		State [6] = State [6] - 1 ;
+	}
+
+	transition OtherProcess_1_1_2 [State [2] >= 1 && State [6] >= 1] {
+		State [7] = State [7] + 1 ;
+		State [6] = State [6] - 1 ;
+	}
+
+	transition OtherProcess_1_1_3 [State [3] >= 1 && State [6] >= 1] {
+		State [6] = State [6] - 1 ;
+		State [8] = State [8] + 1 ;
+	}
+
+	transition OtherProcess_1_1_4 [State [4] >= 1 && State [6] >= 1] {
+		State [9] = State [9] + 1 ;
+		State [6] = State [6] - 1 ;
+	}
+
+	transition OtherProcess_1_2_0 [State [5] >= 1 && State [11] >= 1] {
+		State [10] = State [10] + 1 ;
+		State [11] = State [11] - 1 ;
+	}
+
+	transition OtherProcess_1_2_2 [State [7] >= 1 && State [11] >= 1] {
+		State [11] = State [11] - 1 ;
+		State [12] = State [12] + 1 ;
+	}
+
+	transition OtherProcess_1_2_3 [State [8] >= 1 && State [11] >= 1] {
+		State [13] = State [13] + 1 ;
+		State [11] = State [11] - 1 ;
+	}
+
+	transition OtherProcess_1_2_4 [State [9] >= 1 && State [11] >= 1] {
+		State [14] = State [14] + 1 ;
+		State [11] = State [11] - 1 ;
+	}
+
+	transition OtherProcess_1_3_0 [State [10] >= 1 && State [16] >= 1] {
+		State [15] = State [15] + 1 ;
+		State [16] = State [16] - 1 ;
+	}
+
+	transition OtherProcess_1_3_2 [State [12] >= 1 && State [16] >= 1] {
+		State [16] = State [16] - 1 ;
+		State [17] = State [17] + 1 ;
+	}
+
+	transition OtherProcess_1_3_3 [State [13] >= 1 && State [16] >= 1] {
+		State [18] = State [18] + 1 ;
+		State [16] = State [16] - 1 ;
+	}
+
+	transition OtherProcess_1_3_4 [State [14] >= 1 && State [16] >= 1] {
+		State [19] = State [19] + 1 ;
+		State [16] = State [16] - 1 ;
+	}
+
+	transition OtherProcess_1_4_0 [State [15] >= 1 && State [21] >= 1] {
+		State [20] = State [20] + 1 ;
+		State [21] = State [21] - 1 ;
+	}
+
+	transition OtherProcess_1_4_2 [State [17] >= 1 && State [21] >= 1] {
+		State [22] = State [22] + 1 ;
+		State [21] = State [21] - 1 ;
+	}
+
+	transition OtherProcess_1_4_3 [State [18] >= 1 && State [21] >= 1] {
+		State [23] = State [23] + 1 ;
+		State [21] = State [21] - 1 ;
+	}
+
+	transition OtherProcess_1_4_4 [State [19] >= 1 && State [21] >= 1] {
+		State [24] = State [24] + 1 ;
+		State [21] = State [21] - 1 ;
+	}
+
+	transition OtherProcess_2_1_0 [State [0] >= 1 && State [7] >= 1] {
+		State [5] = State [5] + 1 ;
+		State [7] = State [7] - 1 ;
+	}
+
+	transition OtherProcess_2_1_1 [State [1] >= 1 && State [7] >= 1] {
+		State [6] = State [6] + 1 ;
+		State [7] = State [7] - 1 ;
+	}
+
+	transition OtherProcess_2_1_3 [State [3] >= 1 && State [7] >= 1] {
+		State [8] = State [8] + 1 ;
+		State [7] = State [7] - 1 ;
+	}
+
+	transition OtherProcess_2_1_4 [State [4] >= 1 && State [7] >= 1] {
+		State [9] = State [9] + 1 ;
+		State [7] = State [7] - 1 ;
+	}
+
+	transition OtherProcess_2_2_0 [State [5] >= 1 && State [12] >= 1] {
+		State [12] = State [12] - 1 ;
+		State [10] = State [10] + 1 ;
+	}
+
+	transition OtherProcess_2_2_1 [State [6] >= 1 && State [12] >= 1] {
+		State [11] = State [11] + 1 ;
+		State [12] = State [12] - 1 ;
+	}
+
+	transition OtherProcess_2_2_3 [State [8] >= 1 && State [12] >= 1] {
+		State [12] = State [12] - 1 ;
+		State [13] = State [13] + 1 ;
+	}
+
+	transition OtherProcess_2_2_4 [State [9] >= 1 && State [12] >= 1] {
+		State [14] = State [14] + 1 ;
+		State [12] = State [12] - 1 ;
+	}
+
+	transition OtherProcess_2_3_0 [State [10] >= 1 && State [17] >= 1] {
+		State [17] = State [17] - 1 ;
+		State [15] = State [15] + 1 ;
+	}
+
+	transition OtherProcess_2_3_1 [State [11] >= 1 && State [17] >= 1] {
+		State [16] = State [16] + 1 ;
+		State [17] = State [17] - 1 ;
+	}
+
+	transition OtherProcess_2_3_3 [State [13] >= 1 && State [17] >= 1] {
+		State [18] = State [18] + 1 ;
+		State [17] = State [17] - 1 ;
+	}
+
+	transition OtherProcess_2_3_4 [State [14] >= 1 && State [17] >= 1] {
+		State [17] = State [17] - 1 ;
+		State [19] = State [19] + 1 ;
+	}
+
+	transition OtherProcess_2_4_0 [State [15] >= 1 && State [22] >= 1] {
+		State [20] = State [20] + 1 ;
+		State [22] = State [22] - 1 ;
+	}
+
+	transition OtherProcess_2_4_1 [State [16] >= 1 && State [22] >= 1] {
+		State [21] = State [21] + 1 ;
+		State [22] = State [22] - 1 ;
+	}
+
+	transition OtherProcess_2_4_3 [State [18] >= 1 && State [22] >= 1] {
+		State [23] = State [23] + 1 ;
+		State [22] = State [22] - 1 ;
+	}
+
+	transition OtherProcess_2_4_4 [State [19] >= 1 && State [22] >= 1] {
+		State [22] = State [22] - 1 ;
+		State [24] = State [24] + 1 ;
+	}
+
+	transition OtherProcess_3_1_0 [State [0] >= 1 && State [8] >= 1] {
+		State [8] = State [8] - 1 ;
+		State [5] = State [5] + 1 ;
+	}
+
+	transition OtherProcess_3_1_1 [State [1] >= 1 && State [8] >= 1] {
+		State [8] = State [8] - 1 ;
+		State [6] = State [6] + 1 ;
+	}
+
+	transition OtherProcess_3_1_2 [State [2] >= 1 && State [8] >= 1] {
+		State [7] = State [7] + 1 ;
+		State [8] = State [8] - 1 ;
+	}
+
+	transition OtherProcess_3_1_4 [State [4] >= 1 && State [8] >= 1] {
+		State [9] = State [9] + 1 ;
+		State [8] = State [8] - 1 ;
+	}
+
+	transition OtherProcess_3_2_0 [State [5] >= 1 && State [13] >= 1] {
+		State [13] = State [13] - 1 ;
+		State [10] = State [10] + 1 ;
+	}
+
+	transition OtherProcess_3_2_1 [State [6] >= 1 && State [13] >= 1] {
+		State [11] = State [11] + 1 ;
+		State [13] = State [13] - 1 ;
+	}
+
+	transition OtherProcess_3_2_2 [State [7] >= 1 && State [13] >= 1] {
+		State [13] = State [13] - 1 ;
+		State [12] = State [12] + 1 ;
+	}
+
+	transition OtherProcess_3_2_4 [State [9] >= 1 && State [13] >= 1] {
+		State [13] = State [13] - 1 ;
+		State [14] = State [14] + 1 ;
+	}
+
+	transition OtherProcess_3_3_0 [State [10] >= 1 && State [18] >= 1] {
+		State [15] = State [15] + 1 ;
+		State [18] = State [18] - 1 ;
+	}
+
+	transition OtherProcess_3_3_1 [State [11] >= 1 && State [18] >= 1] {
+		State [16] = State [16] + 1 ;
+		State [18] = State [18] - 1 ;
+	}
+
+	transition OtherProcess_3_3_2 [State [12] >= 1 && State [18] >= 1] {
+		State [17] = State [17] + 1 ;
+		State [18] = State [18] - 1 ;
+	}
+
+	transition OtherProcess_3_3_4 [State [14] >= 1 && State [18] >= 1] {
+		State [18] = State [18] - 1 ;
+		State [19] = State [19] + 1 ;
+	}
+
+	transition OtherProcess_3_4_0 [State [15] >= 1 && State [23] >= 1] {
+		State [20] = State [20] + 1 ;
+		State [23] = State [23] - 1 ;
+	}
+
+	transition OtherProcess_3_4_1 [State [16] >= 1 && State [23] >= 1] {
+		State [21] = State [21] + 1 ;
+		State [23] = State [23] - 1 ;
+	}
+
+	transition OtherProcess_3_4_2 [State [17] >= 1 && State [23] >= 1] {
+		State [22] = State [22] + 1 ;
+		State [23] = State [23] - 1 ;
+	}
+
+	transition OtherProcess_3_4_4 [State [19] >= 1 && State [23] >= 1] {
+		State [24] = State [24] + 1 ;
+		State [23] = State [23] - 1 ;
+	}
+
+	transition OtherProcess_4_1_0 [State [0] >= 1 && State [9] >= 1] {
+		State [5] = State [5] + 1 ;
+		State [9] = State [9] - 1 ;
+	}
+
+	transition OtherProcess_4_1_1 [State [1] >= 1 && State [9] >= 1] {
+		State [9] = State [9] - 1 ;
+		State [6] = State [6] + 1 ;
+	}
+
+	transition OtherProcess_4_1_2 [State [2] >= 1 && State [9] >= 1] {
+		State [7] = State [7] + 1 ;
+		State [9] = State [9] - 1 ;
+	}
+
+	transition OtherProcess_4_1_3 [State [3] >= 1 && State [9] >= 1] {
+		State [8] = State [8] + 1 ;
+		State [9] = State [9] - 1 ;
+	}
+
+	transition OtherProcess_4_2_0 [State [5] >= 1 && State [14] >= 1] {
+		State [14] = State [14] - 1 ;
+		State [10] = State [10] + 1 ;
+	}
+
+	transition OtherProcess_4_2_1 [State [6] >= 1 && State [14] >= 1] {
+		State [11] = State [11] + 1 ;
+		State [14] = State [14] - 1 ;
+	}
+
+	transition OtherProcess_4_2_2 [State [7] >= 1 && State [14] >= 1] {
+		State [14] = State [14] - 1 ;
+		State [12] = State [12] + 1 ;
+	}
+
+	transition OtherProcess_4_2_3 [State [8] >= 1 && State [14] >= 1] {
+		State [14] = State [14] - 1 ;
+		State [13] = State [13] + 1 ;
+	}
+
+	transition OtherProcess_4_3_0 [State [10] >= 1 && State [19] >= 1] {
+		State [19] = State [19] - 1 ;
+		State [15] = State [15] + 1 ;
+	}
+
+	transition OtherProcess_4_3_1 [State [11] >= 1 && State [19] >= 1] {
+		State [16] = State [16] + 1 ;
+		State [19] = State [19] - 1 ;
+	}
+
+	transition OtherProcess_4_3_2 [State [12] >= 1 && State [19] >= 1] {
+		State [17] = State [17] + 1 ;
+		State [19] = State [19] - 1 ;
+	}
+
+	transition OtherProcess_4_3_3 [State [13] >= 1 && State [19] >= 1] {
+		State [19] = State [19] - 1 ;
+		State [18] = State [18] + 1 ;
+	}
+
+	transition OtherProcess_4_4_0 [State [15] >= 1 && State [24] >= 1] {
+		State [24] = State [24] - 1 ;
+		State [20] = State [20] + 1 ;
+	}
+
+	transition OtherProcess_4_4_1 [State [16] >= 1 && State [24] >= 1] {
+		State [24] = State [24] - 1 ;
+		State [21] = State [21] + 1 ;
+	}
+
+	transition OtherProcess_4_4_2 [State [17] >= 1 && State [24] >= 1] {
+		State [24] = State [24] - 1 ;
+		State [22] = State [22] + 1 ;
+	}
+
+	transition OtherProcess_4_4_3 [State [18] >= 1 && State [24] >= 1] {
+		State [23] = State [23] + 1 ;
+		State [24] = State [24] - 1 ;
+	}
+	TRANSIENT = false ;
+}
