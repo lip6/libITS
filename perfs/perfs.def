@@ -768,18 +768,6 @@ szymanski.3-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/szymanski.3.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1"
 szymanski.4-reach.dve
 ../bin/its-reach -t DVE --quiet -i test_models/szymanski.4.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1"
-telephony.1-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/telephony.1.dve -reachable "User_0.error_state"
-telephony.2-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/telephony.2.dve -reachable "User_0.error_state"
-telephony.3-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/telephony.3.dve -reachable "User_0.error_state"
-telephony.4-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/telephony.4.dve -reachable "User_0.error_state"
-telephony.7-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/telephony.7.dve -reachable "User_0.error_state"
-telephony.8-reach.dve
-../bin/its-reach -t DVE --quiet -i test_models/telephony.8.dve -reachable "User_0.error_state"
 cpn_test/csRepeat-2-col.inst.gal
 ../bin/its-reach -i cpn_test/csRepeat-2-col.inst.gal -t GAL --quiet
 cpn_test/dotsBoxes-2-col.inst.gal
