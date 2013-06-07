@@ -277,9 +277,7 @@ int main_noex (int argc, char **argv) {
      if (dowitness) {
        std::cout << "computing trace..." <<endl;
        path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
-       for (labels_it it = path.getPath().begin() ; it != path.getPath().end() ; ++it) {
-	 std::cout << *it << "  ";
-       }
+       model.printPath(path, std::cout,true);
      }
      std::cout << std::endl;
    }
