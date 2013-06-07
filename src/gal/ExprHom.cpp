@@ -652,8 +652,9 @@ public:
 	      std::set<Variable> expr_support = expr.getSupport(); 
 	      
 	      // Check if expr is a function of at most "x", hence in fact x=f(x)
-	      if (expr_support.size()==1 && IntExpressionFactory::createVariable(*expr_support.begin()).equals(curv) ) {
-		// Indeed, expr is only a function of at most current var
+	      IntExpression e2 = e & assertion;
+	      if ( e2.getType() == CONST ) {
+		//		std::cerr<< "Indeed, expr is only a function of at most current var" << std::endl;
 		
 		GDDD pot = computeDomain(vr,potall);
 		GDDD inv = invertExprValues(expr.getExpr(), curv.getExpr(), pot);
