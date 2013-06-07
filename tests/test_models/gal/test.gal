@@ -4,7 +4,7 @@ GAL a {
 
 	array[2] tabf = (1,50);
 	
-	transition t1 [True && False]
+	transition t1 [true && false]
 	{
 		a = a-1; 
 		tabf[0] = tabf[0];
