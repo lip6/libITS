@@ -91,7 +91,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   int Nsize = -1;
 
   // For parameters to Force tool
-  string orderHeuristic = "LQ";
+  string orderHeuristic = "L";
   
   bool stutterOnDeadlock = false;
 
@@ -376,7 +376,7 @@ void usageInputOptions() {
     cerr<<  "       L   try to improve locality of transitions." << endl;
     cerr<<  "       Q   try to reduce the number of queries." << endl;
     cerr<<  "       S   try get the state variables higher in the structure." << endl;
-    cerr<<  "       It defaults to LQ, a fair compromise between improving locality and reducing the need to query the lower part of the structure when resolving the actions." <<endl;
+    cerr<<  "       It defaults to L, as improving locality seems to be the most efficient." <<endl;
     cerr<<  "       If you want to use the default (lexicographical) ordering, use --gen-order \"\" to deactivate all the constraints\n." <<endl;
 }
 
