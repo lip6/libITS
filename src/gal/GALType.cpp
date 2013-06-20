@@ -223,7 +223,7 @@ labels_t GALType::getTransLabels () const {
   labels_t GALType::getVarSet () const
   {
     labels_t res;
-    res = force_heuristic (gal_, voLocal, voQuery, voState);
+    res = force_heuristic (gal_);
     
     for (labels_t::const_iterator it = res.begin ();
          it != res.end (); ++it)

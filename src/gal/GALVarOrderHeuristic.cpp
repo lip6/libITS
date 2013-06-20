@@ -58,97 +58,10 @@ lex_heuristic (const GAL * const g)
 
 /********** force heuristic ****************/
 
-class GetArrayVisitor : public PIntExprVisitor, public PBoolExprVisitor {
-  std::vector< std::pair<int,PIntExpression> > res;
-public:
-  GetArrayVisitor () {}
-  
-  // nothing to do
-  void visitVarExpr (int) {}
-  void visitConstExpr (int) {}
-  void visitArrayConstExpr (int, const PIntExpression &) {}
-  void visitBoolConstExpr (bool) {}
-  
-  // recursive calls
-  void visitWrapBoolExpr (const PBoolExpression & e) { e.accept (this); }
-  void visitNaryIntExpr (IntExprType, const NaryPParamType & n)
-  {
-    for (NaryPParamType::const_iterator it = n.begin ();
-         it != n.end (); ++it)
-    {
-      it->accept (this);
-    }
-  }
-  void visitBinaryIntExpr (IntExprType, const PIntExpression & l, const PIntExpression & r)
-  {
-    l.accept (this);
-    r.accept (this);
-  }
-  void visitNaryBoolExpr (BoolExprType, const std::vector<PBoolExpression> & n)
-  {
-    for (std::vector<PBoolExpression>::const_iterator it = n.begin ();
-         it != n.end (); ++it)
-    {
-      it->accept (this);
-    }
-  }
-  void visitBinaryBoolComp (BoolExprType, const PIntExpression & l, const PIntExpression & r)
-  {
-    l.accept (this);
-    r.accept (this);
-  }
-  void visitNotBoolExpr (const PBoolExpression & e) { e.accept (this); }
-  
-  // base case
-  void visitArrayVarExpr (int a, const PIntExpression & i)
-  {
-    std::vector<std::pair<int,PIntExpression> >::const_iterator it;
-    for (it = res.begin ();
-         it != res.end (); ++it)
-    {
-      if (it->first == a && it->second.equals (i))
-      {
-        break;
-      }
-    }
-    // if the pair is not already in the vector
-    if (it == res.end ())
-    {
-      res.push_back (std::make_pair (a, i));
-    }
-    i.accept (this);
-  }
-  
-  // accessor
-  const std::vector< std::pair<int,PIntExpression> > & getResult () const { return res; }
-};
+// a type to associate a variable to an int
+typedef std::map<std::string,int> vtoi_t;
 
-class ArrayVisitor : public PIntExprVisitor {
-  int res;
-  PIntExpression index;
-public:
-  ArrayVisitor(): res(-1), index(PIntExpressionFactory::createConstant (0)) {}
-  
-  // nothing to do
-  void visitVarExpr (int) {}
-  void visitConstExpr (int) {}
-  void visitWrapBoolExpr (const class PBoolExpression &) {}
-  void visitArrayConstExpr (int, const class PIntExpression &) {}
-  void visitNaryIntExpr (IntExprType, const NaryPParamType &) {}
-  void visitBinaryIntExpr (IntExprType, const class PIntExpression &, const class PIntExpression &) {}
-
-  // get Array name
-  void visitArrayVarExpr (int i, const PIntExpression & e)
-  {
-    res = i;
-    index = e;
-  }
-  
-  // accessors
-  int getResult () const { return res; }
-  PIntExpression getIndex () const { return index; }
-};
-
+// an expression visitor to retrieve the variables
 class GetVariableVisitor : public PIntExprVisitor, public PBoolExprVisitor {
   env_t env;
   std::set< std::string > res;
@@ -203,45 +116,9 @@ public:
   const std::set< std::string > & getResult () const { return res; }
 };
 
-class QueryEdge : public edge_t {
+class LocalityEdge : public constraint_t {
 public:
-  QueryEdge (const std::string & l, const std::string & r)
-  {
-    data_.push_back (l);
-    data_.push_back (r);
-  }
-  
-  int
-  cost (const order_t & o) const
-  {
-    int e1 = o.find (data_[0])->second;
-    int e2 = o.find (data_[1])->second;
-    return (e1 < e2) ? 0 : (e1-e2);
-  }
-  
-  cog_t
-  cog (const order_t & o) const
-  {
-    int e1 = o.find (data_[0])->second;
-    int e2 = o.find (data_[1])->second;
-    cog_t res;
-    if (e1 < e2)
-    {
-      res[data_[0]] = e1;
-      res[data_[1]] = e2;
-    }
-    else
-    {
-      res[data_[0]] = e2;
-      res[data_[1]] = e1;
-    }
-    return res;
-  }
-};
-
-class LocalityEdge : public edge_t {
-public:
-  LocalityEdge (const std::vector<std::string> & v): edge_t (v) {}
+  LocalityEdge (const std::set<var_t> & v): constraint_t (v) {}
   
   int
   cost (const order_t & o) const
@@ -265,361 +142,142 @@ public:
     return max - min;
   }
   
-  cog_t
+  float
   cog (const order_t & o) const
   {
-    float tmp = 0;
+    float res = 0;
     for (const_iterator it = begin ();
          it != end (); ++it)
     {
-      tmp += o.find (*it)->second;
+      res += o.find (*it)->second;
     }
-    tmp /= data_.size ();
-    cog_t res;
-    for (const_iterator it = begin ();
-         it != end (); ++it)
-    {
-      res[*it] = tmp;
-    }
-    return res;
-  }
-};
-
-class StateEdge : public edge_t {
-public:
-  StateEdge (const std::string & c)
-  {
-    data_.push_back (c);
-  }
-  
-  int
-  cost (const order_t & o) const
-  {
-    int e = o.find (data_[0])->second;
-    return o.size () - e;
-  }
-  
-  cog_t
-  cog (const order_t & o) const
-  {
-    cog_t res;
-    res [data_ [0]] = o.size ();
+    res /= data_.size ();
     return res;
   }
 };
 
 namespace {
 
-template<class Expr>
-void
-add_query_constraint (std::vector<const edge_t *> & c, const Expr & g, const GAL & gal)
-{
-  // query constraints
-  GetArrayVisitor gav;
-  g.getExpr ().accept (&gav);
+class LocalConstraintBuilder : public StatementVisitor {
+public :
+  std::set<std::string> res;
+
+  LocalConstraintBuilder() {}
+
+  ~LocalConstraintBuilder() {} 
   
-  env_t env = g.getEnv ();
-  for (std::vector< std::pair<int, PIntExpression> >::const_iterator it = gav.getResult ().begin ();
-       it != gav.getResult ().end (); ++it)
-  {
-    std::set< std::string > lhs, rhs;
-    std::string current_array = IntExpressionFactory::getVar (env [it->first]);
-    // walk the GAL looking for the current_array
-    for (GAL::arrays_it ai = gal.arrays_begin ();
-         ai != gal.arrays_end (); ++ai)
-    {
-      if (ai->getName () == current_array)
-      {
-        for (ArrayDeclaration::vars_it vi = ai->vars_begin ();
-             vi != ai->vars_end (); ++vi)
-        {
-          lhs.insert (vi->getName ());
-        }
-        break;
-      }
-    }
+  void visitAssign (const class Assignment & ai) {
+    GetVariableVisitor v1 (ai.getVariable ().getEnv ());
+    ai.getVariable ().getExpr ().accept (&v1);
+    GetVariableVisitor v2 (ai.getExpression ().getEnv ());
+    ai.getExpression ().getExpr ().accept (&v2);
     
-    GetVariableVisitor vv (env);
-    it->second.accept (&vv);
-    rhs = vv.getResult ();
-    // query constraints
-    for (std::set<std::string>::const_iterator li = lhs.begin ();
-         li != lhs.end (); ++li)
-    {
-      for (std::set<std::string>::const_iterator ri = rhs.begin ();
-           ri != rhs.end (); ++ri)
-      {
-        std::string e1 = li->substr (0, li->find_first_of ('['));
-        std::string e2 = ri->substr (0, ri->find_first_of ('['));
-        if (e1 != e2)
-        {
-          edge_t * tmp = new QueryEdge (*li, *ri);
-          c.push_back (tmp);
-        }
-      }
+    res.insert (v1.getResult ().begin (), v1.getResult ().end ());
+    res.insert (v2.getResult ().begin (), v2.getResult ().end ());
+  } 
+  
+  void visitSequence (const class Sequence & seq) {
+    for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
+      (*it)->acceptVisitor(*this);
     }
+  } 
+
+  void visitIte (const class Ite & ite) {
+    handleBoolExpr(ite.getCondition());      
+    ite.getIfTrue().acceptVisitor(*this);
+    ite.getIfFalse().acceptVisitor(*this);
   }
-}
 
-  class ConstraintBuilder : public StatementVisitor {
-  public :
-    std::vector<const edge_t *> & c;
-    const GAL & gal;
+  void visitFix (const class FixStatement & loop) {
+    loop.getAction().acceptVisitor(*this);
+  }
 
-    ConstraintBuilder(std::vector<const edge_t *> & cc, const GAL & gal): c(cc), gal(gal) {}
+  void visitCall (const class Call & call) {
+    // \todo
+    // Calls are not followed currently => no additional constraints
+  } 
+  void visitAbort () {
+    // ignore
+  } 
 
-    ~ConstraintBuilder() {} 
-    
-    void visitAssign (const class Assignment & ai) {
-      // add the array constraints for the lhs
-      add_query_constraint (c, ai.getVariable (), gal);
-      // add the array constraints for the rhs
-      add_query_constraint (c, ai.getExpression (), gal);
-
-      IntExpression var = ai.getVariable ();
-      // add the assignment constraints
-      std::set<std::string> lhs;
-      // if var is a variable
-      if (var.getType () == VAR || var.getType () == CONSTARRAY)
-	{
-	  lhs.insert (var.getName ());
-	}
-      // else, var is a non-const array access
-      else
-	{
-	  // find the array in the GAL
-	  ArrayVisitor av;
-	  var.getExpr ().accept (&av);
-	  std::string current_array = IntExpressionFactory::getVar (var.getEnv () [av.getResult ()]);
-	  // find the array in the GAL
-	  for (GAL::arrays_it ari = gal.arrays_begin ();
-	       ari != gal.arrays_end (); ++ari)
-	    {
-	      if (current_array == ari->getName ())
-		{
-		  // add the variables of the array to lhs
-		  for (ArrayDeclaration::vars_it vi = ari->vars_begin ();
-		       vi != ari->vars_end (); ++vi)
-		    {
-		      lhs.insert (vi->getName ());
-		    }
-		  // leave the loop
-		  break;
-		}
-	    }
-	}
-      
-      // fill the constraints
-      GetVariableVisitor vv (ai.getExpression ().getEnv ());
-      ai.getExpression ().getExpr ().accept (&vv);
-      std::set< std::string > rhs = vv.getResult ();
-      
-      for (std::set< std::string >::const_iterator li = lhs.begin ();
-	   li != lhs.end (); ++li)
-	{
-	  for (std::set< std::string >::const_iterator ri = rhs.begin ();
-	       ri != rhs.end (); ++ri)
-	    {
-	      if (*li != *ri)
-		{
-		  edge_t * tmp = new QueryEdge (*li, *ri);
-		  c.push_back (tmp);
-		}
-	    }
-	}
-      
-    } 
-    
-    void visitSequence (const class Sequence & seq) {
-      for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
-	(*it)->acceptVisitor(*this);
-      }
-    } 
-
-    void visitIte (const class Ite & ite) {
-      add_query_constraint (c, ite.getCondition(), gal);      
-      ite.getIfTrue().acceptVisitor(*this);
-      ite.getIfFalse().acceptVisitor(*this);
-    }
-
-    void visitFix (const class FixStatement & loop) {
-      loop.getAction().acceptVisitor(*this);
-    }
-
-    void visitCall (const class Call & call) {
-      // Calls are not followed currently => no additional constraints
-    } 
-    void visitAbort () {
-      // ignore
-    }
-
-  };
-
+  void handleBoolExpr (const BoolExpression & be) {
+    GetVariableVisitor v (be.getEnv ());
+    be.getExpr().accept (&v);
+    res.insert (v.getResult ().begin (), v.getResult ().end ());
+  }
+};
 
 void
-add_query_constraint (std::vector<const edge_t *> & c, const GuardedAction & g, const GAL & gal)
+add_locality_constraint (std::vector<const constraint_t *> & c,
+                         const GuardedAction & g,
+                         const vtoi_t & var_to_int)
 {
-  // add the array constraints for the guard
-  add_query_constraint (c, g.getGuard (), gal);
-
-
-  ConstraintBuilder cb (c, gal);
-  // This call will update c appropriately based on expressions encountered in statements.
-  g.getAction().acceptVisitor(cb);
-
-}
-
-
-
-
-  class LocalConstraintBuilder : public StatementVisitor {
-  public :
-    std::set<std::string> res;
-
-    LocalConstraintBuilder() {}
-
-    ~LocalConstraintBuilder() {} 
-    
-    void visitAssign (const class Assignment & ai) {
-      GetVariableVisitor v1 (ai.getVariable ().getEnv ());
-      ai.getVariable ().getExpr ().accept (&v1);
-      GetVariableVisitor v2 (ai.getExpression ().getEnv ());
-      ai.getExpression ().getExpr ().accept (&v2);
-      
-      res.insert (v1.getResult ().begin (), v1.getResult ().end ());
-      res.insert (v2.getResult ().begin (), v2.getResult ().end ());
-    } 
-    
-    void visitSequence (const class Sequence & seq) {
-      for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
-	(*it)->acceptVisitor(*this);
-      }
-    } 
-
-    void visitIte (const class Ite & ite) {
-      handleBoolExpr(ite.getCondition());      
-      ite.getIfTrue().acceptVisitor(*this);
-      ite.getIfFalse().acceptVisitor(*this);
-    }
-
-    void visitFix (const class FixStatement & loop) {
-      loop.getAction().acceptVisitor(*this);
-    }
-
-    void visitCall (const class Call & call) {
-      // Calls are not followed currently => no additional constraints
-    } 
-    void visitAbort () {
-      // ignore
-    } 
-
-    void handleBoolExpr (const BoolExpression & be) {
-      GetVariableVisitor v (be.getEnv ());
-      be.getExpr().accept (&v);
-      res.insert (v.getResult ().begin (), v.getResult ().end ());
-    }
-
-  };
-
-
-
-void
-add_locality_constraint (std::vector<const edge_t *> & c, const GuardedAction & g)
-{
-  std::set<std::string> local_edge;
-
   LocalConstraintBuilder lcb;
   lcb.handleBoolExpr(g.getGuard());
   
   g.getAction().acceptVisitor(lcb);
   
-  
-  std::vector<std::string> tmp2 (lcb.res.begin (), lcb.res.end ());
-  if (tmp2.size () > 1)
-    c.push_back (new LocalityEdge (tmp2));
-}
-
-void
-add_state_constraint (std::vector<const edge_t *> & c, const std::string & v)
-{
-  size_t pos = v.find_last_of ('.');
-  if (pos != std::string::npos)
+  if (lcb.res.size () > 1)
   {
-    std::string tail = v.substr (pos+1, v.size () - pos - 1);
-    if (tail == "state")
+    std::set<var_t> result;
+    for (std::set<std::string>::const_iterator it = lcb.res.begin ();
+         it != lcb.res.end (); ++it)
     {
-      c.push_back (new StateEdge (v));
+      vtoi_t::const_iterator vi = var_to_int.find (*it);
+      assert (vi != var_to_int.end ());
+      result.insert (vi->second);
     }
+    c.push_back (new LocalityEdge (result));
   }
 }
 
 } // anonymous namespace
 
 labels_t
-force_heuristic (const GAL * const g,
-                 bool voLocal,
-                 bool voQuery,
-                 bool voState)
+force_heuristic (const GAL * const g)
 {
-  // get the array names
-  std::set< std::string > arrays;
-  for (GAL::arrays_it it = g->arrays_begin() ; it != g->arrays_end() ; ++it)
+  // compute the lexicographical ordering on variables
+  // this is used to map variables to integers (for FORCE, variables are int).
+  // it will also be used as the initial ordering for FORCE
+  labels_t vnames = lex_heuristic (g);
+  vtoi_t var_to_int;
+  for (size_t i = 0; i != vnames.size (); ++i)
   {
-    arrays.insert (it->getName ());
+    var_to_int [vnames [i]] = i;
   }
   
-  // get the constraints
-  std::vector< const edge_t * > constraint;
+  std::vector<const constraint_t *> constraints;
   // walk the transitions of the GAL
   for (GAL::trans_it it = g->trans_begin ();
        it != g->trans_end (); ++it)
   {
     // add locality constraint
-    if (voLocal)
-      add_locality_constraint (constraint, *it);
-    // add query constraints
-    if (voQuery)
-      add_query_constraint (constraint, *it, *g);
+    add_locality_constraint (constraints, *it, var_to_int);
   }
   
-  // use the lexicographical heuristic to get initial order
-  labels_t vnames = lex_heuristic (g);
-  
-  // build the initial ordering
-  // arbitrarily from vnames
-  // \todo randomize this initial ordering ??
+  // build the initial ordering from the lexicographical ordering
   order_t init_order;
   int i = 0;
   for (labels_t::const_iterator it = vnames.begin ();
        it != vnames.end (); ++it)
   {
-    // add state constraints
-    if (voState)
-      add_state_constraint (constraint, *it);
-    // add to the initial order
-    init_order [*it] = i++;
+    init_order [var_to_int [*it]] = i++;
   }
   
-  // call the force algorithm
-  order_t n_order = force (constraint, init_order);
+  // call the FORCE algorithm
+  order_t new_order = force (constraints, init_order);
   
-  // build a labels_t according to the order given by force
-  labels_t tmp = labels_t (n_order.size ());
-  for (order_t::const_iterator it = n_order.begin ();
-       it != n_order.end (); ++it)
+  // rebuild a labels_t according to the order given by FORCE
+  labels_t result (new_order.size ());
+  for (order_t::const_iterator it = new_order.begin ();
+       it != new_order.end (); ++it)
   {
-    tmp[it->second] = it->first;
-  }
-  labels_t result;
-  for (labels_t::const_iterator it = tmp.begin ();
-       it != tmp.end (); ++it)
-  {
-    result.push_back (*it);
+    result [it->second] = vnames [it->first];
   }
   
-  // delete the contraints
-  for (std::vector<const edge_t *>::const_iterator it = constraint.begin ();
-       it != constraint.end (); ++it)
+  // delete the constraints
+  for (std::vector<const constraint_t *>::const_iterator it = constraints.begin ();
+       it != constraints.end (); ++it)
   {
     delete *it;
   }

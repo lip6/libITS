@@ -1,42 +1,67 @@
 #ifndef FORCE_HH_
 #define FORCE_HH_
 
-#include <string>
 #include <map>
 #include <set>
 #include <vector>
 
-typedef std::map< std::string, int > order_t;
-typedef std::map< std::string, float > cog_t;
+/**
+ The interface to the FORCE algorithm.
+ cf.  FORCE: a fast and easy-to-implement variable-ordering heuristic
+      F.A. Aloul, I.L. Markov, K.A. Sakallah
+      Proceedings of the 13th ACM Great Lakes symposium on VLSI (2003)
+ 
+ The basic idea is as follows.
+ A 'locality constraint' is a set of variables.
+ Given a set of locality constraints and an initial ordering on variables,
+ FORCE computes a new ordering so as to minimize the span of the constraints.
+ The main idea is to consider each locality constraint as a set of springs, one
+ connecting each variable to the constraint. The springs are all considered
+ equivalent, applying the same force.
+ FORCE computes the center of gravity (cog) of each constraint.
+ Then each variable is assigned the cog of the cogs of each constraint it
+ appears in. This gives a new ordering on variables. This new ordering is better
+ if the sum of the spans (the costs) of the constraints is decreased.
+ The process is iterated (at most |Var| times to limit complexity).
+ 
+ We refine a bit this model.
+ Each constraint can be assigned a different strength, and a different cost.
+ 
+ Note that a previous version allowed to have different spring strength inside
+ a single constraint (before svn revision 3414).
+ */
 
-class edge_t {
+/// a type for variables
+typedef int var_t;
+/// an ordering associates a position to each variable
+typedef std::map<var_t, int> order_t;
+
+class constraint_t {
 public:
-  edge_t (const std::vector<std::string> & v = std::vector<std::string> ()): data_ (v) {}
-  virtual ~edge_t() {}
-  typedef std::vector< std::string >::const_iterator const_iterator;
-  
+  constraint_t (const std::set<var_t> & v = std::set<var_t> ()): data_ (v) {}
+  virtual ~constraint_t () {}
+
+  /// iterator API
+  typedef std::set<var_t>::const_iterator const_iterator;
   const_iterator begin () const { return data_.begin (); }
   const_iterator end () const { return data_.end (); }
-  
+
   virtual int cost (const order_t &) const = 0;
-  virtual cog_t cog (const order_t &) const = 0;
-  
+  virtual float cog (const order_t &) const = 0;
 protected:
-  /// ordered edges
-  /// one can sort these vectors when working with unordered edges
-  std::vector< std::string > data_;
+  std::set<var_t> data_;
 };
 
-/// the main function of the force heuristic
-/// takes a set of constraints (edge_t)
-/// an initial ordering
-/// a center of gravity function
-/// a cost function for an edge
-/// note: if an edge has a null cost, the algo can take advantage of it
-///       by considering it is a satisfied constraint enforcing nothing
-///       this may lead to a better optimization
+/**
+ The function calling the FORCE heuristic.
+ Takes a set of constraints and an initial ordering.
+ Return a new ordering that is supposed to better fit the constraints.
+ note:  if an edge has a null cost, the algo can take advantage of it
+        by considering it is a satisfied constraint enforcing nothing
+        this may lead to a better optimization
+ */
 order_t
-force (const std::vector< const edge_t * > &,
+force (const std::vector< const constraint_t * > &,
        const order_t &);
 
 #endif
