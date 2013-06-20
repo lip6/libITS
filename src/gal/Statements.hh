@@ -196,14 +196,14 @@ private :
 public :
   /// Constructor, by reference since IntExpr are by construction unique
   Ite () {}
-  Ite (const BoolExpression & ccond, const Sequence & iifTrue, const Sequence & iifFalse=Sequence() ) : cond(ccond), ifTrue(iifTrue), ifFalse(iifFalse) {}
+  Ite (const BoolExpression & ccond, const Sequence & iifTrue, const Sequence & iifFalse=Sequence() ) : cond(ccond.eval ()), ifTrue(iifTrue), ifFalse(iifFalse) {}
 
   const BoolExpression & getCondition() const { return cond; }
   Sequence & getIfTrue() { return ifTrue; }
   Sequence & getIfFalse() { return ifFalse; }
   const Sequence & getIfTrue() const { return ifTrue; }
   const Sequence & getIfFalse() const { return ifFalse; }
-  void setCondition (const BoolExpression & e) { cond = e; }
+  void setCondition (const BoolExpression & e) { cond = e.eval (); }
  
   /// pretty print
   void print (std::ostream & os, int ind) const {
