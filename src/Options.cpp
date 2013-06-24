@@ -91,7 +91,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   int Nsize = -1;
 
   // For parameters to Force tool
-  string orderHeuristic = "L";
+  orderHeuristicType orderHeuristic = DEFAULT;
   
   bool stutterOnDeadlock = false;
 
@@ -147,7 +147,15 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
    } else if ( ! strcmp(argv[i],"--gen-order") ) {
      if (++i > argc) 
        { cerr << "Give description of the heuristic used after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
-     orderHeuristic = argv[i];
+     if ( !strcmp(argv[i],"DEFAULT") ) {
+       orderHeuristic = DEFAULT;
+     } else if ( !strcmp(argv[i],"FOLLOW") ) {
+       orderHeuristic = FOLLOW;
+     } else {
+       cerr << "Unrecognized type " << argv[i] << " provided for variable ordering strategy after " << argv[i-1] << endl;
+       showUsageHelp();
+       exit(1);
+     }
      /** ENCODING STRATEGIES FOR SCALAR SETS */
    } else if (! strcmp(argv[i],"-ssD2") ) {
      if (++i > argc) 

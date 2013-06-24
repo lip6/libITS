@@ -402,8 +402,10 @@ labels_t GALType::getTransLabels () const {
   /******** class GALTypeFactory **************/
 
   void
-  GALTypeFactory::parseHeuristicOptions (const std::string & v, GALType * gt)
+  GALTypeFactory::parseHeuristicOptions (orderHeuristicType v, GALType * gt)
   {
+    // \todo
+    /*
     assert (v.size () < 4);
     for (size_t i = 0 ; i < v.size () ; ++i)
     {
@@ -424,9 +426,10 @@ labels_t GALType::getTransLabels () const {
           assert(false);
       }
     }
+     */
   }
   
-  GALType * GALTypeFactory::createGALType (const GAL * g, bool stutterOnDeadlock, const std::string & varOrderHeuristic)
+  GALType * GALTypeFactory::createGALType (const GAL * g, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic)
   {
     GALType * res = new GALType (g);
     res->setStutterOnDeadlock (stutterOnDeadlock);
@@ -434,7 +437,7 @@ labels_t GALType::getTransLabels () const {
     return res;
   }
 
-  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock, const std::string & varOrderHeuristic)
+  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic)
   {
     struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
     std::string modelName = wibble::str::basename(path);

@@ -12,7 +12,6 @@ namespace dve2GAL {
 }
 
 namespace its {
-
   
 class GALType : public TypeBasics {
 
@@ -147,12 +146,16 @@ public:
   Transition getPredicate (Label predicate) const ;
 };
 
+// DEFAULT: do not follow the 'call' statements
+// FOLLOW: follows 'call' statements
+enum orderHeuristicType { DEFAULT, FOLLOW };
+
 class GALTypeFactory {
   // a helper function to parse the varOrderHeuristic
-  static void parseHeuristicOptions (const std::string &, GALType *);
+  static void parseHeuristicOptions (orderHeuristicType, GALType *);
 public:
-  static GALType * createGALType (const GAL *, bool stutterOnDeadlock, const std::string & varOrderHeuristic);
-  static GALType * createGALDVEType (Label, bool stutterOnDeadlock, const std::string & varOrderHeuristic);
+  static GALType * createGALType (const GAL *, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic);
+  static GALType * createGALDVEType (Label, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic);
 };
 
 }
