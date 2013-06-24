@@ -120,16 +120,16 @@ class LocalityEdge : public constraint_t {
 public:
   LocalityEdge (const std::set<var_t> & v): constraint_t (v) {}
   
-  int
+  float
   cost (const order_t & o) const
   {
     // the cost of such a constraint is its span
     // that is the distance between the min index and the max index
-    int max = -1, min = o.size ();
+    float max = -1, min = o.size ();
     for (const_iterator it = begin ();
          it != end (); ++it)
     {
-      int i = o.find (*it)->second;
+      float i = o.find (*it)->second;
       if (i < min)
       {
         min = i;
@@ -151,7 +151,7 @@ public:
     {
       res += o.find (*it)->second;
     }
-    res /= data_.size ();
+    res /= (float)data_.size ();
     return res;
   }
 };
@@ -159,13 +159,23 @@ public:
 namespace {
 
 class LocalConstraintBuilder : public StatementVisitor {
-public :
+  const GAL * const gal_;
+  std::vector<const constraint_t *> & constraints_;
   std::set<std::string> res;
-
-  LocalConstraintBuilder() {}
-
-  ~LocalConstraintBuilder() {} 
+  bool call_flag_;
+public :
+  // constructor
+  LocalConstraintBuilder (const its::GAL * const g,
+                          std::vector<const constraint_t *> & c)
+  : gal_(g)
+  , constraints_(c)
+  , res(std::set<std::string>())
+  , call_flag_(false)
+  {}
+  // destructor
+  ~LocalConstraintBuilder () {} 
   
+  /**** visit statements ****/
   void visitAssign (const class Assignment & ai) {
     GetVariableVisitor v1 (ai.getVariable ().getEnv ());
     ai.getVariable ().getExpr ().accept (&v1);
@@ -193,11 +203,22 @@ public :
   }
 
   void visitCall (const class Call & call) {
-    // \todo
-    // Calls are not followed currently => no additional constraints
-  } 
+    // set the call flag
+    call_flag_ = true;
+    // add a constraint that gathers all the variables of the callees
+    for (GAL::trans_it it = gal_->trans_begin ();
+         it != gal_->trans_end (); ++it)
+    {
+      if (it->getLabel () == call.getLabel ())
+      {
+        this->handleBoolExpr (it->getGuard ());
+        it->getAction ().acceptVisitor (*this);
+      }
+    }
+  }
+  
   void visitAbort () {
-    // ignore
+    // nothing to do
   } 
 
   void handleBoolExpr (const BoolExpression & be) {
@@ -205,30 +226,42 @@ public :
     be.getExpr().accept (&v);
     res.insert (v.getResult ().begin (), v.getResult ().end ());
   }
+
+  // process a guardedAction
+  void
+  process (const GuardedAction & g, const vtoi_t & var_to_int)
+  {
+    handleBoolExpr (g.getGuard ());
+    g.getAction ().acceptVisitor (*this);
+    
+    // add the constraint only if it has more than one variable
+    if (res.size () > 1)
+    {
+      std::set<var_t> tmp;
+      for (std::set<std::string>::const_iterator it = res.begin ();
+           it != res.end (); ++it)
+      {
+        vtoi_t::const_iterator vi = var_to_int.find (*it);
+        assert (vi != var_to_int.end ());
+        tmp.insert (vi->second);
+      }
+      LocalityEdge * e = new LocalityEdge (tmp);
+      // \todo what weight for a transition featuring a call ?
+//      if (call_flag_)
+//        e->setWeight (2);
+      constraints_.push_back (e);
+    }
+  }
 };
 
 void
 add_locality_constraint (std::vector<const constraint_t *> & c,
+                         const GAL * gal,
                          const GuardedAction & g,
                          const vtoi_t & var_to_int)
 {
-  LocalConstraintBuilder lcb;
-  lcb.handleBoolExpr(g.getGuard());
-  
-  g.getAction().acceptVisitor(lcb);
-  
-  if (lcb.res.size () > 1)
-  {
-    std::set<var_t> result;
-    for (std::set<std::string>::const_iterator it = lcb.res.begin ();
-         it != lcb.res.end (); ++it)
-    {
-      vtoi_t::const_iterator vi = var_to_int.find (*it);
-      assert (vi != var_to_int.end ());
-      result.insert (vi->second);
-    }
-    c.push_back (new LocalityEdge (result));
-  }
+  LocalConstraintBuilder lcb (gal,c);
+  lcb.process (g, var_to_int);
 }
 
 } // anonymous namespace
@@ -252,7 +285,7 @@ force_heuristic (const GAL * const g)
        it != g->trans_end (); ++it)
   {
     // add locality constraint
-    add_locality_constraint (constraints, *it, var_to_int);
+    add_locality_constraint (constraints, g, *it, var_to_int);
   }
   
   // build the initial ordering from the lexicographical ordering

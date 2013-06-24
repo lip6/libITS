@@ -33,12 +33,18 @@
 
 /// a type for variables
 typedef int var_t;
-/// an ordering associates a position to each variable
+/// an ordering associates an integer position to each variable
 typedef std::map<var_t, int> order_t;
+/// a positionning associates a float position to each variable
+typedef std::map<var_t, float> pos_t;
 
 class constraint_t {
 public:
-  constraint_t (const std::set<var_t> & v = std::set<var_t> ()): data_ (v) {}
+  /// constructor
+  constraint_t (const std::set<var_t> & v = std::set<var_t> (),
+                float w = 1)
+  : data_ (v), weight_(w) {}
+  /// destructor
   virtual ~constraint_t () {}
 
   /// iterator API
@@ -46,10 +52,17 @@ public:
   const_iterator begin () const { return data_.begin (); }
   const_iterator end () const { return data_.end (); }
 
-  virtual int cost (const order_t &) const = 0;
+  /// cost, center of gravity
+  virtual float cost (const order_t &) const = 0;
   virtual float cog (const order_t &) const = 0;
+  /// weight getter
+  float weight () const { return weight_; }
+  /// weight setter
+  void setWeight (float w) { weight_ = w; }
 protected:
   std::set<var_t> data_;
+private:
+  float weight_;
 };
 
 /**

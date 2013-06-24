@@ -7,9 +7,6 @@
 
 #include <iostream>
 
-// a pos_t associates to each variable a position
-typedef std::map<var_t,float> pos_t;
-
 // utility function to sort according to the second component of the pairs
 bool
 second_sort (const std::pair<var_t, float> & a, const std::pair<var_t, float> &b)
@@ -36,22 +33,35 @@ order_from_newloc (const pos_t & new_loc)
   return res;
 }
 
+// utility function to cast an order_t to a pos_t
+pos_t
+loc_from_order (const order_t & o)
+{
+  pos_t res;
+  for (order_t::const_iterator it = o.begin ();
+       it != o.end (); ++it)
+  {
+    res[it->first] = it->second;
+  }
+  return res;
+}
+
 // utility function to compute the total cost of a set of constraints
-int
+float
 cost (const std::vector<const constraint_t *> & v,
       const order_t & o)
 {
-  int res = 0;
+  float res = 0;
   for (std::vector<const constraint_t *>::const_iterator it = v.begin ();
        it != v.end (); ++it)
   {
-    res += (*it)->cost (o);
+    res += (*it)->weight () * (*it)->cost (o);
   }
   return res;
 }
 
 // associates to each variable the number of adjacent constraints
-typedef std::map<var_t,int> nb_edge_t;
+typedef std::map<var_t,float> nb_edge_t;
 
 // one step of iteration
 // takes a set of constraint, an ordering, and the number of constraint for each
@@ -66,8 +76,8 @@ new_order (const std::vector<const constraint_t *> & c,
   for (std::vector<const constraint_t *>::const_iterator it = c.begin ();
        it != c.end (); ++it)
   {
-    // compute its center of gravity
-    float cog = (*it)->cog (o);
+    // compute its weighted center of gravity
+    float cog = (*it)->weight () * (*it)->cog (o);
     // add it to each of adjacent variable
     for (constraint_t::const_iterator ei = (*it)->begin ();
          ei != (*it)->end (); ++ei)
@@ -108,17 +118,21 @@ new_order_neutral (const std::vector<const constraint_t *> & c,
   pos_t new_loc;
   // the number of edges adjacent to each variable must be recomputed
   nb_edge_t n;
+  // for each constraint
   for (std::vector<const constraint_t *>::const_iterator it = c.begin ();
        it != c.end (); ++it)
   {
+    // if its cost is not null
     if ((*it)->cost (o) != 0)
     {
-      float cog = (*it)->cog (o);
+      // compute its weighted center of gravity
+      float cog = (*it)->weight () * (*it)->cog (o);
+      // add it to each adjacent variable
       for (constraint_t::const_iterator ei = (*it)->begin ();
            ei != (*it)->end (); ++ei)
       {
         new_loc [*ei] += cog;
-        n [*ei]++;
+        n [*ei] += (*it)->weight ();
       }
     }
   }
@@ -158,7 +172,7 @@ force (const std::vector<const constraint_t *> & c,
     for (constraint_t::const_iterator ei = (*it)->begin ();
          ei != (*it)->end (); ++ei)
     {
-      n[*ei]++;
+      n[*ei] += (*it)->weight ();
     }
   }
   
