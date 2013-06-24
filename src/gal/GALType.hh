@@ -5,6 +5,7 @@
 #include "GAL.hh"
 #include "GALOrder.hh"
 #include "TypeVisitor.hh"
+#include "GALVarOrderHeuristic.hh"
 
 // forward declaration
 namespace dve2GAL {
@@ -12,22 +13,17 @@ namespace dve2GAL {
 }
 
 namespace its {
-  
+
 class GALType : public TypeBasics {
 
   const GAL * gal_;
   /** if true, add a transition /\_{t \in trans} (! t.guard)
    ** this transition makes a self-loop on deadlocks, allowing to have the same LTL semantics as divine */
   bool stutterOnDeadlock;
-  /** the constraints to be used in the determination of the var order
-   ** these constraints are fed to my implementation of Fadi Aloul's force algorithm
-   **   voLocal   try to improve locality
-   **   voQuery   try to minimize the number of queries
-   **   voState   try to put the state variables higher
-   */
-  bool voLocal;
-  bool voQuery;
-  bool voState;
+  /** the strategy to be used in the determination of the var order
+   ** cf. GALVarOrderHeuristic.hh
+   **/
+  orderHeuristicType strat_;
 
   mutable GalOrder * go_;
   // support function to builda Hom from a GuardedAction (using current varOrder)
@@ -36,12 +32,10 @@ class GALType : public TypeBasics {
   GHom getSuccsHom (const labels_t & tau) const ;
   friend class HomBuilder;
 public :
-  GALType (const GAL * gal):gal_(gal), voLocal(false), voQuery(false), voState(false),go_(NULL) {}
+  GALType (const GAL * gal):gal_(gal), strat_(DEFAULT), go_(NULL) {}
 
   void setStutterOnDeadlock (bool s) { stutterOnDeadlock = s; }
-  void setVoLocal (bool a) { voLocal = a; }
-  void setVoQuery (bool a) { voQuery = a; }
-  void setVoState (bool a) { voState = a; }
+  void setOrderStrategy (orderHeuristicType s) { strat_ = s; }
 
   // For Gal order
   const GalOrder * getGalOrder() const {
@@ -145,10 +139,6 @@ public:
    */
   Transition getPredicate (Label predicate) const ;
 };
-
-// DEFAULT: do not follow the 'call' statements
-// FOLLOW: follows 'call' statements
-enum orderHeuristicType { DEFAULT, FOLLOW };
 
 class GALTypeFactory {
   // a helper function to parse the varOrderHeuristic

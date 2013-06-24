@@ -8,8 +8,6 @@
 
 #include <algorithm>
 
-#include "GALVarOrderHeuristic.hh"
-
 #define DEFAULT_VAR 0
 
 namespace its {
@@ -223,7 +221,7 @@ labels_t GALType::getTransLabels () const {
   labels_t GALType::getVarSet () const
   {
     labels_t res;
-    res = force_heuristic (gal_);
+    res = force_heuristic (gal_, strat_);
     
     for (labels_t::const_iterator it = res.begin ();
          it != res.end (); ++it)
@@ -404,29 +402,7 @@ labels_t GALType::getTransLabels () const {
   void
   GALTypeFactory::parseHeuristicOptions (orderHeuristicType v, GALType * gt)
   {
-    // \todo
-    /*
-    assert (v.size () < 4);
-    for (size_t i = 0 ; i < v.size () ; ++i)
-    {
-      switch (v[i])
-      {
-        case 'L':
-          gt->setVoLocal (true);
-          break;
-        case 'Q':
-          gt->setVoQuery (true);
-          break;
-        case 'S':
-          gt->setVoState (true);
-          break;
-        default:
-          // not valid
-          std::cerr << "invalid VarOrder heuristic option " << v[i] << std::endl;
-          assert(false);
-      }
-    }
-     */
+    gt->setOrderStrategy (v);
   }
   
   GALType * GALTypeFactory::createGALType (const GAL * g, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic)

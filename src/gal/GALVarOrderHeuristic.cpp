@@ -161,14 +161,17 @@ namespace {
 class LocalConstraintBuilder : public StatementVisitor {
   const GAL * const gal_;
   std::vector<const constraint_t *> & constraints_;
+  orderHeuristicType strat_;
   std::set<std::string> res;
   bool call_flag_;
 public :
   // constructor
   LocalConstraintBuilder (const its::GAL * const g,
-                          std::vector<const constraint_t *> & c)
+                          std::vector<const constraint_t *> & c,
+                          orderHeuristicType s)
   : gal_(g)
   , constraints_(c)
+  , strat_(s)
   , res(std::set<std::string>())
   , call_flag_(false)
   {}
@@ -203,6 +206,10 @@ public :
   }
 
   void visitCall (const class Call & call) {
+    // currently, only the default strat does not follow the call
+    if (strat_ == DEFAULT)
+      return;
+
     // set the call flag
     call_flag_ = true;
     // add a constraint that gathers all the variables of the callees
@@ -257,17 +264,18 @@ public :
 void
 add_locality_constraint (std::vector<const constraint_t *> & c,
                          const GAL * gal,
+                         orderHeuristicType s,
                          const GuardedAction & g,
                          const vtoi_t & var_to_int)
 {
-  LocalConstraintBuilder lcb (gal,c);
+  LocalConstraintBuilder lcb (gal, c, s);
   lcb.process (g, var_to_int);
 }
 
 } // anonymous namespace
 
 labels_t
-force_heuristic (const GAL * const g)
+force_heuristic (const GAL * const g, orderHeuristicType strat)
 {
   // compute the lexicographical ordering on variables
   // this is used to map variables to integers (for FORCE, variables are int).
@@ -285,7 +293,7 @@ force_heuristic (const GAL * const g)
        it != g->trans_end (); ++it)
   {
     // add locality constraint
-    add_locality_constraint (constraints, g, *it, var_to_int);
+    add_locality_constraint (constraints, g, strat, *it, var_to_int);
   }
   
   // build the initial ordering from the lexicographical ordering
