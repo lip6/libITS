@@ -611,7 +611,7 @@ public :
     return val?6829:102547;
   }
   void print (std::ostream & os, const env_t & env) const {
-    os << val;
+    os << std::boolalpha << val;
   }
 
   bool isSupport (int,int) const {
