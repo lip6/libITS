@@ -106,6 +106,13 @@ public :
 	return PBoolExpressionFactory::createConstant(true);
     else if (p.size() == 1) 
       return *p.begin();
+    else if (p.size () == 2 && *p.begin () == PBoolExpressionFactory::createNot (*p.rbegin()).eval ())
+    {
+      if (getType () == OR)
+        return PBoolExpressionFactory::createConstant(true);
+      else
+        return PBoolExpressionFactory::createConstant(false);
+    }
     else 
       return PBoolExpressionFactory::createNary(getType(),p);
   }
