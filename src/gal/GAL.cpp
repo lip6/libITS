@@ -59,7 +59,7 @@ namespace its {
 
     os << "  //arrays"<<endl;
     for (GAL::arrays_it it = gal.arrays_begin() ; it != gal.arrays_end() ; ++it ) {
-      os  << "  int[" << it->size() << "] " << it->getName() << "= (" ;
+      os  << "  array[" << it->size() << "] " << it->getName() << "= (" ;
       for (ArrayDeclaration::vars_it jt = it->vars_begin() ; jt != it->vars_end() ; /* in loop */ ) {
 	os << gal.getVarValue(jt->getName()) ;
 	++jt;
