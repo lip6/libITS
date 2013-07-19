@@ -318,7 +318,7 @@ public :
   /// pretty print
   void print (std::ostream & os, int ind) const {
     indent(os,ind);
-    os << "self." << label ;
+    os << "self.\"" << label << "\"";
   }
   
   /// To get all the variables occuring in the expression
