@@ -117,12 +117,35 @@ public:
 };
 
 class LocalityEdge : public constraint_t {
+  orderHeuristicType strat_;
 public:
-  LocalityEdge (const std::set<var_t> & v): constraint_t (v) {}
+  LocalityEdge (const std::set<var_t> & v, orderHeuristicType s)
+  : constraint_t (v)
+  , strat_ (s)
+  {}
   
   float
   cost (const order_t & o) const
   {
+    // those strategies are based on a squared cost
+    // physical approach, we compute the energy of the springs
+    // the energy of a spring is quadratic in its elongation
+    if (strat_ == FOLLOW_SQ ||
+        strat_ == FOLLOW_DYN_SQ ||
+        strat_ == FOLLOW_FDYN_SQ)
+    {
+      float c = cog (o);
+      float energy = 0;
+      for (const_iterator it = begin ();
+           it != end (); ++it)
+      {
+        float l = ((float)o.find (*it)->second) - c;
+        energy += l*l;
+      }
+      return energy;
+    }
+    
+    // for all other strategies
     // the cost of such a constraint is its span
     // that is the distance between the min index and the max index
     float max = -1, min = o.size ();
@@ -252,11 +275,49 @@ public :
         assert (vi != var_to_int.end ());
         tmp.insert (vi->second);
       }
-      LocalityEdge * e = new LocalityEdge (tmp);
+      LocalityEdge * e = new LocalityEdge (tmp, strat_);
       // \todo what weight for a transition featuring a call ?
-//      if (call_flag_)
-//        e->setWeight (2);
-      constraints_.push_back (e);
+      float esize = e->size ();
+      float tsize = var_to_int.size ();
+      
+      switch (strat_)
+      {
+        case DEFAULT:
+          if (! call_flag_)
+            constraints_.push_back (e);
+          else
+            delete e;
+          break;
+        case FOLLOW:
+        case FOLLOW_SQ:
+        case SATUR:
+          constraints_.push_back (e);
+          break;
+        case FOLLOW_HALF:
+          if (call_flag_)
+            e->setWeight (0.5);
+          constraints_.push_back (e);
+          break;
+        case FOLLOW_DOUBLE:
+          if (call_flag_)
+            e->setWeight (2);
+          constraints_.push_back (e);
+          break;
+        case FOLLOW_DYN:
+        case FOLLOW_DYN_SQ:
+          if (call_flag_)
+            e->setWeight (esize / tsize);
+          constraints_.push_back (e);
+          break;
+        case FOLLOW_FDYN:
+        case FOLLOW_FDYN_SQ:
+          e->setWeight (esize / tsize);
+          constraints_.push_back (e);
+          break;
+        case LEXICO: // should not happen
+          assert (false);
+          break;
+      }
     }
   }
 };
@@ -281,6 +342,9 @@ force_heuristic (const GAL * const g, orderHeuristicType strat)
   // this is used to map variables to integers (for FORCE, variables are int).
   // it will also be used as the initial ordering for FORCE
   labels_t vnames = lex_heuristic (g);
+  if (strat == LEXICO)
+    return vnames;
+  
   vtoi_t var_to_int;
   for (size_t i = 0; i != vnames.size (); ++i)
   {
@@ -303,6 +367,23 @@ force_heuristic (const GAL * const g, orderHeuristicType strat)
        it != vnames.end (); ++it)
   {
     init_order [var_to_int [*it]] = i++;
+  }
+  
+  if (strat == SATUR)
+  {
+    // count the number of constraints that have the same set of variables
+    std::map<std::set<var_t>, int> count;
+    for (std::vector<const constraint_t *>::const_iterator it = constraints.begin ();
+         it != constraints.end (); ++it)
+    {
+      count [(*it)->get_data ()] += 1;
+    }
+    for (std::vector<const constraint_t *>::const_iterator it = constraints.begin ();
+         it != constraints.end (); ++it)
+    {
+//      std::cerr << count[(*it)->get_data ()] << std::endl;
+      const_cast<constraint_t *> (*it)->set_dev (count[(*it)->get_data ()]);
+    }
   }
   
   // call the FORCE algorithm

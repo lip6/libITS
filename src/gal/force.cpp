@@ -77,7 +77,7 @@ new_order (const std::vector<const constraint_t *> & c,
        it != c.end (); ++it)
   {
     // compute its weighted center of gravity
-    float cog = (*it)->weight () * (*it)->cog (o);
+    float cog = (*it)->weight () * (*it)->cog (o) + (*it)->dev ();
     // add it to each of adjacent variable
     for (constraint_t::const_iterator ei = (*it)->begin ();
          ei != (*it)->end (); ++ei)
@@ -126,7 +126,7 @@ new_order_neutral (const std::vector<const constraint_t *> & c,
     if ((*it)->cost (o) != 0)
     {
       // compute its weighted center of gravity
-      float cog = (*it)->weight () * (*it)->cog (o);
+      float cog = (*it)->weight () * (*it)->cog (o) + (*it)->dev ();
       // add it to each adjacent variable
       for (constraint_t::const_iterator ei = (*it)->begin ();
            ei != (*it)->end (); ++ei)

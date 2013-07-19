@@ -151,6 +151,24 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        orderHeuristic = DEFAULT;
      } else if ( !strcmp(argv[i],"FOLLOW") ) {
        orderHeuristic = FOLLOW;
+     } else if ( !strcmp(argv[i],"FOLLOW_HALF") ) {
+       orderHeuristic = FOLLOW_HALF;
+     } else if ( !strcmp(argv[i],"FOLLOW_DOUBLE") ) {
+       orderHeuristic = FOLLOW_DOUBLE;
+     } else if ( !strcmp(argv[i],"FOLLOW_SQ") ) {
+       orderHeuristic = FOLLOW_SQ;
+     } else if ( !strcmp(argv[i],"FOLLOW_DYN") ) {
+       orderHeuristic = FOLLOW_DYN;
+     } else if ( !strcmp(argv[i],"FOLLOW_DYN_SQ") ) {
+       orderHeuristic = FOLLOW_DYN_SQ;
+     } else if ( !strcmp(argv[i],"FOLLOW_FDYN") ) {
+       orderHeuristic = FOLLOW_FDYN;
+     } else if ( !strcmp(argv[i],"FOLLOW_FDYN_SQ") ) {
+       orderHeuristic = FOLLOW_FDYN_SQ;
+     } else if ( !strcmp(argv[i],"SATUR") ) {
+       orderHeuristic = SATUR;
+     } else if ( !strcmp(argv[i],"LEXICO") ) {
+       orderHeuristic = LEXICO;
      } else {
        cerr << "Unrecognized type " << argv[i] << " provided for variable ordering strategy after " << argv[i-1] << endl;
        showUsageHelp();
@@ -380,12 +398,18 @@ void usageInputOptions() {
     cerr<<  "    -ssDR INT : (depth recursive) use recursive encoding for scalar sets. Integer provided defines number of blocks at highest levels." <<endl;
     cerr<<  "    -ssDS INT : (depth shallow recursive) use alternative recursive encoding for scalar sets. Integer provided defines number of blocks at lowest level.\n" <<endl;
     cerr<< "\nGAL-based specific options (DVE and GAL):" << endl;
-    cerr<<  "    --gen-order L?Q?S? : Invoke ordering heuristic to compute a static ordering. Three types of constraints can be specified:" << endl;
-    cerr<<  "       L   try to improve locality of transitions." << endl;
-    cerr<<  "       Q   try to reduce the number of queries." << endl;
-    cerr<<  "       S   try get the state variables higher in the structure." << endl;
-    cerr<<  "       It defaults to L, as improving locality seems to be the most efficient." <<endl;
-    cerr<<  "       If you want to use the default (lexicographical) ordering, use --gen-order \"\" to deactivate all the constraints\n." <<endl;
+    cerr<<  "    --gen-order STRAT :  Invoke ordering heuristic to compute a static ordering." << endl;
+    cerr<<  "                         STRAT should be one of the following [default DEFAULT]:" << endl;
+    cerr<<  "       DEFAULT         : historical strategy, does not follow labels of 'call' statements"  << endl;
+    cerr<<  "       FOLLOW          : follows the labels of 'call' statements"  << endl;
+    cerr<<  "       FOLLOW_HALF     : follows the labels of 'call' statements, but with halved weight"  << endl;
+    cerr<<  "       FOLLOW_DOUBLE   : follows the labels of 'call' statements, but with doubled weight"  << endl;
+    cerr<<  "       FOLLOW_SQUARE   : same as FOLLOW, but uses energy-based costs"  << endl;
+    cerr<<  "       FOLLOW_DYN      : follows the labels of 'call' statements, with a cost related to constraint' size"  << endl;
+    cerr<<  "       FOLLOW_DYN_SQ   : same as FOLLOW_DYN, but uses energy-based costs"  << endl;
+    cerr<<  "       FOLLOW_FDYN     : same as FOLLOW_DYN, but the cost is related to the size for all constraints (even with no 'call')"  << endl;
+    cerr<<  "       FOLLOW_FDYN_SQ  : same as FOLLOW_FDYN, but uses energy-based costs"  << endl;
+    cerr<<  "       LEXICO          : use the old strategy, based on lexicographical ordering of the variable"  << endl;
 }
 
 /** Consumes the options that are recognized in args, and treats them to configure libDDD

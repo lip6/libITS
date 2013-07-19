@@ -1,6 +1,7 @@
 #ifndef FORCE_HH_
 #define FORCE_HH_
 
+#include <cstdlib>
 #include <map>
 #include <set>
 #include <vector>
@@ -43,7 +44,7 @@ public:
   /// constructor
   constraint_t (const std::set<var_t> & v = std::set<var_t> (),
                 float w = 1)
-  : data_ (v), weight_(w) {}
+  : data_ (v), weight_(w), dev_(0) {}
   /// destructor
   virtual ~constraint_t () {}
 
@@ -51,6 +52,8 @@ public:
   typedef std::set<var_t>::const_iterator const_iterator;
   const_iterator begin () const { return data_.begin (); }
   const_iterator end () const { return data_.end (); }
+  size_t size () const { return data_.size (); }
+  std::set<var_t> get_data () const { return data_; }
 
   /// cost, center of gravity
   virtual float cost (const order_t &) const = 0;
@@ -59,10 +62,14 @@ public:
   float weight () const { return weight_; }
   /// weight setter
   void setWeight (float w) { weight_ = w; }
+  
+  float dev () const { return dev_; }
+  void set_dev (float d) { dev_ = d; }
 protected:
   std::set<var_t> data_;
 private:
   float weight_;
+  float dev_;
 };
 
 /**
