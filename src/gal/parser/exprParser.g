@@ -92,7 +92,7 @@ options {
 setGAL[const its::GAL * g]: { result = const_cast<its::GAL *> (g); } ;
 
 system returns [its::GAL* r] :
-  'GAL' name=qualifiedName
+  ('gal'|'GAL') name=qualifiedName
   
   {result = new its::GAL ( $name.res );}
   '{'
