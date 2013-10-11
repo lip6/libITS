@@ -25,7 +25,7 @@ typedef enum {
   BITXOR, // bitwise XOR ^
   WRAPBOOL, // to evaluate a boolean as 0 or 1
   LSHIFT, // left shift bitwise operator <<
-  RSHIFT, // left shift bitwise operator <<
+  RSHIFT, // right shift bitwise operator >>
   ARRAY, // access inside an array
   CONSTARRAY // access to a given cell of an array
 } IntExprType ;

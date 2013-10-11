@@ -956,7 +956,7 @@ class BitRshiftExpr : public BinaryIntExpr {
 
 public :
   BitRshiftExpr (const PIntExpression & left, const PIntExpression & right) : BinaryIntExpr(left,right) {};
-  IntExprType getType() const  { return BITOR; }
+  IntExprType getType() const  { return RSHIFT; }
   const char * getOpString() const { return " >> ";}
   int constEval (int i, int j) const {
     if (i == TOP || j == TOP)
