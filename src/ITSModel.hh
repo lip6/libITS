@@ -119,7 +119,7 @@ public:
   // Create a type to hold a spot::tgba : this function is implemented in sog-its project, file sogIts.cpp
   bool declareType (const class spot::tgba & tgba);
   // Create a type to represent a PINS wrapper on the ETF file format.
-  bool declareETFType (Label path) ;
+  virtual bool declareETFType (Label path) ;
   // Create a type to hold a GAL model
   bool declareType (const class GAL & net, bool stutterOnDeadlock=false) ;
 

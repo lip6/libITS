@@ -10,18 +10,21 @@
 
 #include "TypeBasics.hh"
 #include "TypeVisitor.hh"
+#include <vector>
 
 extern "C" {
 #include "etf-util.h"
 }
 
+using std::vector;
 
 namespace its {
-
 /** A etf adapter matching the ITS type contract.
  *  Uses (friendly) delegation on Etf class */
 class EtfType : public  TypeBasics {
   // The concrete storage class
+protected :
+
   etf_model_t etfmodel;
   lts_type_t ltstype;
 
@@ -29,7 +32,7 @@ class EtfType : public  TypeBasics {
   
   // a helper function that parses the input ETF file using the primitives of LTSmin and produces the corresponding data structures.
   void compute_transitions (std::vector<class ETFTransition> & transitions) const ;
- protected :
+
   // returns the set of component instance names 
   labels_t getVarSet () const;
 public :
@@ -93,6 +96,47 @@ public :
 
   void visit (class TypeVisitor * visitor) const { /* visitor->visitEtf(comp_);*/ }
 };
+
+class ETFTransition {
+ public :
+   vector<int> proj;
+   SDD value;
+
+   ETFTransition (const vector<int> & proj) :  proj(proj),value(SDD::null) {};
+
+   // returns the index of the variable in the projection
+   // e.g. if transition touches vars 0, 3 , 5 and variable 3 is the target pid "var"
+   // this will return 1 (i.e index of 3 in projection)
+   // return -1 if var is not touched by the transition
+   int concernsVariable (int var) const {
+     for (vector<int>::const_iterator it = proj.begin() ; it != proj.end() ; ++it ) {
+	if (*it == var) {
+	  return var;
+	}
+     }
+     return -1;
+   }
+
+   void addEdge (int *src, int * dst) {
+     GSDD element = SDD::one;
+     int len = proj.size();
+
+     for (int i = 0; i < len; i++) {
+	element = SDD(proj[i], DDD(DEFAULT_VAR,src[i],GDDD(DEFAULT_VAR,dst[i])) , element);
+     }
+
+     value = value + element;
+     assert(value != SDD::top);
+   }
+
+   GShom getShom () const {
+     return apply2k(value);
+   }
+
+
+ };
+
+
 
 } // namespace
 
