@@ -1,7 +1,7 @@
 AC_INIT([SOGITS],[0.1],[Yann.Thierry-mieg@lip6.fr])
 # We use automake to build makefiles
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 
 # M4 macros location
 AC_CONFIG_MACRO_DIR([m4])
