@@ -59,8 +59,14 @@ MYHEADER =apiterator.hh \
 	sogsucciter.hh \
 	sogtgba.hh \
 	sogtgbautils.hh \
-	tgbaIts.hh
-
+	slaptgta.hh \
+	etf/ETFTestingType.hh \
+	fsltltesting.hh \
+	sogkripke.hh \
+	tgbaIts.hh \
+	dsogtgta.hh
+	
+	
 
 MYSRC = apiterator.cpp \
 	bczCSD99.cpp \
@@ -73,8 +79,13 @@ MYSRC = apiterator.cpp \
 	sogsucciter.cpp \
 	sogtgba.cpp \
 	sogtgbautils.cpp \
-	tgbaIts.cpp
-
+	slaptgta.ccp \
+	etf/ETFTestingType.cpp \
+	fsltltesting.cpp \
+	sogkripke.ccp \
+	tgbaIts.cpp \
+    dsogtgta.cpp
+	
 its_ltl_SOURCES = $(MYSRC) $(MYHEADER)
 
 its_ltl_LDADD = $(LDADDFLAGS) 

@@ -1,10 +1,11 @@
 #ifndef SOG_STATE_HH
 #define SOG_STATE_HH
 
+#include "sogIts.hh"
 #include "tgba/state.hh"
 #include "bdd.h"
 #include "SDD.h"
-#include "sogIts.hh"
+
 
 namespace sogits {
 

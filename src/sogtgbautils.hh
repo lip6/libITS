@@ -5,6 +5,7 @@
 #include <list>
 #include <string>
 
+#include "sogtgba.hh"
 #include "misc/timer.hh"
 #include "ltlast/formula.hh"
 #include "ltlast/atomic_prop.hh"
@@ -13,7 +14,8 @@
 
 #include "ITSModel.hh"
 
-#include "sogtgba.hh"
+
+
 
 namespace sogits {
 
@@ -40,8 +42,8 @@ namespace sogits {
 
     its::ITSModel * model_;
     sogIts * sogModel_;
-
     const spot::tgba* a_;
+    const spot::tgba* tgba_transformed_to_tgta_;
     sog_tgba * systgba_;
     const spot::tgba* tba_;
     // options
@@ -70,6 +72,7 @@ namespace sogits {
 		    model_(NULL),
 		    sogModel_(NULL),
 		    a_(NULL),
+		    tgba_transformed_to_tgta_(NULL),
 		    systgba_(NULL),
 		    tba_(NULL),
 		    fm_exprop_opt_(false),

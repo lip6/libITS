@@ -99,17 +99,17 @@ namespace slap
     bdd current_condition() const;
     bdd current_acceptance_conditions() const;
 
-  private:
+  protected:
     //@{
     /// Internal routines to advance to the next successor.
-    void step_();
+    virtual void step_();
     void next_non_false_();
     bdd compute_weaker_selfloop_ap() ;
     //@}
 
     // to allow pretty printing of arc annotations
     friend class slap_tgba;
-  protected:
+
     const spot::tgba * aut_;
     const spot::state * aut_state_;
     spot::tgba_succ_iterator* left_;
@@ -203,7 +203,6 @@ namespace slap
     virtual bdd compute_support_conditions(const spot::state* state) const;
     virtual bdd compute_support_variables(const spot::state* state) const;
 
-  private:
     spot::bdd_dict* dict_;
     const spot::tgba* left_;
     const sogIts & model_;

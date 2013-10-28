@@ -41,6 +41,7 @@
 // fair CTL bricks
 #include "tgbaIts.hh"
 #include "fsltl.hh"
+#include "fsltltesting.hh"
 
 using namespace its;
 using namespace sogits;
@@ -64,7 +65,7 @@ void usage() {
 	    << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
-            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLAP,SOP,FSOWCTY,FSEL,BCZ99,SLAP-FST,SLAP-FSA} (SLAP-FST by default)\n"
+            << "  -SSOGTYPE       apply the SOG construction algoritm SOGTYPE={SOG,SLAP,SOP,FSOWCTY,FSOWCTY-TGTA,FSEL,BCZ99,SLAP-FST,SLAP-FSA} (SLAP-FST by default)\n"
 	    << "                  The FST variants include a test for switching to fully symbolic emptiness check in terminal states.\n"
 	    << "                  The FSA variants include a test for switching to fully symbolic emptiness check in any potentially accepting automaton state."
             << std::endl
@@ -231,6 +232,30 @@ int main(int argc, const char *argv[]) {
     else if (!strcmp(args[i], "-SFSOWCTY")) {
       sogtype = FS_OWCTY;
     }
+    else if (!strcmp(args[i], "-SFSOWCTY-TGTA"))
+      {
+        sogtype = FS_OWCTY_TGTA;
+      }
+    else if (!strcmp(args[i], "-SSOG-TGTA"))
+      {
+        sogtype = SOG_TGTA;
+      }
+    else if (!strcmp(args[i], "-SSLAP-TGTA"))
+      {
+        sogtype = SLAP_TGTA;
+      }
+    else if (!strcmp(args[i], "-SSOP-TGTA"))
+      {
+        sogtype = SOP_TGTA;
+      }
+    else if (!strcmp(args[i], "-SSLAP-DTGTA"))
+      {
+        sogtype = SLAP_DTGTA;
+      }
+    else if (!strcmp(args[i], "-SSOP-DTGTA"))
+      {
+        sogtype = SOP_DTGTA;
+      }
     else if (!strcmp(args[i], "-x")) {
       fm_exprop_opt = true;
     }
@@ -244,11 +269,19 @@ int main(int argc, const char *argv[]) {
   args = argsleft;
 
   ITSModel * model;
-  if (sogtype == FS_OWCTY || sogtype == FS_EL) {
-    model = new fsltlModel();
-  } else {
-    model = new ITSModel();
-  }
+   if (sogtype == FS_OWCTY || sogtype == FS_EL)
+        {
+          model = new fsltlModel();
+        }
+      else if (sogtype == FS_OWCTY_TGTA || sogtype == SLAP_TGTA || sogtype
+          == SLAP_DTGTA)
+        {
+          model = new fsltlTestingModel();
+        }
+      else
+        {
+          model = new ITSModel();
+        }
 
     // parse command line args to get the options
   if (! handleInputOptions (args, *model) ) {

@@ -17,8 +17,14 @@ namespace sogits {
     SLAP_NOFS, // < The (Symbolic) Local Obs Graph algorithm
     SLAP_FST, // < The (Symbolic) Local Obs Graph algorithm with Terminal states FSLTL test.
     SLAP_FSA, // < The (Symbolic) Local Obs Graph algorithm with Accepting states FSLTL test.
-    SOP // < The Symbolic Observation Product algorithm
-  } ;
+    SOP, // < The Symbolic Observation Product algorithm
+    FS_OWCTY_TGTA, // < The TGTA fully symbolic approach: One-Way catch them Young. Transform a TGBA into TGTA and then encode the TGTA as an ITS.
+    SOG_TGTA, // < The basic algorithm with static parameters and using TGTA instead of TGBA.
+    SLAP_TGTA, // < The (Symbolic) Local Obs Graph algorithm using TGTA instead of TGBA.
+    SOP_TGTA, // < The Symbolic Observation Product algorithm using TGTA instead of TGBA.
+    SLAP_DTGTA, // < The (Symbolic) Local Obs Graph algorithm using DTGTA (Don't care TGTA) instead of TGBA.
+    SOP_DTGTA  // < The Symbolic Observation Product algorithm using DTGTA (Don't care TGTA) instead of TGBA.
+  };
 }
 
 

@@ -107,7 +107,7 @@ namespace dsog
     virtual size_t hash() const;
     virtual dsog_state* clone() const;
 
-  private:
+  protected:
     const spot::state* left_;		///< State from the left automaton.
     its::State right_;		///< State from the right automaton.
     bool div_;
@@ -132,7 +132,7 @@ namespace dsog
     virtual ~dsog_succ_iterator();
 
     // iteration
-    void step();
+    virtual void step();
     void first();
     void next();
     bool done() const;
@@ -222,7 +222,7 @@ namespace dsog
     virtual bdd compute_support_conditions(const spot::state* state) const;
     virtual bdd compute_support_variables(const spot::state* state) const;
 
-  private:
+  protected:
     spot::bdd_dict* dict_;
     const spot::tgba* left_;
     const sogIts & model_;

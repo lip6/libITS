@@ -66,7 +66,7 @@ namespace its {
 
   TgbaType::TgbaType (const spot::tgba * tgba) : tgba_(tgba) 
   {
-    loadTGBA::load_bfs b(tgba, arcs_);    
+    loadTGBA::load_bfs b(tgba, arcs_);
     b.run();
     build_labels();
   }
