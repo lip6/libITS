@@ -288,6 +288,19 @@ int main(int argc, const char *argv[]) {
     usage();
     return 1;
   }
+
+  if (sogtype == FS_OWCTY_TGTA || sogtype == SLAP_TGTA || sogtype
+          == SLAP_DTGTA)
+        {
+          if (((fsltlTestingModel*) model)->getTestingModel() == NULL)
+            {
+              std::cerr << "Please specify input problem type with option -t. Supported type is :  {ETF} \n" ;
+              cerr << "The TGTA approaches can only be used with ETF models"
+                  << endl;
+              exit(2);
+              return 1;
+            }
+        }
   // we now should have the model defined.
   string modelName = model->getInstance()->getType()->getName();
 
