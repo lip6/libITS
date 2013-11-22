@@ -212,6 +212,7 @@ int main_noex (int argc, char **argv) {
      if (++i > argc) 
        { cerr << "give an integer limit to number of traces " << args[i-1]<<endl; usage() ; exit(1);}
      nbwitness = atoi(args[i]);
+     dowitness = false;
    } else if (! strcmp(args[i],"-reachable-file") ) {
      if (++i > argc) 
        { cerr << "Give a file name containing reachability queries. " << args[i-1]<<endl; usage() ; exit(1);}
@@ -285,7 +286,7 @@ int main_noex (int argc, char **argv) {
        path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
        model.printPath(path, std::cout,true);
      }
-     if (nbwitness > 1) {
+     if (nbwitness >= 1) {
        std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
        model.printPaths(model.getInitialState(), verify, reachable,nbwitness);
      }
