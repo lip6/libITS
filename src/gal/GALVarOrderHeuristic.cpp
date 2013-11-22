@@ -272,7 +272,10 @@ public :
            it != res.end (); ++it)
       {
         vtoi_t::const_iterator vi = var_to_int.find (*it);
-        assert (vi != var_to_int.end ());
+        if (vi == var_to_int.end ()) {
+	  std::cerr << "Could not access index of variable :" << *it;
+	  assert (vi != var_to_int.end ());
+	}
         tmp.insert (vi->second);
       }
       LocalityEdge * e = new LocalityEdge (tmp, strat_);
