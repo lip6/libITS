@@ -173,7 +173,7 @@ namespace its {
 	    // This can only be true if current var is an array, and r has unresolved ARRAY access to it.
 	    if ( r.isSupport(curv) ) {
 	      
-	      std::cerr << "Iterating to solve nested expression" << std::endl;
+//	      std::cerr << "Iterating to solve nested expression" << std::endl;
 
 	      // Extract a subexpr from r and query for its value.
 	      // TODO : get a nested expression that concerns the current array
