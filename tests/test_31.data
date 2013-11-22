@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/loyd.1.dve  -t  DVE  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-loyd.1.dve,720,0.09,3776,2,244,5,5859,6,0,34,5048,0
+loyd.1.dve,720,0.02,3848,2,244,5,6131,6,0,34,2805,0
  Total reachable state count : 720
 

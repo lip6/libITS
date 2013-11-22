@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/election_2.cami  -t  CAMI  --quiet  --json-order  test_models/election_2.json  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-PNet0,11257,0.47,10000,5963,3,34867,6,409,27174,8,5,0
+PNet0,11257,0.28,17160,5963,3,34825,6,409,27146,8,5,0
  Total reachable state count : 11257
 

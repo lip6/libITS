@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/gal/brp.gal  -t  GAL  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-brp.1.dve,18928,1.44,8056,2,2709,5,36802,6,0,175,33186,0
+brp.1.dve,18928,0.15,7384,2,1858,5,30508,6,0,175,19450,0
  Total reachable state count : 18928
 

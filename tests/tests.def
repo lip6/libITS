@@ -84,3 +84,5 @@ DVE format, hanoi my own version (with solution trace)
 ../bin/its-reach -i test_models/hanoi.1.dve -t DVE -reachable 'pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1'
 GAL format, train example translated from Romeo
 ../bin/its-reach -i test_models/gal/train4.gal -t GAL --quiet
+Looking for many traces, frogs example
+../bin/its-reach -i test_models/gal/frogs.gal -t GAL -reachable 'Check.state==1' -manywitness 5  --quiet

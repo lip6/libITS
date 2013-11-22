@@ -3,160 +3,208 @@ DVE format, hanoi my own version (with solution trace)
 
 its-reach command run as :
 
-C:\DDD\libits\bin\its-reach.exe  -i  test_models/hanoi.1.dve  -t  DVE  -reachable  pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1  
+../bin/its-reach  -i  test_models/hanoi.1.dve  -t  DVE  -reachable  pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1  
 Model in internal textual format :
 GAL hanoi.1.dve
 {
   //arrays
-  int[8] pos= (0, 0, 0, 0, 0, 0, 0, 0) ;
+  array[8] pos= (0, 0, 0, 0, 0, 0, 0, 0) ;
   //variables
   //transitions 
   transition t0  [ ( pos[0] == 0 ) ] 
-     { pos[0] = 1;    }
+     {     pos[0] = 1;
+    }
 
   transition t1  [ ( ( pos[0] == 2 ) && ( pos[1] == 0 ) ) ] 
-     { pos[1] = 1;    }
+     {     pos[1] = 1;
+    }
 
-  transition t2  [ ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 0 ) ) ] 
-     { pos[2] = 1;    }
+  transition t2  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 0 ) ) ] 
+     {     pos[2] = 1;
+    }
 
-  transition t3  [ ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 0 ) ) ] 
-     { pos[3] = 1;    }
+  transition t3  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 0 ) ) ] 
+     {     pos[3] = 1;
+    }
 
-  transition t4  [ ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 0 ) ) ] 
-     { pos[4] = 1;    }
+  transition t4  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 0 ) ) ] 
+     {     pos[4] = 1;
+    }
 
-  transition t5  [ ( ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 2 ) ) && ( pos[5] == 0 ) ) ] 
-     { pos[5] = 1;    }
+  transition t5  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 2 ) && ( pos[5] == 0 ) ) ] 
+     {     pos[5] = 1;
+    }
 
-  transition t6  [ ( ( ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 2 ) ) && ( pos[5] == 2 ) ) && ( pos[6] == 0 ) ) ] 
-     { pos[6] = 1;    }
+  transition t6  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 2 ) && ( pos[5] == 2 ) && ( pos[6] == 0 ) ) ] 
+     {     pos[6] = 1;
+    }
 
-  transition t7  [ ( ( ( ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 2 ) ) && ( pos[5] == 2 ) ) && ( pos[6] == 2 ) ) && ( pos[7] == 0 ) ) ] 
-     { pos[7] = 1;    }
+  transition t7  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 2 ) && ( pos[5] == 2 ) && ( pos[6] == 2 ) && ( pos[7] == 0 ) ) ] 
+     {     pos[7] = 1;
+    }
 
   transition t8  [ ( pos[0] == 1 ) ] 
-     { pos[0] = 0;    }
+     {     pos[0] = 0;
+    }
 
   transition t9  [ ( ( pos[0] == 2 ) && ( pos[1] == 1 ) ) ] 
-     { pos[1] = 0;    }
+     {     pos[1] = 0;
+    }
 
-  transition t10  [ ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 1 ) ) ] 
-     { pos[2] = 0;    }
+  transition t10  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 1 ) ) ] 
+     {     pos[2] = 0;
+    }
 
-  transition t11  [ ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 1 ) ) ] 
-     { pos[3] = 0;    }
+  transition t11  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 1 ) ) ] 
+     {     pos[3] = 0;
+    }
 
-  transition t12  [ ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 1 ) ) ] 
-     { pos[4] = 0;    }
+  transition t12  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 1 ) ) ] 
+     {     pos[4] = 0;
+    }
 
-  transition t13  [ ( ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 2 ) ) && ( pos[5] == 1 ) ) ] 
-     { pos[5] = 0;    }
+  transition t13  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 2 ) && ( pos[5] == 1 ) ) ] 
+     {     pos[5] = 0;
+    }
 
-  transition t14  [ ( ( ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 2 ) ) && ( pos[5] == 2 ) ) && ( pos[6] == 1 ) ) ] 
-     { pos[6] = 0;    }
+  transition t14  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 2 ) && ( pos[5] == 2 ) && ( pos[6] == 1 ) ) ] 
+     {     pos[6] = 0;
+    }
 
-  transition t15  [ ( ( ( ( ( ( ( ( pos[0] == 2 ) && ( pos[1] == 2 ) ) && ( pos[2] == 2 ) ) && ( pos[3] == 2 ) ) && ( pos[4] == 2 ) ) && ( pos[5] == 2 ) ) && ( pos[6] == 2 ) ) && ( pos[7] == 1 ) ) ] 
-     { pos[7] = 0;    }
+  transition t15  [ ( ( pos[0] == 2 ) && ( pos[1] == 2 ) && ( pos[2] == 2 ) && ( pos[3] == 2 ) && ( pos[4] == 2 ) && ( pos[5] == 2 ) && ( pos[6] == 2 ) && ( pos[7] == 1 ) ) ] 
+     {     pos[7] = 0;
+    }
 
   transition t16  [ ( pos[0] == 0 ) ] 
-     { pos[0] = 2;    }
+     {     pos[0] = 2;
+    }
 
   transition t17  [ ( ( pos[0] == 1 ) && ( pos[1] == 0 ) ) ] 
-     { pos[1] = 2;    }
+     {     pos[1] = 2;
+    }
 
-  transition t18  [ ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 0 ) ) ] 
-     { pos[2] = 2;    }
+  transition t18  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 0 ) ) ] 
+     {     pos[2] = 2;
+    }
 
-  transition t19  [ ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 0 ) ) ] 
-     { pos[3] = 2;    }
+  transition t19  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 0 ) ) ] 
+     {     pos[3] = 2;
+    }
 
-  transition t20  [ ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 0 ) ) ] 
-     { pos[4] = 2;    }
+  transition t20  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 0 ) ) ] 
+     {     pos[4] = 2;
+    }
 
-  transition t21  [ ( ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 1 ) ) && ( pos[5] == 0 ) ) ] 
-     { pos[5] = 2;    }
+  transition t21  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 1 ) && ( pos[5] == 0 ) ) ] 
+     {     pos[5] = 2;
+    }
 
-  transition t22  [ ( ( ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 1 ) ) && ( pos[5] == 1 ) ) && ( pos[6] == 0 ) ) ] 
-     { pos[6] = 2;    }
+  transition t22  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 1 ) && ( pos[5] == 1 ) && ( pos[6] == 0 ) ) ] 
+     {     pos[6] = 2;
+    }
 
-  transition t23  [ ( ( ( ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 1 ) ) && ( pos[5] == 1 ) ) && ( pos[6] == 1 ) ) && ( pos[7] == 0 ) ) ] 
-     { pos[7] = 2;    }
+  transition t23  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 1 ) && ( pos[5] == 1 ) && ( pos[6] == 1 ) && ( pos[7] == 0 ) ) ] 
+     {     pos[7] = 2;
+    }
 
   transition t24  [ ( pos[0] == 2 ) ] 
-     { pos[0] = 0;    }
+     {     pos[0] = 0;
+    }
 
   transition t25  [ ( ( pos[0] == 1 ) && ( pos[1] == 2 ) ) ] 
-     { pos[1] = 0;    }
+     {     pos[1] = 0;
+    }
 
-  transition t26  [ ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 2 ) ) ] 
-     { pos[2] = 0;    }
+  transition t26  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 2 ) ) ] 
+     {     pos[2] = 0;
+    }
 
-  transition t27  [ ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 2 ) ) ] 
-     { pos[3] = 0;    }
+  transition t27  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 2 ) ) ] 
+     {     pos[3] = 0;
+    }
 
-  transition t28  [ ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 2 ) ) ] 
-     { pos[4] = 0;    }
+  transition t28  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 2 ) ) ] 
+     {     pos[4] = 0;
+    }
 
-  transition t29  [ ( ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 1 ) ) && ( pos[5] == 2 ) ) ] 
-     { pos[5] = 0;    }
+  transition t29  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 1 ) && ( pos[5] == 2 ) ) ] 
+     {     pos[5] = 0;
+    }
 
-  transition t30  [ ( ( ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 1 ) ) && ( pos[5] == 1 ) ) && ( pos[6] == 2 ) ) ] 
-     { pos[6] = 0;    }
+  transition t30  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 1 ) && ( pos[5] == 1 ) && ( pos[6] == 2 ) ) ] 
+     {     pos[6] = 0;
+    }
 
-  transition t31  [ ( ( ( ( ( ( ( ( pos[0] == 1 ) && ( pos[1] == 1 ) ) && ( pos[2] == 1 ) ) && ( pos[3] == 1 ) ) && ( pos[4] == 1 ) ) && ( pos[5] == 1 ) ) && ( pos[6] == 1 ) ) && ( pos[7] == 2 ) ) ] 
-     { pos[7] = 0;    }
+  transition t31  [ ( ( pos[0] == 1 ) && ( pos[1] == 1 ) && ( pos[2] == 1 ) && ( pos[3] == 1 ) && ( pos[4] == 1 ) && ( pos[5] == 1 ) && ( pos[6] == 1 ) && ( pos[7] == 2 ) ) ] 
+     {     pos[7] = 0;
+    }
 
   transition t32  [ ( pos[0] == 1 ) ] 
-     { pos[0] = 2;    }
+     {     pos[0] = 2;
+    }
 
   transition t33  [ ( ( pos[0] == 0 ) && ( pos[1] == 1 ) ) ] 
-     { pos[1] = 2;    }
+     {     pos[1] = 2;
+    }
 
-  transition t34  [ ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 1 ) ) ] 
-     { pos[2] = 2;    }
+  transition t34  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 1 ) ) ] 
+     {     pos[2] = 2;
+    }
 
-  transition t35  [ ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 1 ) ) ] 
-     { pos[3] = 2;    }
+  transition t35  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 1 ) ) ] 
+     {     pos[3] = 2;
+    }
 
-  transition t36  [ ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 1 ) ) ] 
-     { pos[4] = 2;    }
+  transition t36  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 1 ) ) ] 
+     {     pos[4] = 2;
+    }
 
-  transition t37  [ ( ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 0 ) ) && ( pos[5] == 1 ) ) ] 
-     { pos[5] = 2;    }
+  transition t37  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 0 ) && ( pos[5] == 1 ) ) ] 
+     {     pos[5] = 2;
+    }
 
-  transition t38  [ ( ( ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 0 ) ) && ( pos[5] == 0 ) ) && ( pos[6] == 1 ) ) ] 
-     { pos[6] = 2;    }
+  transition t38  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 0 ) && ( pos[5] == 0 ) && ( pos[6] == 1 ) ) ] 
+     {     pos[6] = 2;
+    }
 
-  transition t39  [ ( ( ( ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 0 ) ) && ( pos[5] == 0 ) ) && ( pos[6] == 0 ) ) && ( pos[7] == 1 ) ) ] 
-     { pos[7] = 2;    }
+  transition t39  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 0 ) && ( pos[5] == 0 ) && ( pos[6] == 0 ) && ( pos[7] == 1 ) ) ] 
+     {     pos[7] = 2;
+    }
 
   transition t40  [ ( pos[0] == 2 ) ] 
-     { pos[0] = 1;    }
+     {     pos[0] = 1;
+    }
 
   transition t41  [ ( ( pos[0] == 0 ) && ( pos[1] == 2 ) ) ] 
-     { pos[1] = 1;    }
+     {     pos[1] = 1;
+    }
 
-  transition t42  [ ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 2 ) ) ] 
-     { pos[2] = 1;    }
+  transition t42  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 2 ) ) ] 
+     {     pos[2] = 1;
+    }
 
-  transition t43  [ ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 2 ) ) ] 
-     { pos[3] = 1;    }
+  transition t43  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 2 ) ) ] 
+     {     pos[3] = 1;
+    }
 
-  transition t44  [ ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 2 ) ) ] 
-     { pos[4] = 1;    }
+  transition t44  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 2 ) ) ] 
+     {     pos[4] = 1;
+    }
 
-  transition t45  [ ( ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 0 ) ) && ( pos[5] == 2 ) ) ] 
-     { pos[5] = 1;    }
+  transition t45  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 0 ) && ( pos[5] == 2 ) ) ] 
+     {     pos[5] = 1;
+    }
 
-  transition t46  [ ( ( ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 0 ) ) && ( pos[5] == 0 ) ) && ( pos[6] == 2 ) ) ] 
-     { pos[6] = 1;    }
+  transition t46  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 0 ) && ( pos[5] == 0 ) && ( pos[6] == 2 ) ) ] 
+     {     pos[6] = 1;
+    }
 
-  transition t47  [ ( ( ( ( ( ( ( ( pos[0] == 0 ) && ( pos[1] == 0 ) ) && ( pos[2] == 0 ) ) && ( pos[3] == 0 ) ) && ( pos[4] == 0 ) ) && ( pos[5] == 0 ) ) && ( pos[6] == 0 ) ) && ( pos[7] == 2 ) ) ] 
-     { pos[7] = 1;    }
+  transition t47  [ ( ( pos[0] == 0 ) && ( pos[1] == 0 ) && ( pos[2] == 0 ) && ( pos[3] == 0 ) && ( pos[4] == 0 ) && ( pos[5] == 0 ) && ( pos[6] == 0 ) && ( pos[7] == 2 ) ) ] 
+     {     pos[7] = 1;
+    }
 
   // transient predicate 
-TRANSIENT = 0;
+TRANSIENT = false;
 
 }
 
@@ -166,12 +214,23 @@ main:hanoi.1.dve = init ;
 [ ]
 
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-hanoi.1.dve,6561,0.457,8048,2,9,5,141,6,0,120,132,0
+hanoi.1.dve,6561,0,3460,2,9,5,120,7,0,121,75,0
  Total reachable state count : 6561
 
-There are 1 reachable states that satisfy your predicate : pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1
+Verifying 1 reachability properties.
+Never property pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 1 reachable states that exhibit your property : pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1
 computing trace...
-Reverse transition relation is exact ! Faster fixpoint algorithm enabled. 
-t16  t1  t40  t18  t8  t33  t16  t3  t40  t25  t8  t42  t16  t1  t40  t20  t8  t33  t16  t10  t40  t25  t8  t35  t16  t1  t40  t18  t8  t33  t16  t5  t40  t25  t8  t42  t16  t1  t40  t27  t8  t33  t16  t10  t40  t25  t8  t44  t16  t1  t40  t18  t8  t33  t16  t3  t40  t25  t8  t42  t16  t1  t40  t22  t8  t33  t16  t10  t40  t25  t8  t35  t16  t1  t40  t18  t8  t33  t16  t12  t40  t25  t8  t42  t16  t1  t40  t27  t8  t33  t16  t10  t40  t25  t8  t37  t16  t1  t40  t18  t8  t33  t16  t3  t40  t25  t8  t42  t16  t1  t40  t20  t8  t33  t16  t10  t40  t25  t8  t35  t16  t1  t40  t18  t8  t33  t16  t7  t40  t25  t8  t42  t16  t1  t40  t27  t8  t33  t16  t10  t40  t25  t8  t44  t16  t1  t40  t18  t8  t33  t16  t3  t40  t25  t8  t42  t16  t1  t40  t29  t8  t33  t16  t10  t40  t25  t8  t35  t16  t1  t40  t18  t8  t33  t16  t12  t40  t25  t8  t42  t16  t1  t40  t27  t8  t33  t16  t10  t40  t25  t8  t46  t16  t1  t40  t18  t8  t33  t16  t3  t40  t25  t8  t42  t16  t1  t40  t20  t8  t33  t16  t10  t40  t25  t8  t35  t16  t1  t40  t18  t8  t33  t16  t5  t40  t25  t8  t42  t16  t1  t40  t27  t8  t33  t16  t10  t40  t25  t8  t44  t16  t1  t40  t18  t8  t33  t16  t3  t40  t25  t8  t42  t16  t1  t40  
+From initial states :
+[ ]
+This shortest transition sequence of length 255 :
+t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t20, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t5, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t44, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t22, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t12, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t37, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t20, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t7, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t44, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t29, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t12, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t46, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t20, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t5, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t44, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40
+Leads to final states :
+[ pos[7]=1 pos[6]=1 pos[5]=1 pos[4]=1 pos[3]=1 pos[2]=1 pos[1]=1 pos[0]=1 ]
+computing up to 1 traces...
+This shortest transition sequence of length 255 :
+t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t20, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t5, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t44, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t22, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t12, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t37, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t20, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t7, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t44, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t29, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t12, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t46, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40, t20, t8, t33, t16, t10, t40, t25, t8, t35, t16, t1, t40, t18, t8, t33, t16, t5, t40, t25, t8, t42, t16, t1, t40, t27, t8, t33, t16, t10, t40, t25, t8, t44, t16, t1, t40, t18, t8, t33, t16, t3, t40, t25, t8, t42, t16, t1, t40
+
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1,1,0.661,11384,2,9,1150,8291,79,1275,228,7146,6207
+pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1,1,0.06,5588,2,9,1150,6606,58,1275,252,6372,5952

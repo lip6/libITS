@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/gal/bakery.gal  -t  GAL  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-bakery.4.dve,157003,23.86,167316,2,3952,5,848207,6,0,123,915922,0
+bakery.4.dve,157003,5.29,141240,2,3952,5,870287,6,0,123,576021,0
  Total reachable state count : 157003
 

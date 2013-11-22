@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/gal/reader_writer.gal  -t  GAL  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-reader\_writer.3.dve,604498,1.01,10528,2,420,5,48945,6,0,403,46992,0
+reader\_writer.3.dve,604498,0.06,4064,2,194,5,5633,6,0,403,3447,0
  Total reachable state count : 604498
 

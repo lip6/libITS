@@ -5,6 +5,6 @@ its-reach command run as :
 
 ../bin/its-reach  -i  test_models/gal/phils.gal  -t  GAL  --quiet  
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-phils.4.dve,340789,0.22,3044,2,328,5,4735,6,0,230,4637,0
+phils.4.dve,340789,0.02,2992,2,234,5,2894,6,0,230,1348,0
  Total reachable state count : 340789
 
