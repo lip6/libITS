@@ -132,6 +132,7 @@ void usage() {
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
+  cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
   cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
@@ -186,6 +187,7 @@ int main_noex (int argc, char **argv) {
  vLabel reachFile="";
  
  argc = args.size();
+ int nbwitness=1;
  for (int i=0;i < argc; i++) {
    if (! strcmp(args[i],"-d") ) {
      if (++i > argc) 
@@ -206,6 +208,10 @@ int main_noex (int argc, char **argv) {
      if (++i > argc) 
        { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
      reachExpr = args[i];
+   } else if (! strcmp(args[i],"-manywitness") ) {
+     if (++i > argc) 
+       { cerr << "give an integer limit to number of traces " << args[i-1]<<endl; usage() ; exit(1);}
+     nbwitness = atoi(args[i]);
    } else if (! strcmp(args[i],"-reachable-file") ) {
      if (++i > argc) 
        { cerr << "Give a file name containing reachability queries. " << args[i-1]<<endl; usage() ; exit(1);}
@@ -278,6 +284,10 @@ int main_noex (int argc, char **argv) {
        std::cout << "computing trace..." <<endl;
        path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
        model.printPath(path, std::cout,true);
+     }
+     if (nbwitness > 1) {
+       std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
+       model.printPaths(model.getInitialState(), verify, reachable,nbwitness);
      }
      std::cout << std::endl;
    }
