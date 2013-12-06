@@ -76,13 +76,16 @@ new_order (const std::vector<const constraint_t *> & c,
   for (std::vector<const constraint_t *>::const_iterator it = c.begin ();
        it != c.end (); ++it)
   {
-    // compute its weighted center of gravity
-    float cog = (*it)->weight () * (*it)->cog (o) + (*it)->dev ();
-    // add it to each of adjacent variable
-    for (constraint_t::const_iterator ei = (*it)->begin ();
-         ei != (*it)->end (); ++ei)
+    // compute its action on the variables
+    cog_t cog = (*it)->cog (o);
+    // get the weight and deviation
+    float weight = (*it)->weight ();
+    float dev = (*it)->dev ();
+    // add the corresponding cog to each adjacent variable
+    for (constraint_t::const_iterator ci = (*it)->begin ();
+         ci != (*it)->end (); ++ci)
     {
-      new_loc [*ei] += cog;
+      new_loc [*ci] += weight * cog [*ci] + dev;
     }
   }
   // if a variable has not been visited, set its new location to its current one
@@ -125,14 +128,17 @@ new_order_neutral (const std::vector<const constraint_t *> & c,
     // if its cost is not null
     if ((*it)->cost (o) != 0)
     {
-      // compute its weighted center of gravity
-      float cog = (*it)->weight () * (*it)->cog (o) + (*it)->dev ();
-      // add it to each adjacent variable
-      for (constraint_t::const_iterator ei = (*it)->begin ();
-           ei != (*it)->end (); ++ei)
+      // compute its action on the variables
+      cog_t cog = (*it)->cog (o);
+      // get the weight and deviation
+      float weight = (*it)->weight ();
+      float dev = (*it)->dev ();
+      // add the corresponding cog to each adjacent variable
+      for (constraint_t::const_iterator ci = (*it)->begin ();
+           ci != (*it)->end (); ++ci)
       {
-        new_loc [*ei] += cog;
-        n [*ei] += (*it)->weight ();
+        new_loc [*ci] += weight * cog [*ci] + dev;
+        n [*ci] += weight;
       }
     }
   }

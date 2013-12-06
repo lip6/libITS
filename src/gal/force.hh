@@ -27,9 +27,15 @@
  
  We refine a bit this model.
  Each constraint can be assigned a different strength, and a different cost.
+ We also add a deviation to the constraint, that is a deviation of its center of
+ gravity.
+ Initially designed to obtain orderings more saturation-friendly, it has not
+ proven very efficient.
  
- Note that a previous version allowed to have different spring strength inside
- a single constraint (before svn revision 3414).
+ We also allow a constraint to have different spring strengths.
+ Thus, each variable may see a different center of gravity of the constraints.
+ This allows to have asymmetric constraints, and is especially useful to avoid
+ too much queries in the EquivSplit setting.
  */
 
 /// a type for variables
@@ -38,6 +44,8 @@ typedef int var_t;
 typedef std::map<var_t, int> order_t;
 /// a positionning associates a float position to each variable
 typedef std::map<var_t, float> pos_t;
+/// a 'center of gravity' associates a new ideal position to each variable
+typedef std::map<var_t, float> cog_t;
 
 class constraint_t {
 public:
@@ -53,22 +61,28 @@ public:
   const_iterator begin () const { return data_.begin (); }
   const_iterator end () const { return data_.end (); }
   size_t size () const { return data_.size (); }
-  std::set<var_t> get_data () const { return data_; }
+  const std::set<var_t> & get_data () const { return data_; }
 
-  /// cost, center of gravity
+  /// cost
   virtual float cost (const order_t &) const = 0;
-  virtual float cog (const order_t &) const = 0;
+  /// center of gravity
+  virtual cog_t cog (const order_t &) const = 0;
   /// weight getter
   float weight () const { return weight_; }
   /// weight setter
   void setWeight (float w) { weight_ = w; }
   
+  /// deviation getter
   float dev () const { return dev_; }
+  /// deviation setter
   void set_dev (float d) { dev_ = d; }
 protected:
+  /// the set of variables affected by the constraint
   std::set<var_t> data_;
 private:
+  /// the weight
   float weight_;
+  /// the deviation
   float dev_;
 };
 
