@@ -134,7 +134,8 @@ AC_CHECK_TOOL([STRIP],[strip])
 AC_CONFIG_FILES([ Makefile \
 		  src/Makefile \
 		  src/ctlp/Makefile \
-		  src/mc/Makefile
+		  src/mc/Makefile \
+		  bin/Makefile
                 ])
 
 AC_OUTPUT
