@@ -124,6 +124,10 @@ alnum		[A-Za-z0-9\^\?\|\/\+\*\$\<\>~@\_#\$%\:\"\'\.]
 
 "#".*   ;   
 
+
+\"[^\"]*\" { return (QUOTED_TOK_ID) ; }
+
+
 A	{ return(TOK_FORALL); }
 AX	{ return(TOK_FORALL_NEXT); }
 AF	{ return(TOK_FORALL_EVENTUALLY); }

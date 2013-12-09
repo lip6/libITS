@@ -68,6 +68,7 @@ extern char * CtlpYytext;
 %token TOK_DEFINE
 %token TOK_MACRO
 %token TOK_ID
+%token QUOTED_TOK_ID
 %token TOK_ID2
 %token TOK_ID_VECTOR
 %token TOK_ID_UNION
@@ -312,6 +313,12 @@ name:  TOK_ID
      | TOK_ID2
        { (void) CtlpChangeBracket(CtlpYytext);
 	 $$ = util_strsav(CtlpYytext); };
+     | QUOTED_TOK_ID
+       {
+	 CtlpYytext++;
+	 CtlpYytext[strlen(CtlpYytext)-1]='\0';
+	 $$ = util_strsav(CtlpYytext);
+       }
 
 comparator : TOK_ASSIGN 
        { $$ = util_strsav(CtlpYytext); }
