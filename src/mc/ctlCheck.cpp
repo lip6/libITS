@@ -1,8 +1,5 @@
-
-
-
-#include "ctlCheck.hh"
-#include "visfd.h"
+#include "mc/ctlCheck.hh"
+#include "ctlp/visfd.h"
 
 using namespace its;
 

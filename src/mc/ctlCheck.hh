@@ -3,7 +3,7 @@
 
 
 #include "ITSModel.hh"
-#include "ctlp.h"
+#include "ctlp/ctlp.h"
 
 
 class CTLChecker {
