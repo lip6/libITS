@@ -1,0 +1,34 @@
+GAL input, using quoted variables to access arrays
+../bin/its-ctl -i test_models/gal/hanoi.gal -t GAL -ctl test_models/gal/hanoi.ctl --quiet
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/gal/hanoi.gal  -t  GAL  -ctl  test_models/gal/hanoi.ctl  --quiet  
+No direction supplied, using forward translation only.
+Parsed 3 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,6561,0.01,3540,2,9,5,120,6,0,120,75,0
+
+
+Converting to forward existential form...Done !
+original formula: EF(((((pos[0]=1 * pos[1]=1) * pos[2]=1) * pos[3]=1) * pos[4]=1))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * ((((pos[0]=1 * pos[1]=1) * pos[2]=1) * pos[3]=1) * pos[4]=1))] != FALSE
+(forward)formula 0,1,0.01,3820,1,0,14,120,11,5,125,75,5
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF((((((((pos[0]=1 * pos[1]=1) * pos[2]=1) * pos[3]=1) * pos[4]=1) * pos[5]=1) * pos[6]=1) * pos[7]=1))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * (((((((pos[0]=1 * pos[1]=1) * pos[2]=1) * pos[3]=1) * pos[4]=1) * pos[5]=1) * pos[6]=1) * pos[7]=1))] != FALSE
+(forward)formula 1,1,0.02,3856,1,0,20,120,14,9,128,75,8
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG(EF((((((((pos[0]=1 * pos[1]=1) * pos[2]=1) * pos[3]=1) * pos[4]=1) * pos[5]=1) * pos[6]=1) * pos[7]=1)))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(E(TRUE U (((((((pos[0]=1 * pos[1]=1) * pos[2]=1) * pos[3]=1) * pos[4]=1) * pos[5]=1) * pos[6]=1) * pos[7]=1))))] = FALSE
+(forward)formula 2,1,0.05,3856,1,0,274,3718,20,518,258,5138,522
+Formula is TRUE !
+
+ *************************************** 
+
