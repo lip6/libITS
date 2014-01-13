@@ -301,11 +301,12 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   case CGAL_T :
     {
       // do the parsing
-      GAL * result = GALParser::loadGAL(pathinputff);
-      model.declareType (*result);
+      GALParser::loadCGAL(pathinputff,model);
+//       model.declareType (*result);
       
-      model.setInstance(result->getName(), "main");
-      model.setInstanceState("init");
+
+//       model.setInstance(result->getName(), "main");
+//       model.setInstanceState("init");
 
       break;
     }

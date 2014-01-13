@@ -11,12 +11,16 @@ options {
 @parser::header {
 
   #include "gal/GAL.hh"
+  #include "composite/Composite.hh"
+  #include "ITSModel.hh"
   #include <iostream>
   #include <cstdlib>
 }
 
 @members {
 
+  // "result" is the root of GAL elements.
+  its::ITSModel * model = NULL;
   // "result" is the root of GAL elements.
   its::GAL* result = NULL;
   // pointer on the current transition (GuardedAction) found
@@ -90,6 +94,27 @@ options {
 /// Sets the result
 /// It allows to set a context (an already built GAL) in order to parse a single IntExpr or BoolExpr in that context
 setGAL[const its::GAL * g]: { result = const_cast<its::GAL *> (g); } ;
+setModel[const its::ITSModel * g]: { model = const_cast<its::ITSModel *> (g); } ;
+
+specification : 
+	(
+	gal=system { model->declareType(*gal);  }
+	| composite {  /* TODO */ }
+	) *
+	'main' name=qualifiedName { model->setInstance($name.res,"main"); }
+		( 
+		  ( '(' initState=qualifiedName {}  ')' { model->setInstanceState($initState.res); }  )
+		  | { model->setInstanceState("init"); }
+		) 
+;
+
+composite returns [its::Composite * r] :
+	'composite' name=qualifiedName 
+	{ $r = new its::Composite($name.res); }
+	'{'
+
+	'}'	
+;
 
 system returns [its::GAL* r] :
   ('gal'|'GAL') name=qualifiedName
