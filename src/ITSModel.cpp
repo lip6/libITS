@@ -569,9 +569,9 @@ void ITSModel::print (std::ostream & os) const  {
   }
 
   // Create a type to hold a GAL model
-  bool ITSModel::declareType (const class GAL & net, bool stutterOnDeadlock) {
+  bool ITSModel::declareType (const class GAL & net) {
     GALType * newtype = new GALType(&net);
-    newtype->setStutterOnDeadlock (stutterOnDeadlock);
+    newtype->setStutterOnDeadlock (stutterOnDeadlock_);
     return addType(newtype);
   }
 

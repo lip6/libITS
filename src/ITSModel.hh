@@ -70,7 +70,8 @@ private:
   storage storage_;
   scalarStrategy scalarStrat_;
   int scalarParam_;
-
+  // for self loops in deadlocks
+  bool stutterOnDeadlock_;
 public:
   // add a type to the type declarations
   // returns false if the type name already exists
@@ -79,7 +80,7 @@ public:
   virtual bool addType (pType type);
 
   // default constructor
-  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1) {};
+  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1), stutterOnDeadlock_(false) {};
   // quite a bit of cleanup necessary given the use of pointers...
   virtual ~ITSModel () ;
 
@@ -121,7 +122,7 @@ public:
   // Create a type to represent a PINS wrapper on the ETF file format.
   virtual bool declareETFType (Label path) ;
   // Create a type to hold a GAL model
-  bool declareType (const class GAL & net, bool stutterOnDeadlock=false) ;
+  bool declareType (const class GAL & net) ;
 
 
   // Set the behavior for TPN factory from SDD to DDD strategy.
@@ -130,6 +131,8 @@ public:
   // Set the behavior for Scalar set strategy.
   // Affects subsequent call to declareType.
   void setScalarStrategy (scalarStrategy s, int param=1) { scalarStrat_ = s ; scalarParam_ =param ; }
+  // Set deadlock self loop behavior (for LTL mostly)
+  void setStutterOnDeadlock (bool stutterOnDeadlock) { stutterOnDeadlock_ = stutterOnDeadlock ; }
 
   // allow to manually define an order for a type
   // !! no controls, if var set is incomplete errors will occur
