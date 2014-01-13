@@ -1,0 +1,23 @@
+Looking for many traces, frogs example, with CGAL input
+../bin/its-reach -i test_models/cgal/frogs.gal -t CGAL -reachable 'Check.state==1' -manywitness 5  --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/cgal/frogs.gal  -t  CGAL  -reachable  Check.state==1  -manywitness  5  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+frogs.1.dve,5094,0.3,13540,2,2600,5,89933,7,0,57,31873,0
+ Total reachable state count : 5094
+
+Verifying 1 reachability properties.
+Never property Check.state==1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 1 reachable states that exhibit your property : Check.state==1
+computing up to 5 traces...
+This shortest transition sequence of length 81 :
+t1, t7, t5, t3, t3, t1, t7, t7, t7, t5, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t5, t7, t7, t7, t1, t3, t3, t5, t7, t1, t8
+This shortest transition sequence of length 81 :
+t5, t3, t1, t7, t7, t5, t3, t3, t3, t1, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t1, t3, t3, t3, t5, t7, t7, t1, t3, t5, t8
+All 2 minimal witness paths have been reported.
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Check.state==1,1,0.42,13592,2,21,533,89933,20,608,657,31873,1605
