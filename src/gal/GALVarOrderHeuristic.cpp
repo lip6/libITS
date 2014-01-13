@@ -2,6 +2,7 @@
 
 #include "force.hh"
 #include "PIntExprVisitor.hh"
+#include "GALType.hh"
 
 namespace its {
 

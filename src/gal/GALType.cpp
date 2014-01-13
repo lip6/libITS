@@ -397,35 +397,6 @@ labels_t GALType::getTransLabels () const {
     return GALType::getPredicate (new_pred);
   }
 
-  /******** class GALTypeFactory **************/
-
-  void
-  GALTypeFactory::parseHeuristicOptions (orderHeuristicType v, GALType * gt)
-  {
-    gt->setOrderStrategy (v);
-  }
-  
-  GALType * GALTypeFactory::createGALType (const GAL * g, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic)
-  {
-    GALType * res = new GALType (g);
-    res->setStutterOnDeadlock (stutterOnDeadlock);
-    parseHeuristicOptions (varOrderHeuristic, res);
-    return res;
-  }
-
-  GALType * GALTypeFactory::createGALDVEType (Label path, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic)
-  {
-    struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
-    std::string modelName = wibble::str::basename(path);
-    loader->setModelName(modelName);
-    loader->read( path.c_str() );
-    loader->analyse();
-    GALType * res = new GALDVEType (loader->convertFromDve(), loader);
-    res->setStutterOnDeadlock (stutterOnDeadlock);
-    
-    parseHeuristicOptions (varOrderHeuristic, res);
-    return res;
-  }
 
 } // namespace
 

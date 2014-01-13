@@ -1,6 +1,10 @@
 #ifndef PINTEXPR_VISITOR_HH_
 #define PINTEXPR_VISITOR_HH_
 
+#include "gal/PIntExpression.hh"
+#include "gal/PBoolExpression.hh"
+
+
 namespace its {
 
 class PIntExprVisitor {

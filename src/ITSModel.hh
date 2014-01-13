@@ -14,6 +14,7 @@
 #include "Type.hh"
 #include "Instance.hh"
 #include "Ordering.hh"
+#include "gal/GALVarOrderHeuristic.hh"
 
 #include <vector>
 #include <set>
@@ -72,6 +73,8 @@ private:
   int scalarParam_;
   // for self loops in deadlocks
   bool stutterOnDeadlock_;
+  // GAL var ordering heuristics
+  orderHeuristicType orderHeuristic_;
 public:
   // add a type to the type declarations
   // returns false if the type name already exists
@@ -80,7 +83,7 @@ public:
   virtual bool addType (pType type);
 
   // default constructor
-  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1), stutterOnDeadlock_(false) {};
+  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1), stutterOnDeadlock_(false), orderHeuristic_(DEFAULT) {};
   // quite a bit of cleanup necessary given the use of pointers...
   virtual ~ITSModel () ;
 
@@ -123,6 +126,9 @@ public:
   virtual bool declareETFType (Label path) ;
   // Create a type to hold a GAL model
   bool declareType (const class GAL & net) ;
+  // Create a GAL type to hold a DVE model
+  Label declareDVEType (Label path) ;
+
 
 
   // Set the behavior for TPN factory from SDD to DDD strategy.
@@ -133,6 +139,8 @@ public:
   void setScalarStrategy (scalarStrategy s, int param=1) { scalarStrat_ = s ; scalarParam_ =param ; }
   // Set deadlock self loop behavior (for LTL mostly)
   void setStutterOnDeadlock (bool stutterOnDeadlock) { stutterOnDeadlock_ = stutterOnDeadlock ; }
+  // Set order strategy
+  void setGALOrderStrategy (orderHeuristicType order) { orderHeuristic_ = order ; }
 
   // allow to manually define an order for a type
   // !! no controls, if var set is incomplete errors will occur
@@ -164,7 +172,7 @@ public:
   /** Returns a shortest witness trace expressed in transition names path.path() leading from a state of path.init() (subset of init) to a state in path.final() (a subset of final). 
    ** if precise is false, the input sets are returned as path init/final (faster). Precise ensures the path actually works on ALL of its init states, otherwise it may work only on some. */
   path_t findPath (State init, State toreach, State reach, bool precise=false) const;  
-  void printPaths (State init, State toreach, State reach, int limit) const;
+  void printPaths (State init, State toreach, State reach, size_t limit) const;
   /** Prints a set of states to a string. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. **/
   void printSomeStates (State states, std::ostream & out, size_t limit=10) const;

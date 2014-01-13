@@ -140,13 +140,6 @@ public:
   Transition getPredicate (Label predicate) const ;
 };
 
-class GALTypeFactory {
-  // a helper function to parse the varOrderHeuristic
-  static void parseHeuristicOptions (orderHeuristicType, GALType *);
-public:
-  static GALType * createGALType (const GAL *, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic);
-  static GALType * createGALDVEType (Label, bool stutterOnDeadlock, orderHeuristicType varOrderHeuristic);
-};
 
 }
 

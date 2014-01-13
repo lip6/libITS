@@ -11,6 +11,7 @@
 #include "scalar/CircularSetType.hh"
 #include "etf/ETFType.hh"
 #include "gal/GALType.hh"
+#include "divine/dve2GAL.hh"
 
 #include "MemoryManager.h"
 #include "util/dotExporter.h"
@@ -190,7 +191,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     return predRel_;
 }
 
-  void ITSModel::printPaths (State init, State toreach, State reach, int limit) const {
+  void ITSModel::printPaths (State init, State toreach, State reach, size_t limit) const {
     
     typedef std::list<State> rev_t;
     typedef rev_t::iterator rev_it;
@@ -272,16 +273,16 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     }
 
 
-    std::vector<int>  iters;
-    for (int i=0; i < revcomponents.size(); i++) {
+    std::vector<size_t>  iters;
+    for (size_t i=0; i < revcomponents.size(); i++) {
       iters.push_back(0);
     }
 //    iters[0]=10;
-    for (int nbwitness=0 ; nbwitness < limit ; ) {
+    for (size_t nbwitness=0 ; nbwitness < limit ; ) {
       State Mi = init;
       State Mi_next = State::null;
       labels_t witness;
-      int cur = 0;
+      size_t cur = 0;
       bool ok = false;
       for ( rev_it comp= revcomponents.begin();comp != revcomponents.end();  /*NOP, in loop */) {
 	ok = false;
@@ -336,7 +337,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	} else {
 //	  std::cout << "Trying next trans at step " << cur-1 << " of path " <<  std::endl;
 	  
-	  for (int j = cur; j < revcomponents.size() ; ++j) {
+	  for (size_t j = cur; j < revcomponents.size() ; ++j) {
 	    iters[j]=0;
 	  }
 	  cur--;
@@ -572,7 +573,26 @@ void ITSModel::print (std::ostream & os) const  {
   bool ITSModel::declareType (const class GAL & net) {
     GALType * newtype = new GALType(&net);
     newtype->setStutterOnDeadlock (stutterOnDeadlock_);
+    newtype->setOrderStrategy(orderHeuristic_);
     return addType(newtype);
+  }
+
+  // Create a type to hold a GAL model
+  static const vLabel empty_string = "";
+  Label ITSModel::declareDVEType (Label path) {
+    struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
+    std::string modelName = wibble::str::basename(path);
+    loader->setModelName(modelName);
+    loader->read( path.c_str() );
+    loader->analyse();
+    GALType * res = new GALDVEType (loader->convertFromDve(), loader);
+    res->setStutterOnDeadlock (stutterOnDeadlock_);
+    res->setOrderStrategy(orderHeuristic_);
+    if (addType(res)) {
+      return res->getName();
+    } else {
+      return empty_string;
+    }
   }
 
 

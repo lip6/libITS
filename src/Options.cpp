@@ -78,7 +78,7 @@ namespace its {
 bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   string pathinputff = "";
-  enum InputType {NDEF,CAMI,PROD,ROMEO,UROMEO,ITSXML,ETF,DLL,NDLL,DVE,GAL_T};
+  enum InputType {NDEF,CAMI,PROD,ROMEO,UROMEO,ITSXML,ETF,DLL,NDLL,DVE,GAL_T, CGAL_T};
   InputType parse_t = NDEF;
 
   bool hasOrder=false;
@@ -90,10 +90,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   // For use in NDLL case
   int Nsize = -1;
 
-  // For parameters to Force tool
-  orderHeuristicType orderHeuristic = DEFAULT;
   
-  bool stutterOnDeadlock = false;
 
   std::vector<const char *> argsleft;
 
@@ -129,8 +126,10 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        parse_t = DVE;
      } else if ( !strcmp(argv[i],"GAL") ) {
        parse_t = GAL_T;
+     } else if ( !strcmp(argv[i],"CGAL") ) {
+       parse_t = CGAL_T;
      } else {
-       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|UROMEO|ITSXML|ETF|DVE|DLL|NDLL|GAL} is expected. " << endl;  showUsageHelp() ;exit(1);
+       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|UROMEO|ITSXML|ETF|DVE|DLL|NDLL|GAL|CGAL} is expected. " << endl;  showUsageHelp() ;exit(1);
      }
 
      /** ORDER FILE OPTIONS */
@@ -147,6 +146,9 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
    } else if ( ! strcmp(argv[i],"--gen-order") ) {
      if (++i > argc) 
        { cerr << "Give description of the heuristic used after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
+     // For parameters to Force tool
+     orderHeuristicType orderHeuristic = DEFAULT;
+
      if ( !strcmp(argv[i],"DEFAULT") ) {
        orderHeuristic = DEFAULT;
      } else if ( !strcmp(argv[i],"FOLLOW") ) {
@@ -174,6 +176,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        showUsageHelp();
        exit(1);
      }
+     model.setGALOrderStrategy(orderHeuristic);
      /** ENCODING STRATEGIES FOR SCALAR SETS */
    } else if (! strcmp(argv[i],"-ssD2") ) {
      if (++i > argc) 
@@ -200,7 +203,7 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
      /** STUTTERING ON DEADLOCKS STRATEGIES
       ** \warning only valid for GAL and DVE */
    } else if (! strcmp(argv[i],"--stutter")   ) {
-     stutterOnDeadlock = true;
+     model.setStutterOnDeadlock(true);
 
      /** LEFTOVER OPTIONS */
    } else {
@@ -278,22 +281,32 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
     }
   case DVE :
     {
-      pType newtype = GALTypeFactory::createGALDVEType (pathinputff, stutterOnDeadlock, orderHeuristic);
-      model.addType (newtype);
-      
-      model.setInstance(newtype->getName(), "main");
-      model.setInstanceState("init");
+      Label modelName = model.declareDVEType(pathinputff);
+      if (modelName != "") {
+	model.setInstance(modelName, "main");
+	model.setInstanceState("init");
+      }
       break;
     }
   case GAL_T :
     {
       // do the parsing
       GAL * result = GALParser::loadGAL(pathinputff);
-      pType newtype = GALTypeFactory::createGALType (result, stutterOnDeadlock, orderHeuristic);
-      model.addType (newtype);
+      model.declareType (*result);
       
-      model.setInstance(newtype->getName(), "main");
+      model.setInstance(result->getName(), "main");
       model.setInstanceState("init");
+      break;
+    }
+  case CGAL_T :
+    {
+      // do the parsing
+      GAL * result = GALParser::loadGAL(pathinputff);
+      model.declareType (*result);
+      
+      model.setInstance(result->getName(), "main");
+      model.setInstanceState("init");
+
       break;
     }
 
@@ -376,7 +389,7 @@ void usageInputOptions() {
 	 << " in the distribution for more details.\n"
 	 << "(see Samples dir for documentation and examples). \n \nMANDATORY Options :" << endl;
     cerr<<  "    -i path : specifies the path to input model file" <<endl;
-    cerr<<  "    -t {CAMI|PROD|ROMEO|ITSXML|ETF|DLL|NDLL|DVE|GAL} : specifies format of the input model file : " <<endl;
+    cerr<<  "    -t {CAMI|PROD|ROMEO|ITSXML|ETF|DLL|NDLL|DVE|GAL|CGAL} : specifies format of the input model file : " <<endl;
     cerr<<  "             CAMI : CAMI format (for P/T nets) is the native Petri net format of CPN-AMI" <<endl;
     cerr<<  "             PROD : PROD format (for P/T nets) is the native format of PROD" <<endl;
     cerr<<  "             ROMEO : an XML format (for Time Petri nets) that is the native format of Romeo" <<endl;
@@ -386,7 +399,8 @@ void usageInputOptions() {
     cerr<<  "             DLL : use a dynamic library that provides a function \"void loadModel (Model &,int)\" typically written using the manipulation APIs. See demo/ folder." <<endl;
     cerr<<  "             NDLL : same as DLL, but expect input formatted as size:lib.so. See demo/ folder." <<endl;
     cerr<<  "             DVE : Divine is a modelling language similar to Promela." <<endl;
-    cerr<<  "             GAL : Guarded Action Language." << endl;
+    cerr<<  "             GAL : Guarded Action Language." << endl; 
+    cerr<<  "             CGAL : Guarded Action Language + Composite/ITS textual syntax. File must contain a main declaration." << endl;
     cerr<< "\nAdditional Options and Settings:" << endl;
     cerr << "    --load-order path : load the variable order from the file designated by path. This order file can be produced with --dump-order. Note this option is not exclusive of --json-order; the model is loaded as usual, then the provided order is applied a posteriori. \n" ;
     cerr<< "\nPetri net specific options :" << endl;

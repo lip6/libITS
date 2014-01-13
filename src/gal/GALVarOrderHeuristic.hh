@@ -1,7 +1,7 @@
 #ifndef GAL_VAR_ORDER_HEURISTIC_HH_
 #define GAL_VAR_ORDER_HEURISTIC_HH_
 
-#include "GAL.hh"
+#include "Naming.hh"
 
 namespace its {
 
@@ -29,8 +29,9 @@ enum orderHeuristicType
  
  \todo add a strategy
  */
-labels_t force_heuristic (const GAL * const, orderHeuristicType);
-labels_t lex_heuristic (const GAL * const);
+
+labels_t force_heuristic (const class GAL * const, orderHeuristicType);
+labels_t lex_heuristic (const class GAL * const);
 
 } // namespace its
 
