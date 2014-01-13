@@ -105,7 +105,7 @@ specification :
 		( 
 		  ( '(' initState=qualifiedName {}  ')' { model->setInstanceState($initState.res); }  )
 		  | { model->setInstanceState("init"); }
-		) 
+		) ';'
 ;
 
 composite returns [its::Composite * r] :
