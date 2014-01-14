@@ -98,8 +98,8 @@ setModel[const its::ITSModel * g]: { model = const_cast<its::ITSModel *> (g); } 
 
 specification : 
 	(
-	gal=system { model->declareType(*gal);  }
-	| composite {  /* TODO */ }
+	gal=system { model->declareType(* gal);  }
+	| comp=composite { model->declareType(* comp);  }
 	) *
 	'main' name=qualifiedName { model->setInstance($name.res,"main"); }
 		( 
@@ -109,11 +109,34 @@ specification :
 ;
 
 composite returns [its::Composite * r] :
-	'composite' name=qualifiedName 
-	{ $r = new its::Composite($name.res); }
-	'{'
-
-	'}'	
+	'composite' cname=qualifiedName 
+		{
+		  $r = new its::Composite ( $cname.res ) ;
+		}
+	'{' 
+		( ('gal'|'composite'|'gmodel') type=qualifiedName instName=qualifiedName  
+		{
+			$r -> addInstance($instName.res , $type.res, *model);
+			$r -> updateStateDef ("init",$instName.res,"init"); 
+		}
+		';' )*
+		( 
+		'synchronization' name=qualifiedName 'label' label=STRING 
+		{
+			$r -> addSynchronization($name.res,toStringTok($label));
+		}
+		'{'
+			(
+			instance=qualifiedName '.' slabel=STRING ';'
+			{
+				$r -> addSyncPart ($name.res, $instance.res, toStringTok($slabel));
+			}
+	/* TODO */
+ /*			| selfCall */
+			)*
+		'}'
+		)*
+	'}' 
 ;
 
 system returns [its::GAL* r] :
