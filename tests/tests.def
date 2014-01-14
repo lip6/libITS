@@ -88,3 +88,5 @@ Looking for many traces, frogs example
 ../bin/its-reach -i test_models/gal/frogs.gal -t GAL -reachable 'Check.state==1' -manywitness 5  --quiet
 Looking for many traces, frogs example, with CGAL input
 ../bin/its-reach -i test_models/cgal/frogs.gal -t CGAL -reachable 'Check.state==1' -manywitness 5  --quiet
+CGAL input, with several levels of depth
+../bin/its-reach -i test_models/cgal/PhiloFork.gal -t CGAL --quiet

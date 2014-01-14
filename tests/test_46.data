@@ -1,0 +1,10 @@
+CGAL input, with several levels of depth
+../bin/its-reach -i test_models/cgal/PhiloFork.gal -t CGAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/cgal/PhiloFork.gal  -t  CGAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+closeLoop,29,0,2484,18,26,66,67,41,53,36,42,0
+ Total reachable state count : 29
+
