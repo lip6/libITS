@@ -327,7 +327,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	// move last cursor
 	++iters[cur-1];
 
-	printPath(path_t(witness,init,toreach), std::cout);
+	printPath(path_t(witness,init,toreach), std::cout,true);
 	nbwitness++;
 	ok = false;
       } else {
