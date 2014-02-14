@@ -187,7 +187,7 @@ int main_noex (int argc, char **argv) {
  vLabel reachFile="";
  
  argc = args.size();
- int nbwitness=1;
+ int nbwitness=0;
  for (int i=0;i < argc; i++) {
    if (! strcmp(args[i],"-d") ) {
      if (++i > argc) 
@@ -296,6 +296,14 @@ int main_noex (int argc, char **argv) {
    Statistic Scheck = Statistic(verify, reachExpr , CSV); // can also use LATEX instead of CSV
    cout.precision(6);
    Scheck.print_table(std::cout);
+
+#ifdef HASH_STAT
+  std::cout << " Some stats on unique table and cache :" << std::endl;
+  its::IntExpressionFactory::printStats (std::cout);
+  its::BoolExpressionFactory::printStats (std::cout);
+  its::query_stats ();
+  MemoryManager::pstats();
+#endif // HASH_STAT
 
  }
 
