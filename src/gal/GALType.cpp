@@ -5,6 +5,7 @@
 #include "ExprHom.hpp"
 
 #include "divine/dve2GAL.hh"
+#include "gal/parser/GALParser.hh"
 
 #include <algorithm>
 
@@ -320,7 +321,7 @@ labels_t GALType::getTransLabels () const {
         std::string state = predicate.substr (i+1, s_end-i-1);
         
         // for this variable:
-        // -1 means "unitiliazed", i.e. the state index has not been found yet
+        // -1 means "uninitialized", i.e. the state index has not been found yet
         // -2 means that the corresponding process has a single state, so "P.state" is to be replaced by "true"
         // any other value is positive and corresponds to the state index
         int nb_state = -1;
@@ -390,24 +391,12 @@ labels_t GALType::getTransLabels () const {
     return new_pred.str ();
   }
   
-  Transition
-  GALDVEType::getPredicate (Label predicate) const
+  BoolExpression
+  GALDVEType::getBPredicate (Label pred) const
   {
-    vLabel new_pred = predicate_dve2gal (predicate);
-    return GALType::getPredicate (new_pred);
+    vLabel new_pred = predicate_dve2gal (pred);
+    return GALType::getBPredicate (new_pred);
   }
-
-
-} // namespace
-
-// GAL parser
-// moved includes here because on MingW some includes derived from antlr dependencies # define as a macro the string CONST
-// This messes with CONST, the enum value in a PIntExpression
-#include "gal/parser/exprParserLexer.h"
-#include "gal/parser/exprParserParser.h"
-#include <antlr3.h>
-
-namespace its {
 
   /** The state predicate function : string p -> SHom.
    *  returns a selector homomorphism that selects states verifying the predicate 'p'.
@@ -416,65 +405,18 @@ namespace its {
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   Transition GALType::getPredicate (Label pred) const {
-    // to support old-fashioned syntax, first turn the '=' into '=='
-    std::stringstream tmp;
-    tmp << pred[0];
-    for (size_t i=1 ; i < pred.size() -1; i++) {
-      // '=' cannot be the first or last character of 'pred'
-      // so that accessing pred[i+1] or pred[i-1] would fail only if 'pred' is not well-formed
-      // if current character is a single '=', turn it into '=='
-      if (pred[i] == '=' && pred[i+1] != '=' && pred[i-1] != '=' && pred[i-1] != '<' && pred[i-1] != '!' && pred[i-1] != '>')
-        tmp << "==";
-      else
-        tmp << pred[i];
-     }
-    tmp << pred[pred.size()-1];
-    std::string predicate = tmp.str ();
-    
-    // reads the string as an input stream for the lexer
-    pANTLR3_INPUT_STREAM input = antlr3StringStreamNew((pANTLR3_UINT8)(predicate.c_str()), 0, predicate.size (), (pANTLR3_UINT8)"predicate");
-    if (input == NULL) {
-      std::cerr << "Unable to read predicate: " << predicate << std::endl;
-      exit(1);
-    }
-    
-    // the lexer
-    pexprParserLexer lexer = exprParserLexerNew(input);
-    if (lexer == NULL) {
-      std::cerr << "Unable to create the lexer for the predicate" << std::endl;
-      exit(1);
-    }
-    
-    // the token stream produced by the lexer
-    pANTLR3_COMMON_TOKEN_STREAM tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lexer));
-    if (tstream == NULL) {
-      std::cerr << "Unable to allocate token stream for predicate parsing" << std::endl;
-      exit(1);
-    }
-    
-    // the parser
-    pexprParserParser parser = exprParserParserNew(tstream);
-    if (parser == NULL) {
-      std::cerr << "Unable to create the parser for the predicate" << std::endl;
-      exit(1);
-    }
-    
-    // set the parsing context
-    parser->setGAL (parser, gal_);
-    // do the parsing
-    BoolExpression result = parser->boolOr (parser);
-    if (parser->pParser->rec->state->errorCount > 0) {
-      std::cerr << "The parser returned " << parser->pParser->rec->state->errorCount << " errors, parsing aborted" << std::endl;
-      exit(1);
-    }
-    
-    // free memory
-    parser->free(parser); parser = NULL;
-    tstream->free(tstream); tstream = NULL;
-    lexer->free(lexer); lexer = NULL;
-    input->close(input); input = NULL;
-    
-    return localApply (its::predicate (result, getGalOrder ()), DEFAULT_VAR);
+    return localApply (its::predicate (getBPredicate (pred), getGalOrder ()), DEFAULT_VAR);
+  }
+  
+  BoolExpression GALType::getBPredicate (Label pred) const {
+    return GALParser::parsePredicate (pred, gal_);
   }
 
-}
+} // namespace
+
+// GAL parser
+// moved includes here because on MingW some includes derived from antlr dependencies # define as a macro the string CONST
+// This messes with CONST, the enum value in a PIntExpression
+//#include "gal/parser/exprParserLexer.h"
+//#include "gal/parser/exprParserParser.h"
+//#include <antlr3.h>

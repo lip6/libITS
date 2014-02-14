@@ -27,6 +27,7 @@ class GALType : public TypeBasics {
 
   mutable GalOrder * go_;
   // support function to builda Hom from a GuardedAction (using current varOrder)
+public: // \todo public for access from libltl, is it a good idea?
   GHom buildHom(const GuardedAction & it) const ;
   GHom buildHom(const Statement & it) const ;
   GHom getSuccsHom (const labels_t & tau) const ;
@@ -44,6 +45,9 @@ public :
     }
     return go_;
   }
+
+  // simple getter of the pointer to the GAL system
+  const GAL * get_gal () const { return gal_; }
   
   Label getName() const { return gal_->getName(); }
 
@@ -79,10 +83,12 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  virtual Transition getPredicate (Label predicate) const;
+  Transition getPredicate (Label predicate) const;
   /// implement a pure virtual function to please the compiler
   /// but make it produce an error since it is not supposed to be used in this case
   Transition getAPredicate (Label predicate) const { return getPredicate (predicate); }
+  /// the real state predicate function parsing function
+  virtual BoolExpression getBPredicate (Label pred) const;
 
   /* delegated */
   std::ostream & print (std::ostream & os) const { os << *gal_ ; return os ; }
@@ -137,7 +143,7 @@ public:
    *  This class supports the original LTL syntax from DVE/BEEM.
    *  Especially, it interprets correctly "P0.CS" as "P0.state='index of CS'".
    */
-  Transition getPredicate (Label predicate) const ;
+  BoolExpression getBPredicate (Label pred) const ;
 };
 
 
