@@ -161,8 +161,8 @@ class array_of_abstract_t
    * doesn't relesase the memory allocated for the last item (this memory
    * will be reused in the next push_back()) - therefore it runs in a
    * time <i>O(1)</i> and it it really fast operation. */
-  T pop_back()
-   { T result = (*array[array.size()]);
+  T* pop_back()
+   { T* result = array[array.size()];
      shrink_to(array.size()-1);
      return result; }
   //!Resizes the container to the size of `count' elements.
