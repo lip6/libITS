@@ -2,7 +2,7 @@ AC_PREREQ([2.19])
 AC_INIT([ITSREACH],[0.2],[Yann.Thierry-mieg@lip6.fr])
 # We use automake to build makefiles
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall foreign])
 
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
