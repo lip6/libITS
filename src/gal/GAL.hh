@@ -102,6 +102,7 @@ public :
 
   typedef std::vector<GuardedAction> trans_t;
   typedef trans_t::const_iterator trans_it;
+  typedef trans_t::iterator trans_ncit;
 
   typedef GALState state_t;
   typedef state_t::const_iterator state_it;
@@ -132,6 +133,8 @@ public :
   arrays_it arrays_end() const { return arrays_.end() ; }
   trans_it trans_begin() const { return transitions_.begin() ; }
   trans_it trans_end() const { return transitions_.end() ; }
+  trans_ncit trans_begin() { return transitions_.begin(); }
+  trans_ncit trans_end() { return transitions_.end(); }
   state_it state_begin() const { return init_.begin() ; }
   state_it state_end() const { return init_.end() ; }
   int getVarValue (Label name) const {
