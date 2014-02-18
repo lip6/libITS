@@ -148,6 +148,9 @@ public :
   void add (const Statement & s) {
     actions.push_back(s.clone());
   }
+  void prepend (const Statement & s) {
+    actions.insert (actions.begin (), s.clone ());
+  }
 
   /// pretty print
   void print (std::ostream & os, int ind) const {
