@@ -63,6 +63,7 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 
+CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
 LDFLAGS="-static-libgcc -static-libstdc++ $LDFLAGS"
 
 
