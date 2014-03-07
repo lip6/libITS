@@ -131,8 +131,11 @@ composite returns [its::Composite * r] :
 			{
 				$r -> addSyncPart ($name.res, $instance.res, toStringTok($slabel));
 			}
-	/* TODO */
- /*			| selfCall */
+			| ( 'self' '.' slabel=STRING ';'  
+                  {
+				$r -> addSyncPart ($name.res, "self", toStringTok($slabel));
+                    }  
+           )  
 			)*
 		'}'
 		)*
