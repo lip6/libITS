@@ -83,6 +83,7 @@ public :
 	 */
   bool addSynchronization (Label sname, Label slabel);
 	 /** A synchronization part : <instanceName,transitionLabel>. 
+	  * instanceName can be "self" which has a special meaning.
 	  * Checks that the label exists in the instance are performed
 	  */
     bool addSyncPart (Label sname, Label subnetname, Label tname);

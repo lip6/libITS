@@ -59,6 +59,10 @@ bool Composite::addSyncPart (Label sname, Label subnetname, Label tname) {
 		      << tname << ")\n";
 	    return false;
 	}
+	/** forget about checks here, the label may not be yet defined and the instance obviously is. */
+	if (subnetname == "self") {
+	  return true;
+	}
 	// reference to a transition of a subnet
 	comps_it subnet = findName(subnetname,comps_);
 	if (subnet == comps_.end()) {

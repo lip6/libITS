@@ -62,12 +62,18 @@ Transition CompositeType::skipLocalApply(Transition h, int index) const {
       Label subname = partit->first;
       Label subtrans = partit->second;
       Shom hpart;
- 
-      int instindex =  vo->getIndex ( partit->first );
-      Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
-      labels_t tau;
-      tau.push_back(subtrans);
-      hpart = skipLocalApply(instance->getType()->getSuccs(tau), instindex);
+      
+      if (subname == "self") {
+	labels_t tau ;
+	tau.push_back(subtrans);
+	hpart = getSuccs(tau);
+      } else {
+	int instindex =  vo->getIndex ( partit->first );
+	Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
+	labels_t tau;
+	tau.push_back(subtrans);
+	hpart = skipLocalApply(instance->getType()->getSuccs(tau), instindex);
+      }
       
       hsync = hpart & hsync;
     }
