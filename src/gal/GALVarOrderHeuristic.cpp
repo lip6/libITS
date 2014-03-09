@@ -14,6 +14,7 @@ static int parseFirstInt (Label s) {
   for (const char  *cp = sc ; *cp ; ++ cp ) {
     if (*cp >= '0' && *cp <= '9'){
       sscanf (cp, "%d" , &val);
+	  break;
 	}
   }
   return val;
