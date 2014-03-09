@@ -33,6 +33,9 @@ enum orderHeuristicType
 labels_t force_heuristic (const class GAL * const, orderHeuristicType);
 labels_t lex_heuristic (const class GAL * const);
 
+/** a helper to sort lexico numeric */
+bool less_var ( Label a , Label b );
+
 } // namespace its
 
 #endif /// ! GAL_VAR_ORDER_HEURISTIC_HH_

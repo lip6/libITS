@@ -19,7 +19,7 @@ static int parseFirstInt (Label s) {
   return val;
 }
 
-static bool less_var ( Label a , Label b ) {
+bool less_var ( Label a , Label b ) {
   int vala = parseFirstInt(a) ;
   int valb = parseFirstInt(b) ;
   // Case 1 : global vars (no ints in them) are heavy, they go to top of structure.
