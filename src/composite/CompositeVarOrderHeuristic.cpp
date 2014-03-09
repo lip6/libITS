@@ -1,4 +1,4 @@
-#include "CompositeVarOrderHeuristic.hh"
+#include "composite/CompositeVarOrderHeuristic.hh"
 
 #include "gal/force.hh"
 #include "composite/Composite.hh"
@@ -7,20 +7,8 @@ namespace its {
 
 /********** lexicographical heuristic *************/
 
-static int parseFirstInt (Label s) {
-  int val = -1 ;
-  const char * sc = s.c_str();
-  for (const char  *cp = sc ; *cp ; ++ cp ) {
-    if (*cp >= '0' && *cp <= '9'){
-      sscanf (cp, "%d" , &val);
-    }
-  }
-  return val;
-}
-
-
 labels_t
-lex_heuristic (const Composite * comp const g)
+lex_heuristic (const Composite & comp)
 {
   labels_t pnames ;
   for (Composite::comps_it it = comp.comps_begin() ; it != comp.comps_end(); ++it ) {
@@ -110,7 +98,7 @@ public:
 };
 
 labels_t
-force_heuristic (const Composite * const comp, orderHeuristicType strat)
+force_heuristic (const Composite & comp, orderHeuristicType strat)
 {
   // compute the lexicographical ordering on variables
   // this is used to map variables to integers (for FORCE, variables are int).
@@ -129,41 +117,35 @@ force_heuristic (const Composite * const comp, orderHeuristicType strat)
   std::vector<const constraint_t *> constraints;
   // walk the syncs of the Composite
   for (Composite::syncs_it it = comp.syncs_begin(); it != comp.syncs_end() ; ++it) {
-	for (Synchronization::parts_it partit = sync.begin() ;
-	 partit != sync.end() ;
+    std::set<var_t> tmp;
+    for (Synchronization::parts_it partit = it->begin() ;
+	 partit != it->end() ;
 	 ++partit) {
 	 
       Label subname = partit->first;
-      Label subtrans = partit->second;
+     // Label subtrans = partit->second;
       
       if (subname == "self") {
-	labels_t tau ;
-	tau.push_back(subtrans);
-	hpart = getSuccs(tau);
+	// Do not follow self calls currently
+//	labels_t tau ;
+//	tau.push_back(subtrans);
+//	hpart = getSuccs(tau);
+	
       } else {
-	int instindex =  vo->getIndex ( partit->first );
-	Composite::comps_it instance = findName( subname, comp_.comps_begin() , comp_.comps_end() );
-	labels_t tau;
-	tau.push_back(subtrans);
-	hpart = skipLocalApply(instance->getType()->getSuccs(tau), instindex);
+	cvtoi_t::const_iterator vi = var_to_int.find ( partit->first );
+        if (vi == var_to_int.end ()) {
+	  std::cerr << "Could not access index of variable :" <<  partit->first;
+	  assert (vi != var_to_int.end ());
+	}
+
+	int instindex =  vi->second ;
+	tmp.insert(instindex);
       }
-      
-      hsync = hpart & hsync;
     }
-      
-	  
-	  toRet.insert(it->getLabel());
+    CLocalityEdge * e = new CLocalityEdge (tmp, strat);
+    constraints.push_back(e);
   }
-  
-  for (GAL::trans_it it = g->trans_begin ();
-       it != g->trans_end (); ++it)
-  {
-    // add locality constraint
-    add_locality_constraint (constraints, g, strat, *it, var_to_int);
-    // add query constraint
-    add_query_constraint (constraints, g, *it, var_to_int);
-  }
-  
+    
   // build the initial ordering from the lexicographical ordering
   order_t init_order;
   int i = 0;
@@ -173,22 +155,6 @@ force_heuristic (const Composite * const comp, orderHeuristicType strat)
     init_order [var_to_int [*it]] = i++;
   }
   
-  if (strat == SATUR)
-  {
-    // count the number of constraints that have the same set of variables
-    std::map<std::set<var_t>, int> count;
-    for (std::vector<const constraint_t *>::const_iterator it = constraints.begin ();
-         it != constraints.end (); ++it)
-    {
-      count [(*it)->get_data ()] += 1;
-    }
-    for (std::vector<const constraint_t *>::const_iterator it = constraints.begin ();
-         it != constraints.end (); ++it)
-    {
-//      std::cerr << count[(*it)->get_data ()] << std::endl;
-      const_cast<constraint_t *> (*it)->set_dev (count[(*it)->get_data ()]);
-    }
-  }
   
   // \debug
   std::map<int, std::string> int_to_var;

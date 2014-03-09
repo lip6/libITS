@@ -16,8 +16,8 @@ namespace its {
  \todo add a strategy
  */
 
-labels_t force_heuristic (const class Composite * const, orderHeuristicType);
-labels_t lex_heuristic (const Composite * const);
+labels_t force_heuristic (const class Composite & , orderHeuristicType);
+labels_t lex_heuristic (const Composite &);
 
 } // namespace its
 

@@ -5,7 +5,8 @@
  *      Author: yann
  */
 
-#include "CompositeType.hh"
+#include "composite/CompositeType.hh"
+#include "composite/CompositeVarOrderHeuristic.hh"
 // exit function
 #include <cstdlib>
 
@@ -38,9 +39,17 @@ labels_t CompositeType::getTransLabels () const {
 // also sets to default if currently unset.
 labels_t CompositeType::getVarSet () const {
   labels_t pnames ;
-  for (Composite::comps_it it = comp_.comps_begin() ; it != comp_.comps_end(); ++it ) {
-    pnames.push_back(it->getName());
-  }
+
+  pnames = force_heuristic(comp_, DEFAULT);
+
+    for (labels_t::const_iterator it = pnames.begin ();
+         it != pnames.end (); ++it)
+    {
+      std::cerr << (*it) << ",";
+    }
+    std::cerr << std::endl;
+  
+
   return pnames;
  }
 
