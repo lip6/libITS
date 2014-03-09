@@ -76,6 +76,7 @@ PETRIHEADERS = 	$(MYPETRISRCDIR)/Arc.hh \
 
 COMPOSITEHEADERS = 	$(MYCOMPSRCDIR)/Composite.hh \
 	$(MYCOMPSRCDIR)/CompositeType.hh \
+	$(MYCOMPSRCDIR)/CompositeVarOrderHeuristic.hh \
 	$(MYCOMPSRCDIR)/CState.hh \
 	$(MYCOMPSRCDIR)/Synchronization.hh \
 	$(MYCOMPSRCDIR)/TComposite.hh 
@@ -189,6 +190,7 @@ PETRISOURCES = 	$(MYPETRISRCDIR)/Arc.cpp \
 
 COMPOSITESOURCES = $(MYCOMPSRCDIR)/Composite.cpp \
 	$(MYCOMPSRCDIR)/CompositeType.cpp \
+	$(MYCOMPSRCDIR)/CompositeVarOrderHeuristic.cpp \
 	$(MYCOMPSRCDIR)/Synchronization.cpp \
 	$(MYCOMPSRCDIR)/TComposite.cpp 
 
