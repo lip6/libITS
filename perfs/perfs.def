@@ -779,15 +779,11 @@ cpn_test/globalresalloc-3-col.inst.gal
 cpn_test/lamport-fast-2-col.inst.gal
 ../bin/its-reach -i cpn_test/lamport-fast-2-col.inst.gal -t GAL --quiet
 cpn_test/neo-election-2-col.inst.gal
-../bin/its-reach -i cpn_test/neo-election-2-col.inst.gal -t GAL --quiet
-cpn_test/permadmit-2-col.inst.gal
 ../bin/its-reach -i cpn_test/permadmit-2-col.inst.gal -t GAL --quiet
 cpn_test/peterson-3-col.inst.gal
 ../bin/its-reach -i cpn_test/peterson-3-col.inst.gal -t GAL --quiet
 cpn_test/philo-5-col.inst.gal
 ../bin/its-reach -i cpn_test/philo-5-col.inst.gal -t GAL --quiet
-cpn_test/shared-mem-5-col.inst.gal
-../bin/its-reach -i cpn_test/shared-mem-5-col.inst.gal -t GAL --quiet
 cpn_test/simple-loadB-5-col.inst.gal
 ../bin/its-reach -i cpn_test/simple-loadB-5-col.inst.gal -t GAL --quiet
 cpn_test/token-ring-5-col.inst.gal
@@ -800,12 +796,8 @@ cpn_test/drink-vending-2-col.sep.flat.gal
 ../bin/its-reach -i cpn_test/drink-vending-2-col.sep.flat.gal -t GAL --quiet
 cpn_test/globalresalloc-3-col.sep.flat.gal
 ../bin/its-reach -i cpn_test/globalresalloc-3-col.sep.flat.gal -t GAL --quiet
-cpn_test/lamport-fast-2-col.sep.flat.gal
-../bin/its-reach -i cpn_test/lamport-fast-2-col.sep.flat.gal -t GAL --quiet
 cpn_test/neo-election-2-col.sep.flat.gal
 ../bin/its-reach -i cpn_test/neo-election-2-col.sep.flat.gal -t GAL --quiet
-cpn_test/permadmit-2-col.sep.flat.gal
-../bin/its-reach -i cpn_test/permadmit-2-col.sep.flat.gal -t GAL --quiet
 cpn_test/peterson-3-col.sep.flat.gal
 ../bin/its-reach -i cpn_test/peterson-3-col.sep.flat.gal -t GAL --quiet
 cpn_test/philo-5-col.sep.flat.gal
