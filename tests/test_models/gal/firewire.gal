@@ -1,4 +1,4 @@
-GAL firewire_link.2.dve
+GAL firewire_link_2_dve
 {
   //arrays
   array[2] Bus.t= (0, 0) ;

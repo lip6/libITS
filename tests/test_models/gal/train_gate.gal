@@ -1,4 +1,4 @@
-GAL train_gate.5.dve
+GAL train_gate_5_dve
 {
   //arrays
   array[7] IntQueue.liste = (0, 0, 0, 0, 0, 0, 0) ;
