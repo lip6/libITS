@@ -224,12 +224,13 @@ labels_t GALType::getTransLabels () const {
     labels_t res;
     res = force_heuristic (gal_, strat_);
     
-    for (labels_t::const_iterator it = res.begin ();
-         it != res.end (); ++it)
-    {
-      std::cerr << (*it) << ",";
-    }
-    std::cerr << std::endl;
+    // Debug
+    // for (labels_t::const_iterator it = res.begin ();
+    //      it != res.end (); ++it)
+    // {
+    //   std::cerr << (*it) << ",";
+    // }
+    // std::cerr << std::endl;
     
     return res;
   }
