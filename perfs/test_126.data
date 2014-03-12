@@ -1,0 +1,10 @@
+lann.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.7.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lann.7.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lann.7.dve,1.60026e+08,19.286,0,2,4744,5,136424,6,0,203,252650,0
+ Total reachable state count : 160025986
+

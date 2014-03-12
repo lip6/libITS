@@ -1,0 +1,10 @@
+leader_election.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.5.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_election.5.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leader\_election.5.dve,4.80395e+06,2.70949,0,2,24637,5,121251,6,0,908,24010,0
+ Total reachable state count : 4803952
+

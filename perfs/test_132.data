@@ -1,0 +1,6 @@
+leader_election.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.6.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_election.6.dve  
