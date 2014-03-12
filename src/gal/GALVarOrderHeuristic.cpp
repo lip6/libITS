@@ -8,14 +8,18 @@ namespace its {
 
 /********** lexicographical heuristic *************/
 
+/** Actually parses LAST integer currently */
 static int parseFirstInt (Label s) {
   int val = -1 ;
   const char * sc = s.c_str();
   for (const char  *cp = sc ; *cp ; ++ cp ) {
     if (*cp >= '0' && *cp <= '9'){
       sscanf (cp, "%d" , &val);
-	  break;
-	}
+      int copy = val;
+      while (copy /= 10) {
+	++cp;
+      }
+    }
   }
   return val;
 }
