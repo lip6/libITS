@@ -1,0 +1,10 @@
+brp2.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp2.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/brp2.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+brp2.4.dve,679993,17.8805,0,2,55845,5,196699,6,0,160,58729,0
+ Total reachable state count : 679993
+

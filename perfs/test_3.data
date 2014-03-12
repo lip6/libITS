@@ -1,0 +1,10 @@
+adding.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/adding.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/adding.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+adding.3.dve,1.89438e+06,134.103,0,2,3841,5,563515,6,0,33,21185,0
+ Total reachable state count : 1894376
+

@@ -1,0 +1,10 @@
+cambridge.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/cambridge.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+cambridge.3.dve,18138,1.68665,0,2,6005,5,45910,6,0,268,20647,0
+ Total reachable state count : 18138
+

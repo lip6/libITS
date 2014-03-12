@@ -1,0 +1,10 @@
+bridge.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/bridge.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bridge.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bridge.1.dve,3186,0.117659,0,2,808,5,5555,6,0,206,3183,0
+ Total reachable state count : 3186
+

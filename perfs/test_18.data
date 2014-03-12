@@ -1,0 +1,10 @@
+bakery.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/bakery.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bakery.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bakery.4.dve,157003,4.8288,0,2,5989,5,119983,6,0,123,96965,0
+ Total reachable state count : 157003
+

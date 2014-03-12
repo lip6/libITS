@@ -1,0 +1,10 @@
+anderson.8.dve
+../bin/its-reach -t DVE --quiet -i test_models/anderson.8.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/anderson.8.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+anderson.8.dve,5.38699e+08,95.4398,0,2,50851,5,1.7468e+06,6,0,194,1.14226e+06,0
+ Total reachable state count : 538699029
+

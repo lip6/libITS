@@ -1,0 +1,10 @@
+bopdp.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/bopdp.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bopdp.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bopdp.1.dve,12642,0.433575,0,2,1343,5,11057,6,0,303,10316,0
+ Total reachable state count : 12642
+
