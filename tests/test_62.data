@@ -1,0 +1,11 @@
+CGAL train4
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/train4.mod.gal
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/train4.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+model\_flat\_mod,28895,0.2693,0,318,151,5703,370,158,5200,213,1107,0
+ Total reachable state count : 28895
+
+NOTE : This log was manually edited ! Test does not pass currently.

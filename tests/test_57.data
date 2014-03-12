@@ -1,0 +1,10 @@
+CGAL loyd
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/loyd.mod.gal           
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/loyd.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+loyd\_1\_dve\_flat\_mod,720,0.022844,0,5,239,18,3511,19,8,35,1532,0
+ Total reachable state count : 720
+

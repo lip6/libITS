@@ -1,0 +1,10 @@
+CGAL bakery
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/szymanski.flat.mod.gal
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/szymanski.flat.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+szymanski\_2\_dve\_flat\_flat\_mod,31875,48.8484,0,1652,2847,40065,33849,341,1.30252e+06,242,1.87931e+06,0
+ Total reachable state count : 31875
+

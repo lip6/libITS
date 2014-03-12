@@ -1,0 +1,10 @@
+CGAL firewire
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/firewire.mod.gal  
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/firewire.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+firewire\_link\_2\_dve\_flat\_mod,55887,46.4722,0,2592,12529,129557,324693,1331,2.17236e+06,865,7.87128e+06,0
+ Total reachable state count : 55887
+

@@ -1,0 +1,10 @@
+GAL lamport
+../bin/its-reach -t GAL --quiet -i test_models/gal/lamport.gal        
+
+its-reach command run as :
+
+../bin/its-reach  -t  GAL  --quiet  -i  test_models/gal/lamport.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lamport\_2\_dve,110920,1.42882,0,2,1578,5,45216,6,0,164,46114,0
+ Total reachable state count : 110920
+

@@ -1,0 +1,10 @@
+CGAL lup
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/lup.mod.gal            
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/lup.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lup\_1\_dve\_flat\_mod,1404,0.061357,0,157,19,1955,38,163,2677,91,286,0
+ Total reachable state count : 1404
+

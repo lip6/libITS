@@ -1,0 +1,10 @@
+CGAL phils
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/phils.mod.gal
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/phils.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+phils\_4\_dve\_flat\_mod,340789,0.037072,0,228,9,1516,16,199,1013,127,35,0
+ Total reachable state count : 340789
+

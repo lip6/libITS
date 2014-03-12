@@ -1,0 +1,10 @@
+CGAL exit
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/exit.mod.gal      
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/exit.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+exit\_1\_dve\_flat\_mod,3.23933e+06,1.4159,0,4819,99,70416,435,191,67390,110,4389,0
+ Total reachable state count : 3239334
+

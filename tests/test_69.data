@@ -1,0 +1,10 @@
+CGAL frogs
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/frogs.mod.gal     
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/frogs.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+frogs\_1\_dve\_flat\_mod,5094,0.256089,0,8,1493,16,83204,23,2,57,22070,0
+ Total reachable state count : 5094
+

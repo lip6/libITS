@@ -1,0 +1,12 @@
+CGAL fischer
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/fischer.mod.gal   
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/fischer.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+fischer\_1\_dve\_flat\_mod,634,0.071241,0,406,23,2521,34,128,2441,73,329,0
+ Total reachable state count : 634
+
+NOTE : Manually edited log file, test does not pass currently.
+

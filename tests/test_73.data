@@ -1,0 +1,10 @@
+CGAL reader_writer
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/reader_writer.mod.gal
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/reader_writer.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reader\_writer\_3\_dve\_flat\_mod,604498,0.045927,0,172,25,3873,36,251,3163,132,315,0
+ Total reachable state count : 604498
+

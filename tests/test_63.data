@@ -1,0 +1,10 @@
+GAL fischer
+../bin/its-reach -t GAL --quiet -i test_models/gal/fischer.gal   
+
+its-reach command run as :
+
+../bin/its-reach  -t  GAL  --quiet  -i  test_models/gal/fischer.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+fischer\_1\_dve,634,0.11051,0,2,178,5,2090,6,0,109,1403,0
+ Total reachable state count : 634
+

@@ -1,0 +1,10 @@
+CGAL hanoi
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/hanoi.mod.gal     
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/hanoi.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+hanoi\_1\_dve\_flat\_mod,6561,0.009267,0,10,2,175,10,184,101,78,29,0
+ Total reachable state count : 6561
+

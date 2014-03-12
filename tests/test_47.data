@@ -1,0 +1,10 @@
+CGAL bakery
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/bakery.mod.gal 
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/bakery.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bakery\_4\_dve\_flat\_mod,157003,29.5619,0,141,7379,22354,236545,119,128510,111,1.99628e+06,0
+ Total reachable state count : 157003
+

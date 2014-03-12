@@ -1,0 +1,6 @@
+GAL firewire
+../bin/its-reach -t GAL --quiet -i test_models/gal/firewire.gal  
+
+its-reach command run as :
+
+../bin/its-reach  -t  GAL  --quiet  -i  test_models/gal/firewire.gal  

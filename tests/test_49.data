@@ -1,0 +1,10 @@
+GAL hanoi ori
+../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi_ori.gal      
+
+its-reach command run as :
+
+../bin/its-reach  -t  GAL  --quiet  -i  test_models/gal/hanoi_ori.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+hanoi.ori\_1\_dve,6561,5.15986,0,2,3918,5,22418,6,0,48,6419,0
+ Total reachable state count : 6561
+

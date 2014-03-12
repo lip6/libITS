@@ -1,0 +1,10 @@
+CGAL test
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/test.mod.gal
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/test.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+a\_flat\_mod,0,0.000725,0,1,0,3,3,2,0,1,0,0
+ Total reachable state count : 0
+

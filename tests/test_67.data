@@ -1,0 +1,10 @@
+GAL train_gate
+../bin/its-reach -t GAL --quiet -i test_models/gal/train_gate.gal
+
+its-reach command run as :
+
+../bin/its-reach  -t  GAL  --quiet  -i  test_models/gal/train_gate.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+train\_gate\_5\_dve,269488,1.04267,0,2,8627,5,28277,6,0,232,17300,0
+ Total reachable state count : 269488
+

@@ -1,0 +1,10 @@
+CGAL peterson
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/peterson.mod.gal       
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/peterson.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peterson\_4\_dve\_flat\_mod,1.11956e+06,333.19,0,825,31607,135204,1.33155e+06,145,1.12201e+06,114,1.58656e+07,0
+ Total reachable state count : 1119560
+

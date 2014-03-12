@@ -1,0 +1,10 @@
+CGAL lamport
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/lamport.mod.gal        
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/lamport.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lamport\_2\_dve\_flat\_mod,110920,19.1844,0,1289,749,33877,12490,193,352737,126,461304,0
+ Total reachable state count : 110920
+

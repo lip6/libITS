@@ -1,0 +1,10 @@
+CGAL szymanski
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/szymanski.mod.gal
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/szymanski.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+szymanski\_2\_dve\_flat\_mod,31875,52.2459,0,1652,2847,38373,33097,341,1.18837e+06,242,1.73797e+06,0
+ Total reachable state count : 31875
+

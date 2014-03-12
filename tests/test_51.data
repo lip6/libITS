@@ -1,0 +1,10 @@
+CGAL brp
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/brp.mod.gal       
+
+its-reach command run as :
+
+../bin/its-reach  -t  CGAL  --quiet  -i  test_models/cgal/brp.mod.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+brp\_1\_dve\_flat\_mod,18928,0.365181,0,871,326,7085,1898,196,7440,107,6370,0
+ Total reachable state count : 18928
+
