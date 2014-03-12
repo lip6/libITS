@@ -1,6 +1,9 @@
 GAL firewire
 ../bin/its-reach -t GAL --quiet -i test_models/gal/firewire.gal  
-
 its-reach command run as :
 
 ../bin/its-reach  -t  GAL  --quiet  -i  test_models/gal/firewire.gal  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+firewire\_link\_2\_dve,55887,3.01001,0,2,4968,5,26985,6,0,1547,16742,0
+ Total reachable state count : 55887
+
