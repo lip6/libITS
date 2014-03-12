@@ -1,6 +1,7 @@
 #! /bin/sh
 
-echo "##teamcity[testSuiteStarted name='its-perfs.test']"
+# Do not name test suite to keep history from older versions active
+# echo "##teamcity[testSuiteStarted name='its-perfs.test']"
 
 if ! [ -f ../bin/its-reach ]
 then
@@ -11,5 +12,6 @@ for i in *.data ; do
 done;
 fi
 
-echo "##teamcity[testSuiteFinished name='its-perfs.test']"
+# anonymous test suite
+# echo "##teamcity[testSuiteFinished name='its-perfs.test']"
 
