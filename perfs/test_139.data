@@ -1,0 +1,10 @@
+lifts.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/lifts.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lifts.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lifts.2.dve,2664,0.871745,0,2,2114,5,8956,6,0,536,4107,0
+ Total reachable state count : 2664
+

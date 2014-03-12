@@ -1,0 +1,10 @@
+leader_filters.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_filters.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leader\_filters.2.dve,29284,0.590054,0,2,3202,5,10301,6,0,123,8162,0
+ Total reachable state count : 29284
+

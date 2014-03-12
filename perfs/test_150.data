@@ -1,0 +1,6 @@
+mcs.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/mcs.5.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/mcs.5.dve  

@@ -1,0 +1,10 @@
+lup.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/lup.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lup.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lup.4.dve,7.47954e+06,7.53891,0,2,437,5,20712,6,0,355,6354,0
+ Total reachable state count : 7479540
+
