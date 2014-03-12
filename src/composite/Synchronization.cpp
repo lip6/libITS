@@ -12,11 +12,11 @@ namespace its {
 
 std::ostream & Synchronization::print (std::ostream & os) const {
 	 os << "    "
-	    << " synchronization " << getName() << " label(" << getLabel() << ") {\n";
+	    << " synchronization " << getName() << " label \"" << getLabel() << "\" {\n";
 	 for (parts_it it = begin(); it != end();  ++it ) {
 	   os << "      " ;
 	   os << it->first;
-	   os << "." << it->second << " ;\n";
+	   os << ".\"" << it->second << "\" ;\n";
 	 }
 	 os << "    }\n";
 	 return os;
