@@ -42,12 +42,13 @@ labels_t CompositeType::getVarSet () const {
 
   pnames = force_heuristic(comp_, DEFAULT);
 
-    for (labels_t::const_iterator it = pnames.begin ();
-         it != pnames.end (); ++it)
-    {
-      std::cerr << (*it) << ",";
-    }
-    std::cerr << std::endl;
+  // // DEBUG
+  //   for (labels_t::const_iterator it = pnames.begin ();
+  //        it != pnames.end (); ++it)
+  //   {
+  //     std::cerr << (*it) << ",";
+  //   }
+  //   std::cerr << std::endl;
   
 
   return pnames;
