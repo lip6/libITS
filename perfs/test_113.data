@@ -1,0 +1,10 @@
+lamport_nonatomic.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport_nonatomic.5.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lamport_nonatomic.5.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lamport\_nonatomic.5.dve,9.51185e+07,2.68689,0,2,3099,5,55941,6,0,1123,72117,0
+ Total reachable state count : 95118524
+

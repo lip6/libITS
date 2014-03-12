@@ -1,0 +1,10 @@
+lamport.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lamport.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lamport.3.dve,38067,0.408298,0,2,592,5,12947,6,0,163,13307,0
+ Total reachable state count : 38067
+

@@ -1,0 +1,10 @@
+firewire_tree.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/firewire_tree.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+firewire\_tree.3.dve,86556,0.880349,0,2,6620,5,32465,6,0,1919,12286,0
+ Total reachable state count : 86556
+

@@ -1,0 +1,10 @@
+iprotocol.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/iprotocol.7.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/iprotocol.7.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+iprotocol.7.dve,5.97942e+07,27.6118,0,2,177582,5,519332,6,0,172,637415,0
+ Total reachable state count : 59794192
+

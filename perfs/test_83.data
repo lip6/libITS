@@ -1,0 +1,10 @@
+firewire_tree.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/firewire_tree.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+firewire\_tree.4.dve,169992,1.68711,0,2,10151,5,58541,6,0,2553,19418,0
+ Total reachable state count : 169992
+

@@ -1,0 +1,10 @@
+krebs.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/krebs.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+krebs.4.dve,1.0474e+06,24.693,0,2,14784,5,262921,6,0,141,59869,0
+ Total reachable state count : 1047405
+

@@ -1,0 +1,10 @@
+fischer.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/fischer.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/fischer.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+fischer.1.dve,634,0.026139,0,2,132,5,1009,6,0,86,629,0
+ Total reachable state count : 634
+

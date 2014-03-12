@@ -1,0 +1,10 @@
+frogs.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/frogs.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/frogs.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+frogs.3.dve,760789,57.4515,0,2,24984,5,181973,6,0,56,49992,0
+ Total reachable state count : 760789
+

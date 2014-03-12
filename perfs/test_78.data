@@ -1,0 +1,10 @@
+firewire_link.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_link.5.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/firewire_link.5.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+firewire\_link.5.dve,1.8553e+07,12.8192,0,2,63460,5,274766,6,0,2278,252447,0
+ Total reachable state count : 18553032
+

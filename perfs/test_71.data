@@ -1,0 +1,10 @@
+extinction.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/extinction.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/extinction.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+extinction.2.dve,10061,0.248481,0,2,3796,5,19112,6,0,413,5730,0
+ Total reachable state count : 10061
+

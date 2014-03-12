@@ -1,0 +1,10 @@
+gear.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/gear.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/gear.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+gear.1.dve,2689,0.258726,0,2,887,5,7778,6,0,222,3694,0
+ Total reachable state count : 2689
+
