@@ -1,0 +1,23 @@
+lann.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/lann.1.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lann.1.dve  -reachable  P_0.CS + P_1.CS + P_2.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lann.1.dve,7017,0.104591,0,2,1411,6,7405,7,0,118,4614,0
+ Total reachable state count : 7017
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 420 reachable states that exhibit your property : P_0.CS + P_1.CS + P_2.CS > 1
+computing trace...
+From initial states :
+[ P_0.state=1 ]
+This shortest transition sequence of length 14 :
+t17, t23, t4, t5, t8, t14, t0, t21, t22, t8, t9, t23, t4, t7
+Leads to final states :
+[ 420 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS > 1,420,0.284986,0,2,464,87,61624,38,81,508,66812,210

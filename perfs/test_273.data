@@ -1,0 +1,14 @@
+exit.5-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/exit.5.dve -reachable "at_modul == 3"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/exit.5.dve  -reachable  at_modul == 3  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+exit.5.dve,833226,0.235394,0,2,2127,5,31262,7,0,467,16309,0
+ Total reachable state count : 833226
+
+Verifying 1 reachability properties.
+Never property at_modul == 3 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+at\_modul == 3,0,0.235997,0,1,0,5,31262,7,0,468,16309,1

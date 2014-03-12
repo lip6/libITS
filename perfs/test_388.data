@@ -1,0 +1,10 @@
+cpn_test/drink-vending-2-col.inst.gal
+../bin/its-reach -i cpn_test/drink-vending-2-col.inst.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/drink-vending-2-col.inst.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Document\_inst,1024,0.035479,0,2,35,5,1308,6,0,415,262,0
+ Total reachable state count : 1024
+

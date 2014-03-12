@@ -1,0 +1,23 @@
+rushhour.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/rushhour.2.dve -reachable "Red_car.out"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/rushhour.2.dve  -reachable  Red_car.out  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+rushhour.2.dve,2242,1.94324,0,2,36343,5,121507,7,0,122,7956,0
+ Total reachable state count : 2242
+
+Verifying 1 reachability properties.
+Never property Red_car.out does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 689 reachable states that exhibit your property : Red_car.out
+computing trace...
+From initial states :
+[ Red_car.y=2 Red_car.x=1 Red_car.length=2 Car_ver_4.y=4 Car_ver_4.x=5 Car_ver_4.length=2 Car_ver_3.x=3 Car_ver_3.length=3 Car_hor_3.y=5 Car_hor_3.x=2 Car_hor_3.length=3 Car_ver_2.y=3 Car_ver_2.x=2 Car_ver_2.length=2 Car_hor_2.y=3 Car_hor_2.x=3 Car_hor_2.length=3 Car_ver_1.length=3 Car_hor_1.x=1 Car_hor_1.length=2 A[9]=1 A[29]=1 A[6]=1 A[26]=1 A[35]=1 A[15]=1 A[34]=1 A[14]=1 A[3]=1 A[33]=1 A[23]=1 A[13]=1 A[32]=1 A[2]=1 A[22]=1 A[12]=1 A[21]=1 A[1]=1 A[20]=1 A[0]=1 ]
+This shortest transition sequence of length 57 :
+t10, t10, t10, t0, t11, t11, t5, t15, t8, t15, t15, t6, t12, t12, t1, t9, t9, t9, t12, t5, t5, t5, t14, t4, t4, t4, t13, t6, t6, t6, t10, t10, t10, t0, t11, t7, t7, t11, t11, t5, t5, t11, t1, t9, t7, t9, t9, t5, t14, t3, t14, t14, t1, t1, t15, t1, t2
+Leads to final states :
+[ 689 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Red\_car.out,689,5.25977,0,2,17209,347,896530,28,370,828,362423,629

@@ -1,0 +1,23 @@
+loyd.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/loyd.1.dve -reachable "Check.done"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/loyd.1.dve  -reachable  Check.done  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+loyd.1.dve,720,0.07605,0,2,244,5,1391,7,0,35,361,0
+ Total reachable state count : 720
+
+Verifying 1 reachability properties.
+Never property Check.done does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 360 reachable states that exhibit your property : Check.done
+computing trace...
+From initial states :
+[ a[5]=5 a[4]=4 a[3]=3 a[2]=2 a[1]=1 ]
+This shortest transition sequence of length 16 :
+t1, t3, t3, t0, t2, t2, t1, t3, t3, t0, t2, t2, t1, t3, t3, t4
+Leads to final states :
+[ 360 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Check.done,360,0.096276,0,2,244,91,6124,16,95,234,3895,84

@@ -1,0 +1,14 @@
+extinction.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/extinction.4.dve -reachable "leaders_num > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/extinction.4.dve  -reachable  leaders_num > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+extinction.4.dve,2.00137e+06,7.40348,0,2,41892,5,255585,7,0,565,129404,0
+ Total reachable state count : 2001372
+
+Verifying 1 reachability properties.
+Never property leaders_num > 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leaders\_num > 1,0,7.406,0,1,0,5,255585,7,0,566,129404,1

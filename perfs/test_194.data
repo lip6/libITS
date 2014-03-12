@@ -1,0 +1,10 @@
+protocols.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/protocols.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/protocols.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+protocols.1.dve,2430,0.004227,0,2,32,5,485,6,0,61,307,0
+ Total reachable state count : 2430
+

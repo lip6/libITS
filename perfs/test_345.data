@@ -1,0 +1,26 @@
+peg_solitaire.5-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/peg_solitaire.5.dve -reachable "peg_count == 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/peg_solitaire.5.dve  -reachable  peg_count == 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peg\_solitaire.5.dve,23587,1.16759,0,2,6919,6,138042,7,0,803,60970,0
+ Total reachable state count : 23587
+
+Verifying 1 reachability properties.
+Never property peg_count == 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 3 reachable states that exhibit your property : peg_count == 1
+computing trace...
+From initial states :
+[ a[43]=2 a[42]=2 a[47]=2 a[36]=2 a[35]=2 a[29]=1 a[28]=1 a[48]=2 a[22]=1 a[40]=2 a[30]=1 a[31]=1 a[7]=2 a[8]=2 a[23]=1 a[16]=1 peg_count=16 a[41]=2 a[32]=1 a[33]=1 a[24]=1 a[17]=1 a[25]=1 a[26]=1 a[34]=1 a[18]=1 a[0]=2 a[10]=1 a[1]=2 a[12]=2 a[5]=2 a[13]=2 a[6]=2 ]
+This shortest transition sequence of length 15 :
+t13, t19, t114, t120, t122, t58, t125, t49, t47, t79, t56, t20, t121, t11, t80
+Leads to final states :
+[ a[43]=2 a[42]=2 a[47]=2 a[36]=2 a[35]=2 a[48]=2 a[40]=2 a[7]=2 a[8]=2 peg_count=1 a[41]=2 a[0]=2 a[1]=2 a[12]=2 a[5]=2 a[3]=1 a[13]=2 a[6]=2 ]
+[ a[43]=2 a[42]=2 a[47]=2 a[36]=2 a[35]=2 a[48]=2 a[40]=2 a[7]=2 a[8]=2 peg_count=1 a[41]=2 a[0]=2 a[1]=2 a[12]=2 a[27]=1 a[5]=2 a[13]=2 a[6]=2 ]
+[ a[43]=2 a[42]=2 a[47]=2 a[36]=2 a[35]=2 a[48]=2 a[40]=2 a[7]=2 a[8]=2 peg_count=1 a[41]=2 a[24]=1 a[0]=2 a[1]=2 a[12]=2 a[5]=2 a[13]=2 a[6]=2 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peg\_count == 1,3,3.70585,0,2,66,91,348497,151,103,1910,152967,1082

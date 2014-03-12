@@ -1,0 +1,24 @@
+frogs.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/frogs.3.dve -reachable "Check.done"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/frogs.3.dve  -reachable  Check.done  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+frogs.3.dve,760789,44.8145,0,2,24984,5,181973,7,0,57,49992,0
+ Total reachable state count : 760789
+
+Verifying 1 reachability properties.
+Never property Check.done does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 1 reachable states that exhibit your property : Check.done
+computing trace...
+From initial states :
+[ y=15 a[24]=2 a[14]=1 a[3]=1 a[23]=2 a[13]=1 a[2]=1 a[22]=2 a[12]=1 a[21]=2 a[1]=1 a[11]=1 a[30]=2 a[20]=2 a[0]=1 a[4]=1 a[25]=2 a[5]=1 a[16]=2 a[26]=2 a[6]=1 a[17]=2 a[27]=2 a[7]=1 a[18]=2 a[28]=2 a[8]=1 a[19]=2 a[29]=2 a[9]=1 a[10]=1 ]
+This shortest transition sequence of length 256 :
+t1, t7, t5, t3, t3, t1, t7, t7, t7, t5, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t5, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t1, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t3, t3, t5, t7, t7, t7, t7, t7, t1, t3, t3, t3, t3, t5, t7, t7, t7, t1, t3, t3, t5, t7, t1, t8
+Leads to final states :
+[ y=15 a[24]=1 a[14]=2 a[3]=2 a[23]=1 a[13]=2 a[2]=2 a[22]=1 a[12]=2 a[21]=1 a[1]=2 a[11]=2 a[30]=1 a[20]=1 a[0]=2 a[4]=2 a[25]=1 a[5]=2 a[16]=1 a[26]=1 a[6]=2 a[17]=1 a[27]=1 a[7]=2 a[18]=1 a[28]=1 a[8]=2 a[19]=1 a[29]=1 a[9]=2 Check.state=1 a[10]=2 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Check.done,1,46.394,0,2,35,1141,314179,20,1391,1132,132289,1992

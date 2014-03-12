@@ -1,0 +1,10 @@
+phils.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/phils.7.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/phils.7.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+phils.7.dve,7.19348e+07,0.132332,0,2,644,5,8915,6,0,330,4202,0
+ Total reachable state count : 71934773
+

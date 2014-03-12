@@ -1,0 +1,23 @@
+leader_election.5-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.5.dve -reachable "nr_leaders > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_election.5.dve  -reachable  nr_leaders > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leader\_election.5.dve,4.80395e+06,2.29966,0,2,24637,5,121422,7,0,909,24196,0
+ Total reachable state count : 4803952
+
+Verifying 1 reachability properties.
+Never property nr_leaders > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 410 reachable states that exhibit your property : nr_leaders > 1
+computing trace...
+From initial states :
+[ Node_6.max=21 Node_6.active=1 Node_5.max=21 Node_5.active=1 Node_7.active=1 Node_7.max=23 Node_4.max=23 Node_4.active=1 Node_3.active=1 Node_2.max=6 Node_2.active=1 Node_1.max=14 Node_1.active=1 Node_0.active=1 Node_0.max=24 ]
+This shortest transition sequence of length 123 :
+t96, t103, t0, t1, t4, t105, t110, t12, t13, t16, t112, t12, t14, t18, t115, t117, t24, t25, t28, t119, t24, t26, t30, t32, t24, t25, t29, t118, t124, t36, t37, t40, t126, t36, t38, t42, t44, t36, t37, t41, t125, t131, t48, t49, t52, t133, t48, t50, t54, t56, t48, t49, t53, t132, t138, t60, t61, t64, t140, t60, t62, t66, t143, t60, t61, t64, t140, t145, t72, t73, t76, t84, t85, t88, t98, t0, t2, t6, t8, t148, t72, t74, t78, t80, t72, t73, t77, t84, t87, t95, t102, t0, t3, t11, t109, t12, t15, t23, t116, t24, t27, t35, t123, t36, t39, t47, t130, t48, t51, t59, t137, t60, t63, t70, t144, t146, t72, t74, t79, t149, t72, t75, t82
+Leads to final states :
+[ 410 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+nr\_leaders > 1,410,65.676,0,2,1396,586,1.18923e+07,163,617,2975,3.44001e+06,8418

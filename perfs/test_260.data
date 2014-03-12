@@ -1,0 +1,14 @@
+cambridge.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.1.dve -reachable "Sender.q_error"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/cambridge.1.dve  -reachable  Sender.q_error  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+cambridge.1.dve,11339,2.53055,0,2,6050,5,51223,7,0,252,22740,0
+ Total reachable state count : 11339
+
+Verifying 1 reachability properties.
+Never property Sender.q_error is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Sender.q\_error,0,2.53098,0,1,0,5,51223,7,0,253,22740,1

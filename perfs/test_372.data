@@ -1,0 +1,27 @@
+rether.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/rether.4.dve -reachable "Node_0.error_st"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/rether.4.dve  -reachable  Node_0.error_st  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+rether.4.dve,4768,0.185481,0,2,3685,6,19117,7,0,504,12033,0
+ Total reachable state count : 4768
+
+Verifying 1 reachability properties.
+Never property Node_0.error_st does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 4 reachable states that exhibit your property : Node_0.error_st
+computing trace...
+From initial states :
+[ Token.NRT_count=5 ]
+This shortest transition sequence of length 72 :
+t110, t111, t111, t111, t111, t111, t111, t111, t111, t111, t112, t21, t23, t0, t27, t29, t123, t31, t33, t1, t37, t39, t124, t41, t43, t46, t125, t51, t53, t56, t126, t61, t63, t66, t127, t122, t132, t110, t20, t22, t9, t113, t30, t32, t35, t114, t111, t111, t111, t111, t111, t111, t111, t112, t71, t73, t76, t128, t81, t83, t86, t129, t91, t93, t96, t130, t122, t132, t110, t20, t22, t24
+Leads to final states :
+[ Bandwidth.state=1 RT_count=2 Token.state=2 Token.NRT_count=3 Token.next=8 Node_0.state=7 Node_1.granted=1 Node_1.rt=1 Node_0.rt=1 in_RT[1]=1 in_RT[0]=1 ]
+[ Bandwidth.state=1 RT_count=2 Token.state=2 Token.NRT_count=3 Token.next=8 Node_2.granted=1 Node_2.rt=1 Node_0.state=7 Node_0.rt=1 in_RT[2]=1 in_RT[0]=1 ]
+[ Bandwidth.state=1 RT_count=2 Token.state=2 Token.NRT_count=3 Token.next=8 Node_3.granted=1 Node_3.rt=1 Node_0.state=7 Node_0.rt=1 in_RT[3]=1 in_RT[0]=1 ]
+[ Bandwidth.state=1 RT_count=2 Token.state=2 Token.NRT_count=3 Token.next=8 Node_4.granted=1 Node_4.rt=1 Node_0.state=7 Node_0.rt=1 in_RT[4]=1 in_RT[0]=1 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Node\_0.error\_st,4,0.589666,0,2,91,287,77498,144,376,1780,28127,5981

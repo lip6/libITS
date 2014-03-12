@@ -1,0 +1,23 @@
+msmie.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/msmie.2.dve -reachable "slave_1.error_state"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/msmie.2.dve  -reachable  slave_1.error_state  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+msmie.2.dve,10558,0.16217,0,2,171,5,2502,7,0,566,865,0
+ Total reachable state count : 10558
+
+Verifying 1 reachability properties.
+Never property slave_1.error_state does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 252 reachable states that exhibit your property : slave_1.error_state
+computing trace...
+From initial states :
+[ sem=1 b[1]=2 ]
+This shortest transition sequence of length 13 :
+t0, t3, t5, t7, t10, t77, t80, t82, t84, t0, t3, t4, t9
+Leads to final states :
+[ 252 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+slave\_1.error\_state,252,0.215561,0,2,49,59,11172,178,73,1522,3844,406

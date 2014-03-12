@@ -1,0 +1,10 @@
+production_cell.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/production_cell.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+production\_cell.2.dve,9003,0.251197,0,2,488,5,3641,6,0,129,2496,0
+ Total reachable state count : 9003
+

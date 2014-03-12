@@ -1,0 +1,10 @@
+cpn_test/token-ring-5-col.sep.flat.gal
+../bin/its-reach -i cpn_test/token-ring-5-col.sep.flat.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/token-ring-5-col.sep.flat.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Token\_Ring\_5\_sep\_inst,65,0.033327,0,2,214,5,661,6,0,308,386,0
+ Total reachable state count : 65
+

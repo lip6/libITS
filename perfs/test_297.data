@@ -1,0 +1,14 @@
+lamport.5-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.5.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lamport.5.dve  -reachable  P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lamport.5.dve,1.0668e+06,1.39655,0,2,1429,5,64003,7,0,217,46140,0
+ Total reachable state count : 1066800
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS + P\_3.CS > 1,0,1.39857,0,1,0,5,64003,7,0,224,46140,1

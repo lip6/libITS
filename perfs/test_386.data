@@ -1,0 +1,10 @@
+cpn_test/csRepeat-2-col.inst.gal
+../bin/its-reach -i cpn_test/csRepeat-2-col.inst.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/csRepeat-2-col.inst.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Client\_Server\_with\_Repetitions\_inst,7424,0.037493,0,2,429,5,3140,6,0,155,2210,0
+ Total reachable state count : 7424
+

@@ -1,0 +1,23 @@
+pouring.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/pouring.1.dve -reachable "Bottle_1.q4"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/pouring.1.dve  -reachable  Bottle_1.q4  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+pouring.1.dve,503,0.811047,0,2,63,5,2738,7,0,3397,1653,0
+ Total reachable state count : 503
+
+Verifying 1 reachability properties.
+Never property Bottle_1.q4 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 23 reachable states that exhibit your property : Bottle_1.q4
+computing trace...
+From initial states :
+[ Bottle_1.state=24 ]
+This shortest transition sequence of length 6 :
+t765, t1317, t345, t1278, t763, t1782
+Leads to final states :
+[ 23 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Bottle\_1.q4,23,0.989584,0,2,19,39,11562,1929,41,12390,6583,6007

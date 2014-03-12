@@ -1,0 +1,23 @@
+bridge.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/bridge.2.dve -reachable "on_right == 6"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bridge.2.dve  -reachable  on_right == 6  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bridge.2.dve,96923,1.21585,0,2,2498,5,34717,7,0,299,18449,0
+ Total reachable state count : 96923
+
+Verifying 1 reachability properties.
+Never property on_right == 6 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 18 reachable states that exhibit your property : on_right == 6
+computing trace...
+From initial states :
+[ ]
+This shortest transition sequence of length 32 :
+t0, t14, t26, t33, t1, t24, t30, t0, t16, t26, t39, t1, t24, t30, t0, t18, t26, t45, t1, t24, t30, t0, t20, t26, t51, t1, t24, t30, t0, t22, t26, t57
+Leads to final states :
+[ 18 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+on\_right == 6,18,2.49695,0,2,17,152,120402,72,172,1167,62668,764

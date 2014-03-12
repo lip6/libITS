@@ -1,0 +1,23 @@
+peterson.5-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.5.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/peterson.5.dve  -reachable  P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peterson.5.dve,54924,0.141562,0,2,844,6,29386,7,0,136,22271,0
+ Total reachable state count : 54924
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 260 reachable states that exhibit your property : P_0.CS + P_1.CS + P_2.CS + P_3.CS > 1
+computing trace...
+From initial states :
+[ ]
+This shortest transition sequence of length 33 :
+t0, t2, t4, t7, t9, t11, t6, t2, t4, t14, t16, t18, t13, t9, t11, t6, t12, t2, t4, t12, t12, t12, t13, t9, t11, t6, t3, t12, t12, t12, t12, t13, t10
+Leads to final states :
+[ 260 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS + P\_3.CS > 1,260,0.289656,0,2,67,198,50737,39,192,451,51358,401

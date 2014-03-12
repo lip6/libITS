@@ -1,0 +1,10 @@
+pgm_protocol.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.7.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/pgm_protocol.7.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+pgm\_protocol.7.dve,322585,36.5187,0,2,201850,5,574039,6,0,878,168843,0
+ Total reachable state count : 322585
+

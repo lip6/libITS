@@ -1,0 +1,10 @@
+msmie.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/msmie.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/msmie.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+msmie.1.dve,2334,0.061568,0,2,125,5,1304,6,0,275,649,0
+ Total reachable state count : 2334
+

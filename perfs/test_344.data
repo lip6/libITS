@@ -1,0 +1,14 @@
+peg_solitaire.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/peg_solitaire.4.dve -reachable "peg_count == 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/peg_solitaire.4.dve  -reachable  peg_count == 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peg\_solitaire.4.dve,873326,86.81,0,2,82367,5,3.13711e+06,7,0,355,2.58215e+06,0
+ Total reachable state count : 873326
+
+Verifying 1 reachability properties.
+Never property peg_count == 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peg\_count == 1,0,86.8465,0,1,0,5,3.13711e+06,7,0,356,2.58215e+06,1

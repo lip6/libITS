@@ -1,0 +1,10 @@
+cpn_test/simple-loadB-5-col.sep.flat.gal
+../bin/its-reach -i cpn_test/simple-loadB-5-col.sep.flat.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/simple-loadB-5-col.sep.flat.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lb\_5\_sep\_inst,4968,0.075053,0,2,369,5,6662,6,0,639,1783,0
+ Total reachable state count : 4968
+

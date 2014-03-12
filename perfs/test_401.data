@@ -1,0 +1,10 @@
+cpn_test/philo-5-col.sep.flat.gal
+../bin/its-reach -i cpn_test/philo-5-col.sep.flat.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/philo-5-col.sep.flat.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Philosophers\_sep\_inst,243,0.010503,0,2,112,5,647,6,0,158,167,0
+ Total reachable state count : 243
+

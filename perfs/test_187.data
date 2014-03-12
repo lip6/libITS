@@ -1,0 +1,10 @@
+pouring.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/pouring.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/pouring.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+pouring.2.dve,51624,0.365994,0,2,10,5,3780,6,0,2940,2638,0
+ Total reachable state count : 51624
+

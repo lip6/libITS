@@ -1,0 +1,10 @@
+szymanski.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/szymanski.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/szymanski.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+szymanski.1.dve,20264,0.606771,0,2,698,5,5454,6,0,273,4185,0
+ Total reachable state count : 20264
+

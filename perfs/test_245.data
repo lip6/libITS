@@ -1,0 +1,14 @@
+bakery.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/bakery.1.dve -reachable "P_0.CS + P_1.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bakery.1.dve  -reachable  P_0.CS + P_1.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bakery.1.dve,1506,0.308343,0,2,342,5,2245,7,0,84,1401,0
+ Total reachable state count : 1506
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS > 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS > 1,0,0.30884,0,1,0,5,2245,7,0,87,1401,1

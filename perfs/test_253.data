@@ -1,0 +1,33 @@
+bridge.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/bridge.3.dve -reachable "on_right == 8"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bridge.3.dve  -reachable  on_right == 8  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bridge.3.dve,838864,7.8211,0,2,13025,5,157598,7,0,393,85461,0
+ Total reachable state count : 838864
+
+Verifying 1 reachability properties.
+Never property on_right == 8 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 10 reachable states that exhibit your property : on_right == 8
+computing trace...
+From initial states :
+[ ]
+This shortest transition sequence of length 46 :
+t0, t18, t34, t41, t1, t32, t38, t0, t20, t34, t47, t1, t32, t38, t0, t22, t34, t53, t1, t32, t38, t8, t26, t57, t65, t3, t32, t44, t0, t18, t34, t41, t1, t32, t38, t12, t30, t70, t77, t3, t32, t44, t0, t18, t34, t41
+Leads to final states :
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 soldier_4.state=2 total_time=185 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 soldier_4.state=2 total_time=190 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 soldier_4.state=2 total_time=195 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 soldier_4.state=2 total_time=200 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 torch.time2=5 soldier_4.state=2 total_time=185 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 torch.time2=5 soldier_4.state=2 total_time=190 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 torch.time2=5 soldier_4.state=2 total_time=195 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 torch.time2=5 soldier_4.state=2 total_time=200 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 torch.time2=10 soldier_4.state=2 total_time=195 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+[ soldier_8.state=2 soldier_7.state=2 soldier_6.state=2 soldier_5.state=2 on_right=8 where_is_torch=1 torch.time2=10 soldier_4.state=2 total_time=200 soldier_3.state=2 soldier_2.state=2 soldier_1.state=2 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+on\_right == 8,10,19.1796,0,2,19,214,596228,92,257,1760,302578,1417

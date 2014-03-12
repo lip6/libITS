@@ -1,0 +1,10 @@
+schedule_world.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/schedule_world.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/schedule_world.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+schedule\_world.3.dve,1.66649e+08,1.97566,0,2,4015,5,377718,6,0,312,258935,0
+ Total reachable state count : 166649331
+

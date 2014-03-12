@@ -1,0 +1,23 @@
+cambridge.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/cambridge.2.dve -reachable "Sender.q_error"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/cambridge.2.dve  -reachable  Sender.q_error  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+cambridge.2.dve,5883,0.31689,0,2,2641,6,27715,7,0,263,13615,0
+ Total reachable state count : 5883
+
+Verifying 1 reachability properties.
+Never property Sender.q_error does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 39 reachable states that exhibit your property : Sender.q_error
+computing trace...
+From initial states :
+[ Sender.n=-1 ]
+This shortest transition sequence of length 13 :
+t50, t2, t15, t44, t45, t53, t7, t42, t26, t30, t51, t7, t14
+Leads to final states :
+[ 39 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Sender.q\_error,39,1.05069,0,2,155,83,157833,69,78,1393,69389,428

@@ -1,0 +1,23 @@
+synapse.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.1.dve -reachable "Cache_0.error_st"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/synapse.1.dve  -reachable  Cache_0.error_st  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+synapse.1.dve,8042,0.318623,0,2,3571,6,33562,7,0,520,22252,0
+ Total reachable state count : 8042
+
+Verifying 1 reachability properties.
+Never property Cache_0.error_st does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 256 reachable states that exhibit your property : Cache_0.error_st
+computing trace...
+From initial states :
+[ written_value=255 written_line=255 read_line=255 Cache_1.state=8 read_value=255 Cache_1.m2=-1 Cache_0.state=8 Cache_0.m2=-1 ]
+This shortest transition sequence of length 21 :
+t76, t107, t24, t33, t110, t82, t52, t13, t96, t110, t84, t111, t112, t127, t129, t23, t5, t76, t107, t37, t46
+Leads to final states :
+[ 256 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Cache\_0.error\_st,256,0.683278,0,2,190,124,86231,142,125,2458,40119,1626

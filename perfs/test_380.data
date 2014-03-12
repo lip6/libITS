@@ -1,0 +1,14 @@
+synapse.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.4.dve -reachable "Cache_0.error_st"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/synapse.4.dve  -reachable  Cache_0.error_st  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+synapse.4.dve,2.29229e+06,5.04439,0,2,11877,5,68587,7,0,652,61314,0
+ Total reachable state count : 2292286
+
+Verifying 1 reachability properties.
+Never property Cache_0.error_st is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Cache\_0.error\_st,0,5.04515,0,1,0,5,68587,7,0,653,61314,1

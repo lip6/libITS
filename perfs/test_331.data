@@ -1,0 +1,23 @@
+lifts.8-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/lifts.8.dve -reachable "Wheels.error_state"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lifts.8.dve  -reachable  Wheels.error_state  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lifts.8.dve,404772,24.9551,0,2,76583,6,329247,7,0,1045,157025,0
+ Total reachable state count : 404772
+
+Verifying 1 reachability properties.
+Never property Wheels.error_state does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 16 reachable states that exhibit your property : Wheels.error_state
+computing trace...
+From initial states :
+[ Environment.state=8 ]
+This shortest transition sequence of length 63 :
+t159, t0, t187, t29, t30, t162, t213, t14, t241, t29, t30, t193, t216, t9, t217, t29, t30, t219, t15, t29, t195, t30, t225, t10, t234, t29, t30, t239, t20, t29, t201, t30, t203, t11, t234, t29, t30, t238, t19, t29, t42, t201, t30, t116, t232, t226, t11, t234, t29, t30, t239, t20, t29, t201, t30, t203, t11, t234, t29, t30, t238, t19, t154
+Leads to final states :
+[ 16 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Wheels.error\_state,16,44.6764,0,2,183,301,2.83636e+06,278,323,4526,957544,6896

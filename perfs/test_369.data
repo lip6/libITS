@@ -1,0 +1,14 @@
+rether.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/rether.1.dve -reachable "Node_0.error_st"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/rether.1.dve  -reachable  Node_0.error_st  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+rether.1.dve,2458,0.246908,0,2,955,5,3320,7,0,210,2256,0
+ Total reachable state count : 2458
+
+Verifying 1 reachability properties.
+Never property Node_0.error_st is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Node\_0.error\_st,0,0.247329,0,1,0,5,3320,7,0,211,2256,1

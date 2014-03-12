@@ -1,0 +1,10 @@
+plc.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/plc.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/plc.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+plc.4.dve,3.764e+06,761.73,0,2,56126,5,445385,6,0,1021,154394,0
+ Total reachable state count : 3763999
+

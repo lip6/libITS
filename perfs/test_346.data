@@ -1,0 +1,14 @@
+peterson.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.1.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/peterson.1.dve  -reachable  P_0.CS + P_1.CS + P_2.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peterson.1.dve,12498,0.265523,0,2,698,5,7020,7,0,103,5229,0
+ Total reachable state count : 12498
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS > 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS > 1,0,0.266266,0,1,0,5,7020,7,0,108,5229,1

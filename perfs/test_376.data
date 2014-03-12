@@ -1,0 +1,23 @@
+sokoban.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/sokoban.2.dve -reachable "done == 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/sokoban.2.dve  -reachable  done == 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+sokoban.2.dve,761633,15.1661,0,2,10737,5,188499,7,0,43,65596,0
+ Total reachable state count : 761633
+
+Verifying 1 reachability properties.
+Never property done == 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 20 reachable states that exhibit your property : done == 1
+computing trace...
+From initial states :
+[ y=1 x=1 a[9]=1 a[59]=1 a[49]=1 a[39]=1 a[29]=1 a[19]=1 a[8]=1 a[58]=1 a[48]=1 a[7]=1 a[57]=1 a[47]=1 a[6]=1 a[56]=1 a[46]=1 a[36]=1 a[5]=1 a[55]=1 a[45]=1 a[35]=1 a[54]=1 a[4]=1 a[34]=2 a[24]=2 a[14]=1 a[53]=1 a[3]=1 a[33]=2 a[52]=1 a[32]=2 a[2]=1 a[22]=2 a[51]=1 a[1]=1 a[50]=1 a[40]=1 a[30]=1 a[20]=1 a[10]=1 a[0]=1 ]
+This shortest transition sequence of length 87 :
+t2, t2, t4, t6, t6, t6, t3, t2, t2, t4, t4, t1, t7, t2, t3, t5, t4, t1, t1, t1, t1, t3, t1, t1, t4, t6, t6, t6, t6, t6, t6, t3, t2, t8, t1, t1, t1, t1, t1, t1, t1, t4, t4, t2, t7, t1, t3, t6, t6, t6, t6, t6, t1, t3, t6, t6, t8, t1, t1, t1, t1, t1, t4, t4, t2, t7, t1, t3, t6, t6, t6, t6, t6, t1, t1, t1, t1, t4, t4, t2, t7, t1, t3, t6, t6, t6, t0
+Leads to final states :
+[ 20 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+done == 1,20,15.8685,0,2,66,498,213844,20,525,698,190902,570

@@ -1,0 +1,10 @@
+cpn_test/dotsBoxes-2-col.inst.gal
+../bin/its-reach -i cpn_test/dotsBoxes-2-col.inst.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/dotsBoxes-2-col.inst.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Document\_inst,11,0.07823,0,2,179,5,585,6,0,801,185,0
+ Total reachable state count : 11
+

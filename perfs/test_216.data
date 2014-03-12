@@ -1,0 +1,10 @@
+sokoban.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/sokoban.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/sokoban.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+sokoban.2.dve,761633,15.1067,0,2,10737,5,188499,6,0,42,65596,0
+ Total reachable state count : 761633
+

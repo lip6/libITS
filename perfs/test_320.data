@@ -1,0 +1,23 @@
+leader_filters.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.2.dve -reachable "P_0.elected + P_1.elected + P_2.elected > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_filters.2.dve  -reachable  P_0.elected + P_1.elected + P_2.elected > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leader\_filters.2.dve,27198,0.332813,0,2,3058,6,10062,7,0,124,8162,0
+ Total reachable state count : 27198
+
+Verifying 1 reachability properties.
+Never property P_0.elected + P_1.elected + P_2.elected > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 414 reachable states that exhibit your property : P_0.elected + P_1.elected + P_2.elected > 1
+computing trace...
+From initial states :
+[ ]
+This shortest transition sequence of length 22 :
+t0, t1, t2, t4, t8, t0, t1, t2, t4, t7, t9, t10, t11, t12, t14, t18, t10, t11, t12, t14, t17, t19
+Leads to final states :
+[ 414 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.elected + P\_1.elected + P\_2.elected > 1,414,0.580173,0,2,364,118,63752,41,112,422,77252,255

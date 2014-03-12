@@ -1,0 +1,14 @@
+firewire_tree.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/firewire_tree.3.dve -reachable "elected_num == 2"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/firewire_tree.3.dve  -reachable  elected_num == 2  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+firewire\_tree.3.dve,86556,0.957311,0,2,6620,5,31203,7,0,1920,11425,0
+ Total reachable state count : 86556
+
+Verifying 1 reachability properties.
+Never property elected_num == 2 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+elected\_num == 2,0,0.958133,0,1,0,5,31203,7,0,1921,11425,1

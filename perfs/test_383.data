@@ -1,0 +1,23 @@
+szymanski.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/szymanski.2.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/szymanski.2.dve  -reachable  P_0.CS + P_1.CS + P_2.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+szymanski.2.dve,19259,0.275133,0,2,583,6,4653,7,0,274,3802,0
+ Total reachable state count : 19259
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 14 reachable states that exhibit your property : P_0.CS + P_1.CS + P_2.CS > 1
+computing trace...
+From initial states :
+[ ]
+This shortest transition sequence of length 33 :
+t0, t1, t1, t1, t2, t24, t25, t25, t25, t26, t27, t29, t31, t32, t40, t42, t43, t28, t45, t3, t5, t6, t6, t46, t48, t7, t8, t16, t17, t18, t19, t4, t22
+Leads to final states :
+[ 14 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS > 1,14,0.413332,0,2,36,188,29608,83,184,814,27192,774

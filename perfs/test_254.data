@@ -1,0 +1,14 @@
+brp.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.1.dve -reachable "Consumer.st_error"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/brp.1.dve  -reachable  Consumer.st_error  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+brp.1.dve,18928,0.201339,0,2,1565,5,9424,7,0,176,4713,0
+ Total reachable state count : 18928
+
+Verifying 1 reachability properties.
+Never property Consumer.st_error is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Consumer.st\_error,0,0.201832,0,1,0,5,9424,7,0,177,4713,1

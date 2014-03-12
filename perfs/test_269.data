@@ -1,0 +1,14 @@
+collision.6-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.6.dve -reachable "Medium.collision"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/collision.6.dve  -reachable  Medium.collision  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+collision.6.dve,4.68004e+09,8.66016,0,2,10978,5,261538,7,0,264,483954,0
+ Total reachable state count : 4680042040
+
+Verifying 1 reachability properties.
+Never property Medium.collision is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Medium.collision,0,8.66108,0,1,0,5,261538,7,0,265,483954,1

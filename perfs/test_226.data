@@ -1,0 +1,10 @@
+synapse.6.dve
+../bin/its-reach -t DVE --quiet -i test_models/synapse.6.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/synapse.6.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+synapse.6.dve,625175,8.39183,0,2,19564,5,162790,6,0,755,117579,0
+ Total reachable state count : 625175
+

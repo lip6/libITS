@@ -1,0 +1,23 @@
+hanoi.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/hanoi.1.dve -reachable "c_act == 8"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/hanoi.1.dve  -reachable  c_act == 8  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+hanoi.1.dve,6561,4.87791,0,2,3918,5,22418,7,0,49,6419,0
+ Total reachable state count : 6561
+
+Verifying 1 reachability properties.
+Never property c_act == 8 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 16 reachable states that exhibit your property : c_act == 8
+computing trace...
+From initial states :
+[ c_act=1 b_act=1 a_act=9 a[8]=1 a[7]=2 a[6]=3 a[5]=4 a[4]=5 a[3]=6 a[2]=7 a[1]=8 c[0]=100 b[0]=100 a[0]=100 ]
+This shortest transition sequence of length 127 :
+t1, t0, t5, t1, t2, t3, t1, t0, t5, t4, t2, t5, t1, t0, t5, t1, t2, t3, t1, t2, t5, t4, t2, t3, t1, t0, t5, t1, t2, t3, t1, t0, t5, t4, t2, t5, t1, t0, t5, t4, t2, t3, t1, t2, t5, t4, t2, t5, t1, t0, t5, t1, t2, t3, t1, t0, t5, t4, t2, t5, t1, t0, t5, t1, t2, t3, t1, t2, t5, t4, t2, t3, t1, t0, t5, t1, t2, t3, t1, t2, t5, t4, t2, t5, t1, t0, t5, t4, t2, t3, t1, t2, t5, t4, t2, t3, t1, t0, t5, t1, t2, t3, t1, t0, t5, t4, t2, t5, t1, t0, t5, t1, t2, t3, t1, t2, t5, t4, t2, t3, t1, t0, t5, t1, t2, t3, t1
+Leads to final states :
+[ 16 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+c\_act == 8,16,6.8625,0,2,203,705,578662,17,779,1519,305666,697

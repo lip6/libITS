@@ -1,0 +1,23 @@
+production_cell.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.4.dve -reachable "done == 4"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/production_cell.4.dve  -reachable  done == 4  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+production\_cell.4.dve,340685,2.88668,0,2,4943,5,54516,7,0,174,36011,0
+ Total reachable state count : 340685
+
+Verifying 1 reachability properties.
+Never property done == 4 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 77416 reachable states that exhibit your property : done == 4
+computing trace...
+From initial states :
+[ Robot.A=255 Robot.state=2 Robot.B=255 ]
+This shortest transition sequence of length 85 :
+t0, t8, t4, t9, t1, t8, t5, t10, t31, t30, t28, t25, t14, t9, t2, t8, t6, t11, t26, t29, t31, t32, t15, t16, t34, t30, t27, t28, t25, t14, t9, t3, t8, t7, t12, t26, t29, t31, t32, t15, t17, t33, t20, t21, t35, t34, t30, t27, t28, t25, t14, t9, t13, t26, t29, t31, t32, t15, t18, t33, t20, t22, t35, t34, t30, t27, t28, t25, t26, t29, t32, t15, t19, t33, t20, t23, t35, t34, t30, t27, t29, t32, t33, t20, t24
+Leads to final states :
+[ 77416 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+done == 4,77416,4.62583,0,2,4473,491,393038,47,508,659,342175,2118

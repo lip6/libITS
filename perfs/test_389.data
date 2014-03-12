@@ -1,0 +1,10 @@
+cpn_test/globalresalloc-3-col.inst.gal
+../bin/its-reach -i cpn_test/globalresalloc-3-col.inst.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/globalresalloc-3-col.inst.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Global\_Allocation\_Resource\_Management\_inst,6320,4.63435,0,2,2746,5,76862,6,0,25304,4358,0
+ Total reachable state count : 6320
+

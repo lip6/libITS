@@ -1,0 +1,10 @@
+peg_solitaire.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/peg_solitaire.5.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/peg_solitaire.5.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peg\_solitaire.5.dve,84191,5.18459,0,2,17930,5,448884,6,0,802,251586,0
+ Total reachable state count : 84191
+

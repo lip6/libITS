@@ -1,0 +1,10 @@
+telephony.7.dve
+../bin/its-reach -t DVE --quiet -i test_models/telephony.7.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/telephony.7.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+telephony.7.dve,2.19603e+07,58.9598,0,2,8504,5,602577,6,0,459,409907,0
+ Total reachable state count : 21960308
+

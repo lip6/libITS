@@ -1,0 +1,10 @@
+rushhour.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/rushhour.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/rushhour.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+rushhour.2.dve,2242,1.96647,0,2,36343,5,121367,6,0,121,7884,0
+ Total reachable state count : 2242
+

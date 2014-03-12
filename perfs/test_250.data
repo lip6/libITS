@@ -1,0 +1,24 @@
+blocks.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/blocks.3.dve -reachable "Hand.done"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/blocks.3.dve  -reachable  Hand.done  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+blocks.3.dve,695418,11.4218,0,2,18105,5,457382,7,0,193,165195,0
+ Total reachable state count : 695418
+
+Verifying 1 reachability properties.
+Never property Hand.done does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 1 reachable states that exhibit your property : Hand.done
+computing trace...
+From initial states :
+[ holding=253 on[7]=254 on[6]=254 on[5]=4 on[4]=1 clear[7]=1 clear[6]=1 clear[5]=1 on[2]=254 on[1]=254 on[0]=2 clear[3]=1 ]
+This shortest transition sequence of length 21 :
+t12, t25, t14, t20, t13, t22, t7, t18, t9, t23, t3, t17, t8, t19, t13, t24, t14, t21, t4, t22, t0
+Leads to final states :
+[ holding=253 on[7]=2 on[6]=1 on[5]=4 Hand.state=2 on[4]=7 on[3]=5 on[1]=254 on[0]=6 clear[3]=1 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Hand.done,1,16.3035,0,2,19,122,1.29657e+06,37,125,725,717558,374

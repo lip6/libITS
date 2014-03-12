@@ -1,0 +1,26 @@
+adding.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/adding.2.dve -reachable "c==500"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/adding.2.dve  -reachable  c==500  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+adding.2.dve,142374,1.76921,0,2,2395,6,57093,7,0,34,11720,0
+ Total reachable state count : 142374
+
+Verifying 1 reachability properties.
+Never property c==500 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 3 reachable states that exhibit your property : c==500
+computing trace...
+From initial states :
+[ c=1 ]
+This shortest transition sequence of length 33 :
+t0, t1, t2, t0, t1, t2, t0, t1, t3, t2, t0, t1, t2, t4, t5, t0, t1, t3, t2, t0, t1, t2, t0, t1, t2, t0, t1, t4, t5, t3, t2, t4, t5
+Leads to final states :
+[ x2=340 c=500 x1=500 ]
+[ x2=500 c=500 x1=320 ]
+[ x2=500 c=500 x1=330 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+c==500,3,22.6444,0,2,8,166,1.11496e+06,17,174,2300,186153,162

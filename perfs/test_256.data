@@ -1,0 +1,23 @@
+brp.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/brp.3.dve -reachable "Consumer.st_error"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/brp.3.dve  -reachable  Consumer.st_error  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+brp.3.dve,337985,0.521139,0,2,4504,6,45429,7,0,191,22740,0
+ Total reachable state count : 337985
+
+Verifying 1 reachability properties.
+Never property Consumer.st_error does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 14600 reachable states that exhibit your property : Consumer.st_error
+computing trace...
+From initial states :
+[ Receiver.state=1 ]
+This shortest transition sequence of length 23 :
+t0, t23, t24, t37, t33, t35, t14, t20, t42, t25, t10, t21, t0, t32, t36, t23, t24, t37, t33, t35, t14, t20, t22
+Leads to final states :
+[ 14600 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Consumer.st\_error,14600,1.08371,0,2,488,119,138012,54,120,894,93511,632

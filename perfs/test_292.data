@@ -1,0 +1,23 @@
+krebs.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.3.dve -reachable "energy > 50"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/krebs.3.dve  -reachable  energy > 50  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+krebs.3.dve,238876,9.24804,0,2,10745,5,151894,7,0,113,34821,0
+ Total reachable state count : 238876
+
+Verifying 1 reachability properties.
+Never property energy > 50 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 1954 reachable states that exhibit your property : energy > 50
+computing trace...
+From initial states :
+[ ATP=4 ADP=4 glukosa=10 O2=15 Hp=10 NADp=12 NADH=2 H20=10 ]
+This shortest transition sequence of length 75 :
+t0, t0, t15, t15, t0, t15, t15, t0, t15, t15, t0, t15, t15, t0, t15, t15, t14, t15, t15, t14, t15, t15, t0, t15, t15, t14, t15, t15, t14, t15, t15, t0, t15, t15, t14, t15, t15, t14, t15, t15, t0, t15, t15, t14, t15, t15, t14, t15, t15, t0, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t15, t15, t15, t15, t15
+Leads to final states :
+[ 1954 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+energy > 50,1954,11.6243,0,2,566,437,345635,27,431,291,101137,1189

@@ -1,0 +1,23 @@
+bakery.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/bakery.4.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bakery.4.dve  -reachable  P_0.CS + P_1.CS + P_2.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bakery.4.dve,8151,0.177091,0,2,1002,6,19539,7,0,124,14296,0
+ Total reachable state count : 8151
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 30 reachable states that exhibit your property : P_0.CS + P_1.CS + P_2.CS > 1
+computing trace...
+From initial states :
+[ ]
+This shortest transition sequence of length 24 :
+t0, t2, t2, t2, t3, t4, t6, t4, t6, t4, t6, t5, t8, t9, t10, t10, t11, t12, t14, t12, t14, t12, t14, t13
+Leads to final states :
+[ 30 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS > 1,30,0.295748,0,2,131,129,32517,35,134,577,25633,258

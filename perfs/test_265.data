@@ -1,0 +1,23 @@
+collision.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.2.dve -reachable "Medium.collision"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/collision.2.dve  -reachable  Medium.collision  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+collision.2.dve,12661,0.089949,0,2,158,5,1865,7,0,132,1667,0
+ Total reachable state count : 12661
+
+Verifying 1 reachability properties.
+Never property Medium.collision does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 228 reachable states that exhibit your property : Medium.collision
+computing trace...
+From initial states :
+[ Master.next=1 ]
+This shortest transition sequence of length 12 :
+t2, t29, t5, t9, t10, t11, t21, t12, t24, t29, t4, t8
+Leads to final states :
+[ 228 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Medium.collision,228,0.107537,0,2,30,75,5916,42,69,417,5610,203

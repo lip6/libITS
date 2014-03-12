@@ -1,0 +1,23 @@
+peg_solitaire.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/peg_solitaire.1.dve -reachable "peg_count == 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/peg_solitaire.1.dve  -reachable  peg_count == 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peg\_solitaire.1.dve,28600,0.815569,0,2,4958,6,115189,7,0,277,82718,0
+ Total reachable state count : 28600
+
+Verifying 1 reachability properties.
+Never property peg_count == 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 15 reachable states that exhibit your property : peg_count == 1
+computing trace...
+From initial states :
+[ a[12]=1 a[4]=1 a[14]=1 a[8]=1 a[13]=1 a[9]=1 a[6]=1 a[5]=1 peg_count=15 a[10]=1 a[0]=1 a[7]=1 a[11]=1 a[2]=1 a[3]=1 a[1]=1 ]
+This shortest transition sequence of length 14 :
+t3, t20, t9, t6, t15, t0, t17, t9, t23, t2, t31, t43, t7, t35
+Leads to final states :
+[ 15 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peg\_count == 1,15,2.90703,0,2,33,65,237278,59,76,759,128512,265

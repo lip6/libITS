@@ -1,0 +1,10 @@
+cpn_test/peterson-3-col.sep.flat.gal
+../bin/its-reach -i cpn_test/peterson-3-col.sep.flat.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/peterson-3-col.sep.flat.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Peterson\_sep\_inst,3.40795e+06,31.0554,0,2,52144,5,1.78881e+06,6,0,1500,2.20564e+06,0
+ Total reachable state count : 3407946
+

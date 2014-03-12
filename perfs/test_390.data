@@ -1,0 +1,10 @@
+cpn_test/lamport-fast-2-col.inst.gal
+../bin/its-reach -i cpn_test/lamport-fast-2-col.inst.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/lamport-fast-2-col.inst.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lamport\_2\_inst,380,0.066889,0,2,641,5,3315,6,0,467,1688,0
+ Total reachable state count : 380
+

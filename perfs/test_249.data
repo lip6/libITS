@@ -1,0 +1,14 @@
+blocks.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/blocks.2.dve -reachable "Hand.done"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/blocks.2.dve  -reachable  Hand.done  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+blocks.2.dve,7057,0.301419,0,2,1594,5,19331,7,0,149,6467,0
+ Total reachable state count : 7057
+
+Verifying 1 reachability properties.
+Never property Hand.done is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Hand.done,0,0.301639,0,1,0,5,19331,7,0,150,6467,1

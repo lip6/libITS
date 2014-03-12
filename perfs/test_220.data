@@ -1,0 +1,10 @@
+sorter.5.dve
+../bin/its-reach -t DVE --quiet -i test_models/sorter.5.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/sorter.5.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+sorter.5.dve,296148,1.28028,0,2,2815,5,38710,6,0,224,52726,0
+ Total reachable state count : 296148
+

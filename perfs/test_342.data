@@ -1,0 +1,14 @@
+msmie.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/msmie.4.dve -reachable "slave_1.error_state"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/msmie.4.dve  -reachable  slave_1.error_state  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+msmie.4.dve,7.12544e+06,0.926115,0,2,467,5,12819,7,0,1302,3206,0
+ Total reachable state count : 7125441
+
+Verifying 1 reachability properties.
+Never property slave_1.error_state is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+slave\_1.error\_state,0,0.926548,0,1,0,5,12819,7,0,1303,3206,1

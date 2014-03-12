@@ -1,0 +1,10 @@
+peterson.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/peterson.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/peterson.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+peterson.3.dve,170156,0.436845,0,2,1512,5,16407,6,0,102,11626,0
+ Total reachable state count : 170156
+

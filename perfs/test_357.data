@@ -1,0 +1,14 @@
+pgm_protocol.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.4.dve -reachable "RXW_LEAD - RXW_TRAIL + 1 > 4"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/pgm_protocol.4.dve  -reachable  RXW_LEAD - RXW_TRAIL + 1 > 4  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+pgm\_protocol.4.dve,39832,13.0696,0,2,99860,5,296553,7,0,879,72766,0
+ Total reachable state count : 39832
+
+Verifying 1 reachability properties.
+Never property RXW_LEAD - RXW_TRAIL + 1 > 4 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+RXW\_LEAD - RXW\_TRAIL + 1 > 4,0,13.0963,0,1,0,5,296553,7,0,888,72766,1

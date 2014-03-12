@@ -1,0 +1,10 @@
+reader_writer.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/reader_writer.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/reader_writer.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reader\_writer.1.dve,2666,0.023396,0,2,104,5,1580,6,0,229,1181,0
+ Total reachable state count : 2666
+

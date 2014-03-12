@@ -1,0 +1,10 @@
+cpn_test/neo-election-2-col.sep.flat.gal
+../bin/its-reach -i cpn_test/neo-election-2-col.sep.flat.gal -t GAL --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  cpn_test/neo-election-2-col.sep.flat.gal  -t  GAL  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+neoelection\_2\_sep\_inst,241,0.215083,0,2,1382,5,7396,6,0,1378,2914,0
+ Total reachable state count : 241
+

@@ -1,0 +1,23 @@
+lamport.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/lamport.3.dve -reachable "P_0.CS + P_1.CS + P_2.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lamport.3.dve  -reachable  P_0.CS + P_1.CS + P_2.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lamport.3.dve,33736,0.212902,0,2,661,6,12947,7,0,164,13307,0
+ Total reachable state count : 33736
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 1092 reachable states that exhibit your property : P_0.CS + P_1.CS + P_2.CS > 1
+computing trace...
+From initial states :
+[ y=255 x=255 ]
+This shortest transition sequence of length 22 :
+t0, t2, t4, t14, t16, t18, t6, t8, t9, t20, t21, t15, t27, t9, t9, t10, t14, t16, t18, t20, t11, t21
+Leads to final states :
+[ 1092 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS > 1,1092,0.451633,0,2,237,126,66181,53,120,495,68502,357

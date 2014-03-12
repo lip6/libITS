@@ -1,0 +1,14 @@
+krebs.4-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.4.dve -reachable "energy > 80"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/krebs.4.dve  -reachable  energy > 80  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+krebs.4.dve,1.0474e+06,19.9056,0,2,14784,5,262921,7,0,142,59869,0
+ Total reachable state count : 1047405
+
+Verifying 1 reachability properties.
+Never property energy > 80 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+energy > 80,0,19.9062,0,1,0,5,262921,7,0,143,59869,1

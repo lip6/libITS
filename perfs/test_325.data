@@ -1,0 +1,14 @@
+lifts.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/lifts.2.dve -reachable "Wheels.error_state"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/lifts.2.dve  -reachable  Wheels.error_state  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+lifts.2.dve,2664,0.823032,0,2,2114,5,8956,7,0,537,4107,0
+ Total reachable state count : 2664
+
+Verifying 1 reachability properties.
+Never property Wheels.error_state is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+Wheels.error\_state,0,0.823607,0,1,0,5,8956,7,0,538,4107,1

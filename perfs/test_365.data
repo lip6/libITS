@@ -1,0 +1,24 @@
+production_cell.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/production_cell.3.dve -reachable "done == 0"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/production_cell.3.dve  -reachable  done == 0  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+production\_cell.3.dve,822612,5.41196,0,2,24139,5,131700,7,0,211,106698,0
+ Total reachable state count : 822612
+
+Verifying 1 reachability properties.
+Never property done == 0 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 822612 reachable states that exhibit your property : done == 0
+computing trace...
+From initial states :
+[ Robot.A=255 Robot.state=2 Robot.B=255 ]
+This shortest transition sequence of length 0 :
+
+Leads to final states :
+[ Robot.A=255 Robot.state=2 Robot.B=255 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+done == 0,822612,5.42037,0,2,24139,5,131700,7,1,212,106698,1

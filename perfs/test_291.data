@@ -1,0 +1,23 @@
+krebs.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/krebs.2.dve -reachable "energy > 20"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/krebs.2.dve  -reachable  energy > 20  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+krebs.2.dve,62476,1.6825,0,2,3172,5,43930,7,0,113,10406,0
+ Total reachable state count : 62476
+
+Verifying 1 reachability properties.
+Never property energy > 20 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 12460 reachable states that exhibit your property : energy > 20
+computing trace...
+From initial states :
+[ ATP=4 ADP=4 glukosa=3 O2=15 Hp=10 NADp=12 NADH=2 H20=10 ]
+This shortest transition sequence of length 30 :
+t0, t0, t15, t15, t0, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t14, t15, t15, t15, t15, t15, t15, t15
+Leads to final states :
+[ 12460 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+energy > 20,12460,2.16575,0,2,1402,189,83466,27,183,291,18280,492

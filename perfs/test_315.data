@@ -1,0 +1,14 @@
+leader_election.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.3.dve -reachable "nr_leaders > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_election.3.dve  -reachable  nr_leaders > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leader\_election.3.dve,101360,0.641209,0,2,5844,5,29152,7,0,653,6126,0
+ Total reachable state count : 101360
+
+Verifying 1 reachability properties.
+Never property nr_leaders > 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+nr\_leaders > 1,0,0.642003,0,1,0,5,29152,7,0,654,6126,1

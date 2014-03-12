@@ -1,0 +1,26 @@
+sokoban.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/sokoban.1.dve -reachable "done == 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/sokoban.1.dve  -reachable  done == 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+sokoban.1.dve,91416,9.2367,0,2,6848,6,74420,7,0,43,51759,0
+ Total reachable state count : 91416
+
+Verifying 1 reachability properties.
+Never property done == 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 3 reachable states that exhibit your property : done == 1
+computing trace...
+From initial states :
+[ y=6 x=4 a[59]=1 a[49]=1 a[39]=1 a[8]=1 a[58]=1 a[48]=1 a[35]=2 a[42]=2 a[37]=2 a[18]=1 a[7]=1 a[57]=1 a[47]=1 a[17]=2 a[6]=1 a[56]=1 a[46]=1 a[16]=1 a[5]=1 a[55]=1 a[15]=1 a[54]=1 a[4]=1 a[44]=1 a[24]=1 a[14]=1 a[63]=1 a[3]=1 a[23]=1 a[13]=1 a[62]=1 a[32]=1 a[2]=1 a[22]=1 a[12]=1 a[61]=1 a[31]=1 a[21]=1 a[1]=1 a[60]=1 a[50]=1 a[40]=1 a[20]=1 a[0]=1 ]
+This shortest transition sequence of length 112 :
+t1, t3, t7, t1, t1, t4, t6, t3, t2, t2, t3, t5, t3, t3, t1, t1, t8, t8, t6, t1, t3, t3, t2, t2, t4, t8, t2, t4, t5, t2, t3, t2, t2, t4, t5, t4, t4, t1, t1, t7, t7, t6, t3, t2, t8, t1, t1, t4, t1, t1, t7, t6, t6, t6, t3, t5, t3, t3, t1, t1, t4, t8, t6, t1, t3, t3, t2, t2, t4, t8, t2, t4, t5, t4, t1, t1, t7, t7, t2, t8, t2, t2, t3, t2, t2, t4, t5, t5, t5, t4, t4, t2, t2, t7, t4, t1, t1, t3, t3, t3, t1, t1, t4, t6, t3, t2, t3, t3, t1, t1, t8, t0
+Leads to final states :
+[ y=1 x=1 done=1 a[59]=1 a[49]=1 a[39]=1 a[8]=1 a[58]=1 a[48]=1 a[35]=2 a[42]=2 a[25]=2 a[37]=2 a[18]=1 a[7]=1 a[57]=1 a[47]=1 a[6]=1 a[56]=1 a[46]=1 a[16]=1 a[5]=1 a[55]=1 a[15]=1 a[54]=1 a[4]=1 a[44]=1 a[24]=1 a[14]=1 a[63]=1 a[3]=1 a[23]=1 a[13]=1 a[62]=1 a[32]=1 a[2]=1 a[22]=1 a[12]=1 a[61]=1 a[31]=1 a[21]=1 a[1]=1 a[60]=1 a[50]=1 a[40]=1 a[20]=1 a[0]=1 ]
+[ y=1 x=2 done=1 a[59]=1 a[49]=1 a[39]=1 a[8]=1 a[58]=1 a[48]=1 a[35]=2 a[42]=2 a[25]=2 a[37]=2 a[18]=1 a[7]=1 a[57]=1 a[47]=1 a[6]=1 a[56]=1 a[46]=1 a[16]=1 a[5]=1 a[55]=1 a[15]=1 a[54]=1 a[4]=1 a[44]=1 a[24]=1 a[14]=1 a[63]=1 a[3]=1 a[23]=1 a[13]=1 a[62]=1 a[32]=1 a[2]=1 a[22]=1 a[12]=1 a[61]=1 a[31]=1 a[21]=1 a[1]=1 a[60]=1 a[50]=1 a[40]=1 a[20]=1 a[0]=1 ]
+[ y=2 x=1 done=1 a[59]=1 a[49]=1 a[39]=1 a[8]=1 a[58]=1 a[48]=1 a[35]=2 a[42]=2 a[25]=2 a[37]=2 a[18]=1 a[7]=1 a[57]=1 a[47]=1 a[6]=1 a[56]=1 a[46]=1 a[16]=1 a[5]=1 a[55]=1 a[15]=1 a[54]=1 a[4]=1 a[44]=1 a[24]=1 a[14]=1 a[63]=1 a[3]=1 a[23]=1 a[13]=1 a[62]=1 a[32]=1 a[2]=1 a[22]=1 a[12]=1 a[61]=1 a[31]=1 a[21]=1 a[1]=1 a[60]=1 a[50]=1 a[40]=1 a[20]=1 a[0]=1 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+done == 1,3,9.75553,0,2,69,610,124838,20,652,714,152534,730

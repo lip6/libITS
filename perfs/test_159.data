@@ -1,0 +1,10 @@
+needham.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/needham.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/needham.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+needham.4.dve,6.52502e+06,3.22458,0,2,12414,5,153609,6,0,557,98611,0
+ Total reachable state count : 6525019
+

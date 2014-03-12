@@ -1,0 +1,23 @@
+gear.2-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/gear.2.dve -reachable "currentGear == 30"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/gear.2.dve  -reachable  currentGear == 30  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+gear.2.dve,16689,2.49583,0,2,3487,5,18228,7,0,223,8094,0
+ Total reachable state count : 16689
+
+Verifying 1 reachability properties.
+Never property currentGear == 30 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 280 reachable states that exhibit your property : currentGear == 30
+computing trace...
+From initial states :
+[ tGB=255 tGC=255 tE=255 Engine.state=4 tC=255 ]
+This shortest transition sequence of length 562 :
+t27, t29, t19, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25, t27, t13, t49, t49, t49, t30, t10, t49, t49, t31, t24, t49, t38, t6, t49, t49, t39, t21, t25
+Leads to final states :
+[ 280 states ]
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+currentGear == 30,280,3.24117,0,2,258,2519,118933,61,2811,1009,88556,21064

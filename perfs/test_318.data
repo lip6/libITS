@@ -1,0 +1,15 @@
+leader_election.6-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_election.6.dve -reachable "nr_leaders > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_election.6.dve  -reachable  nr_leaders > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leader\_election.6.dve,3.57771e+07,22.5257,0,2,138600,5,703242,7,0,1058,116256,0
+ Total reachable state count : 35777100
+
+Verifying 1 reachability properties.
+Never property nr_leaders > 1 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 1730 reachable states that exhibit your property : nr_leaders > 1
+computing trace...

@@ -1,0 +1,25 @@
+bridge.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/bridge.1.dve -reachable "on_right == 4"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/bridge.1.dve  -reachable  on_right == 4  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+bridge.1.dve,3186,0.118973,0,2,808,5,5555,7,0,207,3183,0
+ Total reachable state count : 3186
+
+Verifying 1 reachability properties.
+Never property on_right == 4 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 2 reachable states that exhibit your property : on_right == 4
+computing trace...
+From initial states :
+[ ]
+This shortest transition sequence of length 18 :
+t0, t10, t18, t25, t1, t16, t22, t4, t14, t30, t37, t3, t16, t28, t0, t10, t18, t25
+Leads to final states :
+[ soldier_4.state=2 soldier_3.state=2 where_is_torch=1 on_right=4 soldier_2.state=2 soldier_1.state=2 total_time=60 ]
+[ soldier_4.state=2 soldier_3.state=2 where_is_torch=1 on_right=4 torch.time2=5 soldier_2.state=2 soldier_1.state=2 total_time=60 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+on\_right == 4,2,0.199303,0,2,11,78,18951,52,96,798,11333,334

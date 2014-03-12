@@ -1,0 +1,14 @@
+leader_filters.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/leader_filters.1.dve -reachable "P_0.elected + P_1.elected + P_2.elected > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/leader_filters.1.dve  -reachable  P_0.elected + P_1.elected + P_2.elected > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+leader\_filters.1.dve,4966,0.516485,0,2,2424,5,6760,7,0,124,5660,0
+ Total reachable state count : 4966
+
+Verifying 1 reachability properties.
+Never property P_0.elected + P_1.elected + P_2.elected > 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.elected + P\_1.elected + P\_2.elected > 1,0,0.517914,0,1,0,5,6760,7,0,129,5660,1

@@ -1,0 +1,14 @@
+anderson.6-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/anderson.6.dve -reachable "P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS + P_5.CS > 1"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/anderson.6.dve  -reachable  P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS + P_5.CS > 1  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+anderson.6.dve,1.82069e+07,19.5513,0,2,16781,5,446598,7,0,168,308756,0
+ Total reachable state count : 18206917
+
+Verifying 1 reachability properties.
+Never property P_0.CS + P_1.CS + P_2.CS + P_3.CS + P_4.CS + P_5.CS > 1 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+P\_0.CS + P\_1.CS + P\_2.CS + P\_3.CS + P\_4.CS + P\_5.CS > 1,0,19.5684,0,1,0,5,446598,7,0,179,308756,1

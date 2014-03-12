@@ -1,0 +1,10 @@
+public_subscribe.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/public_subscribe.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/public_subscribe.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+public\_subscribe.2.dve,1.8466e+06,6.20419,0,2,13082,5,191964,6,0,469,171052,0
+ Total reachable state count : 1846603
+

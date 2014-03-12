@@ -4,3 +4,7 @@ mcs.5.dve
 its-reach command run as :
 
 ../bin/its-reach  -t  DVE  --quiet  -i  test_models/mcs.5.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+mcs.5.dve,6.05565e+07,104.01,0,2,57561,5,2.27618e+06,6,0,249,2.03882e+06,0
+ Total reachable state count : 60556519
+

@@ -1,0 +1,10 @@
+rether.3.dve
+../bin/its-reach -t DVE --quiet -i test_models/rether.3.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/rether.3.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+rether.3.dve,305334,21.3482,0,2,21056,5,429495,6,0,433,369618,0
+ Total reachable state count : 305334
+

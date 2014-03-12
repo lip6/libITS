@@ -1,0 +1,14 @@
+plc.1-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/plc.1.dve -reachable "batches > 4"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/plc.1.dve  -reachable  batches > 4  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+plc.1.dve,7444,17.3929,0,2,2687,5,30141,7,0,1022,11438,0
+ Total reachable state count : 7444
+
+Verifying 1 reachability properties.
+Never property batches > 4 is true.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+batches > 4,0,17.3933,0,1,0,5,30141,7,0,1023,11438,1

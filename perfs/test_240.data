@@ -1,0 +1,29 @@
+adding.3-reach.dve
+../bin/its-reach -t DVE --quiet -i test_models/adding.3.dve -reachable "c==637"
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/adding.3.dve  -reachable  c==637  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+adding.3.dve,146635,1.84914,0,2,3790,6,75249,7,0,34,17123,0
+ Total reachable state count : 146635
+
+Verifying 1 reachability properties.
+Never property c==637 does not hold.
+Reachable states that satisfy the never predicate will be exhibited.
+There are 6 reachable states that exhibit your property : c==637
+computing trace...
+From initial states :
+[ c=1 ]
+This shortest transition sequence of length 36 :
+t0, t1, t3, t2, t0, t1, t2, t0, t1, t2, t0, t1, t2, t0, t1, t4, t2, t0, t5, t1, t2, t0, t1, t3, t2, t0, t1, t2, t0, t1, t4, t5, t3, t2, t4, t5
+Leads to final states :
+[ x2=350 c=637 x1=637 ]
+[ x2=392 c=637 x1=637 ]
+[ x2=637 c=637 x1=392 ]
+[ x2=637 c=637 x1=416 ]
+[ x2=637 c=637 x1=490 ]
+[ x2=637 c=637 x1=574 ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+c==637,6,38.977,0,2,8,168,2.10441e+06,17,188,3372,237278,174
