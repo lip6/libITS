@@ -1,0 +1,705 @@
+gal p0 {
+	int P_0.state = 0 ;
+	transition t0 [P_0.state == 0] label "t0" {
+		P_0.state = 1 ;
+	}
+	transition t1 [P_0.state == 1] label "t1" {
+		P_0.state = 1 ;
+	}
+	transition t2 [P_0.state == 1] label "t2" {
+		P_0.state = 2 ;
+	}
+	transition t3 [P_0.state == 2] label "t3" {
+		P_0.state = 3 ;
+	}
+	transition t4 [P_0.state == 3] label "t4" {
+		P_0.state = 11 ;
+	}
+	transition t5 [P_0.state == 3] label "t5" {
+		P_0.state = 4 ;
+	}
+	transition t6 [P_0.state == 4] label "t6" {
+		P_0.state = 4 ;
+	}
+	transition t7 [P_0.state == 4] label "t7" {
+		P_0.state = 5 ;
+	}
+	transition t8 [P_0.state == 5] label "t8" {
+		P_0.state = 8 ;
+	}
+	transition t9 [P_0.state == 5] label "t9" {
+		P_0.state = 6 ;
+	}
+	transition t10 [P_0.state == 6] label "t10" {
+		P_0.state = 6 ;
+	}
+	transition t11 [P_0.state == 6] label "t11" {
+		P_0.state = 8 ;
+	}
+	transition t12 [P_0.state == 6] label "t12" {
+		P_0.state = 7 ;
+	}
+	transition t13 [P_0.state == 7] label "t13" {
+		P_0.state = 7 ;
+	}
+	transition t14 [P_0.state == 7] label "t14" {
+		P_0.state = 8 ;
+	}
+	transition t15 [P_0.state == 8] label "t15" {
+		P_0.state = 10 ;
+	}
+	transition t16 [P_0.state == 8] label "t16" {
+		P_0.state = 9 ;
+	}
+	transition t17 [P_0.state == 9] label "t17" {
+		P_0.state = 9 ;
+	}
+	transition t18 [P_0.state == 9] label "t18" {
+		P_0.state = 10 ;
+	}
+	transition t19 [P_0.state == 10] label "t19" {
+		P_0.state = 3 ;
+	}
+	transition t21 [P_0.state == 11] label "t21" {
+		P_0.state = 11 ;
+	}
+	transition t22 [P_0.state == 11] label "t22" {
+		P_0.state = 12 ;
+	}
+	transition t23 [P_0.state == 12] label "t23" {
+		P_0.state = 0 ;
+	}
+}
+gal p1 {
+	int P_1.state = 0 ;
+	transition t24 [P_1.state == 0] label "t24" {
+		P_1.state = 1 ;
+	}
+	transition t25 [P_1.state == 1] label "t25" {
+		P_1.state = 1 ;
+	}
+	transition t26 [P_1.state == 1] label "t26" {
+		P_1.state = 2 ;
+	}
+	transition t27 [P_1.state == 2] label "t27" {
+		P_1.state = 3 ;
+	}
+	transition t28 [P_1.state == 3] label "t28" {
+		P_1.state = 11 ;
+	}
+	transition t29 [P_1.state == 3] label "t29" {
+		P_1.state = 4 ;
+	}
+	transition t30 [P_1.state == 4] label "t30" {
+		P_1.state = 4 ;
+	}
+	transition t31 [P_1.state == 4] label "t31" {
+		P_1.state = 5 ;
+	}
+	transition t32 [P_1.state == 5] label "t32" {
+		P_1.state = 8 ;
+	}
+	transition t33 [P_1.state == 5] label "t33" {
+		P_1.state = 6 ;
+	}
+	transition t34 [P_1.state == 6] label "t34" {
+		P_1.state = 6 ;
+	}
+	transition t35 [P_1.state == 6] label "t35" {
+		P_1.state = 8 ;
+	}
+	transition t36 [P_1.state == 6] label "t36" {
+		P_1.state = 7 ;
+	}
+	transition t37 [P_1.state == 7] label "t37" {
+		P_1.state = 7 ;
+	}
+	transition t38 [P_1.state == 7] label "t38" {
+		P_1.state = 8 ;
+	}
+	transition t39 [P_1.state == 8] label "t39" {
+		P_1.state = 10 ;
+	}
+	transition t40 [P_1.state == 8] label "t40" {
+		P_1.state = 9 ;
+	}
+	transition t41 [P_1.state == 9] label "t41" {
+		P_1.state = 9 ;
+	}
+	transition t42 [P_1.state == 9] label "t42" {
+		P_1.state = 10 ;
+	}
+	transition t43 [P_1.state == 10] label "t43" {
+		P_1.state = 3 ;
+	}
+	transition t45 [P_1.state == 11] label "t45" {
+		P_1.state = 11 ;
+	}
+	transition t46 [P_1.state == 11] label "t46" {
+		P_1.state = 12 ;
+	}
+	transition t47 [P_1.state == 12] label "t47" {
+		P_1.state = 0 ;
+	}
+}
+gal p2 {
+	int P_2.state = 0 ;
+	transition t48 [P_2.state == 0] label "t48" {
+		P_2.state = 1 ;
+	}
+	transition t49 [P_2.state == 1] label "t49" {
+		P_2.state = 1 ;
+	}
+	transition t50 [P_2.state == 1] label "t50" {
+		P_2.state = 2 ;
+	}
+	transition t51 [P_2.state == 2] label "t51" {
+		P_2.state = 3 ;
+	}
+	transition t52 [P_2.state == 3] label "t52" {
+		P_2.state = 11 ;
+	}
+	transition t53 [P_2.state == 3] label "t53" {
+		P_2.state = 4 ;
+	}
+	transition t54 [P_2.state == 4] label "t54" {
+		P_2.state = 4 ;
+	}
+	transition t55 [P_2.state == 4] label "t55" {
+		P_2.state = 5 ;
+	}
+	transition t56 [P_2.state == 5] label "t56" {
+		P_2.state = 8 ;
+	}
+	transition t57 [P_2.state == 5] label "t57" {
+		P_2.state = 6 ;
+	}
+	transition t58 [P_2.state == 6] label "t58" {
+		P_2.state = 6 ;
+	}
+	transition t59 [P_2.state == 6] label "t59" {
+		P_2.state = 8 ;
+	}
+	transition t60 [P_2.state == 6] label "t60" {
+		P_2.state = 7 ;
+	}
+	transition t61 [P_2.state == 7] label "t61" {
+		P_2.state = 7 ;
+	}
+	transition t62 [P_2.state == 7] label "t62" {
+		P_2.state = 8 ;
+	}
+	transition t63 [P_2.state == 8] label "t63" {
+		P_2.state = 10 ;
+	}
+	transition t64 [P_2.state == 8] label "t64" {
+		P_2.state = 9 ;
+	}
+	transition t65 [P_2.state == 9] label "t65" {
+		P_2.state = 9 ;
+	}
+	transition t66 [P_2.state == 9] label "t66" {
+		P_2.state = 10 ;
+	}
+	transition t67 [P_2.state == 10] label "t67" {
+		P_2.state = 3 ;
+	}
+	transition t69 [P_2.state == 11] label "t69" {
+		P_2.state = 11 ;
+	}
+	transition t70 [P_2.state == 11] label "t70" {
+		P_2.state = 12 ;
+	}
+	transition t71 [P_2.state == 12] label "t71" {
+		P_2.state = 0 ;
+	}
+}
+gal p3 {
+	int P_0.j = 0 ;
+	int P_2.j = 0 ;
+	int P_1.j = 0 ;
+	array [3] s = (0, 0, 0) ;
+	array [3] w = (0, 0, 0) ;
+	array [3] a = (0, 0, 0) ;
+	transition t0 [true] label "t0" {
+		a [0] = 1 ;
+		P_0.j = 0 ;
+	}
+	transition t1 [P_0.j < 3 && s [P_0.j] == 0] label "t1" {
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t2 [P_0.j == 3] label "t2" {
+	}
+	transition t3 [true] label "t3" {
+		w [0] = 1 ;
+		a [0] = 0 ;
+	}
+	transition t4 [s [0] == 1] label "t4" {
+		P_0.j = 0 ;
+	}
+	transition t5 [s [0] == 0] label "t5" {
+		P_0.j = 0 ;
+	}
+	transition t6 [P_0.j < 3 && a [P_0.j] == 0] label "t6" {
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t7 [! (P_0.j < 3 && a [P_0.j] == 0)] label "t7" {
+	}
+	transition t8 [P_0.j < 3] label "t8" {
+	}
+	transition t9 [P_0.j == 3] label "t9" {
+		s [0] = 1 ;
+		P_0.j = 0 ;
+	}
+	transition t11 [P_0.j < 3 && a [P_0.j] == 1] label "t11" {
+		s [0] = 0 ;
+	}
+	transition t12 [P_0.j == 3] label "t12" {
+		w [0] = 0 ;
+		P_0.j = 0 ;
+	}
+	transition t13 [P_0.j < 3 && w [P_0.j] == 0] label "t13" {
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t16 [P_0.j < 3] label "t16" {
+		P_0.j = 0 ;
+	}
+	transition t17 [s [P_0.j] == 0 && P_0.j < 3 && w [P_0.j] == 1] label "t17" {
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t18 [! (P_0.j < 3 && (s [P_0.j] == 0 && w [P_0.j] == 1))] label "t18" {
+	}
+	transition t19 [P_0.j < 3 && P_0.j != 0] label "t19" {
+		s [0] = 1 ;
+		w [0] = 0 ;
+	}
+	transition t20 [! (P_0.j < 3 && P_0.j != 0)] label "t20" {
+	}
+	transition t21 [s [P_0.j] == 0 && w [P_0.j] == 0 && P_0.j < 0] label "t21" {
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t22 [P_0.j == 0] label "t22" {
+	}
+	transition t23 [true] label "t23" {
+		s [0] = 0 ;
+	}
+	transition t24 [true] label "t24" {
+		a [1] = 1 ;
+		P_1.j = 0 ;
+	}
+	transition t25 [P_1.j < 3 && s [P_1.j] == 0] label "t25" {
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t26 [P_1.j == 3] label "t26" {
+	}
+	transition t27 [true] label "t27" {
+		w [1] = 1 ;
+		a [1] = 0 ;
+	}
+	transition t28 [s [1] == 1] label "t28" {
+		P_1.j = 0 ;
+	}
+	transition t29 [s [1] == 0] label "t29" {
+		P_1.j = 0 ;
+	}
+	transition t30 [P_1.j < 3 && a [P_1.j] == 0] label "t30" {
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t31 [! (P_1.j < 3 && a [P_1.j] == 0)] label "t31" {
+	}
+	transition t32 [P_1.j < 3] label "t32" {
+	}
+	transition t33 [P_1.j == 3] label "t33" {
+		s [1] = 1 ;
+		P_1.j = 0 ;
+	}
+	transition t35 [P_1.j < 3 && a [P_1.j] == 1] label "t35" {
+		s [1] = 0 ;
+	}
+	transition t36 [P_1.j == 3] label "t36" {
+		w [1] = 0 ;
+		P_1.j = 0 ;
+	}
+	transition t37 [w [P_1.j] == 0 && P_1.j < 3] label "t37" {
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t40 [P_1.j < 3] label "t40" {
+		P_1.j = 0 ;
+	}
+	transition t41 [w [P_1.j] == 1 && P_1.j < 3 && s [P_1.j] == 0] label "t41" {
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t42 [! (P_1.j < 3 && (w [P_1.j] == 1 && s [P_1.j] == 0))] label "t42" {
+	}
+	transition t43 [P_1.j != 1 && P_1.j < 3] label "t43" {
+		s [1] = 1 ;
+		w [1] = 0 ;
+	}
+	transition t44 [! (P_1.j != 1 && P_1.j < 3)] label "t44" {
+	}
+	transition t45 [w [P_1.j] == 0 && P_1.j < 1 && s [P_1.j] == 0] label "t45" {
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t46 [P_1.j == 1] label "t46" {
+	}
+	transition t47 [true] label "t47" {
+		s [1] = 0 ;
+	}
+	transition t48 [true] label "t48" {
+		a [2] = 1 ;
+		P_2.j = 0 ;
+	}
+	transition t49 [s [P_2.j] == 0 && P_2.j < 3] label "t49" {
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t50 [P_2.j == 3] label "t50" {
+	}
+	transition t51 [true] label "t51" {
+		w [2] = 1 ;
+		a [2] = 0 ;
+	}
+	transition t52 [s [2] == 1] label "t52" {
+		P_2.j = 0 ;
+	}
+	transition t53 [s [2] == 0] label "t53" {
+		P_2.j = 0 ;
+	}
+	transition t54 [P_2.j < 3 && a [P_2.j] == 0] label "t54" {
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t55 [! (P_2.j < 3 && a [P_2.j] == 0)] label "t55" {
+	}
+	transition t56 [P_2.j < 3] label "t56" {
+	}
+	transition t57 [P_2.j == 3] label "t57" {
+		s [2] = 1 ;
+		P_2.j = 0 ;
+	}
+	transition t59 [P_2.j < 3 && a [P_2.j] == 1] label "t59" {
+		s [2] = 0 ;
+	}
+	transition t60 [P_2.j == 3] label "t60" {
+		w [2] = 0 ;
+		P_2.j = 0 ;
+	}
+	transition t61 [P_2.j < 3 && w [P_2.j] == 0] label "t61" {
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t64 [P_2.j < 3] label "t64" {
+		P_2.j = 0 ;
+	}
+	transition t65 [w [P_2.j] == 1 && P_2.j < 3 && s [P_2.j] == 0] label "t65" {
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t66 [! (w [P_2.j] == 1 && s [P_2.j] == 0 && P_2.j < 3)] label "t66" {
+	}
+	transition t67 [P_2.j != 2 && P_2.j < 3] label "t67" {
+		s [2] = 1 ;
+		w [2] = 0 ;
+	}
+	transition t68 [! (P_2.j != 2 && P_2.j < 3)] label "t68" {
+	}
+	transition t69 [s [P_2.j] == 0 && P_2.j < 2 && w [P_2.j] == 0] label "t69" {
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t70 [P_2.j == 2] label "t70" {
+	}
+	transition t71 [true] label "t71" {
+		s [2] = 0 ;
+	}
+}
+composite szymanski_2_dve_flat_mod {
+	gal p0 i0 ;
+	gal p1 i1 ;
+	gal p2 i2 ;
+	gal p3 i3 ;
+	synchronization t0 label "" {
+		i0."t0" ;
+		i3."t0" ;
+	}
+	synchronization t1 label "" {
+		i0."t1" ;
+		i3."t1" ;
+	}
+	synchronization t2 label "" {
+		i0."t2" ;
+		i3."t2" ;
+	}
+	synchronization t3 label "" {
+		i0."t3" ;
+		i3."t3" ;
+	}
+	synchronization t4 label "" {
+		i0."t4" ;
+		i3."t4" ;
+	}
+	synchronization t5 label "" {
+		i0."t5" ;
+		i3."t5" ;
+	}
+	synchronization t6 label "" {
+		i0."t6" ;
+		i3."t6" ;
+	}
+	synchronization t7 label "" {
+		i0."t7" ;
+		i3."t7" ;
+	}
+	synchronization t8 label "" {
+		i0."t8" ;
+		i3."t8" ;
+	}
+	synchronization t9 label "" {
+		i0."t9" ;
+		i3."t9" ;
+	}
+	synchronization t10 label "" {
+		i0."t10" ;
+		i3."t6" ;
+	}
+	synchronization t11 label "" {
+		i0."t11" ;
+		i3."t11" ;
+	}
+	synchronization t12 label "" {
+		i0."t12" ;
+		i3."t12" ;
+	}
+	synchronization t13 label "" {
+		i0."t13" ;
+		i3."t13" ;
+	}
+	synchronization t14 label "" {
+		i0."t14" ;
+		i3."t2" ;
+	}
+	synchronization t15 label "" {
+		i0."t15" ;
+		i3."t2" ;
+	}
+	synchronization t16 label "" {
+		i0."t16" ;
+		i3."t16" ;
+	}
+	synchronization t17 label "" {
+		i0."t17" ;
+		i3."t17" ;
+	}
+	synchronization t18 label "" {
+		i0."t18" ;
+		i3."t18" ;
+	}
+	synchronization t19 label "" {
+		i0."t19" ;
+		i3."t19" ;
+	}
+	synchronization t20 label "" {
+		i0."t19" ;
+		i3."t20" ;
+	}
+	synchronization t21 label "" {
+		i0."t21" ;
+		i3."t21" ;
+	}
+	synchronization t22 label "" {
+		i0."t22" ;
+		i3."t22" ;
+	}
+	synchronization t23 label "" {
+		i0."t23" ;
+		i3."t23" ;
+	}
+	synchronization t24 label "" {
+		i1."t24" ;
+		i3."t24" ;
+	}
+	synchronization t25 label "" {
+		i1."t25" ;
+		i3."t25" ;
+	}
+	synchronization t26 label "" {
+		i1."t26" ;
+		i3."t26" ;
+	}
+	synchronization t27 label "" {
+		i1."t27" ;
+		i3."t27" ;
+	}
+	synchronization t28 label "" {
+		i1."t28" ;
+		i3."t28" ;
+	}
+	synchronization t29 label "" {
+		i1."t29" ;
+		i3."t29" ;
+	}
+	synchronization t30 label "" {
+		i1."t30" ;
+		i3."t30" ;
+	}
+	synchronization t31 label "" {
+		i1."t31" ;
+		i3."t31" ;
+	}
+	synchronization t32 label "" {
+		i1."t32" ;
+		i3."t32" ;
+	}
+	synchronization t33 label "" {
+		i1."t33" ;
+		i3."t33" ;
+	}
+	synchronization t34 label "" {
+		i1."t34" ;
+		i3."t30" ;
+	}
+	synchronization t35 label "" {
+		i1."t35" ;
+		i3."t35" ;
+	}
+	synchronization t36 label "" {
+		i1."t36" ;
+		i3."t36" ;
+	}
+	synchronization t37 label "" {
+		i1."t37" ;
+		i3."t37" ;
+	}
+	synchronization t38 label "" {
+		i1."t38" ;
+		i3."t26" ;
+	}
+	synchronization t39 label "" {
+		i1."t39" ;
+		i3."t26" ;
+	}
+	synchronization t40 label "" {
+		i1."t40" ;
+		i3."t40" ;
+	}
+	synchronization t41 label "" {
+		i1."t41" ;
+		i3."t41" ;
+	}
+	synchronization t42 label "" {
+		i1."t42" ;
+		i3."t42" ;
+	}
+	synchronization t43 label "" {
+		i1."t43" ;
+		i3."t43" ;
+	}
+	synchronization t44 label "" {
+		i1."t43" ;
+		i3."t44" ;
+	}
+	synchronization t45 label "" {
+		i1."t45" ;
+		i3."t45" ;
+	}
+	synchronization t46 label "" {
+		i1."t46" ;
+		i3."t46" ;
+	}
+	synchronization t47 label "" {
+		i1."t47" ;
+		i3."t47" ;
+	}
+	synchronization t48 label "" {
+		i2."t48" ;
+		i3."t48" ;
+	}
+	synchronization t49 label "" {
+		i2."t49" ;
+		i3."t49" ;
+	}
+	synchronization t50 label "" {
+		i2."t50" ;
+		i3."t50" ;
+	}
+	synchronization t51 label "" {
+		i2."t51" ;
+		i3."t51" ;
+	}
+	synchronization t52 label "" {
+		i2."t52" ;
+		i3."t52" ;
+	}
+	synchronization t53 label "" {
+		i2."t53" ;
+		i3."t53" ;
+	}
+	synchronization t54 label "" {
+		i2."t54" ;
+		i3."t54" ;
+	}
+	synchronization t55 label "" {
+		i2."t55" ;
+		i3."t55" ;
+	}
+	synchronization t56 label "" {
+		i2."t56" ;
+		i3."t56" ;
+	}
+	synchronization t57 label "" {
+		i2."t57" ;
+		i3."t57" ;
+	}
+	synchronization t58 label "" {
+		i2."t58" ;
+		i3."t54" ;
+	}
+	synchronization t59 label "" {
+		i2."t59" ;
+		i3."t59" ;
+	}
+	synchronization t60 label "" {
+		i2."t60" ;
+		i3."t60" ;
+	}
+	synchronization t61 label "" {
+		i2."t61" ;
+		i3."t61" ;
+	}
+	synchronization t62 label "" {
+		i2."t62" ;
+		i3."t50" ;
+	}
+	synchronization t63 label "" {
+		i2."t63" ;
+		i3."t50" ;
+	}
+	synchronization t64 label "" {
+		i2."t64" ;
+		i3."t64" ;
+	}
+	synchronization t65 label "" {
+		i2."t65" ;
+		i3."t65" ;
+	}
+	synchronization t66 label "" {
+		i2."t66" ;
+		i3."t66" ;
+	}
+	synchronization t67 label "" {
+		i2."t67" ;
+		i3."t67" ;
+	}
+	synchronization t68 label "" {
+		i2."t67" ;
+		i3."t68" ;
+	}
+	synchronization t69 label "" {
+		i2."t69" ;
+		i3."t69" ;
+	}
+	synchronization t70 label "" {
+		i2."t70" ;
+		i3."t70" ;
+	}
+	synchronization t71 label "" {
+		i2."t71" ;
+		i3."t71" ;
+	}
+}
+main szymanski_2_dve_flat_mod ;

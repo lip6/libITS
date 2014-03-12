@@ -1,0 +1,66 @@
+gal p0 {
+	int b_act = 1 ;
+	int c_act = 1 ;
+	int a_act = 9 ;
+	array [9] c = (100, 0, 0, 0, 0, 0, 0, 0, 0) ;
+	array [9] b = (100, 0, 0, 0, 0, 0, 0, 0, 0) ;
+	array [9] a = (100, 8, 7, 6, 5, 4, 3, 2, 1) ;
+	transition t0 [a [a_act - 1] < b [b_act - 1]] label "t0" {
+		b [b_act] = a [a_act - 1] ;
+		b_act = 1 + b_act ;
+		a [a_act - 1] = 0 ;
+		a_act = a_act - 1 ;
+	}
+	transition t1 [a [a_act - 1] < c [c_act - 1]] label "t1" {
+		c [c_act] = a [a_act - 1] ;
+		c_act = 1 + c_act ;
+		a [a_act - 1] = 0 ;
+		a_act = a_act - 1 ;
+	}
+	transition t2 [b [b_act - 1] < a [a_act - 1]] label "t2" {
+		a [a_act] = b [b_act - 1] ;
+		a_act = 1 + a_act ;
+		b [b_act - 1] = 0 ;
+		b_act = b_act - 1 ;
+	}
+	transition t3 [b [b_act - 1] < c [c_act - 1]] label "t3" {
+		c [c_act] = b [b_act - 1] ;
+		c_act = 1 + c_act ;
+		b [b_act - 1] = 0 ;
+		b_act = b_act - 1 ;
+	}
+	transition t4 [c [c_act - 1] < a [a_act - 1]] label "t4" {
+		a [a_act] = c [c_act - 1] ;
+		a_act = 1 + a_act ;
+		c [c_act - 1] = 0 ;
+		c_act = c_act - 1 ;
+	}
+	transition t5 [c [c_act - 1] < b [b_act - 1]] label "t5" {
+		b [b_act] = c [c_act - 1] ;
+		b_act = 1 + b_act ;
+		c [c_act - 1] = 0 ;
+		c_act = c_act - 1 ;
+	}
+}
+composite hanoi_ori_1_dve_flat_mod {
+	gal p0 i0 ;
+	synchronization t0 label "" {
+		i0."t0" ;
+	}
+	synchronization t1 label "" {
+		i0."t1" ;
+	}
+	synchronization t2 label "" {
+		i0."t2" ;
+	}
+	synchronization t3 label "" {
+		i0."t3" ;
+	}
+	synchronization t4 label "" {
+		i0."t4" ;
+	}
+	synchronization t5 label "" {
+		i0."t5" ;
+	}
+}
+main hanoi_ori_1_dve_flat_mod ;

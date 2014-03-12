@@ -1,0 +1,269 @@
+gal p0 {
+	int P_0.state = 0 ;
+	transition t0 [P_0.state == 0] label "t0" {
+		P_0.state = 1 ;
+	}
+	transition t1 [P_0.state == 1] label "t1" {
+		P_0.state = 1 ;
+	}
+	transition t3 [P_0.state == 1] label "t3" {
+		P_0.state = 2 ;
+	}
+	transition t4 [P_0.state == 2] label "t4" {
+		P_0.state = 3 ;
+	}
+	transition t5 [P_0.state == 2] label "t5" {
+		P_0.state = 4 ;
+	}
+	transition t6 [P_0.state == 3] label "t6" {
+		P_0.state = 2 ;
+	}
+	transition t7 [P_0.state == 4] label "t7" {
+		P_0.state = 0 ;
+	}
+}
+gal p1 {
+	int P_1.state = 0 ;
+	transition t8 [P_1.state == 0] label "t8" {
+		P_1.state = 1 ;
+	}
+	transition t9 [P_1.state == 1] label "t9" {
+		P_1.state = 1 ;
+	}
+	transition t11 [P_1.state == 1] label "t11" {
+		P_1.state = 2 ;
+	}
+	transition t12 [P_1.state == 2] label "t12" {
+		P_1.state = 3 ;
+	}
+	transition t13 [P_1.state == 2] label "t13" {
+		P_1.state = 4 ;
+	}
+	transition t14 [P_1.state == 3] label "t14" {
+		P_1.state = 2 ;
+	}
+	transition t15 [P_1.state == 4] label "t15" {
+		P_1.state = 0 ;
+	}
+}
+gal p2 {
+	int P_2.state = 0 ;
+	transition t16 [P_2.state == 0] label "t16" {
+		P_2.state = 1 ;
+	}
+	transition t17 [P_2.state == 1] label "t17" {
+		P_2.state = 1 ;
+	}
+	transition t19 [P_2.state == 1] label "t19" {
+		P_2.state = 2 ;
+	}
+	transition t20 [P_2.state == 2] label "t20" {
+		P_2.state = 3 ;
+	}
+	transition t21 [P_2.state == 2] label "t21" {
+		P_2.state = 4 ;
+	}
+	transition t22 [P_2.state == 3] label "t22" {
+		P_2.state = 2 ;
+	}
+	transition t23 [P_2.state == 4] label "t23" {
+		P_2.state = 0 ;
+	}
+}
+gal p3 {
+	int P_1.max = 0 ;
+	int P_2.j = 0 ;
+	int P_0.max = 0 ;
+	int P_0.j = 0 ;
+	int P_2.max = 0 ;
+	int P_1.j = 0 ;
+	array [3] choosing = (0, 0, 0) ;
+	array [3] number = (0, 0, 0) ;
+	transition t0 [true] label "t0" {
+		choosing [0] = 1 ;
+		P_0.j = 0 ;
+		P_0.max = 0 ;
+	}
+	transition t1 [P_0.j < 3 && number [P_0.j] > P_0.max] label "t1" {
+		P_0.max = number [P_0.j] ;
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t2 [P_0.j < 3 && number [P_0.j] <= P_0.max] label "t2" {
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t3 [P_0.j == 3 && P_0.max < 6] label "t3" {
+		number [0] = P_0.max + 1 ;
+		P_0.j = 0 ;
+		choosing [0] = 0 ;
+	}
+	transition t4 [P_0.j < 3 && choosing [P_0.j] == 0] label "t4" {
+	}
+	transition t5 [P_0.j == 3] label "t5" {
+	}
+	transition t6 [number [P_0.j] == number [0] && 0 <= P_0.j || (number [P_0.j] == 0 || number [P_0.j] < number [0])]
+	label "t6" {
+		P_0.j = 1 + P_0.j ;
+	}
+	transition t7 [true] label "t7" {
+		number [0] = 0 ;
+	}
+	transition t8 [true] label "t8" {
+		choosing [1] = 1 ;
+		P_1.j = 0 ;
+		P_1.max = 0 ;
+	}
+	transition t9 [number [P_1.j] > P_1.max && P_1.j < 3] label "t9" {
+		P_1.max = number [P_1.j] ;
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t10 [P_1.j < 3 && number [P_1.j] <= P_1.max] label "t10" {
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t11 [P_1.j == 3 && P_1.max < 6] label "t11" {
+		number [1] = 1 + P_1.max ;
+		P_1.j = 0 ;
+		choosing [1] = 0 ;
+	}
+	transition t12 [choosing [P_1.j] == 0 && P_1.j < 3] label "t12" {
+	}
+	transition t13 [P_1.j == 3] label "t13" {
+	}
+	transition t14 [number [P_1.j] == 0 || number [P_1.j] < number [1] || number [P_1.j] == number [1] && 1 <= P_1.j]
+	label "t14" {
+		P_1.j = 1 + P_1.j ;
+	}
+	transition t15 [true] label "t15" {
+		number [1] = 0 ;
+	}
+	transition t16 [true] label "t16" {
+		choosing [2] = 1 ;
+		P_2.j = 0 ;
+		P_2.max = 0 ;
+	}
+	transition t17 [P_2.j < 3 && number [P_2.j] > P_2.max] label "t17" {
+		P_2.max = number [P_2.j] ;
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t18 [P_2.j < 3 && number [P_2.j] <= P_2.max] label "t18" {
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t19 [P_2.j == 3 && P_2.max < 6] label "t19" {
+		number [2] = 1 + P_2.max ;
+		P_2.j = 0 ;
+		choosing [2] = 0 ;
+	}
+	transition t20 [P_2.j < 3 && choosing [P_2.j] == 0] label "t20" {
+	}
+	transition t21 [P_2.j == 3] label "t21" {
+	}
+	transition t22 [number [P_2.j] < number [2] || number [P_2.j] == 0 || 2 <= P_2.j && number [P_2.j] == number [2]]
+	label "t22" {
+		P_2.j = 1 + P_2.j ;
+	}
+	transition t23 [true] label "t23" {
+		number [2] = 0 ;
+	}
+}
+composite bakery_4_dve_flat_mod {
+	gal p0 i0 ;
+	gal p1 i1 ;
+	gal p2 i2 ;
+	gal p3 i3 ;
+	synchronization t0 label "" {
+		i0."t0" ;
+		i3."t0" ;
+	}
+	synchronization t1 label "" {
+		i0."t1" ;
+		i3."t1" ;
+	}
+	synchronization t2 label "" {
+		i0."t1" ;
+		i3."t2" ;
+	}
+	synchronization t3 label "" {
+		i0."t3" ;
+		i3."t3" ;
+	}
+	synchronization t4 label "" {
+		i0."t4" ;
+		i3."t4" ;
+	}
+	synchronization t5 label "" {
+		i0."t5" ;
+		i3."t5" ;
+	}
+	synchronization t6 label "" {
+		i0."t6" ;
+		i3."t6" ;
+	}
+	synchronization t7 label "" {
+		i0."t7" ;
+		i3."t7" ;
+	}
+	synchronization t8 label "" {
+		i1."t8" ;
+		i3."t8" ;
+	}
+	synchronization t9 label "" {
+		i1."t9" ;
+		i3."t9" ;
+	}
+	synchronization t10 label "" {
+		i1."t9" ;
+		i3."t10" ;
+	}
+	synchronization t11 label "" {
+		i1."t11" ;
+		i3."t11" ;
+	}
+	synchronization t12 label "" {
+		i1."t12" ;
+		i3."t12" ;
+	}
+	synchronization t13 label "" {
+		i1."t13" ;
+		i3."t13" ;
+	}
+	synchronization t14 label "" {
+		i1."t14" ;
+		i3."t14" ;
+	}
+	synchronization t15 label "" {
+		i1."t15" ;
+		i3."t15" ;
+	}
+	synchronization t16 label "" {
+		i2."t16" ;
+		i3."t16" ;
+	}
+	synchronization t17 label "" {
+		i2."t17" ;
+		i3."t17" ;
+	}
+	synchronization t18 label "" {
+		i2."t17" ;
+		i3."t18" ;
+	}
+	synchronization t19 label "" {
+		i2."t19" ;
+		i3."t19" ;
+	}
+	synchronization t20 label "" {
+		i2."t20" ;
+		i3."t20" ;
+	}
+	synchronization t21 label "" {
+		i2."t21" ;
+		i3."t21" ;
+	}
+	synchronization t22 label "" {
+		i2."t22" ;
+		i3."t22" ;
+	}
+	synchronization t23 label "" {
+		i2."t23" ;
+		i3."t23" ;
+	}
+}
+main bakery_4_dve_flat_mod ;

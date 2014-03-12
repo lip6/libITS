@@ -1,0 +1,644 @@
+gal p0 {
+	int far_1 = 1 ;
+	transition App0 [far_1 >= 1] label "App0" {
+		far_1 = far_1 - 1 ;
+	}
+	transition Exit0 [true] label "Exit0" {
+		far_1 = far_1 + 1 ;
+	}
+}
+gal p1 {
+	int far_2 = 1 ;
+	transition App_c0 [far_2 >= 1] label "App_c0" {
+		far_2 = far_2 - 1 ;
+	}
+	transition Exit_c0 [true] label "Exit_c0" {
+		far_2 = far_2 + 1 ;
+	}
+}
+gal p2 {
+	int far_2_c = 1 ;
+	transition App_c_c0 [far_2_c >= 1] label "App_c_c0" {
+		far_2_c = far_2_c - 1 ;
+	}
+	transition Exit_c_c0 [true] label "Exit_c_c0" {
+		far_2_c = far_2_c + 1 ;
+	}
+}
+gal p3 {
+	int far_2_c_c = 1 ;
+	transition App_c_c_c0 [far_2_c_c >= 1] label "App_c_c_c0" {
+		far_2_c_c = far_2_c_c - 1 ;
+	}
+	transition Exit_c_c_c0 [true] label "Exit_c_c_c0" {
+		far_2_c_c = far_2_c_c + 1 ;
+	}
+}
+gal p4 {
+	int raising = 0 ;
+	int R.clock = 0 ;
+	int open = 1 ;
+	int coming = 0 ;
+	transition App0 [true] label "App0" {
+		coming = coming + 1 ;
+	}
+	transition Down0 [open >= 1 && coming >= 1] label "Down0" {
+		open = open - 1 ;
+		coming = coming - 1 ;
+	}
+	transition R [raising >= 1 && R.clock >= 1] label "R" {
+		raising = raising - 1 ;
+		open = open + 1 ;
+		R.clock = 0 ;
+	}
+	transition Down [coming >= 1 && raising >= 1] label "Down" {
+		coming = coming - 1 ;
+		raising = raising - 1 ;
+	}
+	transition up [true] label "up" {
+		raising = raising + 1 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (open >= 1 && coming >= 1) {
+			abort ;
+		}
+		if (raising >= 1) {
+			if (R.clock < 2) {
+				R.clock = R.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+		if (coming >= 1 && raising >= 1) {
+			abort ;
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! raising >= 1) {
+			R.clock = 0 ;
+		}
+	}
+}
+gal p5 {
+	int lowering = 0 ;
+	int L.clock = 0 ;
+	transition Down0 [true] label "Down0" {
+		lowering = lowering + 1 ;
+	}
+	transition L [lowering >= 1 && L.clock >= 1] label "L" {
+		lowering = lowering - 1 ;
+		L.clock = 0 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (lowering >= 1) {
+			if (L.clock < 2) {
+				L.clock = L.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! lowering >= 1) {
+			L.clock = 0 ;
+		}
+	}
+}
+gal p6 {
+	int leaving = 0 ;
+	int closed = 0 ;
+	transition Exit1 [true] label "Exit1" {
+		leaving = leaving + 1 ;
+	}
+	transition L [true] label "L" {
+		closed = closed + 1 ;
+	}
+	transition up [leaving >= 1 && closed >= 1] label "up" {
+		leaving = leaving - 1 ;
+		closed = closed - 1 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (leaving >= 1 && closed >= 1) {
+			abort ;
+		}
+	}
+}
+gal p7 {
+	int close_1 = 0 ;
+	int In_1.clock = 0 ;
+	transition App0 [true] label "App0" {
+		close_1 = close_1 + 1 ;
+	}
+	transition In_1 [close_1 >= 1 && In_1.clock >= 3] label "In_1" {
+		close_1 = close_1 - 1 ;
+		In_1.clock = 0 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (close_1 >= 1) {
+			if (In_1.clock < 5) {
+				In_1.clock = In_1.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! close_1 >= 1) {
+			In_1.clock = 0 ;
+		}
+	}
+}
+gal p8 {
+	int on_1 = 0 ;
+	int Ex_1.clock = 0 ;
+	transition In_1 [true] label "In_1" {
+		on_1 = on_1 + 1 ;
+	}
+	transition Ex_1 [on_1 >= 1 && Ex_1.clock >= 2] label "Ex_1" {
+		on_1 = on_1 - 1 ;
+		Ex_1.clock = 0 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (on_1 >= 1) {
+			if (Ex_1.clock < 4) {
+				Ex_1.clock = Ex_1.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! on_1 >= 1) {
+			Ex_1.clock = 0 ;
+		}
+	}
+}
+gal p9 {
+	int close_2 = 0 ;
+	int In_2.clock = 0 ;
+	transition In_2 [close_2 >= 1 && In_2.clock >= 3] label "In_2" {
+		close_2 = close_2 - 1 ;
+		In_2.clock = 0 ;
+	}
+	transition App_c0 [true] label "App_c0" {
+		close_2 = close_2 + 1 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (close_2 >= 1) {
+			if (In_2.clock < 5) {
+				In_2.clock = In_2.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! close_2 >= 1) {
+			In_2.clock = 0 ;
+		}
+	}
+}
+gal p10 {
+	int Ex_2.clock = 0 ;
+	int on_2 = 0 ;
+	transition In_2 [true] label "In_2" {
+		on_2 = on_2 + 1 ;
+	}
+	transition Ex_2 [on_2 >= 1 && Ex_2.clock >= 2] label "Ex_2" {
+		on_2 = on_2 - 1 ;
+		Ex_2.clock = 0 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (on_2 >= 1) {
+			if (Ex_2.clock < 4) {
+				Ex_2.clock = Ex_2.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! on_2 >= 1) {
+			Ex_2.clock = 0 ;
+		}
+	}
+}
+gal p11 {
+	int on_2_c = 0 ;
+	int Ex_2_c.clock = 0 ;
+	transition Ex_2_c [on_2_c >= 1 && Ex_2_c.clock >= 2] label "Ex_2_c" {
+		on_2_c = on_2_c - 1 ;
+		Ex_2_c.clock = 0 ;
+	}
+	transition In_3 [true] label "In_3" {
+		on_2_c = on_2_c + 1 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (on_2_c >= 1) {
+			if (Ex_2_c.clock < 4) {
+				Ex_2_c.clock = Ex_2_c.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! on_2_c >= 1) {
+			Ex_2_c.clock = 0 ;
+		}
+	}
+}
+gal p12 {
+	int close_2_c = 0 ;
+	int In_3.clock = 0 ;
+	transition App_c_c0 [true] label "App_c_c0" {
+		close_2_c = close_2_c + 1 ;
+	}
+	transition In_3 [close_2_c >= 1 && In_3.clock >= 3] label "In_3" {
+		close_2_c = close_2_c - 1 ;
+		In_3.clock = 0 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (close_2_c >= 1) {
+			if (In_3.clock < 5) {
+				In_3.clock = In_3.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! close_2_c >= 1) {
+			In_3.clock = 0 ;
+		}
+	}
+}
+gal p13 {
+	int Ex_2_c_c.clock = 0 ;
+	int on_2_c_c = 0 ;
+	transition Ex_2_c_c [on_2_c_c >= 1 && Ex_2_c_c.clock >= 2] label "Ex_2_c_c" {
+		on_2_c_c = on_2_c_c - 1 ;
+		Ex_2_c_c.clock = 0 ;
+	}
+	transition In_3_c [true] label "In_3_c" {
+		on_2_c_c = on_2_c_c + 1 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (on_2_c_c >= 1) {
+			if (Ex_2_c_c.clock < 4) {
+				Ex_2_c_c.clock = Ex_2_c_c.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! on_2_c_c >= 1) {
+			Ex_2_c_c.clock = 0 ;
+		}
+	}
+}
+gal p14 {
+	int left_2 = 0 ;
+	int in = 0 ;
+	int left_2_c_c = 0 ;
+	int left_2_c = 0 ;
+	int left_1 = 0 ;
+	int far = 4 ;
+	transition App0 [far >= 4] label "App0" {
+		far = far - 4 ;
+		in = in + 1 ;
+		far = far + 3 ;
+	}
+	transition App1 [far >= 1 && in >= 1] label "App1" {
+		far = far - 1 ;
+		in = in - 1 ;
+		in = in + 2 ;
+	}
+	transition Exit0 [left_1 >= 1 && in >= 2] label "Exit0" {
+		left_1 = left_1 - 1 ;
+		in = in - 2 ;
+		in = in + 1 ;
+		far = far + 1 ;
+	}
+	transition Exit1 [in >= 1 && left_1 >= 1 && far >= 3] label "Exit1" {
+		in = in - 1 ;
+		left_1 = left_1 - 1 ;
+		far = far - 3 ;
+		far = far + 4 ;
+	}
+	transition Ex_1 [true] label "Ex_1" {
+		left_1 = left_1 + 1 ;
+	}
+	transition Ex_2 [true] label "Ex_2" {
+		left_2 = left_2 + 1 ;
+	}
+	transition Exit_c0 [in >= 2 && left_2 >= 1] label "Exit_c0" {
+		in = in - 2 ;
+		left_2 = left_2 - 1 ;
+		far = far + 1 ;
+		in = in + 1 ;
+	}
+	transition Exit_c1 [left_2 >= 1 && far >= 3 && in >= 1] label "Exit_c1" {
+		left_2 = left_2 - 1 ;
+		far = far - 3 ;
+		in = in - 1 ;
+		far = far + 4 ;
+	}
+	transition Ex_2_c [true] label "Ex_2_c" {
+		left_2_c = left_2_c + 1 ;
+	}
+	transition App_c_c0 [far >= 4] label "App_c_c0" {
+		far = far - 4 ;
+		far = far + 3 ;
+		in = in + 1 ;
+	}
+	transition App_c_c1 [in >= 1 && far >= 1] label "App_c_c1" {
+		in = in - 1 ;
+		far = far - 1 ;
+		in = in + 2 ;
+	}
+	transition Exit_c_c0 [left_2_c >= 1 && in >= 2] label "Exit_c_c0" {
+		left_2_c = left_2_c - 1 ;
+		in = in - 2 ;
+		far = far + 1 ;
+		in = in + 1 ;
+	}
+	transition Exit_c_c1 [in >= 1 && left_2_c >= 1 && far >= 3] label "Exit_c_c1" {
+		in = in - 1 ;
+		left_2_c = left_2_c - 1 ;
+		far = far - 3 ;
+		far = far + 4 ;
+	}
+	transition Ex_2_c_c [true] label "Ex_2_c_c" {
+		left_2_c_c = left_2_c_c + 1 ;
+	}
+	transition Exit_c_c_c0 [left_2_c_c >= 1 && in >= 2] label "Exit_c_c_c0" {
+		left_2_c_c = left_2_c_c - 1 ;
+		in = in - 2 ;
+		far = far + 1 ;
+		in = in + 1 ;
+	}
+	transition Exit_c_c_c1 [left_2_c_c >= 1 && far >= 3 && in >= 1] label "Exit_c_c_c1" {
+		left_2_c_c = left_2_c_c - 1 ;
+		far = far - 3 ;
+		in = in - 1 ;
+		far = far + 4 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (left_1 >= 1 && in >= 2) {
+			abort ;
+		}
+		if (in >= 1 && left_1 >= 1 && far >= 3) {
+			abort ;
+		}
+		if (in >= 2 && left_2 >= 1) {
+			abort ;
+		}
+		if (left_2 >= 1 && far >= 3 && in >= 1) {
+			abort ;
+		}
+		if (left_2_c >= 1 && in >= 2) {
+			abort ;
+		}
+		if (in >= 1 && left_2_c >= 1 && far >= 3) {
+			abort ;
+		}
+		if (left_2_c_c >= 1 && in >= 2) {
+			abort ;
+		}
+		if (left_2_c_c >= 1 && far >= 3 && in >= 1) {
+			abort ;
+		}
+	}
+}
+gal p15 {
+	int close_2_c_c = 0 ;
+	int In_3_c.clock = 0 ;
+	transition App_c_c_c0 [true] label "App_c_c_c0" {
+		close_2_c_c = close_2_c_c + 1 ;
+	}
+	transition In_3_c [close_2_c_c >= 1 && In_3_c.clock >= 3] label "In_3_c" {
+		close_2_c_c = close_2_c_c - 1 ;
+		In_3_c.clock = 0 ;
+	}
+	transition elapse [true] label "elapse" {
+		if (close_2_c_c >= 1) {
+			if (In_3_c.clock < 5) {
+				In_3_c.clock = In_3_c.clock + 1 ;
+			} else {
+				abort ;
+			}
+		}
+	}
+	transition reset [true] label "reset" {
+		if (! close_2_c_c >= 1) {
+			In_3_c.clock = 0 ;
+		}
+	}
+}
+composite model_flat_mod {
+	gal p0 i0 ;
+	gal p1 i1 ;
+	gal p2 i2 ;
+	gal p3 i3 ;
+	gal p4 i4 ;
+	gal p5 i5 ;
+	gal p6 i6 ;
+	gal p7 i7 ;
+	gal p8 i8 ;
+	gal p9 i9 ;
+	gal p10 i10 ;
+	gal p11 i11 ;
+	gal p12 i12 ;
+	gal p13 i13 ;
+	gal p14 i14 ;
+	gal p15 i15 ;
+	synchronization App0 label "" {
+		i0."App0" ;
+		i4."App0" ;
+		i7."App0" ;
+		i14."App0" ;
+		self."reset" ;
+	}
+	synchronization App1 label "" {
+		i0."App0" ;
+		i7."App0" ;
+		i14."App1" ;
+		self."reset" ;
+	}
+	synchronization Exit0 label "" {
+		i0."Exit0" ;
+		i14."Exit0" ;
+		self."reset" ;
+	}
+	synchronization Exit1 label "" {
+		i0."Exit0" ;
+		i6."Exit1" ;
+		i14."Exit1" ;
+		self."reset" ;
+	}
+	synchronization Down0 label "" {
+		i4."Down0" ;
+		i5."Down0" ;
+		self."reset" ;
+	}
+	synchronization R label "" {
+		i4."R" ;
+		self."reset" ;
+	}
+	synchronization Down label "" {
+		i4."Down" ;
+		i5."Down0" ;
+		self."reset" ;
+	}
+	synchronization L label "" {
+		i5."L" ;
+		i6."L" ;
+		self."reset" ;
+	}
+	synchronization up label "" {
+		i4."up" ;
+		i6."up" ;
+		self."reset" ;
+	}
+	synchronization In_1 label "" {
+		i7."In_1" ;
+		i8."In_1" ;
+		self."reset" ;
+	}
+	synchronization Ex_1 label "" {
+		i8."Ex_1" ;
+		i14."Ex_1" ;
+		self."reset" ;
+	}
+	synchronization In_2 label "" {
+		i9."In_2" ;
+		i10."In_2" ;
+		self."reset" ;
+	}
+	synchronization Ex_2 label "" {
+		i10."Ex_2" ;
+		i14."Ex_2" ;
+		self."reset" ;
+	}
+	synchronization App_c0 label "" {
+		i1."App_c0" ;
+		i4."App0" ;
+		i9."App_c0" ;
+		i14."App0" ;
+		self."reset" ;
+	}
+	synchronization App_c1 label "" {
+		i1."App_c0" ;
+		i9."App_c0" ;
+		i14."App1" ;
+		self."reset" ;
+	}
+	synchronization Exit_c0 label "" {
+		i1."Exit_c0" ;
+		i14."Exit_c0" ;
+		self."reset" ;
+	}
+	synchronization Exit_c1 label "" {
+		i1."Exit_c0" ;
+		i6."Exit1" ;
+		i14."Exit_c1" ;
+		self."reset" ;
+	}
+	synchronization Ex_2_c label "" {
+		i11."Ex_2_c" ;
+		i14."Ex_2_c" ;
+		self."reset" ;
+	}
+	synchronization App_c_c0 label "" {
+		i2."App_c_c0" ;
+		i4."App0" ;
+		i12."App_c_c0" ;
+		i14."App_c_c0" ;
+		self."reset" ;
+	}
+	synchronization App_c_c1 label "" {
+		i2."App_c_c0" ;
+		i12."App_c_c0" ;
+		i14."App_c_c1" ;
+		self."reset" ;
+	}
+	synchronization Exit_c_c0 label "" {
+		i2."Exit_c_c0" ;
+		i14."Exit_c_c0" ;
+		self."reset" ;
+	}
+	synchronization Exit_c_c1 label "" {
+		i2."Exit_c_c0" ;
+		i6."Exit1" ;
+		i14."Exit_c_c1" ;
+		self."reset" ;
+	}
+	synchronization In_3 label "" {
+		i11."In_3" ;
+		i12."In_3" ;
+		self."reset" ;
+	}
+	synchronization Ex_2_c_c label "" {
+		i13."Ex_2_c_c" ;
+		i14."Ex_2_c_c" ;
+		self."reset" ;
+	}
+	synchronization App_c_c_c0 label "" {
+		i3."App_c_c_c0" ;
+		i4."App0" ;
+		i14."App0" ;
+		i15."App_c_c_c0" ;
+		self."reset" ;
+	}
+	synchronization App_c_c_c1 label "" {
+		i3."App_c_c_c0" ;
+		i14."App_c_c1" ;
+		i15."App_c_c_c0" ;
+		self."reset" ;
+	}
+	synchronization Exit_c_c_c0 label "" {
+		i3."Exit_c_c_c0" ;
+		i14."Exit_c_c_c0" ;
+		self."reset" ;
+	}
+	synchronization Exit_c_c_c1 label "" {
+		i3."Exit_c_c_c0" ;
+		i6."Exit1" ;
+		i14."Exit_c_c_c1" ;
+		self."reset" ;
+	}
+	synchronization In_3_c label "" {
+		i13."In_3_c" ;
+		i15."In_3_c" ;
+		self."reset" ;
+	}
+	synchronization elapse label "elapse" {
+		i4."elapse" ;
+		i5."elapse" ;
+		i6."elapse" ;
+		i7."elapse" ;
+		i8."elapse" ;
+		i9."elapse" ;
+		i10."elapse" ;
+		i11."elapse" ;
+		i12."elapse" ;
+		i13."elapse" ;
+		i14."elapse" ;
+		i15."elapse" ;
+	}
+	synchronization reset label "reset" {
+		i4."reset" ;
+		i5."reset" ;
+		i7."reset" ;
+		i8."reset" ;
+		i9."reset" ;
+		i10."reset" ;
+		i11."reset" ;
+		i12."reset" ;
+		i13."reset" ;
+		i15."reset" ;
+	}
+}
+main model_flat_mod ;

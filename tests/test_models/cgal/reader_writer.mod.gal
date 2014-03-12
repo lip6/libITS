@@ -1,0 +1,828 @@
+gal p0 {
+	int control.state = 0 ;
+	transition t0 [control.state == 0] label "t0" {
+		control.state = 1 ;
+	}
+	transition t14 [control.state == 0] label "t14" {
+		control.state = 2 ;
+	}
+	transition t28 [control.state == 1] label "t28" {
+		control.state = 1 ;
+	}
+	transition t56 [control.state == 1] label "t56" {
+		control.state = 0 ;
+	}
+	transition t70 [control.state == 1] label "t70" {
+		control.state = 3 ;
+	}
+	transition t84 [control.state == 2] label "t84" {
+		control.state = 0 ;
+	}
+	transition t98 [control.state == 2] label "t98" {
+		control.state = 3 ;
+	}
+}
+gal p1 {
+	int reader_0.state = 0 ;
+	transition t0 [reader_0.state == 0] label "t0" {
+		reader_0.state = 1 ;
+	}
+	transition t42 [reader_0.state == 1] label "t42" {
+		reader_0.state = 0 ;
+	}
+}
+gal p2 {
+	int activeR = 0 ;
+	transition t0 [true] label "t0" {
+		activeR = 1 ;
+	}
+	transition t28 [true] label "t28" {
+		activeR = 1 + activeR ;
+	}
+	transition t42 [activeR > 0] label "t42" {
+		activeR = 1 ;
+	}
+	transition t56 [activeR == 1] label "t56" {
+		activeR = 0 ;
+	}
+}
+gal p3 {
+	int reader_1.state = 0 ;
+	transition t1 [reader_1.state == 0] label "t1" {
+		reader_1.state = 1 ;
+	}
+	transition t43 [reader_1.state == 1] label "t43" {
+		reader_1.state = 0 ;
+	}
+}
+gal p4 {
+	int reader_2.state = 0 ;
+	transition t2 [reader_2.state == 0] label "t2" {
+		reader_2.state = 1 ;
+	}
+	transition t44 [reader_2.state == 1] label "t44" {
+		reader_2.state = 0 ;
+	}
+}
+gal p5 {
+	int reader_3.state = 0 ;
+	transition t3 [reader_3.state == 0] label "t3" {
+		reader_3.state = 1 ;
+	}
+	transition t45 [reader_3.state == 1] label "t45" {
+		reader_3.state = 0 ;
+	}
+}
+gal p6 {
+	int reader_4.state = 0 ;
+	transition t4 [reader_4.state == 0] label "t4" {
+		reader_4.state = 1 ;
+	}
+	transition t46 [reader_4.state == 1] label "t46" {
+		reader_4.state = 0 ;
+	}
+}
+gal p7 {
+	int reader_5.state = 0 ;
+	transition t5 [reader_5.state == 0] label "t5" {
+		reader_5.state = 1 ;
+	}
+	transition t47 [reader_5.state == 1] label "t47" {
+		reader_5.state = 0 ;
+	}
+}
+gal p8 {
+	int reader_6.state = 0 ;
+	transition t6 [reader_6.state == 0] label "t6" {
+		reader_6.state = 1 ;
+	}
+	transition t48 [reader_6.state == 1] label "t48" {
+		reader_6.state = 0 ;
+	}
+}
+gal p9 {
+	int reader_7.state = 0 ;
+	transition t7 [reader_7.state == 0] label "t7" {
+		reader_7.state = 1 ;
+	}
+	transition t49 [reader_7.state == 1] label "t49" {
+		reader_7.state = 0 ;
+	}
+}
+gal p10 {
+	int reader_8.state = 0 ;
+	transition t8 [reader_8.state == 0] label "t8" {
+		reader_8.state = 1 ;
+	}
+	transition t50 [reader_8.state == 1] label "t50" {
+		reader_8.state = 0 ;
+	}
+}
+gal p11 {
+	int reader_9.state = 0 ;
+	transition t9 [reader_9.state == 0] label "t9" {
+		reader_9.state = 1 ;
+	}
+	transition t51 [reader_9.state == 1] label "t51" {
+		reader_9.state = 0 ;
+	}
+}
+gal p12 {
+	int reader_10.state = 0 ;
+	transition t10 [reader_10.state == 0] label "t10" {
+		reader_10.state = 1 ;
+	}
+	transition t52 [reader_10.state == 1] label "t52" {
+		reader_10.state = 0 ;
+	}
+}
+gal p13 {
+	int reader_11.state = 0 ;
+	transition t11 [reader_11.state == 0] label "t11" {
+		reader_11.state = 1 ;
+	}
+	transition t53 [reader_11.state == 1] label "t53" {
+		reader_11.state = 0 ;
+	}
+}
+gal p14 {
+	int reader_12.state = 0 ;
+	transition t12 [reader_12.state == 0] label "t12" {
+		reader_12.state = 1 ;
+	}
+	transition t54 [reader_12.state == 1] label "t54" {
+		reader_12.state = 0 ;
+	}
+}
+gal p15 {
+	int reader_13.state = 0 ;
+	transition t13 [reader_13.state == 0] label "t13" {
+		reader_13.state = 1 ;
+	}
+	transition t55 [reader_13.state == 1] label "t55" {
+		reader_13.state = 0 ;
+	}
+}
+gal p16 {
+	int writer_0.state = 0 ;
+	transition t14 [writer_0.state == 0] label "t14" {
+		writer_0.state = 1 ;
+	}
+	transition t70 [writer_0.state == 1] label "t70" {
+		writer_0.state = 0 ;
+	}
+}
+gal p17 {
+	int writer_1.state = 0 ;
+	transition t15 [writer_1.state == 0] label "t15" {
+		writer_1.state = 1 ;
+	}
+	transition t71 [writer_1.state == 1] label "t71" {
+		writer_1.state = 0 ;
+	}
+}
+gal p18 {
+	int writer_2.state = 0 ;
+	transition t16 [writer_2.state == 0] label "t16" {
+		writer_2.state = 1 ;
+	}
+	transition t72 [writer_2.state == 1] label "t72" {
+		writer_2.state = 0 ;
+	}
+}
+gal p19 {
+	int writer_3.state = 0 ;
+	transition t17 [writer_3.state == 0] label "t17" {
+		writer_3.state = 1 ;
+	}
+	transition t73 [writer_3.state == 1] label "t73" {
+		writer_3.state = 0 ;
+	}
+}
+gal p20 {
+	int writer_4.state = 0 ;
+	transition t18 [writer_4.state == 0] label "t18" {
+		writer_4.state = 1 ;
+	}
+	transition t74 [writer_4.state == 1] label "t74" {
+		writer_4.state = 0 ;
+	}
+}
+gal p21 {
+	int writer_5.state = 0 ;
+	transition t19 [writer_5.state == 0] label "t19" {
+		writer_5.state = 1 ;
+	}
+	transition t75 [writer_5.state == 1] label "t75" {
+		writer_5.state = 0 ;
+	}
+}
+gal p22 {
+	int writer_6.state = 0 ;
+	transition t20 [writer_6.state == 0] label "t20" {
+		writer_6.state = 1 ;
+	}
+	transition t76 [writer_6.state == 1] label "t76" {
+		writer_6.state = 0 ;
+	}
+}
+gal p23 {
+	int writer_7.state = 0 ;
+	transition t21 [writer_7.state == 0] label "t21" {
+		writer_7.state = 1 ;
+	}
+	transition t77 [writer_7.state == 1] label "t77" {
+		writer_7.state = 0 ;
+	}
+}
+gal p24 {
+	int writer_8.state = 0 ;
+	transition t22 [writer_8.state == 0] label "t22" {
+		writer_8.state = 1 ;
+	}
+	transition t78 [writer_8.state == 1] label "t78" {
+		writer_8.state = 0 ;
+	}
+}
+gal p25 {
+	int writer_9.state = 0 ;
+	transition t23 [writer_9.state == 0] label "t23" {
+		writer_9.state = 1 ;
+	}
+	transition t79 [writer_9.state == 1] label "t79" {
+		writer_9.state = 0 ;
+	}
+}
+gal p26 {
+	int writer_10.state = 0 ;
+	transition t24 [writer_10.state == 0] label "t24" {
+		writer_10.state = 1 ;
+	}
+	transition t80 [writer_10.state == 1] label "t80" {
+		writer_10.state = 0 ;
+	}
+}
+gal p27 {
+	int writer_11.state = 0 ;
+	transition t25 [writer_11.state == 0] label "t25" {
+		writer_11.state = 1 ;
+	}
+	transition t81 [writer_11.state == 1] label "t81" {
+		writer_11.state = 0 ;
+	}
+}
+gal p28 {
+	int writer_12.state = 0 ;
+	transition t26 [writer_12.state == 0] label "t26" {
+		writer_12.state = 1 ;
+	}
+	transition t82 [writer_12.state == 1] label "t82" {
+		writer_12.state = 0 ;
+	}
+}
+gal p29 {
+	int writer_13.state = 0 ;
+	transition t27 [writer_13.state == 0] label "t27" {
+		writer_13.state = 1 ;
+	}
+	transition t83 [writer_13.state == 1] label "t83" {
+		writer_13.state = 0 ;
+	}
+}
+composite reader_writer_3_dve_flat_mod {
+	gal p0 i0 ;
+	gal p1 i1 ;
+	gal p2 i2 ;
+	gal p3 i3 ;
+	gal p4 i4 ;
+	gal p5 i5 ;
+	gal p6 i6 ;
+	gal p7 i7 ;
+	gal p8 i8 ;
+	gal p9 i9 ;
+	gal p10 i10 ;
+	gal p11 i11 ;
+	gal p12 i12 ;
+	gal p13 i13 ;
+	gal p14 i14 ;
+	gal p15 i15 ;
+	gal p16 i16 ;
+	gal p17 i17 ;
+	gal p18 i18 ;
+	gal p19 i19 ;
+	gal p20 i20 ;
+	gal p21 i21 ;
+	gal p22 i22 ;
+	gal p23 i23 ;
+	gal p24 i24 ;
+	gal p25 i25 ;
+	gal p26 i26 ;
+	gal p27 i27 ;
+	gal p28 i28 ;
+	gal p29 i29 ;
+	synchronization t0 label "" {
+		i0."t0" ;
+		i1."t0" ;
+		i2."t0" ;
+	}
+	synchronization t1 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i3."t1" ;
+	}
+	synchronization t2 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i4."t2" ;
+	}
+	synchronization t3 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i5."t3" ;
+	}
+	synchronization t4 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i6."t4" ;
+	}
+	synchronization t5 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i7."t5" ;
+	}
+	synchronization t6 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i8."t6" ;
+	}
+	synchronization t7 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i9."t7" ;
+	}
+	synchronization t8 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i10."t8" ;
+	}
+	synchronization t9 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i11."t9" ;
+	}
+	synchronization t10 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i12."t10" ;
+	}
+	synchronization t11 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i13."t11" ;
+	}
+	synchronization t12 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i14."t12" ;
+	}
+	synchronization t13 label "" {
+		i0."t0" ;
+		i2."t0" ;
+		i15."t13" ;
+	}
+	synchronization t14 label "" {
+		i0."t14" ;
+		i16."t14" ;
+	}
+	synchronization t15 label "" {
+		i0."t14" ;
+		i17."t15" ;
+	}
+	synchronization t16 label "" {
+		i0."t14" ;
+		i18."t16" ;
+	}
+	synchronization t17 label "" {
+		i0."t14" ;
+		i19."t17" ;
+	}
+	synchronization t18 label "" {
+		i0."t14" ;
+		i20."t18" ;
+	}
+	synchronization t19 label "" {
+		i0."t14" ;
+		i21."t19" ;
+	}
+	synchronization t20 label "" {
+		i0."t14" ;
+		i22."t20" ;
+	}
+	synchronization t21 label "" {
+		i0."t14" ;
+		i23."t21" ;
+	}
+	synchronization t22 label "" {
+		i0."t14" ;
+		i24."t22" ;
+	}
+	synchronization t23 label "" {
+		i0."t14" ;
+		i25."t23" ;
+	}
+	synchronization t24 label "" {
+		i0."t14" ;
+		i26."t24" ;
+	}
+	synchronization t25 label "" {
+		i0."t14" ;
+		i27."t25" ;
+	}
+	synchronization t26 label "" {
+		i0."t14" ;
+		i28."t26" ;
+	}
+	synchronization t27 label "" {
+		i0."t14" ;
+		i29."t27" ;
+	}
+	synchronization t28 label "" {
+		i0."t28" ;
+		i1."t0" ;
+		i2."t28" ;
+	}
+	synchronization t29 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i3."t1" ;
+	}
+	synchronization t30 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i4."t2" ;
+	}
+	synchronization t31 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i5."t3" ;
+	}
+	synchronization t32 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i6."t4" ;
+	}
+	synchronization t33 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i7."t5" ;
+	}
+	synchronization t34 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i8."t6" ;
+	}
+	synchronization t35 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i9."t7" ;
+	}
+	synchronization t36 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i10."t8" ;
+	}
+	synchronization t37 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i11."t9" ;
+	}
+	synchronization t38 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i12."t10" ;
+	}
+	synchronization t39 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i13."t11" ;
+	}
+	synchronization t40 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i14."t12" ;
+	}
+	synchronization t41 label "" {
+		i0."t28" ;
+		i2."t28" ;
+		i15."t13" ;
+	}
+	synchronization t42 label "" {
+		i0."t28" ;
+		i1."t42" ;
+		i2."t42" ;
+	}
+	synchronization t43 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i3."t43" ;
+	}
+	synchronization t44 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i4."t44" ;
+	}
+	synchronization t45 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i5."t45" ;
+	}
+	synchronization t46 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i6."t46" ;
+	}
+	synchronization t47 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i7."t47" ;
+	}
+	synchronization t48 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i8."t48" ;
+	}
+	synchronization t49 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i9."t49" ;
+	}
+	synchronization t50 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i10."t50" ;
+	}
+	synchronization t51 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i11."t51" ;
+	}
+	synchronization t52 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i12."t52" ;
+	}
+	synchronization t53 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i13."t53" ;
+	}
+	synchronization t54 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i14."t54" ;
+	}
+	synchronization t55 label "" {
+		i0."t28" ;
+		i2."t42" ;
+		i15."t55" ;
+	}
+	synchronization t56 label "" {
+		i0."t56" ;
+		i1."t42" ;
+		i2."t56" ;
+	}
+	synchronization t57 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i3."t43" ;
+	}
+	synchronization t58 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i4."t44" ;
+	}
+	synchronization t59 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i5."t45" ;
+	}
+	synchronization t60 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i6."t46" ;
+	}
+	synchronization t61 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i7."t47" ;
+	}
+	synchronization t62 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i8."t48" ;
+	}
+	synchronization t63 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i9."t49" ;
+	}
+	synchronization t64 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i10."t50" ;
+	}
+	synchronization t65 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i11."t51" ;
+	}
+	synchronization t66 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i12."t52" ;
+	}
+	synchronization t67 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i13."t53" ;
+	}
+	synchronization t68 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i14."t54" ;
+	}
+	synchronization t69 label "" {
+		i0."t56" ;
+		i2."t56" ;
+		i15."t55" ;
+	}
+	synchronization t70 label "" {
+		i0."t70" ;
+		i16."t70" ;
+	}
+	synchronization t71 label "" {
+		i0."t70" ;
+		i17."t71" ;
+	}
+	synchronization t72 label "" {
+		i0."t70" ;
+		i18."t72" ;
+	}
+	synchronization t73 label "" {
+		i0."t70" ;
+		i19."t73" ;
+	}
+	synchronization t74 label "" {
+		i0."t70" ;
+		i20."t74" ;
+	}
+	synchronization t75 label "" {
+		i0."t70" ;
+		i21."t75" ;
+	}
+	synchronization t76 label "" {
+		i0."t70" ;
+		i22."t76" ;
+	}
+	synchronization t77 label "" {
+		i0."t70" ;
+		i23."t77" ;
+	}
+	synchronization t78 label "" {
+		i0."t70" ;
+		i24."t78" ;
+	}
+	synchronization t79 label "" {
+		i0."t70" ;
+		i25."t79" ;
+	}
+	synchronization t80 label "" {
+		i0."t70" ;
+		i26."t80" ;
+	}
+	synchronization t81 label "" {
+		i0."t70" ;
+		i27."t81" ;
+	}
+	synchronization t82 label "" {
+		i0."t70" ;
+		i28."t82" ;
+	}
+	synchronization t83 label "" {
+		i0."t70" ;
+		i29."t83" ;
+	}
+	synchronization t84 label "" {
+		i0."t84" ;
+		i16."t70" ;
+	}
+	synchronization t85 label "" {
+		i0."t84" ;
+		i17."t71" ;
+	}
+	synchronization t86 label "" {
+		i0."t84" ;
+		i18."t72" ;
+	}
+	synchronization t87 label "" {
+		i0."t84" ;
+		i19."t73" ;
+	}
+	synchronization t88 label "" {
+		i0."t84" ;
+		i20."t74" ;
+	}
+	synchronization t89 label "" {
+		i0."t84" ;
+		i21."t75" ;
+	}
+	synchronization t90 label "" {
+		i0."t84" ;
+		i22."t76" ;
+	}
+	synchronization t91 label "" {
+		i0."t84" ;
+		i23."t77" ;
+	}
+	synchronization t92 label "" {
+		i0."t84" ;
+		i24."t78" ;
+	}
+	synchronization t93 label "" {
+		i0."t84" ;
+		i25."t79" ;
+	}
+	synchronization t94 label "" {
+		i0."t84" ;
+		i26."t80" ;
+	}
+	synchronization t95 label "" {
+		i0."t84" ;
+		i27."t81" ;
+	}
+	synchronization t96 label "" {
+		i0."t84" ;
+		i28."t82" ;
+	}
+	synchronization t97 label "" {
+		i0."t84" ;
+		i29."t83" ;
+	}
+	synchronization t98 label "" {
+		i0."t98" ;
+		i1."t42" ;
+	}
+	synchronization t99 label "" {
+		i0."t98" ;
+		i3."t43" ;
+	}
+	synchronization t100 label "" {
+		i0."t98" ;
+		i4."t44" ;
+	}
+	synchronization t101 label "" {
+		i0."t98" ;
+		i5."t45" ;
+	}
+	synchronization t102 label "" {
+		i0."t98" ;
+		i6."t46" ;
+	}
+	synchronization t103 label "" {
+		i0."t98" ;
+		i7."t47" ;
+	}
+	synchronization t104 label "" {
+		i0."t98" ;
+		i8."t48" ;
+	}
+	synchronization t105 label "" {
+		i0."t98" ;
+		i9."t49" ;
+	}
+	synchronization t106 label "" {
+		i0."t98" ;
+		i10."t50" ;
+	}
+	synchronization t107 label "" {
+		i0."t98" ;
+		i11."t51" ;
+	}
+	synchronization t108 label "" {
+		i0."t98" ;
+		i12."t52" ;
+	}
+	synchronization t109 label "" {
+		i0."t98" ;
+		i13."t53" ;
+	}
+	synchronization t110 label "" {
+		i0."t98" ;
+		i14."t54" ;
+	}
+	synchronization t111 label "" {
+		i0."t98" ;
+		i15."t55" ;
+	}
+}
+main reader_writer_3_dve_flat_mod ;

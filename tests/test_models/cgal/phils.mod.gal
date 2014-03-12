@@ -1,0 +1,517 @@
+gal p0 {
+	int count = 0 ;
+	transition t0 [count < 7] label "t0" {
+		count = 1 + count ;
+	}
+	transition t1 [true] label "t1" {
+		count = count - 1 ;
+	}
+}
+gal p1 {
+	int phil_0.state = 0 ;
+	transition t0 [phil_0.state == 0] label "t0" {
+		phil_0.state = 1 ;
+	}
+	transition t1 [phil_0.state == 1] label "t1" {
+		phil_0.state = 0 ;
+	}
+	transition t2 [phil_0.state == 1] label "t2" {
+		phil_0.state = 2 ;
+	}
+	transition t3 [phil_0.state == 2] label "t3" {
+		phil_0.state = 3 ;
+	}
+	transition t4 [phil_0.state == 3] label "t4" {
+		phil_0.state = 4 ;
+	}
+	transition t5 [phil_0.state == 4] label "t5" {
+		phil_0.state = 1 ;
+	}
+}
+gal p2 {
+	int fork_0 = 0 ;
+	transition t2 [fork_0 == 0] label "t2" {
+		fork_0 = 1 ;
+	}
+	transition t4 [true] label "t4" {
+		fork_0 = 0 ;
+	}
+}
+gal p3 {
+	int fork_1 = 0 ;
+	transition t3 [fork_1 == 0] label "t3" {
+		fork_1 = 1 ;
+	}
+	transition t5 [true] label "t5" {
+		fork_1 = 0 ;
+	}
+}
+gal p4 {
+	int phil_1.state = 0 ;
+	transition t6 [phil_1.state == 0] label "t6" {
+		phil_1.state = 1 ;
+	}
+	transition t7 [phil_1.state == 1] label "t7" {
+		phil_1.state = 0 ;
+	}
+	transition t8 [phil_1.state == 1] label "t8" {
+		phil_1.state = 2 ;
+	}
+	transition t9 [phil_1.state == 2] label "t9" {
+		phil_1.state = 3 ;
+	}
+	transition t10 [phil_1.state == 3] label "t10" {
+		phil_1.state = 4 ;
+	}
+	transition t11 [phil_1.state == 4] label "t11" {
+		phil_1.state = 1 ;
+	}
+}
+gal p5 {
+	int fork_2 = 0 ;
+	transition t9 [fork_2 == 0] label "t9" {
+		fork_2 = 1 ;
+	}
+	transition t11 [true] label "t11" {
+		fork_2 = 0 ;
+	}
+}
+gal p6 {
+	int phil_2.state = 0 ;
+	transition t12 [phil_2.state == 0] label "t12" {
+		phil_2.state = 1 ;
+	}
+	transition t13 [phil_2.state == 1] label "t13" {
+		phil_2.state = 0 ;
+	}
+	transition t14 [phil_2.state == 1] label "t14" {
+		phil_2.state = 2 ;
+	}
+	transition t15 [phil_2.state == 2] label "t15" {
+		phil_2.state = 3 ;
+	}
+	transition t16 [phil_2.state == 3] label "t16" {
+		phil_2.state = 4 ;
+	}
+	transition t17 [phil_2.state == 4] label "t17" {
+		phil_2.state = 1 ;
+	}
+}
+gal p7 {
+	int fork_3 = 0 ;
+	transition t15 [fork_3 == 0] label "t15" {
+		fork_3 = 1 ;
+	}
+	transition t17 [true] label "t17" {
+		fork_3 = 0 ;
+	}
+}
+gal p8 {
+	int phil_3.state = 0 ;
+	transition t18 [phil_3.state == 0] label "t18" {
+		phil_3.state = 1 ;
+	}
+	transition t19 [phil_3.state == 1] label "t19" {
+		phil_3.state = 0 ;
+	}
+	transition t20 [phil_3.state == 1] label "t20" {
+		phil_3.state = 2 ;
+	}
+	transition t21 [phil_3.state == 2] label "t21" {
+		phil_3.state = 3 ;
+	}
+	transition t22 [phil_3.state == 3] label "t22" {
+		phil_3.state = 4 ;
+	}
+	transition t23 [phil_3.state == 4] label "t23" {
+		phil_3.state = 1 ;
+	}
+}
+gal p9 {
+	int fork_4 = 0 ;
+	transition t21 [fork_4 == 0] label "t21" {
+		fork_4 = 1 ;
+	}
+	transition t23 [true] label "t23" {
+		fork_4 = 0 ;
+	}
+}
+gal p10 {
+	int phil_4.state = 0 ;
+	transition t24 [phil_4.state == 0] label "t24" {
+		phil_4.state = 1 ;
+	}
+	transition t25 [phil_4.state == 1] label "t25" {
+		phil_4.state = 0 ;
+	}
+	transition t26 [phil_4.state == 1] label "t26" {
+		phil_4.state = 2 ;
+	}
+	transition t27 [phil_4.state == 2] label "t27" {
+		phil_4.state = 3 ;
+	}
+	transition t28 [phil_4.state == 3] label "t28" {
+		phil_4.state = 4 ;
+	}
+	transition t29 [phil_4.state == 4] label "t29" {
+		phil_4.state = 1 ;
+	}
+}
+gal p11 {
+	int fork_5 = 0 ;
+	transition t27 [fork_5 == 0] label "t27" {
+		fork_5 = 1 ;
+	}
+	transition t29 [true] label "t29" {
+		fork_5 = 0 ;
+	}
+}
+gal p12 {
+	int phil_5.state = 0 ;
+	transition t30 [phil_5.state == 0] label "t30" {
+		phil_5.state = 1 ;
+	}
+	transition t31 [phil_5.state == 1] label "t31" {
+		phil_5.state = 0 ;
+	}
+	transition t32 [phil_5.state == 1] label "t32" {
+		phil_5.state = 2 ;
+	}
+	transition t33 [phil_5.state == 2] label "t33" {
+		phil_5.state = 3 ;
+	}
+	transition t34 [phil_5.state == 3] label "t34" {
+		phil_5.state = 4 ;
+	}
+	transition t35 [phil_5.state == 4] label "t35" {
+		phil_5.state = 1 ;
+	}
+}
+gal p13 {
+	int fork_6 = 0 ;
+	transition t33 [fork_6 == 0] label "t33" {
+		fork_6 = 1 ;
+	}
+	transition t35 [true] label "t35" {
+		fork_6 = 0 ;
+	}
+}
+gal p14 {
+	int phil_6.state = 0 ;
+	transition t36 [phil_6.state == 0] label "t36" {
+		phil_6.state = 1 ;
+	}
+	transition t37 [phil_6.state == 1] label "t37" {
+		phil_6.state = 0 ;
+	}
+	transition t38 [phil_6.state == 1] label "t38" {
+		phil_6.state = 2 ;
+	}
+	transition t39 [phil_6.state == 2] label "t39" {
+		phil_6.state = 3 ;
+	}
+	transition t40 [phil_6.state == 3] label "t40" {
+		phil_6.state = 4 ;
+	}
+	transition t41 [phil_6.state == 4] label "t41" {
+		phil_6.state = 1 ;
+	}
+}
+gal p15 {
+	int fork_7 = 0 ;
+	transition t39 [fork_7 == 0] label "t39" {
+		fork_7 = 1 ;
+	}
+	transition t41 [true] label "t41" {
+		fork_7 = 0 ;
+	}
+}
+gal p16 {
+	int phil_7.state = 0 ;
+	transition t42 [phil_7.state == 0] label "t42" {
+		phil_7.state = 1 ;
+	}
+	transition t43 [phil_7.state == 1] label "t43" {
+		phil_7.state = 0 ;
+	}
+	transition t44 [phil_7.state == 1] label "t44" {
+		phil_7.state = 2 ;
+	}
+	transition t45 [phil_7.state == 2] label "t45" {
+		phil_7.state = 3 ;
+	}
+	transition t46 [phil_7.state == 3] label "t46" {
+		phil_7.state = 4 ;
+	}
+	transition t47 [phil_7.state == 4] label "t47" {
+		phil_7.state = 1 ;
+	}
+}
+gal p17 {
+	int fork_8 = 0 ;
+	transition t45 [fork_8 == 0] label "t45" {
+		fork_8 = 1 ;
+	}
+	transition t47 [true] label "t47" {
+		fork_8 = 0 ;
+	}
+}
+gal p18 {
+	int phil_8.state = 0 ;
+	transition t48 [phil_8.state == 0] label "t48" {
+		phil_8.state = 1 ;
+	}
+	transition t49 [phil_8.state == 1] label "t49" {
+		phil_8.state = 0 ;
+	}
+	transition t50 [phil_8.state == 1] label "t50" {
+		phil_8.state = 2 ;
+	}
+	transition t51 [phil_8.state == 2] label "t51" {
+		phil_8.state = 3 ;
+	}
+	transition t52 [phil_8.state == 3] label "t52" {
+		phil_8.state = 4 ;
+	}
+	transition t53 [phil_8.state == 4] label "t53" {
+		phil_8.state = 1 ;
+	}
+}
+composite phils_4_dve_flat_mod {
+	gal p0 i0 ;
+	gal p1 i1 ;
+	gal p2 i2 ;
+	gal p3 i3 ;
+	gal p4 i4 ;
+	gal p5 i5 ;
+	gal p6 i6 ;
+	gal p7 i7 ;
+	gal p8 i8 ;
+	gal p9 i9 ;
+	gal p10 i10 ;
+	gal p11 i11 ;
+	gal p12 i12 ;
+	gal p13 i13 ;
+	gal p14 i14 ;
+	gal p15 i15 ;
+	gal p16 i16 ;
+	gal p17 i17 ;
+	gal p18 i18 ;
+	synchronization t0 label "" {
+		i0."t0" ;
+		i1."t0" ;
+	}
+	synchronization t1 label "" {
+		i0."t1" ;
+		i1."t1" ;
+	}
+	synchronization t2 label "" {
+		i1."t2" ;
+		i2."t2" ;
+	}
+	synchronization t3 label "" {
+		i1."t3" ;
+		i3."t3" ;
+	}
+	synchronization t4 label "" {
+		i1."t4" ;
+		i2."t4" ;
+	}
+	synchronization t5 label "" {
+		i1."t5" ;
+		i3."t5" ;
+	}
+	synchronization t6 label "" {
+		i0."t0" ;
+		i4."t6" ;
+	}
+	synchronization t7 label "" {
+		i0."t1" ;
+		i4."t7" ;
+	}
+	synchronization t8 label "" {
+		i3."t3" ;
+		i4."t8" ;
+	}
+	synchronization t9 label "" {
+		i4."t9" ;
+		i5."t9" ;
+	}
+	synchronization t10 label "" {
+		i3."t5" ;
+		i4."t10" ;
+	}
+	synchronization t11 label "" {
+		i4."t11" ;
+		i5."t11" ;
+	}
+	synchronization t12 label "" {
+		i0."t0" ;
+		i6."t12" ;
+	}
+	synchronization t13 label "" {
+		i0."t1" ;
+		i6."t13" ;
+	}
+	synchronization t14 label "" {
+		i5."t9" ;
+		i6."t14" ;
+	}
+	synchronization t15 label "" {
+		i6."t15" ;
+		i7."t15" ;
+	}
+	synchronization t16 label "" {
+		i5."t11" ;
+		i6."t16" ;
+	}
+	synchronization t17 label "" {
+		i6."t17" ;
+		i7."t17" ;
+	}
+	synchronization t18 label "" {
+		i0."t0" ;
+		i8."t18" ;
+	}
+	synchronization t19 label "" {
+		i0."t1" ;
+		i8."t19" ;
+	}
+	synchronization t20 label "" {
+		i7."t15" ;
+		i8."t20" ;
+	}
+	synchronization t21 label "" {
+		i8."t21" ;
+		i9."t21" ;
+	}
+	synchronization t22 label "" {
+		i7."t17" ;
+		i8."t22" ;
+	}
+	synchronization t23 label "" {
+		i8."t23" ;
+		i9."t23" ;
+	}
+	synchronization t24 label "" {
+		i0."t0" ;
+		i10."t24" ;
+	}
+	synchronization t25 label "" {
+		i0."t1" ;
+		i10."t25" ;
+	}
+	synchronization t26 label "" {
+		i9."t21" ;
+		i10."t26" ;
+	}
+	synchronization t27 label "" {
+		i10."t27" ;
+		i11."t27" ;
+	}
+	synchronization t28 label "" {
+		i9."t23" ;
+		i10."t28" ;
+	}
+	synchronization t29 label "" {
+		i10."t29" ;
+		i11."t29" ;
+	}
+	synchronization t30 label "" {
+		i0."t0" ;
+		i12."t30" ;
+	}
+	synchronization t31 label "" {
+		i0."t1" ;
+		i12."t31" ;
+	}
+	synchronization t32 label "" {
+		i11."t27" ;
+		i12."t32" ;
+	}
+	synchronization t33 label "" {
+		i12."t33" ;
+		i13."t33" ;
+	}
+	synchronization t34 label "" {
+		i11."t29" ;
+		i12."t34" ;
+	}
+	synchronization t35 label "" {
+		i12."t35" ;
+		i13."t35" ;
+	}
+	synchronization t36 label "" {
+		i0."t0" ;
+		i14."t36" ;
+	}
+	synchronization t37 label "" {
+		i0."t1" ;
+		i14."t37" ;
+	}
+	synchronization t38 label "" {
+		i13."t33" ;
+		i14."t38" ;
+	}
+	synchronization t39 label "" {
+		i14."t39" ;
+		i15."t39" ;
+	}
+	synchronization t40 label "" {
+		i13."t35" ;
+		i14."t40" ;
+	}
+	synchronization t41 label "" {
+		i14."t41" ;
+		i15."t41" ;
+	}
+	synchronization t42 label "" {
+		i0."t0" ;
+		i16."t42" ;
+	}
+	synchronization t43 label "" {
+		i0."t1" ;
+		i16."t43" ;
+	}
+	synchronization t44 label "" {
+		i15."t39" ;
+		i16."t44" ;
+	}
+	synchronization t45 label "" {
+		i16."t45" ;
+		i17."t45" ;
+	}
+	synchronization t46 label "" {
+		i15."t41" ;
+		i16."t46" ;
+	}
+	synchronization t47 label "" {
+		i16."t47" ;
+		i17."t47" ;
+	}
+	synchronization t48 label "" {
+		i0."t0" ;
+		i18."t48" ;
+	}
+	synchronization t49 label "" {
+		i0."t1" ;
+		i18."t49" ;
+	}
+	synchronization t50 label "" {
+		i17."t45" ;
+		i18."t50" ;
+	}
+	synchronization t51 label "" {
+		i2."t2" ;
+		i18."t51" ;
+	}
+	synchronization t52 label "" {
+		i17."t47" ;
+		i18."t52" ;
+	}
+	synchronization t53 label "" {
+		i2."t4" ;
+		i18."t53" ;
+	}
+}
+main phils_4_dve_flat_mod ;

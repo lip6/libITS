@@ -1,0 +1,54 @@
+gal p0 {
+	int x = 0 ;
+	int y = 0 ;
+	array [6] a = (0, 1, 2, 3, 4, 5) ;
+	transition t0 [x > 0] label "t0" {
+		a [y * 2 + x] = a [y * 2 + x - 1] ;
+		a [y * 2 + x - 1] = 0 ;
+		x = x - 1 ;
+	}
+	transition t1 [x < 1] label "t1" {
+		a [y * 2 + x] = a [y * 2 + x + 1] ;
+		a [y * 2 + x + 1] = 0 ;
+		x = x + 1 ;
+	}
+	transition t2 [y > 0] label "t2" {
+		a [y * 2 + x] = a [(y - 1) * 2 + x] ;
+		a [(y - 1) * 2 + x] = 0 ;
+		y = y - 1 ;
+	}
+	transition t3 [y < 2] label "t3" {
+		a [y * 2 + x] = a [(y + 1) * 2 + x] ;
+		a [(y + 1) * 2 + x] = 0 ;
+		y = y + 1 ;
+	}
+	transition t4 [a [5] == 0 && a [4] == 1 && a [3] == 2 && a [2] == 3 && a [1] == 4 && a [0] == 5] label "t4" {
+	}
+}
+gal p1 {
+	int Check.state = 0 ;
+	transition t4 [Check.state == 0] label "t4" {
+		Check.state = 1 ;
+	}
+}
+composite loyd_1_dve_flat_mod {
+	gal p0 i0 ;
+	gal p1 i1 ;
+	synchronization t0 label "" {
+		i0."t0" ;
+	}
+	synchronization t1 label "" {
+		i0."t1" ;
+	}
+	synchronization t2 label "" {
+		i0."t2" ;
+	}
+	synchronization t3 label "" {
+		i0."t3" ;
+	}
+	synchronization t4 label "" {
+		i0."t4" ;
+		i1."t4" ;
+	}
+}
+main loyd_1_dve_flat_mod ;

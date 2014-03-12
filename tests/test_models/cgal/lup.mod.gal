@@ -1,0 +1,411 @@
+gal p0 {
+	int lup0.state = 0 ;
+	transition t0 [lup0.state == 0] label "t0" {
+		lup0.state = 0 ;
+	}
+	transition t1 [lup0.state == 0] label "t1" {
+		lup0.state = 2 ;
+	}
+	transition t2 [lup0.state == 0] label "t2" {
+		lup0.state = 1 ;
+	}
+	transition t3 [lup0.state == 1] label "t3" {
+		lup0.state = 1 ;
+	}
+	transition t4 [lup0.state == 1] label "t4" {
+		lup0.state = 2 ;
+	}
+	transition t5 [lup0.state == 2] label "t5" {
+		lup0.state = 3 ;
+	}
+	transition t6 [lup0.state == 3] label "t6" {
+		lup0.state = 4 ;
+	}
+	transition t7 [lup0.state == 4] label "t7" {
+		lup0.state = 5 ;
+	}
+	transition t8 [lup0.state == 5] label "t8" {
+		lup0.state = 5 ;
+	}
+	transition t9 [lup0.state == 5] label "t9" {
+		lup0.state = 0 ;
+	}
+	transition t10 [lup0.state == 5] label "t10" {
+		lup0.state = 2 ;
+	}
+	transition t11 [lup0.state == 5] label "t11" {
+		lup0.state = 1 ;
+	}
+}
+gal p1 {
+	int Timer.time = 0 ;
+	transition t0 [Timer.time == 0] label "t0" {
+		Timer.time = Timer.time + 1 ;
+	}
+	transition t12 [Timer.time == 1] label "t12" {
+		Timer.time = Timer.time + 1 ;
+	}
+	transition t24 [Timer.time == 2] label "t24" {
+		Timer.time = Timer.time + 1 ;
+	}
+	transition t36 [Timer.time == 3] label "t36" {
+		Timer.time = 0 ;
+	}
+}
+gal p2 {
+	int loading = 0 ;
+	transition t1 [! loading == 1] label "t1" {
+		loading = 1 ;
+	}
+	transition t2 [loading == 1] label "t2" {
+	}
+	transition t5 [true] label "t5" {
+		loading = 0 ;
+	}
+}
+gal p3 {
+	int lup1.state = 0 ;
+	transition t12 [lup1.state == 0] label "t12" {
+		lup1.state = 0 ;
+	}
+	transition t13 [lup1.state == 0] label "t13" {
+		lup1.state = 2 ;
+	}
+	transition t14 [lup1.state == 0] label "t14" {
+		lup1.state = 1 ;
+	}
+	transition t15 [lup1.state == 1] label "t15" {
+		lup1.state = 1 ;
+	}
+	transition t16 [lup1.state == 1] label "t16" {
+		lup1.state = 2 ;
+	}
+	transition t17 [lup1.state == 2] label "t17" {
+		lup1.state = 3 ;
+	}
+	transition t18 [lup1.state == 3] label "t18" {
+		lup1.state = 4 ;
+	}
+	transition t19 [lup1.state == 4] label "t19" {
+		lup1.state = 5 ;
+	}
+	transition t20 [lup1.state == 5] label "t20" {
+		lup1.state = 5 ;
+	}
+	transition t21 [lup1.state == 5] label "t21" {
+		lup1.state = 0 ;
+	}
+	transition t22 [lup1.state == 5] label "t22" {
+		lup1.state = 2 ;
+	}
+	transition t23 [lup1.state == 5] label "t23" {
+		lup1.state = 1 ;
+	}
+}
+gal p4 {
+	int lup2.state = 0 ;
+	transition t24 [lup2.state == 0] label "t24" {
+		lup2.state = 0 ;
+	}
+	transition t25 [lup2.state == 0] label "t25" {
+		lup2.state = 2 ;
+	}
+	transition t26 [lup2.state == 0] label "t26" {
+		lup2.state = 1 ;
+	}
+	transition t27 [lup2.state == 1] label "t27" {
+		lup2.state = 1 ;
+	}
+	transition t28 [lup2.state == 1] label "t28" {
+		lup2.state = 2 ;
+	}
+	transition t29 [lup2.state == 2] label "t29" {
+		lup2.state = 3 ;
+	}
+	transition t30 [lup2.state == 3] label "t30" {
+		lup2.state = 4 ;
+	}
+	transition t31 [lup2.state == 4] label "t31" {
+		lup2.state = 5 ;
+	}
+	transition t32 [lup2.state == 5] label "t32" {
+		lup2.state = 5 ;
+	}
+	transition t33 [lup2.state == 5] label "t33" {
+		lup2.state = 0 ;
+	}
+	transition t34 [lup2.state == 5] label "t34" {
+		lup2.state = 2 ;
+	}
+	transition t35 [lup2.state == 5] label "t35" {
+		lup2.state = 1 ;
+	}
+}
+gal p5 {
+	int lup3.state = 0 ;
+	transition t36 [lup3.state == 0] label "t36" {
+		lup3.state = 0 ;
+	}
+	transition t37 [lup3.state == 0] label "t37" {
+		lup3.state = 2 ;
+	}
+	transition t38 [lup3.state == 0] label "t38" {
+		lup3.state = 1 ;
+	}
+	transition t39 [lup3.state == 1] label "t39" {
+		lup3.state = 1 ;
+	}
+	transition t40 [lup3.state == 1] label "t40" {
+		lup3.state = 2 ;
+	}
+	transition t41 [lup3.state == 2] label "t41" {
+		lup3.state = 3 ;
+	}
+	transition t42 [lup3.state == 3] label "t42" {
+		lup3.state = 4 ;
+	}
+	transition t43 [lup3.state == 4] label "t43" {
+		lup3.state = 5 ;
+	}
+	transition t44 [lup3.state == 5] label "t44" {
+		lup3.state = 5 ;
+	}
+	transition t45 [lup3.state == 5] label "t45" {
+		lup3.state = 0 ;
+	}
+	transition t46 [lup3.state == 5] label "t46" {
+		lup3.state = 2 ;
+	}
+	transition t47 [lup3.state == 5] label "t47" {
+		lup3.state = 1 ;
+	}
+}
+composite lup_1_dve_flat_mod {
+	gal p0 i0 ;
+	gal p1 i1 ;
+	gal p2 i2 ;
+	gal p3 i3 ;
+	gal p4 i4 ;
+	gal p5 i5 ;
+	synchronization t0 label "" {
+		i0."t0" ;
+		i1."t0" ;
+	}
+	synchronization t1 label "" {
+		i0."t1" ;
+		i1."t0" ;
+		i2."t1" ;
+	}
+	synchronization t2 label "" {
+		i0."t2" ;
+		i1."t0" ;
+		i2."t2" ;
+	}
+	synchronization t3 label "" {
+		i0."t3" ;
+		i1."t0" ;
+		i2."t2" ;
+	}
+	synchronization t4 label "" {
+		i0."t4" ;
+		i1."t0" ;
+		i2."t1" ;
+	}
+	synchronization t5 label "" {
+		i0."t5" ;
+		i1."t0" ;
+		i2."t5" ;
+	}
+	synchronization t6 label "" {
+		i0."t6" ;
+		i1."t0" ;
+	}
+	synchronization t7 label "" {
+		i0."t7" ;
+		i1."t0" ;
+	}
+	synchronization t8 label "" {
+		i0."t8" ;
+		i1."t0" ;
+	}
+	synchronization t9 label "" {
+		i0."t9" ;
+		i1."t0" ;
+	}
+	synchronization t10 label "" {
+		i0."t10" ;
+		i1."t0" ;
+		i2."t1" ;
+	}
+	synchronization t11 label "" {
+		i0."t11" ;
+		i1."t0" ;
+		i2."t2" ;
+	}
+	synchronization t12 label "" {
+		i1."t12" ;
+		i3."t12" ;
+	}
+	synchronization t13 label "" {
+		i1."t12" ;
+		i2."t1" ;
+		i3."t13" ;
+	}
+	synchronization t14 label "" {
+		i1."t12" ;
+		i2."t2" ;
+		i3."t14" ;
+	}
+	synchronization t15 label "" {
+		i1."t12" ;
+		i2."t2" ;
+		i3."t15" ;
+	}
+	synchronization t16 label "" {
+		i1."t12" ;
+		i2."t1" ;
+		i3."t16" ;
+	}
+	synchronization t17 label "" {
+		i1."t12" ;
+		i2."t5" ;
+		i3."t17" ;
+	}
+	synchronization t18 label "" {
+		i1."t12" ;
+		i3."t18" ;
+	}
+	synchronization t19 label "" {
+		i1."t12" ;
+		i3."t19" ;
+	}
+	synchronization t20 label "" {
+		i1."t12" ;
+		i3."t20" ;
+	}
+	synchronization t21 label "" {
+		i1."t12" ;
+		i3."t21" ;
+	}
+	synchronization t22 label "" {
+		i1."t12" ;
+		i2."t1" ;
+		i3."t22" ;
+	}
+	synchronization t23 label "" {
+		i1."t12" ;
+		i2."t2" ;
+		i3."t23" ;
+	}
+	synchronization t24 label "" {
+		i1."t24" ;
+		i4."t24" ;
+	}
+	synchronization t25 label "" {
+		i1."t24" ;
+		i2."t1" ;
+		i4."t25" ;
+	}
+	synchronization t26 label "" {
+		i1."t24" ;
+		i2."t2" ;
+		i4."t26" ;
+	}
+	synchronization t27 label "" {
+		i1."t24" ;
+		i2."t2" ;
+		i4."t27" ;
+	}
+	synchronization t28 label "" {
+		i1."t24" ;
+		i2."t1" ;
+		i4."t28" ;
+	}
+	synchronization t29 label "" {
+		i1."t24" ;
+		i2."t5" ;
+		i4."t29" ;
+	}
+	synchronization t30 label "" {
+		i1."t24" ;
+		i4."t30" ;
+	}
+	synchronization t31 label "" {
+		i1."t24" ;
+		i4."t31" ;
+	}
+	synchronization t32 label "" {
+		i1."t24" ;
+		i4."t32" ;
+	}
+	synchronization t33 label "" {
+		i1."t24" ;
+		i4."t33" ;
+	}
+	synchronization t34 label "" {
+		i1."t24" ;
+		i2."t1" ;
+		i4."t34" ;
+	}
+	synchronization t35 label "" {
+		i1."t24" ;
+		i2."t2" ;
+		i4."t35" ;
+	}
+	synchronization t36 label "" {
+		i1."t36" ;
+		i5."t36" ;
+	}
+	synchronization t37 label "" {
+		i1."t36" ;
+		i2."t1" ;
+		i5."t37" ;
+	}
+	synchronization t38 label "" {
+		i1."t36" ;
+		i2."t2" ;
+		i5."t38" ;
+	}
+	synchronization t39 label "" {
+		i1."t36" ;
+		i2."t2" ;
+		i5."t39" ;
+	}
+	synchronization t40 label "" {
+		i1."t36" ;
+		i2."t1" ;
+		i5."t40" ;
+	}
+	synchronization t41 label "" {
+		i1."t36" ;
+		i2."t5" ;
+		i5."t41" ;
+	}
+	synchronization t42 label "" {
+		i1."t36" ;
+		i5."t42" ;
+	}
+	synchronization t43 label "" {
+		i1."t36" ;
+		i5."t43" ;
+	}
+	synchronization t44 label "" {
+		i1."t36" ;
+		i5."t44" ;
+	}
+	synchronization t45 label "" {
+		i1."t36" ;
+		i5."t45" ;
+	}
+	synchronization t46 label "" {
+		i1."t36" ;
+		i2."t1" ;
+		i5."t46" ;
+	}
+	synchronization t47 label "" {
+		i1."t36" ;
+		i2."t2" ;
+		i5."t47" ;
+	}
+}
+main lup_1_dve_flat_mod ;
