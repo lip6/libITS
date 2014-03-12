@@ -1,0 +1,10 @@
+exit.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/exit.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/exit.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+exit.1.dve,3.23933e+06,2.23672,0,2,13333,5,156615,6,0,174,118203,0
+ Total reachable state count : 3239334
+

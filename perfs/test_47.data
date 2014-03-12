@@ -1,0 +1,10 @@
+collision.4.dve
+../bin/its-reach -t DVE --quiet -i test_models/collision.4.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/collision.4.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+collision.4.dve,4.14655e+07,0.811307,0,2,1992,5,45667,6,0,219,72840,0
+ Total reachable state count : 41465543
+

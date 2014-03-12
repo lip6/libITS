@@ -1,0 +1,10 @@
+cyclic_scheduler.2.dve
+../bin/its-reach -t DVE --quiet -i test_models/cyclic_scheduler.2.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/cyclic_scheduler.2.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+cyclic\_scheduler.2.dve,3302,0.016017,0,2,127,5,638,6,0,138,431,0
+ Total reachable state count : 3302
+

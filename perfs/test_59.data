@@ -1,0 +1,10 @@
+elevator.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/elevator.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/elevator.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+elevator.1.dve,8543,0.449083,0,2,2665,5,23117,6,0,195,10221,0
+ Total reachable state count : 8543
+

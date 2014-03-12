@@ -1,0 +1,10 @@
+driving_phils.1.dve
+../bin/its-reach -t DVE --quiet -i test_models/driving_phils.1.dve
+
+its-reach command run as :
+
+../bin/its-reach  -t  DVE  --quiet  -i  test_models/driving_phils.1.dve  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+driving\_phils.1.dve,14889,1.47779,0,2,1058,5,10305,6,0,193,6650,0
+ Total reachable state count : 14889
+
