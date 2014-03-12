@@ -313,6 +313,9 @@ int main_noex (int argc, char **argv) {
 
 
 int main (int argc, char **argv) { 
+
+  // Reserve 16K of memory that can be deleted just in case we run out of memory
+  char* _emergencyMemory = new char[16384];
   try {
     return main_noex (argc, argv);
   } catch (const char * ex) {
@@ -321,5 +324,14 @@ int main (int argc, char **argv) {
   } catch (std::string err) {
     std::cerr << "An unexpected exception occurred : " << err << std::endl;
     return 1;
+  } catch(std::bad_alloc ex) {
+    // Delete the reserved memory so we can print an error message before exiting
+    delete[] _emergencyMemory;
+
+    MemoryManager::pstats();
+    cerr << "Out of memory error !";
+    cin.get();
+    exit(1);
   }
+
 }
