@@ -90,3 +90,57 @@ Looking for many traces, frogs example, with CGAL input
 ../bin/its-reach -i test_models/cgal/frogs.gal -t CGAL -reachable 'Check.state==1' -manywitness 5  --quiet
 CGAL input, with several levels of depth
 ../bin/its-reach -i test_models/cgal/PhiloFork.gal -t CGAL --quiet
+CGAL bakery
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/bakery.mod.gal 
+CGAL hanoi ori
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/hanoi_ori.mod.gal      
+GAL hanoi ori
+../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi_ori.gal      
+CGAL bakery
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/szymanski.flat.mod.gal
+CGAL brp
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/brp.mod.gal       
+GAL lamport
+../bin/its-reach -t GAL --quiet -i test_models/gal/lamport.gal        
+CGAL lamport
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/lamport.mod.gal        
+CGAL szymanski
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/szymanski.mod.gal
+CGAL exit
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/exit.mod.gal      
+GAL exit
+../bin/its-reach -t GAL --quiet -i test_models/gal/exit.gal      
+CGAL loyd
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/loyd.mod.gal           
+CGAL test
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/test.mod.gal
+CGAL firewire
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/firewire.mod.gal  
+GAL firewire
+../bin/its-reach -t GAL --quiet -i test_models/gal/firewire.gal  
+CGAL lup
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/lup.mod.gal            
+CGAL train4
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/train4.mod.gal
+GAL fischer
+../bin/its-reach -t GAL --quiet -i test_models/gal/fischer.gal   
+CGAL fischer
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/fischer.mod.gal   
+GAL peterson
+../bin/its-reach -t GAL --quiet -i test_models/gal/peterson.gal       
+CGAL peterson
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/peterson.mod.gal       
+GAL train_gate
+../bin/its-reach -t GAL --quiet -i test_models/gal/train_gate.gal
+CGAL train_gate
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/train_gate.mod.gal
+CGAL frogs
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/frogs.mod.gal     
+CGAL phils
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/phils.mod.gal
+CGAL hanoi
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/hanoi.mod.gal     
+GAL hanoi
+../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi.gal     
+CGAL reader_writer
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/reader_writer.mod.gal
