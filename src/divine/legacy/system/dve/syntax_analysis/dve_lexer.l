@@ -15,7 +15,8 @@
 using namespace divine;
 using std::ostream;
 
-extern dve_position_t dve_yylloc;
+// YYLTYPE dve_yylloc = YYLTYPE();
+#define  YYLTYPE_IS_TRIVIAL 0
 
 //#define YY_DECL int lexer_flex(void)
 

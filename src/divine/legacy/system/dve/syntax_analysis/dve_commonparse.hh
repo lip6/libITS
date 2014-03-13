@@ -17,29 +17,49 @@
 /*!This structure is used in an implementation of parser of DVE files
  * You should not need to use it during an implementation of program
  * based on this library*/
-struct dve_position_t
+ #define YYLTYPE YYLTYPE
+typedef struct YYLTYPE
 {
- int first_line, first_column, last_line, last_column;
- dve_position_t() { reset(); }
- dve_position_t(const dve_position_t &loc): 
-   first_line(loc.first_line), first_column(loc.first_column),
-   last_line(loc.last_line), last_column(loc.last_column) {};
- ~dve_position_t(){ };
- void reset() {
-  first_column = first_line = 1; 
-  last_column = last_line = 1; 
- };
- void lines(int num) {
-  last_column = 1;
-  last_line += num;
- };
- void step() {
-  first_column = last_column;       
-  first_line = last_line;
- };
-};
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
 
-#define YYLTYPE dve_position_t
+  void lines(int num) {
+   last_column = 1;
+   last_line += num;
+  };
+  void step() {
+   first_column = last_column;       
+   first_line = last_line;
+  };
+
+} YYLTYPE;
+
+// struct dve_position_t
+// {
+//   int first_line;
+//   int first_column;
+//   int last_line; 
+//   int last_column;
+//  dve_position_t() { reset(); }
+//  void reset() {
+//    first_column = 1;
+//    first_line = 1; 
+//    last_column = 1;
+//    last_line = 1; 
+//  };
+//  void lines(int num) {
+//   last_column = 1;
+//   last_line += num;
+//  };
+//  void step() {
+//   first_column = last_column;       
+//   first_line = last_line;
+//  };
+// };
+
+// #define YYLTYPE dve_position_t
 
 //!Method called by Bison's parser in case of unrecorvable syntax error
 //! in DVE file

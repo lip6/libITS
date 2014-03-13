@@ -14,13 +14,7 @@
 //  #define yylex lexer_flex
   #define YY_DECL static yyFlexLexer mylexer;
 
-#if defined(__linux)
-  #define YYINITDEPTH 30000
-#endif
-
-#if defined(_WIN32)
   #define YYINITDEPTH 10000
-#endif
 
   #define YYMAXDEPTH 30000
   #ifdef yylex
@@ -51,7 +45,7 @@
                                  ERRTYPE, 34005);
   ERR_c_triplet_t PE_ASSERT("Error in an assertion definition",ERRTYPE,34003);
   
-  static dve_position_t last_loc;
+  static YYLTYPE last_loc=YYLTYPE();
 %}
 
 /* end of C++ declarations */
@@ -81,8 +75,6 @@
 %token T_WIDE_ARROW
 
 /* Syntax switch tokens */
-%token T_PROPERTY
-
 %type <number> TypeName
 %type <number> TypeId
 %type <number> ArrayDecl
@@ -433,7 +425,7 @@ TransitionOpt:
 	;
 
 Guard:
-	/* empty */ { $$ = false }
+	/* empty */ { $$ = false; }
         | T_GUARD { CALL(@1,@1,take_expression()); }
 	  Expression ';' { CALL(@2,@2,trans_guard_expr()); $$ = true; }
 	| T_GUARD error { CALL(@1,@1,take_expression_cancel()) } ';' { $$ = false; }
@@ -614,8 +606,10 @@ void yyerror(const char * msg)
 void divine::dve_init_parsing(dve_parser_t * const pt, error_vector_t * const estack,
                        istream & mystream)
  { parser = pt; pterr = estack; mylexer.yyrestart(&mystream);
-   yylloc.first_line=1; yylloc.first_column=1;
-   yylloc.last_line=1; yylloc.last_column=1;
+   yylloc.first_line = 1; 
+   yylloc.first_column = 1; 
+   yylloc.last_line = 1; 
+   yylloc.last_column = 1;
  }
 
 /* END of definitions of functions provided by parser */
