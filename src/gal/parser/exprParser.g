@@ -108,7 +108,8 @@ specification :
 		) ';'
 ;
 
-composite returns [its::Composite * r] :
+composite returns [its::Composite * r] 
+@init{r=NULL;} :
 	'composite' cname=qualifiedName 
 		{
 		  $r = new its::Composite ( $cname.res ) ;
@@ -190,10 +191,7 @@ arrayDeclaration :
  -------------------------------------------------------------------*/
 
 
-transition 
-@init {
-    its::Assignment* ptrAction = NULL ;
-} : 
+transition : 
   'transition' name=qualifiedName 
   '[' gard=boolOr ']'
   {
@@ -387,7 +385,7 @@ bitxor returns [its::IntExpression ires]
 ;
 
 bit_and returns [its::IntExpression ires]
-@init{its::IntExprType op;}
+@init{its::IntExprType op = its::BITAND;}
 :
   left = bitshift
   {$ires = $left.ires;}
@@ -419,7 +417,7 @@ bitshift returns [its::IntExpression ires]
 ;
 
 addition returns [its::IntExpression ires]
-@init{its::IntExprType op;}
+@init{its::IntExprType op = its::PLUS;}
 :
   left = multiplication
   {$ires = $left.ires;}
@@ -435,7 +433,7 @@ addition returns [its::IntExpression ires]
 ;
 
 multiplication returns [its::IntExpression ires]
-@init{its::IntExprType op;}
+@init{its::IntExprType op = its::MULT;}
 :
   left = unaryMinus
   {$ires = $left.ires;}
@@ -452,7 +450,7 @@ multiplication returns [its::IntExpression ires]
 
 
 unaryMinus returns [its::IntExpression ires] :
-  (sign='-' value=power
+  ('-' value=power
    {$ires = its::IntExpressionFactory::createBinary(
       its::MINUS,
       0,
@@ -561,7 +559,10 @@ initValues returns [std::vector<int> vres] :
     )*
 ;
 
-comparisonOperators returns [its::BoolExprType opres]:
+comparisonOperators returns [its::BoolExprType opres]
+@init{opres= its::EQ;}
+:
+
   '>'
   {$opres = its::GT;}
   |
