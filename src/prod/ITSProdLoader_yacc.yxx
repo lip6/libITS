@@ -225,9 +225,9 @@ marquage	: TOKEN {$$=1;}
 its::PNet * ProdLoader::loadProd(const std::string & filename){
   int i;
   if ((ITSProdin=fopen(filename.c_str(),"r"))==NULL)
-    return false;
+    return NULL;
   R= new PNet(filename);
-  i=(int) yyparse();
+  yyparse();
   fclose(ITSProdin);
   return R;
 }
