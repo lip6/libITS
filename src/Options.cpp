@@ -87,9 +87,10 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
   bool hasJson = false;
   string pathjsonff;
 
+#if defined(ENABLE_DLL) 
   // For use in NDLL case
-  int Nsize = -1;
-
+  // int Nsize = -1;
+#endif
   
 
   std::vector<const char *> argsleft;
