@@ -4,7 +4,7 @@
 #include "FixObserver.hh"
 
 
-#define trace if(verbose) std::cerr
+#define trace if(verbose) std::cout
 //#define trace std::cerr
 
 
@@ -71,7 +71,7 @@ public:
   {
     if (pred (after) != State::null)
     {
-      trace << "SDD computation interrupted after " << n << " fixpoint passes" << std::endl;
+      trace << "Found a reachable state matching predicate : " << pred  << "\nWill report total states built up to this point. Computation was interrupted after " << n << " fixpoint passes" << std::endl;
     }
     else
     {
@@ -85,14 +85,14 @@ public:
   {
     if (pred (State(0,DDD(after))) != State::null)
     {
-      trace << "DDD computation interrupted after " << n << " fixpoint passes" << std::endl;
+      trace << "Found a reachable state matching predicate : " << pred  << "\nWill report total states built up to this point. Computation was interrupted after " << n << " fixpoint passes" << std::endl;
     }
     else
     {
       n = 0;
       max += max;
       interrupted = false;
-      trace << "DDD proceeding with computation, new max is " << max << std::endl;
+      //      trace << "DDD proceeding with computation, new max is " << max << std::endl;
     }
   }
 };
