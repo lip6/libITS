@@ -231,10 +231,12 @@ int main_noex (int argc, char **argv) {
    }
  }
  
-  if (fixobs_passes != 0 && reachExpr != "")
+ // Test that we don't have several props to check, otherwise do not set up interrupt.
+  if (fixobs_passes != 0 && reachExpr != "" && reachFile == "")
   {
     Transition predicate = model.getPredicate(reachExpr);
-    fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate, ! beQuiet));
+    // This observer interrupts computation if the predicate is found
+    fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate, true )); // !beQuiet
   }
  
 	
@@ -291,6 +293,8 @@ int main_noex (int argc, char **argv) {
        model.printPaths(model.getInitialState(), verify, reachable,nbwitness);
      }
      std::cout << std::endl;
+   } else {
+     std::cout << "No reachable states exhibit your property : " << it->getName() <<std::endl;
    }
    
    Statistic Scheck = Statistic(verify, reachExpr , CSV); // can also use LATEX instead of CSV
