@@ -1,4 +1,4 @@
-noinst_PROGRAMS = its-reach 
+noinst_PROGRAMS = its-reach dve2gal
 #gal-test
 
 LIBITS_CPP=-I$(top_srcdir)/src
@@ -38,6 +38,12 @@ its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp
 
 its_reach_LDADD = $(LDADDFLAGS)  
 its_reach_LDFLAGS = -export-dynamic -flto -fwhole-program 
+
+dve2gal_SOURCES = dve2galmain.cpp
+
+dve2gal_LDADD = $(LDADDFLAGS)  
+dve2gal_LDFLAGS = -export-dynamic -flto -fwhole-program 
+
 
 #gal_test_SOURCES = test-gal.cpp 
 # philo.hh philo.cpp
