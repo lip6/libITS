@@ -13,6 +13,7 @@ public:
   
   virtual void visitVarExpr (int) = 0;
   virtual void visitConstExpr (int) = 0;
+  virtual void visitNDefExpr () = 0;
   virtual void visitWrapBoolExpr (const class PBoolExpression &) = 0;
   virtual void visitArrayVarExpr (int, const class PIntExpression &) = 0;
   virtual void visitArrayConstExpr (int, const class PIntExpression &) = 0;
@@ -28,6 +29,7 @@ public:
   virtual void visitBinaryBoolComp (BoolExprType, const class PIntExpression &, const class PIntExpression &) = 0;
   virtual void visitNotBoolExpr (const class PBoolExpression &) = 0;
   virtual void visitBoolConstExpr (bool) = 0;
+  virtual void visitBoolNDefExpr () = 0;  
 };
 
 } // namespace sym

@@ -83,6 +83,7 @@ public :
 
   PBoolExpression eval () const {
     NaryPBoolParamType p ;
+    bool hasNDef = false;
     for (params_it it = begin(); it != end() ; ++it ) {
       PBoolExpression e = it->eval();
       if (e.getType() == BOOLCONST) {
@@ -96,8 +97,14 @@ public :
 	  // XXX || false = XXX
 	  continue;
       } else {
+	if (e.getType() == BOOLNDEF) {
+	  hasNDef = true;
+	}
 	p.insert(e);
       }
+    }
+    if (hasNDef) {
+      return PBoolExpressionFactory::createNDef();
     }
     if (p.empty())
       if (getType() == OR)
@@ -152,6 +159,7 @@ public :
   PBoolExpression setAssertion (const PAssertion & a) const {
     NaryPBoolParamType res ;
     bool isUpd = false;
+    bool isNDef = false;
     for (params_it it = begin() ; it != end()  ; ++it ) {
       PBoolExpression aa = (*it) & a;      
       if (aa.getType() == BOOLCONST) {
@@ -170,7 +178,13 @@ public :
 	if (! (aa == *it)) {
 	  isUpd = true;
 	}
+	if (aa.getType() == BOOLNDEF) {
+	  isNDef = true;
+	}
       }
+    }
+    if (isNDef) {
+      return PBoolExpressionFactory::createNDef();
     }
     if (isUpd)
       return PBoolExpressionFactory::createNary(getType(),res).eval();
@@ -288,6 +302,8 @@ public :
     if (l.getType() == CONST && r.getType() == CONST ) {
       return  PBoolExpressionFactory::createConstant( constEval( l.getValue(),
 								r.getValue()) );
+    } else if (l.getType() == INTNDEF || r.getType() == INTNDEF) {
+      return PBoolExpressionFactory::createNDef();
     } else {
       return  PBoolExpressionFactory::createComparison( getType(), l, r );
     }
@@ -301,6 +317,8 @@ public :
     if (l.getType() == CONST && r.getType() == CONST ) {
       return  PBoolExpressionFactory::createConstant( constEval( l.getValue(),
 								r.getValue()) );
+    } else if (l.getType() == INTNDEF || r.getType() == INTNDEF) {
+      return PBoolExpressionFactory::createNDef();
     }
     return PBoolExpressionFactory::createComparison(getType(),l,r);    
   }
@@ -518,6 +536,9 @@ public :
     PBoolExpression e = exp.eval();
     if (e.getType() == BOOLCONST)
       return  PBoolExpressionFactory::createConstant(! e.getValue());
+    if (e.getType() == BOOLNDEF) {
+      return PBoolExpressionFactory::createNDef();
+    }    
     return  PBoolExpressionFactory::createNot(e);
   }
 
@@ -525,6 +546,9 @@ public :
     PBoolExpression e = exp & a;
     if (e.getType() == BOOLCONST)
       return  PBoolExpressionFactory::createConstant(! e.getValue());
+    if (e.getType() == BOOLNDEF) {
+      return PBoolExpressionFactory::createNDef();
+    }    
 
     return PBoolExpressionFactory::createNot(e);
   }
@@ -647,6 +671,64 @@ public :
 };
 
 
+
+class BoolNDefExpr : public _PBoolExpression {
+
+public :
+  BoolNDefExpr () {}
+  BoolExprType getType() const  { return BOOLNDEF; }
+
+  bool getValue() const { return false;}
+
+  PBoolExpression eval () const {
+    return this;
+  }
+  bool operator==(const _PBoolExpression & e) const {
+    return true;
+  }
+
+  bool operator<(const _PBoolExpression & e) const {
+    return false;
+  }
+
+  virtual _PBoolExpression * clone () const { return new BoolNDefExpr(*this);}
+  PBoolExpression setAssertion (const PAssertion&) const {
+    return this;
+  }
+
+  virtual size_t hash () const {
+    return 103099;
+  }
+  void print (std::ostream & os, const env_t & env) const {
+    os << "BOOLNDEF";
+  }
+
+  bool isSupport (int,int) const {
+    return false;
+  }
+  void getSupport(bool * const ) const {
+    return ;
+  }
+
+  PIntExpression getFirstSubExpr () const {
+    return 0;
+  }
+
+  PIntExpression getSubExprExcept (int , int ) const {
+    return PIntExpressionFactory::wrapBoolExpr(this);
+  }
+
+  PBoolExpression reindexVariables (const PIntExpression::indexes_t & ) const {
+    return this ;
+  }
+
+  void accept (PBoolExprVisitor * v) const {
+    v->visitBoolNDefExpr ();
+  }
+
+};
+
+
 // namespace PBoolExpressionFactory {
 UniqueTable<_PBoolExpression> &  PBoolExpressionFactory::unique () {
   static UniqueTable<_PBoolExpression> unique = UniqueTable<_PBoolExpression>();
@@ -706,8 +788,17 @@ PBoolExpression PBoolExpressionFactory::createConstant (bool b) {
   return unique()(BoolConstExpr(b));
 }
 
+PBoolExpression PBoolExpressionFactory::createNDef () {
+  return unique()(BoolNDefExpr());
+}
+
+
 // a comparison (==,!=,<,>,<=,>=) between two integer expressions
 PBoolExpression PBoolExpressionFactory::createComparison (BoolExprType type, const PIntExpression & l, const PIntExpression & r) {
+  if (l.getType() == INTNDEF || r.getType() == INTNDEF) {
+    return createNDef();
+  }
+
   switch (type) {
   case EQ :
     return unique()(BoolEq (l,r));

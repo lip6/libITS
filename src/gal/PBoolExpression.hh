@@ -22,7 +22,8 @@ typedef enum {
   LT, // <
   GT, // >
   LEQ, // <=
-  GEQ  // >=
+  GEQ,  // >=
+  BOOLNDEF // The undefined boolean expression, resulting from arith exceptions or array index out of bounds
 } BoolExprType ;
 
 
@@ -35,6 +36,7 @@ class PBoolExpression {
   // access to concrete or to allow return "this" from derived boolexpr
   friend class _PBoolExpression;
   friend class BoolConstExpr;
+  friend class BoolNDefExpr;
   friend class PBoolExpressionFactory;
   friend class NaryBoolExpr;
   friend class BinaryBoolComp;
@@ -132,6 +134,9 @@ public :
   static PBoolExpression createNot  (const PBoolExpression & e) ;
   // a boolean constant T or F
   static PBoolExpression createConstant (bool b);
+
+  // An undefined boolean value
+  static PBoolExpression createNDef ();
 
   // a comparison (==,!=,<,>,<=,>=) between two integer expressions
   static PBoolExpression createComparison (BoolExprType type, const PIntExpression & l, const PIntExpression & r) ;

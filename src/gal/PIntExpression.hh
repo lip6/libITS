@@ -27,7 +27,8 @@ typedef enum {
   LSHIFT, // left shift bitwise operator <<
   RSHIFT, // right shift bitwise operator >>
   ARRAY, // access inside an array
-  CONSTARRAY // access to a given cell of an array
+  CONSTARRAY, // access to a given cell of an array
+  INTNDEF // An undefined value, typically obtained by array index out of bounds
 } IntExprType ;
 
 class _PIntExpression ;
@@ -50,6 +51,7 @@ class PIntExpression {
   friend class ArrayVarExpr;
   friend class ArrayConstExpr;
   friend class ConstExpr;
+  friend class NDefExpr;
   friend class NaryIntExpr;
   friend class PIntExpressionFactory;
   friend class BinaryIntExpr;
@@ -166,6 +168,7 @@ public :
   static PIntExpression  createNary (IntExprType type, const NaryPParamType & params) ;
   static PIntExpression  createBinary (IntExprType type, const PIntExpression & l, const PIntExpression & r) ;
   static PIntExpression  createConstant (int v);
+  static PIntExpression  createNDef ();
   static PIntExpression  createVariable (int varIndex) ;
   static PIntExpression  createArrayAccess (int var, const PIntExpression & index) ;
   /// value is 1 if true or 0 otherwise

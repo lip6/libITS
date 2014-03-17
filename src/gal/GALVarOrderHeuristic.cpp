@@ -86,6 +86,8 @@ public:
   // nothing to do
   void visitConstExpr (int) {}
   void visitBoolConstExpr (bool) {}
+  void visitBoolNDefExpr () {}
+  void visitNDefExpr () {}
   
   // recursive call
   void visitWrapBoolExpr (const PBoolExpression & e) { e.accept (this); }
@@ -117,6 +119,7 @@ public:
     r.accept (this);
   }
   void visitNotBoolExpr (const PBoolExpression & e) { e.accept (this); }
+  
   
   // accessor
   const std::set< std::string > & getResult () const { return res; }
@@ -397,6 +400,8 @@ public:
   // nothing to do
   void visitVarExpr (int) {}
   void visitConstExpr (int) {}
+  void visitNDefExpr () {}
+  void visitBoolNDefExpr () {}
   void visitArrayConstExpr (int, const PIntExpression &) {}
   void visitBoolConstExpr (bool) {}
   
@@ -463,6 +468,7 @@ public:
   // nothing to do
   void visitVarExpr (int) {}
   void visitConstExpr (int) {}
+  void visitNDefExpr () {}
   void visitWrapBoolExpr (const class PBoolExpression &) {}
   void visitArrayConstExpr (int, const class PIntExpression &) {}
   void visitNaryIntExpr (IntExprType, const NaryPParamType &) {}

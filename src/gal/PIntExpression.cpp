@@ -16,6 +16,7 @@
 namespace its {
 
 // for return in case of N/A
+
 static NaryPParamType empty_params = NaryPParamType();
 
 // unique storage class
@@ -216,6 +217,62 @@ public :
   }
 };
 
+class NDefExpr : public _PIntExpression {
+
+public :
+  NDefExpr () {}
+  IntExprType getType() const  { return INTNDEF; }
+
+  int getValue() const { return 0; }
+
+  PIntExpression eval () const {
+    return this;
+  }
+
+  bool operator==(const _PIntExpression & e) const {
+    return true;
+  }
+  bool operator< (const _PIntExpression & e) const {
+    return false;
+  }
+
+
+  virtual size_t hash () const {
+    return 102337;
+  }
+
+  _PIntExpression * clone () const { return new NDefExpr(*this); }
+
+  void print (std::ostream & os, const env_t & env) const {
+    os << "NDEF";
+  }
+
+  bool isSupport (int,int) const {
+    return false;
+  }
+  void getSupport(bool * const) const {
+    return;
+  }
+
+  PIntExpression getFirstSubExpr () const {
+    return this;
+  }
+
+  PIntExpression getSubExprExcept (int,int) const {    
+    return this;
+  }
+
+  PIntExpression reindexVariables (const PIntExpression::indexes_t & ) const {
+    return this ;
+  }
+  
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitNDefExpr();
+  }
+};
+
+
+
 
 class WrapBoolExpr : public _PIntExpression {
   PBoolExpression b;
@@ -280,6 +337,9 @@ public :
 	return PIntExpressionFactory::createConstant(0);
       }
     }
+    if (bb.getType() == BOOLNDEF) {
+      return PIntExpressionFactory::createNDef();
+    }
     return PIntExpressionFactory::wrapBoolExpr(bb);
   }
 
@@ -292,6 +352,9 @@ public :
       } else {
 	return PIntExpressionFactory::createConstant(0);
       }
+    }
+    if (bb.getType() == BOOLNDEF) {
+      return PIntExpressionFactory::createNDef();
     }
     return PIntExpressionFactory::wrapBoolExpr(bb);
   }
@@ -540,7 +603,9 @@ public :
       PIntExpression e = it->eval();
       if (e.getType() == CONST) {
 	constant = constEval(constant, e.getValue());
-      } else {
+      } else if (e.getType() == INTNDEF) {
+	  return PIntExpressionFactory::createNDef();
+      } else  {
 	p.insert(e);
       }
     }
@@ -560,6 +625,8 @@ public :
       PIntExpression e = (*it) & a;
       if (e.getType() == CONST) {
 	constant = constEval(constant, e.getValue());
+      } else if (e.getType() == INTNDEF) {
+	  return PIntExpressionFactory::createNDef();
       } else {
 	p.insert(e);
       }
@@ -725,8 +792,10 @@ public :
 
     if (l.getType() == CONST && r.getType() == CONST ) {
       return  PIntExpressionFactory::createConstant( constEval( l.getValue(), r.getValue()) );
-    }    
-
+    }
+    if (l.getType() == INTNDEF || r.getType() == INTNDEF ) {
+      return PIntExpressionFactory::createNDef();
+    }
     PIntExpression e = PIntExpressionFactory::createBinary(getType(),l,r);    
     return a.getValue(e);
   }
@@ -737,6 +806,8 @@ public :
 
     if (l.getType() == CONST && r.getType() == CONST ) {
       return  PIntExpressionFactory::createConstant( constEval( l.getValue(), r.getValue()) );
+    } else if (l.getType() == INTNDEF || r.getType() == INTNDEF ) {
+      return PIntExpressionFactory::createNDef();
     } else {
       return  PIntExpressionFactory::createBinary( getType(), l, r );
     }
@@ -1027,12 +1098,13 @@ void PIntExpressionFactory::pstats () {
 
 PIntExpression PIntExpressionFactory::createNary (IntExprType type, const NaryPParamType & params) {
   NaryPParamType pp;
-
   for (NaryPParamType::const_iterator it = params.begin() ; it != params.end() ; ++it ){
     if ( it->getType() == type ) {
       for (NaryPParamType::const_iterator jt = it->getParams().begin() ; jt != it->getParams().end() ; ++jt ) {
 	pp.insert(*jt);
       }
+    } else if ( it->getType() == INTNDEF ) {
+      return createNDef();
     } else {
       pp.insert(*it);
     }
@@ -1049,6 +1121,10 @@ PIntExpression PIntExpressionFactory::createNary (IntExprType type, const NaryPP
 }
 
 PIntExpression PIntExpressionFactory::createBinary (IntExprType type, const PIntExpression & l, const PIntExpression & r) {
+  if (l.getType() == INTNDEF || r.getType() == INTNDEF ) {
+    return createNDef();
+  }
+
   switch (type) {
   case MINUS :
     return unique()(MinusExpr (l,r));      
@@ -1085,6 +1161,11 @@ PIntExpression PIntExpressionFactory::createConstant (int v) {
   return unique () (ConstExpr(v));
 }
 
+PIntExpression PIntExpressionFactory::createNDef () {
+  return unique () (NDefExpr());
+}
+
+
 PIntExpression PIntExpressionFactory::createVariable (int  v) {
   return unique () (VarExpr(v));
 }
@@ -1092,8 +1173,14 @@ PIntExpression PIntExpressionFactory::createVariable (int  v) {
 PIntExpression PIntExpressionFactory::createArrayAccess (int v, const PIntExpression & index) {
   if (index.getType() != CONST) 
     return unique () (ArrayVarExpr(v,index));
-  else
+  else {
+    int ival = index.getValue();
+    // TODO : how to test for >= SIZE ??
+    if (ival  < 0) {
+      return createNDef();
+    } 
     return unique () (ArrayConstExpr(v,index.getValue()));
+  }
 }
 
 PIntExpression PIntExpressionFactory::wrapBoolExpr (const PBoolExpression &b) {
