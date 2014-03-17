@@ -143,7 +143,8 @@ composite returns [its::Composite * r]
 	'}' 
 ;
 
-system returns [its::GAL* r] :
+system returns [its::GAL* r] 
+@init{r = NULL;} :
   ('gal'|'GAL') name=qualifiedName
   
   {result = new its::GAL ( $name.res );}
@@ -401,7 +402,7 @@ bit_and returns [its::IntExpression ires]
 ;
 
 bitshift returns [its::IntExpression ires]
-@init{its::IntExprType op;}
+@init{its::IntExprType op=its::LSHIFT;}
 :
   left = addition
   {$ires = $left.ires;}
