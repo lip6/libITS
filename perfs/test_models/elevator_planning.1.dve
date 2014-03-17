@@ -9,7 +9,7 @@
 
 byte person[5] = { 0, 1, 2, 3, 4 };
  byte conflictA[5] = {1,0,0,1,1};
- byte conflictB[5] = {0,1,1};
+ byte conflictB[5] = {0,1,1,0,0};
  byte not_alone[5] = {1,1,0,0,0};
 
 
