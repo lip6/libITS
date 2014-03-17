@@ -512,11 +512,17 @@ GHom predicate (const BoolExpression & e, const GalOrder * vo) {
       return GHom::id;
     }
   }
+  if (e.getType() == BOOLNDEF) {
+    return GHom(GDDD::top);
+  }
 
   return _Predicate(e,vo);
 }
   
 GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo) {
+  if (var.getType() == INTNDEF || val.getType() == INTNDEF) {
+    return GHom(GDDD::top);
+  }
   return _Assign(var,val,vo);
 }
 
