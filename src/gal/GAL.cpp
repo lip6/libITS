@@ -82,9 +82,11 @@ namespace its {
       os << endl;
     }
 
-    os << "  // transient predicate " << endl ;
-    os << "TRANSIENT = " << gal.isTransientState() << ";"  << std::endl;
-
+    if (gal.isTransientState().getType() != BOOLCONST) {
+      // True is illegal as a transient predicate.
+      os << "  // transient predicate " << endl ;
+      os << "TRANSIENT = " << gal.isTransientState() << ";"  << std::endl;
+    }
     os << "\n}\n"<<endl;;
     return os;
   }
