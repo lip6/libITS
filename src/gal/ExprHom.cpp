@@ -519,7 +519,8 @@ GHom predicate (const BoolExpression & e, const GalOrder * vo) {
     }
   }
   if (e.getType() == BOOLNDEF) {
-    return GHom::id;
+    //    std::cerr << "Building undefined bool pred " << std::endl;
+    return GHom(GDDD::null);
   }
 
   return _Predicate(e,vo);
@@ -527,6 +528,7 @@ GHom predicate (const BoolExpression & e, const GalOrder * vo) {
   
 GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo) {
   if (var.getType() == INTNDEF || val.getType() == INTNDEF) {
+    //    std::cerr << "Building undefined assign " << std::endl;
     return GHom::id;
   }
   return _Assign(var,val,vo);
