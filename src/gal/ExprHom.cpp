@@ -529,7 +529,7 @@ GHom predicate (const BoolExpression & e, const GalOrder * vo) {
 GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo) {
   if (var.getType() == INTNDEF || val.getType() == INTNDEF) {
     //    std::cerr << "Building undefined assign " << std::endl;
-    return GHom::id;
+    return GHom(GDDD::null);
   }
   return _Assign(var,val,vo);
 }
@@ -856,6 +856,11 @@ public:
 GHom invertExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo, const GDDD & pot) {
   if (var.getType () == CONSTARRAY && ! vo->isValidAddress (IntExpressionFactory::getVar (var.getEnv ()[var.getExpr ().getVariable ()]), var.getValue ()))
     return GDDD::null;
+  if (var.getType() == INTNDEF || val.getType() == INTNDEF) {
+    //    std::cerr << "Building undefined assign " << std::endl;
+    return GHom(GDDD::null);
+  }
+
   return _InvertExpr(var,val,vo,pot);
 }
 
