@@ -149,7 +149,7 @@ public :
   static IntExpression  createBinary (IntExprType type, const IntExpression & l, const IntExpression & r) ;
   static IntExpression  createConstant (int v);
   static IntExpression  createVariable (const Variable & v) ;
-  static IntExpression  createArrayAccess (const Variable & v, const IntExpression & index) ;
+  static IntExpression  createArrayAccess (const Variable & v, const IntExpression & index, int limit) ;
   // More low level version, give an int for the variable index in global names (see getVarIndex)
   // and an int for an array access, -1 means simple var access.
   static IntExpression  createVarAccess (int vindex, int index=-1) ;

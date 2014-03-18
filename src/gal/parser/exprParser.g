@@ -88,6 +88,25 @@ options {
       exit(1) ; 
     }
   }
+
+
+  // Grab the size of the Array in GAL def, supposed to be called after above checkExistence.
+  int getArraySize(std::string str)
+  {
+  	assert (result != NULL);
+    for (its::GAL::arrays_it v = result->arrays_begin() ; 
+                           v != result->arrays_end() ; 
+                           v++) 
+    {
+       if(v->getName() == str)
+       {
+           return v->size();
+       }
+    }
+    return -1;
+  }
+
+
 }
 
 /// This is a hack to get around the ANTLR hiding all "members" inside the .cpp
@@ -541,7 +560,7 @@ arrayVarAccess returns [its::IntExpression ires] :
   {
     its::Variable v ($name.res);
     its::IntExpression _index ($index.ires) ; 
-    $ires = its::IntExpressionFactory::createArrayAccess(v, _index) ;
+    $ires = its::IntExpressionFactory::createArrayAccess(v, _index, getArraySize($name.res)) ;
     
   }
 ;

@@ -111,15 +111,21 @@ namespace dve2GAL {
 	    vname <<".";
 	  }
 	vname << parent_table->get_variable(expr.get_ident_gid())->get_name(); 
-
-	return IntExpressionFactory::createArrayAccess(Variable(vname.str()), convertInt(*expr.left()));
+	for (size_t ii=0; ii < state_creators_count; ++ii) {
+	  if ( expr.get_ident_gid() == state_creators[ii].gid ) 
+	    return IntExpressionFactory::createArrayAccess(Variable(vname.str()), convertInt(*expr.left()), state_creators[ii].array_size);
+	}
+	std::cerr << "Undeclared  array !!" << std::endl;
+	// this will cause failures
+	return IntExpressionFactory::createArrayAccess(Variable(vname.str()), convertInt(*expr.left()),0);
       case T_FOREIGN_SQUARE_BRACKETS:
 	vname << parent_table->get_process(parent_table->get_variable(expr.get_ident_gid())->
 					  get_process_gid())->get_name(); //name of preocess
 	vname<<"->";
 	vname << parent_table->get_variable(expr.get_ident_gid())->get_name();
-	
-	return IntExpressionFactory::createArrayAccess(Variable(vname.str()), convertInt(*expr.left()));
+	// This place is never used ?
+	assert(false);
+	return IntExpressionFactory::createArrayAccess(Variable(vname.str()), convertInt(*expr.left()),0);
 
       case T_PLUS:
     	  return IntExpressionFactory::createBinary ( PLUS , convertInt( *expr.left()), convertInt( *expr.right() ) );
@@ -384,10 +390,17 @@ its::Variable dve2GAL::channel_item ( int i , int x) {
   return Variable ( channel_name( i ) + ".content" + ".x" + wibble::str::fmt( x ));
 }
 
-its::IntExpression  dve2GAL::channel_item_at( int i, const IntExpression & pos, int x ) 
+its::IntExpression  dve2GAL::channel_item_at( int i, int pos, int x ) 
 {
-  return IntExpressionFactory::createArrayAccess(  channel_item( i,x ),   pos );
+  return IntExpressionFactory::createArrayAccess(  channel_item( i,x ),   IntExpressionFactory::createConstant(pos), pos+1 );
 }
+
+  its::IntExpression  dve2GAL::channel_item_at( int i, const its::Variable & pos, int x , int limit) 
+{
+  return IntExpressionFactory::createArrayAccess(  channel_item( i,x ),   pos, limit );
+}
+
+
 
 void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
 {
@@ -401,10 +414,13 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
       int chan = et->first->get_channel_gid();
       if(et->first->get_sync_mode() == SYNC_EXCLAIM_BUFFER)
         {
+	  dve_symbol_t * symbol = get_symbol_table()->get_channel(chan);
+	  size_int_t chan_size = symbol->get_channel_buffer_size();
+
 	  // When sending message, the set expr_list assigns to each field of the struct in channel, in order
 	  for(size_int_t s = 0;s < et->first->get_sync_expr_list_size();s++)
             {
-	      ga.getAction().add( Assignment ( channel_item_at( chan, channel_items( chan ), s ),
+	      ga.getAction().add( Assignment ( channel_item_at( chan, channel_items( chan ), s, chan_size ),
 				    convertInt( *et->first->get_sync_expr_list_item( s ) ) ));
             }
 	  // Add 1 to channel size

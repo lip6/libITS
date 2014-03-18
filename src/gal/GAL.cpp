@@ -48,7 +48,7 @@ namespace its {
 
   ArrayDeclaration::ArrayDeclaration (Label name, size_t size) : name_(name), size_(size) {
       for (size_t i=0; i < size; ++i){
-	vars_.push_back( IntExpressionFactory::createArrayAccess( name, i).eval().getName() );
+	vars_.push_back( IntExpressionFactory::createArrayAccess( name, i, size).eval().getName() );
       }
   }
 

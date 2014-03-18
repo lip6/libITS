@@ -238,7 +238,10 @@ namespace its {
 	  return GDDD::null; 
 	}
       else if( d== GDDD::top)
-	{ return GDDD::top; }
+	{ 
+	  std::cerr << " assign hit Top" << std::endl;
+	  return GDDD::top; 
+	}
       else
 	{
 	  int vr = d.variable();
@@ -412,7 +415,10 @@ public:
 	return GDDD::null; 
       }
     else if( d== GDDD::top)
-      { return GDDD::top; }
+      { 	  
+	std::cerr << "Predicate hit Top" << std::endl;
+	return GDDD::top; 
+      }
     else
       {
 	// current variable 
@@ -513,7 +519,7 @@ GHom predicate (const BoolExpression & e, const GalOrder * vo) {
     }
   }
   if (e.getType() == BOOLNDEF) {
-    return GHom(GDDD::top);
+    return GHom::id;
   }
 
   return _Predicate(e,vo);
@@ -521,7 +527,7 @@ GHom predicate (const BoolExpression & e, const GalOrder * vo) {
   
 GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo) {
   if (var.getType() == INTNDEF || val.getType() == INTNDEF) {
-    return GHom(GDDD::top);
+    return GHom::id;
   }
   return _Assign(var,val,vo);
 }
@@ -603,7 +609,10 @@ public:
 	  return GDDD::null; 
 	}
       else if( d== GDDD::top)
-	{ return GDDD::top; }
+	{ 
+	  std::cerr << " assign hit Top" << std::endl;
+	  return GDDD::top; 
+	}
       else
 	{
 	  int vr = d.variable();

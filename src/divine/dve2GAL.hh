@@ -99,7 +99,8 @@ struct dve2GAL: public divine::dve_explicit_system_t
   its::Variable channel_item ( int i , int x) ;
 
   // An access to a channel item; i is channel index, pos is position of msg in channel, x is field id of struct in channel.
-  its::IntExpression  channel_item_at( int i, const its::IntExpression & pos, int x ) ;
+  its::IntExpression  channel_item_at( int i, int pos, int x ) ;
+  its::IntExpression  channel_item_at( int i, const its::Variable & v, int x , int limit) ;
 // {
 //         return state + "." + channel_name( i ) + ".content[" + pos + "].x" + wibble::str::fmt( x );
 //     }

@@ -360,7 +360,7 @@ IntExpression IntExpressionFactory::createVariable (const Variable & v) {
   
   IntExpression res = createConstant (0);
   if (v.getArrayName() != v.getName()) {
-    res = createArrayAccess(v.getArrayName(), v.getIndex());
+    res = createArrayAccess(v.getArrayName(), v.getIndex(), v.getIndex()+1);
   } else {
     int vari = getVarIndex (v.getName ());
     res = createUnique (_IntExpression(PIntExpressionFactory::createVariable(0),env_t(1,vari)));
@@ -370,7 +370,7 @@ IntExpression IntExpressionFactory::createVariable (const Variable & v) {
 }
 
 
-IntExpression IntExpressionFactory::createArrayAccess (const Variable & v, const IntExpression & index) {
+  IntExpression IntExpressionFactory::createArrayAccess (const Variable & v, const IntExpression & index, int limit) {
   IntExpression var = createVariable (v);
 
   // build the union of both envs, sorted on var names
@@ -380,7 +380,7 @@ IntExpression IntExpressionFactory::createArrayAccess (const Variable & v, const
   
   // now that the alphabets are compatible, build a parametric expression
   // e.g.   res = Add(Var(x0), Var(x1))
-  PIntExpression res = PIntExpressionFactory::createArrayAccess (normalize<IntExpression,PIntExpression>(var,unione).getVariable(),  normalize<IntExpression,PIntExpression>(index,unione)) ;
+  PIntExpression res = PIntExpressionFactory::createArrayAccess (normalize<IntExpression,PIntExpression>(var,unione).getVariable(),  normalize<IntExpression,PIntExpression>(index,unione), limit) ;
 
 
   return createUnique(_IntExpression(res, unione));

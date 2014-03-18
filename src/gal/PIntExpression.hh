@@ -170,7 +170,7 @@ public :
   static PIntExpression  createConstant (int v);
   static PIntExpression  createNDef ();
   static PIntExpression  createVariable (int varIndex) ;
-  static PIntExpression  createArrayAccess (int var, const PIntExpression & index) ;
+  static PIntExpression  createArrayAccess (int var, const PIntExpression & index, int limit) ;
   /// value is 1 if true or 0 otherwise
   static PIntExpression  wrapBoolExpr (const PBoolExpression & b);
 

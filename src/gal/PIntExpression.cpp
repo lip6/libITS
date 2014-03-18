@@ -371,8 +371,9 @@ public :
 class ArrayVarExpr : public _PIntExpression {
   int var;  
   PIntExpression index;
+  int limit;
 public :
-  ArrayVarExpr (int vvar, const PIntExpression & index) : var(vvar), index(index) {};
+  ArrayVarExpr (int vvar, const PIntExpression & index, int llimit) : var(vvar), index(index), limit(llimit) {};
   IntExprType getType() const  { return ARRAY; }
 
   void print (std::ostream & os, const env_t & env) const {
@@ -386,7 +387,7 @@ public :
     if (indeval.equals(index)) {
       return this;
     } else {
-      return PIntExpressionFactory::createArrayAccess (var, indeval);
+      return PIntExpressionFactory::createArrayAccess (var, indeval,limit);
     }
   }
 
@@ -437,11 +438,11 @@ public :
 
   PIntExpression setAssertion (const PAssertion & a) const {
     PIntExpression tmp = index & a;
-    return a.getValue(PIntExpressionFactory::createArrayAccess(var, tmp));
+    return a.getValue(PIntExpressionFactory::createArrayAccess(var, tmp, limit));
   }
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
-    return PIntExpressionFactory::createArrayAccess( newindex[var], index.reindexVariables(newindex));
+    return PIntExpressionFactory::createArrayAccess( newindex[var], index.reindexVariables(newindex),limit);
   }
 
   void accept (class PIntExprVisitor * visitor) const {
@@ -502,7 +503,7 @@ public :
 
 
   PIntExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
-    return PIntExpressionFactory::createArrayAccess(newindex[var],  index);
+    return PIntExpressionFactory::createArrayAccess(newindex[var],  index, index+1);
   }
 
   int getVariable () const {
@@ -1170,13 +1171,13 @@ PIntExpression PIntExpressionFactory::createVariable (int  v) {
   return unique () (VarExpr(v));
 }
 
-PIntExpression PIntExpressionFactory::createArrayAccess (int v, const PIntExpression & index) {
+  PIntExpression PIntExpressionFactory::createArrayAccess (int v, const PIntExpression & index, int limit) {
   if (index.getType() != CONST) 
-    return unique () (ArrayVarExpr(v,index));
+    return unique () (ArrayVarExpr(v,index,limit));
   else {
     int ival = index.getValue();
-    // TODO : how to test for >= SIZE ??
-    if (ival  < 0) {
+    if (ival  < 0 || ival >= limit) {
+      //      std::cerr << "Array index out of bounds : " << ival << " limit=" << limit << std::endl;
       return createNDef();
     } 
     return unique () (ArrayConstExpr(v,index.getValue()));
