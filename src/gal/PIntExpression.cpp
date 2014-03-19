@@ -392,7 +392,7 @@ public :
   }
 
   bool operator==(const _PIntExpression & e) const {
-    return var == ((const ArrayVarExpr &)e).var && (index.equals( ((const ArrayVarExpr &)e).index));
+    return var == ((const ArrayVarExpr &)e).var && limit == ((const ArrayVarExpr &)e).limit  && (index.equals( ((const ArrayVarExpr &)e).index));
   }
 
 
@@ -404,7 +404,7 @@ public :
 
 
   virtual size_t hash () const {
-    return (ddd::wang32_hash(var) * 70019) ^ index.hash();
+    return (ddd::wang32_hash(var) * 70019) ^ (index.hash() + limit);
   }
 
   _PIntExpression * clone () const { return new ArrayVarExpr(*this); }
