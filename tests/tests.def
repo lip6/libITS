@@ -27,7 +27,7 @@ cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet -ssDR 5 
 COLOANE format for ITS (scalar depth shallow)
 cd test_models; ../../bin/its-reach -i votersMain.xml -t ITSXML --quiet -ssDS 5 ; cd ..
 ETF format
-../bin/its-reach -i test_models/peterson.4.dve.etf -t ETF --quiet 
+../bin/its-reach -i test_models/peterson.4.dve.etf -t ETF --quiet
 DVE format, philos
 ../bin/its-reach -i test_models/phils.4.dve -t DVE --quiet
 DVE format, peterson
@@ -78,8 +78,8 @@ GAL format, file : phils.gal
 ../bin/its-reach -i test_models/gal/phils.gal -t GAL --quiet
 GAL format, file : reader_writer.gal
 ../bin/its-reach -i test_models/gal/reader_writer.gal -t GAL --quiet
-DVE format, adding model 
-../bin/its-reach -i test_models/adding.1.5.dve -t DVE --quiet 
+DVE format, adding model
+../bin/its-reach -i test_models/adding.1.5.dve -t DVE --quiet
 DVE format, hanoi my own version (with solution trace)
 ../bin/its-reach -i test_models/hanoi.1.dve -t DVE -reachable 'pos[0]=1&&pos[1]=1&&pos[2]=1&&pos[3]=1&&pos[4]=1&&pos[5]=1&&pos[6]=1&&pos[7]=1'
 GAL format, train example translated from Romeo
@@ -91,56 +91,58 @@ Looking for many traces, frogs example, with CGAL input
 CGAL input, with several levels of depth
 ../bin/its-reach -i test_models/cgal/PhiloFork.gal -t CGAL --quiet
 CGAL bakery
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/bakery.mod.gal 
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/bakery.mod.gal
 CGAL hanoi ori
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/hanoi_ori.mod.gal      
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/hanoi_ori.mod.gal
 GAL hanoi ori
-../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi_ori.gal      
+../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi_ori.gal
 CGAL bakery
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/szymanski.flat.mod.gal
 CGAL brp
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/brp.mod.gal       
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/brp.mod.gal
 GAL lamport
-../bin/its-reach -t GAL --quiet -i test_models/gal/lamport.gal        
+../bin/its-reach -t GAL --quiet -i test_models/gal/lamport.gal
 CGAL lamport
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/lamport.mod.gal        
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/lamport.mod.gal
 CGAL szymanski
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/szymanski.mod.gal
 CGAL exit
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/exit.mod.gal      
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/exit.mod.gal
 GAL exit
-../bin/its-reach -t GAL --quiet -i test_models/gal/exit.gal      
+../bin/its-reach -t GAL --quiet -i test_models/gal/exit.gal
 CGAL loyd
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/loyd.mod.gal           
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/loyd.mod.gal
 CGAL test
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/test.mod.gal
 CGAL firewire
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/firewire.mod.gal  
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/firewire.mod.gal
 GAL firewire
-../bin/its-reach -t GAL --quiet -i test_models/gal/firewire.gal  
+../bin/its-reach -t GAL --quiet -i test_models/gal/firewire.gal
 CGAL lup
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/lup.mod.gal            
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/lup.mod.gal
 CGAL train4
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/train4.mod.gal
 GAL fischer
-../bin/its-reach -t GAL --quiet -i test_models/gal/fischer.gal   
+../bin/its-reach -t GAL --quiet -i test_models/gal/fischer.gal
 CGAL fischer
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/fischer.mod.gal   
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/fischer.mod.gal
 GAL peterson
-../bin/its-reach -t GAL --quiet -i test_models/gal/peterson.gal       
+../bin/its-reach -t GAL --quiet -i test_models/gal/peterson.gal
 CGAL peterson
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/peterson.mod.gal       
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/peterson.mod.gal
 GAL train_gate
 ../bin/its-reach -t GAL --quiet -i test_models/gal/train_gate.gal
 CGAL train_gate
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/train_gate.mod.gal
 CGAL frogs
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/frogs.mod.gal     
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/frogs.mod.gal
 CGAL phils
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/phils.mod.gal
 CGAL hanoi
-../bin/its-reach -t CGAL --quiet -i test_models/cgal/hanoi.mod.gal     
+../bin/its-reach -t CGAL --quiet -i test_models/cgal/hanoi.mod.gal
 GAL hanoi
-../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi.gal     
+../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi.gal
 CGAL reader_writer
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/reader_writer.mod.gal
+DVE pgm_protocol 2
+../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.2.dve
