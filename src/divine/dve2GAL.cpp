@@ -453,7 +453,7 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
     }  
       //first transition effect
       // Update process state variable
-      if (! procHasSingleState ( et->first->get_process_gid() ))
+      if (! procHasSingleState ( et->first->get_process_gid() ) && et->first->get_state2_lid() !=  et->first->get_state1_lid() )
 	  ga.getAction().add ( Assignment( process_state( et->first->get_process_gid()), et->first->get_state2_lid() ));
       
       // Effects on variables of main process
@@ -465,7 +465,7 @@ void dve2GAL::transition_effect( ext_transition_t *et, its::GuardedAction & ga )
       if(et->synchronized) //second transiton effect
 	{
 	  // Update second process state
-	  if (! procHasSingleState ( et->second->get_process_gid() ))
+	  if (! procHasSingleState ( et->second->get_process_gid() ) && et->second->get_state2_lid() !=  et->second->get_state1_lid() )
 	      ga.getAction().add(Assignment( process_state( et->second->get_process_gid()),
 				       et->second->get_state2_lid() )) ;
 	  // actions of second process
