@@ -582,6 +582,8 @@ void ITSModel::print (std::ostream & os) const  {
   Label ITSModel::declareDVEType (Label path) {
     struct dve2GAL::dve2GAL * loader = new dve2GAL::dve2GAL ();
     std::string modelName = wibble::str::basename(path);
+    std::replace( modelName.begin(), modelName.end(), '-', '_');
+    std::replace( modelName.begin(), modelName.end(), '.', '_');
     loader->setModelName(modelName);
     loader->read( path.c_str() );
     loader->analyse();
