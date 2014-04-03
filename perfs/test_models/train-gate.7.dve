@@ -7,7 +7,7 @@
 
  
 
-byte e[9];
+byte e;
 
 /* simulates clock x*/
 byte x;
