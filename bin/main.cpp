@@ -250,7 +250,7 @@ int main_noex (int argc, char **argv) {
  }
 
  if (reachExpr != "") {
-   props.push_back(Property(reachExpr,reachExpr,false));
+   props.push_back(Property(reachExpr,reachExpr,REACH));
  }
  
  if (props.size() > 0) {
@@ -262,7 +262,7 @@ int main_noex (int argc, char **argv) {
    Transition predicate = model.getPredicate(it->getPred());
    State verify = predicate (reachable);
 
-   if (it->isInvariant()) {
+   if (it->getType() == INVARIANT) {
      if (verify == reachable) {
        std::cout << "Invariant property " << it->getName() << " is true." << std::endl;
      } else {
@@ -271,31 +271,33 @@ int main_noex (int argc, char **argv) {
      }
      // to build a trace.
      verify = reachable - verify;
-   } else {
+   } else if (it->getType() == NEVER) {
      if (verify == State::null) {
        std::cout << "Never property " << it->getName() << " is true." << std::endl;
      } else {
        std::cout << "Never property " << it->getName() << " does not hold." << std::endl;
-       std::cout << "Reachable states that satisfy the never predicate will be exhibited." << std::endl;
+       std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
+     }
+   } else {
+     if (verify != State::null) {
+       std::cout << "Reachability property " << it->getName() << " is true." << std::endl;
+       std::cout << "There are " << verify.nbStates() << " reachable states in which your predicate is true." <<std::endl;
+     } else {
+       std::cout << "No reachable states exhibit your property : " << it->getName() <<std::endl;
      }
    }
    
-   if (verify != State::null) {
-     std::cout << "There are " << verify.nbStates() << " reachable states that exhibit your property : " << it->getName() <<std::endl;
-     
-     if (dowitness) {
-       std::cout << "computing trace..." <<endl;
-       path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
-       model.printPath(path, std::cout,true);
-     }
-     if (nbwitness >= 1) {
-       std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
-       model.printPaths(model.getInitialState(), verify, reachable,nbwitness);
-     }
-     std::cout << std::endl;
-   } else {
-     std::cout << "No reachable states exhibit your property : " << it->getName() <<std::endl;
+ 
+   if (dowitness && verify != State::null) {
+     std::cout << "computing trace..." <<endl;
+     path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
+     model.printPath(path, std::cout,true);
    }
+   if (nbwitness >= 1) {
+     std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
+     model.printPaths(model.getInitialState(), verify, reachable,nbwitness);
+   }
+   std::cout << std::endl;
    
    Statistic Scheck = Statistic(verify, reachExpr , CSV); // can also use LATEX instead of CSV
    cout.precision(6);
