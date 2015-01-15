@@ -5,17 +5,18 @@
 
 namespace its {
 
+  enum PropType { REACH, INVARIANT, NEVER};
 
   class Property {
     vLabel name;
     vLabel predicate;
-    bool isInv;
+    PropType isInv;
   public :
-    Property(Label name, Label predicate, bool isInv) : name(name),predicate(predicate), isInv(isInv) {}
+    Property(Label name, Label predicate, PropType isInv) : name(name),predicate(predicate), isInv(isInv) {}
     
     Label getName () const { return name; }
     Label getPred() const { return predicate; }
-    bool isInvariant() const { return isInv; }
+    PropType getType() const { return isInv; }
 
 
   };
