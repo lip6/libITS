@@ -27,16 +27,31 @@ namespace its {
 			if (sz > 0 && sline[sz-1] == '\n') {
 				sline.erase(sz-1);
 			}
+			if (sline == "")
+			  continue;
 			
 			const char * line = sline.c_str();
 			char name [1024] ;
-			char type;
+			char type [1024];
 			int n;
-			if ( 2 == sscanf(line, "reach %s : %c %n",name, &type, &n) ) {
-				props.push_back(Property(name, line+n , type=='I'));	
-				std::cerr << "Read property : " << name << " with value :" << line+n << std::endl;
+			if ( 2 == sscanf(line, "property %s %s : %n",name, type, &n) ) {
+			  PropType ptype;
+			  if (! strcmp(type,"[never]")) {
+			    ptype = NEVER;
+			  } else if (! strcmp(type,"[reachable]")) {
+			    ptype = REACH;
+			  } else if (! strcmp(type,"[invariant]")) {
+			    ptype = INVARIANT;
+			  } else {
+			    std::cerr << "Unable to read property type " << type << " (skipping this line): " << line << std::endl;
+			    continue;
+			  }
+
+			  props.push_back(Property(name, line+n , ptype));
+	
+			  std::cerr << "Read property : " << name << " with value :" << line+n << std::endl;
 			} else {
-				std::cerr << "Unable to read property (skipping this line): " << line << std::endl;
+			  std::cerr << "Unable to read property (skipping this line): " << line << std::endl;
 			}			
 		}
 		myfile.close();
