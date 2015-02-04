@@ -124,7 +124,7 @@ namespace its
       }
     else
       {
-        std::cerr << "Unrecognized comparison operator : " << comp
+        std::cerr << "Unrecognized comparison operator : " << op
             << " when parsing predicate " << predicate << std::endl;
         std::cerr << "Error is fatal, failing with error code 2" << std::endl;
         exit(2);
