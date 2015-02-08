@@ -43,7 +43,7 @@ gal p0 {
 	}
 }
 composite hanoi_ori_1_dve_flat_mod {
-	gal p0 i0 ;
+	p0 i0 ;
 	synchronization t0 label "" {
 		i0."t0" ;
 	}

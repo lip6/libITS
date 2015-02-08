@@ -438,22 +438,22 @@ gal p15 {
 	}
 }
 composite model_flat_mod {
-	gal p0 i0 ;
-	gal p1 i1 ;
-	gal p2 i2 ;
-	gal p3 i3 ;
-	gal p4 i4 ;
-	gal p5 i5 ;
-	gal p6 i6 ;
-	gal p7 i7 ;
-	gal p8 i8 ;
-	gal p9 i9 ;
-	gal p10 i10 ;
-	gal p11 i11 ;
-	gal p12 i12 ;
-	gal p13 i13 ;
-	gal p14 i14 ;
-	gal p15 i15 ;
+	p0 i0 ;
+	p1 i1 ;
+	p2 i2 ;
+	p3 i3 ;
+	p4 i4 ;
+	p5 i5 ;
+	p6 i6 ;
+	p7 i7 ;
+	p8 i8 ;
+	p9 i9 ;
+	p10 i10 ;
+	p11 i11 ;
+	p12 i12 ;
+	p13 i13 ;
+	p14 i14 ;
+	p15 i15 ;
 	synchronization App0 label "" {
 		i0."App0" ;
 		i4."App0" ;

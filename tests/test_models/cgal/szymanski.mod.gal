@@ -409,10 +409,10 @@ gal p3 {
 	}
 }
 composite szymanski_2_dve_flat_mod {
-	gal p0 i0 ;
-	gal p1 i1 ;
-	gal p2 i2 ;
-	gal p3 i3 ;
+	p0 i0 ;
+	p1 i1 ;
+	p2 i2 ;
+	p3 i3 ;
 	synchronization t0 label "" {
 		i0."t0" ;
 		i3."t0" ;

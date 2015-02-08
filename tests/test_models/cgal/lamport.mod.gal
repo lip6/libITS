@@ -229,11 +229,11 @@ gal p4 {
 	}
 }
 composite lamport_2_dve_flat_mod {
-	gal p0 i0 ;
-	gal p1 i1 ;
-	gal p2 i2 ;
-	gal p3 i3 ;
-	gal p4 i4 ;
+	p0 i0 ;
+	p1 i1 ;
+	p2 i2 ;
+	p3 i3 ;
+	p4 i4 ;
 	synchronization t0 label "" {
 		i0."t0" ;
 		i4."t0" ;

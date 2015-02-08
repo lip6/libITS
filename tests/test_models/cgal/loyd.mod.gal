@@ -32,8 +32,8 @@ gal p1 {
 	}
 }
 composite loyd_1_dve_flat_mod {
-	gal p0 i0 ;
-	gal p1 i1 ;
+	p0 i0 ;
+	p1 i1 ;
 	synchronization t0 label "" {
 		i0."t0" ;
 	}
