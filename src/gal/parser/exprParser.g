@@ -134,12 +134,24 @@ composite returns [its::Composite * r]
 		  $r = new its::Composite ( $cname.res ) ;
 		}
 	'{' 
-		( ('gal'|'composite'|'gmodel') type=qualifiedName instName=qualifiedName  
+		(
+		(  
+		type=qualifiedName instName=qualifiedName  ';'
 		{
 			$r -> addInstance($instName.res , $type.res, *model);
 			$r -> updateStateDef ("init",$instName.res,"init"); 
 		}
-		';' )*
+		
+		) | (
+		type=qualifiedName '[' size=integer ']'  instName=qualifiedName ';'
+		{
+		for (int i=0; i < $size.res ; i++) {
+			$r -> addInstance($instName.res + "["+ to_string(i)+ "]" , $type.res, *model);
+			$r -> updateStateDef ("init",$instName.res + "["+ to_string(i)+ "]" ,"init");
+		}			
+		}
+		)
+		 )*
 		( 
 		'synchronization' name=qualifiedName 'label' label=STRING 
 		{
@@ -155,7 +167,12 @@ composite returns [its::Composite * r]
                   {
 				$r -> addSyncPart ($name.res, "self", toStringTok($slabel));
                     }  
-           )  
+           ) | (
+			instance=qualifiedName '[' index=integer ']' '.' slabel=STRING ';'
+			{
+				$r -> addSyncPart ($name.res, $instance.res + "["+ to_string($index.res) + "]", toStringTok($slabel));
+			}	
+			)
 			)*
 		'}'
 		)*
