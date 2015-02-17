@@ -128,6 +128,7 @@ void usage() {
   cerr << "    --dump-order path : dump the currently used variable order to file designated by path and exit. \n" ;
   cerr<<  "    -d path : specifies the path prefix to construct dot state-space graph" <<endl;
   cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
+  cerr<<  "    -trace XXX : try to replay a trace, XXX is given as a space separated list of transition names, as used in path outputs." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
@@ -185,7 +186,8 @@ int main_noex (int argc, char **argv) {
 
  vLabel reachExpr="";
  vLabel reachFile="";
- 
+ vLabel traceStr = "";
+
  argc = args.size();
  int nbwitness=0;
  for (int i=0;i < argc; i++) {
@@ -226,6 +228,10 @@ int main_noex (int argc, char **argv) {
      if (++i > argc)
      { cerr << "give number of passes in fixpoint after " << args[i-1] << endl; usage(); exit(1); }
      fixobs_passes = atoi(args[i]);
+   } else if (! strcmp(args[i],"-trace") ) {
+     if (++i > argc)
+     { cerr << "give trace after " << args[i-1] << endl; usage(); exit(1); }
+     traceStr = args[i];
    } else {
      cerr << "Error : incorrect Argument : "<<args[i] <<endl ; usage(); return 1;
    }
@@ -239,6 +245,18 @@ int main_noex (int argc, char **argv) {
     fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate, true )); // !beQuiet
   }
  
+  if (traceStr != "") {
+    labels_t path ;
+    stringstream ss (traceStr);
+    vLabel str;
+    while (ss >> str) {
+      path.push_back(str);
+    }
+    
+    model.playPath(path);
+    return 0;
+
+  }
 	
  State reachable = exhibitModel(model);
 
