@@ -75,6 +75,9 @@ private:
   bool stutterOnDeadlock_;
   // GAL var ordering heuristics
   orderHeuristicType orderHeuristic_;
+  // a helper used in multi witness scenario
+  int printWitnesses (const std::list<State> & revcomponents, size_t limit, State init, State toreach) const ;
+
 public:
   // add a type to the type declarations
   // returns false if the type name already exists
@@ -181,7 +184,9 @@ public:
    ** The boolean "withStates" controls if only transitions are shown or states as well 
    **/
   void printPath (const path_t &path, std::ostream & out, bool withStates=false) const;
-
+  /** Replay a trace if possible. Names should be compatible with getNamedtrs.
+   */
+  void playPath (labels_t path) const ;
 
   // semi private function used in Scalar sandboxes
   void cloneType (pType type) { int n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }

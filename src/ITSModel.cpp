@@ -191,6 +191,46 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     return predRel_;
 }
 
+  void ITSModel::playPath (labels_t path) const {
+    State init = getInitialState();
+
+    // Forward construction of witness
+    
+    Type::namedTrs_t namedTrs;
+    getInstance()->getType()->getNamedLocals(namedTrs);
+    
+    /** add elapse if necessary */
+    Transition elapse = getElapse(); 
+    if (elapse != Transition::id) {
+      namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
+    }
+
+    
+    State cur = init;
+    int i=0;
+    for (labels_it pathit = path.begin() ; pathit != path.end() ; ++pathit) {
+      Type::namedTrs_t::const_iterator  transit;
+      for (transit = namedTrs.begin() ; transit != namedTrs.end() ; ++transit) {
+	if (transit->first == *pathit) {
+	  break;
+	}
+      }
+      if (transit == namedTrs.end() ) {
+	std::cerr << "ERROR : Unknown transition " << *pathit << " in path. Please check that transition exists." << std::endl;
+	return;
+      }
+      cur = (transit->second) (cur);
+      if (cur == State::null) {
+	std::cout << "At step " << i << " could not execute transition :" << transit->first <<std::endl;
+	std::cout << "Replay trace mode failed : could not execute transition sequence." <<std::endl;
+	return;
+      }
+      ++i;
+    }
+    std::cout << "Replay trace successfully played your trace. Reached states (10 max shown):" << std::endl;
+    printSomeStates(cur,std::cout,10);
+  }
+
   void ITSModel::printPaths (State init, State toreach, State reach, size_t limit) const {
     
     typedef std::list<State> rev_t;
