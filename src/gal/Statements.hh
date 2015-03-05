@@ -17,7 +17,8 @@ enum StatementType {
     FIXPOINT,
     CHOICE,
     CALL,
-    ABORT
+    ABORT,
+    INCRASSIGN
 };
 
 
@@ -32,6 +33,7 @@ public :
   virtual void visitFix (const class FixStatement & loop)=0; 
   virtual void visitCall (const class Call & call)=0; 
   virtual void visitAbort ()=0; 
+  virtual void visitIncrAssign (const class IncrAssignment & ass)=0; 
 };
 
 
@@ -99,6 +101,51 @@ class Assignment : public Statement {
 
   void acceptVisitor (class StatementVisitor & vis) const {  vis.visitAssign(*this) ; }    
 };
+
+/** 
+ * An IncrAssignment is a basic atomic action that updates a single variable of the GAL 
+ * based on an expression on the current variable states.
+ * e.g. X += Y + ( 2 * Z )
+ * There is no DecrAssign : it is simulated by  x -= e;  <=>  x += -e;
+*/ 
+class IncrAssignment : public Statement {
+  // Note : the lhs should be of type Variable or ArrayAccess, ultimately resolved to a variable.
+  // It is an error if the lhs resolves to a constant value.
+  IntExpression var_;
+  // A contrario, the rhs should evaluate to a constant
+  IntExpression expr_;
+    
+  public :
+  /// Constructor, by reference since IntExpr are by construction unique
+  IncrAssignment (const IntExpression & var, const IntExpression & expr) : var_(var.eval()), expr_(expr.eval()) {}
+  /// Returns the left hand side of the IncrAssignment
+  const IntExpression & getVariable () const { return var_; }
+  /// Returns the right hand side of the IncrAssignment
+  const IntExpression & getExpression () const { return expr_; }
+  /// pretty print
+  void print (std::ostream & os, int ind) const {
+    indent(os,ind);
+    var_.print(os);
+    os <<  " += " ;
+    expr_.print(os);    
+  }
+  
+  /// simplifies the current expression by asserting the value of a variable.
+ // Assignment operator&(const Assertion &) const;
+  /// To get all the variables occuring in the expression
+  std::set<Variable> getSupport() const;
+  /// equality comparison
+  bool operator==(const IncrAssignment &) const;
+  /// ordering (for use with sets and maps)
+  bool operator< (const IncrAssignment &) const;
+
+  StatementType getType() const { return INCRASSIGN; }
+  
+  Statement * clone () const { return new IncrAssignment(*this); }
+
+  void acceptVisitor (class StatementVisitor & vis) const {  vis.visitIncrAssign(*this) ; }    
+};
+
 
 
 /** 
