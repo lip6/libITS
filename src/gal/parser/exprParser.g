@@ -252,14 +252,22 @@ transition :
 
   ;
 
-body returns [its::Sequence seq ] :	
+body returns [its::Sequence seq ] 
+@init{int op=0;}
+:	
 '{'
 (
  // Normal actions (assignments)
  (
-  var=varAccess  '=' val=bit_or ';'
+  var=varAccess  ('=' { op=0 ; } | '+=' { op =1;} | '-=' {op=2;}) val=bit_or ';'
  {
-   $seq.add(its::Assignment($var.ires, $val.ires));
+   if (op==0) {
+              $seq.add(its::Assignment($var.ires, $val.ires));
+   } else if (op==1) { 
+              $seq.add(its::IncrAssignment($var.ires, $val.ires));
+   } else {
+           $seq.add(its::IncrAssignment($var.ires, its::IntExpressionFactory::createBinary(its::MINUS, 0, $val.ires)));
+   }
  }
   )
  |
