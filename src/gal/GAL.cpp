@@ -22,6 +22,25 @@ namespace its {
     return result;
   }
 
+  bool IncrAssignment::operator==(const IncrAssignment &other) const {
+    return var_.equals(other.var_) && expr_.equals(other.expr_);
+  }
+  
+  bool IncrAssignment::operator< (const IncrAssignment &other) const {
+    return var_.equals(other.var_) ? expr_.less(other.expr_) : var_.less(other.var_);
+  }
+  
+
+    
+  std::set<Variable> IncrAssignment::getSupport() const {
+    std::set<Variable> result = var_.getSupport();
+    std::set<Variable> tmp = expr_.getSupport();
+    result.insert( tmp.begin(), tmp.end() );
+    return result;
+  }
+
+
+
   std::set<Variable> GuardedAction::getSupport() const {
     std::set<Variable> result = guard_.getSupport();
     std::set<Variable> tmp = actions_.getSupport();
@@ -54,7 +73,7 @@ namespace its {
 
 
   std::ostream & operator<< ( std::ostream & os, const GAL & gal) {
-    os << "GAL " << gal.getName() << endl;
+    os << "gal " << gal.getName() << endl;
     os << "{" << endl;
 
     os << "  //arrays"<<endl;

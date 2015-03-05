@@ -267,6 +267,17 @@ public :
     res.insert (v1.getResult ().begin (), v1.getResult ().end ());
     res.insert (v2.getResult ().begin (), v2.getResult ().end ());
   } 
+
+  void visitIncrAssign (const class IncrAssignment & ai) {
+    GetVariableVisitor v1 (ai.getVariable ().getEnv ());
+    ai.getVariable ().getExpr ().accept (&v1);
+    GetVariableVisitor v2 (ai.getExpression ().getEnv ());
+    ai.getExpression ().getExpr ().accept (&v2);
+    
+    res.insert (v1.getResult ().begin (), v1.getResult ().end ());
+    res.insert (v2.getResult ().begin (), v2.getResult ().end ());
+  } 
+
   
   void visitSequence (const class Sequence & seq) {
     for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
@@ -558,12 +569,22 @@ public:
   void
   visitAssign (const class Assignment & ai)
   {
+    visitAnyAssign(ai.getVariable(), ai.getExpression());
+  }
+  void
+  visitIncrAssign (const class IncrAssignment & ai)
+  {
+    visitAnyAssign(ai.getVariable(), ai.getExpression());
+  }
+
+  void 
+  visitAnyAssign (const IntExpression & var, const IntExpression & value) 
+  {
     // add the array constraints for the lhs
-    add_query_constraint (c, ai.getVariable (), gal, vtoi);
+    add_query_constraint (c, var, gal, vtoi);
     // add the array constraints for the rhs
-    add_query_constraint (c, ai.getExpression (), gal, vtoi);
+    add_query_constraint (c, value, gal, vtoi);
     
-    IntExpression var = ai.getVariable ();
     // add the assignment constraints
     std::set<std::string> lhs;
     // if var is a variable
@@ -597,8 +618,8 @@ public:
     }
     
     // fill the constraints
-    GetVariableVisitor vv (ai.getExpression ().getEnv ());
-    ai.getExpression ().getExpr ().accept (&vv);
+    GetVariableVisitor vv (value.getEnv ());
+    value.getExpr ().accept (&vv);
     std::set< std::string > rhs = vv.getResult ();
     
     for (std::set< std::string >::const_iterator li = lhs.begin ();

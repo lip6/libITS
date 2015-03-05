@@ -218,8 +218,11 @@ namespace its {
     IntExpression var;
     IntExpression expr;
     const GalOrder * vo;
+    // if true : var += expr
+    // else : var = expr
+    bool isIncrement;
     public:
-    _Assign(const IntExpression & varr, const IntExpression & e, const GalOrder * vo) : var(varr), expr(e), vo(vo) {
+    _Assign(const IntExpression & varr, const IntExpression & e, const GalOrder * vo, bool isIncrement) : var(varr), expr(e), vo(vo), isIncrement(isIncrement) {
       assert(var.getType() == VAR || var.getType() == ARRAY || var.getType() == CONSTARRAY  );
     }
 
@@ -286,7 +289,11 @@ namespace its {
 		// If the RHS is also resolved (to a constant)
 
 //			std::cerr << "solved" << std::endl;
-		res.insert(GDDD(vr, e.getValue(), it->second));
+		if (isIncrement) {
+		  res.insert(GDDD(vr, e.getValue() + vl, it->second));		  
+		} else {
+		  res.insert(GDDD(vr, e.getValue(), it->second));
+		}
 	      } else {
 		
 		// So LHS is resolved, but RHS still needs some work.
@@ -294,7 +301,7 @@ namespace its {
 		// This (current) value may be necessary to solve tab[tab[i]] expressions.
 		InfoNode rhssolved = query (e, vo, GDDD(vr,vl,it->second));
 		for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
-		  res.insert( assignExpr(v, jt->first, vo) ( jt->second ));
+		  res.insert( assignExpr(v, jt->first, vo, isIncrement) ( jt->second ));
 		}
 	      }
 	    
@@ -309,7 +316,7 @@ namespace its {
 		// Note that we also attempt to simplify rhs with the same subexpr result if possible
 		// The recursion works with a more resolved expression
     Assertion ass_tmp = IntExpressionFactory::createAssertion (sub_expr, jt->first);
-		res.insert( assignExpr(v & ass_tmp, e & ass_tmp, vo) ( jt->second ));
+    res.insert( assignExpr(v & ass_tmp, e & ass_tmp, vo, isIncrement) ( jt->second ));
 	      }
 
 	    // The LHS does not concern the current variable
@@ -324,7 +331,7 @@ namespace its {
 	      for (InfoNode_it jt = rhssolved.begin() ; jt != rhssolved.end() ; ++jt ) {
 
 		// The recursion works with a more resolved RHS expression
-    res.insert( assignExpr(v, e & IntExpressionFactory::createAssertion(sub_expr,jt->first), vo) ( jt->second ));
+		res.insert( assignExpr(v, e & IntExpressionFactory::createAssertion(sub_expr,jt->first), vo, isIncrement) ( jt->second ));
 	      }
 
 	    // Pure propagation of simplified expressions
@@ -332,7 +339,7 @@ namespace its {
 	      // Neither lhs nor rhs concern current variable 
 	      // (anymore, they were simplified or skip would have taken effect)
 	      
-	      res.insert(GDDD(vr,vl, assignExpr(v,e,vo) (it->second) ));
+	res.insert(GDDD(vr,vl, assignExpr(v,e,vo,isIncrement) (it->second) ));
 	    }
 
 	  } // end foreach arc of current node
@@ -359,7 +366,11 @@ namespace its {
       //std::cerr << "ERROR : invert not implemented !"<< std::endl;
       // return GHom::id;
       //  TODO
-      return invertExpr (var, expr, vo, potall);
+      if (isIncrement) {
+	return invertExpr (var, var + expr, vo, potall); 
+      } else {
+	return invertExpr (var, expr, vo, potall);
+      }
     }
     
     size_t hash() const {
@@ -369,14 +380,18 @@ namespace its {
     /* Compare */
     bool operator==(const _GHom &h) const {
       if (const _Assign * other = dynamic_cast<const _Assign *> (&h)) {
-	return other->vo == vo && other->var.equals(this->var) && other->expr.equals(expr);
+	return other->vo == vo && isIncrement==other->isIncrement && other->var.equals(this->var) && other->expr.equals(expr) ;
       }
       return false;
     }
 
     void print (std::ostream & os) const {
       os << "Assign(" ;
-      os << var << "=";
+      os << var ;
+      if (isIncrement)
+	os << "+=";
+      else 
+	os << "=";
       expr.print(os);
       os << ")";
     }
@@ -526,13 +541,19 @@ GHom predicate (const BoolExpression & e, const GalOrder * vo) {
   return _Predicate(e,vo);
 }
   
-GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo) {
+  GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo, bool isIncrement) {
   if (var.getType() == INTNDEF || val.getType() == INTNDEF) {
     //    std::cerr << "Building undefined assign " << std::endl;
     return GHom(GDDD::null);
   }
-  return _Assign(var,val,vo);
+  return _Assign(var,val,vo,isIncrement);
 }
+
+/// Increment value of var by amount.
+GHom incrExpr (const IntExpression & var, const IntExpression & expr, const GalOrder * vo) {
+   return assignExpr(var,expr,vo,true);
+}
+
 
 
 

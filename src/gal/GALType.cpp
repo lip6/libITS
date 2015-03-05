@@ -52,11 +52,25 @@ labels_t GALType::getTransLabels () const {
     ~HomBuilder() {} 
     
     void visitAssign (const class Assignment & ass) {
-      if (ass.getVariable().getType() == VAR && ass.getExpression().getType() == CONST)
+      if (ass.getVariable().getType() == VAR && ass.getExpression().getType() == CONST) {
 	res = setVarConst ( context.getVarOrder()->getIndex(ass.getVariable().getName()), ass.getExpression().getValue());
-      else
+      } else if (ass.getVariable().getType() == CONSTARRAY && ass.getExpression().getType() == CONST) {
+	res = setVarConst ( context.getVarOrder()->getIndex(ass.getVariable().getName()), ass.getExpression().getValue());
+      }	else {
 	res =  assignExpr( ass.getVariable(), ass.getExpression(), context.getGalOrder());
+      }
     } 
+
+    void visitIncrAssign (const class IncrAssignment & ass) {
+      if (ass.getVariable().getType() == VAR && ass.getExpression().getType() == CONST) {
+	res = incVar ( context.getVarOrder()->getIndex(ass.getVariable().getName()), ass.getExpression().getValue());
+      } else if (ass.getVariable().getType() == CONSTARRAY && ass.getExpression().getType() == CONST) {
+	res = incVar ( context.getVarOrder()->getIndex(ass.getVariable().getName()), ass.getExpression().getValue());
+      }	else {
+	res =  incrExpr( ass.getVariable(), ass.getExpression(), context.getGalOrder());
+      }
+    } 
+
 
     void visitSequence (const class Sequence & seq) {
       for (Sequence::const_iterator it = seq.begin() ; it != seq.end() ; ++ it) {
