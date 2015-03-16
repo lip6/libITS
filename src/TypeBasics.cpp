@@ -63,14 +63,22 @@ bool TypeBasics::setDefaultState (Label def) {
     // Test for nesting
     if (* pred == '(') {
       // scan ahead for closing paren.
-      char * end = strstr(pred,")");
-      if (end == NULL) {
+      char * end = pred+1 ;
+      for ( int open =1 ; *end ; ++end) {
+	if ( * end == '(') {
+	  ++open;
+	} else if ( *end == ')' ) {
+	  --open;
+	  if (open == 0) break;
+	}
+      }
+      if (*end =='\0') {
 	std::cerr << "Syntax Error : Mismatched paren problem in predicate : " << predicate << std::endl;
 	exit(1);
       } else {
 	*end='\0';
 	Transition nested = getPredicate(pred+1);
-	if (end+1!='\0') {
+	if (*(end+1)!='\0') {
 	  if (strncmp(end+1,"&&",2)) {
 	    return nested & getPredicate(end+3);
 	  } else if (strncmp(end+1,"||",2)) {
