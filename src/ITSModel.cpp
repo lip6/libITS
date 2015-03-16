@@ -503,6 +503,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     }
 
     if (!precise) {
+      std::cout << "Imprecise witness reported."<<std::endl ;
       return path_t(witness,init,toreach);
     }
 
