@@ -60,6 +60,15 @@ bool TypeBasics::setDefaultState (Label def) {
       return Transition::null;
     }
 
+    if (*pred == '!') {
+      if ( * (pred+1) == '(') {
+	return ! getPredicate(pred+1);
+      } else {
+	std::cerr << "Syntax Error : we require not (!) to be followed by a parenthesized expression, e.g. write !(a>=1) instead of !a>=1.\nParsing :" << predicate << std::endl;
+	exit(1);
+      }
+    }
+
     // Test for nesting
     if (* pred == '(') {
       // scan ahead for closing paren.
@@ -79,9 +88,13 @@ bool TypeBasics::setDefaultState (Label def) {
 	*end='\0';
 	Transition nested = getPredicate(pred+1);
 	if (*(end+1)!='\0') {
-	  if (strncmp(end+1,"&&",2)) {
+	  if (! strncmp(end+1,"&&",2)) {
+	    // std::cerr << "parsing predicate :" << predicate << std::endl;
+	    // std::cerr << "Returning  :" << nested  <<  " combine with & getPred:" << end+3 << std::endl;	    
 	    return nested & getPredicate(end+3);
-	  } else if (strncmp(end+1,"||",2)) {
+	  } else if (! strncmp(end+1,"||",2)) {
+	    // std::cerr << "parsing predicate :" << predicate << std::endl;
+	    // std::cerr << "Returning  :" << nested  <<  " combine with + getPred:" << end+3 << std::endl;	    
 	    return nested + getPredicate(end+3);
 	  } else {
 	    std::cerr << "Syntax Error : Expected operator && or || after predicate : (" << pred+1 << ") but encountered unexpected:" << end+1 << std::endl;
@@ -96,17 +109,27 @@ bool TypeBasics::setDefaultState (Label def) {
       char * and_t = strstr(pred,"&&");
       char * or_t = strstr(pred,"||");
       if (! and_t && ! or_t) {
+	// std::cerr << "parsing predicate :" << predicate << std::endl;
+	// std::cerr << "Returning  atomic predicate." << std::endl;	    
+
 	return getAPredicate(predicate);
       } 
       if ( and_t && (! or_t || and_t < or_t)) {
 	*and_t = '\0';
 	Transition left = getPredicate(pred);
+	// std::cerr << "parsing predicate :" << predicate << std::endl;
+	// std::cerr << "Returning  :" << left  <<  " combine with & getPred:" << and_t+2 << std::endl;	    
+
 	return left & getPredicate(and_t+2);
       } else {
 	// so we are sure that :
 	// ( or_t && (! and_t || or_t < and_t)) 
 	*or_t = '\0';
 	Transition left = getPredicate(pred);
+
+	// std::cerr << "parsing predicate :" << predicate << std::endl;
+	// std::cerr << "Returning  :" << left  <<  " combine with + getPred:" << or_t+2 << std::endl;	    
+
 	return left + getPredicate(or_t+2);
       }	
     }
