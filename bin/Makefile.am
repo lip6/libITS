@@ -37,13 +37,14 @@ LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $
 its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp
 
 its_reach_LDADD = $(LDADDFLAGS)  
-its_reach_LDFLAGS = -export-dynamic -flto -fwhole-program 
+its_reach_LDFLAGS =  -flto -fwhole-program -static -all-static
+# -export-dynamic
 
 dve2gal_SOURCES = dve2galmain.cpp
 
 dve2gal_LDADD = $(LDADDFLAGS)  
-dve2gal_LDFLAGS = -export-dynamic -flto -fwhole-program 
-
+dve2gal_LDFLAGS =  -flto -fwhole-program 
+# -export-dynamic
 
 #gal_test_SOURCES = test-gal.cpp 
 # philo.hh philo.cpp
