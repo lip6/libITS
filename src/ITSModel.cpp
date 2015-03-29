@@ -173,6 +173,9 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	reach = reach_envelope;
       }
       Transition rel = getNextRel().invert(reach);
+// 	std::cerr << "Was working with reverse transition :\n" << rel << endl;
+// 	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
+
       bool isExact = ( rel(reach) - reach == State::null );
       if (isExact) {
 	predRel_ = rel;
