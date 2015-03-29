@@ -96,8 +96,10 @@ State exhibitModel (ITSModel & model) {
 //     model.getInstance()->getType()->printState(layer, std::cout);
     std::cout << std::endl;
   }
-  if (!beQuiet && reachable.nbStates() < 10)
-    std::cout << reachable << std::endl;	
+  if (!beQuiet) {
+    std::cout << " Some reachable states : " ;
+    model.printSomeStates(reachable, std::cout, 10);
+  }
   // Print some stats : memory size, number of states ....
   Statistic S = Statistic(reachable, modelName , CSV); // can also use LATEX instead of CSV
   S.print_table(std::cout);
