@@ -1,0 +1,43 @@
+CGAL dhccp protocol test with trace
+../bin/its-reach -i test_models/cgal/cache_l1.gal -t CGAL -reachable-file test_models/cgal/cache_l1.prop --quiet
+
+its-reach command run as :
+
+../bin/its-reach  -i  test_models/cgal/cache_l1.gal  -t  CGAL  -reachable-file  test_models/cgal/cache_l1.prop  --quiet  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+c\_flat,5,0.057496,5156,43,22,259,130,1192,62,484,64,0
+ Total reachable state count : 5
+
+Loading property file test_models/cgal/cache_l1.prop.
+Verifying 1 reachability properties.
+Reachability property success4 is true.
+There are 1 reachable states in which your predicate is true.
+computing trace...
+Imprecise witness reported.
+From initial states :
+[ tester={[ ]
+} chan_L1MCDTREQ={[ ]
+} chan_L1MCCPACK={[ ]
+} chan_MCL1DTACK={[ ]
+} chan_MCL1CPREQ={[ ]
+} c0={[ cstate=3 ]
+} chan_L1PDTACK0={[ ]
+} chan_MCL1CLACK={[ ]
+} chan_PL1DTREQ0={[ ]
+} ]
+This shortest transition sequence of length 4 :
+step_0, step_1, step_2, step_3
+Leads to final states :
+[ tester={[ tstate=4 ]
+} chan_L1MCDTREQ={[ ]
+} chan_L1MCCPACK={[ ]
+} chan_MCL1DTACK={[ ]
+} chan_MCL1CPREQ={[ ]
+} c0={[ v_cache_valid=1 cstate=8 ]
+} chan_L1PDTACK0={[ ]
+} chan_MCL1CLACK={[ ]
+} chan_PL1DTREQ0={[ ]
+} ]
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+,1,0.06507,5164,14,9,259,130,2698,62,1007,73,552
