@@ -144,5 +144,9 @@ GAL hanoi
 ../bin/its-reach -t GAL --quiet -i test_models/gal/hanoi.gal
 CGAL reader_writer
 ../bin/its-reach -t CGAL --quiet -i test_models/cgal/reader_writer.mod.gal
+DVE elevator_planning 1
+../bin/its-reach -t DVE --quiet -i test_models/elevator_planning.1.dve
 DVE pgm_protocol 2
 ../bin/its-reach -t DVE --quiet -i test_models/pgm_protocol.2.dve
+CGAL dhccp protocol test with trace
+../bin/its-reach -i test_models/cgal/cache_l1.gal -t CGAL -reachable-file test_models/cgal/cache_l1.prop --quiet
