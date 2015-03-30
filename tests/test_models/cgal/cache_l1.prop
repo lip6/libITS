@@ -1,0 +1,2 @@
+import  "cache_l1.gal";
+property success4 [reachable] : tester.tstate==4
