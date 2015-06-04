@@ -34,10 +34,11 @@ public:
   , strat_ (s)
   {}
 
-  CLocalityEdge (const DDD & v, orderHeuristicType s)
+  CLocalityEdge (const DDD  & v, orderHeuristicType s)
   : constraint_t ()
   , strat_ (s)
   {
+    // std::cerr << "building constraint for : " << v << std::endl;
     for (DDD::const_iterator it = v.begin() ; it != v.end() ; ++it ) {
       data_.insert(it->first);
     }
@@ -109,12 +110,12 @@ public:
   // a set of supporting variables, designated by index
   typedef DDD support_t;
   // a set of supports
-  typedef d3::set<DDD>::type support_set_t;
+  typedef std::set<DDD> support_set_t;
   // a type to hold mappings from labels to sets of supports
   typedef typename hash_map<vLabel, support_set_t>::type labmap_t;
 
   // a type to hold list of calls
-  typedef d3::set<vLabel>::type calls_t;
+  typedef std::set<vLabel> calls_t;
   // a value type for the result of first pass : for each transition, get an (immediate) support + list of called labels
   typedef std::pair<support_t, calls_t> supp_call_t;
   // a set of these support/call pairs, will be values of our map
@@ -128,24 +129,33 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
 
   // look in labmap first
   labmap_t::accessor res ;
-  bool found = labmap.insert(res, label);
-  if (! found) {
+  bool inserted = labmap.insert(res, label);
+  if (inserted) {
     // we need to build it from the labcallmap
-    
+    std::cerr << "Support for label \""<<label << "\" not found, building it" << std::endl;
+    res->second = support_set_t();
+
     // access the entry, should exist
     labcallmap_t::const_accessor access;
-    labcallmap.find(access, label);
+    bool found = labcallmap.find(access, label);
+    if (!found) {
+      std::cerr << "could not access labcallmap for label \"" << label << "\". Fatal error."<< std::endl;
+      exit(1);
+    }
+    support_set_t restotal;
     // iterate over entries
-    for (supp_call_set_t::const_iterator it = access->second.begin() ; it != access->second.begin() ; ++it) {
+    for (supp_call_set_t::const_iterator it = access->second.begin() ; it != access->second.end() ; ++it) {
       // it points to a pair (support, list of calls)
       // the result is a set of support,
       support_set_t ressupp;
       // initialize with raw support
       ressupp.insert(it->first);
+       if (label == "") std::cerr << "Starting with raw support " << it->first ;
 
       // iterate over called labels
       for (calls_t::const_iterator callit = it->second.begin() ; callit != it->second.end() ; ++callit) {
 
+	std::cerr << " Adding called label \"" << *callit << "\" "<<std::endl;
 	// recursively resolve supports of callees
 	const support_set_t & callsupp = computeSupport(*callit, labcallmap, labmap);
 	
@@ -160,19 +170,39 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
 	// the result after union of callees	
 	ressupp = cross;	
       } // end of treating this called label
-      res->second.insert(ressupp.begin(), ressupp.end());
+      
+      if (label == "") 
+	std::cerr << " got ressup size " << ressupp.size() << std::endl ;
+      // for (support_set_t::const_iterator sit = ressupp.begin() ; sit != ressupp.end() ; ++sit ) {
+      // 	if (label == "") 
+      // 	  std::cerr << *sit << std::endl;
+      // 	if ( res->second.find(*sit) == res->second.end() )
+      // 	  res->second.insert(*sit);
+      // }
+      restotal.insert(ressupp.begin(), ressupp.end());
+      //      res->second.insert(ressupp.begin(), ressupp.end());
 
     } // for entries in labcallmap
-
     
+    res->second = restotal;
+
+    std::cerr << "Final support for label \""<<label << "\" built : " << std::endl;
+    std::cerr << " got result size " << res->second.size() << std::endl ;
+    for (support_set_t::const_iterator sit = restotal.begin() ; sit != restotal.end() ; ++sit ) {
+      std::cerr << *sit << std::endl;
+    }
+    
+
   } // ! found
 
-
+  std::cerr << "Final support for label \""<<label << "\" built : " << std::endl;
+  std::cerr << " got result size " << res->second.size() << std::endl ;
+  for (support_set_t::const_iterator sit = res->second.begin() ; sit != res->second.end() ; ++sit ) {
+    std::cerr << *sit << std::endl;
+  }
+  
   
   return res->second;
-
-
-  
 }
 
 labels_t
@@ -232,12 +262,12 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
     }
     
     // build an edge for this transition by itself
-    CLocalityEdge * e = new CLocalityEdge (suppcall.first, strat);
-    constraints.push_back(e);
+    //    CLocalityEdge * e = new CLocalityEdge (suppcall.first, strat);
+    //    constraints.push_back(e);
 
     // add this pair to labcallmap values
     typename labcallmap_t::accessor access;
-    Label lab = it->getName();
+    Label lab = it->getLabel();
     bool insertion = labcallmap.insert ( access, lab );
     if (insertion) {
       // new key
@@ -253,17 +283,21 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
   for (labcallmap_t::const_iterator access = labcallmap.begin() ; access != labcallmap.end() ; ++access) {
     Label label = access->first;
     // make sure this label is never called locally, hence it is a valid root of the DAG that is the call graph
-    if ( called.find(label) != called.end() ) {
+    if ( called.find(label) == called.end() ) {
+      std::cerr << "Found uncalled label \"" << label << "\"" << std::endl;     
       // we need some recursion and a cache to do the traversal effectively
       // this call auto-limits itself to avoid explosion of number of constraints
       // it read-only accesses labcallmap to build up labmap, also used as a cache
       const support_set_t & supports = computeSupport( label, labcallmap, labmap);
+      
+      std::cerr << " Built " << supports.size() << " constraints for  label \"" << label << "\"" << std::endl;
 
       // iterate over the result and build constraints
+      int i =0;
       for (support_set_t::const_iterator suppit = supports.begin() ; suppit != supports.end() ; ++suppit ) {
+	std::cerr << " entry  "<< i++ << " :"  << *suppit;
 	CLocalityEdge * e = new CLocalityEdge (*suppit, strat);
-	constraints.push_back(e);
-	
+	constraints.push_back(e);	
       }
 
     }
@@ -287,7 +321,8 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
   {
     int_to_var[it->second] = it->first;
   }
-  
+
+  std::cerr << "built " << constraints.size() << " constraints" << std::endl;
   // call the FORCE algorithm
   order_t new_order = force (constraints, init_order);
   
