@@ -83,7 +83,7 @@ public:
         max = i;
       }
     }
-    return max - min;
+    return 2*max - min;
   }
   
   cog_t
@@ -167,7 +167,9 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
 	  }
 	}
 	// the result after union of callees	
-	ressupp = cross;	
+	// ressupp = cross;	
+	// new version : avoid building crossproduct
+	restotal.insert(cross.begin() , cross.end() ) ;
       } // end of treating this called label
       
       // if (label == "") 
@@ -290,7 +292,7 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
       // std::cerr << " Built " << supports.size() << " constraints for  label \"" << label << "\"" << std::endl;
 
       // iterate over the result and build constraints
-      int i =0;
+      // int i =0;
       for (support_set_t::const_iterator suppit = supports.begin() ; suppit != supports.end() ; ++suppit ) {
 	// std::cerr << " entry  "<< i++ << " :"  << *suppit;
 	CLocalityEdge * e = new CLocalityEdge (*suppit, strat);
