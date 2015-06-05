@@ -131,10 +131,8 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
   labmap_t::accessor res ;
   bool exists = labmap.find(res, label);
   if (! exists) {
-    labmap.insert(res,label);
     // we need to build it from the labcallmap
     std::cerr << "Support for label \""<<label << "\" not found, building it" << std::endl;
-    res->second = support_set_t();
 
     // access the entry, should exist
     labcallmap_t::const_accessor access;
@@ -184,7 +182,8 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
       //      res->second.insert(ressupp.begin(), ressupp.end());
 
     } // for entries in labcallmap
-    
+
+    labmap.insert(res,label);
     res->second = restotal;
 
     std::cerr << "Final support for label \""<<label << "\" built : " << std::endl;
