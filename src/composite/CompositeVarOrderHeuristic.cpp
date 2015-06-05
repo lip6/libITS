@@ -129,8 +129,9 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
 
   // look in labmap first
   labmap_t::accessor res ;
-  bool inserted = labmap.insert(res, label);
-  if (inserted) {
+  bool exists = labmap.find(res, label);
+  if (! exists) {
+    labmap.insert(res,label);
     // we need to build it from the labcallmap
     std::cerr << "Support for label \""<<label << "\" not found, building it" << std::endl;
     res->second = support_set_t();
@@ -268,9 +269,10 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
     // add this pair to labcallmap values
     typename labcallmap_t::accessor access;
     Label lab = it->getLabel();
-    bool insertion = labcallmap.insert ( access, lab );
-    if (insertion) {
+    bool found = labcallmap.find ( access, lab );
+    if (! found) {
       // new key
+      labcallmap.insert(access, lab);
       access->second = supp_call_set_t () ;
     }
     access->second.insert(suppcall);
