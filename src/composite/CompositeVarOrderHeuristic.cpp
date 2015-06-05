@@ -132,7 +132,7 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
   bool exists = labmap.find(res, label);
   if (! exists) {
     // we need to build it from the labcallmap
-    std::cerr << "Support for label \""<<label << "\" not found, building it" << std::endl;
+    // std::cerr << "Support for label \""<<label << "\" not found, building it" << std::endl;
 
     // access the entry, should exist
     labcallmap_t::const_accessor access;
@@ -149,12 +149,12 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
       support_set_t ressupp;
       // initialize with raw support
       ressupp.insert(it->first);
-       if (label == "") std::cerr << "Starting with raw support " << it->first ;
+// if (label == "") std::cerr << "Starting with raw support " << it->first ;
 
       // iterate over called labels
       for (calls_t::const_iterator callit = it->second.begin() ; callit != it->second.end() ; ++callit) {
 
-	std::cerr << " Adding called label \"" << *callit << "\" "<<std::endl;
+	// std::cerr << " Adding called label \"" << *callit << "\" "<<std::endl;
 	// recursively resolve supports of callees
 	const support_set_t & callsupp = computeSupport(*callit, labcallmap, labmap);
 	
@@ -170,14 +170,9 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
 	ressupp = cross;	
       } // end of treating this called label
       
-      if (label == "") 
-	std::cerr << " got ressup size " << ressupp.size() << std::endl ;
-      // for (support_set_t::const_iterator sit = ressupp.begin() ; sit != ressupp.end() ; ++sit ) {
-      // 	if (label == "") 
-      // 	  std::cerr << *sit << std::endl;
-      // 	if ( res->second.find(*sit) == res->second.end() )
-      // 	  res->second.insert(*sit);
-      // }
+      // if (label == "") 
+      // 	std::cerr << " got ressup size " << ressupp.size() << std::endl ;
+
       restotal.insert(ressupp.begin(), ressupp.end());
       //      res->second.insert(ressupp.begin(), ressupp.end());
 
@@ -186,20 +181,20 @@ computeSupport ( Label label, const labcallmap_t & labcallmap, labmap_t & labmap
     labmap.insert(res,label);
     res->second = restotal;
 
-    std::cerr << "Final support for label \""<<label << "\" built : " << std::endl;
-    std::cerr << " got result size " << res->second.size() << std::endl ;
-    for (support_set_t::const_iterator sit = restotal.begin() ; sit != restotal.end() ; ++sit ) {
-      std::cerr << *sit << std::endl;
-    }
+    // std::cerr << "Final support for label \""<<label << "\" built : " << std::endl;
+    // std::cerr << " got result size " << res->second.size() << std::endl ;
+    // for (support_set_t::const_iterator sit = restotal.begin() ; sit != restotal.end() ; ++sit ) {
+    //   std::cerr << *sit << std::endl;
+    // }
     
 
   } // ! found
 
-  std::cerr << "Final support for label \""<<label << "\" built : " << std::endl;
-  std::cerr << " got result size " << res->second.size() << std::endl ;
-  for (support_set_t::const_iterator sit = res->second.begin() ; sit != res->second.end() ; ++sit ) {
-    std::cerr << *sit << std::endl;
-  }
+  // std::cerr << "Final support for label \""<<label << "\" built : " << std::endl;
+  // std::cerr << " got result size " << res->second.size() << std::endl ;
+  // for (support_set_t::const_iterator sit = res->second.begin() ; sit != res->second.end() ; ++sit ) {
+  //   std::cerr << *sit << std::endl;
+  // }
   
   
   return res->second;
@@ -285,18 +280,19 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
     Label label = access->first;
     // make sure this label is never called locally, hence it is a valid root of the DAG that is the call graph
     if ( called.find(label) == called.end() ) {
-      std::cerr << "Found uncalled label \"" << label << "\"" << std::endl;     
+      // std::cerr << "Found uncalled label \"" << label << "\"" << std::endl;     
+
       // we need some recursion and a cache to do the traversal effectively
       // this call auto-limits itself to avoid explosion of number of constraints
       // it read-only accesses labcallmap to build up labmap, also used as a cache
       const support_set_t & supports = computeSupport( label, labcallmap, labmap);
       
-      std::cerr << " Built " << supports.size() << " constraints for  label \"" << label << "\"" << std::endl;
+      // std::cerr << " Built " << supports.size() << " constraints for  label \"" << label << "\"" << std::endl;
 
       // iterate over the result and build constraints
       int i =0;
       for (support_set_t::const_iterator suppit = supports.begin() ; suppit != supports.end() ; ++suppit ) {
-	std::cerr << " entry  "<< i++ << " :"  << *suppit;
+	// std::cerr << " entry  "<< i++ << " :"  << *suppit;
 	CLocalityEdge * e = new CLocalityEdge (*suppit, strat);
 	constraints.push_back(e);	
       }
@@ -323,7 +319,7 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
     int_to_var[it->second] = it->first;
   }
 
-  std::cerr << "built " << constraints.size() << " constraints" << std::endl;
+  std::cerr << "built " << constraints.size() << " ordering constraints for composite." << std::endl;
   // call the FORCE algorithm
   order_t new_order = force (constraints, init_order);
   
