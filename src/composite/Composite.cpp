@@ -117,7 +117,7 @@ std::ostream & Composite::print (std::ostream & os) const {
 	  for (comps_it it = comps_.begin();
 	       it != comps_.end() ;
 	       ++it) {
-	    os << "    subnet " << it->getType()->getName() << " " << it->getName() << " ;\n";
+	    os << "    " << it->getType()->getName() << " " << it->getName() << " ;\n";
 	  }
 
 	  os << "    // nested exposed variables \n";
