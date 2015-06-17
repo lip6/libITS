@@ -170,7 +170,11 @@ public:
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition getPredicate (Label predicate) const { return getInstance()->getType()->getPredicate(predicate); }
+  Transition getPredicate (Label predicate) const {     
+    char  pred [predicate.size()+1];
+    strcpy(pred,predicate.c_str());
+    return getInstance()->getType()->getPredicate(pred); 
+  }
   
   /** Returns a shortest witness trace expressed in transition names path.path() leading from a state of path.init() (subset of init) to a state in path.final() (a subset of final). 
    ** if precise is false, the input sets are returned as path init/final (faster). Precise ensures the path actually works on ALL of its init states, otherwise it may work only on some. */

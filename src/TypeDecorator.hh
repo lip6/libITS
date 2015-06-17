@@ -33,7 +33,7 @@ namespace its {
      *  The only constraint is that the character '.' is used as a namespace separator
      *  and should not be used in the concrete predicate syntax.
      *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-    virtual Transition getPredicate (Label predicate) const { return concrete_->getPredicate(predicate); }
+    virtual Transition getPredicate (char* predicate) const { return concrete_->getPredicate(predicate); }
 
 
     /** order */

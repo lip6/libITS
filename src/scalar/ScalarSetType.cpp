@@ -128,7 +128,10 @@ labels_t ScalarSetType::getTransLabels () const {
 //     std::cerr << "When searching instance : "<< value << std::endl;
 //     std::cerr << "In model : "<< *getConcrete() << std::endl;
 
-    return getConcrete()->getPredicate(resolveVariableName(predicate));
+    vLabel var = resolveVariableName(predicate);
+    char buff [var.size()+1];
+    strcpy(buff, var.c_str());
+    return getConcrete()->getPredicate(buff);
   }
 
 

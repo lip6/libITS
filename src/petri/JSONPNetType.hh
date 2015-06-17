@@ -82,7 +82,9 @@ public :
   Transition getAPredicate (Label predicate) const { 
     std::cerr << "This is not yet implemented for nets loaded with JSON hierarchy." << std::endl;
     assert(false);
-    return getConcrete()->getPredicate(predicate); 
+    char buff [predicate.size() +1];
+    strcpy(buff, predicate.c_str());
+    return getConcrete()->getPredicate(buff); 
   }
 
 

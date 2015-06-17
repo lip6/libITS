@@ -50,13 +50,13 @@ bool TypeBasics::setDefaultState (Label def) {
   }
 }
 
-  Transition TypeBasics::getPredicate (Label predicate) const {
-    char  pred [predicate.size()+1];
-    strcpy(pred,predicate.c_str());
+  Transition TypeBasics::getPredicate (char * pred) const {
+    // char  pred [predicate.size()+1];
+    // strcpy(pred,predicate.c_str());
 
-    if (predicate == "true") {
+    if (! strcmp(pred,"true") ) {
       return Transition::id;
-    } else if (predicate == "false") {
+    } else if (! strcmp(pred,"false")) {
       return Transition::null;
     }
 
@@ -64,7 +64,7 @@ bool TypeBasics::setDefaultState (Label def) {
       if ( * (pred+1) == '(') {
 	return ! getPredicate(pred+1);
       } else {
-	std::cerr << "Syntax Error : we require not (!) to be followed by a parenthesized expression, e.g. write !(a>=1) instead of !a>=1.\nParsing :" << predicate << std::endl;
+	std::cerr << "Syntax Error : we require not (!) to be followed by a parenthesized expression, e.g. write !(a>=1) instead of !a>=1.\nParsing :" << pred << std::endl;
 	exit(1);
       }
     }
@@ -82,7 +82,7 @@ bool TypeBasics::setDefaultState (Label def) {
 	}
       }
       if (*end =='\0') {
-	std::cerr << "Syntax Error : Mismatched paren problem in predicate : " << predicate << std::endl;
+	std::cerr << "Syntax Error : Mismatched paren problem in predicate : " << pred << std::endl;
 	exit(1);
       } else {
 	*end='\0';
@@ -112,7 +112,7 @@ bool TypeBasics::setDefaultState (Label def) {
 	// std::cerr << "parsing predicate :" << predicate << std::endl;
 	// std::cerr << "Returning  atomic predicate." << std::endl;	    
 
-	return getAPredicate(predicate);
+	return getAPredicate(pred);
       } 
       if ( and_t && (! or_t || and_t < or_t)) {
 	*and_t = '\0';

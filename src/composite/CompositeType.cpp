@@ -350,7 +350,9 @@ Transition CompositeType::getAPredicate (Label predicate) const {
   int instindex =  getVarOrder()->getIndex (var);
 
   Composite::comps_it instance = findName( var, comp_.comps_begin() , comp_.comps_end() );
-  return skipLocalApply( instance->getType()->getPredicate(remain), instindex);
+  char  buff [remain.size()+ 1];
+  strcpy(buff,remain.c_str());
+  return skipLocalApply( instance->getType()->getPredicate(buff), instindex);
 }
 
   void CompositeType::recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const {
