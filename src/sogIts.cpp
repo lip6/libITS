@@ -36,9 +36,14 @@ its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
     Transition hcond ;
 //    int len =type->getName().size();
     if (! isPlaceSyntax ) {
-      hcond = type->getPredicate(prop);
+      char buff [prop.size()+1];
+      strcpy(buff,prop.c_str());
+      hcond = type->getPredicate(buff);
     } else {
-      hcond = type->getPredicate(prop+"=1");
+      char buff [prop.size()+3];
+      strcpy(buff,prop.c_str());
+      strcat(buff,"=1");
+      hcond = type->getPredicate(buff);
       // Used to be (before introduction of getPredicate in ITSModel)
 //       labels_t tau;
 //       tau.push_back(prop);
