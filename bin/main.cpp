@@ -280,29 +280,51 @@ int main_noex (int argc, char **argv) {
  for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
    
    Transition predicate = model.getPredicate(it->getPred());
-   State verify = predicate (reachable);
+   bool isVerify = false;
+
+   State verify = State::null;
 
    if (it->getType() == INVARIANT) {
-     if (verify == reachable) {
+     predicate = ! predicate;
+     isVerify = ! predicate.has_image(reachable);
+     if (isVerify ) {
        std::cout << "Invariant property " << it->getName() << " is true." << std::endl;
      } else {
        std::cout << "Invariant property " << it->getName() << " does not hold." << std::endl;
-       std::cout << "Reachable states that do not respect the invariant will be exhibited." << std::endl;
+       if (dowitness) {
+	 std::cout << "Reachable states that do not respect the invariant will be exhibited." << std::endl;
+	 // to build a trace.
+	 verify = predicate (reachable);
+       }
      }
-     // to build a trace.
-     verify = reachable - verify;
+
    } else if (it->getType() == NEVER) {
-     if (verify == State::null) {
+
+     isVerify = ! predicate.has_image(reachable);
+
+     if (isVerify) {
        std::cout << "Never property " << it->getName() << " is true." << std::endl;
      } else {
        std::cout << "Never property " << it->getName() << " does not hold." << std::endl;
-       std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
+       if (dowitness) {
+	 std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
+	 // to build a trace.
+	 verify = predicate (reachable);
+       }
      }
    } else {
-     if (verify != State::null) {
+
+     isVerify =  predicate.has_image(reachable);
+
+     if (isVerify) {
        std::cout << "Reachability property " << it->getName() << " is true." << std::endl;
-       std::cout << "There are " << verify.nbStates() << " reachable states in which your predicate is true." <<std::endl;
+       if (dowitness) {
+	 std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
+	 verify = predicate (reachable);
+	 std::cout << "There are " << verify.nbStates() << " reachable states in which your predicate is true." <<std::endl;
+       }
      } else {
+       std::cout << "Reachability property " << it->getName() << " does not hold." << std::endl;
        std::cout << "No reachable states exhibit your property : " << it->getName() <<std::endl;
      }
    }
