@@ -286,7 +286,7 @@ int main_noex (int argc, char **argv) {
 
    if (it->getType() == INVARIANT) {
      predicate = ! predicate;
-     isVerify = ! predicate.has_image(reachable);
+     isVerify = predicate.has_image(reachable) == State::null;
      if (isVerify ) {
        std::cout << "Invariant property " << it->getName() << " is true." << std::endl;
      } else {
@@ -300,7 +300,7 @@ int main_noex (int argc, char **argv) {
 
    } else if (it->getType() == NEVER) {
 
-     isVerify = ! predicate.has_image(reachable);
+     isVerify = predicate.has_image(reachable) == State::null;
 
      if (isVerify) {
        std::cout << "Never property " << it->getName() << " is true." << std::endl;
@@ -314,7 +314,7 @@ int main_noex (int argc, char **argv) {
      }
    } else {
 
-     isVerify =  predicate.has_image(reachable);
+     isVerify =  ! ( predicate.has_image(reachable) == State::null )  ;
 
      if (isVerify) {
        std::cout << "Reachability property " << it->getName() << " is true." << std::endl;
