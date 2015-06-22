@@ -279,6 +279,9 @@ int main_noex (int argc, char **argv) {
 
  for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
    
+   if (MemoryManager::should_garbage()) {
+     MemoryManager::garbage();
+   }
    Transition predicate = model.getPredicate(it->getPred());
    bool isVerify = false;
 
