@@ -418,6 +418,85 @@ public:
 //   std::cerr << "Skips " << vo->getVar(var) << " ? " << ! expr.isSupport(vo->getVar(var)) << std::endl;
    return ! expr.isSupport(vo->getVar(var)) ;
   }
+
+  GDDD has_image (const GDDD &d) const {
+    if( d== GDDD::null)
+      { return GDDD::null; }
+    else if( d == GDDD::one)
+      { 
+	std::cerr << "Predicate ";
+	print(std::cerr);
+	std::cerr << " produced an overflow error !"<< std::endl;
+	return GDDD::null; 
+      }
+    else if( d== GDDD::top)
+      { 	  
+	std::cerr << "Predicate hit Top" << std::endl;
+	return GDDD::top; 
+      }
+    else
+      {
+	// current variable 
+	int vr = d.variable();
+	const IntExpression & curv = vo->getVar(vr);
+	
+	// To hold result
+	std::set<GDDD> res;
+	GDDD::const_iterator dend = d.end();
+	for (GDDD::const_iterator it = d.begin() ; it != dend ; ++it ) {
+	  // current value
+	  int vl = it->first;
+    bool expr_support = expr.isSupport(curv);
+
+    // Simplify current expression by current edge.
+	  BoolExpression e = expr ;
+    // only if necessary
+    if (expr_support) {
+      // An assertion describing info on current arc: var = val
+      Assertion assertion = IntExpressionFactory::createAssertion(curv,IntExpressionFactory::createConstant(it->first));
+      if (expr_support)
+        e = e & assertion;
+    }
+
+    //     if (! ( e == expr) ) 
+    //        std::cerr << "Predicate: Solving : " << expr << std::endl
+    //  		<< "knowing that :" << vo->getLabel(vr) << "=" << vl << std::endl
+    //  		<< " reduced to " << e << std::endl;
+
+	  
+	  // Check if we now have a constant : Terminal case.
+	  if (e.getType() == BOOLCONST) {
+	    // Constant :
+	    if (e.getValue()) 
+	      // True : return current path
+	      return GDDD(vr,vl,it->second);
+	    // else
+	    // False : Cut current path from result
+	    // Not adding edge to res produces this effect
+	  } else {
+
+	    // If we still need current variable : 
+	    // this means current var is an array and that expr has nested access to it.
+	    if (e.isSupport(curv)) {
+	      
+	      // still need to resolve.
+	      // go for full eval for complex array expressions
+	      return _GHom::has_image(d);
+	    
+	    // If RHS no longer targets curv, we can propagate to child
+	    } else {
+	      GDDD child = predicate ( e, vo).has_image (it->second);
+	      if (child != GDDD::null) {
+		return  GDDD(vr,vl, child);
+	      }
+	    }
+	  } 
+	} // end foreach edge of node
+
+	return GDDD::null;
+      } // end non terminal case
+
+  }
   
   GDDD eval(const GDDD &d) const {
     if( d== GDDD::null)
