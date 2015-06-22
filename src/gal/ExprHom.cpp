@@ -523,7 +523,7 @@ public:
   }
   
   GHom negate() const {
-    return predicate ( ! expr );
+    return predicate ( ! expr, vo );
   }
 
 };
