@@ -521,6 +521,10 @@ public:
     expr.print(os);
     os << ")";
   }
+  
+  GHom negate() const {
+    return predicate ( ! expr );
+  }
 
 };
 
