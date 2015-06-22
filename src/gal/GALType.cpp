@@ -419,7 +419,9 @@ labels_t GALType::getTransLabels () const {
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition GALType::getPredicate (Label pred) const {
+  Transition GALType::getAPredicate (Label pred) const {
+    // std::cerr << "pred :\n" ;
+    // std::cerr << its::predicate (getBPredicate (pred), getGalOrder ()) << std::endl;
     return localApply (its::predicate (getBPredicate (pred), getGalOrder ()), DEFAULT_VAR);
   }
   
