@@ -171,7 +171,7 @@ Transition CompositeType::getSuccs (const labels_t & tau) const {
     }
     if ( orSet.empty() ) {
       std::cerr << "Unknown transition label " << *it << " when processing getSuccs for type " << comp_.getName() << std::endl;
-      assert(false);
+      return Transition::null;
     }
 
     // union the orSet
