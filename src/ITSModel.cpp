@@ -231,7 +231,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       ++i;
     }
     std::cout << "Replay trace successfully played your trace. Reached states (10 max shown):" << std::endl;
-    printSomeStates(cur,std::cout,10);
+    printSomeStates(cur,std::cout,printLimit_);
   }
 
   void ITSModel::printPaths (State init, State toreach, State reach, size_t limit) const {
@@ -721,7 +721,7 @@ void ITSModel::print (std::ostream & os) const  {
   void ITSModel::printPath (const path_t &path, std::ostream & out, bool withStates) const {
     if (withStates) {
       out << "From initial states :\n" ;
-      printSomeStates(path.getInit(),out);
+      printSomeStates(path.getInit(),out,printLimit_);
     }
     out << "This shortest transition sequence of length " << path.getPath().size() << " :\n";
     labels_it end = path.getPath().end();
@@ -734,7 +734,7 @@ void ITSModel::print (std::ostream & os) const  {
     out << std::endl;
     if (withStates) {
       out << "Leads to final states :\n" ;
-      printSomeStates(path.getFinal(),out);
+      printSomeStates(path.getFinal(),out,printLimit_);
     }
   }
  

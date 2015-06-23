@@ -139,6 +139,11 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        { cerr << "Give a file name containing a JSON variable order definition please after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
      pathjsonff = argv[i];
      hasJson = true;
+   } else if ( ! strcmp(argv[i],"--print-limit") ) {
+      if (++i > argc) 
+       { cerr << "give numeric value in number of states for print-limit option " << argv[i-1]<<endl;  showUsageHelp() ; return false;}
+      int threshold = atoi(argv[i]);
+      model.setPrintLimit(threshold);
    } else if ( ! strcmp(argv[i],"--load-order") ) {
      if (++i > argc) 
        { cerr << "Give a file name containing a variable order definition please after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
@@ -404,6 +409,7 @@ void usageInputOptions() {
     cerr<<  "             GAL : Guarded Action Language." << endl; 
     cerr<<  "             CGAL : Guarded Action Language + Composite/ITS textual syntax. File must contain a main declaration." << endl;
     cerr<< "\nAdditional Options and Settings:" << endl;
+    cerr <<  "    --print-limit INT : set the threshold for full printout of states in traces. DD holding more states than threshold will not be printed. [DEFAULT:10 states]" << endl;
     cerr << "    --load-order path : load the variable order from the file designated by path. This order file can be produced with --dump-order. Note this option is not exclusive of --json-order; the model is loaded as usual, then the provided order is applied a posteriori. \n" ;
     cerr<< "\nPetri net specific options :" << endl;
     cerr<<  "    --json-order path : use a JSON encoded hierarchy description file for a Petri net model (CAMI, PROD or ROMEO), such as produced using Neoppod heuristic ordering tools. Note that this option modifies the way the model is loaded. \n " <<endl;    

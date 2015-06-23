@@ -75,6 +75,8 @@ private:
   bool stutterOnDeadlock_;
   // GAL var ordering heuristics
   orderHeuristicType orderHeuristic_;
+  // for print limit
+  int printLimit_;
   // a helper used in multi witness scenario
   int printWitnesses (const std::list<State> & revcomponents, size_t limit, State init, State toreach) const ;
 
@@ -86,7 +88,7 @@ public:
   virtual bool addType (pType type);
 
   // default constructor
-  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1), stutterOnDeadlock_(false), orderHeuristic_(DEFAULT) {};
+  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1), stutterOnDeadlock_(false), orderHeuristic_(DEFAULT),printLimit_(10) {};
   // quite a bit of cleanup necessary given the use of pointers...
   virtual ~ITSModel () ;
 
@@ -182,7 +184,8 @@ public:
   void printPaths (State init, State toreach, State reach, size_t limit) const;
   /** Prints a set of states to a string. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. **/
-  void printSomeStates (State states, std::ostream & out, size_t limit=10) const;
+  void printSomeStates (State states, std::ostream & out, size_t limit) const;
+  void setPrintLimit (int limit) { printLimit_ = limit ; }
   /** Prints a path. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. 
    ** The boolean "withStates" controls if only transitions are shown or states as well 
