@@ -185,7 +185,9 @@ public:
   /** Prints a set of states to a string. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. **/
   void printSomeStates (State states, std::ostream & out, size_t limit) const;
+  /** Default is set by print limit */
   void setPrintLimit (int limit) { printLimit_ = limit ; }
+  void printSomeStates (State states, std::ostream & out) const { printSomeStates(states,out,printLimit_); }
   /** Prints a path. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. 
    ** The boolean "withStates" controls if only transitions are shown or states as well 
