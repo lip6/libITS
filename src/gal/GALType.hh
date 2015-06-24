@@ -83,9 +83,13 @@ public :
    *  The only constraint is that the character '.' is used as a namespace separator
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
-  Transition getPredicate (Label predicate) const;
+  Transition getPredicate (char * predicate) const;
   /// Atomic predicates for GAL use normal parser
-  Transition getAPredicate (Label predicate) const { return getPredicate (predicate); }
+  Transition getAPredicate (Label predicate) const { 
+    char buff [predicate.size()+1];
+    strcpy(buff,predicate.c_str());
+    return getPredicate (buff); 
+  }
   /// the real state predicate function parsing function
   virtual BoolExpression getBPredicate (Label pred) const;
 
