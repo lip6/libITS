@@ -86,8 +86,6 @@ public :
   Transition getPredicate (Label predicate) const;
   /// Atomic predicates for GAL use normal parser
   Transition getAPredicate (Label predicate) const { return getPredicate (predicate); }
-
-  Transition getAPredicate (Label predicate) const;
   /// the real state predicate function parsing function
   virtual BoolExpression getBPredicate (Label pred) const;
 
