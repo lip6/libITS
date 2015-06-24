@@ -84,7 +84,9 @@ public :
    *  and should not be used in the concrete predicate syntax.
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   Transition getPredicate (Label predicate) const;
-  /// Atomic predicates for GAL
+  /// Atomic predicates for GAL use normal parser
+  Transition getAPredicate (Label predicate) const { return getPredicate (predicate); }
+
   Transition getAPredicate (Label predicate) const;
   /// the real state predicate function parsing function
   virtual BoolExpression getBPredicate (Label pred) const;
