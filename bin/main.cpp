@@ -319,7 +319,7 @@ int main_noex (int argc, char **argv) {
      }
    } else {
      Transition predicate = model.getPredicate(it->getPred());
-     std::cerr << "built pred :" << predicate << std::endl;
+     //     std::cerr << "built pred :" << predicate << std::endl;
      verify = predicate.has_image(reachable);
      isVerify =  ! ( verify == State::null )  ;
 
