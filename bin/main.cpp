@@ -282,13 +282,14 @@ int main_noex (int argc, char **argv) {
    if (MemoryManager::should_garbage()) {
      MemoryManager::garbage();
    }
-   Transition predicate = model.getPredicate(it->getPred());
    bool isVerify = false;
 
    State verify = State::null;
 
    if (it->getType() == INVARIANT) {
-     predicate = ! predicate;
+     Transition predicate = model.getPredicate("!(" + it->getPred() + ")");
+     //     predicate = ! predicate;
+     verify = predicate.has_image(reachable);
      isVerify = predicate.has_image(reachable) == State::null;
      if (isVerify ) {
        std::cout << "Invariant property " << it->getName() << " is true." << std::endl;
@@ -302,8 +303,9 @@ int main_noex (int argc, char **argv) {
      }
 
    } else if (it->getType() == NEVER) {
-
-     isVerify = predicate.has_image(reachable) == State::null;
+     Transition predicate = model.getPredicate(it->getPred());
+     verify = predicate.has_image(reachable);
+     isVerify = verify == State::null;
 
      if (isVerify) {
        std::cout << "Never property " << it->getName() << " is true." << std::endl;
@@ -316,8 +318,10 @@ int main_noex (int argc, char **argv) {
        }
      }
    } else {
-
-     isVerify =  ! ( predicate.has_image(reachable) == State::null )  ;
+     Transition predicate = model.getPredicate(it->getPred());
+     std::cerr << "built pred :" << predicate << std::endl;
+     verify = predicate.has_image(reachable);
+     isVerify =  ! ( verify == State::null )  ;
 
      if (isVerify) {
        std::cout << "Reachability property " << it->getName() << " is true." << std::endl;
@@ -344,7 +348,7 @@ int main_noex (int argc, char **argv) {
    }
    std::cout << std::endl;
    
-   Statistic Scheck = Statistic(verify, reachExpr , CSV); // can also use LATEX instead of CSV
+   Statistic Scheck = Statistic(verify, it->getName() , CSV); // can also use LATEX instead of CSV
    cout.precision(6);
    Scheck.print_table(std::cout);
 
