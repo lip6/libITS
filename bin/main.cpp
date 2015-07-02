@@ -295,7 +295,7 @@ int main_noex (int argc, char **argv) {
        std::cout << "Invariant property " << it->getName() << " is true." << std::endl;
      } else {
        std::cout << "Invariant property " << it->getName() << " does not hold." << std::endl;
-       if (dowitness) {
+       if (dowitness || nbwitness > 0) {
 	 std::cout << "Reachable states that do not respect the invariant will be exhibited." << std::endl;
 	 // to build a trace.
 	 verify = predicate (reachable);
@@ -311,7 +311,7 @@ int main_noex (int argc, char **argv) {
        std::cout << "Never property " << it->getName() << " is true." << std::endl;
      } else {
        std::cout << "Never property " << it->getName() << " does not hold." << std::endl;
-       if (dowitness) {
+       if (dowitness || nbwitness > 0) {
 	 std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
 	 // to build a trace.
 	 verify = predicate (reachable);
@@ -325,7 +325,7 @@ int main_noex (int argc, char **argv) {
 
      if (isVerify) {
        std::cout << "Reachability property " << it->getName() << " is true." << std::endl;
-       if (dowitness) {
+       if (dowitness || nbwitness > 0) {
 	 std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
 	 verify = predicate (reachable);
 	 std::cout << "There are " << verify.nbStates() << " reachable states in which your predicate is true." <<std::endl;
@@ -339,12 +339,12 @@ int main_noex (int argc, char **argv) {
  
    if (dowitness && verify != State::null) {
      std::cout << "computing trace..." <<endl;
-     path_t path = model.findPath(model.getInitialState(), verify, reachable,false);
+     path_t path = model.findPath(model.getInitialState(), verify, reachable, false);
      model.printPath(path, std::cout,true);
    }
    if (nbwitness >= 1) {
      std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
-     model.printPaths(model.getInitialState(), verify, reachable,nbwitness);
+     model.printPaths(model.getInitialState(), verify, reachable, nbwitness);
    }
    std::cout << std::endl;
    
