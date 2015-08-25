@@ -59,6 +59,9 @@ public :
    **/
   void printPath (const its::path_t &path, std::ostream & out, bool withStates=false) {  model.printPath(path, out, withStates) ; }
 
+  void printSomeStates (its::State states, std::ostream & out) const {
+    model.printSomeStates(states,out);
+  }
 
   // Explain the truth value of formula in given states.
   // Formula is true if at least some input states satify it.
