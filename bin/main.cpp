@@ -31,6 +31,7 @@ void usage () {
   cerr<<  "    -ctl [CTL formulas file]  MANDATORY : give path to a file containing CTL formulae \n";
   cerr<<  " Optionally, if the [CTL formulas file] provided is the string DEADLOCK, the tool will compute and return the number of deadlocks.\n";
   cerr<<  "    --witness to ask for a witness/counter-example path to be produced (may be much more difficult than just proving/disproving)\n";
+  cerr<<  "    --precise to ask for more precise counter example traces, that include states\n";
   cerr<<  "    --fair-time to disallow infinite loops over elapse. More precisely, with this option, time elapse is applied directly after each discrete transition firing (and on initial state).\n";
   cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
   cerr<<  "    [--forward] to force forward CTL model-checking (default)\n";
@@ -90,6 +91,8 @@ int main (int argc, char ** argv) {
 
   bool befairtime = false;
 
+  bool isPrecise = false;
+
   string pathformff;
   
   argc = args.size();
@@ -108,6 +111,8 @@ int main (int argc, char ** argv) {
      doWitness = true;
    } else if (! strcmp(args[i],"--quiet")   ) {
      bequiet = true;
+   } else if (! strcmp(args[i],"--precise")   ) {
+     isPrecise = true;
    } else if (! strcmp(args[i],"--fair-time")   ) {
      befairtime = true;
    } else {
@@ -187,7 +192,8 @@ int main (int argc, char ** argv) {
 
     if (doWitness &&dead.nbStates() > 0) {
       std::cout << "Computing a witness path..."<< std::endl;
-      its::path_t path = checker.findPath(checker.getInitialState(), dead, checker.getReachable());
+      its::path_t path = checker.findPath(checker.getInitialState(), dead, checker.getReachable(), isPrecise);
+      checker.printPath(path, std::cout, isPrecise);
       for (labels_it it = path.getPath().begin() ; it != path.getPath().end() ; ++it ) {
 	std::cout << *it << ", ";
       }
