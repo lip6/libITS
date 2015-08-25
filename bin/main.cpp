@@ -188,7 +188,8 @@ int main (int argc, char ** argv) {
     SSdead.print_table(std::cout);
     std::cout << "\n";
 
-    std::cout << "System contains "<< dead.nbStates() << " deadlocks !" << std::endl;    
+    std::cout << "System contains "<< dead.nbStates() << " deadlocks (shown below if less than --print-limit option) !" << std::endl;    
+    checker.printSomeStates(dead, std::cout);
 
     if (doWitness &&dead.nbStates() > 0) {
       std::cout << "Computing a witness path..."<< std::endl;
