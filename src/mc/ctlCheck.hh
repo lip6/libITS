@@ -51,7 +51,14 @@ public :
   its::State getReachableDeadlocks () const;
 
   /** Returns a shortest witness trace expressed in transition names leading from a state of init to a state in final. */
-  its::path_t findPath (its::State init, its::State toreach, its::State reach) const { return model.findPath(init,toreach,reach); }
+  its::path_t findPath (its::State init, its::State toreach, its::State reach, bool precise = false) const { return model.findPath(init,toreach,reach, precise); }
+
+  /** Prints a path. The printing invokes the main instance's type's printing mechanism.
+   ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. 
+   ** The boolean "withStates" controls if only transitions are shown or states as well 
+   **/
+  void printPath (const its::path_t &path, std::ostream & out, bool withStates=false) {  model.printPath(path, out, withStates) ; }
+
 
   // Explain the truth value of formula in given states.
   // Formula is true if at least some input states satify it.
