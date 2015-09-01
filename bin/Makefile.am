@@ -28,16 +28,17 @@ ANTLRC_LINK=-lantlr3c
 endif
 
 
-AM_CPPFLAGS = $(LIBDDD_CPP) $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(HAVE_BOOST_FLAG) -g -O2 -Wall
-AM_CXXFLAGS = -g -O2 -Wall 
+AM_CPPFLAGS = $(LIBDDD_CPP) $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(HAVE_BOOST_FLAG) -g -O3 -Wall
+AM_CXXFLAGS = -g -O3 -Wall 
 
 LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
 
 
-its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp
+its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp
 
 its_reach_LDADD = $(LDADDFLAGS)  
-its_reach_LDFLAGS =  -flto -fwhole-program -static -all-static
+its_reach_LDFLAGS =  -flto -fwhole-program 
+#-static -all-static
 # -export-dynamic
 
 dve2gal_SOURCES = dve2galmain.cpp

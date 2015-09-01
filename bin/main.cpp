@@ -269,9 +269,9 @@ int main_noex (int argc, char **argv) {
  State reachable = exhibitModel(model);
 
  if (dostats) {
-//    MaxComputer mc ;
-//    mc.compute(reachable);
-//    mc.printStats(std::cout);
+   MaxComputer mc ;
+   MaxComputer::stat_t stat = mc.compute(reachable);
+   mc.printStats(stat, std::cout);
  }
 
  std::vector<Property> props;
