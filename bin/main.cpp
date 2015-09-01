@@ -17,6 +17,8 @@
 #include "petri/JSON2ITS.hh"
 #include "parser_json/parse_json.hh"
 
+// for stats
+#include "MaxComputer.hh"
 
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
@@ -41,6 +43,7 @@ static string pathorderff = "order";
 static bool dodotexport=false;
 static bool dodumporder = false;
 static bool dowitness = true; 
+static bool dostats = false;
 static bool with_garbage=true;
 static std::string modelName = "";
 // if BMC use is wanted, will be >0
@@ -132,6 +135,7 @@ void usage() {
   cerr<<  "    -bmc XXX : use limited depth BFS exploration, up to XXX steps from initial state." << endl;
   cerr<<  "    -trace XXX : try to replay a trace, XXX is given as a space separated list of transition names, as used in path outputs." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
+  cerr<<  "    --stats : produce stats on max sum of variables (i.e. maximum tokens in a marking for a Petri net), maximum variable value (bound for a Petri net)" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
@@ -206,6 +210,8 @@ int main_noex (int argc, char **argv) {
      usage(); exit(0);
    } else if (! strcmp(args[i],"--quiet")   ) {
      beQuiet = true;
+   } else if (! strcmp(args[i],"--stats")   ) {
+     dostats = true;
    } else if (! strcmp(args[i],"--nowitness")   ) {
      dowitness = false;
    } else if (! strcmp(args[i],"-reachable") ) {
@@ -261,6 +267,12 @@ int main_noex (int argc, char **argv) {
   }
 	
  State reachable = exhibitModel(model);
+
+ if (dostats) {
+//    MaxComputer mc ;
+//    mc.compute(reachable);
+//    mc.printStats(std::cout);
+ }
 
  std::vector<Property> props;
 
