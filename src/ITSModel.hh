@@ -197,6 +197,9 @@ public:
    */
   void playPath (labels_t path) const ;
 
+  /** Get bounds for a variable : the maximum value the variable can reach in the given state space. */
+  int getMaxValue (Label variable, State states) const;
+
   // semi private function used in Scalar sandboxes
   void cloneType (pType type) { int n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }
   // member pretty print

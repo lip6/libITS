@@ -737,6 +737,128 @@ void ITSModel::print (std::ostream & os) const  {
       printSomeStates(path.getFinal(),out,printLimit_);
     }
   }
+
+  class ValueExtractor {
+    d3::hash_set<GDDD>::type seend3;
+    d3::hash_set<GSDD>::type seen;
+
+  public : 
+    const Type::varindex_t & index;
+    DDD values;
+    bool firsterror;
+    ValueExtractor(const Type::varindex_t & index_):index(index_),values(DDD::null), firsterror(true){}
+
+    void visitEdge (const DataSet* g, int curindex)
+    {
+      // Used to work for referenced DDD
+      if (typeid(*g) == typeid(GSDD) ) {
+	visit ( GSDD ((SDD &) *g), curindex );
+      } else if (typeid(*g) == typeid(DDD)) {
+	visit ( GDDD ((DDD &) *g), curindex );
+      //    } else if (typeid(*g) == typeid(IntDataSet)) {
+      // nothing, no nodes for this implem
+      } else {
+	if (firsterror) {
+	  std::cerr << "Warning : unknown referenced dataset type on arc, node count is inacurate"<<std::endl;
+	  std::cerr << "Read type :" << typeid(*g).name() <<std::endl ;
+	  firsterror = false;
+	}
+      }
+    }
+
+    void visit (const GSDD & d, int curindex) {
+      if ( d == GSDD::one || d == GSDD::null){
+	if (firsterror) {
+	  std::cerr << "Warning : variable not found when computing bounds."<<std::endl;
+	  firsterror = false;
+	}
+	return;
+      }
+      // hit ?
+      if (seen.find(d) == seen.end()) {
+	// add to seen
+	seen.insert(d);
+	// grab target index
+	int target = index[curindex];
+
+	if (d.variable() == target) {
+	  // extract
+	  for(GSDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
+	    visitEdge(gi->first,curindex+1);
+	  }
+	} else {
+	  // navigate
+	  for(GSDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
+	    visit(gi->second,curindex);
+	  }	  
+	}
+      }
+    }
+
+    void visit (const GDDD & d, int curindex) {
+      if ( d == GDDD::one || d == GDDD::null){
+	if (firsterror) {
+	  std::cerr << "Warning : variable not found when computing bounds."<<std::endl;	
+	  std::cerr << "Current index : " << curindex;
+	  std::cerr << "var index : " ;
+	  std::cerr << "[";
+	  for (Type::varindex_t::const_iterator it = index.begin() ; it != index.end() ; ++it) {
+	    std::cerr <<  *it << "," ;
+	  }
+	  std::cerr << "]" << std::endl;
+	  firsterror = false;
+	}
+	return;
+      }
+      // hit ?
+      if (seend3.find(d) == seend3.end()) {
+	// add to seen
+	seend3.insert(d);
+	// grab target index
+	int target = index[curindex];
+
+	if (d.variable() == target) {	  
+	  // extract
+	  for(GDDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
+	    values = values + GDDD(0,gi->first);
+	  }
+	} else {
+	  // navigate
+	  for(GDDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
+	    visit(gi->second,curindex);
+	  }	  
+	}
+      }
+    }
+
+  };
+
+  DDD extractValues (const Type::varindex_t & index,State s) {
+    ValueExtractor ve (index);
+    ve.visit(s,0);
+    return ve.values;
+  }
+
+  /** Get bounds for a variable : the maximum value the variable can reach in the given state space. */
+  int ITSModel::getMaxValue (Label variable, State states) const {
+    Type::varindex_t index;
+    getInstance()->getType()->getVarIndex(index,variable);
+    
+    std::cout << "var index : " ;
+    std::cout << "[";
+    for (Type::varindex_t::const_iterator it = index.begin() ; it != index.end() ; ++it) {
+      std::cout <<  *it << "," ;
+    }
+    std::cout << "]" << std::endl;
+
+    DDD d = extractValues(index,states);
+ 
+    int max = 0;
+    for(GDDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
+      max = gi->first; 
+    }
+    return max;
+  }
  
 
   // Visitor pattern to work on the underlying types
