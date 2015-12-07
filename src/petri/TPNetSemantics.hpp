@@ -145,6 +145,9 @@ namespace its {
     
     static NodeType newNode (int var, int val) ;
 
+    static void getVarIndex (Type::varindex_t & index, int target) ;
+
+
     static NodeType getMarking (const Marking &m, const VarOrder & vo) {
       // converting to DDD first
       NodeType M0 = NodeType::one;
@@ -218,6 +221,19 @@ namespace its {
   inline GDDD dddSemantics::newNode (int var, int val) {
     return GDDD (var, val) ;
   }
+
+  template <>
+  inline void dddSemantics::getVarIndex (Type::varindex_t & index, int target) {
+    index.push_back(DEFAULT_VAR);
+    index.push_back(target);
+  }
+
+  template <>
+  inline void sddSemantics::getVarIndex (Type::varindex_t & index, int target) {
+    index.push_back(target);
+    index.push_back(DEFAULT_VAR);
+  }
+
 
   template <>
   inline GSDD dddSemantics::getState (const Marking &m, const VarOrder & vo) {
