@@ -77,6 +77,13 @@ namespace its {
 
     virtual void getNamedLocals (namedTrs_t & ntrans) const { concrete_->getNamedLocals(ntrans); }
 
+    /** Return the index of a given variable in the representation, actually a vector of indices in SDD case.
+     */
+    virtual void getVarIndex(varindex_t & index, Label vname) const {
+      concrete_->getVarIndex (index,vname);
+    }
+
+
     /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
      *  Uses the provided "reachable" states to compute the variable domains. */
     virtual State getPotentialStates(State reachable) const { return concrete_->getPotentialStates(reachable); }
