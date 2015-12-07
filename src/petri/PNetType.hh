@@ -110,7 +110,7 @@ public :
   virtual HomType getTransitionAction (const PTransition & t, const VarOrder & vo) const {
     return  Semantics::getActionHom(t, vo) ;
   }
-
+    
 
   
   /** Successors synchronization function : Bag(T) -> SHom.
@@ -197,6 +197,11 @@ public :
       
       return Semantics::getState (m, *vo);
     }
+  }
+
+  void getVarIndex(varindex_t & index, Label vname) const {
+     int target = getVarOrder()->getIndex(vname);
+     Semantics::getVarIndex(index,target);
   }
 
   /** Use delegation on net_ */
