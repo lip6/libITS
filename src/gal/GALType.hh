@@ -120,6 +120,12 @@ public :
 
   labels_t getVarSet () const ;
 
+  void getVarIndex(varindex_t & index, Label vname) const {
+    // to access inside the SDD
+    index.push_back(0);
+    // actual var index
+    TypeBasics::getVarIndex(index,vname);
+  }
 
   virtual bool setVarOrder (labels_t ord) const {
     go_ = NULL;
