@@ -91,6 +91,11 @@ public :
    **/
   virtual void getNamedLocals (namedTrs_t & ntrans) const = 0;
 
+  typedef std::vector<int> varindex_t;
+  /** Return the index of a given variable in the representation, actually a vector of indices in SDD case.
+   */
+  virtual void getVarIndex(varindex_t & index, Label vname) const =0;
+
   /** Return a Transition that maps states to their observation class.
    *  Observation class is based on the provided set of observed variables, 
    *  in standard "." separated qualified variable names. 
