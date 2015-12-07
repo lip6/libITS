@@ -61,8 +61,16 @@ namespace its {
      *  Stands for getAtomicPredicate. */
     virtual Transition getAPredicate (Label predicate) const = 0;
 
+
+    /** Return the index of a given variable in the representation, actually a vector of indices in SDD case.
+   */
+    virtual void getVarIndex(varindex_t & index, Label vname) const {
+      index.push_back(getVarOrder()->getIndex(vname));
+    }
+
     // helper function
     AtomicPredicate parseAtomicPredicate (Label predicate) const;
+
 
     // Some helper functions to print states corresponding to a VarOrder.
     // This for a system whose variables are integer domain, coded as single level DDD
