@@ -136,6 +136,7 @@ void usage() {
   cerr<<  "    -trace XXX : try to replay a trace, XXX is given as a space separated list of transition names, as used in path outputs." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    --stats : produce stats on max sum of variables (i.e. maximum tokens in a marking for a Petri net), maximum variable value (bound for a Petri net)" <<endl;
+  cerr<<  "    -maxbound XXXX,YYYY : return the maximum value for each variable in the list (comma separated)" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
@@ -191,6 +192,7 @@ int main_noex (int argc, char **argv) {
  }
 
  vLabel reachExpr="";
+ vLabel boundsExpr="";
  vLabel reachFile="";
  vLabel traceStr = "";
 
@@ -218,6 +220,10 @@ int main_noex (int argc, char **argv) {
      if (++i > argc) 
        { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
      reachExpr = args[i];
+   } else if (! strcmp(args[i],"-maxbound") ) {
+     if (++i > argc) 
+       { cerr << "give a comma separated list of variables for maxbounds criterion " << args[i-1]<<endl; usage() ; exit(1);}
+     boundsExpr = args[i];
    } else if (! strcmp(args[i],"-manywitness") ) {
      if (++i > argc) 
        { cerr << "give an integer limit to number of traces " << args[i-1]<<endl; usage() ; exit(1);}
@@ -244,27 +250,43 @@ int main_noex (int argc, char **argv) {
      cerr << "Error : incorrect Argument : "<<args[i] <<endl ; usage(); return 1;
    }
  }
- 
- // Test that we don't have several props to check, otherwise do not set up interrupt.
-  if (fixobs_passes != 0 && reachExpr != "" && reachFile == "")
-  {
-    Transition predicate = model.getPredicate(reachExpr);
-    // This observer interrupts computation if the predicate is found
-    fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate, true )); // !beQuiet
-  }
- 
-  if (traceStr != "") {
-    labels_t path ;
-    stringstream ss (traceStr);
-    vLabel str;
-    while (ss >> str) {
-      path.push_back(str);
-    }
-    
-    model.playPath(path);
-    return 0;
 
-  }
+ std::vector<Property> props;
+
+ if (reachFile != "") {
+   std::cout << "Loading property file " << reachFile << "."<< std::endl; 
+   loadProps(reachFile,props);
+ }
+ 
+ if (reachExpr != "") {
+   props.push_back(Property(reachExpr,reachExpr,REACH));
+ } 
+ 
+ 
+ if (traceStr != "") {
+   labels_t path ;
+   stringstream ss (traceStr);
+   vLabel str;
+   while (ss >> str) {
+     path.push_back(str);
+   }
+   
+   model.playPath(path);
+   return 0;
+   
+ }
+
+ // Test that we don't have several props to check, otherwise do not set up interrupt.
+ if (fixobs_passes != 0 && props.size() == 1 ) {
+   Transition predicate = Transition::null; 
+   if (props.begin()->getType() == INVARIANT) {
+     predicate = model.getPredicate("!(" + props.begin()->getPred() + ")");
+   } else {
+     predicate = model.getPredicate(props.begin()->getPred());
+   }
+   // This observer interrupts computation if the predicate is found
+   fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, predicate, true )); // !beQuiet
+ }
 	
  State reachable = exhibitModel(model);
 
@@ -274,17 +296,15 @@ int main_noex (int argc, char **argv) {
    mc.printStats(stat, std::cout);
  }
 
- std::vector<Property> props;
-
- if (reachFile != "") {
-   std::cout << "Loading property file " << reachFile << "."<< std::endl; 
-   loadProps(reachFile,props);
+ if (boundsExpr != "") {
+   std::istringstream iss(boundsExpr);
+   vLabel token;
+   while (std::getline(iss, token, ',')) {
+     int max = model.getMaxValue (token, reachable);
+     std::cout << "Bound for variable : " << token << " <= " << max << std::endl;  
+   }
  }
 
- if (reachExpr != "") {
-   props.push_back(Property(reachExpr,reachExpr,REACH));
- }
- 
  if (props.size() > 0) {
    std::cout << "Verifying " << props.size() << " reachability properties."<< std::endl; 
  }
