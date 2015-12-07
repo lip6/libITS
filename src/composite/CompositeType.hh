@@ -68,6 +68,9 @@ public :
    *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
   Transition getAPredicate (Label predicate) const ;
 
+  /** Return the index of a given variable in the representation, actually a vector of indices in SDD case.
+   */
+  void getVarIndex(varindex_t & index, Label vname) const;
 
   /* delegated */
   std::ostream & print (std::ostream & os) const { return comp_.print(os); }  

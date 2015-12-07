@@ -332,6 +332,26 @@ State CompositeType::getState(Label stateLabel) const {
     return h;    
   }
 
+  /** Return the index of a given variable in the representation, actually a vector of indices in SDD case.
+   */
+  void CompositeType::getVarIndex(varindex_t & index, Label vname) const {
+    std::istringstream iss(vname);
+    vLabel var;
+    std::getline(iss, var, '.');
+    vLabel endOf;
+    std::getline(iss, endOf);
+
+    int instindex =  getVarOrder()->getIndex (var);
+    if (comp_.comps_size()!=1) {
+      index.push_back(instindex);
+    }
+    std::cout << "Var " << var << " Instance index :" << instindex;
+    std::cout << "end of var :" << endOf << std::endl;
+    Composite::comps_it instance = findName( var, comp_.comps_begin() , comp_.comps_end() );
+    instance->getType()->getVarIndex(index, endOf);
+  }
+
+
 
 Transition CompositeType::getAPredicate (Label predicate) const {
     
