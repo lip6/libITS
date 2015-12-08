@@ -300,8 +300,8 @@ int main_noex (int argc, char **argv) {
    std::istringstream iss(boundsExpr);
    vLabel token;
    while (std::getline(iss, token, ',')) {
-     int max = model.getMaxValue (token, reachable);
-     std::cout << "Bound for variable : " << token << " <= " << max << std::endl;  
+     std::pair<int,int> range = model.getVarRange (token, reachable);
+     std::cout << "Bounds of variable : " << range.first <<  " <= " << token << " <= " << range.second << std::endl;  
    }
  }
 
