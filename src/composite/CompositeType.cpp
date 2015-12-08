@@ -345,8 +345,8 @@ State CompositeType::getState(Label stateLabel) const {
     if (comp_.comps_size()!=1) {
       index.push_back(instindex);
     }
-    std::cout << "Var " << var << " Instance index :" << instindex;
-    std::cout << "end of var :" << endOf << std::endl;
+    // std::cout << "Var " << var << " Instance index :" << instindex;
+    // std::cout << "end of var :" << endOf << std::endl;
     Composite::comps_it instance = findName( var, comp_.comps_begin() , comp_.comps_end() );
     instance->getType()->getVarIndex(index, endOf);
   }
