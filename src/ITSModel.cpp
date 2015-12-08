@@ -839,25 +839,36 @@ void ITSModel::print (std::ostream & os) const  {
     return ve.values;
   }
 
-  /** Get bounds for a variable : the maximum value the variable can reach in the given state space. */
-  int ITSModel::getMaxValue (Label variable, State states) const {
+  /** Get bounds for a variable : the <min,maximum> value the variable can reach in the given state space. */
+  std::pair<int,int> ITSModel::getVarRange (Label variable, State states) const {
     Type::varindex_t index;
     getInstance()->getType()->getVarIndex(index,variable);
     
-    std::cout << "var index : " ;
-    std::cout << "[";
-    for (Type::varindex_t::const_iterator it = index.begin() ; it != index.end() ; ++it) {
-      std::cout <<  *it << "," ;
-    }
-    std::cout << "]" << std::endl;
+    // std::cout << "var index : " ;
+    // std::cout << "[";
+    // for (Type::varindex_t::const_iterator it = index.begin() ; it != index.end() ; ++it) {
+    //   std::cout <<  *it << "," ;
+    // }
+    // std::cout << "]" << std::endl;
 
     DDD d = extractValues(index,states);
- 
-    int max = 0;
-    for(GDDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
-      max = gi->first; 
+    
+    if (d == DDD::null) {
+      std::cerr << "Error handling bounds for variable " << variable << std::endl;
+      return std::make_pair(1,-1);
     }
-    return max;
+    
+    std::pair<int,int> toret;
+    GDDD::const_iterator gi=d.begin();
+    if (gi != d.end()) {
+      toret.first = gi->first; 
+      toret.second = gi->first;
+    }
+    for(;gi!=d.end();++gi) {
+      toret.first = std::min(toret.first,(int)gi->first); 
+      toret.second = std::max(toret.second,(int)gi->first); 
+    }
+    return toret;
   }
  
 
