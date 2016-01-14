@@ -349,6 +349,16 @@ IntExpression IntExpressionFactory::createBinary (IntExprType type, const IntExp
   return createUnique(_IntExpression(res, unione));
 }
 
+IntExpression IntExpressionFactory::createUnary (IntExprType type, const IntExpression & p) {
+  env_t unione = p.concrete->getEnv();
+  
+  // now that the alphabets are compatible, build a parametric expression
+  PIntExpression res = PIntExpressionFactory::createUnary (type, normalize<IntExpression,PIntExpression>(p,unione));
+
+  return createUnique(_IntExpression(res, unione));
+}
+
+
 IntExpression IntExpressionFactory::createConstant (int v) {
   return createUnique (_IntExpression(PIntExpressionFactory::createConstant(v),env_t()));
 }

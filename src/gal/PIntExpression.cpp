@@ -750,6 +750,134 @@ public :
   _PIntExpression * clone () const { return new MultExpr(*this); }
 };
 
+  /// unary
+
+class UnaryIntExpr : public _PIntExpression {
+protected :
+  PIntExpression arg;
+public :
+  virtual const char * getOpString() const = 0;
+  UnaryIntExpr (const PIntExpression & p) : arg (p){};
+
+  virtual int constEval (int i) const = 0;
+
+  bool operator==(const _PIntExpression & e) const{
+    const UnaryIntExpr & other = (const UnaryIntExpr &)e ;
+    return other.arg.equals(arg);
+  }
+
+  bool operator<(const _PIntExpression & e) const{
+    const UnaryIntExpr & other = (const UnaryIntExpr &)e ;
+    return arg.less(other.arg);
+  }
+
+  size_t hash () const {
+    size_t res = getType();
+    res *= arg.hash() *  6113 ;
+    return res;
+  }
+
+  void print (std::ostream & os, const env_t & env) const {
+    os << getOpString();
+    os << "( ";
+    arg.print(os,env);
+    os << " )";
+  }
+
+  PIntExpression setAssertion (const PAssertion & a) const {
+    PIntExpression na = arg & a;
+
+    if (na.getType() == CONST) {
+      return  PIntExpressionFactory::createConstant( constEval(na.getValue()) );
+    } else if (na.getType() == INTNDEF) {
+      return PIntExpressionFactory::createNDef();
+    }
+    PIntExpression e = PIntExpressionFactory::createUnary(getType(),na);    
+    return a.getValue(e);
+  }
+
+  PIntExpression eval () const {
+    PIntExpression  l = arg.eval();
+
+    if (l.getType() == CONST ) {
+      return  PIntExpressionFactory::createConstant( constEval( l.getValue()));
+    } else if (l.getType() == INTNDEF) {
+      return PIntExpressionFactory::createNDef();
+    } else {
+      return  PIntExpressionFactory::createUnary( getType(), l );
+    }
+  }
+
+
+  bool isSupport (int v, int id) const {
+    return arg.isSupport(v,id) ;
+  }
+  
+  void getSupport(bool *const mark) const {
+    arg.getSupport(mark);
+  }
+
+  PIntExpression getFirstSubExpr () const {
+    PIntExpression tmp = arg.getFirstSubExpr();
+    if (! tmp.equals(arg)) {
+      return tmp;
+    }
+    
+    return this;
+  }
+
+
+  PIntExpression getSubExprExcept (int v, int id) const {  
+  
+    if (! arg.isSupport(v,id)) {
+      // So, no children concern  "var, id"
+      return this;
+    } 
+        
+    PIntExpression sub = arg.getSubExprExcept(v,id) ;
+    if (!  sub.equals(arg) ) {
+      // Child has not found an extractible sub expression
+      return sub;
+    } else if ( arg.getType() != CONST ) {
+      // A child formula, that does not carry var
+      return arg; 
+    }
+
+    // Desperation move : all children are "var" or constants. 
+    // should not happen.
+    return this;
+  }
+
+
+
+  PIntExpression reindexVariables (const PIntExpression::indexes_t & newindex) const {
+    return PIntExpressionFactory::createUnary(getType(),arg.reindexVariables(newindex));
+  }
+
+  void accept (class PIntExprVisitor * visitor) const {
+    visitor->visitUnaryIntExpr(getType(), arg);
+  }
+};
+
+class BitCompExpr : public UnaryIntExpr {
+
+public :
+  BitCompExpr (const PIntExpression & p):UnaryIntExpr(p) {};
+  IntExprType getType() const  { return BITCOMP; }
+  const char * getOpString() const { return " ~ ";}
+
+  int constEval (int i) const {
+    if (i == TOP)
+      return TOP;
+    return ~i;
+  }
+
+  _PIntExpression * clone () const { return new BitCompExpr(*this); }
+};
+
+
+
+  /// binary
 class BinaryIntExpr : public _PIntExpression {
 protected :
   PIntExpression left;
@@ -1118,6 +1246,19 @@ PIntExpression PIntExpressionFactory::createNary (IntExprType type, const NaryPP
     return unique()(MultExpr (params));      
   default :
     throw "Operator " + to_string(type)  + " is not N-ary";
+  }
+}
+
+PIntExpression PIntExpressionFactory::createUnary (IntExprType type, const PIntExpression & p) {
+  if (p.getType() == INTNDEF) {
+    return createNDef();
+  }
+
+  switch (type) {
+  case BITCOMP : 
+    return unique()(BitCompExpr(p));
+  default :
+    throw "Operator " + to_string(type)  + " is not unary";
   }
 }
 

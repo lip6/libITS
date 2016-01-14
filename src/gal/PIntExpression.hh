@@ -28,7 +28,8 @@ typedef enum {
   RSHIFT, // right shift bitwise operator >>
   ARRAY, // access inside an array
   CONSTARRAY, // access to a given cell of an array
-  INTNDEF // An undefined value, typically obtained by array index out of bounds
+  INTNDEF, // An undefined value, typically obtained by array index out of bounds
+  BITCOMP // bitwise complement ~
 } IntExprType ;
 
 class _PIntExpression ;
@@ -53,6 +54,7 @@ class PIntExpression {
   friend class ConstExpr;
   friend class NDefExpr;
   friend class NaryIntExpr;
+  friend class UnaryIntExpr;
   friend class PIntExpressionFactory;
   friend class BinaryIntExpr;
   friend class WrapBoolExpr;
@@ -165,6 +167,7 @@ public :
 class PIntExpressionFactory {
   static UniqueTable<_PIntExpression> & unique();
 public :
+  static PIntExpression  createUnary (IntExprType type, const PIntExpression & p) ;
   static PIntExpression  createNary (IntExprType type, const NaryPParamType & params) ;
   static PIntExpression  createBinary (IntExprType type, const PIntExpression & l, const PIntExpression & r) ;
   static PIntExpression  createConstant (int v);

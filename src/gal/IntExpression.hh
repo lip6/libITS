@@ -147,6 +147,7 @@ class IntExpressionFactory {
 public :
   static IntExpression  createNary (IntExprType type, const NaryParamType & params) ;
   static IntExpression  createBinary (IntExprType type, const IntExpression & l, const IntExpression & r) ;
+  static IntExpression  createUnary (IntExprType type, const IntExpression & p) ;
   static IntExpression  createConstant (int v);
   static IntExpression  createVariable (const Variable & v) ;
   static IntExpression  createArrayAccess (const Variable & v, const IntExpression & index, int limit) ;

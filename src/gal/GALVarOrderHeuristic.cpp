@@ -105,6 +105,10 @@ public:
     l.accept (this);
     r.accept (this);
   }
+  void visitUnaryIntExpr (IntExprType, const PIntExpression & l)
+  {
+    l.accept (this);
+  }
   void visitNaryBoolExpr (BoolExprType, const std::vector<PBoolExpression> & n)
   {
     for (std::vector<PBoolExpression>::const_iterator it = n.begin ();
@@ -431,6 +435,10 @@ public:
     l.accept (this);
     r.accept (this);
   }
+  void visitUnaryIntExpr (IntExprType, const PIntExpression & l)
+  {
+    l.accept (this);
+  }
   void visitNaryBoolExpr (BoolExprType, const std::vector<PBoolExpression> & n)
   {
     for (std::vector<PBoolExpression>::const_iterator it = n.begin ();
@@ -484,6 +492,7 @@ public:
   void visitArrayConstExpr (int, const class PIntExpression &) {}
   void visitNaryIntExpr (IntExprType, const NaryPParamType &) {}
   void visitBinaryIntExpr (IntExprType, const class PIntExpression &, const class PIntExpression &) {}
+  void visitUnaryIntExpr (IntExprType, const class PIntExpression &) {}
   
   // get Array name
   void visitArrayVarExpr (int i, const PIntExpression & e)

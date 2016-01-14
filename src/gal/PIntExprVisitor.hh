@@ -19,6 +19,7 @@ public:
   virtual void visitArrayConstExpr (int, const class PIntExpression &) = 0;
   virtual void visitNaryIntExpr (IntExprType, const NaryPParamType &) = 0;
   virtual void visitBinaryIntExpr (IntExprType, const class PIntExpression &, const class PIntExpression &) = 0;
+  virtual void visitUnaryIntExpr (IntExprType, const class PIntExpression &) = 0;
 };
 
 class PBoolExprVisitor {
