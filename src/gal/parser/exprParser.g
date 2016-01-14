@@ -502,6 +502,12 @@ unaryMinus returns [its::IntExpression ires] :
       $value.ires);}
   )
   |
+  ('~' value=power
+   {$ires = its::IntExpressionFactory::createUnary(
+      its::BITCOMP,
+      $value.ires);}
+  )
+  |
   (value=power
   { $ires = $value.ires ;}
   )
