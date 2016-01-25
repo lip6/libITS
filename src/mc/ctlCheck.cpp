@@ -802,7 +802,10 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 
 	// states reachable by an infinite path of f
-	result = fixpoint (  getNextRel() 
+	result = fixpoint (  (
+			      getNextRel() 
+			      + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
+			      )
 			     * ( fixpoint ( (rightStates * getNextRel()) + Transition::id  ) ( leftStates * rightStates)  )
 			     ) ( getReachable() );
 
