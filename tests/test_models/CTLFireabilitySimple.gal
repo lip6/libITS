@@ -1,0 +1,209 @@
+
+gal Philosophers_PT_000005_flat{
+  /**Think_1*/
+  int Think_1 = 1;
+  /**Think_2*/
+  int Think_2 = 1;
+  /**Think_3*/
+  int Think_3 = 1;
+  /**Think_4*/
+  int Think_4 = 1;
+  /**Think_5*/
+  int Think_5 = 1;
+  /**Fork_1*/
+  int Fork_1 = 1;
+  /**Fork_2*/
+  int Fork_2 = 1;
+  /**Fork_3*/
+  int Fork_3 = 1;
+  /**Fork_4*/
+  int Fork_4 = 1;
+  /**Fork_5*/
+  int Fork_5 = 1;
+  /**Catch1_1*/
+  int Catch1_1 = 0;
+  /**Catch1_2*/
+  int Catch1_2 = 0;
+  /**Catch1_3*/
+  int Catch1_3 = 0;
+  /**Catch1_5*/
+  int Catch1_5 = 0;
+  /**Catch1_4*/
+  int Catch1_4 = 0;
+  /**Catch2_2*/
+  int Catch2_2 = 0;
+  /**Catch2_1*/
+  int Catch2_1 = 0;
+  /**Catch2_4*/
+  int Catch2_4 = 0;
+  /**Catch2_3*/
+  int Catch2_3 = 0;
+  /**Eat_1*/
+  int Eat_1 = 0;
+  /**Catch2_5*/
+  int Catch2_5 = 0;
+  /**Eat_3*/
+  int Eat_3 = 0;
+  /**Eat_2*/
+  int Eat_2 = 0;
+  /**Eat_5*/
+  int Eat_5 = 0;
+  /**Eat_4*/
+  int Eat_4 = 0;
+  /**FF1a_2*/
+  transition FF1a_2 [ Fork_1 >= 1 && Think_2 >= 1 ] {
+    Fork_1 -= 1    ;
+    Catch1_2 += 1    ;
+    Think_2 -= 1    ;
+  }
+  /**FF1a_1*/
+  transition FF1a_1 [ Fork_5 >= 1 && Think_1 >= 1 ] {
+    Catch1_1 += 1    ;
+    Fork_5 -= 1    ;
+    Think_1 -= 1    ;
+  }
+  /**FF1a_4*/
+  transition FF1a_4 [ Think_4 >= 1 && Fork_3 >= 1 ] {
+    Catch1_4 += 1    ;
+    Fork_3 -= 1    ;
+    Think_4 -= 1    ;
+  }
+  /**FF1a_3*/
+  transition FF1a_3 [ Fork_2 >= 1 && Think_3 >= 1 ] {
+    Think_3 -= 1    ;
+    Fork_2 -= 1    ;
+    Catch1_3 += 1    ;
+  }
+  /**FF1b_2*/
+  transition FF1b_2 [ Think_2 >= 1 && Fork_2 >= 1 ] {
+    Catch2_2 += 1    ;
+    Think_2 -= 1    ;
+    Fork_2 -= 1    ;
+  }
+  /**FF1b_3*/
+  transition FF1b_3 [ Fork_3 >= 1 && Think_3 >= 1 ] {
+    Catch2_3 += 1    ;
+    Think_3 -= 1    ;
+    Fork_3 -= 1    ;
+  }
+  /**FF1a_5*/
+  transition FF1a_5 [ Fork_4 >= 1 && Think_5 >= 1 ] {
+    Fork_4 -= 1    ;
+    Catch1_5 += 1    ;
+    Think_5 -= 1    ;
+  }
+  /**FF1b_1*/
+  transition FF1b_1 [ Think_1 >= 1 && Fork_1 >= 1 ] {
+    Catch2_1 += 1    ;
+    Fork_1 -= 1    ;
+    Think_1 -= 1    ;
+  }
+  /**FF2a_1*/
+  transition FF2a_1 [ Catch1_1 >= 1 && Fork_1 >= 1 ] {
+    Catch1_1 -= 1    ;
+    Fork_1 -= 1    ;
+    Eat_1 += 1    ;
+  }
+  /**FF2a_2*/
+  transition FF2a_2 [ Catch1_2 >= 1 && Fork_2 >= 1 ] {
+    Eat_2 += 1    ;
+    Catch1_2 -= 1    ;
+    Fork_2 -= 1    ;
+  }
+  /**FF1b_4*/
+  transition FF1b_4 [ Fork_4 >= 1 && Think_4 >= 1 ] {
+    Fork_4 -= 1    ;
+    Catch2_4 += 1    ;
+    Think_4 -= 1    ;
+  }
+  /**FF1b_5*/
+  transition FF1b_5 [ Fork_5 >= 1 && Think_5 >= 1 ] {
+    Catch2_5 += 1    ;
+    Fork_5 -= 1    ;
+    Think_5 -= 1    ;
+  }
+  /**FF2a_5*/
+  transition FF2a_5 [ Fork_5 >= 1 && Catch1_5 >= 1 ] {
+    Fork_5 -= 1    ;
+    Catch1_5 -= 1    ;
+    Eat_5 += 1    ;
+  }
+  /**FF2b_1*/
+  transition FF2b_1 [ Fork_5 >= 1 && Catch2_1 >= 1 ] {
+    Catch2_1 -= 1    ;
+    Fork_5 -= 1    ;
+    Eat_1 += 1    ;
+  }
+  /**FF2a_3*/
+  transition FF2a_3 [ Catch1_3 >= 1 && Fork_3 >= 1 ] {
+    Eat_3 += 1    ;
+    Fork_3 -= 1    ;
+    Catch1_3 -= 1    ;
+  }
+  /**FF2a_4*/
+  transition FF2a_4 [ Catch1_4 >= 1 && Fork_4 >= 1 ] {
+    Fork_4 -= 1    ;
+    Catch1_4 -= 1    ;
+    Eat_4 += 1    ;
+  }
+  /**FF2b_4*/
+  transition FF2b_4 [ Catch2_4 >= 1 && Fork_3 >= 1 ] {
+    Eat_4 += 1    ;
+    Fork_3 -= 1    ;
+    Catch2_4 -= 1    ;
+  }
+  /**FF2b_5*/
+  transition FF2b_5 [ Fork_4 >= 1 && Catch2_5 >= 1 ] {
+    Catch2_5 -= 1    ;
+    Fork_4 -= 1    ;
+    Eat_5 += 1    ;
+  }
+  /**FF2b_2*/
+  transition FF2b_2 [ Fork_1 >= 1 && Catch2_2 >= 1 ] {
+    Eat_2 += 1    ;
+    Fork_1 -= 1    ;
+    Catch2_2 -= 1    ;
+  }
+  /**FF2b_3*/
+  transition FF2b_3 [ Fork_2 >= 1 && Catch2_3 >= 1 ] {
+    Catch2_3 -= 1    ;
+    Eat_3 += 1    ;
+    Fork_2 -= 1    ;
+  }
+  /**End_4*/
+  transition End_4 [ Eat_4 >= 1 ] {
+    Fork_4 += 1    ;
+    Eat_4 -= 1    ;
+    Fork_3 += 1    ;
+    Think_4 += 1    ;
+  }
+  /**End_3*/
+  transition End_3 [ Eat_3 >= 1 ] {
+    Think_3 += 1    ;
+    Eat_3 -= 1    ;
+    Fork_3 += 1    ;
+    Fork_2 += 1    ;
+  }
+  /**End_2*/
+  transition End_2 [ Eat_2 >= 1 ] {
+    Eat_2 -= 1    ;
+    Fork_1 += 1    ;
+    Think_2 += 1    ;
+    Fork_2 += 1    ;
+  }
+  /**End_1*/
+  transition End_1 [ Eat_1 >= 1 ] {
+    Fork_1 += 1    ;
+    Fork_5 += 1    ;
+    Think_1 += 1    ;
+    Eat_1 -= 1    ;
+  }
+  /**End_5*/
+  transition End_5 [ Eat_5 >= 1 ] {
+    Fork_4 += 1    ;
+    Fork_5 += 1    ;
+    Think_5 += 1    ;
+    Eat_5 -= 1    ;
+  }
+}
+main Philosophers_PT_000005_flat ;
