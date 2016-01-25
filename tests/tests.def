@@ -46,3 +46,7 @@ DVE input, Lamport model, backward CTL, with witness construction
 ../bin/its-ctl -i test_models/lamport.2.dve -t DVE -ctl test_models/lamport.ctl --quiet --backward --witness
 GAL input, using quoted variables to access arrays
 ../bin/its-ctl -i test_models/gal/hanoi.gal -t GAL -ctl test_models/gal/hanoi.ctl --quiet
+GAL input, test from pnmcc
+../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet
+GAL input, test from pnmcc (backward)
+../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet --backward
