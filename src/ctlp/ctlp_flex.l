@@ -116,7 +116,7 @@ removed here for the until operator */
 /* +, *, and ^ have to be used surrounded by spaces
 since they are symbols. ! can be attached immediately w/o spaces though
 since it is not a symbol */
-alnum		[A-Za-z0-9\^\?\|\/\+\*\$\<\>~@\_#\$%\:\"\'\.]
+alnum		[A-Za-z0-9\^\?\|\/\+\*\$\<\>~@\_#\$%\:\'\.]
 /*alnum		[A-Za-z0-9\^\?\|\/\[\]\+\*\$\<\>~@\_#\$%\:\"\'\.]*/
 %%
 
