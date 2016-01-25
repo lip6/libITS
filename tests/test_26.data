@@ -1,0 +1,116 @@
+GAL input, test from pnmcc (backward)
+../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet --backward
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/CTLFireabilitySimple.gal  -t  CGAL  -ctl  test_models/CTLFireabilitySimple.ctl  --quiet  --backward  
+Parsed 15 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,243,0.006921,2400,2,112,5,520,6,0,128,298,0
+
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 0,180,0.025572,3208,2,175,35,8185,19,21,472,5505,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 1,180,0.026426,3616,2,175,35,8185,19,22,472,5518,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 2,180,0.027053,3620,2,175,35,8185,19,22,472,5518,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 3,180,0.0277,3620,2,175,35,8185,19,22,472,5518,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 4,180,0.028341,3620,2,175,35,8185,19,22,472,5518,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 5,180,0.028793,3620,2,175,35,8185,19,22,472,5518,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 6,180,0.029193,3620,2,175,35,8185,19,22,472,5518,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))
+(state)formula 7,180,0.029592,3620,2,175,35,8185,19,22,472,5518,25
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)) U (((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+=> equivalent existential formula: E((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)) U (((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+(state)formula 8,161,0.036854,3880,2,193,57,10409,32,34,473,7947,39
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: E(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1) U (((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1)))
+=> equivalent existential formula: E(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1) U (((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1)))
+(state)formula 9,205,0.05613,4560,2,192,85,17048,40,56,474,14378,57
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EG((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+=> equivalent existential formula: EG((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+(state)formula 10,156,0.058074,4976,2,210,87,17485,40,61,474,14863,64
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AF((((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1)))
+=> equivalent existential formula: !(EG(!((((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1)))))
+(state)formula 11,145,0.067524,5244,2,212,114,22003,45,82,478,18728,82
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((((((Think_2>=1 * Fork_2>=1) + (Fork_3>=1 * Think_3>=1)) + (Think_1>=1 * Fork_1>=1)) + (Fork_4>=1 * Think_4>=1)) + (Fork_5>=1 * Think_5>=1)) U ((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent existential formula: !((E(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)) U (!((((((Think_2>=1 * Fork_2>=1) + (Fork_3>=1 * Think_3>=1)) + (Think_1>=1 * Fork_1>=1)) + (Fork_4>=1 * Think_4>=1)) + (Fork_5>=1 * Think_5>=1))) * !(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))) + EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))))
+(state)formula 12,120,0.078446,6136,2,149,135,25891,48,107,478,23113,93
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)) U (((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+=> equivalent existential formula: !((E(!((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1))) U (!((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1))) * !((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1))))) + EG(!((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1))))))
+(state)formula 13,161,0.101294,6412,2,193,152,30755,51,125,478,27017,112
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: E((((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1)) U (((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1)))
+=> equivalent existential formula: E((((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1)) U (((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1)))
+(state)formula 14,170,0.113425,7112,2,234,165,35699,54,136,478,32052,125
+Formula is FALSE !
+
+ *************************************** 
+
