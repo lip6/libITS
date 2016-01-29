@@ -788,7 +788,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
       // FwdUntil(p,q) holds at any state "t", such that there exists a path through "t" from some state at which
       // p holds, and q holds at all states before "t" on the path.
       
-      result = (getNextRel() +Transition::id) (fixpoint ( (rightStates * getNextRel()) + its::Transition::id ) ( leftStates )) ;
+      result =fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id ) ( leftStates ) ;
       break;
     case Ctlp_FwdG_c:
       {
