@@ -771,7 +771,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
        */
       /**
        * In other words, start from states satisfying p, then add successors satisfying q to fixpoint
-       * FwdUntil(p,q) =  ( q & Next  + Id)^* & p
+       * FwdUntil(p,q) =  ( Next & (q * id)  + Id)^* ( p )
        */
       // test for trivial reachability case
       if (Ctlp_FormulaReadLeftChild(ctlFormula) &&
@@ -792,6 +792,24 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
       break;
     case Ctlp_FwdG_c:
       {
+	  // from original forward CTL paper :
+	  // EH (p) = gfp Z [p ^ Img (Z)]
+	  // Reachable (p; q) = FwdUntil (p; q) ^ q
+	  // FwdGlobal (p; q) = EH (Reachable (p; q))
+	  
+	  // so, EH (p) = ( Next * id )^* (p)
+	  // Reachable(p,q) = FwdUntil(p;q) ^q
+	  // and  FwdUntil(p,q) =  ( Next & (q * id)  + Id)^* ( p )
+	  // Reachable(p,q) = (( Next & (q * id)  + Id)^* ( p )) * q
+	  // FwdGlobal (p; q) = ( Next * id )^* ((( Next & (q * id)  + Id)^* ( p )) * q)
+		result = fixpoint ( getNextRel() * Transition::id  
+							+ (  (getReachable() -  (getPredRel() (getReachable()))) * Transition::id ) 
+		// FwdUntil(p,q)
+		(fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id ) ( leftStates ) 
+		// ^q 
+		* rightStates);
+		
+	
 	// EH (p) is the subset of states verifying "p" that are reachable through a cycle in p
 	// EH = fixpoint ( p * getNextRel() ) (getReachable);
 
@@ -802,13 +820,13 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 
 	// states reachable by an infinite path of f
-	result = fixpoint (  (
+/*	result = fixpoint (  (
 			      getNextRel() 
 			      + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
 			      )
 			     * ( fixpoint ( (rightStates * getNextRel()) + Transition::id  ) ( leftStates * rightStates)  )
 			     ) ( getReachable() );
-
+*/
 
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
