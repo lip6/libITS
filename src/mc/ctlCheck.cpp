@@ -803,7 +803,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	  // Reachable(p,q) = (( Next & (q * id)  + Id)^* ( p )) * q
 	  // FwdGlobal (p; q) = ( Next * id )^* ((( Next & (q * id)  + Id)^* ( p )) * q)
 		result = fixpoint ( getNextRel() * Transition::id  
-							+ (  (getReachable() -  (getPredRel() (getReachable()))) * Transition::id ) 
+							+ (  (getReachable() -  (getPredRel() (getReachable()))) * Transition::id ) ) 
 		// FwdUntil(p,q)
 		(fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id ) ( leftStates ) 
 		// ^q 
