@@ -50,3 +50,5 @@ GAL input, test from pnmcc
 ../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet
 GAL input, test from pnmcc (backward)
 ../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet --backward
+GAL input from pnmcc
+../bin/its-ctl --quiet  -i  test_models/circ/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl 
