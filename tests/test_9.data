@@ -8,34 +8,34 @@ Successfully loaded order from file test_models/train4.ord
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-reachable,28895,1.13607,43984,2693,10,74085,31,243,64221,42,175,0
+reachable,28895,1.05,45228,2693,10,75952,31,243,66288,42,177,0
 
 
 Converting to forward existential form...Done !
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,1.14066,43228,1,0,74085,31,496,64221,48,175,1081
+(forward)formula 0,1,1.05,44156,1,0,75952,31,496,66288,48,177,1081
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,1.14074,43232,1,0,74085,31,496,64221,48,175,1081
+(forward)formula 1,0,1.05,44156,1,0,75952,31,496,66288,48,177,1081
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,1.14078,43232,1,0,74085,31,496,64221,48,175,1081
+(forward)formula 2,0,1.05,44156,1,0,75952,31,496,66288,48,177,1081
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
-(forward)formula 3,1,1.28433,43232,1,0,74085,40,1345,64221,92,210,142166
+(forward)formula 3,1,1.16,44156,1,0,75952,40,1284,66288,91,224,88775
 Formula is TRUE !
 
  *************************************** 
