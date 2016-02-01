@@ -7,34 +7,34 @@ its-ctl command run as :
 No direction supplied, using forward translation only.
 Parsed 4 CTL formulae.
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-reachable,11257,1.3,66792,11361,3,111125,6,409,90728,8,5,0
+reachable,11257,1.37857,67080,11361,3,111592,6,409,91415,8,5,0
 
 
 Converting to forward existential form...Done !
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 0,1,1.31,66808,1,0,111125,6,980,90728,11,5,1894
+(forward)formula 0,1,1.39568,67092,1,0,111592,6,980,91415,11,5,1894
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 1,0,1.31,66880,1,0,111125,6,980,90728,11,5,1894
+(forward)formula 1,0,1.39577,67124,1,0,111592,6,980,91415,11,5,1894
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(FALSE)
 => equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
-(forward)formula 2,0,1.31,66880,1,0,111125,6,980,90728,11,5,1894
+(forward)formula 2,0,1.3958,67124,1,0,111592,6,980,91415,11,5,1894
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AG(EX(TRUE))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
-(forward)formula 3,0,2.16,66880,1,0,111125,8,2935,90728,14,11,807723
+(forward)formula 3,0,2.28933,67124,1,0,111592,8,2633,91415,14,11,797487
 Formula is FALSE !
 
  *************************************** 

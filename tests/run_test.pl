@@ -47,7 +47,7 @@ while (my $line = <IN>) {
 }
 
 
-if ( @nominal[1] != @tested[1] ) {
+if ( @nominal[1] ne @tested[1] ) {
   print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='@nominal[1]' actual='@tested[1]'] \n";
 #  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
 } else {
@@ -59,7 +59,7 @@ if ( @nominal[1] != @tested[1] ) {
 
 foreach my $i  (0..$#refverdicts ) {
   if ( @refverdicts[$i] ne @verdicts[$i] ) {
-     print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='formula $i : @refverdicts[$i]' actual='@verdict[$i]'] \n";
+     print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='formula $i : @refverdicts[$i]' actual='@verdicts[$i]'] \n";
   } else {
     print "Test of formula $i successful.\n";
   }

@@ -7,517 +7,517 @@ its-ctl command run as :
 No direction supplied, using forward translation only.
 Parsed 73 CTL formulae.
 Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
-reachable,11257,0.3,17116,5963,3,34829,6,409,27157,8,5,0
+reachable,11257,0.302315,17188,5963,3,34826,6,409,27153,8,5,0
 
 
 Converting to forward existential form...Done !
 original formula: AF(second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [FwdG(Init,!(second_negociation_phase_ID0=1))] = FALSE
-(forward)formula 0,0,2.85,145004,1,0,342306,6,984,409093,13,5,1081565
+(forward)formula 0,0,3.44455,179448,1,0,366599,8,2552,437410,15,11,1498382
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(EG(!(second_negociation_phase_ID0=1)))
 => equivalent forward existential formula: [FwdG(Init,!(second_negociation_phase_ID0=1))] = FALSE
-(forward)formula 1,0,2.85,145228,1,0,342306,6,984,409093,13,5,1081565
+(forward)formula 1,0,3.44467,179544,1,0,366599,8,2552,437410,15,11,1498382
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AF((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [FwdG(Init,!((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1)))] = FALSE
-(forward)formula 2,0,3.12,152616,1,0,350153,6,989,455233,13,5,1137278
+(forward)formula 2,0,3.61902,184820,1,0,374363,8,2558,483590,15,11,1554095
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AF((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [FwdG(Init,!((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1)))] = FALSE
-(forward)formula 3,0,3.25,158184,1,0,361970,6,993,482353,13,5,1185039
+(forward)formula 3,0,3.7576,189724,1,0,386180,8,2563,510730,15,11,1601856
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AG(second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(second_negociation_phase_ID0=1))] = FALSE
-(forward)formula 4,0,3.25,158420,1,0,361970,6,993,482384,13,5,1185039
+(forward)formula 4,0,3.75777,189756,1,0,386180,8,2563,510761,15,11,1601856
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(EF(!(second_negociation_phase_ID0=1)))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(second_negociation_phase_ID0=1))] = FALSE
-(forward)formula 5,0,3.25,158420,1,0,361970,6,993,482384,13,5,1185039
+(forward)formula 5,0,3.75781,189756,1,0,386180,8,2563,510761,15,11,1601856
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AG((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1)))] = FALSE
-(forward)formula 6,0,3.25,158420,1,0,361970,6,993,482415,13,5,1185039
+(forward)formula 6,0,3.75794,189756,1,0,386180,8,2563,510792,15,11,1601856
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AG((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1)))] = FALSE
-(forward)formula 7,0,3.25,158420,1,0,361970,6,993,482446,13,5,1185039
+(forward)formula 7,0,3.75805,189756,1,0,386180,8,2563,510823,15,11,1601856
 Formula is FALSE !
 
  *************************************** 
 
 original formula: A(init_ID0=1 U second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [((Init * !(EG(!(second_negociation_phase_ID0=1)))) * !(E(!(second_negociation_phase_ID0=1) U (!(init_ID0=1) * !(second_negociation_phase_ID0=1)))))] != FALSE
-(forward)formula 8,0,4.33,208300,1,0,412014,8,2790,551087,15,11,1696009
+(forward)formula 8,0,4.21826,198660,1,0,410677,8,2570,551020,15,11,1682835
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !((E(!(second_negociation_phase_ID0=1) U (!(init_ID0=1) * !(second_negociation_phase_ID0=1))) + EG(!(second_negociation_phase_ID0=1))))
 => equivalent forward existential formula: [((Init * !(EG(!(second_negociation_phase_ID0=1)))) * !(E(!(second_negociation_phase_ID0=1) U (!(init_ID0=1) * !(second_negociation_phase_ID0=1)))))] != FALSE
-(forward)formula 9,0,4.33,208300,1,0,412014,8,2790,551087,15,11,1696009
+(forward)formula 9,0,4.2184,198676,1,0,410677,8,2570,551020,15,11,1682835
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(E(!(init_ID0=1) U !(second_negociation_phase_ID0=1)))
 => equivalent forward existential formula: [(FwdU(Init,!(init_ID0=1)) * !(second_negociation_phase_ID0=1))] = FALSE
-(forward)formula 10,0,4.85,218856,1,0,465923,8,2850,626216,15,11,1854735
+(forward)formula 10,0,4.219,198676,1,0,410677,8,2682,551020,15,11,1682946
 Formula is FALSE !
 
  *************************************** 
 
 original formula: A((init_ID0=1 * init_ID1=1) U (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [((Init * !(EG(!((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))))) * !(E(!((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1)) U (!((init_ID0=1 * init_ID1=1)) * !((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))))))] != FALSE
-(forward)formula 11,0,4.92,222600,1,0,473612,8,2854,640250,15,11,1878290
+(forward)formula 11,0,4.30831,201056,1,0,418243,8,2686,565047,15,11,1705079
 Formula is FALSE !
 
  *************************************** 
 
 original formula: A((init_ID0=1 + init_ID1=1) U (second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [((Init * !(EG(!((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))))) * !(E(!((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1)) U (!((init_ID0=1 + init_ID1=1)) * !((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))))))] != FALSE
-(forward)formula 12,0,4.96,224996,1,0,479290,8,2857,650291,15,11,1892519
+(forward)formula 12,0,4.5069,202664,1,0,423855,8,2689,575084,15,11,1718195
 Formula is FALSE !
 
  *************************************** 
 
 original formula: first_negociation_phase_ID0=1
 => equivalent forward existential formula: [(Init * first_negociation_phase_ID0=1)] != FALSE
-(forward)formula 13,0,4.97,225612,1,0,482997,8,2858,650399,15,11,1898474
+(forward)formula 13,0,4.51525,203380,1,0,427562,8,2690,575192,15,11,1724150
 Formula is FALSE !
 
  *************************************** 
 
 original formula: second_negociation_phase_ID0=1
 => equivalent forward existential formula: [(Init * second_negociation_phase_ID0=1)] != FALSE
-(forward)formula 14,0,4.97,225804,1,0,482997,8,2858,650430,15,11,1898474
+(forward)formula 14,0,4.51544,203444,1,0,427562,8,2690,575223,15,11,1724150
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EG(second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [FwdG(Init,second_negociation_phase_ID0=1)] != FALSE
-(forward)formula 15,0,4.97,225808,1,0,482997,8,2863,650430,15,11,1898476
+(forward)formula 15,0,4.51563,203444,1,0,427562,8,2695,575223,15,11,1724152
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EG(first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [FwdG(Init,first_negociation_phase_ID0=1)] != FALSE
-(forward)formula 16,0,4.97,225828,1,0,482997,8,2866,650430,15,11,1898476
+(forward)formula 16,0,4.51579,203444,1,0,427562,8,2698,575223,15,11,1724152
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EG((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [FwdG(Init,(second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 17,0,4.97,225864,1,0,482997,8,2869,650461,15,11,1898476
+(forward)formula 17,0,4.51594,203444,1,0,427562,8,2701,575254,15,11,1724152
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EG((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [FwdG(Init,(second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 18,0,4.97,225872,1,0,482997,8,2872,650492,15,11,1898476
+(forward)formula 18,0,4.51609,203444,1,0,427562,8,2704,575285,15,11,1724152
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(AF(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: [FwdG(Init,!(first_negociation_phase_ID0=1))] != FALSE
-(forward)formula 19,1,5.01,228508,1,0,491368,8,2877,659556,15,11,1913255
+(forward)formula 19,1,4.54976,205028,1,0,436141,8,2709,584611,15,11,1738931
 Formula is TRUE !
 
  *************************************** 
 
 original formula: EG(!(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: [FwdG(Init,!(first_negociation_phase_ID0=1))] != FALSE
-(forward)formula 20,1,5.01,228572,1,0,491368,8,2877,659556,15,11,1913255
+(forward)formula 20,1,4.54987,205288,1,0,436141,8,2709,584611,15,11,1738931
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EF(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * first_negociation_phase_ID0=1)] = FALSE
-(forward)formula 21,0,5.02,228572,1,0,491368,8,2877,663837,15,11,1913255
+(forward)formula 21,0,4.55635,205288,1,0,436141,8,2709,588900,15,11,1738931
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AG(!(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * first_negociation_phase_ID0=1)] = FALSE
-(forward)formula 22,0,5.02,228800,1,0,491368,8,2877,663837,15,11,1913255
+(forward)formula 22,0,4.55644,205464,1,0,436141,8,2709,588900,15,11,1738931
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(AX(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: [(EY(Init) * !(first_negociation_phase_ID0=1))] != FALSE
-(forward)formula 23,1,5.02,228800,1,0,491368,8,2877,663837,15,11,1913255
+(forward)formula 23,1,4.55648,205464,1,0,436141,8,2709,588900,15,11,1738931
 Formula is TRUE !
 
  *************************************** 
 
 original formula: EX(!(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: [(EY(Init) * !(first_negociation_phase_ID0=1))] != FALSE
-(forward)formula 24,1,5.02,228800,1,0,491368,8,2877,663837,15,11,1913255
+(forward)formula 24,1,4.55651,205464,1,0,436141,8,2709,588900,15,11,1738931
 Formula is TRUE !
 
  *************************************** 
 
 original formula: AF(first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [FwdG(Init,!(first_negociation_phase_ID0=1))] = FALSE
-(forward)formula 25,0,5.02,228800,1,0,491368,8,2877,663837,15,11,1913255
+(forward)formula 25,0,4.55655,205464,1,0,436141,8,2709,588900,15,11,1738931
 Formula is FALSE !
 
  *************************************** 
 
 original formula: A(TRUE U first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [((Init * !(EG(!(first_negociation_phase_ID0=1)))) * !(E(!(first_negociation_phase_ID0=1) U (!(TRUE) * !(first_negociation_phase_ID0=1)))))] != FALSE
-(forward)formula 26,0,5.65,265756,1,0,599417,8,2880,774011,15,11,2149241
+(forward)formula 26,0,5.07534,239780,1,0,539770,8,2712,697195,15,11,1954818
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EF(first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * first_negociation_phase_ID0=1)] != FALSE
-(forward)formula 27,1,5.65,265936,1,0,599417,8,2880,774011,15,11,2149241
+(forward)formula 27,1,5.07544,239944,1,0,539770,8,2712,697195,15,11,1954818
 Formula is TRUE !
 
  *************************************** 
 
 original formula: E(TRUE U first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * first_negociation_phase_ID0=1)] != FALSE
-(forward)formula 28,1,5.65,265936,1,0,599417,8,2880,774011,15,11,2149241
+(forward)formula 28,1,5.0755,239944,1,0,539770,8,2712,697195,15,11,1954818
 Formula is TRUE !
 
  *************************************** 
 
 original formula: AG(first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * !(first_negociation_phase_ID0=1))] = FALSE
-(forward)formula 29,0,5.65,265936,1,0,599417,8,2880,774224,15,11,2149241
+(forward)formula 29,0,5.07605,239944,1,0,539770,8,2712,697408,15,11,1954818
 Formula is FALSE !
 
  *************************************** 
 
 original formula: (first_negociation_phase_ID0=1 * AX(AG(first_negociation_phase_ID0=1)))
 => equivalent forward existential formula: ([(Init * !(first_negociation_phase_ID0=1))] = FALSE * [(FwdU(EY(Init),TRUE) * !(first_negociation_phase_ID0=1))] = FALSE)
-(forward)formula 30,0,5.8,273324,1,0,615585,8,2883,799712,15,11,2196185
+(forward)formula 30,0,5.07667,239976,1,0,539770,8,2830,697408,15,11,1954989
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EG(first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [FwdG(Init,first_negociation_phase_ID0=1)] != FALSE
-(forward)formula 31,0,5.8,273524,1,0,615585,8,2883,799712,15,11,2196185
+(forward)formula 31,0,5.07672,240004,1,0,539770,8,2830,697408,15,11,1954989
 Formula is FALSE !
 
  *************************************** 
 
 original formula: (first_negociation_phase_ID0=1 * EX(EG(first_negociation_phase_ID0=1)))
 => equivalent forward existential formula: [FwdG(EY((Init * first_negociation_phase_ID0=1)),first_negociation_phase_ID0=1)] != FALSE
-(forward)formula 32,0,5.8,273524,1,0,615585,8,2883,799712,15,11,2196185
+(forward)formula 32,0,5.07676,240004,1,0,539770,8,2830,697408,15,11,1954989
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EF(first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * first_negociation_phase_ID0=1)] != FALSE
-(forward)formula 33,1,5.8,273524,1,0,615585,8,2883,799712,15,11,2196185
+(forward)formula 33,1,5.07679,240004,1,0,539770,8,2830,697408,15,11,1954989
 Formula is TRUE !
 
  *************************************** 
 
 original formula: (first_negociation_phase_ID0=1 + EX(EF(first_negociation_phase_ID0=1)))
 => equivalent forward existential formula: ([(Init * first_negociation_phase_ID0=1)] != FALSE + [(FwdU(EY(Init),TRUE) * first_negociation_phase_ID0=1)] != FALSE)
-(forward)formula 34,1,5.8,273524,1,0,615585,8,2883,799794,15,11,2196185
+(forward)formula 34,1,5.07713,240004,1,0,539823,8,2830,697491,15,11,1954989
 Formula is TRUE !
 
  *************************************** 
 
 original formula: (init_ID0=1 -> first_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(Init * (init_ID0=1 -> first_negociation_phase_ID0=1))] != FALSE
-(forward)formula 35,0,5.81,273788,1,0,615585,8,2883,804081,15,11,2196185
+(forward)formula 35,0,5.08745,240264,1,0,539823,8,2830,701848,15,11,1954989
 Formula is FALSE !
 
  *************************************** 
 
 original formula: (init_ID0=1 -> first_negociation_phase_ID0=0)
 => equivalent forward existential formula: [(Init * (init_ID0=1 -> first_negociation_phase_ID0=0))] != FALSE
-(forward)formula 36,1,5.83,274828,1,0,615585,8,2884,808158,16,11,2202140
+(forward)formula 36,1,5.10847,241308,1,0,539823,8,2831,705832,16,11,1960944
 Formula is TRUE !
 
  *************************************** 
 
 original formula: (EX(init_ID0=1) -> first_negociation_phase_ID0=1)
 => equivalent forward existential formula: ([(Init * !(EX(init_ID0=1)))] != FALSE + [(Init * first_negociation_phase_ID0=1)] != FALSE)
-(forward)formula 37,0,5.84,275268,1,0,615942,8,2884,808480,16,11,2205080
+(forward)formula 37,0,5.11395,241660,1,0,540171,8,2831,706154,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: (init_ID0=1 -> EX(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: ([(Init * !(init_ID0=1))] != FALSE + [(EY(Init) * first_negociation_phase_ID0=1)] != FALSE)
-(forward)formula 38,1,5.84,275368,1,0,615942,8,2884,808563,16,11,2205080
+(forward)formula 38,1,5.11407,241720,1,0,540171,8,2831,706154,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: (EX(init_ID0=1) -> EX(first_negociation_phase_ID0=1))
 => equivalent forward existential formula: ([(Init * !(EX(init_ID0=1)))] != FALSE + [(EY(Init) * first_negociation_phase_ID0=1)] != FALSE)
-(forward)formula 39,1,5.84,275372,1,0,615942,8,2884,808563,16,11,2205080
+(forward)formula 39,1,5.11414,241720,1,0,540171,8,2831,706154,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: EX(init_ID0=1)
 => equivalent forward existential formula: [(EY(Init) * init_ID0=1)] != FALSE
-(forward)formula 40,1,5.84,275372,1,0,615942,8,2884,808618,16,11,2205080
+(forward)formula 40,1,5.1144,241720,1,0,540171,8,2831,706209,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: EF(init_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * init_ID0=1)] != FALSE
-(forward)formula 41,1,5.84,275376,1,0,615942,8,2884,808665,16,11,2205080
+(forward)formula 41,1,5.11458,241720,1,0,540171,8,2831,706256,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: !(EX(TRUE))
 => equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
-(forward)formula 42,0,5.84,275376,1,0,615942,8,2884,808696,16,11,2205080
+(forward)formula 42,0,5.11469,241720,1,0,540171,8,2831,706287,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(EX(!(FALSE)))
 => equivalent forward existential formula: [(EY(Init) * !(FALSE))] = FALSE
-(forward)formula 43,0,5.84,275380,1,0,615942,8,2884,808696,16,11,2205080
+(forward)formula 43,0,5.11473,241724,1,0,540171,8,2831,706287,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(TRUE)
 => equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
-(forward)formula 44,1,5.84,275380,1,0,615942,8,2884,808696,16,11,2205080
+(forward)formula 44,1,5.11477,241724,1,0,540171,8,2831,706287,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: TRUE
 => equivalent forward existential formula: [(Init * TRUE)] != FALSE
-(forward)formula 45,1,5.84,275380,1,0,615942,8,2884,808696,16,11,2205080
+(forward)formula 45,1,5.11481,241724,1,0,540171,8,2831,706287,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: FALSE
 => equivalent forward existential formula: [(Init * FALSE)] != FALSE
-(forward)formula 46,0,5.84,275380,1,0,615942,8,2884,808696,16,11,2205080
+(forward)formula 46,0,5.11484,241724,1,0,540171,8,2831,706287,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(TRUE)
 => equivalent forward existential formula: [(Init * !(TRUE))] != FALSE
-(forward)formula 47,0,5.84,275380,1,0,615942,8,2884,808696,16,11,2205080
+(forward)formula 47,0,5.11488,241724,1,0,540171,8,2831,706287,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(FALSE)
 => equivalent forward existential formula: [(Init * !(FALSE))] != FALSE
-(forward)formula 48,1,5.84,275380,1,0,615942,8,2884,808696,16,11,2205080
+(forward)formula 48,1,5.11493,241724,1,0,540171,8,2831,706287,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: EX(second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(EY(Init) * second_negociation_phase_ID0=1)] != FALSE
-(forward)formula 49,0,5.84,275380,1,0,615942,8,2884,808727,16,11,2205080
+(forward)formula 49,0,5.11504,241724,1,0,540171,8,2831,706318,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(EY(Init) * (second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 50,0,5.84,275380,1,0,615942,8,2884,808758,16,11,2205080
+(forward)formula 50,0,5.11518,241724,1,0,540171,8,2831,706349,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(EY(Init) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 51,0,5.84,275384,1,0,615942,8,2884,808789,16,11,2205080
+(forward)formula 51,0,5.1153,241728,1,0,540171,8,2831,706380,16,11,1963488
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EF(second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * second_negociation_phase_ID0=1)] != FALSE
-(forward)formula 52,1,5.84,275388,1,0,615942,8,2884,809655,16,11,2205080
+(forward)formula 52,1,5.11759,241728,1,0,540171,8,2831,707246,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: EF((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * (second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 53,1,5.84,275460,1,0,615942,8,2884,810069,16,11,2205080
+(forward)formula 53,1,5.11875,241784,1,0,540171,8,2831,707660,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: EF((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 54,1,5.84,275484,1,0,615942,8,2884,810121,16,11,2205080
+(forward)formula 54,1,5.11898,241808,1,0,540171,8,2831,707712,16,11,1963488
 Formula is TRUE !
 
  *************************************** 
 
 original formula: E(init_ID0=1 U second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(FwdU(Init,init_ID0=1) * second_negociation_phase_ID0=1)] != FALSE
-(forward)formula 55,0,5.85,275492,1,0,615996,8,2886,811525,16,11,2205514
+(forward)formula 55,0,5.11979,241808,1,0,540171,8,2943,707712,16,11,1963599
 Formula is FALSE !
 
  *************************************** 
 
 original formula: (init_ID0=1 * init_ID1=1)
 => equivalent forward existential formula: [(Init * (init_ID0=1 * init_ID1=1))] != FALSE
-(forward)formula 56,1,5.85,275688,1,0,615996,8,2886,811525,16,11,2205514
+(forward)formula 56,1,5.11986,241824,1,0,540171,8,2943,707712,16,11,1963599
 Formula is TRUE !
 
  *************************************** 
 
 original formula: (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1)
 => equivalent forward existential formula: [(Init * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 57,0,5.85,275688,1,0,615996,8,2886,811525,16,11,2205514
+(forward)formula 57,0,5.11994,241824,1,0,540171,8,2943,707712,16,11,1963599
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(EY(Init) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 58,0,5.85,275688,1,0,615996,8,2886,811525,16,11,2205514
+(forward)formula 58,0,5.12002,241824,1,0,540171,8,2943,707712,16,11,1963599
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EF((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,TRUE) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 59,1,5.85,275688,1,0,615996,8,2886,811525,16,11,2205514
+(forward)formula 59,1,5.12008,241824,1,0,540171,8,2943,707712,16,11,1963599
 Formula is TRUE !
 
  *************************************** 
 
 original formula: ((init_ID0=1 * init_ID1=1) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(Init * ((init_ID0=1 * init_ID1=1) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1)))] != FALSE
-(forward)formula 60,0,5.85,275688,1,0,615996,8,2886,811525,16,11,2205514
+(forward)formula 60,0,5.12015,241824,1,0,540171,8,2943,707712,16,11,1963599
 Formula is FALSE !
 
  *************************************** 
 
 original formula: ((init_ID0=1 * init_ID1=1) * EX((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1)))
 => equivalent forward existential formula: [(EY((Init * (init_ID0=1 * init_ID1=1))) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 61,0,5.85,275688,1,0,615996,8,2886,811525,16,11,2205514
+(forward)formula 61,0,5.12022,241824,1,0,540171,8,2943,707712,16,11,1963599
 Formula is FALSE !
 
  *************************************** 
 
 original formula: E((init_ID0=1 * init_ID1=1) U (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,(init_ID0=1 * init_ID1=1)) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 62,0,5.85,275688,1,0,615996,8,2889,811611,16,11,2205607
+(forward)formula 62,0,5.12079,241824,1,0,540171,8,3000,707712,16,11,1963655
 Formula is FALSE !
 
  *************************************** 
 
 original formula: (((init_ID0=1 * init_ID1=1) * EX((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))) + (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: ([(EY((Init * (init_ID0=1 * init_ID1=1))) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE + [(Init * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE)
-(forward)formula 63,0,5.85,275688,1,0,615996,8,2889,811611,16,11,2205607
+(forward)formula 63,0,5.12089,241836,1,0,540171,8,3000,707712,16,11,1963655
 Formula is FALSE !
 
  *************************************** 
 
 original formula: E((init_ID0=1 + init_ID1=1) U (second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,(init_ID0=1 + init_ID1=1)) * (second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 64,0,5.87,277004,1,0,619668,8,2892,815210,16,11,2216585
+(forward)formula 64,0,5.12148,241836,1,0,540171,8,3057,707712,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
 
 original formula: EX(second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(EY(Init) * second_negociation_phase_ID0=1)] != FALSE
-(forward)formula 65,0,5.87,277172,1,0,619668,8,2892,815210,16,11,2216585
+(forward)formula 65,0,5.12154,241848,1,0,540171,8,3057,707712,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AX(second_negociation_phase_ID0=1)
 => equivalent forward existential formula: [(EY(Init) * !(second_negociation_phase_ID0=1))] = FALSE
-(forward)formula 66,0,5.87,277172,1,0,619668,8,2892,815210,16,11,2216585
+(forward)formula 66,0,5.12159,241848,1,0,540171,8,3057,707712,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
 
 original formula: !(EX(!(second_negociation_phase_ID0=1)))
 => equivalent forward existential formula: [(EY(Init) * !(second_negociation_phase_ID0=1))] = FALSE
-(forward)formula 67,0,5.87,277172,1,0,619668,8,2892,815210,16,11,2216585
+(forward)formula 67,0,5.12164,241848,1,0,540171,8,3057,707712,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AX((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(EY(Init) * !((second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1)))] = FALSE
-(forward)formula 68,0,5.87,277172,1,0,619668,8,2892,815210,16,11,2216585
+(forward)formula 68,0,5.1217,241848,1,0,540171,8,3057,707712,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AX((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(EY(Init) * !((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1)))] = FALSE
-(forward)formula 69,0,5.87,277172,1,0,619668,8,2892,815210,16,11,2216585
+(forward)formula 69,0,5.12176,241848,1,0,540171,8,3057,707712,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
 
 original formula: AX(!((second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1)))
 => equivalent forward existential formula: [(EY(Init) * (second_negociation_phase_ID0=1 + second_negociation_phase_ID1=1))] = FALSE
-(forward)formula 70,1,5.87,277172,1,0,619668,8,2892,815210,16,11,2216585
+(forward)formula 70,1,5.12182,241848,1,0,540171,8,3057,707712,16,11,1963712
 Formula is TRUE !
 
  *************************************** 
 
 original formula: AX((second_negociation_phase_ID0=1 * init_ID1=1))
 => equivalent forward existential formula: [(EY(Init) * !((second_negociation_phase_ID0=1 * init_ID1=1)))] = FALSE
-(forward)formula 71,0,5.87,277172,1,0,619668,8,2892,815241,16,11,2216585
+(forward)formula 71,0,5.12196,241848,1,0,540171,8,3057,707743,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
 
 original formula: E((init_ID0=1 * init_ID1=1) U (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))
 => equivalent forward existential formula: [(FwdU(Init,(init_ID0=1 * init_ID1=1)) * (second_negociation_phase_ID0=1 * second_negociation_phase_ID1=1))] != FALSE
-(forward)formula 72,0,5.87,277172,1,0,619668,8,2892,815241,16,11,2216585
+(forward)formula 72,0,5.12231,241848,1,0,540171,8,3057,707743,16,11,1963712
 Formula is FALSE !
 
  *************************************** 
