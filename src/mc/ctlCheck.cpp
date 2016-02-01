@@ -802,14 +802,12 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	  // and  FwdUntil(p,q) =  ( Next & (q * id)  + Id)^* ( p )
 	  // Reachable(p,q) = (( Next & (q * id)  + Id)^* ( p )) * q
 	  // FwdGlobal (p; q) = ( Next * id )^* ((( Next & (q * id)  + Id)^* ( p )) * q)
-		result = fixpoint ( getNextRel() * Transition::id  
-							+ (  (getReachable() -  (getPredRel() (getReachable()))) * Transition::id ) ) 
+	//	result = fixpoint ( (getNextRel() 
+	//			     +   (getReachable() -  (getPredRel() (getReachable())))) * Transition::id )  
 		// FwdUntil(p,q)
-		(fixpoint ( ( (getNextRel() 
-						+ (  (getReachable() -  (getPredRel() (getReachable()))) * Transition::id ))
-					& (rightStates * its::Transition::id)) + its::Transition::id ) ( leftStates ) 
+	//	(fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id ) ( leftStates  
 		// ^q 
-		* rightStates);
+	//												   * rightStates));
 		
 	
 	// EH (p) is the subset of states verifying "p" that are reachable through a cycle in p
@@ -822,13 +820,12 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 
 	// states reachable by an infinite path of f
-/*	result = fixpoint (  (
+	result = fixpoint (  (
 			      getNextRel() 
 			      + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
 			      )
 			     * ( fixpoint ( (rightStates * getNextRel()) + Transition::id  ) ( leftStates * rightStates)  )
 			     ) ( getReachable() );
-*/
 
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
