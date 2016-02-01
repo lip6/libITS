@@ -276,7 +276,7 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
 	  out << "Some " << leftStates.nbStates() << " of your " << sat.nbStates() << " input states do satisfy " ;
 	  Ctlp_FormulaPrint(vis_stdout,leftChild);
 	  out << " AND some " << rightStates.nbStates() << " of your " << sat.nbStates() << " input states do satisfy " ;
-	  Ctlp_FormulaPrint(vis_stdout,leftChild);
+	  Ctlp_FormulaPrint(vis_stdout,rightChild);
 	  out << ".\nBut these sets (explained below) have an empty intersection.\n";
 	  explain(sat, leftChild, out);
 	  explain(sat, rightChild, out);
