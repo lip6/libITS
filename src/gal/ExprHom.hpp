@@ -16,6 +16,7 @@ GHom incrExpr (const IntExpression & var, const IntExpression & expr, const GalO
 
 
 /// Creates a predicate to select paths that verify the expression e.
+/// NB : e should be simplified, e.g. through e.eval()
 GHom predicate (const BoolExpression & e, const GalOrder * vo);
 
 #ifdef HASH_STAT
