@@ -426,7 +426,7 @@ labels_t GALType::getTransLabels () const {
   }
   
   BoolExpression GALType::getBPredicate (Label pred) const {
-    return GALParser::parsePredicate (pred, gal_);
+    return GALParser::parsePredicate (pred, gal_).eval();
   }
 
 } // namespace
