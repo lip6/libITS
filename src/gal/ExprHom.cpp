@@ -424,10 +424,20 @@ public:
       { return GDDD::null; }
     else if( d == GDDD::one)
       { 
-	std::cerr << "Predicate ";
-	print(std::cerr);
-	std::cerr << " produced an overflow error !"<< std::endl;
-	return GDDD::null; 
+	BoolExpression r = expr.eval();
+	if (r.getType() == BOOLCONST) {
+	  // Constant :
+	  if (! r.getValue()) {
+	    return GDDD::null;
+	  } else {
+	    return GDDD::one;
+	  }
+	} else {
+	  std::cerr << "Predicate ";
+	  print(std::cerr);
+	  std::cerr << " produced an overflow error !"<< std::endl;
+	  return GDDD::null; 
+	}
       }
     else if( d== GDDD::top)
       { 	  
@@ -503,10 +513,20 @@ public:
       { return GDDD::null; }
     else if( d == GDDD::one)
       { 
-	std::cerr << "Predicate ";
-	print(std::cerr);
-	std::cerr << " produced an overflow error !"<< std::endl;
-	return GDDD::null; 
+	BoolExpression r = expr.eval();
+	if (r.getType() == BOOLCONST) {
+	  // Constant :
+	  if (! r.getValue()) {
+	    return GDDD::null;
+	  } else {
+	    return GDDD::one;
+	  }
+	} else {
+	  std::cerr << "Predicate ";
+	  print(std::cerr);
+	  std::cerr << " produced an overflow error !"<< std::endl;
+	  return GDDD::null; 
+	}
       }
     else if( d== GDDD::top)
       { 	  
@@ -580,7 +600,7 @@ public:
       } // end non terminal case
   }
     
-  size_t hash() const {
+   size_t hash() const {
     return 16363*expr.hash();
   }
 
