@@ -47,9 +47,9 @@ while (my $line = <IN>) {
 }
 
 
-if ( @nominal[1] ne @tested[1] ) {
+if ( @nominal[1] != @tested[1] ) {
   print "\n##teamcity[testFailed name='$title' message='regression detected' details='' expected='@nominal[1]' actual='@tested[1]'] \n";
-#  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
+  print "Expected :  @nominal[1]  Obtained :  @tested[1] \n";
 } else {
   print "##teamcity[buildStatisticValue key='testDuration' value='@tested[2]']\n";
   print "##teamcity[buildStatisticValue key='testMemory' value='@tested[3]']\n";
