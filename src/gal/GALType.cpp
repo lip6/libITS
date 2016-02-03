@@ -104,7 +104,7 @@ labels_t GALType::getTransLabels () const {
   }
 
   GHom GALType::buildHom(const GuardedAction & ga) const {
-    GHom guard = predicate ( ga.getGuard(), getGalOrder());
+    GHom guard = predicate ( ga.getGuard().eval(), getGalOrder());
     GHom action = buildHom( ga.getAction());
     return action & guard;
   }
@@ -123,13 +123,13 @@ labels_t GALType::getTransLabels () const {
       }
     }
     if (stutterOnDeadlock)
-      toadd.insert (predicate (BoolExpressionFactory::createNary (AND, stutter_trans), getGalOrder ()));
+      toadd.insert (predicate (BoolExpressionFactory::createNary (AND, stutter_trans).eval(), getGalOrder ()));
     
     GHom sum = GHom::add(toadd);
 
     // so "sum" contains the successor relationship
     // now factor in the transient states
-    GHom next = fixpoint(ITE ( predicate(gal_->isTransientState(), getGalOrder()), sum, GHom::id)) & sum;
+    GHom next = fixpoint(ITE ( predicate(gal_->isTransientState().eval(), getGalOrder()), sum, GHom::id)) & sum;
 
     return localApply(  next, DEFAULT_VAR );
   }
