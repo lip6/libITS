@@ -4,8 +4,10 @@
 using namespace its;
 
 
+
 its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const {
-  its::Transition result;
+  its::Transition stop = Shom(GSDD::top);
+  its::Transition result= stop;
   ctl_cache_it it = ctl_cache.find(ctlFormula);
   if ( it == ctl_cache.end() ) {
     // A miss 
@@ -16,6 +18,9 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
       Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
       if (leftChild) {
 	leftHom = getHomomorphism (leftChild);
+	if (leftHom == stop) {
+	  return stop;
+	}
       }
     }
     // Handle right child
@@ -23,6 +28,9 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
       Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
       if (rightChild) {
 	rightHom = getHomomorphism (rightChild);
+	if (rightHom == stop) {
+	  return stop;
+	}
       }      
     }
     //    std::cerr << "Translating CTL formula : " ;
@@ -44,11 +52,11 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
       break;
 
     case Ctlp_NOT_c:
-      result = Transition(getReachable() - leftHom (getReachable())) ; 
+      result = !  leftHom  ; 
       break;
       
     case Ctlp_AND_c:
-      result = Transition( ( leftHom (getReachable())) *  (rightHom(getReachable())) );
+      result =  leftHom & rightHom ;
       break;
 
     case Ctlp_EQ_c:
@@ -67,31 +75,34 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
       break;
 
     case Ctlp_OR_c:
-      result = Transition( ( leftHom (getReachable())) +  (rightHom(getReachable())) );
+      result = leftHom + rightHom ;
       //      result = leftHom + rightHom;
       break;
 
     case Ctlp_EX_c:
       
-      result = getPredRel() & leftHom;
+      result = stop ;
       break;
 
     case Ctlp_EU_c: 
       // start from states satisfying g, then add predescessors verifying f in a fixpoint.
       // f U g <-> ( f & pred + Id )^* & g
-      result = fixpoint ( (leftHom & getPredRel()) + its::Transition::id ) & rightHom ;
+      //      result = fixpoint ( (leftHom & getPredRel()) + its::Transition::id ) & rightHom ;
+      result = stop;
       break;
     
     case Ctlp_EG_c: 
       // start with states satisfying f
       // then remove states that are not a predescessor of a state in the set
       // EG f <->  ( f & pred )^* & f
-      result = fixpoint ( leftHom & getPredRel() * its::Transition::id ) & leftHom ;
+      result = stop;
+      //      result = fixpoint ( leftHom & getPredRel() * its::Transition::id ) & leftHom ;
       break;
     
     case Ctlp_Cmp_c: {
+      result = stop;
       // Forward CTL specific operator, curretly unimplemented
-      assert(false);
+      //      assert(false);
 //       if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
 // 	result = bdd_is_tautology(leftMdd, 0) ?
 // 	  mdd_one(mddMgr) : mdd_zero(mddMgr);
@@ -102,7 +113,7 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
     }
     case Ctlp_Init_c:
       // cast to constant homomorphism
-      result = GShom(getInitialState()) ;
+      result = stop; // result = GShom(getInitialState()) ;
       break;
     case Ctlp_FwdU_c:
       /** From Vis source documentation :
@@ -115,28 +126,31 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
        * FwdUntil(p,q) =  ( q & Next  + Id)^* & p
        */
       // test for trivial reachability case
-      if (Ctlp_FormulaReadLeftChild(ctlFormula) &&
-	  Ctlp_FormulaReadType(Ctlp_FormulaReadLeftChild(ctlFormula)) ==
-	  Ctlp_Init_c &&
-	  Ctlp_FormulaReadRightChild(ctlFormula) &&
-	  Ctlp_FormulaReadType(Ctlp_FormulaReadRightChild(ctlFormula)) ==
-	  Ctlp_TRUE_c ) {
-	// cast to constant hom
-	result = GShom(getReachable()) ;
-	break;
-      }
-      // the real case
-      result = fixpoint ( (rightHom & getNextRel()) + its::Transition::id ) & leftHom ;
+      // if (Ctlp_FormulaReadLeftChild(ctlFormula) &&
+      // 	  Ctlp_FormulaReadType(Ctlp_FormulaReadLeftChild(ctlFormula)) ==
+      // 	  Ctlp_Init_c &&
+      // 	  Ctlp_FormulaReadRightChild(ctlFormula) &&
+      // 	  Ctlp_FormulaReadType(Ctlp_FormulaReadRightChild(ctlFormula)) ==
+      // 	  Ctlp_TRUE_c ) {
+      // 	// cast to constant hom
+      // 	result = GShom(getReachable()) ;
+      // 	break;
+      // }
+      // // the real case
+      // result = fixpoint ( (rightHom & getNextRel()) + its::Transition::id ) & leftHom ;
+      result = stop;
       break;
     case Ctlp_FwdG_c:
       // states reachable by an infinite path of f
-      result = fixpoint ( leftHom & getNextRel() ) ; 
+      //      result = fixpoint ( leftHom & getNextRel() ) ; 
+      result = stop;
       break;
     case Ctlp_EY_c:
       // exists yesterday : states that have a predescessor that verifies f
       // take states verifying f, then compute successors
       // EY f  <->  Next & f (reach)
-      result = getNextRel() & leftHom ;
+      //      result = getNextRel() & leftHom ;
+      result = stop;
       break;
       
     default: 
@@ -479,7 +493,7 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
       its::State reachableA = reachA (satF);
       // This lockstep algorithm identifies SCCs (w/o prefix or suffix) with a good overall complexity.
       // See papers on "A best symbolic SCC algorithm" by M. Vardi et. al. 
-      its::Transition hasEG = fixpoint( (getNextRel()*its::Transition::id) &  (getNextRel()*its::Transition::id),true);
+      its::Transition hasEG = fixpoint( (getPredRel()*its::Transition::id) &  (getNextRel()*its::Transition::id),true);
       its::State SCCa = hasEG(reachableA);
       
       its::path_t path = model.findPath(satF,SCCa, getReachable(), true);
@@ -659,24 +673,47 @@ break;
 }
 
 its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
+  its::Transition stop = Shom(GSDD::top);
   its::State result;
   ctl_statecache_it it = ctl_statecache.find(ctlFormula);
   if ( it == ctl_statecache.end() ) {
     // A miss 
     // invoke recursive procedures
     its::State leftStates, rightStates;
+    its::Transition leftHom, rightHom;
     // Handle left child
     {
       Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
       if (leftChild) {
-	leftStates = getStateVerifying (leftChild);
+	leftHom = getHomomorphism(leftChild);
+	if (leftHom == stop) {
+	  leftStates = getStateVerifying (leftChild);
+	} else {
+	  leftStates = leftHom ( getReachable()) ; 
+	  // if (leftStates !=  getStateVerifying (leftChild)) {
+	  //   Ctlp_FormulaPrint(vis_stdout,leftChild);	    
+	  //   std::cerr << "Incoherent Hom vs States (left)" << std::endl;
+	  //   throw "error";
+	  // }
+	}
       }
     }
     // Handle right child
     {
       Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
-      if (rightChild) {
-	rightStates = getStateVerifying (rightChild);
+      if (rightChild) {	
+	rightHom = getHomomorphism(rightChild);
+	if (rightHom == stop) {
+	  rightStates = getStateVerifying (rightChild);
+	} else {
+	  rightStates = rightHom ( getReachable()) ;
+	  // if (rightStates !=  getStateVerifying (rightChild)) {
+	  //   Ctlp_FormulaPrint(vis_stdout,rightChild);	    
+	  //   std::cerr << "Incoherent Hom vs States (right)" << std::endl;
+	  //   throw "error";
+	  // }
+
+	}
       }      
     }
     //    std::cerr << "Translating CTL formula : " ;
@@ -737,19 +774,22 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
       {
       // start from states satisfying g, then add predescessors verifying f in a fixpoint.
       // f U g <-> ( f & pred + Id )^* & g
-      result = fixpoint ( (leftStates * getPredRel()) + its::Transition::id )  (rightStates) ;
+	if (leftHom == stop) {
+	  result = fixpoint ( (leftStates * getPredRel()) + its::Transition::id, true )  (rightStates) ;
+	} else {
+	  result = fixpoint ( (leftHom & getPredRel()) + its::Transition::id, true )  (rightStates) ;
+	}
       break;
       }
     case Ctlp_EG_c: 
+      {
       // start with states satisfying f
       // then remove states that are not a predescessor of a state in the set
       // EG f <->  ( f & pred )^* & f      
-      result = fixpoint (  
-			   ( getPredRel()   
-			     + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
-			     ) * its::Transition::id ) (leftStates) ; 
+      its::State deadf = ( getReachable() -  (getPredRel() (getReachable())) )*leftStates ; // i.e. add dead states that verify f; 
+      result = fixpoint ( getPredRel() * its::Transition::id , true) (leftStates)  + deadf; 
       break;
-			   
+      }			   
     case Ctlp_Cmp_c: {
       // Forward CTL specific : compare a formula to false or true
       // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
@@ -784,11 +824,15 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	result = getReachable() ;
 	break;
       }
+
       // the real case
       // FwdUntil(p,q) holds at any state "t", such that there exists a path through "t" from some state at which
       // p holds, and q holds at all states before "t" on the path.
-      
-      result =fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id ) ( leftStates ) ;
+      if (rightHom == stop) {
+	result =fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id, true ) ( leftStates ) ;
+      } else {
+	result =fixpoint ( ( getNextRel() & rightHom ) + its::Transition::id, true ) ( leftStates ) ;
+      }
       break;
     case Ctlp_FwdG_c:
       {
@@ -825,7 +869,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 			      + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
 			      )
 			     * ( fixpoint ( (rightStates * getNextRel()) + Transition::id  ) ( leftStates * rightStates)  )
-			     ) ( getReachable() );
+			     , true) ( getReachable() );
 
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
