@@ -787,7 +787,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
       // then remove states that are not a predescessor of a state in the set
       // EG f <->  ( f & pred )^* & f      
       its::State deadf = ( getReachable() -  (getPredRel() (getReachable())) )*leftStates ; // i.e. add dead states that verify f; 
-      result = fixpoint ( getPredRel() * its::Transition::id , true) (leftStates)  + deadf; 
+      result = fixpoint ( getPredRel() * its::Transition::id + deadf, true) (leftStates) ; 
       break;
       }			   
     case Ctlp_Cmp_c: {
