@@ -349,6 +349,16 @@ namespace its {
 	} // end non terminal DDD case
     }
 
+    const GHom::range_t  get_range () const {
+      GHom::range_t toret;
+      for (int i =0 ; i < vo->size(); i++) {
+	if (!skip_variable(i)) {
+	  toret.insert(i);
+	}
+      }
+      return toret;
+    }
+
     bool
     skip_variable(int vr) const
     {
@@ -418,6 +428,17 @@ public:
 //   std::cerr << "Skips " << vo->getVar(var) << " ? " << ! expr.isSupport(vo->getVar(var)) << std::endl;
    return ! expr.isSupport(vo->getVar(var)) ;
   }
+
+    const GHom::range_t  get_range () const {
+      GHom::range_t toret;
+      for (int i =0 ; i < vo->size(); i++) {
+	if (!skip_variable(i)) {
+	  toret.insert(i);
+	}
+      }
+      return toret;
+    }
+
 
   GDDD has_image (const GDDD &d) const {
     if( d== GDDD::null)
@@ -708,6 +729,16 @@ public:
   void mark () const {
     potall.mark();
   }
+
+    const GHom::range_t  get_range () const {
+      GHom::range_t toret;
+      for (int i =0 ; i < vo->size(); i++) {
+	if (!skip_variable(i)) {
+	  toret.insert(i);
+	}
+      }
+      return toret;
+    }
   
 
   bool
