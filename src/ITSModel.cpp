@@ -175,14 +175,53 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       Transition rel = getNextRel().invert(reach);
 // 	std::cerr << "Was working with reverse transition :\n" << rel << endl;
 // 	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
-
-      bool isExact = ( rel(reach) - reach == State::null );
+      State border = rel(reach) - reach;
+      bool isExact = ( border == State::null );
       if (isExact) {
 	predRel_ = rel;
 	std::cerr << "Reverse transition relation is exact ! Faster fixpoint algorithm enabled. \n" ;
       } else {
-	predRel_ = rel * reach;
-	std::cerr << "Reverse transition relation is NOT exact ! Intersection with reachable at each step enabled. \n" ;
+	d3::set<GShom>::type toadd;
+	d3::set<GShom>::type toprotect;
+	Type::namedTrs_t namedTrs;
+	getInstance()->getType()->getNamedLocals(namedTrs);
+	Transition elapse = getElapse(); 
+	if (elapse != Transition::id) {
+	  namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
+	}
+
+	Type::namedTrs_t::const_iterator  transit;
+	stringstream translist ;
+	for (transit = namedTrs.begin() ; transit != namedTrs.end() ; ++transit) {
+	  State res = transit->second (reach );
+	  if (res != State::null) {
+	    State preds = transit->second.invert(reach) (reach);
+	    State falsepreds =  preds - reach;
+	    if ( falsepreds != State::null) {
+	      translist << transit->first << ", " ;
+	      // std::cerr << "Transition reverse adds behavior : "<< transit->first << std::endl;
+	      // printSomeStates(falsepreds,std::cout,20);
+	      // std::cerr << "Some legit states : ";
+	      // printSomeStates(preds * reach,std::cout,20);
+	      toprotect.insert(transit->second);
+	    } else {
+	      toadd.insert(transit->second);
+	    }
+	  } 
+	  // else {
+	  //	    std::cerr << "Transition is unreachable killing from backward relation : "<< transit->first << std::endl;
+	  // }
+	}
+	// if (toadd.size() > 0 || toprotect.size() < namedTrs.size()) {
+	//   std::cout << "Hit reverse partial " << toprotect.size() << "/" <<  toadd.size() << "/" << namedTrs.size() << std::endl;
+	// } 
+	predRel_ = Transition::add(toadd).invert(reach) + Transition::add(toprotect).invert(reach) * reach;
+	//	predRel_ = rel * reach;
+	//predRel_ = (Transition::id - border ) & rel;
+	std::cerr << "Reverse transition relation is NOT exact ! Due to transitions " << translist.str() 
+		  << " Intersection with reachable at each step enabled. (destroyed/reverse/intersect/total) :" 
+		  << (namedTrs.size()-toprotect.size() -toadd.size()) << "/"   <<  toadd.size() << "/" << toprotect.size() << "/" << namedTrs.size() << std::endl;
+	//printSomeStates( rel(reach) - reach, std::cout, 400000);
       }
       if (reach_envelope != State::null) {
 	// Don't cache !
