@@ -215,7 +215,11 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	// if (toadd.size() > 0 || toprotect.size() < namedTrs.size()) {
 	//   std::cout << "Hit reverse partial " << toprotect.size() << "/" <<  toadd.size() << "/" << namedTrs.size() << std::endl;
 	// } 
-	predRel_ = Transition::add(toadd).invert(reach) + Transition::add(toprotect).invert(reach) * reach;
+	if (toadd.size()> 0) {
+		predRel_ = Transition::add(toadd).invert(reach) + Transition::add(toprotect).invert(reach) * reach;
+	} else {
+		predRel_ = rel * reach;
+	}
 	//	predRel_ = rel * reach;
 	//predRel_ = (Transition::id - border ) & rel;
 	std::cerr << "Reverse transition relation is NOT exact ! Due to transitions " << translist.str() 
