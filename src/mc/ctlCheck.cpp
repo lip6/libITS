@@ -681,6 +681,19 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
     // invoke recursive procedures
     its::State leftStates, rightStates;
     its::Transition leftHom, rightHom;
+    
+    {
+      // test necessary conditions
+      if ( Ctlp_FormulaReadType(ctlFormula) == Ctlp_AND_c) 
+	{
+	  Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
+	  // Explore right child will "luck" out pretty well due to rewriting of FwdU and FwdG
+	  rightStates = getStateVerifying (rightChild);
+	  if (rightStates == State::null) { 
+	    return State::null;
+	  } 
+	}
+    }
     // Handle left child
     {
       Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
@@ -699,7 +712,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
       }
     }
     // Handle right child
-    {
+    if (rightStates == State::null) {
       Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
       if (rightChild) {	
 	rightHom = getHomomorphism(rightChild);
@@ -828,10 +841,12 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
       // the real case
       // FwdUntil(p,q) holds at any state "t", such that there exists a path through "t" from some state at which
       // p holds, and q holds at all states before "t" on the path.
-      if (rightHom == stop) {
-	result =fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id, true ) ( leftStates ) ;
+      if (rightHom == stop ) {
+	result = fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id, true ) ( leftStates ) ;
       } else {
-	result =fixpoint ( ( getNextRel() & rightHom ) + its::Transition::id, true ) ( leftStates ) ;
+	its::Transition t = fixpoint ( ( getNextRel() & rightHom ) + its::Transition::id, true );
+	//	std::cerr << t << std::endl; 
+	result = t ( leftStates ) ;
       }
       break;
     case Ctlp_FwdG_c:
