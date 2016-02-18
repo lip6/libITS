@@ -209,15 +209,11 @@ class _IntExpression {
 }
 
   IntExpression Assertion::getLeftHandSide () const {
-    std::pair<PIntExpression, env_t> aftergc = gc ( assertion.getFirst(), env );
-
-    return IntExpressionFactory::createIntExpression(aftergc.first, aftergc.second );    
+    return IntExpressionFactory::createIntExpression( assertion.getFirst(), env );
   }
 
   IntExpression Assertion::getRightHandSide () const {
-    std::pair<PIntExpression, env_t> aftergc = gc ( assertion.getSecond(), env );
-
-    return IntExpressionFactory::createIntExpression(aftergc.first, aftergc.second );    
+    return IntExpressionFactory::createIntExpression(assertion.getSecond(), env );
   }
 
 
@@ -401,7 +397,8 @@ IntExpression IntExpressionFactory::wrapBoolExpr (const BoolExpression &b) {
 }
 
 IntExpression IntExpressionFactory::createIntExpression (const PIntExpression & pie, const env_t & env) {
-  return createUnique( _IntExpression(pie,env) );
+  std::pair<PIntExpression, env_t> aftergc = gc (pie,env);
+  return createUnique( _IntExpression(aftergc.first, aftergc.second ) );
 }
 
 Assertion IntExpressionFactory::createAssertion (const Variable & v,const IntExpression & e) {
