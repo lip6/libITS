@@ -7,10 +7,12 @@
 #include "DED.h"
 #include "AdditiveMap.hpp"
 #include "IntExpression.hh"
+#include "Hom_Basic.hh"
 #include "ExprHom.hpp"
 // For hash maps
 #include "util/configuration.hh"
 
+#include "gal/PIntExprVisitor.hh"
 
 
 namespace its {
@@ -351,7 +353,7 @@ namespace its {
 
     const GHom::range_t  get_range () const {
       GHom::range_t toret;
-      for (int i =0 ; i < vo->size(); i++) {
+      for (size_t i =0 ; i < vo->size(); i++) {
 	if (!skip_variable(i)) {
 	  toret.insert(i);
 	}
@@ -431,7 +433,7 @@ public:
 
     const GHom::range_t  get_range () const {
       GHom::range_t toret;
-      for (int i =0 ; i < vo->size(); i++) {
+      for (size_t i =0 ; i < vo->size(); i++) {
 	if (!skip_variable(i)) {
 	  toret.insert(i);
 	}
@@ -648,22 +650,170 @@ public:
 
 };
 
-GHom predicate (const BoolExpression & e, const GalOrder * vo) {
-  if (e.getType() == BOOLCONST) {
-    // Constant :
-    if (! e.getValue()) {
-      return GHom(GDDD::null);
-    } else {
-      return GHom::id;
-    }
-  }
-  if (e.getType() == BOOLNDEF) {
-    //    std::cerr << "Building undefined bool pred " << std::endl;
-    return GHom(GDDD::null);
-  }
 
-  return _Predicate(e,vo);
-}
+
+  class PredHomBuilder : public PBoolExprVisitor {
+  public:
+    GHom res;
+    const GalOrder * vo;
+    const env_t & env;
+
+    PredHomBuilder(const GalOrder * vvo, const env_t & envv) : vo (vvo), env(envv) {};
+    virtual ~PredHomBuilder() {}
+  
+    void visitNaryBoolExpr (BoolExprType type, const std::vector<class PBoolExpression> &children) {
+      if (type==OR) {
+	d3::set<GHom>::type toadd;
+	PredHomBuilder child(vo,env) ;
+	for (std::vector<class PBoolExpression>::const_iterator it = children.begin() ; it != children.end() ; ++it ) {
+	  it->accept(&child);
+	  toadd.insert(child.res);
+	}
+	res = GHom::add(toadd);
+      } else {
+	// AND
+	res = GHom::id;
+	PredHomBuilder child(vo,env) ;
+	for (std::vector<class PBoolExpression>::const_iterator it = children.begin() ; it != children.end() ; ++it ) {
+	  it->accept(&child);
+	  res = res & child.res;
+	}
+      }
+    }
+      
+    void visitBinaryBoolComp (BoolExprType type, const class PIntExpression &l, const class PIntExpression &r) {	
+
+      // Try to map this to a basic VarCmpState or VarCmpVar if possible
+      if (l.getType() == VAR || l.getType() == CONSTARRAY) {
+	int var = vo->getIndex(IntExpressionFactory::createIntExpression(l,env));
+	if ( r.getType() == CONST ) {
+	  int val = r.getValue();
+	  switch (type) {
+	  case EQ :
+	    res = varEqState(var,val);
+	    return;
+	  case NEQ :
+	    res = varNeqState(var,val);
+	    return;
+	  case LT :
+	    res = varLtState(var,val);
+	    return;
+	  case GT :
+	    res = varGtState(var,val);
+	    return;
+	  case LEQ :
+	    res = varLeqState(var,val);
+	    return;
+	  case GEQ :
+	    res = varGeqState(var,val);
+	    return;
+	  default :
+	    throw "Incorrect expression structure !";
+	  }
+	}
+      }
+      res =  _Predicate(BoolExpressionFactory::createBoolExpression( PBoolExpressionFactory::createComparison(type,l,r), env),vo);
+      return;
+    }
+
+
+    /**
+ else if (r.getType() == VAR || r.getType() == CONSTARRAY ) {
+	std::cerr << "varvar..." << std::endl;
+	  int var2 = vo->getIndex((IntExpressionFactory::createIntExpression(r,env)));
+	  switch (type) {
+	  case EQ :
+	    res = varEqVar(var,var2);
+	    return;
+	  case NEQ :
+	    res = varNeqVar(var,var2);
+	    return;
+	  case LT :
+	    res = varLtVar(var,var2);
+	    return;
+	  case GT :
+	    res = varGtVar(var,var2);
+	    return;
+	  case LEQ :
+	    res = varLeqVar(var,var2);
+	    return;
+	  case GEQ :
+	    res = varGeqVar(var,var2);
+	    return;
+	  default :
+	    throw "Incorrect expression structure !";
+	  }	    
+	}
+      } else if (l.getType() == CONST) {
+	std::cerr << "inverting..." << std::endl;
+	if (r.getType() == VAR || r.getType() == CONSTARRAY ) {
+	  switch (type) {
+	  case EQ :
+	  case NEQ :
+	    visitBinaryBoolComp(type,r,l);
+	    return;
+	  case LT :
+	    visitBinaryBoolComp(GT,r,l);
+	    return;
+	  case GT :
+	    visitBinaryBoolComp(LT,r,l);
+	    return;
+	  case LEQ :
+	    visitBinaryBoolComp(GEQ,r,l);
+	    return;
+	  case GEQ :
+	    visitBinaryBoolComp(LEQ,r,l);
+	    return;
+	  default :
+	    throw "Incorrect expression structure !";
+	  }
+	}
+      }
+      
+      res =  _Predicate(BoolExpressionFactory::createBoolExpression( PBoolExpressionFactory::createComparison(type,l,r), env),vo);
+    }
+**/        
+    void visitNotBoolExpr (const class PBoolExpression & e) {
+      PredHomBuilder child(vo,env) ;
+      e.accept(&child);
+      res = ! child.res ;
+    }
+    void visitBoolConstExpr (bool val) {
+      if (val) {
+	res = GHom::id;
+      } else {
+	res = GHom(GDDD::null);
+      }
+    }
+    void visitBoolNDefExpr () {
+      // std::cerr << "Building undefined bool pred " << std::endl;
+      // TODO : should this be top ?
+      res = GHom(GDDD::null);  
+    }
+    
+  };
+
+GHom predicate (const BoolExpression & e, const GalOrder * vo) {
+    // if (e.getType() == BOOLCONST) {
+    //   // Constant :
+    //   if (! e.getValue()) {
+    //     return GHom(GDDD::null);
+    //   } else {
+    //     return GHom::id;
+    //   }
+    // }
+    // if (e.getType() == BOOLNDEF) {
+    //   // std::cerr << "Building undefined bool pred " << std::endl;
+    //   return GHom(GDDD::null);
+    // }
+   
+    // return _Predicate(e,vo);
+
+   PredHomBuilder child(vo, e.getEnv()) ;
+   e.getExpr().accept(&child);
+   return child.res;
+
+ }
   
   GHom assignExpr (const IntExpression & var,const IntExpression & val,const GalOrder * vo, bool isIncrement) {
   if (var.getType() == INTNDEF || val.getType() == INTNDEF) {
@@ -732,7 +882,7 @@ public:
 
     const GHom::range_t  get_range () const {
       GHom::range_t toret;
-      for (int i =0 ; i < vo->size(); i++) {
+      for (size_t i =0 ; i < vo->size(); i++) {
 	if (!skip_variable(i)) {
 	  toret.insert(i);
 	}
