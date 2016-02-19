@@ -1005,7 +1005,7 @@ std::ostream & operator << (std::ostream & os, const BoolExpression & e) {
 	  negtype = NEQ;
 	  break;
 	case NEQ :
-	  negtype = NEQ;
+	  negtype = EQ;
 	  break;
 	case LT :
 	  negtype = GEQ;
@@ -1047,7 +1047,14 @@ std::ostream & operator << (std::ostream & os, const BoolExpression & e) {
 // push negations
 BoolExpression BoolExpression::pushNegations() const {
   NotPusher child (false);
+ 
   getExpr().accept(&child);
+
+  // BoolExpression toret = BoolExpressionFactory::createBoolExpression(child.res,getEnv());
+  // if ( ! (toret == (*this)) ) {
+  //   std::cout << "pushing on " << *this << std::endl;
+  //   std::cout << " produces  " << toret << std::endl;
+  // }
   
   return BoolExpressionFactory::createBoolExpression(child.res,getEnv());
 }
