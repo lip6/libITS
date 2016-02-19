@@ -68,6 +68,9 @@ public :
   // Result is a constant expression iff. the expression has no more variables.
   BoolExpression eval () const ;
 
+  // Push negations down onto atoms, resulting in a negation free boolean expression
+  BoolExpression pushNegations() const;
+
   /// only valid for CONST expressions
   /// use this call only in form : if (e.getType() == BOOLCONST) { int j = e.getValue() ; ...etc }
   /// Exceptions will be thrown otherwise.
