@@ -587,7 +587,10 @@ public:
 
 	  
 	  // Check if we now have a constant : Terminal case.
-	  if (e.getType() == BOOLCONST) {
+    if (e.getType() == BOOLNDEF) {
+      // do nothing = cut the paths, the expression was not evaluable on them
+
+    } else if (e.getType() == BOOLCONST) {
 	    // Constant :
 	    if (e.getValue()) 
 	      // True : return current path
