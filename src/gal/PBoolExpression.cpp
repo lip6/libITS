@@ -99,11 +99,12 @@ public :
       } else {
 	if (e.getType() == BOOLNDEF) {
 	  hasNDef = true;
+	} else {
+	  p.insert(e);
 	}
-	p.insert(e);
       }
     }
-    if (hasNDef) {
+    if (hasNDef  && getType()==AND) {
       return PBoolExpressionFactory::createNDef();
     }
     if (p.empty())
@@ -174,16 +175,18 @@ public :
 	  isUpd = true;
 	  continue;
       } else {
-	res.insert( aa );
 	if (! (aa == *it)) {
 	  isUpd = true;
 	}
 	if (aa.getType() == BOOLNDEF) {
 	  isNDef = true;
+	  isUpd = true;
+	} else {
+	  res.insert( aa );
 	}
       }
     }
-    if (isNDef) {
+    if (isNDef && getType()==AND) {
       return PBoolExpressionFactory::createNDef();
     }
     if (isUpd)
