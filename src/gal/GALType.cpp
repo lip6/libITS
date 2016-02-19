@@ -104,7 +104,7 @@ labels_t GALType::getTransLabels () const {
   }
 
   GHom GALType::buildHom(const GuardedAction & ga) const {
-    GHom guard = predicate ( ga.getGuard().eval(), getGalOrder());
+    GHom guard = predicate ( ga.getGuard().eval().pushNegations(), getGalOrder());
     GHom action = buildHom( ga.getAction());
     return action & guard;
   }
@@ -422,7 +422,7 @@ labels_t GALType::getTransLabels () const {
   Transition GALType::getPredicate (char * pred) const {
     // std::cerr << "pred : " << pred << std::endl;
     // std::cerr << its::predicate (getBPredicate (pred), getGalOrder ()) << std::endl;
-    return localApply (its::predicate (getBPredicate (pred), getGalOrder ()), DEFAULT_VAR);
+    return localApply (its::predicate ( getBPredicate (pred).eval().pushNegations(), getGalOrder ()), DEFAULT_VAR);
   }
   
   BoolExpression GALType::getBPredicate (Label pred) const {
