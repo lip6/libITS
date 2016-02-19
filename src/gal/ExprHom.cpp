@@ -409,7 +409,7 @@ namespace its {
     }
   };
 
-
+ 
 
 class _Predicate:public _GHom {
   BoolExpression expr;
@@ -645,7 +645,7 @@ public:
   }
   
   GHom negate() const {
-    return predicate ( ! expr, vo );
+    return predicate ( (! expr).pushNegations() , vo );
   }
 
 };
