@@ -952,13 +952,13 @@ bool PBoolExpression::operator== (const PBoolExpression & other) const {
 bool PBoolExpression::operator< (const PBoolExpression & other) const {
 
 // Address based comparison while valid is not stable across runs, which is a real pain.
-//  return concrete < other.concrete;
+  return concrete < other.concrete;
 
   // on the other hand recursing is horrible in terms of complexity, we just can't afford to do that when we already have unique table to handle pointer comparison in o(1) regardless of expression depth. This is ESSENTIAL.
-   if (getType() != other.getType()) {
-     return getType() < other.getType();
-   }
-   return *concrete < * other.concrete ;
+   // if (getType() != other.getType()) {
+   //   return getType() < other.getType();
+   // }
+   // return *concrete < * other.concrete ;
 }
 
 

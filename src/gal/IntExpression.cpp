@@ -23,6 +23,35 @@ namespace its {
   /******************************* THIS SECTION : INT EXPR ************************/
 
 
+  int getValueFromConcrete(const _IntExpression  * concrete) {
+      // cast to size_t
+      size_t val = (size_t) concrete;
+      // retrieve sign bit
+      bool isneg = val & 2 ;
+      // right shift
+      val >>= 2 ;
+      // map to int, cutting off higher weight bits 
+      int cst = static_cast<int> (val);
+      // restore sign bit
+      if (isneg) 
+	cst = -cst ;
+      // we need to undo this encoding
+      return cst;
+  }
+  const _IntExpression  * setConcreteFromValue (int cst) {
+    // encode info
+    // set lowest bit and shift value left while keeping sign intact
+    int isneg = (cst < 0) * 2;
+    if (isneg) {
+      cst = -cst ;
+    }
+    cst = cst * 4 + isneg  + 1;
+    // cast to unsigned and grow to size_t
+    size_t val = (unsigned int)cst;
+    // cast and assign to pointer
+    return (const _IntExpression *) val ; 
+  }
+  
 
 // unique storage class
 class _IntExpression {
@@ -274,10 +303,22 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
 // namespace IntExpressionFactory {
 
 
+  static env_t empty_env = env_t();
+
   // return the supporting parametric expression
-  const class PIntExpression & IntExpression::getExpr() const { return concrete->getExpr(); }
+  const class PIntExpression IntExpression::getExpr() const { 
+    if (! ((size_t)concrete & 1) )  
+      return concrete->getExpr(); 
+    else
+      return PIntExpression (getValueFromConcrete(concrete));
+  }
   // return the environment
-  const env_t & IntExpression::getEnv() const { return concrete->getEnv() ; }
+  const env_t & IntExpression::getEnv() const { 
+    if (! ((size_t)concrete & 1) )  
+      return concrete->getEnv() ; 
+    else 
+      return empty_env;
+  }
 
 
 
@@ -338,7 +379,7 @@ IntExpression IntExpressionFactory::createBinary (IntExprType type, const IntExp
 
   // build the union of both envs, sorted on var names
   // eg. unione = {"a","b"}
-  env_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
+  env_t unione = sorted_union ( l.getEnv(), r.getEnv());
   
   // now that the alphabets are compatible, build a parametric expression
   // e.g.   res = Add(Var(x0), Var(x1))
@@ -358,7 +399,8 @@ IntExpression IntExpressionFactory::createUnary (IntExprType type, const IntExpr
 
 
 IntExpression IntExpressionFactory::createConstant (int v) {
-  return createUnique (_IntExpression(PIntExpressionFactory::createConstant(v),env_t()));
+  return IntExpression(v);
+  //createUnique (_IntExpression(PIntExpressionFactory::createConstant(v),env_t()));
 }
 
 IntExpression IntExpressionFactory::createVariable (const Variable & v) {
@@ -399,8 +441,12 @@ IntExpression IntExpressionFactory::wrapBoolExpr (const BoolExpression &b) {
 }
 
 IntExpression IntExpressionFactory::createIntExpression (const PIntExpression & pie, const env_t & env) {
-  std::pair<PIntExpression, env_t> aftergc = gc (pie,env);
-  return createUnique( _IntExpression(aftergc.first, aftergc.second ) );
+  if (pie.getType() == CONST) {
+    return IntExpression(pie.getValue());
+  } else {
+    std::pair<PIntExpression, env_t> aftergc = gc (pie,env);
+    return createUnique( _IntExpression(aftergc.first, aftergc.second ) );
+  }
 }
 
 Assertion IntExpressionFactory::createAssertion (const Variable & v,const IntExpression & e) {
@@ -462,18 +508,19 @@ IntExpression operator*(const IntExpression & l,const IntExpression & r) {
 // necessary administrative trivia
 // refcounting
 IntExpression::IntExpression (const _IntExpression * concret): concrete(concret) {
-  concrete->ref();
+  if (! ((size_t)concrete & 0x1) )  
+    concrete->ref();
 }
 
 IntExpression::IntExpression (const IntExpression & other) {
   concrete = other.concrete;
-  concrete->ref();
+  if (! ((size_t)concrete & 0x1) )  
+    concrete->ref();
 }
 
 
 IntExpression::IntExpression (int cst) {
-  concrete = IntExpressionFactory::createUnique(_IntExpression(PIntExpressionFactory::createConstant(cst), env_t()));
-  concrete->ref();
+  concrete = setConcreteFromValue(cst);
 }
 
 IntExpression::IntExpression (const Variable & var) {
@@ -483,15 +530,18 @@ IntExpression::IntExpression (const Variable & var) {
 
 IntExpression::~IntExpression () {
   // remove const qualifier for delete call
-  IntExpressionFactory::destroy((_IntExpression *) concrete);  
+  if (! ((size_t)concrete & 0x1) )  
+      IntExpressionFactory::destroy((_IntExpression *) concrete);  
 }
 
 IntExpression & IntExpression::operator= (const IntExpression & other) {
   if (this != &other) {
     // remove const qualifier for delete call
-    IntExpressionFactory::destroy((_IntExpression *) concrete);
+    if (! ((size_t)concrete & 0x1) )  
+      IntExpressionFactory::destroy((_IntExpression *) concrete);
     concrete = other.concrete;
-    concrete->ref();
+    if (! ((size_t)concrete & 0x1) )  
+      concrete->ref();
   }
   return *this;
 }
@@ -505,28 +555,43 @@ bool IntExpression::less (const IntExpression & other) const {
 }
 
 IntExpression IntExpression::getFirstSubExpr () const {
-  return concrete->getFirstSubExpr();
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->getFirstSubExpr();
+  else
+    return *this;
 }
 
 IntExpression IntExpression::getSubExprExcept  (const IntExpression & v) const {
-  return concrete->getSubExprExcept(v);
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->getSubExprExcept(v);
+  else
+    return *this;
 }
 
 
 
 void IntExpression::print (std::ostream & os) const {
-  concrete->print(os);
+  if (! ((size_t)concrete & 0x1) )  
+    concrete->print(os);
+  else
+    os << getValue() ;
 }
 
 IntExpression IntExpression::eval () const {
-  return concrete->eval();
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->eval();
+  else
+    return *this;
 }
 
 /// only valid for CONST expressions
 /// use this call only in form : if (e.getType() == CONST) { int j = e.getValue() ; ...etc }
 /// Exceptions will be thrown otherwise.
 int IntExpression::getValue () const { 
-  return  concrete->getExpr().getValue();
+  if (! ((size_t)concrete & 0x1) )  
+    return  concrete->getExpr().getValue();
+  else
+    return getValueFromConcrete(concrete);
 }
 
 
@@ -606,11 +671,17 @@ IntExpression IntExpression::operator& (const Assertion &a) const {
 }
 
 IntExpression IntExpression::assert_eval (const Assertion &a) const {
-  return concrete->setAssertion(a);
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->setAssertion(a);
+  else 
+    return *this;
 }
 
 IntExprType IntExpression::getType() const {
-  return concrete->getType();
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->getType();
+  else
+    return CONST;
 }
 // binary
 IntExpression operator-(const IntExpression & l,const IntExpression & r)  {
@@ -797,7 +868,7 @@ BoolExpression BoolExpressionFactory::createNary (BoolExprType type, const NaryB
 }
 
 BoolExpression BoolExpressionFactory::createBinary (BoolExprType type, const BoolExpression & l, const BoolExpression & r) {
-  env_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
+  env_t unione = sorted_union ( l.getEnv(), r.getEnv());
 
   // now that the alphabets are compatible, build a parametric expression
   // e.g.   res = Add(Var(x0), Var(x1))
@@ -822,7 +893,7 @@ BoolExpression BoolExpressionFactory::createConstant (bool b) {
 
 // a comparison (==,!=,<,>,<=,>=) between two integer expressions
 BoolExpression BoolExpressionFactory::createComparison (BoolExprType type, const IntExpression & l, const IntExpression & r) {
-  env_t unione = sorted_union ( l.concrete->getEnv(), r.concrete->getEnv());
+  env_t unione = sorted_union ( l.getEnv(), r.getEnv());
 
   // now that the alphabets are compatible, build a parametric expression
   // e.g.   res = Add(Var(x0), Var(x1))

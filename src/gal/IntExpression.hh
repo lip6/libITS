@@ -48,7 +48,7 @@ public :
   // return the type of an expression.
   IntExprType getType() const;
   // return the supporting parametric expression
-  const class PIntExpression & getExpr() const ;
+  const class PIntExpression  getExpr() const ;
   // return the environment
   const env_t & getEnv() const;
 

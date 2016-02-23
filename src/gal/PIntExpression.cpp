@@ -1300,7 +1300,7 @@ PIntExpression PIntExpressionFactory::createBinary (IntExprType type, const PInt
 }
 
 PIntExpression PIntExpressionFactory::createConstant (int v) {
-  return unique () (ConstExpr(v));
+  return PIntExpression (v);
 }
 
 PIntExpression PIntExpressionFactory::createNDef () {
@@ -1369,34 +1369,35 @@ PIntExpression operator*(const PIntExpression & l,const PIntExpression & r) {
 // necessary administrative trivia
 // refcounting
 PIntExpression::PIntExpression (const _PIntExpression * concret): concrete(concret) {
-  concrete->ref();
+  if (! ((size_t)concrete & 0x1) )
+    concrete->ref();
 }
 
 PIntExpression::PIntExpression (const PIntExpression & other) {
   if (this != &other) {
     concrete = other.concrete;
-    concrete->ref();
+    if (! ((size_t)concrete & 1) )
+      concrete->ref();
   }
 }
 
 
-PIntExpression::PIntExpression (int cst) {
-  concrete = PIntExpressionFactory::createUnique(ConstExpr(cst));
-  concrete->ref();
-}
-
+ 
 
 PIntExpression::~PIntExpression () {
-  // remove const qualifier for delete call
-  PIntExpressionFactory::destroy((_PIntExpression *) concrete);  
+  if (! ((size_t)concrete & 1) )
+    // remove const qualifier for delete call
+    PIntExpressionFactory::destroy((_PIntExpression *) concrete);  
 }
 
 PIntExpression & PIntExpression::operator= (const PIntExpression & other) {
   if (this != &other) {
-    // remove const qualifier for delete call
-    PIntExpressionFactory::destroy((_PIntExpression *) concrete);
+    if  (! ((size_t)concrete & 1) )
+      // remove const qualifier for delete call
+      PIntExpressionFactory::destroy((_PIntExpression *) concrete);
     concrete = other.concrete;
-    concrete->ref();
+    if (! ((size_t)concrete & 1) )
+      concrete->ref();
   }
   return *this;
 }
@@ -1406,46 +1407,100 @@ bool PIntExpression::equals (const PIntExpression & other) const {
 }
 
 bool PIntExpression::less (const PIntExpression & other) const {
-  if (getType() == other.getType())
-    return *concrete < *other.concrete;
-  else
-    return getType() < other.getType();
+  // address based is fine as orders go, sure it's not stable across runs, but it's o(1) regardless of expression complexity
+  return
+    concrete < other.concrete ;
+
+  // if (getType() == other.getType())
+  //   return *concrete < *other.concrete;
+  // else
+  //   return getType() < other.getType();
 }
 
 PIntExpression PIntExpression::getFirstSubExpr () const {
-  return concrete->getFirstSubExpr();
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->getFirstSubExpr();
+  else 
+    return *this;
 }
 
 /// To allow partial resolution of expressions for invert computations
 PIntExpression PIntExpression::getSubExprExcept (int var, int index) const {
-  return concrete->getSubExprExcept(var,index);
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->getSubExprExcept(var,index);
+  else 
+    return *this;
 }
 
 
 
 PIntExpression PIntExpression::reindexVariables (const indexes_t & newindexes) const {
-  return concrete->reindexVariables (newindexes);
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->reindexVariables (newindexes);
+  else
+    return *this;
 }
 
 const NaryPParamType & PIntExpression::getParams() const {
-  return concrete->getParams();
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->getParams();
+  else
+    return empty_params;
 }
 
 
 
 void PIntExpression::print (std::ostream & os, const env_t & env) const {
-  concrete->print(os,env);
+  if (! ((size_t)concrete & 0x1) )  
+    concrete->print(os,env);
+  else 
+    os << getValue() ;
 }
 
 PIntExpression PIntExpression::eval () const {
-  return concrete->eval();
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->eval();
+  else 
+    return *this;
 }
+
+PIntExpression::PIntExpression (int cst) {
+  // encode info
+  // set lowest bit and shift value left while keeping sign intact
+  int isneg = (cst < 0) * 2;
+  if (isneg) {
+    cst = -cst ;
+  }
+  cst = cst * 4 + isneg  + 1;
+  // cast to unsigned and grow to size_t
+  size_t val = (unsigned int)cst;
+  // cast and assign to pointer
+  concrete = (const _PIntExpression *) val ; 
+}
+
 
 /// only valid for CONST expressions
 /// use this call only in form : if (e.getType() == CONST) { int j = e.getValue() ; ...etc }
 /// Exceptions will be thrown otherwise.
 int PIntExpression::getValue () const {
-  return concrete->getValue();    
+  if (! ((size_t)concrete & 1) )  
+    return concrete->getValue();    
+  else 
+    {
+      // cast to size_t
+      size_t val = (size_t) concrete;
+      // retrieve sign bit
+      bool isneg = val & 2 ;
+      // right shift
+      val >>= 2 ;
+      // map to int, cutting off higher weight bits 
+      int cst = static_cast<int> (val);
+      // restore sign bit
+      if (isneg) 
+	cst = -cst ;
+      // we need to undo this encoding
+      return cst;
+    }
 }
 
 int PIntExpression::getVariable () const {
@@ -1455,23 +1510,36 @@ int PIntExpression::getVariable () const {
 
 
 bool PIntExpression::isSupport(int var, int id) const {
-  return concrete->isSupport(var, id);
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->isSupport(var, id);
+  else
+    return false;
 }
 
 void PIntExpression::getSupport(bool * const mark) const {
-  concrete->getSupport(mark);
+  if (! ((size_t)concrete & 0x1) )  
+    concrete->getSupport(mark);
 }
 
 PIntExpression PIntExpression::operator& (const PAssertion &a) const {
-  return concrete->setAssertion(a);
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->setAssertion(a);
+  else
+    return *this;
 }
 
 IntExprType PIntExpression::getType() const {
-  return concrete->getType();
+  if (! ((size_t)concrete & 0x1) )  
+    return concrete->getType();
+  else
+    return CONST;
 }
 
 void PIntExpression::accept(PIntExprVisitor * v) const {
-  concrete->accept(v);
+  if (! ((size_t)concrete & 0x1) )  
+    concrete->accept(v);
+  else
+    v->visitConstExpr(getValue());
 }
 
 // binary
