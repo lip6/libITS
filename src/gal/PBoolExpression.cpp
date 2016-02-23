@@ -738,47 +738,55 @@ UniqueTable<_PBoolExpression> &  PBoolExpressionFactory::unique () {
   return unique;
 }
 
-NaryPBoolParamType
-PBoolExpressionFactory::fuse_internals (BoolExprType type, const NaryPBoolParamType & params)
+void
+PBoolExpressionFactory::fuse_internals (BoolExprType type, NaryPBoolParamType & params)
 {
-  NaryPBoolParamType tmp;
-  for (NaryPBoolParamType::const_iterator it = params.begin ();
-       it != params.end (); ++it)
-  {
-    if (it->getType () == type)
-    {
-      // fuse
-      const NaryBoolExpr * t = (const NaryBoolExpr *)it->concrete;
-      tmp.insert (t->begin (), t->end ());
-    }
-    else
-    {
-      // simply insert
-      tmp.insert (*it);
+  std::vector<PBoolExpression> totreat;
+  for (NaryPBoolParamType::const_iterator it = params.begin ();it != params.end ();  /*NOP*/) {
+    if (it->getType() == type) {
+      NaryPBoolParamType::const_iterator pos = it ++;
+      totreat.push_back(*pos);
+      params.erase(pos);
+    } else {
+      ++it;
     }
   }
-  return tmp;
+  for (  std::vector<PBoolExpression>::const_iterator it = totreat.begin(); it != totreat.end() ; it++) {
+      // fuse
+    const NaryBoolExpr * t = (const NaryBoolExpr *)it->concrete;
+    params.insert (t->begin (), t->end ());
+  }
 }
 
-PBoolExpression PBoolExpressionFactory::createNary (BoolExprType type, const NaryPBoolParamType & params) {
+PBoolExpression PBoolExpressionFactory::createNary (BoolExprType type, NaryPBoolParamType & params) {
   if (params.size() == 1) {
     return *params.begin();
   }
+  fuse_internals(type, params);
   switch (type) {
   case OR :
-    return unique()(OrExpr (fuse_internals (type, params)));
+    return unique()(OrExpr (params));
   case AND :
-    return unique()(AndExpr (fuse_internals (type, params)));
+    return unique()(AndExpr (params));
   default :
     throw "Operator " + to_string(type) +" is not an N-ary bool op";
   }
-
 }
 
 PBoolExpression PBoolExpressionFactory::createBinary (BoolExprType type, const PBoolExpression & l, const PBoolExpression & r) {
   NaryPBoolParamType params;
-  params.insert(l);
-  params.insert(r);
+  if (l.getType() == type) {
+    const NaryBoolExpr * t = (const NaryBoolExpr *)l.concrete ;
+    params.insert (t->begin (), t->end ());
+  } else {
+    params.insert(l);
+  }
+  if (r.getType() == type) {
+    const NaryBoolExpr * t = (const NaryBoolExpr *)r.concrete ;
+    params.insert (t->begin (), t->end ());
+  } else {
+    params.insert(r);
+  }
   return createNary (type,params);
 }
 
@@ -946,10 +954,11 @@ bool PBoolExpression::operator< (const PBoolExpression & other) const {
 // Address based comparison while valid is not stable across runs, which is a real pain.
 //  return concrete < other.concrete;
 
-  if (getType() != other.getType()) {
-    return getType() < other.getType();
-  }
-  return *concrete < * other.concrete ;
+  // on the other hand recursing is horrible in terms of complexity, we just can't afford to do that when we already have unique table to handle pointer comparison in o(1) regardless of expression depth. This is ESSENTIAL.
+   if (getType() != other.getType()) {
+     return getType() < other.getType();
+   }
+   return *concrete < * other.concrete ;
 }
 
 
