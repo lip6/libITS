@@ -73,13 +73,18 @@ protected :
   typedef params_t::const_iterator params_it;
   
   params_t params;
+  friend class PBoolExpressionFactory;
 public :
   virtual const char * getOpString() const = 0;
 
   params_it begin() const { return params.begin(); }
   params_it end() const { return params.end(); }
-
+  size_t size() const { return params.size() ; }
   NaryBoolExpr (const NaryPBoolParamType & pparams):params(pparams.begin(), pparams.end()) {};
+
+  // make sure its a set :  sorted and unique !
+  NaryBoolExpr (const params_t & pparams):params(pparams) {};
+  
 
   PBoolExpression eval () const {
     NaryPBoolParamType p ;
@@ -274,6 +279,7 @@ class OrExpr : public NaryBoolExpr {
 
 public :
   OrExpr (const NaryPBoolParamType & pparams):NaryBoolExpr(pparams) {};
+  OrExpr (const NaryBoolExpr::params_t & pparams):NaryBoolExpr(pparams) {};
   BoolExprType getType() const  { return OR; }
   const char * getOpString() const { return " || ";}
   virtual _PBoolExpression * clone () const { return new OrExpr(*this);}
@@ -283,6 +289,7 @@ class AndExpr : public NaryBoolExpr {
 
 public :
   AndExpr (const NaryPBoolParamType  & pparams):NaryBoolExpr(pparams) {};
+  AndExpr (const NaryBoolExpr::params_t & pparams):NaryBoolExpr(pparams) {};
   BoolExprType getType() const  { return AND; }
   const char * getOpString() const { return " && ";}
   virtual _PBoolExpression * clone () const { return new AndExpr(*this);}
@@ -774,20 +781,43 @@ PBoolExpression PBoolExpressionFactory::createNary (BoolExprType type, NaryPBool
 }
 
 PBoolExpression PBoolExpressionFactory::createBinary (BoolExprType type, const PBoolExpression & l, const PBoolExpression & r) {
-  NaryPBoolParamType params;
-  if (l.getType() == type) {
-    const NaryBoolExpr * t = (const NaryBoolExpr *)l.concrete ;
-    params.insert (t->begin (), t->end ());
+  NaryBoolExpr::params_t params ;      
+  if (l.getType() != type && r.getType() != type) {
+    if  (l == r) {
+      return l;
+    } else if (l < r) {
+      params.push_back(l);
+      params.push_back(r);
+    } else {
+      params.push_back(r);
+      params.push_back(l);
+    }
+  } else if (l.getType() == type && r.getType() == type) {
+    const NaryBoolExpr * lc = (const NaryBoolExpr *)l.concrete ;
+    const NaryBoolExpr * rc = (const NaryBoolExpr *)r.concrete ;
+    params.reserve (lc->size() + rc->size());
+    std::set_union(lc->begin(),lc->end(),rc->begin(),rc->end(), std::back_inserter(params));
+  } else if (l.getType() == type) {
+    const NaryBoolExpr * lc = (const NaryBoolExpr *)l.concrete ;
+    params.reserve (lc->size() + 1);
+    std::set_union(lc->begin(),lc->end(), &r, (&r) +1, std::back_inserter(params));
   } else {
-    params.insert(l);
+    const NaryBoolExpr * rc = (const NaryBoolExpr *)r.concrete ;
+    params.reserve (rc->size() + 1);
+    std::set_union(rc->begin(),rc->end(), &l, (&l) +1,  std::back_inserter(params));
   }
-  if (r.getType() == type) {
-    const NaryBoolExpr * t = (const NaryBoolExpr *)r.concrete ;
-    params.insert (t->begin (), t->end ());
+  if (params.size()==1) {
+    return * params.begin() ;
   } else {
-    params.insert(r);
+    switch (type) {
+    case OR :
+      return unique()(OrExpr (params));
+    case AND :
+      return unique()(AndExpr (params));
+    default :
+      throw "Operator " + to_string(type) +" is not an N-ary bool op";
+    }
   }
-  return createNary (type,params);
 }
 
 
