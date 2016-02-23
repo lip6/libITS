@@ -608,7 +608,10 @@ vLabel IntExpression::getName () const {
 }
 
 bool IntExpression::isSupport(const IntExpression & var) const {
-  return concrete->isSupport(var);
+  if (! ((size_t)concrete & 1) )  
+    return concrete->isSupport(var);
+  else
+    return false;
 }
 
 
