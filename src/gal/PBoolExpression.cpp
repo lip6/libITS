@@ -876,37 +876,11 @@ void PBoolExpressionFactory::printStats (std::ostream &os) {
 
 // nary constructions
 PBoolExpression operator&&(const PBoolExpression & a,const PBoolExpression & b) {
-  NaryPBoolParamType p;
-  if (a.getType() == AND) {
-    const NaryBoolExpr * pa = (const NaryBoolExpr *) a.concrete;
-    p.insert(pa->begin(), pa->end());
-  } else {
-    p.insert(a);
-  }
-  if (b.getType() == AND) {
-    const NaryBoolExpr * pb = (const NaryBoolExpr *) b.concrete;
-    p.insert(pb->begin(), pb->end());
-  } else {
-    p.insert (b);
-  }
-  return PBoolExpressionFactory::createNary(AND, p);
+  return PBoolExpressionFactory::createBinary(AND, a, b);
 }
 
 PBoolExpression operator||(const PBoolExpression & a,const PBoolExpression & b) {
-  NaryPBoolParamType p;
-  if (a.getType() == OR) {
-    const NaryBoolExpr * pa = (const NaryBoolExpr *) a.concrete;
-    p.insert(pa->begin(), pa->end());
-  } else {
-    p.insert(a);
-  }
-  if (b.getType() == OR) {
-    const NaryBoolExpr * pb = (const NaryBoolExpr *) b.concrete;
-    p.insert(pb->begin(), pb->end());
-  } else {
-    p.insert (b);
-  }
-  return PBoolExpressionFactory::createNary(OR, p);
+  return PBoolExpressionFactory::createBinary(OR, a, b);
 } 
 
 PBoolExpression PBoolExpression::operator!() const {
