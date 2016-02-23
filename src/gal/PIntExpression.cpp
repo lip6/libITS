@@ -1490,9 +1490,9 @@ int PIntExpression::getValue () const {
       // cast to size_t
       size_t val = (size_t) concrete;
       // retrieve sign bit
-      bool isneg = val & 2 ;
+      bool isneg = (val % 4) >= 2 ;
       // right shift
-      val >>= 2 ;
+      val /= 4 ;
       // map to int, cutting off higher weight bits 
       int cst = static_cast<int> (val);
       // restore sign bit
