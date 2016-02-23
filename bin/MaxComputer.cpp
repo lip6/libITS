@@ -55,7 +55,7 @@ const MaxComputer::stat_t & MaxComputer::compute (const GDDD & d) {
   }
 }
 
-
+static MaxComputer::stat_t zero_stat = MaxComputer::stat_t(0,0);
 
 const MaxComputer::stat_t & MaxComputer::compute (const DataSet* g)
 {
@@ -73,6 +73,7 @@ const MaxComputer::stat_t & MaxComputer::compute (const DataSet* g)
         std::cerr << "Read type :" << typeid(*g).name() <<std::endl ;
 	firstError = false;
       }
+      return zero_stat;
     }
 }
 
