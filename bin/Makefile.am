@@ -31,10 +31,10 @@ endif
 AM_CPPFLAGS = $(LIBDDD_CPP) $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(HAVE_BOOST_FLAG) -g -O3 -Wall
 AM_CXXFLAGS = -g -O3 -Wall 
 
-LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
+LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) -lgmpxx -lgmp
 
 
-its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp
+its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh
 
 its_reach_LDADD = $(LDADDFLAGS)  
 its_reach_LDFLAGS =  -flto -fwhole-program 
