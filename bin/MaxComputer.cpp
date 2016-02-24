@@ -14,7 +14,7 @@ const MaxComputer::stat_t & MaxComputer::compute (const GSDD & d) {
     // miss
     stat_t res = stat_t(0,0);
     for(GSDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
-      const stat_t & childStat = compute (gi->second);
+      const stat_t childStat = compute (gi->second);
       const stat_t & edgeStat = compute (gi->first);
 
       res.first = std::max(res.first, std::max(childStat.first, edgeStat.first));
