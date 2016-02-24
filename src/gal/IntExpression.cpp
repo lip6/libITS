@@ -302,8 +302,10 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
 /******* Factory ***************************************/
 // namespace IntExpressionFactory {
 
-
-  static env_t empty_env = env_t();
+  const env_t & empty_env () {
+    static env_t empty_env = env_t();
+    return empty_env;
+  }
 
   // return the supporting parametric expression
   const class PIntExpression IntExpression::getExpr() const { 
@@ -317,16 +319,10 @@ std::ostream & operator<< (std::ostream & os, const Assertion & a) {
     if (! ((size_t)concrete & 1) )  
       return concrete->getEnv() ; 
     else 
-      return empty_env;
+      return empty_env();
   }
 
 
-
-
-UniqueTable<_IntExpression> &  IntExpressionFactory::unique () {
-  static UniqueTable<_IntExpression> unique = UniqueTable<_IntExpression>();
-  return unique;
-}
 
 std::map<std::string,int> & IntExpressionFactory::var_names () {
   static std::map<std::string,int> var_names = std::map<std::string,int> ();
@@ -334,8 +330,16 @@ std::map<std::string,int> & IntExpressionFactory::var_names () {
 }
 
 std::map<Variable, IntExpression> & IntExpressionFactory::var_expr () {
+  // Avoid messy static initialization fiasco when deallocating at exit : force unique to be deall before var_expr.
+  unique();
   static std::map<Variable, IntExpression> var_expr = std::map<Variable, IntExpression> ();
   return var_expr;
+}
+
+
+UniqueTable<_IntExpression> &  IntExpressionFactory::unique () {
+  static UniqueTable<_IntExpression> unique = UniqueTable<_IntExpression>();
+  return unique;
 }
 
 int IntExpressionFactory::getVarIndex (Label v) {
@@ -467,11 +471,13 @@ const _IntExpression * IntExpressionFactory::createUnique(const _IntExpression &
 }
 
 void IntExpressionFactory::destroy (_IntExpression * e) {
-  if (  e->deref() == 0 ){
-    UniqueTable<_IntExpression>::Table::iterator ci = unique().table.find(e);
-    assert (ci != unique().table.end());
-    unique().table.erase(ci);
-    delete e;
+  if ( ! ( (size_t) e & 1 ) ) {
+    if (  e->deref() == 0 ){
+      UniqueTable<_IntExpression>::Table::iterator ci = unique().table.find(e);
+      assert (ci != unique().table.end());
+      unique().table.erase(ci);
+      delete e;
+    }
   }
 }
 
@@ -530,7 +536,7 @@ IntExpression::IntExpression (const Variable & var) {
 
 IntExpression::~IntExpression () {
   // remove const qualifier for delete call
-  if (! ((size_t)concrete & 0x1) )  
+  if (! ((size_t)concrete & 1) )  
       IntExpressionFactory::destroy((_IntExpression *) concrete);  
 }
 
