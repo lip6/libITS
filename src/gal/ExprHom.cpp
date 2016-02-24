@@ -675,12 +675,14 @@ public:
 	res = GHom::add(toadd);
       } else {
 	// AND
+	d3::set<GHom>::type toadd;
 	res = GHom::id;
 	PredHomBuilder child(vo,env) ;
 	for (std::vector<class PBoolExpression>::const_iterator it = children.begin() ; it != children.end() ; ++it ) {
 	  it->accept(&child);
-	  res = res & child.res;
+	  toadd.insert(child.res);
 	}
+	res = GHom::ccompose(toadd);
       }
     }
       
@@ -713,16 +715,8 @@ public:
 	  default :
 	    throw "Incorrect expression structure !";
 	  }
-	}
-      }
-      res =  _Predicate(BoolExpressionFactory::createBoolExpression( PBoolExpressionFactory::createComparison(type,l,r), env),vo);
-      return;
-    }
-
-
-    /**
- else if (r.getType() == VAR || r.getType() == CONSTARRAY ) {
-	std::cerr << "varvar..." << std::endl;
+	} else if (r.getType() == VAR || r.getType() == CONSTARRAY ) {
+	  //std::cerr << "varvar..." << std::endl;
 	  int var2 = vo->getIndex((IntExpressionFactory::createIntExpression(r,env)));
 	  switch (type) {
 	  case EQ :
@@ -747,6 +741,13 @@ public:
 	    throw "Incorrect expression structure !";
 	  }	    
 	}
+      }
+      res =  _Predicate(BoolExpressionFactory::createBoolExpression( PBoolExpressionFactory::createComparison(type,l,r), env),vo);
+      return;
+    }
+
+
+    /**
       } else if (l.getType() == CONST) {
 	std::cerr << "inverting..." << std::endl;
 	if (r.getType() == VAR || r.getType() == CONSTARRAY ) {
