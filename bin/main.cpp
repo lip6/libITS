@@ -19,6 +19,7 @@
 
 // for stats
 #include "MaxComputer.hh"
+#include "ExactStateCounter.hh"
 
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
@@ -26,6 +27,7 @@
 
 #include "EarlyBreakObserver.hh"
 #include "Property.hh"
+#include "SMTExporter.hh"
 
 
 #ifdef HASH_STAT
@@ -65,6 +67,8 @@ State exhibitModel (ITSModel & model) {
     os.close();
     exit(0);
   }
+
+  //  std::cout << " Next rel :" << model.getNextRel() << std::endl;
   State reachable;
   if (BMC <0) {
     // Compute reachable states
@@ -195,6 +199,8 @@ int main_noex (int argc, char **argv) {
  vLabel boundsExpr="";
  vLabel reachFile="";
  vLabel traceStr = "";
+ vLabel smtpath = "";
+ bool dosmtexport = false;
 
  argc = args.size();
  int nbwitness=0;
@@ -208,6 +214,11 @@ int main_noex (int argc, char **argv) {
      if (++i > argc) 
        { cerr << "give argument value for BMC depth " << args[i-1]<<endl; usage() ; exit(1);}
      BMC = atoi(args[i]); 
+   } else if (! strcmp(args[i],"-exportsmt") ) {
+     if (++i > argc) 
+       { cerr << "give argument value for SMT export file " << args[i-1]<<endl; usage() ; exit(1);}
+     dosmtexport = true;
+     smtpath = args[i]; 
    } else if (! strcmp(args[i],"--help") || ! strcmp(args[i],"-h")  ) {
      usage(); exit(0);
    } else if (! strcmp(args[i],"--quiet")   ) {
@@ -290,10 +301,33 @@ int main_noex (int argc, char **argv) {
 	
  State reachable = exhibitModel(model);
 
+ if (dosmtexport) {
+   SMTExporter smtexp (smtpath);
+   if (smtexp.exportDD(model,reachable)) {
+     if (props.size() > 0) {
+       std::cout << "Verifying " << props.size() << " reachability properties."<< std::endl; 
+     }
+
+     for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
+       smtexp.exportPredicate(it->getName(), model, it->getPred());
+     }
+     smtexp.close();
+   }
+   return 0;
+ }
+
  if (dostats) {
-   MaxComputer mc ;
-   MaxComputer::stat_t stat = mc.compute(reachable);
-   mc.printStats(stat, std::cout);
+   // short scopes since these classes cost a cache to maintain.
+   {
+     ExactStateCounter mc ;
+     ExactStateCounter::stat_t stat = mc.compute(reachable);
+     mc.printStats(stat, std::cout);
+   }
+   {
+     MaxComputer mc ;
+     MaxComputer::stat_t stat = mc.compute(reachable);
+     mc.printStats(stat, std::cout);
+   }
  }
 
  if (boundsExpr != "") {
