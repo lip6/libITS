@@ -317,16 +317,25 @@ int main_noex (int argc, char **argv) {
  }
 
  if (dostats) {
+   {
+     MaxComputer mc ;
+     MaxComputer::stat_t stat = mc.compute(reachable);
+     mc.printStats(stat, std::cout);
+   }
    // short scopes since these classes cost a cache to maintain.
    {
      ExactStateCounter mc ;
      ExactStateCounter::stat_t stat = mc.compute(reachable);
      mc.printStats(stat, std::cout);
-   }
-   {
-     MaxComputer mc ;
-     MaxComputer::stat_t stat = mc.compute(reachable);
-     mc.printStats(stat, std::cout);
+
+     mpz_class total = 0;
+     Type::namedTrs_t namedTrs;
+     model.getNamedLocals(namedTrs);
+     for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+       its::State succs = (it->second)(model.computeReachable());
+       total += mc.compute(succs);
+     }
+     std::cout << "Total edges in reachability graph : " << total << std::endl;
    }
  }
 
