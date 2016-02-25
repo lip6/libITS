@@ -197,6 +197,9 @@ public:
    */
   void playPath (labels_t path) const ;
 
+  /** Obtain transitions of the "local" transitions of the model, including top level elapse if it exists. */
+  void  getNamedLocals (Type::namedTrs_t &) const;
+
   /** 
   * Get bounds for a variable : the <min,maximum> value the variable can reach in the given state space. 
   * In case of error returns the pair <1,-1>.

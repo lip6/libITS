@@ -162,6 +162,14 @@ SDD ITSModel::computeReachable (bool wGarbage) const {
   return reached_ ;
 }
 
+  void  ITSModel::getNamedLocals (Type::namedTrs_t & namedTrs) const{
+    getInstance()->getType()->getNamedLocals(namedTrs);
+    Transition elapse = getElapse(); 
+    if (elapse != Transition::id) {
+      namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
+    }
+  }
+
 its::Transition ITSModel::getPredRel (State reach_envelope) const
 {
 
@@ -183,12 +191,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       } else {
 	d3::set<GShom>::type toadd;
 	d3::set<GShom>::type toprotect;
-	Type::namedTrs_t namedTrs;
-	getInstance()->getType()->getNamedLocals(namedTrs);
-	Transition elapse = getElapse(); 
-	if (elapse != Transition::id) {
-	  namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
-	}
+	Type::namedTrs_t namedTrs ;
+	getNamedLocals(namedTrs);
 
 	Type::namedTrs_t::const_iterator  transit;
 	stringstream translist ;
@@ -243,15 +247,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     // Forward construction of witness
     
     Type::namedTrs_t namedTrs;
-    getInstance()->getType()->getNamedLocals(namedTrs);
-    
-    /** add elapse if necessary */
-    Transition elapse = getElapse(); 
-    if (elapse != Transition::id) {
-      namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
-    }
-
-    
+    getNamedLocals(namedTrs);
+        
     State cur = init;
     int i=0;
     for (labels_it pathit = path.begin() ; pathit != path.end() ; ++pathit) {
@@ -350,14 +347,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     // Forward construction of witness
     
     Type::namedTrs_t namedTrs;
-    getInstance()->getType()->getNamedLocals(namedTrs);
-    
-    /** add elapse if necessary */
-    Transition elapse = getElapse(); 
-    if (elapse != Transition::id) {
-      namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
-    }
-
+    getNamedLocals(namedTrs);
 
     std::vector<size_t>  iters;
     for (size_t i=0; i < revcomponents.size(); i++) {
@@ -511,14 +501,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     State Mi = init;
     State Mi_next;
     Type::namedTrs_t namedTrs;
-    getInstance()->getType()->getNamedLocals(namedTrs);
+    getNamedLocals(namedTrs);
     
-    /** add elapse if necessary */
-    Transition elapse = getElapse(); 
-    if (elapse != Transition::id) {
-      namedTrs.push_front ( Type::namedTr_t("elapse",elapse));
-    }
-
 
     for ( rev_it comp= revcomponents.begin();comp != revcomponents.end(); ++comp) {
       bool ok = false;
