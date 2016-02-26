@@ -20,6 +20,7 @@
 // for stats
 #include "MaxComputer.hh"
 #include "ExactStateCounter.hh"
+#include "ToTransRel.hh"
 
 // SDD utilities to output stats and dot graphs
 #include "util/dotExporter.h"
@@ -329,12 +330,58 @@ int main_noex (int argc, char **argv) {
      mc.printStats(stat, std::cout);
 
      mpz_class total = 0;
-     Type::namedTrs_t namedTrs;
-     model.getNamedLocals(namedTrs);
-     for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
-       its::State succs = (it->second)(model.computeReachable());
-       total += mc.compute(succs);
-     }
+     its::State rel = getTransRel(model);
+     total = mc.compute(rel);     
+
+     // // declarations common to cluster and transition approaches
+     // Type::namedTrs_t namedTrs;
+     // model.getNamedLocals(namedTrs);
+     // size_t tsize = namedTrs.size();
+
+     // // transitions approach
+     // int done = 0;
+     // for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+     //   its::State succs = (it->second)(model.computeReachable());
+     //   total += mc.compute(succs);
+     //   ++done;
+     //   if (MemoryManager::should_garbage()) {
+     // 	 std::cerr << "Done " << done << "/" << tsize << " transitions." << std::endl;
+     // 	 mc.clear();
+     // 	 MemoryManager::garbage();
+     //   }
+     // }
+
+     // // CLUSTER APPROACH 
+     // std::list<its::Transition> clusters;
+     // for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+     //   bool added = false;
+     //   for (std::list<its::Transition>::iterator jt = clusters.begin() ; jt != clusters.end() ; ++jt ) {
+     // 	 if ( commutative(*jt, it->second) ) {
+     // 	   *jt = *jt + it->second;
+     // 	   added = true;
+     // 	   break;
+     // 	 }
+     //   }
+     //   if (!added) {
+     // 	 clusters.push_back(it->second);
+     //   }
+     // }
+     // std::cerr << "Built " << clusters.size() << " clusters from "<< tsize << " transitions. " << std::endl;
+     
+
+     // int done = 0;
+     // for (std::list<its::Transition>::iterator jt = clusters.begin() ; jt != clusters.end() ; ++jt ) {
+     //   its::State succs = (*jt)(model.computeReachable());
+     //   total += mc.compute(succs);
+     //   ++done;
+     //   if (MemoryManager::should_garbage()) {
+     // 	 std::cerr << "Done " << done << "/" << clusters.size() << " clusters." << std::endl;
+     // 	 mc.clear();
+     // 	 MemoryManager::garbage();
+     //   }
+     // }
+     
+
      std::cout << "Total edges in reachability graph : " << total << std::endl;
    }
  }
