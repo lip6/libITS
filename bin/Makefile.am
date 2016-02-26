@@ -34,7 +34,7 @@ AM_CXXFLAGS = -g -O3 -Wall
 LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) -lgmpxx -lgmp
 
 
-its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh
+its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp
 
 its_reach_LDADD = $(LDADDFLAGS)  
 its_reach_LDFLAGS =  -flto -fwhole-program 
