@@ -22,6 +22,7 @@ public :
   const stat_t & compute (const GDDD & reach) ;
   const stat_t & compute (const DataSet * ev) ;
 
+  void clear () { cache.clear(); scache.clear(); }
   void printStats (const stat_t & stat, std::ostream & out) const ;
 };
 
