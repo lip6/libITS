@@ -40,8 +40,8 @@ public :
   }
   GShom phi (int var, const DataSet &val) const {
     // Used to work for referenced DDD
-    if (typeid(val) == typeid(const SDD &) ) {
-      return GShom(var, GShom(this) ((const SDD &)val), this);
+    if (typeid(val) == typeid(const GSDD &) ) {
+      return GShom(var, GShom(this) ((const GSDD &)val), this);
     } else if (typeid(val) == typeid(const DDD&)) {
       DDD newval = toRelHom() ((const DDD &)val);
       return GShom(var, newval, this);
