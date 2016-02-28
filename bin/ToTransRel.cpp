@@ -11,7 +11,7 @@ public:
   }
 
   GHom phi (int var, int val) const {
-    return GHom ( var+1, val)& GHom(var, val, this);
+    return GDDD ( var+1, val) ^ GDDD(var, val)^ GHom(this);
   }
 
   bool operator== (const StrongHom & o) const {
@@ -41,10 +41,13 @@ public :
   GShom phi (int var, const DataSet &val) const {
     // Used to work for referenced DDD
     if (typeid(val) == typeid(const GSDD &) ) {
-      return GShom(var, GShom(this) ((const GSDD &)val), this);
+      GSDD oldval =  ((const GSDD &) val);
+      return GShom(var, GShom(this) (oldval), this);
     } else if (typeid(val) == typeid(const DDD&)) {
-      DDD newval = toRelHom() ((const DDD &)val);
-      return GShom(var, newval, this);
+      GDDD oldval = (const DDD &)val;
+      DDD newval = toRelHom() (oldval);
+      GSDD edge = GSDD(var, newval);
+      return edge ^ this;
     } else {
       throw "bad type on edge";
     }
