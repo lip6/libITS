@@ -52,7 +52,7 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
       break;
 
     case Ctlp_NOT_c:
-      result = !  leftHom  ; 
+      result = ! leftHom  ; 
       break;
       
     case Ctlp_AND_c:
@@ -878,14 +878,25 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 
+	its::State reachpq ;
+	if (leftHom != stop && rightHom != stop) {
+	  reachpq = (leftHom & rightHom) ( getReachable() );
+	} else {
+	  reachpq = leftStates * rightStates;
+	}
+	if ( rightHom ==stop) {
+	  reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
+	} else {
+	  reachpq = fixpoint ( (rightHom & getNextRel()) + Transition::id, true) (reachpq)  ;
+	}
+	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
 	// states reachable by an infinite path of f
 	result = fixpoint (  (
 			      getNextRel() 
-			      + ( getReachable() -  (getPredRel() (getReachable())) ) // i.e. add dead states that verify f
+			      + dead
 			      )
-			     * ( fixpoint ( (rightStates * getNextRel()) + Transition::id  ) ( leftStates * rightStates)  )
-			     , true) ( getReachable() );
-
+			     * its::Transition::id 
+			     , true) ( reachpq );
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 	// Start from states p, S = p
