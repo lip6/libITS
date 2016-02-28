@@ -800,7 +800,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
       // then remove states that are not a predescessor of a state in the set
       // EG f <->  ( f & pred )^* & f      
       its::State deadf = ( getReachable() -  (getPredRel() (getReachable())) )*leftStates ; // i.e. add dead states that verify f; 
-      result = fixpoint ( getPredRel() * its::Transition::id + deadf, true) (leftStates) ; 
+      result = fixpoint ( getPredRel() * its::Transition::id + deadf, true) (leftStates); 
       break;
       }			   
     case Ctlp_Cmp_c: {
@@ -891,12 +891,9 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
 	}
 	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
 	// states reachable by an infinite path of f
-	result = fixpoint (  (
-			      getNextRel() 
-			      + dead
-			      )
-			     * its::Transition::id 
-			     , true) ( reachpq );
+	result = fixpoint ( getNextRel() 
+			    * its::Transition::id 
+			    , true) ( reachpq ) + (dead * reachpq);
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 	// Start from states p, S = p
