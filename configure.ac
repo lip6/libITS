@@ -117,6 +117,8 @@ test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
 CXXFLAGS="-std=c++11 -flto $CXXFLAGS"
+AR=gcc-ar
+RANLIB=gcc-ranlib
 
 # compile in C
 AC_PROG_CC
