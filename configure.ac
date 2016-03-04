@@ -143,6 +143,9 @@ test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
 CXXFLAGS="-std=c++11 -flto $CXXFLAGS"
+AR=gcc-ar
+RANLIB=gcc-ranlib
+
 
 # Option to enable hash stats
 AC_ARG_ENABLE([hash-stat],
