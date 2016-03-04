@@ -141,6 +141,9 @@ AC_LIBTOOL_DLOPEN
 test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
+# we compile C++11
+CXXFLAGS="-std=c++11 $CXXFLAGS"
+
 # Option to enable hash stats
 AC_ARG_ENABLE([hash-stat],
 				[AC_HELP_STRING([--enable-hash-stat],[collect stats on hash])],
