@@ -107,6 +107,17 @@ if test "x${with_libexpat}" != x; then
 fi
 
 
+# option to indicate GNU multi-precision library folder
+AC_ARG_WITH([gmp],
+            [AC_HELP_STRING([--with-gmp=/root/of/gmp],
+                            [specify the path of gmp])])
+
+AM_CONDITIONAL([WITH_GMP_PATH], [test "x${with_gmp}" != x])
+if test "x${with_gmp}" != x; then
+    AC_SUBST([GMP_ROOT],[${with_gmp}])
+fi
+
+
 # M4 macros location
 AC_CONFIG_MACRO_DIR([m4])
 
