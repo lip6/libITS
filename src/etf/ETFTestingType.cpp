@@ -96,7 +96,7 @@ namespace its
           }
       }
 
-    std::tr1::function<bool
+    std::function<bool
     (int, int)> comp = NULL;
     if (op == "=")
       {

@@ -22,9 +22,9 @@ namespace its {
  class AtomicProposition {
  public :
    int var;
-   std::tr1::function<bool(int,int)> comp;
+   std::function<bool(int,int)> comp;
    int val;
-   AtomicProposition(int var, std::tr1::function<bool(int,int)> comp, int val) : var(var),comp(comp),val(val) {}
+   AtomicProposition(int var, std::function<bool(int,int)> comp, int val) : var(var),comp(comp),val(val) {}
    AtomicProposition() : var(-1),comp(NULL),val(-1) {}
  };
 
