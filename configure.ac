@@ -121,7 +121,7 @@ test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
-CXXFLAGS="-std=c++11 $CXXFLAGS"
+CXXFLAGS="-std=c++11 -flto $CXXFLAGS"
 
 #compile in C++
 AC_PROG_CXX
