@@ -307,15 +307,15 @@ ANTLRC_LINK=-lantlr3c
 endif
 
 
-AM_CFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O2 -std=gnu99 -Wall
-AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O2 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
-AM_CXXFLAGS = -g -O2 -Wall
+AM_CFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O3 -std=gnu99 -Wall
+AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O3 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
+AM_CXXFLAGS = -g -O3 -Wall
 
 libITSmain_a_SOURCES = $(ITSSOURCES)
 
 
 libITS.a : libITSmain.a libprod.a libCAMI.a libprod.a libRdP.a
-	mkdir .tmp-libs ; cd .tmp-libs ; ar x ../libITSmain.a ; ar x ../libprod.a ; ar x ../libRdP.a ; ar x ../libCAMI.a ; ar x ../libprod.a ; ar cru ../libITS.a *.o ; cd .. ; ranlib libITS.a ; \rm -r .tmp-libs ;
+	mkdir .tmp-libs ; cd .tmp-libs ; $(AR) x ../libITSmain.a ; $(AR) x ../libprod.a ; $(AR) x ../libRdP.a ; $(AR) x ../libCAMI.a ; $(AR) x ../libprod.a ; $(AR) cru ../libITS.a *.o ; cd .. ; $(RANLIB) libITS.a ; \rm -r .tmp-libs ;
 
 
 all-local : libITS.a
