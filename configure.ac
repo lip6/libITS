@@ -142,7 +142,7 @@ test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
-CXXFLAGS="-std=c++11 $CXXFLAGS"
+CXXFLAGS="-std=c++11 -flto $CXXFLAGS"
 
 # Option to enable hash stats
 AC_ARG_ENABLE([hash-stat],
