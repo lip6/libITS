@@ -23,10 +23,6 @@
  */
 
 #include <cstddef>
-#include <bits/stl_iterator_base_types.h>
-
-#include <cstddef>
-#include <bits/stl_iterator_base_types.h>
 
 namespace wibble {
 

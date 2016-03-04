@@ -35,7 +35,6 @@
 #include "expression.hpp"
 
 using namespace std;
-using namespace __gnu_cxx;
 
 
 
