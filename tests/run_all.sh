@@ -9,6 +9,7 @@ else
 for i in *.data ; do
     ./run_test.pl $i ;
 done;
+fi
 
 echo "##teamcity[testSuiteFinished name='its-ltl.test']"
 
