@@ -17,6 +17,27 @@ if test "x${with_libddd}" != x; then
     AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
 fi
 
+# link time opt, set AR and RANLIB before LT_INIT call, unless configure overrides them.
+# also Options for disabling LTO on Darwin since binutils sucks big time on that platform.
+nolto=false
+
+AC_ARG_ENABLE(	[nolto],
+        [AC_HELP_STRING([--enable-nolto],[avoid using LTO flags, mostly for Darwin])],
+        [  case "${enable_nolto}" in
+            yes) nolto=true
+                ;;
+            no)
+                ;;
+            *)  AC_MSG_ERROR(Bad value ${enableval})
+                ;;
+            esac])
+
+if test "x$nolto" = "xfalse"; then
+   CXXFLAGS="-flto $CXXFLAGS"
+   test -z "$AR" && AR=gcc-ar
+   test -z "$RANLIB" && RANLIB=gcc-ranlib
+fi
+
 
 # option to indicate libspot folder
 AC_ARG_WITH([libspot],
@@ -121,9 +142,7 @@ test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
-CXXFLAGS="-std=c++11 -flto $CXXFLAGS"
-AR=gcc-ar
-RANLIB=gcc-ranlib
+CXXFLAGS="-std=c++11 $CXXFLAGS"
 
 #compile in C++
 AC_PROG_CXX
