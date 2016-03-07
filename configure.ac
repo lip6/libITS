@@ -6,6 +6,30 @@ AC_INIT([ctlits],
 # Automake initialisation
 AM_INIT_AUTOMAKE([1.10 -Wall foreign])
 
+
+# link time opt, set AR and RANLIB before LT_INIT call, unless configure overrides them.
+# also Options for disabling LTO on Darwin since binutils sucks big time on that platform.
+nolto=false
+
+AC_ARG_ENABLE(	[nolto],
+        [AC_HELP_STRING([--enable-nolto],[avoid using LTO flags, mostly for Darwin])],
+        [  case "${enable_nolto}" in
+            yes) nolto=true
+                ;;
+            no)
+                ;;
+            *)  AC_MSG_ERROR(Bad value ${enableval})
+                ;;
+            esac])
+
+if test "x$nolto" = "xfalse"; then
+   CXXFLAGS="-flto $CXXFLAGS"
+   test -z "$AR" && AR=gcc-ar
+   test -z "$RANLIB" && RANLIB=gcc-ranlib
+fi
+
+
+
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
             [AC_HELP_STRING([--with-libddd=/root/of/libddd],
@@ -118,12 +142,6 @@ test -z "$CXXFLAGS" && CXXFLAGS=
 # we compile C++11
 # or not : pass it in CXXFLAGS to configure
 # CXXFLAGS="-std=c++11 $CXXFLAGS"
-
-# link time opt
-CXXFLAGS="-flto $CXXFLAGS"
-AR=gcc-ar
-RANLIB=gcc-ranlib
-
 
 # compile in C
 AC_PROG_CC
