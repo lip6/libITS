@@ -1,6 +1,6 @@
 // -*- C++ -*- (c) 2009 Petr Rockai <me@mornfall.net>
 
-#include <divine/stateallocator.h>
+//#include <divine/stateallocator.h>
 #include <divine/blob.h>
 
 #ifndef DIVINE_GENERATOR_COMMON_H
