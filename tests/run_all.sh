@@ -2,7 +2,7 @@
 
 echo "##teamcity[testSuiteStarted name='its-ltl.test']"
 
-if ! [ -f ../src/its-ctl ]
+if ! [ -f ../src/its-ltl ]
 then
     echo "Build of ITS-LTL seems to have failed, skipping test suite"
 else
