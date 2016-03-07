@@ -1,0 +1,128 @@
+CGAL pnmcc CircularTrain12 stress rewriting backward
+../bin/its-ctl --quiet  -i  test_models/CircularTrain-PT-012/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/CircularTrain-PT-012/CTLFireabilitySimple.ctl --backward
+
+its-ctl command run as :
+
+../bin/its-ctl  --quiet  -i  test_models/CircularTrain-PT-012/CTLFireabilitySimple.gal  -t  CGAL  -ctl  test_models/CircularTrain-PT-012/CTLFireabilitySimple.ctl  --backward  
+Parsed 16 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,195,0.005397,4596,2,198,5,800,6,0,159,758,0
+
+
+original formula: AF((Section_6>=1 * F7>=1))
+=> equivalent existential formula: !(EG(!((Section_6>=1 * F7>=1))))
+(state)formula 0,195,0.019864,5376,2,198,45,5772,16,20,394,3870,44
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: E((Section_11>=1 * F12>=1) U (F2>=1 * Section_1>=1))
+=> equivalent existential formula: E((Section_11>=1 * F12>=1) U (F2>=1 * Section_1>=1))
+Hit Full ! 9/2/1
+(state)formula 1,45,0.020629,5636,2,107,47,5818,30,21,425,3911,48
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((F11>=1 * Section_10>=1) U (F3>=1 * Section_2>=1))
+=> equivalent existential formula: !((E(!((F3>=1 * Section_2>=1)) U (!((F11>=1 * Section_10>=1)) * !((F3>=1 * Section_2>=1)))) + EG(!((F3>=1 * Section_2>=1)))))
+Hit Full ! 9/0/3
+(state)formula 2,34,0.033182,6108,2,101,89,9619,48,43,470,7324,93
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E((Section_12>=1 * F1>=1) U (F3>=1 * Section_2>=1))
+=> equivalent existential formula: E((Section_12>=1 * F1>=1) U (F3>=1 * Section_2>=1))
+Hit Full ! 9/2/1
+(state)formula 3,34,0.0341,6372,2,101,90,9692,58,44,499,7366,97
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AX((F5>=1 * Section_4>=1))
+=> equivalent existential formula: !(EX(!((F5>=1 * Section_4>=1))))
+(state)formula 4,1,0.035749,6376,2,25,93,10328,63,45,504,7885,99
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EG((F2>=1 * Section_1>=1))
+=> equivalent existential formula: EG((F2>=1 * Section_1>=1))
+(state)formula 5,0,0.040639,6536,1,0,122,11282,63,61,504,8612,130
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((Section_6>=1 * F7>=1) U (Section_5>=1 * F6>=1))
+=> equivalent existential formula: !((E(!((Section_5>=1 * F6>=1)) U (!((Section_6>=1 * F7>=1)) * !((Section_5>=1 * F6>=1)))) + EG(!((Section_5>=1 * F6>=1)))))
+Hit Full ! 9/0/3
+(state)formula 6,34,0.051342,6992,2,116,164,14738,76,82,540,11890,175
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF((F2>=1 * Section_1>=1))
+=> equivalent existential formula: !(EG(!((F2>=1 * Section_1>=1))))
+(state)formula 7,195,0.059432,7492,2,198,213,17591,77,108,543,14111,227
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EG((F3>=1 * Section_2>=1))
+=> equivalent existential formula: EG((F3>=1 * Section_2>=1))
+(state)formula 8,0,0.062413,7764,1,0,239,18818,77,122,543,15154,256
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EF((F3>=1 * Section_2>=1))
+=> equivalent existential formula: E(TRUE U (F3>=1 * Section_2>=1))
+(state)formula 9,195,0.063623,7928,2,198,239,18978,81,122,561,15458,258
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG((Section_5>=1 * F6>=1))
+=> equivalent existential formula: !(E(TRUE U !((Section_5>=1 * F6>=1))))
+(state)formula 10,0,0.064004,8000,1,0,239,18978,81,122,561,15458,260
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AX((F2>=1 * Section_1>=1))
+=> equivalent existential formula: !(EX(!((F2>=1 * Section_1>=1))))
+(state)formula 11,1,0.064228,8000,2,25,240,18984,81,123,561,15471,260
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX((F5>=1 * Section_4>=1))
+=> equivalent existential formula: EX((F5>=1 * Section_4>=1))
+(state)formula 12,89,0.065579,8012,2,136,242,19465,81,124,561,15864,262
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: A((F8>=1 * Section_7>=1) U (F4>=1 * Section_3>=1))
+=> equivalent existential formula: !((E(!((F4>=1 * Section_3>=1)) U (!((F8>=1 * Section_7>=1)) * !((F4>=1 * Section_3>=1)))) + EG(!((F4>=1 * Section_3>=1)))))
+Hit Full ! 9/0/3
+(state)formula 13,45,0.080734,8488,2,116,284,23148,99,146,604,19397,307
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AF((Section_6>=1 * F7>=1))
+=> equivalent existential formula: !(EG(!((Section_6>=1 * F7>=1))))
+(state)formula 14,195,0.081073,8760,2,198,284,23148,99,147,604,19410,307
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EG((F4>=1 * Section_3>=1))
+=> equivalent existential formula: EG((F4>=1 * Section_3>=1))
+(state)formula 15,0,0.084585,8772,1,0,312,24552,99,162,604,20630,339
+Formula is FALSE !
+
+ *************************************** 
+

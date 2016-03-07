@@ -1,0 +1,125 @@
+CGAL pnmcc FMS 005 stress rewriting backward
+../bin/its-ctl --quiet  -i  test_models/FMS-PT-005/CTLCardinality.gal -t  CGAL  -ctl  test_models/FMS-PT-005/CTLCardinality.ctl --backward
+
+its-ctl command run as :
+
+../bin/its-ctl  --quiet  -i  test_models/FMS-PT-005/CTLCardinality.gal  -t  CGAL  -ctl  test_models/FMS-PT-005/CTLCardinality.ctl  --backward  
+Parsed 16 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,2.89502e+06,0.011639,4844,2,303,5,2644,6,0,155,2478,0
+
+
+original formula: AF(EF(!(P1wP2<=P2)))
+=> equivalent existential formula: !(EG(!(E(TRUE U !(P1wP2<=P2)))))
+(state)formula 0,2.89502e+06,0.032407,5540,2,303,6,7698,17,0,480,4233,5
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EX(((M1>=2 + (P2s<=P3M2 + P1M1<=P12wM3)) * AG(P12wM3<=P2wP1)))
+=> equivalent existential formula: EX(((M1>=2 + (P2s<=P3M2 + P1M1<=P12wM3)) * !(E(TRUE U !(P12wM3<=P2wP1)))))
+(state)formula 1,0,0.037003,5884,1,0,7,9289,24,1,497,5548,8
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(((!(P3M2<=M3) + (P12M3<=M1 + P2s>=1)) * (P3M2>=1 + (P12<=P2wP1 + P1wM1>=2))))
+=> equivalent existential formula: !(E(TRUE U !(((!(P3M2<=M3) + (P12M3<=M1 + P2s>=1)) * (P3M2>=1 + (P12<=P2wP1 + P1wM1>=2))))))
+(state)formula 2,0,0.059556,6664,1,0,8,14322,38,1,533,9524,11
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: !(EF(((P1s<=P2M2 * P1wP2>=1) * P12M3>=3)))
+=> equivalent existential formula: !(E(TRUE U ((P1s<=P2M2 * P1wP2>=1) * P12M3>=3)))
+(state)formula 3,2.89502e+06,0.060373,6924,2,303,8,14595,45,1,543,9562,12
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG((EG(P2d<=P1M1) + EF(P12M3<=M3)))
+=> equivalent existential formula: !(E(TRUE U !((EG(P2d<=P1M1) + E(TRUE U P12M3<=M3)))))
+(state)formula 4,2.89502e+06,0.084191,8104,2,303,48,22865,47,22,559,16725,57
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: ((AG(P12<=P12) * E(P2<=P2wM2 U P1s<=P2)) * AF(AF(P12s<=P12M3)))
+=> equivalent existential formula: ((!(E(TRUE U !(P12<=P12))) * E(P2<=P2wM2 U P1s<=P2)) * !(EG(!(!(EG(!(P12s<=P12M3)))))))
+Hit Full ! 16/0/4
+(state)formula 5,2.29259e+06,0.103715,8708,2,500,55,27975,57,27,620,21844,65
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG((((P12wM3<=M3 + P12<=M1) + P12>=2) + !((P1wP2<=M1 + M3<=P2))))
+=> equivalent existential formula: !(E(TRUE U !((((P12wM3<=M3 + P12<=M1) + P12>=2) + !((P1wP2<=M1 + M3<=P2))))))
+(state)formula 6,2.89502e+06,0.104841,8968,2,303,55,28160,68,28,650,22004,66
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG(EF(!(P12s<=P1wP2)))
+=> equivalent existential formula: !(E(TRUE U !(E(TRUE U !(P12s<=P1wP2)))))
+(state)formula 7,2.89502e+06,0.113516,9296,2,303,56,30591,70,28,662,24445,69
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(!(EX(P12<=P1)))
+=> equivalent existential formula: E(TRUE U !(EX(P12<=P1)))
+(state)formula 8,2.89502e+06,0.131233,9824,2,303,59,33841,71,29,673,27687,73
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: E(!(P12wM3>=2) U AG(M3<=P2wP1))
+=> equivalent existential formula: E(!(P12wM3>=2) U !(E(TRUE U !(M3<=P2wP1))))
+(state)formula 9,0,0.132713,10084,1,0,61,34236,80,29,682,27991,77
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EF(AF((P1d>=3 * P2>=3)))
+=> equivalent existential formula: E(TRUE U !(EG(!((P1d>=3 * P2>=3)))))
+(state)formula 10,2.89502e+06,0.151443,10908,2,303,64,41144,85,31,689,34310,83
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG(AX(!(M3>=3)))
+=> equivalent existential formula: !(E(TRUE U !(!(EX(!(!(M3>=3)))))))
+(state)formula 11,2.89502e+06,0.151867,11172,2,303,64,41144,87,31,691,34310,84
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EF(P12wM3>=3))
+=> equivalent existential formula: !(E(TRUE U P12wM3>=3))
+(state)formula 12,0,0.152625,11052,1,0,65,41271,88,31,692,34388,87
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E(AX(P3s<=P3M2) U (P2M2>=3 * P12s<=P12s))
+=> equivalent existential formula: E(!(EX(!(P3s<=P3M2))) U (P2M2>=3 * P12s<=P12s))
+(state)formula 13,0,0.154909,11052,1,0,68,42017,94,32,705,35093,90
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AX(AG((M3>=1 + M1>=1)))
+=> equivalent existential formula: !(EX(!(!(E(TRUE U !((M3>=1 + M1>=1)))))))
+(state)formula 14,0,0.166022,11612,1,0,69,45531,98,32,709,38130,93
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E(((P1wM1<=P12M3 * M2>=3) + P12<=P3) U EG(P1wP2>=3))
+=> equivalent existential formula: E(((P1wM1<=P12M3 * M2>=3) + P12<=P3) U EG(P1wP2>=3))
+Hit Full ! 9/0/11
+(state)formula 15,2.6981e+06,0.285711,16320,2,448,73,74829,111,33,770,57419,100
+Formula is TRUE !
+
+ *************************************** 
+
