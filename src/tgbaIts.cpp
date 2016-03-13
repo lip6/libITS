@@ -1,10 +1,11 @@
 #include "tgbaIts.hh"
-#include "tgbaalgos/reachiter.hh"
-#include "tgba/bddprint.hh"
-#include "ltlvisit/tostring.hh"
-#include "ltlast/atomic_prop.hh"
-#include "misc/escape.hh"
+#include <spot/twaalgos/reachiter.hh>
+#include <spot/twa/bddprint.hh>
+#include <spot/tl/print.hh>
+#include <spot/tl/formula.hh>
+#include <spot/misc/escape.hh>
 #include "Hom_Basic.hh"
+#include <sstream>
 
 namespace its {
 
@@ -13,14 +14,14 @@ namespace its {
 
   namespace loadTGBA
   {
-    
-    class load_bfs: public spot::tgba_reachable_iterator_breadth_first
+
+    class load_bfs: public spot::twa_reachable_iterator_breadth_first
     {
       TgbaType::arcs_t & arcs_;
       int nbStates_;
     public:
-      load_bfs(const spot::tgba* a, TgbaType::arcs_t & arcs)
-	: tgba_reachable_iterator_breadth_first(a),arcs_(arcs),nbStates_(0)
+      load_bfs(const spot::const_twa_ptr& a, TgbaType::arcs_t & arcs)
+	: twa_reachable_iterator_breadth_first(a),arcs_(arcs),nbStates_(0)
       {
       }
 
@@ -29,7 +30,8 @@ namespace its {
       /// \param s The current state.
       /// \param n A unique number assigned to \a s.
       /// \param si The spot::tgba_succ_iterator for \a s.
-      void process_state(const spot::state* s, int n,spot:: tgba_succ_iterator* si)
+      void process_state(const spot::state* s, int n,
+			 spot::twa_succ_iterator* si)
       {
 	++nbStates_;
       }
@@ -48,9 +50,9 @@ namespace its {
       /// instance is destroyed.
       void process_link(const spot::state* in_s, int in,
 			const spot::state* out_s, int out,
-			const spot::tgba_succ_iterator* si) 
+			const spot::twa_succ_iterator* si)
       {
-	TgbaType::tgba_arc_label_t lab (si->current_condition(), si->current_acceptance_conditions());
+	TgbaType::tgba_arc_label_t lab (si->cond(), si->acc());
 	TgbaType::tgba_arc_t arc (in,out);
 	TgbaType::arcs_it it = arcs_.find(lab);
 	if ( it != arcs_.end() ) {
@@ -64,52 +66,37 @@ namespace its {
     };
   }
 
-  TgbaType::TgbaType (const spot::tgba * tgba) : tgba_(tgba) 
+  TgbaType::TgbaType (const spot::const_twa_ptr& tgba) : tgba_(tgba)
   {
     loadTGBA::load_bfs b(tgba, arcs_);
     b.run();
     build_labels();
   }
 
-  labels_t TgbaType::getAcceptanceSet (bdd acc, const spot::tgba * tgba)  {
+  /** compute a vector of strings representing a bdd of an acceptance set */
+  labels_t TgbaType::getAcceptanceSet (spot::acc_cond::mark_t acc) {
     labels_t ret;
-    
-    const spot::bdd_dict* d = tgba->get_dict();
-    while (acc != bddfalse)
+    for (auto a: acc.sets())
       {
-	bdd cube = bdd_satone(acc);
-	acc -= cube;
-	const spot::ltl::formula* f = d->oneacc_to_formula(cube);
-	std::string s = spot::ltl::to_string(f);
-	if (is_atomic_prop(f) && s[0] == '"')
-	  {
-	    // Unquote atomic propositions.
-	    s.erase(s.begin());
-	    s.resize(s.size() - 1);
-	  }
-	ret.push_back(spot::escape_str(s));
+	std::ostringstream os;
+	os << a;
+	ret.push_back(os.str());
       }
-
-      
-    std::sort(ret.begin(), ret.end());
     return ret;
   }
-  /** compute a vector of strings representing a bdd of an acceptance set */
-  labels_t TgbaType::getAcceptanceSet (bdd acc) const {
-    return getAcceptanceSet(acc, tgba_);
-  }
 
-  /** A helper function to print the acceptance conditions bdd 
+  /** A helper function to print the acceptance conditions bdd
    * Code copy paste direct from spot::save.cc file */
-  void TgbaType::print_acc(bdd acc, std::ostream & os) const {
+  void TgbaType::print_acc(spot::acc_cond::mark_t acc,
+			   std::ostream & os) const {
     labels_t acc_set = getAcceptanceSet(acc);
-    
+
     os << "<";
     labels_it it = acc_set.begin();
 
     if (it != acc_set.end()) {
       os << "\"" << *it << "\"";
-    
+
       for (++it ; it != acc_set.end();  ++it ) {
 	os << "," << "\"" << *it << "\"";
       }
@@ -121,8 +108,7 @@ namespace its {
   /** A helper function to print the atomic prop condition formula bdd */
   void TgbaType::print_cond(bdd cond, std::ostream & os) const {
     /** code stolen from spot::save.cc */
-    const spot::bdd_dict* d = tgba_->get_dict();
-    spot::escape_str(os, bdd_format_formula(d, cond));
+    spot::escape_str(os, bdd_format_formula(tgba_->get_dict(), cond));
   }
 
   /** A pretty print for tgba arc labels, wrapper that relies on print_acc and print_cond */
@@ -137,16 +123,16 @@ namespace its {
   }
 
   void TgbaType::build_labels () {
-    for (arcs_it it = arcs_.begin() ; it != arcs_.end() ; ++it) {      
+    for (arcs_it it = arcs_.begin() ; it != arcs_.end() ; ++it) {
       labmap_.insert(labmap_t::value_type(get_arc_label(it->first), it->first));
     }
   }
-  
+
 
   /** Build the transition for a structural arc */
   GHom TgbaType::buildTransition (const tgba_arc_t & arc) const {
     /** an arc_t is simply a pair of integer */
-    
+
     // test for self loop : optimizes away the write operation
     if (arc.first == arc.second) {
       // 0 is the DEFAULT_VAR

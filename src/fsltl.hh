@@ -3,7 +3,7 @@
 
 #include "sogIts.hh"
 #include "ITSModel.hh"
-#include "tgba/tgba.hh"
+#include <spot/twa/twa.hh>
 #include "tgbaIts.hh"
 
 
@@ -41,7 +41,7 @@ namespace its {
     // Play factory role for building ITS types from other formalisms
     // Returns false and aborts if type name already exists.
     // Create a type to hold a spot TGBA
-    bool declareType (const class spot::tgba * tgba);
+    bool declareType (spot::const_twa_ptr tgba);
 
     // Build the composed system based on the TGBA and the main instance of the ITSModel.
     // Precondition : we have built a model, invoked setInstance and setInstanceState, and declared a TGBA type.

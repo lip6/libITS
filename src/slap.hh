@@ -1,5 +1,5 @@
-// Copyright (C) 2003, 2004, 2006 Laboratoire d'Informatique de Paris
-// 6 (LIP6), département Systèmes Répartis Coopératifs (SRC),
+// Copyright (C) 2003, 2004, 2006, 2016 Laboratoire d'Informatique de
+// Paris 6 (LIP6), département Systèmes Répartis Coopératifs (SRC),
 // Université Pierre et Marie Curie.
 //
 // This file is part of Spot, a model checking library.
@@ -22,7 +22,7 @@
 #ifndef SPOT_TGBA_SLAPPRODUCT_HH
 # define SPOT_TGBA_SLAPPRODUCT_HH
 
-#include "tgba/tgba.hh"
+#include <spot/twa/twa.hh>
 #include "sogIts.hh"
 #include "sogtgbautils.hh"
 
@@ -36,7 +36,7 @@ namespace slap
   ///
   /// This state is in fact a pair of state: the state from the left
   /// automaton and that of the right.
-  class slap_state : public spot::state
+  class slap_state final: public spot::state
   {
   public:
     /// \brief Constructor
@@ -44,7 +44,7 @@ namespace slap
     /// \param right The state from the right automaton.
     /// These states are acquired by spot::state_product, and will
     /// be deleted on destruction.
-    slap_state(spot::state* left, its::State right)
+    slap_state(const spot::state* left, its::State right)
       :	left_(left),
 	right_(right)
     {
@@ -55,7 +55,7 @@ namespace slap
 
     virtual ~slap_state();
 
-    state*
+    const state*
     left() const
     {
       return left_;
@@ -67,37 +67,39 @@ namespace slap
       return right_;
     }
 
-    virtual int compare(const state* other) const;
-    virtual size_t hash() const;
-    virtual slap_state* clone() const;
+    virtual int compare(const state* other) const override;
+    virtual size_t hash() const override;
+    virtual slap_state* clone() const override;
 
   private:
-    spot::state* left_;		///< State from the left automaton.
+    const spot::state* left_;	///< State from the left automaton.
     its::State right_;		///< State from the right automaton.
   };
 
 
   /// \brief Iterate over the successors of a product computed on the fly.
-  class slap_succ_iterator: public spot::tgba_succ_iterator
+  class slap_succ_iterator: public spot::twa_succ_iterator
   {
   public:
     /** aut : the automaton, passed to allow creation of iterators
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-    slap_succ_iterator(const spot::tgba * aut, const spot::state * aut_state, spot::tgba_succ_iterator* left, const sogIts & model, const its::State& right, sogits::FSTYPE fsType_);
+    slap_succ_iterator(const spot::twa* aut, const spot::state* aut_state,
+		       spot::twa_succ_iterator* left, const sogIts& model,
+		       const its::State& right, sogits::FSTYPE fsType_);
 
     virtual ~slap_succ_iterator();
 
     // iteration
-    void first();
-    void next();
-    bool done() const;
+    bool first() override final;
+    bool next() override final;
+    bool done() const override final;
 
     // inspection
-    slap_state* current_state() const;
-    bdd current_condition() const;
-    bdd current_acceptance_conditions() const;
+    const slap_state* dst() const override final;
+    bdd cond() const override final;
+    spot::acc_cond::mark_t acc() const override final;
 
   protected:
     //@{
@@ -110,110 +112,100 @@ namespace slap
     // to allow pretty printing of arc annotations
     friend class slap_tgba;
 
-    const spot::tgba * aut_;
+    const spot::twa * aut_;
     const spot::state * aut_state_;
-    spot::tgba_succ_iterator* left_;
+    spot::twa_succ_iterator* left_;
     const sogIts & model_; ///< The ITS model.
-    its::State right_; ///< The source state.   
-    its::State dest_; ///< The current successor aggregate (could be empty).   
+    its::State right_; ///< The source state.
+    its::State dest_; ///< The current successor aggregate (could be empty).
     sogits::FSTYPE fsType_;
   };
 
 
   /// \brief A divergent state in some specific cases.
-  class slap_div_state : public spot::state {
+  class slap_div_state final: public spot::state {
   public:
-    slap_div_state(const bdd& c, const bdd &a);
-    int compare(const state* other) const;
-    size_t hash() const;
-    state* clone() const;
+    slap_div_state(const bdd& c, spot::acc_cond::mark_t a);
+    int compare(const state* other) const override;
+    size_t hash() const override;
+    state* clone() const override;
     const bdd& get_condition() const;
-    const bdd& get_acceptance() const;
+    spot::acc_cond::mark_t get_acceptance() const;
 
-    
+
     // pretty print
     std::ostream & print (std::ostream &) const ;
-    
+
   private:
     bdd cond; ///< the condition.
-    bdd acc; ///< the (full) acceptance set
+    spot::acc_cond::mark_t acc; ///< the (full) acceptance mark
   };
 
-  class slap_div_succ_iterator : public spot::tgba_succ_iterator
+  class slap_div_succ_iterator final: public spot::twa_succ_iterator
   {
   public:
-    slap_div_succ_iterator(const spot::bdd_dict* d,
-			   const spot::state* s, const bdd & cond, const bdd & acc);
+    slap_div_succ_iterator(const spot::bdd_dict_ptr& d,
+			   const spot::state* s, const bdd & cond,
+			   spot::acc_cond::mark_t acc);
 
 
-    void first();
-    void next();
-    bool done() const;
+    bool first() override;
+    bool next() override;
+    bool done() const override;
 
-    spot::state* current_state() const;
-    bdd current_condition() const;
-    bdd current_acceptance_conditions() const;
+    const spot::state* dst() const override;
+    bdd cond() const override;
+    spot::acc_cond::mark_t acc() const override;
     std::string format_transition() const;
 
   private:
     slap_div_succ_iterator(const slap_div_succ_iterator& s);
     slap_div_succ_iterator& operator=(const slap_div_succ_iterator& s);
 
-    const spot::bdd_dict* dict;
+    spot::bdd_dict_ptr dict;
     const spot::state* state;
     bool done_;
     bdd cond_;
-    bdd acc_;
+    spot::acc_cond::mark_t acc_;
   };
 
 
 
 
   /// \brief A lazy product.  (States are computed on the fly.)
-  class slap_tgba : public spot::tgba
+  class slap_tgba : public spot::twa
   {
   public:
     /// \brief Constructor.
     /// \param left The left automata in the product.
     /// \param right The ITS model.
-    slap_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType);
+    slap_tgba(spot::const_twa_ptr left,
+	      const sogIts & right,sogits::FSTYPE fsType);
 
     virtual ~slap_tgba();
 
-    virtual spot::state* get_init_state() const;
+    virtual spot::state* get_init_state() const override;
 
-    virtual spot::tgba_succ_iterator*
-    succ_iter(const spot::state* local_state,
-	      const spot::state* global_state = 0,
-	      const spot::tgba* global_automaton = 0) const;
+    virtual spot::twa_succ_iterator*
+    succ_iter(const spot::state* local_state) const override;
 
-    virtual spot::bdd_dict* get_dict() const;
+    virtual std::string format_state(const spot::state* state) const override;
 
-    virtual std::string format_state(const spot::state* state) const;
-
-    virtual std::string
-    transition_annotation(const spot::tgba_succ_iterator* t) const;
-
-    virtual spot::state* project_state(const spot::state* s, const spot::tgba* t) const;
-
-    virtual bdd all_acceptance_conditions() const;
-    virtual bdd neg_acceptance_conditions() const;
+    virtual spot::state* project_state(const spot::state* s,
+				       const spot::const_twa_ptr& t)
+      const override;
 
   protected:
-    virtual bdd compute_support_conditions(const spot::state* state) const;
-    virtual bdd compute_support_variables(const spot::state* state) const;
-
-    spot::bdd_dict* dict_;
-    const spot::tgba* left_;
+    spot::const_twa_ptr left_;
     const sogIts & model_;
     sogits::FSTYPE fsType_;
-    
+
     // test for fully symbolic exploration
-    bool isFullAcceptingState (spot::tgba_succ_iterator * it, spot::state * source) const ;
+    bool isFullAcceptingState (spot::twa_succ_iterator* it, const spot::state * source) const ;
     // true if all it arcs are self loops
-    bool isTerminalState (spot::tgba_succ_iterator * it, spot::state * source) const ;
+    bool isTerminalState (spot::twa_succ_iterator* it, const spot::state * source) const ;
     // true if it->destination == source
-    bool isSelfLoop (spot::tgba_succ_iterator * it, spot::state * source) const ;
+    bool isSelfLoop(const spot::twa_succ_iterator* it, const spot::state * source) const ;
     // Disallow copy.
     slap_tgba(const slap_tgba&);
     slap_tgba& operator=(const slap_tgba&);

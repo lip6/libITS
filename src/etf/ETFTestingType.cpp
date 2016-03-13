@@ -296,7 +296,7 @@ namespace its
           }
         int len = proj.size();
 
-        Sgi::hash_map<int, ETFTransition, Sgi::hash<int> > bdd_to_ETFtransition;
+	std::unordered_map<int, ETFTransition> bdd_to_ETFtransition;
 
         ETFrelIterate(trans);
         while (ETFrelNext(trans, src, dst, lbl))
@@ -311,7 +311,7 @@ namespace its
 
                 if (bdd_implies(changeset, dont_care_changeset))
                   {
-                    Sgi::hash_map<int, ETFTransition, Sgi::hash<int> >::iterator
+		    std::unordered_map<int, ETFTransition>::iterator
                         iteratorETFtransition = bdd_to_ETFtransition.find(
                             dont_care_changeset.id());
 
@@ -339,8 +339,7 @@ namespace its
 
           }
 
-        Sgi::hash_map<int, ETFTransition, Sgi::hash<int> >::const_iterator i =
-            bdd_to_ETFtransition.begin();
+        auto i = bdd_to_ETFtransition.begin();
         while (i != bdd_to_ETFtransition.end())
           {
             changeset_to_transitions[i->first].push_back(i->second);
@@ -358,9 +357,7 @@ namespace its
   {
 
     vector<ETFTransition> transitions;
-    Sgi::hash_map<int, vector<ETFTransition> , Sgi::hash<int> >::const_iterator
-        i = changeset_to_transitions.find(changeset.id());
-
+    auto i = changeset_to_transitions.find(changeset.id());
     if (i != changeset_to_transitions.end())
       {
         transitions = i->second;

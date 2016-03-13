@@ -7,24 +7,9 @@
 #include <string>
 #include <cstring>
 
-#include "bdd.h"
-#include "ltlparse/public.hh"
-#include "ltlvisit/destroy.hh"
-#include "ltlast/atomic_prop.hh"
-#include "ltlvisit/apcollect.hh"
-#include "ltlenv/environment.hh"
-#include "ltlparse/public.hh"
-#include "tgbaalgos/ltl2tgba_fm.hh"
-#include "tgba/tgbaproduct.hh"
-#include "tgbaalgos/gtec/gtec.hh"
-#include "tgbaalgos/magic.hh"
-#include "tgbaalgos/stats.hh"
-#include "tgbaalgos/emptiness.hh"
-#include "tgbaalgos/dotty.hh"
-#include "tgba/tgbatba.hh"
-
-#include "tgbaalgos/sccfilter.hh"
-
+#include <bddx>
+#include <spot/tl/parse.hh>
+#include <spot/tl/apcollect.hh>
 
 using std::cerr;
 using std::string;

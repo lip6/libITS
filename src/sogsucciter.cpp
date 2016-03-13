@@ -1,8 +1,8 @@
-// Copyright (C) 2004  Laboratoire d'Informatique de Paris 6 (LIP6),
-// d�artement Syst�es R�artis Coop�atifs (SRC), Universit�Pierre
-// et Marie Curie.
+// Copyright (C) 2004, 2016 Laboratoire d'Informatique de Paris 6
+// (LIP6), d�artement Syst�es R�artis Coop�atifs (SRC),
+// Universit�Pierre et Marie Curie.
 //
-// This file is part of the Spot tutorial. Spot is a model checking 
+// This file is part of the Spot tutorial. Spot is a model checking
 // library.
 //
 // Spot is free software; you can redistribute it and/or modify it
@@ -27,7 +27,7 @@
 
 #include <cassert>
 
-#include "tgba/bddprint.hh"
+#include <spot/twa/bddprint.hh>
 
 #include "sogsucciter.hh"
 #include "sogstate.hh"
@@ -51,11 +51,11 @@ using namespace its;
 namespace sogits {
 
 sog_succ_iterator::sog_succ_iterator(const sogIts& m, const sog_state& s)
-  : model(m), 
-    from(s), 
-    it(APIteratorFactory::create()), 
+  : model(m),
+    from(s),
+    it(APIteratorFactory::create()),
     div_needs_visit(false),
-    succstates(from.get_succ()), 
+    succstates(from.get_succ()),
     current_succ(NULL) {
   // set status of iterator to done() initially
 
@@ -80,7 +80,7 @@ sog_succ_iterator::sog_succ_iterator(const sogIts& m, const sog_state& s)
     }
   }
 
-void sog_succ_iterator::first() {
+bool sog_succ_iterator::first() {
   // set whether the div successor exists, i.e. the source agregate contains a circuit
   if (from.get_div())
     div_needs_visit = true;
@@ -88,25 +88,27 @@ void sog_succ_iterator::first() {
   /// position "it" at first of ap bdd set
   it->first();
   step();
+  return !done();
 }
 
 
-void sog_succ_iterator::next() {
+bool sog_succ_iterator::next() {
   assert(!done());
   if (div_needs_visit) {
     div_needs_visit = false;
-    return;
+    return !done();
   }
   // else
   it->next();
   step();
+  return !done();
 } //
 
 bool sog_succ_iterator::done() const {
   return  it->done() && ! div_needs_visit;
 } //
 
-spot::state* sog_succ_iterator::current_state() const {
+spot::state* sog_succ_iterator::dst() const {
   assert(!done());
   if (! div_needs_visit ) {
     trace << "FIRING : " << it->current() << std::endl;
@@ -118,16 +120,16 @@ spot::state* sog_succ_iterator::current_state() const {
   }
 } //
 
-bdd sog_succ_iterator::current_condition() const {
+bdd sog_succ_iterator::cond() const {
   assert(!done());
   trace << "Succ iter" << *this << " asked for current cond= " << from.get_condition() << std::endl;
   return from.get_condition();
-} // 
+} //
 
 
-bdd sog_succ_iterator::current_acceptance_conditions() const {
+spot::acc_cond::mark_t sog_succ_iterator::acc() const {
   assert(!done());
-  return bddfalse;
+  return 0U;
 } //
 
  std::ostream & sog_succ_iterator::print (std::ostream & os) const {
@@ -137,35 +139,38 @@ bdd sog_succ_iterator::current_acceptance_conditions() const {
 
 
 
-sog_div_succ_iterator::sog_div_succ_iterator(const spot::bdd_dict* d, const bdd& c)
-  : dict(d), cond(c), div_has_been_visited(true) {
+sog_div_succ_iterator::sog_div_succ_iterator(const spot::bdd_dict_ptr& d,
+					     const bdd& c)
+  : dict(d), cond_(c), div_has_been_visited(true) {
   // => done()
 }
 
 
-void sog_div_succ_iterator::first() {
+bool sog_div_succ_iterator::first() {
   div_has_been_visited = false;
+  return true;
 }
 
-void sog_div_succ_iterator::next() {
+bool sog_div_succ_iterator::next() {
   assert(!done());
   div_has_been_visited = true;
+  return false;
 }
 
 bool sog_div_succ_iterator::done() const {
-  return  div_has_been_visited;
+  return div_has_been_visited;
 }
 
-spot::state* sog_div_succ_iterator::current_state() const {
+spot::state* sog_div_succ_iterator::dst() const {
   assert(!done());
   trace << "FIRING : " << format_transition() << std::endl;
   trace << "FROM a div state" << std::endl << std::endl;
-  return new sog_div_state(cond);
+  return new sog_div_state(cond_);
 }
 
-bdd sog_div_succ_iterator::current_condition() const {
+bdd sog_div_succ_iterator::cond() const {
   assert(!done());
-  return cond;
+  return cond_;
 }
 
 int sog_div_succ_iterator::current_transition() const {
@@ -173,29 +178,19 @@ int sog_div_succ_iterator::current_transition() const {
   return -1; // div
 }
 
-bdd sog_div_succ_iterator::current_acceptance_conditions() const {
+spot::acc_cond::mark_t sog_div_succ_iterator::acc() const {
   assert(!done());
-  return bddfalse;
+  return {};
 }
 
 std::string sog_div_succ_iterator::format_transition() const {
   assert(!done());
   std::ostringstream os;
-  spot::bdd_print_formula(os, dict, cond);
+  spot::bdd_print_formula(os, dict, cond_);
   return "div(" + os.str() + ")";
 }
 
-sog_div_succ_iterator::sog_div_succ_iterator(const sog_div_succ_iterator& s) {
-  assert(false);
-}
-
-sog_div_succ_iterator& sog_div_succ_iterator::operator=(const sog_div_succ_iterator& s) {
-  assert(false);
-  return *this;
-}
-
-
-} // namespace 
+} // namespace
 
 std::ostream & operator << (std::ostream & os, const sogits::sog_succ_iterator &s) {
   return s.print(os);

@@ -4,11 +4,8 @@
 #include <string>
 #include <map>
 
-#include "tgba/bdddict.hh"
-#include "tgba/succiter.hh"
-#include "tgba/state.hh"
-
-#include "bdd.h"
+#include <spot/twa/twa.hh>
+#include <bddx.h>
 #include "apiterator.hh"
 
 #include "sogIts.hh"
@@ -18,20 +15,20 @@
 namespace sogits {
 
 /// \brief Implementation of a \a spot::tgba_succ_iterator for a \a ::marking.
-class sog_succ_iterator : public spot::tgba_succ_iterator {
+class sog_succ_iterator : public spot::twa_succ_iterator {
   public:
   sog_succ_iterator(const sogIts & m, const sog_state& s);
   virtual ~sog_succ_iterator();
 
-    void first();
+    bool first() override;
     void step();
-    void next();
-    bool done() const;
-    spot::state* current_state() const;
-    bdd current_condition() const;
+    bool next() override;
+    bool done() const override;
+    spot::state* dst() const override;
+    bdd cond() const override;
     int current_transition() const;
-    bdd current_acceptance_conditions() const;
-  
+    spot::acc_cond::mark_t acc() const override;
+
   // pretty print
   std::ostream & print (std::ostream &) const ;
 private:
@@ -45,30 +42,30 @@ private:
   sog_state * current_succ;
 };
 
-class sog_div_succ_iterator : public spot::tgba_succ_iterator {
+class sog_div_succ_iterator : public spot::twa_succ_iterator {
   public:
-    sog_div_succ_iterator(const spot::bdd_dict* d, const bdd& c);
+    sog_div_succ_iterator(const spot::bdd_dict_ptr& d, const bdd& c);
 
-    void first();
-    void next();
-    bool done() const;
-    spot::state* current_state() const;
-    bdd current_condition() const;
+    bool first() override;
+    bool next() override;
+    bool done() const override;
+    spot::state* dst() const override;
+    bdd cond() const override;
     int current_transition() const;
-    bdd current_acceptance_conditions() const;
+    spot::acc_cond::mark_t acc() const override;
     std::string format_transition() const;
 
   private:
-    sog_div_succ_iterator(const sog_div_succ_iterator& s);
-    sog_div_succ_iterator& operator=(const sog_div_succ_iterator& s);
+    sog_div_succ_iterator(const sog_div_succ_iterator& s) = delete;
+    sog_div_succ_iterator& operator=(const sog_div_succ_iterator& s) = delete;
 
-    const spot::bdd_dict* dict;
-    bdd cond; ///< The condition which must label the unique successor.
+    const spot::bdd_dict_ptr& dict;
+    bdd cond_; ///< The condition which must label the unique successor.
     bool div_has_been_visited;
 };
 
 
-} // namespace sogits 
+} // namespace sogits
 
 
 std::ostream & operator << (std::ostream & , const sogits::sog_succ_iterator &);

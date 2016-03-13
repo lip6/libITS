@@ -1,5 +1,5 @@
 #include <iostream>
-#include "bdd.h"
+#include <bddx.h>
 
 #include "apiterator.hh"
 
@@ -23,7 +23,7 @@ int main(int argc, const char ** argv) {
   if (nbvar)
     bdd_setvarnum(nbvar);
 
-  APIteratorFactory::setAPVarSet(var); 
+  APIteratorFactory::setAPVarSet(var);
   APIterator * api = APIteratorFactory::create();
   for(api->first(); !api->done(); api->next())
     cout << api->current() << endl;

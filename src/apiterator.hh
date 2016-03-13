@@ -3,7 +3,7 @@
 
 #include <cassert>
 #include <vector>
-#include "bvec.h"
+#include <bvecx.h>
 
 namespace sogits {
 
@@ -29,7 +29,7 @@ public:
   /** This class is designed to iterate over 2^AP : provide the AP
    *  this class provides the bdd representing each of the 2^AP
    *  possible combinations */
-class APBDDIterator : public APIterator { 
+class APBDDIterator : public APIterator {
 public:
 
   /** initialize from a set of vars */

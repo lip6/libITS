@@ -2,9 +2,9 @@
 #define __TGBA_ITS_HH__
 
 #include "TypeBasics.hh"
-#include "tgba/tgba.hh"
-#include "misc/bddlt.hh"
-#include "tgbaalgos/dotty.hh"
+#include <spot/twa/twa.hh>
+#include <spot/misc/bddlt.hh>
+#include <spot/twaalgos/dot.hh>
 
 
 #include <iosfwd>
@@ -17,7 +17,7 @@ namespace its {
  *  Using delegation to build a type from a TGBA */
   class TgbaType : public TypeBasics {
     // the concrete storage class
-    const spot::tgba * tgba_;
+    spot::const_twa_ptr tgba_;
     // used to label SDD node of PNet.
     static const int DEFAULT_VAR = 0;
     // used to name this type
@@ -27,14 +27,14 @@ namespace its {
       return labels_t (1,"state");
     }
   public :
-    TgbaType (const spot::tgba * tgba_) ;
+    TgbaType (const spot::const_twa_ptr& tgba_) ;
 
     /** Allow to visit the underlying type definition */
     void visit (class TypeVisitor * visitor) const {
     }
 
     /** This function is not relevant for TGBA implementation (afaics currently) */
-    its::Transition getAPredicate(const std::string&) const 
+    its::Transition getAPredicate(const std::string&) const
     { return its::Transition::id; }
 
     /** Return the set of local transitions, with their name, useful for displaying.*
@@ -49,7 +49,7 @@ namespace its {
     }
 
     /** the type that designates a TGBA arc label : <apcond , acc> as a pair of bdd */
-    typedef std::pair<bdd, bdd> tgba_arc_label_t;
+    typedef std::pair<bdd, spot::acc_cond::mark_t> tgba_arc_label_t;
     /** the type that designates a physical arc description : <source, target> as a pair of integer */
     typedef std::pair<int,int> tgba_arc_t;
 
@@ -62,11 +62,11 @@ namespace its {
     struct less_than {
       bool operator()(const its::TgbaType::tgba_arc_label_t &g1, const its::TgbaType::tgba_arc_label_t &g2) const{
 	return g1.first.id() < g2.first.id()
-	  || ( (! (g1.first.id() > g2.first.id() )) && g1.second.id() < g2.second.id());
+	  || ( (! (g1.first.id() > g2.first.id() )) && g1.second.id < g2.second.id);
       }
     };
 
-    
+
     /** a data structure to store mappings of TGBA arc label to physical arcs that bear this label */
     typedef std::map<tgba_arc_label_t,tgba_arcs_t,less_than> arcs_t;
     typedef arcs_t::iterator arcs_it;
@@ -75,11 +75,8 @@ namespace its {
     /** the data structure instance used to store the appropriate tgba representation */
     arcs_t arcs_;
 
-    /** The index of the initial state */
-    int init_state_index_;
-
     /** A helper function to print the acceptance conditions bdd */
-    void print_acc(bdd acc, std::ostream & os) const;
+    void print_acc(spot::acc_cond::mark_t acc, std::ostream & os) const;
     /** A helper function to print the atomic prop condition formula bdd */
     void print_cond(bdd cond, std::ostream & os) const;
     /** A pretty print for tgba arc labels, wrapper that relies on print_acc and print_cond */
@@ -111,12 +108,9 @@ namespace its {
       return ret;
     }
 
-    /** compute a vector of strings representing a bdd of an acceptance set */
-    labels_t getAcceptanceSet (bdd acc) const ;
+    /** compute a vector of strings representing an acceptance mark */
+    static labels_t getAcceptanceSet (spot::acc_cond::mark_t acc);
 
-    /** compute a vector of strings representing a bdd of an acceptance set */
-    static labels_t getAcceptanceSet (bdd acc, const spot::tgba * tgba) ;
-    
     tgba_arc_label_t getTransLabelDescription (Label trans) const {
       // example : trans = "a . !b x {}" => bdd of : a.!b,  empty set of acc
       // example : trans = "a  x {black,white}" => bdd of : a,  set of acc {black,white}
@@ -168,12 +162,12 @@ namespace its {
     }
 
     std::ostream& print(std::ostream& os) const {
-      spot::dotty_reachable(os, tgba_);// TODO : use tgba_dump
+      spot::print_dot(os, tgba_);// TODO : use tgba_dump
       os << "Internal view (arcs):" << std::endl;
       for (arcs_t::const_iterator it = arcs_.begin() ; it != arcs_.end() ; ++it ) {
 	os << get_arc_label(it->first);
-	os << it->first.first.id() << "/" << it->first.second.id() << "  ";
-	os << "   : "; 
+	os << it->first.first.id() << "/" << it->first.second << "  ";
+	os << "   : ";
 	for (tgba_arcs_it jt = it->second.begin() ; jt != it->second.end() ; ++jt) {
 	  os << jt->first << "->" << jt->second << " ;" ;
 	}
@@ -181,15 +175,15 @@ namespace its {
       }
       os << "Internal view (labmap):" << std::endl;
       for (labmap_t::const_iterator it = labmap_.begin() ; it != labmap_.end() ; ++it) {
- 	os << it->first << " mapsto " << get_arc_label(it->second) << "  ";
-	os << it->second.first.id() << "/" << it->second.second.id() << "  ";
+	os << it->first << " mapsto " << get_arc_label(it->second) << "  ";
+	os << it->second.first.id() << "/" << it->second.second << "  ";
 	os << std::endl;
       }
       os << std::endl;
       return os;
     }
 
-    /** Print a set of states, explicitly. 
+    /** Print a set of states, explicitly.
      *  Watch out, do not call on large its::State (>10^6). */
     void printState (State s, std::ostream & os) const {
       os << s << std::endl ;
@@ -197,11 +191,11 @@ namespace its {
 
 
     /** Return a Transition that maps states to their observation class.
-     *  Observation class is based on the provided set of observed variables, 
-     *  in standard "." separated qualified variable names. 
+     *  Observation class is based on the provided set of observed variables,
+     *  in standard "." separated qualified variable names.
      *  The returned Transition replaces the values of non-observed variables
      *  by their domain.
-     **/ 
+     **/
     Transition observe (labels_t obs, State potential) const {
       if (obs.empty()) {
 	return potential;
@@ -210,7 +204,7 @@ namespace its {
       }
     }
 
-    
+
 
   };
 

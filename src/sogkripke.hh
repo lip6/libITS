@@ -1,4 +1,5 @@
-// Copyright (C) 2012 Laboratoire de Recherche et Developpement de l'Epita
+// Copyright (C) 2012, 2016 Laboratoire de Recherche et Developpement
+// de l'Epita
 //
 // This file is part of Spot, a model checking library.
 //
@@ -20,7 +21,7 @@
 #ifndef SPOT_SOGKRIPKE_KRIPKE_HH
 #define SPOT_SOGKRIPKE_KRIPKE_HH
 
-#include "kripke/kripke.hh"
+#include <spot/kripke/kripke.hh>
 #include "sogtgba.hh"
 
 namespace sogits
@@ -54,27 +55,22 @@ namespace sogits
   {
   public:
     ~sog_kripke();
-    sog_kripke(sog_tgba*);
+    sog_kripke(sog_tgba_ptr);
 
-
-        spot::bdd_dict* get_dict() const;
         spot::state* get_init_state() const;
 
         /// \brief Allow to get an iterator on the state we passed in
         /// parameter.
-        spot::tgba_succ_iterator*
-        succ_iter(const spot::state* local_state,
-    	      const spot::state* global_state = 0,
-    	      const tgba* global_automaton = 0) const;
+        spot::twa_succ_iterator*
+        succ_iter(const spot::state* local_state) const;
 
         /// \brief Get the condition on the state
         bdd state_condition(const spot::state* s) const;
 
-
         /// \brief Return the name of the state.
         std::string format_state(const spot::state*) const;
   protected:
-        sog_tgba* sog_tgba_;
+        sog_tgba_ptr sog_tgba_;
 
   };
 }

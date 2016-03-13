@@ -2,8 +2,8 @@
 #define SOG_STATE_HH
 
 #include "sogIts.hh"
-#include "tgba/state.hh"
-#include "bdd.h"
+#include <spot/twa/twa.hh>
+#include <bddx.h>
 #include "SDD.h"
 
 
@@ -21,7 +21,7 @@ public:
 
   // return states contained in this agregate : that verify AP
   const GSDD & get_states() const;
-  // return true if div or dead is true in this agregate 
+  // return true if div or dead is true in this agregate
   bool get_div() const;
   // return any successor of a state in get_states such that AP is not true
   GSDD get_succ() const;

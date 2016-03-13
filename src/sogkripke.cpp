@@ -1,4 +1,5 @@
-// Copyright (C) 2009, 2010 Laboratoire de Recherche et Developpement de l'Epita
+// Copyright (C) 2009, 2010, 2016 Laboratoire de Recherche et
+// Developpement de l'Epita
 //
 // This file is part of Spot, a model checking library->
 //
@@ -22,8 +23,8 @@
 
 namespace sogits {
 
-sog_kripke::sog_kripke(sogits::sog_tgba* sog_tgba_) :
-	sog_tgba_(sog_tgba_) {
+sog_kripke::sog_kripke(sog_tgba_ptr sog_tgba_)
+  : spot::kripke(sog_tgba_->get_dict()), sog_tgba_(sog_tgba_) {
 }
 
 sog_kripke::~sog_kripke() {
@@ -35,15 +36,11 @@ sog_kripke::get_init_state() const {
 	return sog_tgba_->get_init_state();
 }
 
-spot::tgba_succ_iterator*
-sog_kripke::succ_iter(const spot::state* state, const spot::state*, const tgba*) const {
+spot::twa_succ_iterator*
+sog_kripke::succ_iter(const spot::state* state) const {
 	return sog_tgba_->succ_iter(state);
 }
 
-spot::bdd_dict*
-sog_kripke::get_dict() const {
-	return sog_tgba_->get_dict();
-}
 
 bdd sog_kripke::state_condition(const spot::state* state) const {
 	const sog_state* s = dynamic_cast<const sog_state*> (state);

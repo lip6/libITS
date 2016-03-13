@@ -12,10 +12,10 @@
 #include "TypeVisitor.hh"
 
 
-#include "ltlvisit/apcollect.hh"
-#include "misc/hash.hh"
+#include <spot/tl/apcollect.hh>
+#include <spot/misc/hash.hh>
 #include "etf/ETFType.hh"
-#include "misc/bddlt.hh"
+#include <spot/misc/bddlt.hh>
 
 namespace its {
 // hold the result of a parse
@@ -41,8 +41,8 @@ class EtfTestingType: public EtfType {
 	// in the atomic proposition.
 	std::map<int, class AtomicProposition> bddvar_to_AtomicProposition;
 
-	Sgi::hash_map<int, std::vector<class ETFTransition>, Sgi::hash<int> >
-			changeset_to_transitions;
+        std::unordered_map<int, std::vector<class ETFTransition>>
+			   changeset_to_transitions;
 
 	vLabel name;
 

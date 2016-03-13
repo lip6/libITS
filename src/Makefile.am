@@ -14,7 +14,7 @@ endif
 
 if WITH_LIBITS_PATH
 LIBITS_CPP=-I$(LIBITS_ROOT)
-LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a 
+LIBITS_PATH=$(LIBITS_ROOT)/../lib/libITS.a
 else
 LIBITS_LINK=-lITS
 endif
@@ -22,9 +22,9 @@ endif
 
 if WITH_LIBSPOT_PATH
 LIBSPOT_CPP=-I$(LIBSPOT_ROOT) -I$(LIBSPOT_ROOT)/..
-LIBSPOT_PATH=$(LIBSPOT_ROOT)/../../lib/libspot.a $(LIBSPOT_ROOT)/../../lib/libbdd.a
+LIBSPOT_PATH=$(LIBSPOT_ROOT)/../../lib/libspot.a $(LIBSPOT_ROOT)/../../lib/libbddx.a
 else
-LIBSPOT_LINK=-lspot
+LIBSPOT_LINK=-lspot -lbddx
 endif
 
 if WITH_LIBEXPAT_PATH
@@ -47,7 +47,7 @@ endif
 AM_CPPFLAGS = $(LIBSPOT_CPP) $(LIBITS_CPP) $(LIBDDD_CPP)  -g -O2 -Wall $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(ANTLRC_CPP)
 AM_CXXFLAGS = -g -O2 -Wall
 
-LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
+LDADDFLAGS = $(LIBITS_PATH) $(LIBSPOT_PATH) $(LIBSPOT_LINK) $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
 
 MYHEADER =apiterator.hh \
 	bczCSD99.hh \
@@ -65,8 +65,8 @@ MYHEADER =apiterator.hh \
 	sogkripke.hh \
 	tgbaIts.hh \
 	dsogtgta.hh
-	
-	
+
+
 
 MYSRC = apiterator.cpp \
 	bczCSD99.cpp \
@@ -85,11 +85,11 @@ MYSRC = apiterator.cpp \
 	sogkripke.ccp \
 	tgbaIts.cpp \
     dsogtgta.cpp
-	
+
 its_ltl_SOURCES = $(MYSRC) $(MYHEADER)
 
-its_ltl_LDADD = $(LDADDFLAGS) 
-# its_ltl_LDFLAGS = 
+its_ltl_LDADD = $(LDADDFLAGS)
+# its_ltl_LDFLAGS =
 
 testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
 testite_LDADD =  $(LDADDFLAGS)

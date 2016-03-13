@@ -1,6 +1,6 @@
-// Copyright (C) 2009, 2010 Laboratoire d'Informatique de Paris 6 (LIP6),
-// département Systèmes Répartis Coopératifs (SRC), Université Pierre
-// et Marie Curie.
+// Copyright (C) 2009, 2010, 2016 Laboratoire d'Informatique de Paris
+// 6 (LIP6), département Systèmes Répartis Coopératifs (SRC),
+// Université Pierre et Marie Curie.
 //
 // This file is part of Spot, a model checking library.
 //
@@ -22,22 +22,25 @@
 #ifndef SPOT_TGBA_DSOGPRODUCT_HH
 # define SPOT_TGBA_DSOGPRODUCT_HH
 
-#include "tgba/tgba.hh"
+#include <spot/twa/twa.hh>
+#include <spot/twa/twagraph.hh>
+#include <spot/twaalgos/sccinfo.hh>
 #include "sogIts.hh"
-#include "tgbaalgos/scc.hh"
 #include "apiterator.hh"
 
 namespace dsog
 {
   class dsog_tgba;
+  typedef std::shared_ptr<dsog_tgba> dsog_tgba_ptr;
+  typedef std::shared_ptr<const dsog_tgba> const_dsog_tgba_ptr;
 
-  class dsog_div_state : public spot::state {
+  class dsog_div_state final : public spot::state {
   public:
     dsog_div_state(const state* s, const bdd& c);
     ~dsog_div_state();
-    int compare(const state* other) const;
-    size_t hash() const;
-    state* clone() const;
+    int compare(const state* other) const override;
+    size_t hash() const override;
+    state* clone() const override;
     const bdd& get_condition() const;
     const state* get_left_state() const { return left_state_; }
 
@@ -103,9 +106,9 @@ namespace dsog
       return cond_;
     }
 
-    virtual int compare(const state* other) const;
-    virtual size_t hash() const;
-    virtual dsog_state* clone() const;
+    virtual int compare(const state* other) const override final;
+    virtual size_t hash() const override final;
+    virtual dsog_state* clone() const override final;
 
   protected:
     const spot::state* left_;		///< State from the left automaton.
@@ -117,7 +120,7 @@ namespace dsog
 
 
   /// \brief Iterate over the successors of a product computed on the fly.
-  class dsog_succ_iterator: public spot::tgba_succ_iterator
+  class dsog_succ_iterator: public spot::twa_succ_iterator
   {
   public:
     /** aut : the automaton, passed to allow creation of iterators
@@ -126,21 +129,21 @@ namespace dsog
      * right : the source aggregate */
     dsog_succ_iterator(const dsog_tgba* aut,
 		       const dsog_state* s,
-		       spot::tgba_succ_iterator* left_iter_,
+		       spot::twa_succ_iterator* left_iter_,
 		       const sogIts & model);
 
     virtual ~dsog_succ_iterator();
 
     // iteration
     virtual void step();
-    void first();
-    void next();
-    bool done() const;
+    bool first() override final;
+    bool next() override final;
+    bool done() const override final;
 
     // inspection
-    spot::state* current_state() const;
-    bdd current_condition() const;
-    bdd current_acceptance_conditions() const;
+    spot::state* dst() const override final;
+    bdd cond() const override final;
+    spot::acc_cond::mark_t acc() const override final;
 
   private:
 
@@ -151,7 +154,7 @@ namespace dsog
     const dsog_state* cur;
     const dsog_tgba* aut_;
     const spot::state* left_;
-    spot::tgba_succ_iterator* left_iter_;
+    spot::twa_succ_iterator* left_iter_;
     const sogIts & model_; ///< The ITS model.
     its::State right_; ///< The source state.
     dsog_state* dest_; ///< The current successor aggregate (could be empty).
@@ -160,20 +163,20 @@ namespace dsog
   };
 
 
-  class dsog_div_succ_iterator : public spot::tgba_succ_iterator
+  class dsog_div_succ_iterator final: public spot::twa_succ_iterator
   {
   public:
     dsog_div_succ_iterator(const dsog_tgba* aut,
 			   const bdd& c,
-			   tgba_succ_iterator* li);
+			   twa_succ_iterator* li);
 
     void step();
-    void first();
-    void next();
-    bool done() const;
-    spot::state* current_state() const;
-    bdd current_condition() const;
-    bdd current_acceptance_conditions() const;
+    bool first() override;
+    bool next() override;
+    bool done() const override;
+    spot::state* dst() const override;
+    bdd cond() const override;
+    spot::acc_cond::mark_t acc() const override;
     std::string format_transition() const;
 
   private:
@@ -181,56 +184,47 @@ namespace dsog
     dsog_div_succ_iterator& operator=(const dsog_div_succ_iterator& s);
 
     const dsog_tgba* aut_;
-    bdd cond; ///< The condition which must label the unique successor.
-    spot::tgba_succ_iterator* left_iter_;
+    bdd cond_; ///< The condition which must label the unique successor.
+    spot::twa_succ_iterator* left_iter_;
   };
 
 
   /// \brief A lazy product.  (States are computed on the fly.)
-  class dsog_tgba : public spot::tgba
+  class dsog_tgba: public spot::twa
   {
   public:
     /// \brief Constructor.
     /// \param left The left automata in the product.
     /// \param right The ITS model.
-    dsog_tgba(const spot::tgba* left, const sogIts & right);
+    dsog_tgba(const spot::const_twa_graph_ptr& left, const sogIts & right);
 
     virtual ~dsog_tgba();
 
-    virtual spot::state* get_init_state() const;
+    virtual spot::state* get_init_state() const override;
 
-    const spot::scc_map& get_scc_map() const;
+    /// the conjunction of all APs reachable from the state \a s in
+    /// the left automaton.
+    bdd ap_reachable_from_left(const spot::state* s) const;
 
-    virtual spot::tgba_succ_iterator*
-    succ_iter(const spot::state* local_state,
-	      const spot::state* global_state = 0,
-	      const spot::tgba* global_automaton = 0) const;
+    virtual spot::twa_succ_iterator*
+    succ_iter(const spot::state* local_state) const override;
 
-    virtual spot::bdd_dict* get_dict() const;
+    virtual std::string format_state(const spot::state* state) const
+      override final;
 
-    virtual std::string format_state(const spot::state* state) const;
-
-    virtual std::string
-    transition_annotation(const spot::tgba_succ_iterator* t) const;
-
-    virtual spot::state* project_state(const spot::state* s, const spot::tgba* t) const;
-
-    virtual bdd all_acceptance_conditions() const;
-    virtual bdd neg_acceptance_conditions() const;
+    virtual spot::state*
+      project_state(const spot::state* s,
+		    const spot::const_twa_ptr& t) const override final;
 
   protected:
-    virtual bdd compute_support_conditions(const spot::state* state) const;
-    virtual bdd compute_support_variables(const spot::state* state) const;
-
-  protected:
-    spot::bdd_dict* dict_;
-    const spot::tgba* left_;
+    spot::const_twa_graph_ptr left_;
     const sogIts & model_;
-    spot::scc_map scc_;
+    spot::scc_info scc_;
+    std::vector<bdd> scc_ap_;
 
     // Disallow copy.
-    dsog_tgba(const dsog_tgba&);
-    dsog_tgba& operator=(const dsog_tgba&);
+    dsog_tgba(const dsog_tgba&) = delete;
+    dsog_tgba& operator=(const dsog_tgba&) = delete;
   };
 
 }

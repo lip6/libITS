@@ -1,5 +1,5 @@
-// Copyright (C) 2013 Laboratoire de Recherche et
-// Développement de l'Epita (LRDE).
+// Copyright (C) 2013, 2016 Laboratoire de Recherche et Développement
+// de l'Epita (LRDE).
 //
 // This file is part of Spot, a model checking library.
 //
@@ -21,7 +21,7 @@
 #ifndef SPOT_TGTA_SLAPPRODUCT_HH
 # define SPOT_TGTA_SLAPPRODUCT_HH
 
-#include "ta/tgta.hh"
+#include <spot/ta/tgta.hh>
 #include "slap.hh"
 #include "etf/ETFTestingType.hh"
 #include "fsltl.hh"
@@ -30,15 +30,15 @@ namespace slap
 {
 
   /// \brief Iterate over the successors of a product computed on the fly.
-  class tgta_slap_succ_iterator : public slap_succ_iterator
+  class tgta_slap_succ_iterator final : public slap_succ_iterator
   {
   public:
     /** aut : the automaton, passed to allow creation of iterators
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-    tgta_slap_succ_iterator(const spot::tgba * aut,
-        const spot::state * aut_state, spot::tgba_succ_iterator* left,
+    tgta_slap_succ_iterator(const spot::twa * aut,
+        const spot::state * aut_state, spot::twa_succ_iterator* left,
         const sogIts & model, const its::State& right, sogits::FSTYPE fsType_);
 
     //virtual ~tgta_slap_succ_iterator();
@@ -57,7 +57,7 @@ namespace slap
     //@{
     /// Internal routines to advance to the next successor.
     virtual void
-    step_();
+    step_() override;
     //void next_non_false_();
     its::Transition
     compute_weaker_selfloop_trans();
@@ -74,15 +74,14 @@ namespace slap
   {
   public:
 
-    slap_tgta(const spot::tgba* left, const sogIts & right,
+    slap_tgta(const spot::const_twa_ptr& left, const sogIts & right,
         sogits::FSTYPE fsType);
 
     virtual spot::state*
     get_init_state() const;
 
-    virtual spot::tgba_succ_iterator*
-    succ_iter(const spot::state* local_state, const spot::state* global_state =
-        0, const spot::tgba* global_automaton = 0) const;
+    virtual spot::twa_succ_iterator*
+    succ_iter(const spot::state* local_state) const;
 
   };
 

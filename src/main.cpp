@@ -1,4 +1,4 @@
-// Copyright (C) 2004, 2009, 2010, 2011, 2012 Laboratoire
+// Copyright (C) 2004, 2009, 2010, 2011, 2012, 2016 Laboratoire
 // d'Informatique de Paris 6 (LIP6), département Systèmes Répartis
 // Coopératifs (SRC), Université Pierre et Marie Curie.
 //
@@ -27,9 +27,8 @@
 #include <string>
 #include <cstring>
 
-#include "bdd.h"
-#include "ltlparse/public.hh"
-#include "ltlvisit/destroy.hh"
+#include <bddx.h>
+#include <spot/tl/parse.hh>
 
 #include "sogtgbautils.hh"
 #include "train.hh"
@@ -118,7 +117,6 @@ int main(int argc, const char *argv[]) {
   bool check = false;
   bool print_rg = false;
   bool print_pn = false;
-  bool count = false;
 
   bool ce_expected = false;
   bool fm_exprop_opt = false;
@@ -162,9 +160,6 @@ int main(int argc, const char *argv[]) {
     }
     else if (!strcmp(args[i], "-c")) {
       check = true;
-    }
-    else if (!strcmp(args[i], "-C")) {
-      count = true;
     }
     else if (!strcmp(args[i], "-e")) {
       ce_expected = true;
@@ -334,17 +329,13 @@ int main(int argc, const char *argv[]) {
 //   model.setInstanceState("init");
 
   // Initialize spot
-  spot::ltl::parse_error_list pel;
-
-  const spot::ltl::formula* f = spot::ltl::parse(ltl_string, pel);
-  if (spot::ltl::format_parse_errors(std::cerr, ltl_string, pel)) {
-    f->destroy();
+  spot::parsed_formula pf = spot::parse_infix_psl(ltl_string);
+  if (pf.format_errors(std::cerr))
     return 1;
-  }
 
   if (check) {
     LTLChecker checker;
-    checker.setFormula(f);
+    checker.setFormula(pf.f);
     checker.setModel(model);
     checker.setOptions(algo_string, ce_expected,
 		       fm_exprop_opt, fm_symb_merge_opt,
@@ -356,7 +347,6 @@ int main(int argc, const char *argv[]) {
     checker.model_check(sogtype);
   }
 
-  f->destroy();
   delete model;
   // external block for full garbage
   }

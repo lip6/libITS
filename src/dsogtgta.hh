@@ -1,4 +1,4 @@
-// Copyright (C) 2013 Laboratoire de Recherche et
+// Copyright (C) 2013, 2016 Laboratoire de Recherche et
 // Développement de l'Epita (LRDE)..
 //
 // This file is part of Spot, a model checking library.
@@ -62,11 +62,11 @@ namespace dsog
      * model : the ITS model
      * right : the source aggregate */
     dsog_tgta_succ_iterator(const dsog_tgta* aut, const dsog_state* s,
-        spot::tgba_succ_iterator* left_iter_, const sogIts & model);
+        spot::twa_succ_iterator* left_iter_, const sogIts & model);
 
     // iteration
     virtual void
-    step();
+    step() override;
 
   private:
     // to allow pretty printing of arc annotations
@@ -81,14 +81,13 @@ namespace dsog
     /// \brief Constructor.
     /// \param left The left automata in the product.
     /// \param right The ITS model.
-    dsog_tgta(const spot::tgba* left, const sogIts & right);
+    dsog_tgta(const spot::const_twa_graph_ptr& left, const sogIts & right);
 
     virtual spot::state*
-    get_init_state() const;
+    get_init_state() const override;
 
-    virtual spot::tgba_succ_iterator*
-    succ_iter(const spot::state* local_state, const spot::state* global_state =
-        0, const spot::tgba* global_automaton = 0) const;
+    virtual spot::twa_succ_iterator*
+    succ_iter(const spot::state* local_stateb) const override;
   };
 
 }

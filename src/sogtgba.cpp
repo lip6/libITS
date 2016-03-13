@@ -1,5 +1,5 @@
-// Copyright (C) 2009  Laboratoire d'Informatique de Paris 6 (LIP6),
-// Equipe MoVe , Universite Pierre et Marie Curie.
+// Copyright (C) 2009, 2016 Laboratoire d'Informatique de Paris 6
+// (LIP6), Equipe MoVe , Universite Pierre et Marie Curie.
 //
 // This file is part of the Spot tutorial. Spot is a model checking
 // library.
@@ -22,11 +22,10 @@
 #include <cassert>
 #include <sstream>
 
-#include "ltlast/atomic_prop.hh"
-#include "ltlvisit/apcollect.hh"
-#include "ltlenv/defaultenv.hh"
-#include "tgba/bddprint.hh"
-#include "tgba/state.hh"
+#include <spot/tl/formula.hh>
+#include <spot/tl/apcollect.hh>
+#include <spot/tl/defaultenv.hh>
+#include <spot/twa/bddprint.hh>
 
 #include "sogtgba.hh"
 #include "sogsucciter.hh"
@@ -47,13 +46,11 @@ using its::ITSModel;
 namespace sogits {
 
 
-sog_tgba::sog_tgba(const sogIts & m,
-		   spot::bdd_dict* dict, sog_product_type type): model(m),dict(dict), type(type) {
+sog_tgba::sog_tgba(const sogIts & m, const spot::bdd_dict_ptr& dict,
+		   sog_product_type type): spot::twa(dict), model(m), type(type) {
 } //
 
 sog_tgba::~sog_tgba() {
-  if (dict)
-    dict->unregister_all_my_variables(this);
 } //
 
 
@@ -70,7 +67,7 @@ sog_tgba::~sog_tgba() {
   spot::state* sog_tgba::get_init_state() const {
     its::State m0 = model.getInitialState() ;
     assert(m0 != SDD::null);
-  
+
     // now determine which AP are true in m0
     APIterator * it = APIteratorFactory::create();
     for (it->first() ; ! it->done() ; it->next() ) {
@@ -84,11 +81,11 @@ sog_tgba::~sog_tgba() {
       }
     }
     delete it;
-      
+
     /** should be captured now by emptyAPITerator code */
 //     if (APIteratorFactory::empty())
 //       return create_state(model, m0, bddtrue);
-    
+
 
     // no conjunction of AP is verified by m0 ???
     assert (false);
@@ -96,25 +93,20 @@ sog_tgba::~sog_tgba() {
     return NULL;
   }
 
-spot::tgba_succ_iterator* sog_tgba::succ_iter (const spot::state* local_state,
-                                               const spot::state*, const spot::tgba*) const {
-  
+spot::twa_succ_iterator* sog_tgba::succ_iter(const spot::state* local_state) const {
+
   if (const sog_state* s = dynamic_cast<const sog_state*>(local_state)) {
     // build a new succ iter :
     //   agregate is built by saturating :
     return new sog_succ_iterator(model , *s);
   } else if (const sog_div_state* s = dynamic_cast<const sog_div_state*>(local_state)) {
     assert(s);
-    return new sog_div_succ_iterator(dict, s->get_condition());
+    return new sog_div_succ_iterator(get_dict(), s->get_condition());
   } else if (const bcz_state* s = dynamic_cast<const bcz_state*>(local_state)) {
     return new bcz_succ_iterator(model , *s);
   } else {
     assert(false);
   }
-} //
-
-spot::bdd_dict* sog_tgba::get_dict() const {
-  return dict;
 } //
 
 std::string sog_tgba::format_state(const spot::state* state) const {
@@ -126,7 +118,7 @@ std::string sog_tgba::format_state(const spot::state* state) const {
   } else if (const sog_div_state* s = dynamic_cast<const sog_div_state*>(state)) {
     assert(s);
     std::ostringstream os;
-    spot::bdd_print_formula(os, dict, s->get_condition());
+    spot::bdd_print_formula(os, get_dict(), s->get_condition());
     return "div_state(" + os.str() + ")";
   } else if (const bcz_state* s = dynamic_cast<const bcz_state*>(state)) {
     std::stringstream  ss;
@@ -136,37 +128,5 @@ std::string sog_tgba::format_state(const spot::state* state) const {
     assert(false);
   }
 } //
-
-std::string sog_tgba::transition_annotation(const spot::tgba_succ_iterator* t) const {
-  assert(!t->done());
-
-  if (  const sog_succ_iterator* it = dynamic_cast<const sog_succ_iterator*>(t) ) {
-    return "A transition" ; //it->format_transition();
-  } else if (const sog_div_succ_iterator* it = dynamic_cast<const sog_div_succ_iterator*>(t)) {
-    assert(it);
-    return it->format_transition();
-  } else if (const bcz_succ_iterator* it = dynamic_cast<const bcz_succ_iterator*>(t) ) {
-    return "A transition" ; //it->format_transition();
-  } else {
-    assert(false);
-  }
-} //
-
-bdd sog_tgba::all_acceptance_conditions() const {
-  return bddfalse;
-} //
-
-bdd sog_tgba::neg_acceptance_conditions() const {
-  return bddtrue;
-} //
-
-bdd sog_tgba::compute_support_conditions(const spot::state* state) const {
-  return bddtrue;
-} //
-
-bdd sog_tgba::compute_support_variables(const spot::state* state) const {
-  return bddtrue;
-} //
-
 
 } // namespace

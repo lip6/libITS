@@ -6,11 +6,10 @@
 #include <string>
 
 #include "sogtgba.hh"
-#include "misc/timer.hh"
-#include "ltlast/formula.hh"
-#include "ltlast/atomic_prop.hh"
-#include "ltlvisit/apcollect.hh"
-#include "tgba/bdddict.hh"
+#include <spot/misc/timer.hh>
+#include <spot/tl/formula.hh>
+#include <spot/tl/apcollect.hh>
+#include <spot/twa/bdddict.hh>
 
 #include "ITSModel.hh"
 
@@ -34,18 +33,17 @@ namespace sogits {
 
   class LTLChecker {
 
-    spot::ltl::atomic_prop_set *sap_;
-    const spot::ltl::formula* f_;
+    spot::atomic_prop_set *sap_;
+    spot::formula f_;
 
     // For bdd varnum to AP name in Spot
-    spot::bdd_dict dict_;
+    spot::bdd_dict_ptr dict_;
 
     its::ITSModel * model_;
     sogIts * sogModel_;
-    const spot::tgba* a_;
-    const spot::tgba* tgba_transformed_to_tgta_;
-    sog_tgba * systgba_;
-    const spot::tgba* tba_;
+    spot::twa_graph_ptr ag_;
+    spot::twa_ptr a_;
+    std::shared_ptr<sog_tgba> systgba_;
     // options
     std::string echeck_algo_;
     bool ce_expected_;
@@ -66,15 +64,13 @@ namespace sogits {
 
     void fs_model_check(bool isOWCTY);
   public :
-    LTLChecker () : sap_(NULL),
-		    f_(NULL),
-		    dict_(),
-		    model_(NULL),
-		    sogModel_(NULL),
-		    a_(NULL),
-		    tgba_transformed_to_tgta_(NULL),
-		    systgba_(NULL),
-		    tba_(NULL),
+    LTLChecker () : sap_(nullptr),
+		    f_(nullptr),
+		    dict_(spot::make_bdd_dict()),
+		    model_(nullptr),
+		    sogModel_(nullptr),
+		    a_(nullptr),
+		    systgba_(nullptr),
 		    fm_exprop_opt_(false),
 		    fm_symb_merge_opt_(true),
 		    post_branching_(false),
@@ -88,7 +84,7 @@ namespace sogits {
 
     ~LTLChecker();
 
-    void setFormula (const spot::ltl::formula* f) {
+    void setFormula (spot::formula f) {
       f_ = f;
     }
 

@@ -9,7 +9,7 @@ namespace its {
 
 
   // Create a type to hold a spot TGBA
-  bool fsltlModel::declareType (const class spot::tgba * tgba) {
+  bool fsltlModel::declareType (spot::const_twa_ptr tgba) {
     TgbaType * newtgba = new TgbaType (tgba);
     // store reference for later use
     tgba_ = newtgba;
@@ -18,7 +18,7 @@ namespace its {
     return addType(newtgba);
   }
 
-  
+
   // Build the composed system based on the TGBA and the main instance of the ITSModel.
   // Precondition : we have built a model, invoked setInstance and setInstanceState, and declared a TGBA type.
   // Side-effect : updates the main instance
@@ -52,13 +52,13 @@ namespace its {
     for (labels_it it = tgbalabs.begin() ; it != tgbalabs.end() ; ++it ) {
       trace << "label :" << *it << std::endl;
       TgbaType::tgba_arc_label_t arcLab = tgba_->getTransLabelDescription(*it);
-      trace << "desc :" << arcLab.first << ":" << arcLab.second << std::endl;      
+      trace << "desc :" << arcLab.first << ":" << arcLab.second << std::endl;
       Transition apcond = sogIts_->getSelector(arcLab.first, getInstance()->getType());
 
       labels_t labtodo;
       labtodo.push_back(*it);
       Transition toadd = localApply(tgba_->getSuccs(labtodo),1) & localApply(getInstance()->getType()->getLocals()  & apcond, 0) ;
-      
+
       allTrans_ = allTrans_ + toadd;
 
       labels_t accs = tgba_->getAcceptanceSet(arcLab.second);
@@ -72,16 +72,16 @@ namespace its {
 	}
       }
 
-    }      
-      
-      
+    }
+
+
 //       std::cout << "Built model with initstate :" << getInitState() << std::endl;
 //       std::cout << "Transition rel (all) :" << allTrans_ << std::endl;
-      
-      
+
+
       return true;
     }
-    
+
   State fsltlModel::getInitState () {
 //    return State(1, getInstance()->getType()->getState("init"), State(0, findType("TGBA")->getState("init")));
     return State(1, findType("TGBA")->getState("init"), State(0, getInstance()->getType()->getState("init")));
@@ -93,23 +93,23 @@ namespace its {
 
   Transition fsltlModel::getNextByAcc (Label acc) {
     return accToTrans_[acc];
-  }  
+  }
 
 
   State fsltlModel::findSCC_fsltl (its::Transition nextAll, const trans_t & nextAccs, its::State init, bool isOWCTY) {
 
-    State reach = fixpoint (nextAll  + Transition::id, true) ( init ); 
-    
+    State reach = fixpoint (nextAll  + Transition::id, true) ( init );
+
 //     trace << "Reachable states : " << reach.nbStates();
 //     if (reach.nbStates() < 15)
 //       trace << reach << std::endl;
-    
+
     State div;
     if (nextAccs.empty()) {
       // No acceptance condition : any cycle is accepting
       div = fixpoint (nextAll, true) (reach);
     } else {
-      // Fixpoint on all acceptance conds 
+      // Fixpoint on all acceptance conds
       div = reach;
       State sat = div;
       int j=0;
@@ -119,7 +119,7 @@ namespace its {
 
 
 	if (isOWCTY) {
-	  // OWCTY variant 
+	  // OWCTY variant
 	  // only states that allow a loop and suffixes
 	  div = fixpoint (nextAll, true) (div);
 	}
@@ -161,7 +161,7 @@ namespace its {
       nextAccs.push_back(accit->second);
       trace << "For acceptance condition  :" <<  accit->first << std::endl ;
     }
-    
+
     return findSCC_owcty (getNextByAll(), nextAccs, getInitState());
   }
 
@@ -171,7 +171,7 @@ namespace its {
       nextAccs.push_back(accit->second);
       trace << "For acceptance condition  :" <<  accit->first << std::endl ;
     }
-    
+
     return findSCC_el (getNextByAll(), nextAccs, getInitState());
   }
 

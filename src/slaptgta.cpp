@@ -1,4 +1,4 @@
-// Copyright (C) 2013 Laboratoire de Recherche et
+// Copyright (C) 2013, 2016 Laboratoire de Recherche et
 // Développement de l'Epita (LRDE).
 //
 // This file is part of Spot, a model checking library.
@@ -21,8 +21,8 @@
 #include "slaptgta.hh"
 #include <string>
 #include <cassert>
-#include "misc/hashfunc.hh"
-#include "tgba/bddprint.hh"
+#include <spot/misc/hashfunc.hh>
+#include <spot/twa/bddprint.hh>
 #include "tgbaIts.hh"
 
 using namespace spot;
@@ -37,8 +37,8 @@ namespace slap
   // tgta_slap_succ_iterator
 
 
-  tgta_slap_succ_iterator::tgta_slap_succ_iterator(const spot::tgba * aut,
-      const spot::state * aut_state, spot::tgba_succ_iterator* left,
+  tgta_slap_succ_iterator::tgta_slap_succ_iterator(const spot::twa* aut,
+      const spot::state * aut_state, spot::twa_succ_iterator* left,
       const sogIts & model, const its::State& right, sogits::FSTYPE fsType_) :
     slap_succ_iterator(aut, aut_state, left, model, right, fsType_)
   {
@@ -49,31 +49,28 @@ namespace slap
   tgta_slap_succ_iterator::compute_weaker_selfloop_trans()
   {
     // The acceptance condition labeling the arc of the tgba
-    bdd ac = left_->current_acceptance_conditions();
+    spot::acc_cond::mark_t ac = left_->acc();
     // The state reached in the tgba through this arc
-    const state * q2 = left_->current_state();
+    const state * q2 = left_->dst();
 
     // Iterate over q2's successors, and add to selfLoopsTrans the its::Transitions which are on arcs "weaker" (wrt ac)
     its::Transition selfLoopsTrans = its::Transition::null;
 
-    tgba_succ_iterator * it = aut_->succ_iter(q2);
-    for (it->first(); !it->done(); it->next())
+    for (auto it: aut_->succ(q2))
       {
-        const state * dest = it->current_state();
+        const state * dest = it->dst();
 
         // Test self loop
         if (dest->compare(q2) == 0)
           {
             // Test ac=>ac' (subsume the arc)
-            bdd acprime = it->current_acceptance_conditions();
+	    spot::acc_cond::mark_t acprime = it->acc();
             if ((ac & acprime) == acprime)
               selfLoopsTrans = selfLoopsTrans
-                  + model_labled_by_changesets_->getLocalsByChangeSet(
-                      it->current_condition());
+                  + model_labled_by_changesets_->getLocalsByChangeSet(it->cond());
           }
         dest->destroy();
       }
-    delete it;
     q2->destroy();
 
     return selfLoopsTrans;
@@ -82,19 +79,19 @@ namespace slap
   void
   tgta_slap_succ_iterator::step_()
   {
-    state * tgta_artificial_init_state = aut_->get_init_state();
+    const state * tgta_artificial_init_state = aut_->get_init_state();
     if (aut_state_->compare(tgta_artificial_init_state) == 0)
       {
 
         //case 1: aut_state_ is the artificial initial state of the TGTA
-        its::Transition apcond = model_.getSelector(left_->current_condition());
+        its::Transition apcond = model_.getSelector(left_->cond());
         dest_ = apcond(right_);
         if (dest_ != its::State::null)
           {
             trace << "case 1:" << aut_->format_state(aut_state_)
-                  << "----> left_->current_condition()" << bdd_format_formula(
-                  aut_->get_dict(), left_->current_condition()) << "----> "
-                  << aut_->format_state(left_->current_state()) << std::endl;
+                  << "----> left_->cond()" << bdd_format_formula(
+                  aut_->get_dict(), left_->cond()) << "----> "
+                  << aut_->format_state(left_->dst()) << std::endl;
             trace << "right_==model_.getInitialState()" << (right_
                   == model_.getInitialState()) << std::endl;
             trace << "apcond(model_.getInitialState())" << apcond(
@@ -102,31 +99,22 @@ namespace slap
             trace << "apcond(right_)" << apcond(right_) << std::endl;
 
             // Iterate over init states successors, and add to F the atomic props which are on arcs without acceptance conds
-            state * init_tgta = left_->current_state();
+            const state * init_tgta = left_->dst();
             its::Transition selfLoopsTrans = its::Transition::id;
-            tgba_succ_iterator * it = aut_->succ_iter(init_tgta);
-            for (it->first(); !it->done(); it->next())
+	    for (auto it: aut_->succ(init_tgta))
               {
-                const state * dest = it->current_state();
+                const state * dest = it->dst();
                 // Test self loop
                 if (dest->compare(init_tgta) == 0)
                   {
                     // Test ac=0 (empty acceptance cond arcs)
-                    if (it->current_acceptance_conditions() == bddfalse
-                        && aut_->all_acceptance_conditions()
-                            != it->current_acceptance_conditions())
-                      {
-
-                        selfLoopsTrans
-                            = selfLoopsTrans
-                                + model_labled_by_changesets_->getLocalsByChangeSet(
-                                    it->current_condition());
-                      }
+                    if (it->acc() == 0U && aut_->num_sets() > 0)
+		      selfLoopsTrans = selfLoopsTrans
+			+ model_labled_by_changesets_->getLocalsByChangeSet(it->cond());
                   }
                 dest->destroy();
               }
             init_tgta->destroy();
-            delete it;
 
             its::Transition sat = fixpoint(selfLoopsTrans, true);
             trace
@@ -141,12 +129,12 @@ namespace slap
         //case 2: aut_state_ is not the artificial initial state of the TGTA
 
         // Test if this TGBA arc is a self-loop without acceptance conditions, if the TGBA has acceptance conds
-        if (aut_->all_acceptance_conditions() != bddfalse)
+        if (aut_->num_sets() > 0)
           {
-            bdd curacc = left_->current_acceptance_conditions();
-            if (curacc == bddfalse)
+	    spot::acc_cond::mark_t curacc = left_->acc();
+            if (curacc == 0U)
               {
-                const state * q2 = left_->current_state();
+                const state * q2 = left_->dst();
                 if (q2->compare(aut_state_) == 0)
                   {
                     dest_ = its::State::null;
@@ -158,7 +146,7 @@ namespace slap
           }
 
         // progress to "entry" states of succ in ITS model
-        bdd changeset = left_->current_condition();
+        bdd changeset = left_->cond();
         //trace << "case 2:" << aut_->format_state(aut_state_)
         //  << "----> left_->current_condition()" << bdd_format_formula(
         //aut_->get_dict(), left_->current_condition()) << "----> "
@@ -206,7 +194,7 @@ namespace slap
 
   }
 
-  slap_tgta::slap_tgta(const spot::tgba* left, const sogIts & right,
+  slap_tgta::slap_tgta(const spot::const_twa_ptr& left, const sogIts & right,
       sogits::FSTYPE fsType) :
     slap_tgba(left, right, fsType)
   {
@@ -245,21 +233,19 @@ namespace slap
     return new slap_state(left_->get_init_state(), model_.getInitialState());
   }
 
-  spot::tgba_succ_iterator*
-  slap_tgta::succ_iter(const state* local_state, const state* global_state,
-      const tgba* global_automaton) const
+  spot::twa_succ_iterator*
+  slap_tgta::succ_iter(const state* local_state) const
   {
 
     // else it should be a normal slap state
     const slap_state* s = dynamic_cast<const slap_state*> (local_state);
     assert(s);
 
-    tgba_succ_iterator* li = left_->succ_iter(s->left(), global_state,
-        global_automaton);
+    twa_succ_iterator* li = left_->succ_iter(s->left());
 
     // trace << "Building succ_iter from state : " << left_->format_state (s->left()) << std::endl;
-    return new tgta_slap_succ_iterator(left_, s->left(), li, model_,
-        s->right(), fsType_);
+    return new tgta_slap_succ_iterator(left_.get(), s->left(), li, model_,
+				       s->right(), fsType_);
   }
 
 }

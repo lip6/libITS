@@ -5,7 +5,7 @@
 
 #include "ITSModel.hh"
 // BuDDy package
-#include "bdd.h"
+#include <bddx.h>
 
 
 namespace sogits {

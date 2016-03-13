@@ -1,7 +1,7 @@
-// Copyright (C) 2004  Laboratoire d'Informatique de Paris 6 (LIP6),
-// (MoVe), Universite Pierre et Marie Curie.
+// Copyright (C) 2004, 2016 Laboratoire d'Informatique de Paris 6
+// (LIP6), (MoVe), Universite Pierre et Marie Curie.
 //
-// This file is part of the Spot tutorial. Spot is a model checking 
+// This file is part of the Spot tutorial. Spot is a model checking
 // library.
 //
 // Spot is free software; you can redistribute it and/or modify it
@@ -26,14 +26,10 @@
 #include <map>
 
 
-#include "tgba/tgba.hh"
-#include "tgba/bdddict.hh"
-#include "tgba/state.hh"
-#include "tgba/succiter.hh"
-#include "ltlvisit/apcollect.hh"
-#include "tgbaalgos/emptiness_stats.hh"
-//#include "ltlast/atomic_prop.hh"
-#include "bdd.h"
+#include <spot/twa/twa.hh>
+#include <spot/tl/apcollect.hh>
+#include <spot/twaalgos/emptiness_stats.hh>
+#include <bddx.h>
 
 #include "sogIts.hh"
 
@@ -42,21 +38,21 @@ namespace sogits {
 
 /// \brief Encapsulation of an ITS model in a
 /// \a spot::tgba.
-class sog_tgba : public spot::tgba {
+class sog_tgba final : public spot::twa {
 public:
-  /// \brief Construct a tgba view of the symbolic observation graph of \a pn 
-  /// where the set of atomic propositions which are obseved are in \a sap. Notice that 
+  /// \brief Construct a tgba view of the symbolic observation graph of \a pn
+  /// where the set of atomic propositions which are obseved are in \a sap. Notice that
   /// these atomic propositions are the observed transitions used for the construction. The
   /// constructor registers these propositions in \a dict.
   ///
-  /// The pointers \a pn and \a dict are supposed to be valide during all the live of the 
+  /// The pointers \a pn and \a dict are supposed to be valide during all the live of the
   /// constructed instance.
   ///
   /// \dontinclude sogtgba.cpp
   /// \skipline sog_tgba::sog_tgba
   /// \until } //
-  sog_tgba(const sogIts & m, 
-	   spot::bdd_dict* dict,
+  sog_tgba(const sogIts & m,
+	   const spot::bdd_dict_ptr& dict,
 	   sogits::sog_product_type type);
 
   /// \brief Unregister all the used propositions.
@@ -75,7 +71,7 @@ public:
   /// \dontinclude sogtgba.cpp
   /// \skipline spot::state* sog_tgba::get_init_state
   /// \until } //
-  spot::state* get_init_state() const;
+  spot::state* get_init_state() const override;
 
   /// \brief Get an iterator over the successors of \a local_state.
   ///
@@ -88,75 +84,38 @@ public:
   /// \dontinclude sogtgba.cpp
   /// \skipline spot::tgba_succ_iterator* sog_tgba::succ_iter
   /// \until } //
-  spot::tgba_succ_iterator* succ_iter (const spot::state* local_state,
-          const spot::state* gs=0, const spot::tgba* ga=0) const;
-
-  /// \brief Get the dictionary associated to the automaton.
-  ///
-  /// \dontinclude sogtgba.cpp
-  /// \skipline bdd_dict* sog_tgba::get_dict
-  /// \until } //
-  spot::bdd_dict* get_dict() const;
+  spot::twa_succ_iterator*
+    succ_iter(const spot::state* local_state) const override;
 
   /// \brief Format the state as a string for printing.
   ///
   /// \dontinclude sogtgba.cpp
   /// \skipline std::string sog_tgba::format_state
   /// \until } //
-  std::string format_state(const spot::state* state) const;
+  std::string format_state(const spot::state* state) const override;
 
-  /// \brief Format the pointed transition as a string for printing.
-  ///
-  /// \param t a non-done sog_succ_iterator for this automata
-  ///
-  /// \dontinclude sogtgba.cpp
-  /// \skipline std::string sog_tgba::transition_annotation
-  /// \until } //
-  std::string transition_annotation(const spot::tgba_succ_iterator* t) const;
-
-  /// \brief Return the empty set (false) as the Petri net accepts 
-  /// all infinite sequences. Take care that blocking sequences are
-  /// not taken into account here.
-  bdd all_acceptance_conditions() const;
-
-  /// \brief Return true.
-  bdd neg_acceptance_conditions() const;
-  
   void clear_stat();
   const spot::unsigned_statistics* get_stat() const;
   void set_stat(bool b);
 
-protected:
-  /// Do the actual computation of tgba::support_conditions(). Return true.
-  bdd compute_support_conditions(const spot::state* state) const;
-
-  /// Do the actual computation of tgba::support_variables(). Return true.
-  bdd compute_support_variables(const spot::state* state) const;
-
 private:
   bdd condition(const bdd& m) const;
-  
-  /// \brief not implemented (assert(false))
-  sog_tgba(const sog_tgba& p);
-  /// \brief not implemented (assert(false))
-  sog_tgba& operator=(const sog_tgba& p);
-  
 
-  /// the encapsulated Petri net. 
+  sog_tgba(const sog_tgba& p) = delete;
+  sog_tgba& operator=(const sog_tgba& p) = delete;
+
+  /// the encapsulated Petri net.
   const sogIts & model;
-  
-  /// Point to the associated dictionnary.
-  spot::bdd_dict* dict;
 
   /// The type of this product, currently PLAIN_SOG or BCZ99
   sog_product_type type;
-  
-  /// Map the indexes of atomic propositions to the 
-  /// corresponding indexes of bdd variables. 
+
+  /// Map the indexes of atomic propositions to the
+  /// corresponding indexes of bdd variables.
   std::map<int, int> mplace_at_prop;
 
   spot::state* create_state (const sogIts & model, const GSDD & m, bdd ap) const ;
-  
+
   class bdd_statistics: public spot::unsigned_statistics {
   public:
     bdd_statistics() : bdd_nodes_(0) {
@@ -175,6 +134,7 @@ private:
   mutable bdd_statistics  bdd_stat;
 };
 
+  typedef std::shared_ptr<sog_tgba> sog_tgba_ptr;
 
 } // namespace
 

@@ -1,6 +1,6 @@
-// Copyright (C) 2003, 2004, 2006, 2009 Laboratoire d'Informatique de
-// Paris 6 (LIP6), département Systèmes Répartis Coopératifs (SRC),
-// Université Pierre et Marie Curie.
+// Copyright (C) 2003, 2004, 2006, 2009, 2016 Laboratoire
+// d'Informatique de Paris 6 (LIP6), département Systèmes Répartis
+// Coopératifs (SRC), Université Pierre et Marie Curie.
 //
 // This file is part of Spot, a model checking library.
 //
@@ -22,8 +22,8 @@
 #include "slap.hh"
 #include <string>
 #include <cassert>
-#include "misc/hashfunc.hh"
-#include "tgba/bddprint.hh"
+#include <spot/misc/hashfunc.hh>
+#include <spot/twa/bddprint.hh>
 #include "tgbaIts.hh"
 
 // for fsltl type optimization of terminal states
@@ -89,7 +89,12 @@ namespace slap
      * left : the current succ iter on the autoamaton
      * model : the ITS model
      * right : the source aggregate */
-  slap_succ_iterator::slap_succ_iterator(const tgba * aut, const spot::state * aut_state, tgba_succ_iterator* left, const sogIts & model, const its::State& right, sogits::FSTYPE fsType)
+  slap_succ_iterator::slap_succ_iterator(const twa* aut,
+					 const spot::state * aut_state,
+					 twa_succ_iterator* left,
+					 const sogIts & model,
+					 const its::State& right,
+					 sogits::FSTYPE fsType)
     : aut_(aut),
       aut_state_(aut_state),
       left_(left),
@@ -102,9 +107,9 @@ namespace slap
 //     for (left_->first() ; ! left_->done() ; left_->next() ) {
 //       if ( left_->current_state()->compare(aut_state) == 0 ) {
 // //	std::cerr << "on arc :" << aut_->transition_annotation(left_) << std::endl;
-// 	if ( left_->current_acceptance_conditions() ==  aut_->all_acceptance_conditions()  ) {
-// 	  trace << "\ndetected condition !" << std::endl;
-// 	}
+//	if ( left_->current_acceptance_conditions() ==  aut_->all_acceptance_conditions()  ) {
+//	  trace << "\ndetected condition !" << std::endl;
+//	}
 //       }
 //     }
 
@@ -119,27 +124,25 @@ namespace slap
   slap_succ_iterator::compute_weaker_selfloop_ap()
   {
     // The acceptance condition labeling the arc of the tgba
-    bdd ac = left_->current_acceptance_conditions();
+    acc_cond::mark_t ac = left_->acc();
     // The state reached in the tgba through this arc
-    const state * q2 = left_->current_state();
+    const state * q2 = left_->dst();
 
     // Iterate over q2's successors, and add to F the atomic props which are on arcs "weaker" (wrt ac)
     bdd F = bddfalse;
 
-    tgba_succ_iterator * it = aut_->succ_iter(q2);
-    for ( it->first() ; ! it->done() ; it->next() ) {
-      const state * dest = it->current_state();
-
-      // Test self loop
-      if ( dest->compare(q2) == 0 ) {
-	// Test ac=>ac' (subsume the arc)
-	bdd acprime = it->current_acceptance_conditions();
-	if ( (ac & acprime) == acprime)
-	  F |= it->current_condition();
+    for (auto it: aut_->succ(q2))
+      {
+	const state * dest = it->dst();
+	// Test self loop
+	if ( dest->compare(q2) == 0 ) {
+	  // Test ac=>ac' (subsume the arc)
+	  acc_cond::mark_t acprime = it->acc();
+	  if ( (ac & acprime) == acprime)
+	    F |= it->cond();
       }
       dest->destroy();
     }
-    delete it;
     q2->destroy();
 
     return F;
@@ -149,22 +152,19 @@ namespace slap
   slap_succ_iterator::step_()
   {
     // Test if this TGBA arc is a self-loop without acceptance conditions, if the TGBA has acceptance conds
-    if (aut_->all_acceptance_conditions() != bddfalse) {
-      bdd curacc = left_->current_acceptance_conditions();
-      if (curacc == bddfalse) {
-	const state * q2 = left_->current_state();
-	if (q2->compare(aut_state_) == 0) {
-	  dest_ = its::State::null;
+    if (aut_->num_sets() > 0)
+      {
+	if (left_->acc() == 0U) {
+	  const state * q2 = left_->dst();
+	  if (q2->compare(aut_state_) == 0)
+	    dest_ = its::State::null;
 	  q2->destroy();
-	  return;
 	}
-	q2->destroy();
-      }
     }
 
 
     // progress to "entry" states of succ in ITS model
-    bdd curcond = left_->current_condition();
+    bdd curcond = left_->cond();
     dest_ = model_.succSatisfying ( right_, curcond );
 
     // test if we have empty initial states => we can avoid computing subsumed arcs etc...
@@ -187,8 +187,8 @@ namespace slap
 	step_();
 
 	if (! dest_.empty() ) {
-	  if ( fsType_ == sogits::FSA 
-	       && left_->current_state()->compare(aut_state_) == 0 
+	  if ( fsType_ == sogits::FSA
+	       && left_->dst()->compare(aut_state_) == 0
 	       && dest_ - right_ == its::State::null ) {
 	    left_->next();
 	    std::cerr << "Subset !!"<< std::endl;
@@ -203,20 +203,22 @@ namespace slap
       }
   }
 
-  void
+  bool
   slap_succ_iterator::first()
   {
     left_->first();
     next_non_false_();
+    return !done();
   }
 
-  void
+  bool
   slap_succ_iterator::next()
   {
     // Progress in the tgba succs
     left_->next();
     // search for a non empty succ aggregate
     next_non_false_();
+    return !done();
   }
 
   bool
@@ -226,22 +228,21 @@ namespace slap
   }
 
 
-  slap_state*
-  slap_succ_iterator::current_state() const
+  const slap_state*
+  slap_succ_iterator::dst() const
   {
-    return new slap_state(left_->current_state(),
-			  dest_);
+    return new slap_state(left_->dst(), dest_);
   }
 
   bdd
-  slap_succ_iterator::current_condition() const
+  slap_succ_iterator::cond() const
   {
-    return left_->current_condition();
+    return left_->cond();
   }
 
-  bdd slap_succ_iterator::current_acceptance_conditions() const
+  spot::acc_cond::mark_t slap_succ_iterator::acc() const
   {
-    return left_->current_acceptance_conditions();
+    return left_->acc();
   }
 
   ////////////////////////////////////////////////////////////
@@ -250,92 +251,85 @@ namespace slap
   /// \brief Constructor.
   /// \param left The left automata in the product.
   /// \param right The ITS model.
-  slap_tgba::slap_tgba(const spot::tgba* left, const sogIts & right,sogits::FSTYPE fsType)
-    : dict_(left->get_dict()), left_(left), model_(right), fsType_(fsType)
+  slap_tgba::slap_tgba(spot::const_twa_ptr left, const sogIts & right,sogits::FSTYPE fsType)
+    : spot::twa(left->get_dict()), left_(left), model_(right), fsType_(fsType)
   {
-    // register that we use the same bdd variables (dict) as the automaton.
-    // these vars are unregistered in dtor
-    dict_->register_all_variables_of(&left_, this);
+    // We use the same atomic propositions as left.
+    copy_ap_of(left);
   }
 
   slap_tgba::~slap_tgba()
   {
-    dict_->unregister_all_my_variables(this);
   }
 
   state*
   slap_tgba::get_init_state() const
   {
-    
+
     // The initial state of the tgba
-    state * init_tgba = left_->get_init_state();
+    const state* init_tgba = left_->get_init_state();
     // Iterate over init states successors, and add to F the atomic props which are on arcs without acceptance conds
     bdd F = bddfalse;
 
-    tgba_succ_iterator * it = left_->succ_iter(init_tgba);
-    for ( it->first() ; ! it->done() ; it->next() ) {
+    for (auto it: left_->succ(init_tgba))
       if ( isSelfLoop(it, init_tgba) ) {
 	// Test ac=0 (empty acceptance cond arcs)
-	if (it->current_acceptance_conditions() == bddfalse && left_->all_acceptance_conditions() != it->current_acceptance_conditions()) {
-	  F |= it->current_condition();
-	}
+	auto ac = it->acc();
+	if (ac == 0U && left_->num_sets() > 0)
+	  F |= it->cond();
       }
-    }
-    delete it;
-
 
     return new slap_state(init_tgba,
 			  model_.leastPreTestFixpoint (model_.getInitialState(), F));
   }
 
 
-  class tgba_no_succ_iterator : public tgba_succ_iterator {
+  class tgba_no_succ_iterator final: public twa_succ_iterator {
 
-    state* current_state() const {
+    state* dst() const override {
       return 0;
     }
-    
+
 
     /// \brief Get the condition on the transition leading to this successor.
     ///
     /// This is a boolean function of atomic propositions.
-    bdd current_condition() const {
+    bdd cond() const override {
       return bddfalse;
     }
 
     /// \brief Get the acceptance conditions on the transition leading
     /// to this successor.
-    bdd current_acceptance_conditions() const {
-      return bddfalse;
+    acc_cond::mark_t acc() const override {
+      return {};
     }
-    void first() {};
-    void next() {};
-    bool done() const {
+    bool first() override {
+      return false;
+    };
+    bool next() override {
+      return false;
+    };
+    bool done() const override {
       return true;
     }
   };
 
-  spot::tgba_succ_iterator*
-  slap_tgba::succ_iter(const state* local_state,
-		       const state* global_state,
-		       const tgba* global_automaton) const
+  spot::twa_succ_iterator*
+  slap_tgba::succ_iter(const state* local_state) const
   {
     // test for div case
     const slap_div_state* d = dynamic_cast<const slap_div_state*>(local_state);
     if (d) {
       return new slap_div_succ_iterator(get_dict(), d, d->get_condition(), d->get_acceptance());
     }
-    
+
 
     // else it should be a normal slap state
     const slap_state* s = dynamic_cast<const slap_state*>(local_state);
     assert(s);
 
 
-    tgba_succ_iterator* li = left_->succ_iter(s->left(),
-					      global_state,
-					      global_automaton);
-
+    twa_succ_iterator* li = left_->succ_iter(s->left());
     // Test whether the tgba state is "terminal", i.e. we might end it right here.
     if ( isFullAcceptingState(li, s->left()) ) {
       trace << "could use FSLTL algo !!" << std::endl;
@@ -345,17 +339,17 @@ namespace slap
       typedef std::map<std::string,its::Transition> accToTrans_t;
       typedef accToTrans_t::iterator accToTrans_it;
       accToTrans_t accToTrans;
-      
+
       for ( li->first(); !li->done() ; li->next() ) {
-	
+
 	if ( isSelfLoop(li,s->left())) {
 	  // compute toadd : the transition relation corresponding to this arc
-	  its::Transition apcond = model_.getSelector(li->current_condition());
+	  its::Transition apcond = model_.getSelector(li->cond());
 	  its::Transition toadd = model_.getNextRel () & apcond;
-	  
+
 	  all = all + toadd;
-	  
-	  labels_t accs = its::TgbaType::getAcceptanceSet (li->current_acceptance_conditions(), left_);
+
+	  labels_t accs = its::TgbaType::getAcceptanceSet (li->acc());
 	  for (labels_it acc = accs.begin() ; acc != accs.end() ; ++acc) {
 	    accToTrans_it accit = accToTrans.find(*acc);
 	    if (accit == accToTrans.end()) {
@@ -364,38 +358,39 @@ namespace slap
 	    } else {
 	      accit->second = accit->second + toadd;
 	    }
-	  }  
+	  }
 	}
       }
-      
+
       for (accToTrans_it accit = accToTrans.begin() ; accit != accToTrans.end() ; ++accit ) {
 	nextAccs.push_back(accit->second);
 	trace << "For acceptance condition  :" <<  accit->first << std::endl ;
       }
-      
-      
+
+
       its::State scc = its::fsltlModel::findSCC_owcty (all, nextAccs, s->right());
 
       if (scc == its::State::null) {
-	if (fsType_ == sogits::FST  
+	if (fsType_ == sogits::FST
 	    || (fsType_ == sogits::FSA &&  isTerminalState(li, s->left()) )) {
 	  return new tgba_no_succ_iterator();
 	} else if ( fsType_ == sogits::FSA ) {
 	  // default back to basic behavior
-	  return new slap_succ_iterator(left_, s->left(), li, model_, s->right(),fsType_);	  
+	  return new slap_succ_iterator(left_.get(), s->left(), li, model_, s->right(),fsType_);
 	}
       } else {
-	return new slap_div_succ_iterator(get_dict(), s, bddtrue, left_->all_acceptance_conditions());
+	return new slap_div_succ_iterator(get_dict(), s, bddtrue, left_->acc().all_sets());
       }
     }
-    
+
     // std::cerr << "Building succ_iter from state : " << left_->format_state (s->left()) << std::endl;
-    return new slap_succ_iterator(left_, s->left(), li, model_, s->right(),fsType_);
+    return new slap_succ_iterator(left_.get(), s->left(), li, model_, s->right(),fsType_);
   }
 
-  bool slap_tgba::isSelfLoop (tgba_succ_iterator * it, state * source) const { 
-    bool ret = false; 
-    state * q2 = it->current_state();
+  bool slap_tgba::isSelfLoop(const twa_succ_iterator * it,
+			     const state * source) const {
+    bool ret = false;
+    const state * q2 = it->dst();
     if (q2->compare(source) == 0) {
       ret = true;
     }
@@ -404,7 +399,7 @@ namespace slap
   }
 
   // only consider a state terminal when it has no successors except themself
-  bool slap_tgba::isTerminalState (tgba_succ_iterator * it, state * source) const {
+  bool slap_tgba::isTerminalState (twa_succ_iterator * it, const state * source) const {
     for ( it->first(); !it->done() ; it->next() ) {
 	if (! isSelfLoop(it,source)) {
 	  trace << "State " << left_->format_state(source) << "is not terminal" << std::endl;
@@ -415,7 +410,7 @@ namespace slap
       return true;
   }
 
-  bool slap_tgba::isFullAcceptingState (tgba_succ_iterator * it, state * source) const {
+  bool slap_tgba::isFullAcceptingState (twa_succ_iterator * it, const state * source) const {
     // FST => only consider a state terminal when it has no successors except themself
     if ( fsType_==sogits::FST) {
       return isTerminalState(it,source);
@@ -424,17 +419,17 @@ namespace slap
     } else if ( fsType_==sogits::FSA ) {
 
       // Compute in slAcc the set of acceptance conditions labeling self-loops
-      bdd slAcc = bddfalse;
-      
+      spot::acc_cond::mark_t slAcc = 0U;
+
       for ( it->first(); !it->done() ; it->next() ) {
 	if ( isSelfLoop(it,source) ) {
 	  // its a self loop,
 	  // store acceptance conditions
-	  slAcc |= it->current_acceptance_conditions();
+	  slAcc |= it->acc();
 	}
       }
 
-      if ( slAcc == left_->all_acceptance_conditions() ) {
+      if ( left_->acc().accepting(slAcc)) {
 	trace << "State " << left_->format_state(source) << "IS FSA-terminal" << std::endl;
 	return true;
       } else {
@@ -447,38 +442,16 @@ namespace slap
     }
   }
 
-  bdd
-  slap_tgba::compute_support_conditions(const state* in) const
-  {
-    const slap_state* s = dynamic_cast<const slap_state*>(in);
-    assert(s);
-    return left_->support_conditions(s->left());
-  }
-
-  bdd
-  slap_tgba::compute_support_variables(const state* in) const
-  {
-    const slap_state* s = dynamic_cast<const slap_state*>(in);
-    assert(s);
-    return left_->support_variables(s->left());
-  }
-
-  bdd_dict*
-  slap_tgba::get_dict() const
-  {
-    return dict_;
-  }
-
   std::string
   slap_tgba::format_state(const state* state) const
   {
     const slap_div_state* d = dynamic_cast<const slap_div_state*>(state);
     if (d) {
       std::ostringstream os;
-      os // <<  left_->format_state(d->get_left_state()) 
+      os // <<  left_->format_state(d->get_left_state())
 	 << " * div_state(";
       spot::bdd_print_formula(os, dict_, d->get_condition()) << ")";
-      
+
       return os.str();
     }
 
@@ -496,17 +469,17 @@ namespace slap
 
     return (left_->format_state(s->left())
 	    + " * "
-	    + " SDD size: " + to_string(s->right().nbStates()) 
+	    + " SDD size: " + to_string(s->right().nbStates())
 //	    + (isDiv ? " div "  : " not div ")
 	    + " hash:" + to_string(s->right().hash()) + ss.str() );
   }
 
   state*
-  slap_tgba::project_state(const state* s, const tgba* t) const
+  slap_tgba::project_state(const state* s, const const_twa_ptr& t) const
   {
     const slap_state* s2 = dynamic_cast<const slap_state*>(s);
     assert(s2);
-    if (t == this)
+    if (t.get() == this)
       return s2->clone();
     state* res = left_->project_state(s2->left(), t);
     if (res)
@@ -517,29 +490,8 @@ namespace slap
     return 0;
   }
 
-  bdd
-  slap_tgba::all_acceptance_conditions() const
-  {
-    return left_->all_acceptance_conditions();
-  }
-
-  bdd
-  slap_tgba::neg_acceptance_conditions() const
-  {
-    return left_->neg_acceptance_conditions();
-  }
-
-  std::string
-  slap_tgba::transition_annotation(const tgba_succ_iterator* t) const
-  {
-    const slap_succ_iterator* i =
-      dynamic_cast<const slap_succ_iterator*>(t);
-    assert(i);
-    return left_->transition_annotation(i->left_);
-  }
-
-
-  slap_div_state::slap_div_state(const bdd& c, const bdd& a) : cond(c),acc(a) {
+  slap_div_state::slap_div_state(const bdd& c, acc_cond::mark_t a)
+    : cond(c), acc(a) {
   }
 
   int slap_div_state::compare(const state* other) const {
@@ -561,7 +513,7 @@ namespace slap
     return cond;
   }
 
-  const bdd& slap_div_state::get_acceptance() const {
+  spot::acc_cond::mark_t slap_div_state::get_acceptance() const {
     return acc;
   }
 
@@ -569,41 +521,42 @@ namespace slap
     return (os << "SlapDivState " << std::endl);
   }
 
-  
-  slap_div_succ_iterator::slap_div_succ_iterator(const spot::bdd_dict* d,
+
+  slap_div_succ_iterator::slap_div_succ_iterator(const spot::bdd_dict_ptr& d,
 						 const spot::state* s,
 						 const bdd & cond,
-						 const bdd & acc)
+						 spot::acc_cond::mark_t acc)
     : dict(d), state(s), done_(false), cond_(cond), acc_(acc)
   {
   }
 
-  void slap_div_succ_iterator::first() {
+  bool slap_div_succ_iterator::first() {
     done_ = false;
+    return true;
   }
 
-  void slap_div_succ_iterator::next() {
-    if (!done_)
-      done_ = true;
+  bool slap_div_succ_iterator::next() {
+    done_ = true;
+    return false;
   }
 
   bool slap_div_succ_iterator::done() const {
     return  done_;
   }
 
-  spot::state* slap_div_succ_iterator::current_state() const {
+  const spot::state* slap_div_succ_iterator::dst() const {
     assert(!done_);
     trace << "FIRING : " << format_transition() << std::endl;
     trace << "FROM a div state" << std::endl << std::endl;
     return new slap_div_state(cond_,acc_);
   }
 
-  bdd slap_div_succ_iterator::current_condition() const {
+  bdd slap_div_succ_iterator::cond() const {
     assert(!done());
     return cond_;
   }
 
-  bdd slap_div_succ_iterator::current_acceptance_conditions() const {
+  acc_cond::mark_t slap_div_succ_iterator::acc() const {
     assert(!done());
     return acc_;
   }
