@@ -1,9 +1,4 @@
-noinst_PROGRAMS = its-ltl testite
-# A simple program to extract atomic propositions from LTL formulae
-# extractAP
-# just a small test for AP
-# testite
-
+noinst_PROGRAMS = its-ltl testite extractAP
 
 if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
@@ -94,5 +89,5 @@ its_ltl_LDADD = $(LDADDFLAGS)
 testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
 testite_LDADD =  $(LDADDFLAGS)
 
-#extractAP_SOURCES = extractAP.cpp
-#extractAP_LDADD =  $(LDADDFLAGS)
+extractAP_SOURCES = extractAP.cpp
+extractAP_LDADD =  $(LDADDFLAGS)
