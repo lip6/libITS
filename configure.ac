@@ -140,8 +140,7 @@ test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
-# or not : pass it in CXXFLAGS to configure
-# CXXFLAGS="-std=c++11 $CXXFLAGS"
+CXXFLAGS="-std=c++11 $CXXFLAGS"
 
 # compile in C
 AC_PROG_CC
