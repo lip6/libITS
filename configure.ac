@@ -85,10 +85,6 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 
-CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
-LDFLAGS="-static-libgcc -static-libstdc++ $LDFLAGS"
-
-
 AC_ARG_ENABLE([mingw-native],
 				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
 				[ case "${enable_mingw_native}" in
@@ -164,8 +160,7 @@ test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
-# or not : pass it in CXXFLAGS to configure
-# CXXFLAGS="-std=c++11 $CXXFLAGS"
+CXXFLAGS="-std=c++11 $CXXFLAGS"
 
 # Option to enable hash stats
 AC_ARG_ENABLE([hash-stat],
@@ -188,6 +183,9 @@ AC_LANG(C++)
 #use bison/flex parsers
 AM_PROG_LEX
 AC_PROG_YACC
+
+CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
+LDFLAGS="-static-libgcc -static-libstdc++ $LDFLAGS"
 
 # Enable boost if found:
 #AX_CHECK_BOOST([1.31], [103100])

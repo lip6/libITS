@@ -313,7 +313,7 @@ ANTLRC_LINK=-lantlr3c
 endif
 
 
-AM_CFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O3 -std=gnu99 -Wall
+AM_CFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I ./ -g -O3 -std=gnu11 -Wall
 AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) -I $(top_srcdir)/src  -I $(MYSRCDIR) -I $(MYPRODSRCDIR) -I ./ -g -O3 -Wall $(BOOST_CPPFLAGS) -DLIBDDD=\"$(LIBDDD_ROOT)\" -DLIBITS=\"$(MYSRCDIR)\"
 AM_CXXFLAGS = -g -O3 -Wall
 
