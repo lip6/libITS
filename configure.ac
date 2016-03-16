@@ -53,6 +53,7 @@ AC_ARG_ENABLE(	[nolto],
             esac])
 
 if test "x$nolto" = "xfalse"; then
+   CFLAGS="-flto $CFLAGS"
    CXXFLAGS="-flto $CXXFLAGS"
    test -z "$AR" && AR=gcc-ar
    test -z "$RANLIB" && RANLIB=gcc-ranlib
@@ -160,6 +161,7 @@ test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
 # we compile C++11
+CFLAGS="-std=c11 $CFLAGS"
 CXXFLAGS="-std=c++11 $CXXFLAGS"
 
 # Option to enable hash stats
@@ -186,10 +188,6 @@ AC_PROG_YACC
 
 CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
 LDFLAGS="-static-libgcc -static-libstdc++ $LDFLAGS"
-
-# Enable boost if found:
-#AX_CHECK_BOOST([1.31], [103100])
-#AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
 
 # define HAS_STDC_HEADERS
 AC_HEADER_STDC

@@ -20,8 +20,8 @@ ANTLRC_LINK=-lantlr3c
 endif
 
 
-AM_CPPFLAGS = $(LIBDDD_CPP)  $(ANTLRC_CPP) -I $(top_srcdir)/src/ -g -O2 -Wall
-AM_CXXFLAGS = -g -O2 -Wall
+AM_CPPFLAGS = $(LIBDDD_CPP)  $(ANTLRC_CPP) -I $(top_srcdir)/src/
+AM_CXXFLAGS = -g -O3 -Wall
 
 LDADDFLAGS = $(IPNLIBPATH)  $(LIBDDD_PATH) $(ANTLRC_PATH) $(ANTLRC_LINK)
 

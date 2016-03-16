@@ -34,7 +34,7 @@ GMP_PATH=-L$(GMP_ROOT)/lib
 endif
 
 
-AM_CPPFLAGS = $(LIBDDD_CPP) $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(HAVE_BOOST_FLAG) $(GMP_CPP) -g -O3 -Wall
+AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBITS_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(GMP_CPP)
 AM_CXXFLAGS = -g -O3 -Wall 
 
 LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
@@ -43,14 +43,14 @@ LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $
 its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp
 
 its_reach_LDADD = $(LDADDFLAGS)  $(GMP_PATH) -lgmp -lgmpxx 
-its_reach_LDFLAGS =  -flto -fwhole-program 
+its_reach_LDFLAGS = -fwhole-program 
 #-static -all-static
 # -export-dynamic
 
 dve2gal_SOURCES = dve2galmain.cpp
 
 dve2gal_LDADD = $(LDADDFLAGS)  
-dve2gal_LDFLAGS =  -flto -fwhole-program 
+dve2gal_LDFLAGS = -fwhole-program 
 # -export-dynamic
 
 #gal_test_SOURCES = test-gal.cpp 
