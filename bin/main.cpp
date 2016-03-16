@@ -381,8 +381,11 @@ int main_noex (int argc, char **argv) {
      //   }
      // }
      
-
-     std::cout << "Total edges in reachability graph : " << total << std::endl;
+	char * pp;
+	gmp_asprintf(&pp,"%Zd",total.get_mpz_t()); 
+	out << "Total edges in reachability graph : " << *pp << std::endl;
+	free (pp);
+     // std::cout << "Total edges in reachability graph : " << total << std::endl;
    }
  }
 
