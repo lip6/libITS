@@ -672,16 +672,254 @@ break;
   return sat;
 }
 
-its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula) const {
+its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need_exact) const {
   its::Transition stop = Shom(GSDD::top);
+  if (! need_exact) {
+    its::State result ;
+
+    Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
+    Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
+    its::Transition leftHom, rightHom;    
+    if (leftChild) {
+      leftHom = getHomomorphism(leftChild);
+    }
+    if (rightChild) {	
+      rightHom = getHomomorphism(rightChild);
+    }
+
+    // Now switch on the type of formula
+    switch (Ctlp_FormulaReadType(ctlFormula)) {
+      // Semantics remain the same as need_exact case for these formulas
+    case Ctlp_TRUE_c:
+    case Ctlp_FALSE_c:
+    case Ctlp_EQ_c:
+    case Ctlp_XOR_c:
+    case Ctlp_THEN_c:
+    case Ctlp_Init_c:
+      break;
+
+
+    case Ctlp_ID_c:
+      {
+	// basic case
+	Transition sel =  getSelectorAP( Ctlp_FormulaReadVariableName(ctlFormula) , Ctlp_FormulaReadValueName(ctlFormula) );
+	return sel.has_image(getReachable());
+      }
+    case Ctlp_NOT_c:
+      if (leftHom != stop) {
+	return  (! leftHom ).has_image(getReachable());
+      }
+      break;      
+    case Ctlp_AND_c:
+      if (rightHom != stop) {
+	if ( rightHom.has_image(getReachable()) == State::null) {
+	  return State::null;
+	} 
+      }
+      if (leftHom != stop) {
+	if ( leftHom.has_image(getReachable()) == State::null) {
+	  return State::null;
+	} 
+      }
+      break;
+
+    case Ctlp_OR_c:
+      if (leftHom != stop) {
+	State img = leftHom.has_image(getReachable()) ;
+	if ( img  != State::null) {
+	  return img;
+	} 
+      }
+      if (rightHom != stop) {
+	State img = rightHom.has_image(getReachable()) ;
+	if ( img  != State::null) {
+	  return img;
+	} 
+      }
+      if (leftHom == stop) {
+	State img = getStateVerifying( leftChild , false) ;
+	if ( img  != State::null) {
+	  return img;
+	} 
+      }
+      if (rightHom == stop) {
+	State img = getStateVerifying( rightChild , false) ;
+	if ( img  != State::null) {
+	  return img;
+	} 
+      }
+      return State::null;
+
+
+    case Ctlp_EX_c:
+      if (leftHom != stop) {
+	return  (getPredRel() & leftHom).has_image(getReachable());
+      } else {
+	State img = getStateVerifying( leftChild , true) ;
+	return getPredRel().has_image (img);
+      }
+
+    case Ctlp_EU_c: 
+      {
+      // start from states satisfying g, then add predescessors verifying f in a fixpoint.
+      // f U g <-> ( f & pred + Id )^* & g
+	if (rightHom != stop) {
+	  State img = rightHom.has_image(getReachable()) ;
+	  // Since img is included in (f & pred + Id)^* (img)
+	  return img;
+	} else {
+	  State img = getStateVerifying(rightChild, false);
+	  return img;
+	}	
+      }
+    case Ctlp_EG_c: 
+      {
+      // start with states satisfying f
+      // then remove states that are not a predescessor of a state in the set
+      // EG f <->  ( f & pred )^* & f      
+	if (leftHom != stop) {
+	  State img = leftHom.has_image(getReachable()) ;
+	  if (img == State::null) {
+	    return img;
+	  }
+	}
+	State leftStates = getStateVerifying(leftChild,true);
+	its::State deadf = ( getReachable() -  (getPredRel() (getReachable())) )*leftStates ; // i.e. add dead states that verify f; 
+	if (deadf != State::null) {
+	  return deadf;
+	} else {
+	  return fixpoint ( getPredRel() * its::Transition::id , true).has_image (leftStates); 
+	}
+      }			   
+    case Ctlp_Cmp_c: {
+      // Forward CTL specific : compare a formula to false or true
+      // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
+      State leftStates = getStateVerifying(leftChild,false);
+      if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
+ 	return (leftStates == State::null ? State::one : State::null);
+      else
+	return (leftStates == State::null ? State::null : State::one);
+    }
+
+
+    // case Ctlp_FwdU_c:
+    //   /** From Vis source documentation :
+    //    *							    t
+    //    ** E[p U q]      = lfp Z[q V (p ^ EX(Z))]   :   p p ... p q
+    //    ** FwdUntil(p,q) = lfp Z[p V EY(Z ^ q)]     :		    pq q q ... q
+    //    */
+    //   /**
+    //    * In other words, start from states satisfying p, then add successors satisfying q to fixpoint
+    //    * FwdUntil(p,q) =  ( Next & (q * id)  + Id)^* ( p )
+    //    */
+    //   // test for trivial reachability case
+    //   if (Ctlp_FormulaReadLeftChild(ctlFormula) &&
+    // 	  Ctlp_FormulaReadType(Ctlp_FormulaReadLeftChild(ctlFormula)) ==
+    // 	  Ctlp_Init_c &&
+    // 	  Ctlp_FormulaReadRightChild(ctlFormula) &&
+    // 	  Ctlp_FormulaReadType(Ctlp_FormulaReadRightChild(ctlFormula)) ==
+    // 	  Ctlp_TRUE_c ) {
+    // 	// cast to constant hom
+    // 	result = getReachable() ;
+    // 	break;
+    //   }
+
+    //   // the real case
+    //   // FwdUntil(p,q) holds at any state "t", such that there exists a path through "t" from some state at which
+    //   // p holds, and q holds at all states before "t" on the path.
+    //   if (rightHom == stop ) {
+    // 	result = fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id, true ) ( leftStates ) ;
+    //   } else {
+    // 	its::Transition t = fixpoint ( ( getNextRel() & rightHom ) + its::Transition::id, true );
+    // 	//	std::cerr << t << std::endl; 
+    // 	result = t ( leftStates ) ;
+    //   }
+    //   break;
+    // case Ctlp_FwdG_c:
+    //   {
+    // 	  // from original forward CTL paper :
+    // 	  // EH (p) = gfp Z [p ^ Img (Z)]
+    // 	  // Reachable (p; q) = FwdUntil (p; q) ^ q
+    // 	  // FwdGlobal (p; q) = EH (Reachable (p; q))
+	  
+    // 	  // so, EH (p) = ( Next * id )^* (p)
+    // 	  // Reachable(p,q) = FwdUntil(p;q) ^q
+    // 	  // and  FwdUntil(p,q) =  ( Next & (q * id)  + Id)^* ( p )
+    // 	  // Reachable(p,q) = (( Next & (q * id)  + Id)^* ( p )) * q
+    // 	  // FwdGlobal (p; q) = ( Next * id )^* ((( Next & (q * id)  + Id)^* ( p )) * q)
+    // 	//	result = fixpoint ( (getNextRel() 
+    // 	//			     +   (getReachable() -  (getPredRel() (getReachable())))) * Transition::id )  
+    // 		// FwdUntil(p,q)
+    // 	//	(fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id ) ( leftStates  
+    // 		// ^q 
+    // 	//												   * rightStates));
+		
+	
+    // 	// EH (p) is the subset of states verifying "p" that are reachable through a cycle in p
+    // 	// EH = fixpoint ( p * getNextRel() ) (getReachable);
+
+    // 	// Reachable (p,q) : states that verify "q" reachable from states verifying "p and q" 
+    // 	// (while constantly verifying "q")
+    // 	// Reach (p,q) = fixpoint (  (q * next) + id )  (p * q)
+
+    // 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
+
+    // 	its::State reachpq ;
+    // 	if (leftHom != stop && rightHom != stop) {
+    // 	  reachpq = (leftHom & rightHom) ( getReachable() );
+    // 	} else {
+    // 	  reachpq = leftStates * rightStates;
+    // 	}
+    // 	if ( rightHom ==stop) {
+    // 	  reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
+    // 	} else {
+    // 	  reachpq = fixpoint ( (rightHom & getNextRel()) + Transition::id, true) (reachpq)  ;
+    // 	}
+    // 	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
+    // 	// states reachable by an infinite path of f
+    // 	its::State dpq = dead * reachpq;
+    // 	// if (dpq != its::State::null) {
+    // 	//   result = dpq;
+    // 	// } else {
+    // 	  its::Transition fix = fixpoint ( getNextRel()  * its::Transition::id, true);
+    // 	  //	  std::cout << "going for has image to compute gfp of "<< fix <<  std::endl;
+    // 	  // result = fix.has_image(reachpq) + dpq;	 
+    // 	   result =  fix ( reachpq ) + dpq;
+    // 	//      }
+
+
+    // 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
+    // 	// Start from states p, S = p
+    // 	// Keep only those satisfying q. S = S * q
+    // 	// Add any states satisfying q, q reachable from S. S = fix( Id +  q*Next ) (S)
+    // 	// Reduce to states in cycles + suffix thereof. S = fix ( Next * Id ) (S)
+    // 	break;
+    //   }
+    // case Ctlp_EY_c:
+    //   // exists yesterday : states that have a predescessor that verifies f
+    //   // take states verifying f, then compute successors
+    //   // EY f  <->  Next & f (reach)
+    //   result = getNextRel() ( leftStates ) ;
+    //   break;
+      
+      case Ctlp_EY_c:
+    case Ctlp_FwdU_c:
+    case Ctlp_FwdG_c:
+      std::cerr << "Inexact computation unsupported for formula. Fall back to exact computation."<<std::endl; 
+      break;
+    default: 
+      fail("Encountered unknown type of CTL formula\n");      
+      break;
+    }
+  }
+
   its::State result;
   ctl_statecache_it it = ctl_statecache.find(ctlFormula);
   if ( it == ctl_statecache.end() ) {
     // A miss 
     // invoke recursive procedures
     its::State leftStates, rightStates;
-    its::Transition leftHom, rightHom;
-    
+    its::Transition leftHom, rightHom;    
     {
       // test necessary conditions
       if ( Ctlp_FormulaReadType(ctlFormula) == Ctlp_AND_c) 

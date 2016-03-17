@@ -38,7 +38,7 @@ public :
 
   its::Transition getHomomorphism (Ctlp_Formula_t *formula) const;
 
-  its::State getStateVerifying (Ctlp_Formula_t *formula) const;
+  its::State getStateVerifying (Ctlp_Formula_t *formula, bool need_exact=true) const;
 
   its::Transition getPredRel () const ;
 
