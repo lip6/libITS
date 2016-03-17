@@ -241,12 +241,16 @@ int main (int argc, char ** argv) {
 	Statistic SS = Statistic(verif, "formula "+ to_string(i) , CSV); // can also use LATEX instead of CSV
 	SS.print_line(std::cout);
       */
-      
-      its::State verif2 = checker.getStateVerifying(formula) ;
+      // wrap formula into : formula * Init != FALSE
+      Ctlp_Formula_t * wrapped = Ctlp_ConvertToCmpFormula(formula);
+
+      its::State verif2 = checker.getStateVerifying(wrapped,false) ;
       Statistic SS2 = Statistic(verif2, "(state)formula "+ to_string(i) , CSV); // can also use LATEX instead of CSV
       SS2.print_line(std::cout);
-      if (verif2 * checker.getInitialState() == checker.getInitialState() ) {
-       std::cout << "Formula is TRUE !" << std::endl;
+      /// without conversion to Cmp Form, need to test :
+      /// verif2 * checker.getInitialState() == checker.getInitialState() ) {
+      if (verif2 == State::one) {
+	std::cout << "Formula is TRUE !" << std::endl;
       } else {
 	std::cout << "Formula is FALSE !" << std::endl;
       }
@@ -267,7 +271,7 @@ int main (int argc, char ** argv) {
       Ctlp_FormulaPrint(vis_stdout, formula);
       (void) fprintf(vis_stdout, "\n");
       
-      its::State verif3 = checker.getStateVerifying(formula) ;
+      its::State verif3 = checker.getStateVerifying(formula,false) ;
       Statistic SS3 = Statistic(verif3, "(forward)formula "+ to_string(i) , CSV); // can also use LATEX instead of CSV
       SS3.print_line(std::cout);
       if (verif3 == State::one) {
