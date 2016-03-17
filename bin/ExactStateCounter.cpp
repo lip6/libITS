@@ -87,8 +87,5 @@ const ExactStateCounter::stat_t & ExactStateCounter::compute (const DataSet* g)
 }
 
 void ExactStateCounter::printStats (const ExactStateCounter::stat_t & stat, std::ostream & out) const  {
-	char * pp;
-	gmp_asprintf(&pp,"%Zd",stat.get_mpz_t()); 
-	out << "Exact state count : " << *pp << std::endl;
-	free (pp);
+  out << "Exact state count : " << stat << std::endl;
 }
