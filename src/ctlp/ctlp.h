@@ -206,6 +206,7 @@ EXTERN Ctlp_Formula_t * Ctlp_FormulaConvertEUtoOR(Ctlp_Formula_t * formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaConvertXORtoOR(Ctlp_Formula_t * formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaConvertEQtoOR(Ctlp_Formula_t * formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaPushNegation(Ctlp_Formula_t * formula);
+EXTERN Ctlp_Formula_t * Ctlp_ConvertToCmpFormula(Ctlp_Formula_t * formula);
 EXTERN void Ctlp_FormulaArrayFree(array_t * formulaArray);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaConvertToExistentialForm(Ctlp_Formula_t * formula);
 EXTERN Ctlp_Formula_t * Ctlp_FormulaConvertToSimpleExistentialForm(Ctlp_Formula_t * formula);

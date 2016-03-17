@@ -1273,6 +1273,20 @@ Ctlp_FormulaArrayFree(
 }
 
 
+Ctlp_Formula_t * Ctlp_ConvertToCmpFormula(Ctlp_Formula_t * formula) {
+
+      Ctlp_Formula_t * andl = FormulaCreateWithType(Ctlp_AND_c);
+      andl->left = formula;
+      andl->right = FormulaCreateWithType(Ctlp_Init_c);
+
+      Ctlp_Formula_t * wrapped = FormulaCreateWithType(Ctlp_Cmp_c);
+      wrapped->left = andl;
+      wrapped->right = FormulaCreateWithType(Ctlp_FALSE_c);
+      wrapped->compareValue = 1;
+      
+      return wrapped;
+}
+
 /**Function********************************************************************
 
   Synopsis    [Converts a CTL formula to existential form.]
