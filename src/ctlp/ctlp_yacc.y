@@ -93,6 +93,7 @@ extern char * CtlpYytext;
 %token TOK_NOT
 %token TOK_ASSIGN
 %token TOK_LT
+%token TOK_NEQ
 %token TOK_GT
 %token TOK_LEQ
 %token TOK_GEQ
@@ -320,13 +321,13 @@ name:  TOK_ID
 	 $$ = util_strsav(CtlpYytext);
        }
 
-comparator : TOK_ASSIGN 
-       { $$ = util_strsav(CtlpYytext); }
-             | TOK_GT
-       { $$ = util_strsav(CtlpYytext); }
+comparator : TOK_ASSIGN  { $$ = util_strsav(CtlpYytext); }
+             | TOK_GT { $$ = util_strsav(CtlpYytext); }
              | TOK_LT { $$ = util_strsav(CtlpYytext); } 
              | TOK_GEQ { $$ = util_strsav(CtlpYytext); } 
              | TOK_LEQ { $$ = util_strsav(CtlpYytext); }
+//             | TOK_EQIV { $$ = util_strsav(CtlpYytext); }
+             | TOK_NEQ { $$ = util_strsav(CtlpYytext); }
 ;
 
 name_vector: TOK_ID_VECTOR

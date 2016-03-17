@@ -155,16 +155,17 @@ FALSE   { return(TOK_FALSE); }
 \|\|	{ return(TOK_OR); }
 \*	{ return(TOK_AND); }
 \&\&	{ return(TOK_AND); }
+"!="    { return(TOK_NEQ); }
 !	{ return(TOK_NOT); }
 "^"	{ return(TOK_XOR); }
 "->"	{ return(TOK_THEN); }
 "<->"	{ return(TOK_EQ); }
+==      { return(TOK_EQIV); }
 =       { return(TOK_ASSIGN); }
 "<"     { return(TOK_LT); }
 ">"     { return(TOK_GT); }
 ">="    { return(TOK_LEQ); }
 "<="    { return(TOK_GEQ); }
-==      { return(TOK_EQIV); }
 \,      { return(TOK_COMMA); }
 \\      { return(TOK_MACRO); }
 
