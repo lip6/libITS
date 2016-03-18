@@ -9,7 +9,7 @@
 
 // forward declaration
 namespace dve2GAL {
-  class dve2GAL;
+  struct dve2GAL;
 }
 
 namespace its {
