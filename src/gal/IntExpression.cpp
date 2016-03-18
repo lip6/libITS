@@ -331,13 +331,23 @@ std::map<std::string,int> & IntExpressionFactory::var_names () {
 
 std::map<Variable, IntExpression> & IntExpressionFactory::var_expr () {
   // Avoid messy static initialization fiasco when deallocating at exit : force unique to be deall before var_expr.
-  unique();
+  static bool first = true;
+  if (first) {
+    unique();
+    first = false;
+  }
   static std::map<Variable, IntExpression> var_expr = std::map<Variable, IntExpression> ();
   return var_expr;
 }
 
 
 UniqueTable<_IntExpression> &  IntExpressionFactory::unique () {
+  // calling PInt unique to avoid static deinitialization fiasco.
+  static bool first = true;
+  if (first) {
+    PIntExpressionFactory::unique();
+    first = false;
+  }
   static UniqueTable<_IntExpression> unique = UniqueTable<_IntExpression>();
   return unique;
 }

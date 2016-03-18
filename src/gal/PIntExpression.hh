@@ -165,6 +165,7 @@ public :
 
 
 class PIntExpressionFactory {
+  friend class IntExpressionFactory;
   static UniqueTable<_PIntExpression> & unique();
 public :
   static PIntExpression  createUnary (IntExprType type, const PIntExpression & p) ;
