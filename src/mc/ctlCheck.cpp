@@ -80,8 +80,8 @@ its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const 
       break;
 
     case Ctlp_EX_c:
-      
-      result = stop ;
+      //      result = ( ( getPredRel()& leftHom & getNextRel() ) * Transition::id );
+      result = stop;
       break;
 
     case Ctlp_EU_c: 
@@ -672,8 +672,25 @@ break;
   return sat;
 }
 
+
+its::State CTLChecker::getSCCs () const {
+  if (! scc_computed_) {
+    scc_computed_ =true;
+    its::Transition findscc = fixpoint( getNextRel() * Transition::id );
+    scc_ = findscc.has_image(getReachable());
+    if (scc_ == State::null) {
+      std::cout << "Fast SCC detection found none." << std::endl;
+      scc_ = findscc ( getReachable()) ;
+    }
+  }
+  return scc_;
+}
+
 its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need_exact) const {
   its::Transition stop = Shom(GSDD::top);
+  std::cout << "Checking (exact) " << need_exact << " :" ;
+  Ctlp_FormulaPrint(vis_stdout,ctlFormula);
+  std::cout << std::endl ;
   if (! need_exact) {
     its::State result ;
 
@@ -1038,7 +1055,37 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
       // then remove states that are not a predescessor of a state in the set
       // EG f <->  ( f & pred )^* & f      
       its::State deadf = ( getReachable() -  (getPredRel() (getReachable())) )*leftStates ; // i.e. add dead states that verify f; 
-      result = fixpoint ( getPredRel() * its::Transition::id + deadf, true) (leftStates); 
+      its::State deadg ;// i.e. add  predecessors of dead states satisfying f
+      if (leftHom == stop) {
+	deadg =  fixpoint( (leftStates * getPredRel()) + Transition::id ) (deadf)  ; 
+      } else {
+	// trigger rewriting ( sel&next + id) ^* potentially
+	deadg =  fixpoint( (leftHom & getPredRel()) + Transition::id ) (deadf)  ; 
+      }
+      State sccs = getSCCs();
+      if (sccs == State::null) {
+	result = deadg;
+      } else {
+	if (leftHom == stop) {
+	  its::Transition egfix = fixpoint ( getPredRel() * its::Transition::id, true); 
+	  its::State img = egfix.has_image(leftStates);
+	  if (img == State::null) {
+	    std::cout << "Fast SCC detection found none." << std::endl;
+	    result = deadg ;
+	  } else {
+	    result = egfix (leftStates) + deadg; 
+	  }
+	} else {
+	  its::Transition egfix = fixpoint ( ( leftHom & getPredRel() ), true);
+	  its::State img = egfix.has_image(leftStates);
+	  if (img == State::null) {
+	    std::cout << "Fast SCC detection found none." << std::endl;
+	    result = deadg ;
+	  } else {
+	    result = egfix (leftStates)+ deadg; 
+	  }
+	}
+      }
       break;
       }			   
     case Ctlp_Cmp_c: {
@@ -1080,7 +1127,12 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
       // FwdUntil(p,q) holds at any state "t", such that there exists a path through "t" from some state at which
       // p holds, and q holds at all states before "t" on the path.
       if (rightHom == stop ) {
-	result = fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id, true ) ( leftStates ) ;
+	if (rightStates == getReachable()) {
+	  // FwdUntil(p, TRUE) = q holds everywhere, so its just reachable states from p
+	  result = fixpoint ( getNextRel() + its::Transition::id, true ) ( leftStates ) ;
+	} else {
+	  result = fixpoint ( (getNextRel() & (rightStates * its::Transition::id)) + its::Transition::id, true ) ( leftStates ) ;
+	}
       } else {
 	its::Transition t = fixpoint ( ( getNextRel() & rightHom ) + its::Transition::id, true );
 	//	std::cerr << t << std::endl; 
@@ -1115,29 +1167,41 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	// Reach (p,q) = fixpoint (  (q * next) + id )  (p * q)
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
-
 	its::State reachpq ;
 	if (leftHom != stop && rightHom != stop) {
 	  reachpq = (leftHom & rightHom) ( getReachable() );
 	} else {
 	  reachpq = leftStates * rightStates;
 	}
-	if ( rightHom ==stop) {
-	  reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
-	} else {
-	  reachpq = fixpoint ( (rightHom & getNextRel()) + Transition::id, true) (reachpq)  ;
-	}
-	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
-	// states reachable by an infinite path of f
-	result = fixpoint ( getNextRel() 
-			    * its::Transition::id 
-			    , true) ( reachpq ) + (dead * reachpq);
 
-	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
-	// Start from states p, S = p
-	// Keep only those satisfying q. S = S * q
-	// Add any states satisfying q, q reachable from S. S = fix( Id +  q*Next ) (S)
-	// Reduce to states in cycles + suffix thereof. S = fix ( Next * Id ) (S)
+	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
+	
+	its::State sccs = getSCCs ();
+	if (sccs == State::null) {
+	  result = (dead * reachpq);
+	} else {
+	  its::State reachpq ;
+	  if (leftHom != stop && rightHom != stop) {
+	    reachpq = (leftHom & rightHom) ( getReachable() );
+	  } else {
+	    reachpq = leftStates * rightStates;
+	  }
+	  if (rightHom ==stop) {
+	    reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
+	  } else {
+	    reachpq = fixpoint ( (rightHom & getNextRel()) + Transition::id, true) (reachpq)  ;
+	  }
+	  // states reachable by an infinite path of f
+	  result = fixpoint ( getNextRel() 
+			      * its::Transition::id 
+			      , true) ( reachpq ) + (dead * reachpq);
+	  
+	  // FwdGlobal(p,q) = EH ( Reachable (p,q) )
+	  // Start from states p, S = p
+	  // Keep only those satisfying q. S = S * q
+	  // Add any states satisfying q, q reachable from S. S = fix( Id +  q*Next ) (S)
+	  // Reduce to states in cycles + suffix thereof. S = fix ( Next * Id ) (S)
+	}
 	break;
       }
     case Ctlp_EY_c:
