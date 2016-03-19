@@ -28,9 +28,10 @@ class CTLChecker {
   mutable its::Transition predRel_;
 
   bool isfairtime;
-
+  mutable its::State scc_;
+  mutable bool scc_computed_;
 public :
-  CTLChecker (const its::ITSModel & model) : model(model), isfairtime(false) {}
+  CTLChecker (const its::ITSModel & model) : model(model), isfairtime(false),scc_computed_(false) {}
 
   void setFairTime(bool befairtime) { isfairtime = befairtime; }
 
@@ -45,6 +46,8 @@ public :
   its::Transition getNextRel () const ;
 
   its::State getReachable () const;
+
+  its::State getSCCs () const;
 
   its::State getInitialState () const;
 
