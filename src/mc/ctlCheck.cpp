@@ -942,10 +942,10 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  return State::null;
 	} 
       } else if (Ctlp_FormulaReadType(ctlFormula) == Ctlp_Cmp_c) {
-       
+	Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
 	// Forward CTL specific : compare a formula to false or true
 	// i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
-	State leftStates = getStateVerifying(leftChild,false);
+	leftStates = getStateVerifying(leftChild,false);
 	if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0) {
 	  return (leftStates == State::null ? State::one : State::null);
 	} else {
