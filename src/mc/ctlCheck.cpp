@@ -673,15 +673,17 @@ break;
 }
 
 
-its::State CTLChecker::getSCCs () const {
+bool CTLChecker::hasSCCs () const {
   if (! scc_computed_) {
     scc_computed_ =true;
     its::Transition findscc = fixpoint( getNextRel() * Transition::id );
-    scc_ = findscc.has_image(getReachable());
-    if (scc_ == State::null) {
-      std::cout << "Fast SCC detection found none." << std::endl;
-      scc_ = findscc ( getReachable()) ;
-    }
+    State sccs = findscc.has_image(getReachable());
+    if (sccs == State::null) {	   
+      std::cout << "Fast SCC detection found none." << std::endl;      
+	  scc_ = false;	
+    } else {
+	  scc_ = true;
+	}
   }
   return scc_;
 }
@@ -1062,8 +1064,8 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	// trigger rewriting ( sel&next + id) ^* potentially
 	deadg =  fixpoint( (leftHom & getPredRel()) + Transition::id ) (deadf)  ; 
       }
-      State sccs = getSCCs();
-      if (sccs == State::null) {
+      bool sccs = hasSCCs();
+      if (! sccs ) {
 	result = deadg;
       } else {
 	if (leftHom == stop) {
@@ -1176,16 +1178,11 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 
 	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
 	
-	its::State sccs = getSCCs ();
-	if (sccs == State::null) {
+	bool sccs = hasSCCs ();
+	if (! sccs) {
 	  result = (dead * reachpq);
 	} else {
-	  its::State reachpq ;
-	  if (leftHom != stop && rightHom != stop) {
-	    reachpq = (leftHom & rightHom) ( getReachable() );
-	  } else {
-	    reachpq = leftStates * rightStates;
-	  }
+
 	  if (rightHom ==stop) {
 	    reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
 	  } else {

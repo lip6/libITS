@@ -47,7 +47,7 @@ public :
 
   its::State getReachable () const;
 
-  its::State getSCCs () const;
+  bool hasSCCs () const;
 
   its::State getInitialState () const;
 
