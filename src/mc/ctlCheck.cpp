@@ -715,6 +715,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
     case Ctlp_XOR_c:
     case Ctlp_THEN_c:
     case Ctlp_Init_c:
+    case Ctlp_Cmp_c:
       break;
 
 
@@ -810,15 +811,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  return fixpoint ( getPredRel() * its::Transition::id , true).has_image (leftStates); 
 	}
       }			   
-    case Ctlp_Cmp_c: {
-      // Forward CTL specific : compare a formula to false or true
-      // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
-      State leftStates = getStateVerifying(leftChild,false);
-      if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
- 	return (leftStates == State::null ? State::one : State::null);
-      else
-	return (leftStates == State::null ? State::null : State::one);
-    }
+ 
 
 
     // case Ctlp_FwdU_c:
@@ -941,15 +934,24 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
     its::Transition leftHom, rightHom;    
     {
       // test necessary conditions
-      if ( Ctlp_FormulaReadType(ctlFormula) == Ctlp_AND_c) 
-	{
-	  Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
-	  // Explore right child will "luck" out pretty well due to rewriting of FwdU and FwdG
-	  rightStates = getStateVerifying (rightChild);
-	  if (rightStates == State::null) { 
-	    return State::null;
-	  } 
+      if ( Ctlp_FormulaReadType(ctlFormula) == Ctlp_AND_c) {
+	Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
+	// Explore right child will "luck" out pretty well due to rewriting of FwdU and FwdG
+	rightStates = getStateVerifying (rightChild);
+	if (rightStates == State::null) { 
+	  return State::null;
+	} 
+      } else if (Ctlp_FormulaReadType(ctlFormula) == Ctlp_Cmp_c) {
+       
+	// Forward CTL specific : compare a formula to false or true
+	// i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
+	State leftStates = getStateVerifying(leftChild,false);
+	if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0) {
+	  return (leftStates == State::null ? State::one : State::null);
+	} else {
+	  return (leftStates == State::null ? State::null : State::one);
 	}
+      }
     }
     // Handle left child
     {
