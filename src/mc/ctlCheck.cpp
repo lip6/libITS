@@ -913,10 +913,16 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
     //   // EY f  <->  Next & f (reach)
     //   result = getNextRel() ( leftStates ) ;
     //   break;
+
+    case Ctlp_FwdG_c:
+      {
+
+
+	break;
+      }
       
       case Ctlp_EY_c:
     case Ctlp_FwdU_c:
-    case Ctlp_FwdG_c:
       std::cerr << "Inexact computation unsupported for formula. Fall back to exact computation."<<std::endl; 
       break;
     default: 
@@ -936,6 +942,11 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
       // test necessary conditions
       if ( Ctlp_FormulaReadType(ctlFormula) == Ctlp_AND_c) {
 	Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
+	rightHom = getHomomorphism(rightChild);
+	Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
+	if (rightHom != stop && Ctlp_FormulaReadType(leftChild) == Ctlp_Init_c) {
+	  return rightHom ( getInitialState());
+	}
 	// Explore right child will "luck" out pretty well due to rewriting of FwdU and FwdG
 	rightStates = getStateVerifying (rightChild);
 	if (rightStates == State::null) { 
@@ -1179,13 +1190,23 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 	its::State reachpq ;
+
+	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
+
+	bool sccs = hasSCCs ();
+	if (! sccs) {
+	  dead = (dead * rightStates);
+	  if (dead == State::null) {
+	    return result;
+	  }
+	}
+
 	if (leftHom != stop && rightHom != stop) {
 	  reachpq = (leftHom & rightHom) ( getReachable() );
 	} else {
 	  reachpq = leftStates * rightStates;
 	}
 
-	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
 
 	if (rightHom ==stop) {
 	    reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
@@ -1193,7 +1214,6 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	    reachpq = fixpoint ( (rightHom & getNextRel()) + Transition::id, true) (reachpq)  ;
 	}
 	
-	bool sccs = hasSCCs ();
 	if (! sccs) {
 	  result = (dead * reachpq);
 	} else {
