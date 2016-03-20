@@ -966,6 +966,10 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  //   throw "error";
 	  // }
 	}
+	if (leftStates == getReachable()) {
+	  leftHom = Transition::id;
+	}
+
       }
     }
     // Handle right child
@@ -983,6 +987,9 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  //   throw "error";
 	  // }
 
+	}
+	if (rightStates == getReachable()) {
+	  rightHom = Transition::id;
 	}
       }      
     }
@@ -1177,17 +1184,18 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	}
 
 	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
+
+	if (rightHom ==stop) {
+	    reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
+	} else {
+	    reachpq = fixpoint ( (rightHom & getNextRel()) + Transition::id, true) (reachpq)  ;
+	}
 	
 	bool sccs = hasSCCs ();
 	if (! sccs) {
 	  result = (dead * reachpq);
 	} else {
 
-	  if (rightHom ==stop) {
-	    reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
-	  } else {
-	    reachpq = fixpoint ( (rightHom & getNextRel()) + Transition::id, true) (reachpq)  ;
-	  }
 	  // states reachable by an infinite path of f
 	  result = fixpoint ( getNextRel() 
 			      * its::Transition::id 
