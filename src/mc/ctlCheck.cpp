@@ -8,11 +8,21 @@ using namespace its;
 its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const {
   its::Transition stop = Shom(GSDD::top);
   its::Transition result= stop;
+
+  if (Ctlp_FormulaReadType(ctlFormula) == Ctlp_NOT_c) {
+    Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
+    if (Ctlp_FormulaReadType(leftChild) == Ctlp_NOT_c) {
+      return getHomomorphism(Ctlp_FormulaReadLeftChild(leftChild));
+    }
+  }
+
+
   ctl_cache_it it = ctl_cache.find(ctlFormula);
   if ( it == ctl_cache.end() ) {
     // A miss 
     // invoke recursive procedures
     its::Transition leftHom, rightHom;
+
     // Handle left child
     {
       Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
@@ -962,6 +972,11 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	} else {
 	  return (leftStates == State::null ? State::null : State::one);
 	}
+      } else if (Ctlp_FormulaReadType(ctlFormula) == Ctlp_NOT_c) {
+	Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
+	if (Ctlp_FormulaReadType(leftChild) == Ctlp_NOT_c) {
+	  return getStateVerifying(Ctlp_FormulaReadLeftChild(leftChild), need_exact);
+	}
       }
     }
     // Handle left child
@@ -1195,8 +1210,9 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 
 	bool sccs = hasSCCs ();
 	if (! sccs) {
-	  dead = (dead * rightStates);
+	  dead = dead * rightStates ;
 	  if (dead == State::null) {
+	    std::cout << "dead was empty" << std::endl;
 	    return result;
 	  }
 	}
@@ -1207,7 +1223,6 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  reachpq = leftStates * rightStates;
 	}
 
-
 	if (rightHom ==stop) {
 	    reachpq = fixpoint ( (rightStates * getNextRel()) + Transition::id, true) (reachpq)  ;
 	} else {
@@ -1215,20 +1230,19 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	}
 	
 	if (! sccs) {
-	  result = (dead * reachpq);
+	  result = dead * reachpq;
 	} else {
-
 	  // states reachable by an infinite path of f
 	  result = fixpoint ( getNextRel() 
-			      * its::Transition::id 
-			      , true) ( reachpq ) + (dead * reachpq);
-	  
+			    * its::Transition::id 
+			    , true) ( reachpq ) + (dead * reachpq);
+	
 	  // FwdGlobal(p,q) = EH ( Reachable (p,q) )
 	  // Start from states p, S = p
 	  // Keep only those satisfying q. S = S * q
 	  // Add any states satisfying q, q reachable from S. S = fix( Id +  q*Next ) (S)
 	  // Reduce to states in cycles + suffix thereof. S = fix ( Next * Id ) (S)
-	}
+	}	
 	break;
       }
     case Ctlp_EY_c:
