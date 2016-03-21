@@ -41,11 +41,28 @@ namespace its {
     labels_t path;
     its::State init;
     its::State final;
+    std::vector<State> fullstates;
+    bool withstates;
   public :
-    path_t (const labels_t & path, const State & init, const State & final) : path(path), init(init), final(final) {}
+    path_t (const labels_t & path, const State & init, const State & final) : path(path), init(init), final(final), withstates(false) {}
+    template <typename t1, typename t2>
+    path_t (const labels_t & path, const t1 & begin, const t2 & end) : path(path), fullstates(begin,end), withstates(true) {}
+    const std::vector<State> & getStates() const { return fullstates; }
     const labels_t & getPath() const { return path; }
-    const State & getInit() const { return init; }
-    const State & getFinal() const { return final; }
+    const State & getInit() const { 
+      if (withstates) {
+	return *fullstates.begin();
+      } else {
+	return init; 
+      }
+    }
+    const State & getFinal() const { 
+      if (withstates) {
+	return *fullstates.rbegin();
+      } else {
+	return final; 
+      }
+    }
   };
 
 
@@ -77,6 +94,8 @@ private:
   orderHeuristicType orderHeuristic_;
   // for print limit
   int printLimit_;
+  // to control trace behavior
+  bool printStatesInTrace_;
   // a helper used in multi witness scenario
   int printWitnesses (const std::list<State> & revcomponents, size_t limit, State init, State toreach) const ;
 
@@ -88,7 +107,7 @@ public:
   virtual bool addType (pType type);
 
   // default constructor
-  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1), stutterOnDeadlock_(false), orderHeuristic_(DEFAULT),printLimit_(10) {};
+  ITSModel () : model_(NULL),reached_(State::null),predRel_(Transition::null),storage_(sdd_storage), scalarStrat_(DEPTH1), scalarParam_(1), stutterOnDeadlock_(false), orderHeuristic_(DEFAULT),printLimit_(10), printStatesInTrace_(false) {};
   // quite a bit of cleanup necessary given the use of pointers...
   virtual ~ITSModel () ;
 
@@ -187,6 +206,7 @@ public:
   void printSomeStates (State states, std::ostream & out, size_t limit) const;
   /** Default is set by print limit */
   void setPrintLimit (int limit) { printLimit_ = limit ; }
+  void setPrintStatesInTrace (bool doprint) { printStatesInTrace_ = doprint ; }
   void printSomeStates (State states, std::ostream & out) const { printSomeStates(states,out,printLimit_); }
   /** Prints a path. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. 
