@@ -144,6 +144,8 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        { cerr << "give numeric value in number of states for print-limit option " << argv[i-1]<<endl;  showUsageHelp() ; return false;}
       int threshold = atoi(argv[i]);
       model.setPrintLimit(threshold);
+   } else if ( ! strcmp(argv[i],"--trace-states") ) {
+      model.setPrintStatesInTrace(true);
    } else if ( ! strcmp(argv[i],"--load-order") ) {
      if (++i > argc) 
        { cerr << "Give a file name containing a variable order definition please after " << argv[i-1]<<endl;  showUsageHelp() ;exit(1);}
@@ -409,6 +411,7 @@ void usageInputOptions() {
     cerr<<  "             GAL : Guarded Action Language." << endl; 
     cerr<<  "             CGAL : Guarded Action Language + Composite/ITS textual syntax. File must contain a main declaration." << endl;
     cerr<< "\nAdditional Options and Settings:" << endl;
+    cerr <<  "    --trace-states : if set, this option will force to print intermediate states (up to print limit) when showing traces. " << endl;
     cerr <<  "    --print-limit INT : set the threshold for full printout of states in traces. DD holding more states than threshold will not be printed. [DEFAULT:10 states]" << endl;
     cerr << "    --load-order path : load the variable order from the file designated by path. This order file can be produced with --dump-order. Note this option is not exclusive of --json-order; the model is loaded as usual, then the provided order is applied a posteriori. \n" ;
     cerr<< "\nPetri net specific options :" << endl;
