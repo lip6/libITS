@@ -532,7 +532,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       }
     }
 
-    if (!precise) {
+    if (!precise && ! printStatesInTrace_) {
       std::cout << "Imprecise witness reported."<<std::endl ;
       return path_t(witness,init,toreach);
     }
@@ -558,8 +558,6 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	M_i = revt ( M_i ) ; 
       }
     }
-    
-
 
 //   cerr << "Witness path :" << endl;
 //   for (vector<int>::iterator it = witness.begin(); it != witness.end() ; it++) {
@@ -567,7 +565,11 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 //   }
 //   cerr << endl;
     if (!witness.empty()) {
-      return path_t(witness, *revcomponents.begin(), *revcomponents.rbegin());
+      if ( printStatesInTrace_ ) {
+	return path_t(witness, revcomponents.begin(), revcomponents.end());
+      } else {
+	return path_t(witness, *revcomponents.begin(), *revcomponents.rbegin());
+      }
     } else {
       return path_t(witness, init, toreach);
     }
@@ -758,6 +760,18 @@ void ITSModel::print (std::ostream & os) const  {
 	out << ", " ;
       }
     }
+
+    if (printStatesInTrace_) {
+      std::cout << "Precise witness with states :" << std::endl;
+      auto wit = path.getPath().begin();
+      int i = 0;
+      for (auto rit = path.getStates().begin(); rit != path.getStates().end() ; ++rit, ++wit) {
+	printSomeStates ( *rit, std::cout) ;
+	if (wit != path.getPath().end())
+	  std::cout << "Transition " << i++ << " fire : " << *wit << std::endl;  
+      }
+    }
+
     out << std::endl;
     if (withStates) {
       out << "Leads to final states :\n" ;
