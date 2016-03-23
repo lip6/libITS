@@ -132,7 +132,7 @@ place		: placelevel VARIABLE
 		{
 		  if(!R->addPlace($2,0,$5,$1))
 		  {
-		    yyerror("creation de place a  capacite");return(1);
+		    yyerror("creation de place a capacite");return(1);
 		  }
                   free($2);
 		}
@@ -140,7 +140,7 @@ place		: placelevel VARIABLE
 		{
 		  if(!R->addPlace($2,$5,$9,$1))
 		  {
-		    yyerror("creation de place marquee a  capacite");return(1);
+		    yyerror("creation de place marquee a capacite");return(1);
 		  }
                   free($2);
 		}
@@ -148,7 +148,7 @@ place		: placelevel VARIABLE
 		{
 		  if(!R->addPlace($2,$9,$5,$1))
 		  {
-		    yyerror("creation de place marquee a  capacite");return(1);
+		    yyerror("creation de place marquee a capacite");return(1);
 		  }
 		  free($2);
 		}
@@ -170,7 +170,7 @@ queue		: QUEUE VARIABLE
 		{
 		  if(!R->addQueue($2,$5))
 		  {
-		    yyerror("creation d'une file a  capacite");return(1);
+		    yyerror("creation d'une file a capacite");return(1);
 		  }
 		  free($2);
 
@@ -179,7 +179,7 @@ queue		: QUEUE VARIABLE
 		{
 		  if(!R->addLossQueue($2))
 		  {
-		    yyerror("creation d'une file a  perte");return(1);
+		    yyerror("creation d'une file a perte");return(1);
 		  }
 		  free($2);
 
@@ -188,7 +188,7 @@ queue		: QUEUE VARIABLE
 		{
 		  if(!R->addLossQueue($2,$6))
 		  {
-		    yyerror("creation d'une file a  capacite et a  perte");return(1);
+		    yyerror("creation d'une file a capacite et a perte");return(1);
 		  }
 		  free($2);
 
@@ -197,7 +197,7 @@ queue		: QUEUE VARIABLE
 		{
 		  if(!R->addLossQueue($2,$5))
 		  {
-		    yyerror("creation d'une file a  capacite et a  perte");return(1);
+		    yyerror("creation d'une file a capacite et a perte");return(1);
 		  }
 		  free($2);
 
