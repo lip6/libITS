@@ -339,6 +339,7 @@ int main(int argc, const char *argv[]) {
 //   // The only state defined in the type "trains" is "init"
 //   // This sets the initial state of the main instance
 //   model.setInstanceState("init");
+  int idform =0;
   for (const auto & ltl_string : ltlprops) {
     // Initialize spot
     spot::parsed_formula pf = spot::parse_infix_psl(ltl_string);
@@ -346,6 +347,10 @@ int main(int argc, const char *argv[]) {
       return 1;
     
     if (check) {
+      std::cout << "Checking formula " << idform++ << " : "  << ltl_string << std::endl;
+      std::cout << "Formula " << idform << " simplified : "  << pf.f << std::endl;     
+
+
       LTLChecker checker;
       checker.setFormula(pf.f);
       checker.setModel(model);
@@ -356,7 +361,14 @@ int main(int argc, const char *argv[]) {
       if (isPlaceSyntax) {
 	checker.setPlaceSyntax(true);
       }
-      checker.model_check(sogtype);
+      bool res = checker.model_check(sogtype);
+      std::cout << "Formula " << idform << " is ";
+      if (res) {
+	std::cerr << "FALSE " ;
+      } else {
+	std::cerr << "TRUE no " ;
+      }
+      std::cout << "accepting run found." << std::endl;
     }
     
   }
