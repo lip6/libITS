@@ -60,7 +60,8 @@ void usage() {
   cerr << " LTL specific options for  package " << PACKAGE_STRING << endl;
 
   std::cerr << "  MANDATORY : specify a formula to check " << std::endl
-	    << "  -ltl formula       specify the ltl formula. Must be stuttering invariant for SOG and SOP variants." << std::endl
+	    << "  -LTL formula_file  formula read from formula_file, one per line, lines starting with # are ignored." << std::endl
+	    << "  -ltl formula       specify the ltl formula as a string. Must be stuttering invariant for SOG and SOP variants." << std::endl
 	    << "Actions:" << std::endl
             << "  -aALGO          apply the emptiness check algoritm ALGO"
             << std::endl
@@ -75,9 +76,7 @@ void usage() {
             << "  -c              check the formula" << std::endl
             << "  -e              display a sequence (if any) of the net "
             << "satisfying the formula (implies -c)" << std::endl
-
-    //            << "  -LTL formula_file  formula read from formula_file"
-    //        << std::endl
+            << std::endl
             << "  -g              display the sog"
             << std::endl
             << "  -p              display the net"
@@ -128,7 +127,7 @@ int main(int argc, const char *argv[]) {
   bool scc_optim = true;
   bool scc_optim_full = false;
 
-  std::string ltl_string = "1"; // true
+  std::vector<std::string> ltlprops ;
   std::string algo_string = "Cou99";
 
   sog_product_type sogtype = SLAP_FST;
@@ -170,7 +169,7 @@ int main(int argc, const char *argv[]) {
     else if (!strncmp(args[i], "-ltl", 4)) {
       if (++i > argc)
 	{ cerr << "give argument value for ltl formula please after " << args[i-1]<<endl; usage() ; exit(1);}
-      ltl_string = args[i];
+      ltlprops.emplace_back(args[i]);
     }
     else if (!strncmp(args[i], "-dR3", 4)) {
       scc_optim = false;
@@ -182,18 +181,31 @@ int main(int argc, const char *argv[]) {
     else if (!strcmp(args[i], "--place-syntax")) {
       isPlaceSyntax = true;
     }
-
-//     else if (!strncmp(args[i], "-ltl", 4)) {
-//       std::ifstream fin(args[i]+2);
-//       if (!fin) {
-//           std::cerr << "Cannot open " << args[i]+2 << std::endl;
-//           exit(2);
-//       }
-//       if (!std::getline(fin, ltl_string, '\0')) {
-//           std::cerr << "Cannot read " << args[i]+2 << std::endl;
-//           exit(2);
-//       }
-//     }
+    else if (!strncmp(args[i], "-LTL", 4)) {
+      if (++i > argc)
+	{ cerr << "give argument value for ltl formula file please after " << args[i-1]<<endl; usage() ; exit(1);}
+      std::ifstream fin(args[i]);
+      if (!fin) {
+          std::cerr << "Cannot open " << args[i]+2 << std::endl;
+          exit(2);
+      }
+      std::string line;
+      int nbprop = 0;
+      while ( std::getline(fin, line)) {
+	if ( line[0] == '#' || line == "" ) {
+	  continue;
+	} else {
+	  ltlprops.emplace_back(line);
+	  nbprop++;
+	}
+      } 
+      if (nbprop == 0) {
+	std::cerr << "Cannot read file " << args[i]<< std::endl;
+	exit(2);
+      } else {
+	std::cout << "Read " << nbprop << " LTL properties " << std::endl;
+      }
+    }
     else if (!strcmp(args[i], "-g")) {
       print_rg = true;
     }
@@ -327,26 +339,27 @@ int main(int argc, const char *argv[]) {
 //   // The only state defined in the type "trains" is "init"
 //   // This sets the initial state of the main instance
 //   model.setInstanceState("init");
-
-  // Initialize spot
-  spot::parsed_formula pf = spot::parse_infix_psl(ltl_string);
-  if (pf.format_errors(std::cerr))
-    return 1;
-
-  if (check) {
-    LTLChecker checker;
-    checker.setFormula(pf.f);
-    checker.setModel(model);
-    checker.setOptions(algo_string, ce_expected,
-		       fm_exprop_opt, fm_symb_merge_opt,
-		       post_branching, fair_loop_approx, "STATS", print_rg,
-		       scc_optim, scc_optim_full, print_formula_tgba);
-    if (isPlaceSyntax) {
-      checker.setPlaceSyntax(true);
+  for (const auto & ltl_string : ltlprops) {
+    // Initialize spot
+    spot::parsed_formula pf = spot::parse_infix_psl(ltl_string);
+    if (pf.format_errors(std::cerr))
+      return 1;
+    
+    if (check) {
+      LTLChecker checker;
+      checker.setFormula(pf.f);
+      checker.setModel(model);
+      checker.setOptions(algo_string, ce_expected,
+			 fm_exprop_opt, fm_symb_merge_opt,
+			 post_branching, fair_loop_approx, "STATS", print_rg,
+			 scc_optim, scc_optim_full, print_formula_tgba);
+      if (isPlaceSyntax) {
+	checker.setPlaceSyntax(true);
+      }
+      checker.model_check(sogtype);
     }
-    checker.model_check(sogtype);
+    
   }
-
   delete model;
   // external block for full garbage
   }
