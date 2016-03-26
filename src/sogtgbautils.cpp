@@ -32,16 +32,19 @@
 namespace sogits
 {
 
-  void
+  bool
   LTLChecker::model_check(sog_product_type sogtype)
   {
     if (!buildTgbaFromformula(sogtype))
-      return;
+      {
+        std::cerr << "Failed to build tgba " << std::endl;
+	return false;
+      }
+
 
     if (sogtype == FS_OWCTY || sogtype == FS_EL || sogtype == FS_OWCTY_TGTA)
-      {
-        fs_model_check(sogtype == FS_OWCTY || sogtype == FS_OWCTY_TGTA);
-        return;
+      {	
+        return fs_model_check(sogtype == FS_OWCTY || sogtype == FS_OWCTY_TGTA);
       }
 
     const char* err;
@@ -103,7 +106,7 @@ namespace sogits
     case FS_EL:
     case FS_OWCTY_TGTA:
       // (case treated for compiler warning) should not happen, tested at top of function
-      return;
+      return false;
       }
 
     if (display_)
@@ -144,12 +147,13 @@ namespace sogits
                 << "an accepting run exists (use option '-e' to print it)"
                 << std::endl;
           }
+	return true;
       }
     else
       {
         std::cout << "no accepting run found" << std::endl;
+	return false;
       }
-    return;
   } //
 
   LTLChecker::~LTLChecker()
@@ -158,7 +162,7 @@ namespace sogits
     delete sap_;
   }
 
-  void
+  bool
   LTLChecker::fs_model_check(bool isOWCTY)
   {
     its::fsltlModel * fsmodel = (its::fsltlModel *) model_;
@@ -183,7 +187,7 @@ namespace sogits
       std::cout << "an accepting run exists" << std::endl;
     else
       std::cout << "no accepting run found" << std::endl;
-    return;
+    return  (res != its::State::null);
   }
 
   bool

@@ -62,7 +62,7 @@ namespace sogits {
 
     bool buildTgbaFromformula (sog_product_type sogtype);
 
-    void fs_model_check(bool isOWCTY);
+    bool fs_model_check(bool isOWCTY);
   public :
     LTLChecker () : sap_(nullptr),
 		    f_(nullptr),
@@ -133,7 +133,7 @@ namespace sogits {
     /// \dontinclude modelcheck.cpp
     /// \skipline void model_check
     /// \until } //
-    void model_check(sog_product_type sogtype);
+    bool model_check(sog_product_type sogtype);
 
   };
 
