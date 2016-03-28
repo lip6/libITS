@@ -347,7 +347,7 @@ int main(int argc, const char *argv[]) {
       return 1;
     
     if (check) {
-      std::cout << "Checking formula " << idform++ << " : "  << ltl_string << std::endl;
+      std::cout << "Checking formula " << idform << " : "  << ltl_string << std::endl;
       std::cout << "Formula " << idform << " simplified : "  << pf.f << std::endl;     
 
 
@@ -364,13 +364,13 @@ int main(int argc, const char *argv[]) {
       bool res = checker.model_check(sogtype);
       std::cout << "Formula " << idform << " is ";
       if (res) {
-	std::cerr << "FALSE " ;
+	std::cout << "FALSE " ;
       } else {
-	std::cerr << "TRUE no " ;
+	std::cout << "TRUE no " ;
       }
       std::cout << "accepting run found." << std::endl;
     }
-    
+    idform++;    
   }
   delete model;
   // external block for full garbage
