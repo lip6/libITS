@@ -39,29 +39,23 @@ namespace its {
   // A path of transition names leading from states in init to states in final.
   class path_t {
     labels_t path;
-    its::State init;
-    its::State final;
     std::vector<State> fullstates;
-    bool withstates;
   public :
-    path_t (const labels_t & path, const State & init, const State & final) : path(path), init(init), final(final), withstates(false) {}
+    path_t (const labels_t & path, const State & init, const State & final) : path(path) {
+      fullstates.push_back(init);
+      fullstates.push_back(final);
+    }
     template <typename t1, typename t2>
-    path_t (const labels_t & path, const t1 & begin, const t2 & end) : path(path), fullstates(begin,end), withstates(true) {}
+    path_t (const labels_t & path, const t1 & begin, const t2 & end) : path(path), fullstates(begin,end) {}
+    std::vector<State> & getStates() { return fullstates; }
     const std::vector<State> & getStates() const { return fullstates; }
     const labels_t & getPath() const { return path; }
+    labels_t & getPath() { return path; }
     const State & getInit() const { 
-      if (withstates) {
-	return *fullstates.begin();
-      } else {
-	return init; 
-      }
+      return *fullstates.begin();
     }
     const State & getFinal() const { 
-      if (withstates) {
-	return *fullstates.rbegin();
-      } else {
-	return final; 
-      }
+      return *fullstates.rbegin();
     }
   };
 
@@ -200,6 +194,7 @@ public:
   /** Returns a shortest witness trace expressed in transition names path.path() leading from a state of path.init() (subset of init) to a state in path.final() (a subset of final). 
    ** if precise is false, the input sets are returned as path init/final (faster). Precise ensures the path actually works on ALL of its init states, otherwise it may work only on some. */
   path_t findPath (State init, State toreach, State reach, bool precise=false) const;  
+  path_t findCycle (State init, State scc) const;  
   void printPaths (State init, State toreach, State reach, size_t limit) const;
   /** Prints a set of states to a string. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. **/

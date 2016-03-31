@@ -425,6 +425,77 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     
   }
 
+class ExtractOneState {
+private:
+  bool firstError;
+public : 
+  ExtractOneState () : firstError(false) {}
+  SDD compute (const GSDD & reach) {
+    if (reach==GSDD::null || reach==GSDD::one) {
+      return reach;
+    }
+    auto it = reach.begin();
+    const DataSet * ev = it->first;
+    // Used to work for referenced DDD
+    if (typeid(*ev) == typeid(GSDD) ) {
+      return SDD(reach.variable(),  compute ( GSDD ((SDD &) *ev)), compute(it->second));
+    } else if (typeid(*ev) == typeid(DDD)) {
+      return SDD(reach.variable(),  compute ( GDDD ((DDD &) *ev)), compute(it->second));
+      //    } else if (typeid(*g) == typeid(IntDataSet)) {
+      // nothing, no nodes for this implem
+      //return stat_t();
+    } else {
+      if (firstError) {
+        std::cerr << "Warning : unknown referenced dataset type on arc, node count is inacurate"<<std::endl;
+        std::cerr << "Read type :" << typeid(*ev).name() <<std::endl ;
+	firstError = false;
+      }
+      return GSDD::null;
+    }
+
+  }
+  DDD  compute (const GDDD & reach)  {
+    if (reach==GDDD::null || reach==GDDD::one) {
+      return reach;
+    }
+    auto it = reach.begin();
+    return DDD(reach.variable(), it->first, compute(it->second));
+  }
+
+};
+
+
+
+
+  path_t ITSModel::findCycle (State init, State scc) const {
+    ExtractOneState eos;
+    State oneinit = eos.compute(init);
+    State pred = getPredRel() (oneinit) * scc;
+
+    if (pred == State::null) {
+      std::cerr << "Empty predecessor step."<< std::endl;
+    }
+    path_t path = findPath(oneinit,pred,scc,true);
+
+    // now close the loop
+    Type::namedTrs_t trs;
+    getNamedLocals(trs);
+    vLabel tr;
+    State target;
+    for (const auto & it : trs ) {
+      target = it.second (path.getFinal()) * path.getInit();
+      if (target != State::null) {
+	tr = it.first;
+	* path.getStates().rbegin() = path.getFinal()*  getPredRel() (target);
+	break;
+      }
+    }
+    path.getStates().push_back(target);
+    path.getPath().push_back(tr);
+    
+    return path;
+  }
+
   path_t ITSModel::findPath (State init, State toreach, State reach, bool precise) const {
     
     typedef std::list<State> rev_t;
@@ -475,7 +546,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
 	return path_t(witness,init,toreach) ;
       }//assert(M2 != GSDD::null);
-
+      
     if (init * M2 == GSDD::null) {
       revcomponents.push_front(M2);
 //       cerr << "Backward steps : "<<  revcomponents.size() << endl ;
@@ -490,6 +561,7 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       }
       M3 = M2;
     } else {
+      revcomponents.push_front(M2 * init);
       break;
     }
   } 
@@ -498,24 +570,30 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 
     // Forward construction of witness
     
-    State Mi = init;
-    State Mi_next;
     Type::namedTrs_t namedTrs;
     getNamedLocals(namedTrs);
     
+    // iterate looking for n-1 transitions
+    for ( rev_it cur= revcomponents.begin();cur != revcomponents.end(); ++cur) {
+      // we look for appropriate transition from cur to next
+      rev_it next = cur;
+      next++;
+      if (next == revcomponents.end()) {
+	break;
+      }
 
-    for ( rev_it comp= revcomponents.begin();comp != revcomponents.end(); ++comp) {
       bool ok = false;
+      // iterate individual transitions
       for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
-	Mi_next = ((it->second) (Mi)) * (*comp) ;
+	State Mi_next = ((it->second) (*cur)) * (*next) ;
 	if ( Mi_next != State::null) {
 	  // transition matches 
 // 	  std::cout << " Using : " << it->first << endl; 
 // 	  std::cout << "Reached :" ;
 // 	  getInstance()->getType()->printState(Mi_next, std::cout);
+
 	  witness.push_back(it->first);
-	  *comp = Mi_next;
-	  Mi = Mi_next;
+	  *next = Mi_next;
 	  // 	cerr << "ForwardSteps : " <<witness.size() <<endl;
 	  // 	MemoryManager::garbage();
 	  ok = true;
@@ -531,19 +609,25 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	std::cout <<endl;
       }
     }
+    assert(! revcomponents.empty()) ;
 
     if (!precise && ! printStatesInTrace_) {
       std::cout << "Imprecise witness reported."<<std::endl ;
-      return path_t(witness,init,toreach);
+      return path_t(witness,*revcomponents.begin(),*revcomponents.rbegin());
     }
 
     // one more pass, executing witness backward
     if (! revcomponents.empty()) {
-      State M_i = *revcomponents.rbegin();
       labels_t::const_reverse_iterator wit = witness.rbegin();
       for (rev_rit rit= revcomponents.rbegin(); rit != revcomponents.rend() ; ++rit, ++wit) {
-	*rit = M_i * (*rit);
-	M_i = *rit;
+	// We look for a transition :  *rit   - t^-1 -> *pred
+	rev_rit pred = rit;
+	++pred;
+	if (pred == revcomponents.rend()) {
+	  break;
+	}
+
+	// lookup and build reverse transition
 	Transition revt ;
 	for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
 	  if (it->first == * wit) {
@@ -555,7 +639,9 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	  std::cerr << "Unexpectedly did not find transition of witness when performing back-step phase of witness construction." << std::endl;
 	  assert(false);
 	}
-	M_i = revt ( M_i ) ; 
+
+
+	*pred = (*pred) *  revt( *rit ) ; 
       }
     }
 
@@ -751,8 +837,14 @@ void ITSModel::print (std::ostream & os) const  {
     if (withStates) {
       out << "From initial states :\n" ;
       printSomeStates(path.getInit(),out,printLimit_);
+      out << std::endl;
     }
-    out << "This shortest transition sequence of length " << path.getPath().size() << " :\n";
+    size_t sz = path.getPath().size() ;
+    if (sz ==0) {
+      out << "The initial states satisfy the goal. Shortest path is empty transition sequence. \n";
+      return;
+    } 
+    out << "This shortest transition sequence of length " << sz << " :\n";
     labels_it end = path.getPath().end();
     for (labels_it it=path.getPath().begin(); it != end ; /*in loop*/) {
       out << *it;
