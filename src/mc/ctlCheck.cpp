@@ -394,9 +394,25 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
     if (formIsTrue) {
       if (leftChild) {
 	its::State leftStates = getStateVerifying (leftChild) ;
-	its::path_t path = model.findPath(satF,leftStates, getReachable(), true);
+	// due to hypothesis on init and final being empty inter in findPath, have to do this manually
+	//	its::path_t path = model.findPath(satF,getNextRel()(satF) * leftStates, getReachable(), true);
+	vLabel tr;
+	State target;
+	Type::namedTrs_t trs;
+	model.getNamedLocals(trs);
+	for (const auto & it : trs ) {
+	  target = it.second (satF) * leftStates;
+	  if (target != State::null) {
+	    tr = it.first;
+	    satF = getPredRel() (target) * satF;
+	    break;
+	  }
+	}
 	// EX => should be exactly one transition
-	assert(path.getPath().size() == 1);
+	assert(tr != "");
+	labels_t cont;
+	cont.push_back(tr);
+	path_t path (cont, satF, target);
 	out << "EX p is true Because there are immediate successors of input states that satisfy p.\n";
 	out << "Following path leads from initial states to states satisfying p.\n";
 	model.printPath(path,out,true);
@@ -509,14 +525,22 @@ its::State CTLChecker::explain (its::State sat, Ctlp_Formula_t *ctlFormula, std:
       its::path_t path = model.findPath(satF,SCCa, getReachable(), true);
       // length of path is a prefix to the lasso, a shortest path to an SCC.
       // compute SCCs really reachable from witness arrival states.
-      reachableA = reachA (path.getFinal());
-      SCCa = hasEG(reachableA);
+      
+      // reachableA = reachA (path.getFinal());
+      // SCCa = hasEG(reachableA);
       
       out << " EG a is true because following path leads from input states satisfying a to states satisfying a that belong to cycle(s) of a:\n ";
       model.printPath(path,out,true);
+      out << std::endl;
       out << "Some states of an SCC reachable from these final states :\n";
       model.printSomeStates(SCCa,out);
+      out << std::endl;
       
+
+      its::path_t cycle = model.findCycle(path.getFinal(), SCCa);
+      out << "A cycle :\n";
+      model.printPath(cycle,out,true);
+      out << std::endl;
       return path.getInit();
     } else if (leftChild) {
       its::State leftStates = getStateVerifying (leftChild) ;
@@ -1298,11 +1322,17 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 */
 }
 
-its::Transition CTLChecker::getPredRel () const
+its::Transition CTLChecker::getPredRel (its::State envelope) const
 {
   if (isfairtime) {
-    if (predRel_ == Transition::id) {
-      State reach = getReachable();
+    if (predRel_ == Transition::id || envelope != State::null) {
+      
+      State reach ;
+      if (envelope == State::null) {
+	reach= getReachable();
+      } else {
+	reach = envelope;
+      }
       Transition inv = getNextRel ().invert(reach);
       bool isExact = ( inv(reach) - reach == State::null );
       if (isExact) {
@@ -1315,7 +1345,7 @@ its::Transition CTLChecker::getPredRel () const
     }
     return predRel_;
   } else {
-    return model.getPredRel();
+    return model.getPredRel(envelope);
   }
 }
 
