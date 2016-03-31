@@ -41,7 +41,7 @@ public :
 
   its::State getStateVerifying (Ctlp_Formula_t *formula, bool need_exact=true) const;
 
-  its::Transition getPredRel () const ;
+  its::Transition getPredRel (its::State envelope=its::State::null) const ;
 
   its::Transition getNextRel () const ;
 
