@@ -227,6 +227,7 @@ GALSOURCES = $(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/IntExpression.cpp \
 	$(MYGALSRCDIR)/PBoolExpression.cpp \
 	$(MYGALSRCDIR)/PIntExpression.cpp \
+	$(MYGALSRCDIR)/Statements.cpp \
 	$(MYGALSRCDIR)/Variable.cpp 
 
 
