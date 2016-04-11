@@ -1058,95 +1058,15 @@ std::ostream & operator << (std::ostream & os, const BoolExpression & e) {
   return os;
 }
 
-
-
-  class NotPusher : public PBoolExprVisitor {
-  public :
-    bool isNeg_;
-    PBoolExpression res;
-
-    NotPusher (bool isNeg) : isNeg_(isNeg), res(PBoolExpressionFactory::createConstant(false)) {};
-
-    void visitNaryBoolExpr (BoolExprType type, const std::vector<class PBoolExpression> & children) {
-      NaryPBoolParamType toadd;
-      NotPusher child (isNeg_);
-      for (std::vector<class PBoolExpression>::const_iterator it = children.begin() ; it != children.end() ; ++it ) {
-	it->accept(&child);
-	toadd.insert(child.res);
-      }
-      if (! isNeg_) {
-	res = PBoolExpressionFactory::createNary(type,toadd);
-      } else {
-	if (type == OR) {
-	  res = PBoolExpressionFactory::createNary(AND,toadd);
-	} else {
-	  res = PBoolExpressionFactory::createNary(OR,toadd);
-	}
-      }
-    }
-
-    void visitBinaryBoolComp (BoolExprType type, const class PIntExpression &l , const class PIntExpression & r) {
-      if ( ! isNeg_ ) {
-	res = PBoolExpressionFactory::createComparison(type, l , r);
-      } else {
-	BoolExprType negtype ;
-	switch (type) {
-	case EQ :
-	  negtype = NEQ;
-	  break;
-	case NEQ :
-	  negtype = EQ;
-	  break;
-	case LT :
-	  negtype = GEQ;
-	  break;
-	case GT :
-	  negtype = LEQ;
-	  break;
-	case GEQ :
-	  negtype = LT;
-	  break;
-	case LEQ :
-	  negtype = GT;
-	  break;
-	default :
-	  assert(false);
-	}
-	res = PBoolExpressionFactory::createComparison(negtype, l , r);
-      }
-    }
-    void visitNotBoolExpr (const class PBoolExpression & arg) {
-      NotPusher child (!isNeg_);
-      arg.accept(&child);
-      res = child.res;
-    }
-  
-    void visitBoolConstExpr (bool b) {
-      if (isNeg_) {
-	res = PBoolExpressionFactory::createConstant(! b);
-      } else {
-	res = PBoolExpressionFactory::createConstant(b);
-      }
-    }
-
-    void visitBoolNDefExpr () {
-      res = PBoolExpressionFactory::createNDef();
-    }
-
-  };
 // push negations
 BoolExpression BoolExpression::pushNegations() const {
-  NotPusher child (false);
- 
-  getExpr().accept(&child);
-
   // BoolExpression toret = BoolExpressionFactory::createBoolExpression(child.res,getEnv());
   // if ( ! (toret == (*this)) ) {
   //   std::cout << "pushing on " << *this << std::endl;
   //   std::cout << " produces  " << toret << std::endl;
   // }
   
-  return BoolExpressionFactory::createBoolExpression(child.res,getEnv());
+  return BoolExpressionFactory::createBoolExpression(getExpr ().pushNegations (),getEnv());
 }
 
 

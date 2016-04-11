@@ -81,6 +81,8 @@ public :
   // Result is a constant expression iff. the expression has no more variables.
   PBoolExpression eval () const ;
 
+  PBoolExpression pushNegations () const;
+
   /// only valid for CONST expressions
   /// use this call only in form : if (e.getType() == BOOLCONST) { int j = e.getValue() ; ...etc }
   /// Exceptions will be thrown otherwise.
