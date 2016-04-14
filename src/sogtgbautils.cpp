@@ -197,11 +197,9 @@ namespace sogits
     sap_ = spot::atomic_prop_collect(f_);
 
     sogModel_ = new sogIts(*model_);
-    if (isPlaceSyntax)
-      {
-        sogModel_->setPlaceSyntax(isPlaceSyntax);
-      }
-
+    sogModel_->setStutterDeadlock(stutter_dead_);
+    sogModel_->setPlaceSyntax(isPlaceSyntax);
+    
     systgba_ = std::make_shared<sog_tgba>(*sogModel_, dict_, sogtype);
 
     if (sap_)

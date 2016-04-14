@@ -46,13 +46,15 @@ class sogIts {
   // as if they were just the names of places, instead of comparisons.
   // e.g. reinterpret AP  "Idle0" as "Idle0 = 1"
   bool isPlaceSyntax;
+  bool stutter_dead_;
 public :
-  sogIts (const its::ITSModel & m) : model(m),isPlaceSyntax(false) {};
+  sogIts (const its::ITSModel & m) : model(m),isPlaceSyntax(false),stutter_dead_(false) {};
 
   // True if for ascending compatibility issues, atomic properties should be reinterpreted
   // as if they were just the names of places, instead of comparisons.
   // e.g. reinterpret AP  "Idle0" as "Idle0 = 1"
   void setPlaceSyntax (bool val) { isPlaceSyntax = val; }
+  void setStutterDeadlock (bool val) { stutter_dead_ = val; }
   // Atomic properties handling primitives
   // return a selector corresponding to the boolean formula over AP encoded as a bdd.
   its::Transition getSelector(bdd aps) const;
@@ -85,7 +87,18 @@ public :
   its::pType getType() const { return model.getInstance()->getType() ; }
 
   its::Transition getNextRel () const {
-    return model.getNextRel();
+    its::Transition trans = model.getNextRel();
+   
+    if (stutter_dead_) {
+      // add deadlocks  
+      its::State reach = model.computeReachable();
+      its::State dead = reach -  (model.getPredRel() (reach)); // i.e. add dead states that verify f
+      if (dead != its::State::null) {
+	std::cerr << "Computing with stutter on "<< dead.nbStates()  << "  deadlock states " << std::endl ;
+      }
+      trans = trans +(dead * its::Transition::id);
+    }
+    return trans ;
   }
 
   // Set an observed atomic proposition : the string corresponding to the AP identifier is then related to the bdd var of index

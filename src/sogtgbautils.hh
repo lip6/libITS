@@ -57,6 +57,7 @@ namespace sogits {
     bool scc_optim_full_;
     bool print_formula_tgba_;
     bool isPlaceSyntax;
+    bool stutter_dead_;
 
     spot::timer_map timers;
 
@@ -80,7 +81,8 @@ namespace sogits {
 		    scc_optim_(true),
 		    scc_optim_full_(false),
                     print_formula_tgba_(false),
-		    isPlaceSyntax(false) {}
+		    isPlaceSyntax(false),
+		    stutter_dead_(false){}
 
     ~LTLChecker();
 
@@ -107,7 +109,8 @@ namespace sogits {
 		     bool dotdump = false,
 		     bool scc_optim = true,
 		     bool scc_optim_full = false,
-		     bool print_formula_tgba = false)
+		     bool print_formula_tgba = false,
+		     bool stutter_dead = false)
     {
       echeck_algo_ = echeck_algo;
       ce_expected_ = ce_expected;
@@ -120,6 +123,7 @@ namespace sogits {
       scc_optim_ = scc_optim;
       scc_optim_full_ = scc_optim_full;
       print_formula_tgba_ = print_formula_tgba;
+      stutter_dead_  = stutter_dead;
     }
 
     /// \brief Check if the Petri net \a n can produce at least one infinite

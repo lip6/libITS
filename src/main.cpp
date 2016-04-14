@@ -83,6 +83,8 @@ void usage() {
             << std::endl
             << "  -s              show the formula automaton"
             << std::endl
+            << "  -stutter-deadlock              stutter in deadlock states"
+            << std::endl
             << "Options of the formula transformation:"
             << std::endl
 	    << "  -dR3            disable the SCC reduction" << std::endl
@@ -123,6 +125,7 @@ int main(int argc, const char *argv[]) {
   bool post_branching = false;
   bool fair_loop_approx = false;
   bool print_formula_tgba = false;
+  bool stutter_dead = false;
 
   bool scc_optim = true;
   bool scc_optim_full = false;
@@ -214,6 +217,9 @@ int main(int argc, const char *argv[]) {
     }
     else if (!strcmp(args[i], "-p")) {
       print_pn = true;
+    }
+    else if (!strcmp(args[i], "-stutter-deadlock")) {
+      stutter_dead = true;
     }
     else if (!strcmp(args[i], "-SSOG")) {
       sogtype = PLAIN_SOG;
@@ -357,7 +363,7 @@ int main(int argc, const char *argv[]) {
       checker.setOptions(algo_string, ce_expected,
 			 fm_exprop_opt, fm_symb_merge_opt,
 			 post_branching, fair_loop_approx, "STATS", print_rg,
-			 scc_optim, scc_optim_full, print_formula_tgba);
+			 scc_optim, scc_optim_full, print_formula_tgba, stutter_dead);
       if (isPlaceSyntax) {
 	checker.setPlaceSyntax(true);
       }
