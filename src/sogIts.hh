@@ -38,7 +38,7 @@ class sogIts {
   typedef formCache_t::accessor formCache_it;
   mutable formCache_t formulaCache;
 
-
+  mutable its::Transition transRel_;
    // Defines a mapping from atomic property name to bdd variable index
   its::VarOrder apOrder_;
 
@@ -48,7 +48,7 @@ class sogIts {
   bool isPlaceSyntax;
   bool stutter_dead_;
 public :
-  sogIts (const its::ITSModel & m) : model(m),isPlaceSyntax(false),stutter_dead_(false) {};
+  sogIts (const its::ITSModel & m) : model(m),transRel_(its::Transition::id),isPlaceSyntax(false),stutter_dead_(false) {};
 
   // True if for ascending compatibility issues, atomic properties should be reinterpreted
   // as if they were just the names of places, instead of comparisons.
@@ -87,18 +87,21 @@ public :
   its::pType getType() const { return model.getInstance()->getType() ; }
 
   its::Transition getNextRel () const {
-    its::Transition trans = model.getNextRel();
+    if (transRel_ == its::Transition::id) {
+      transRel_ = model.getNextRel();
    
-    if (stutter_dead_) {
-      // add deadlocks  
-      its::State reach = model.computeReachable();
-      its::State dead = reach -  (model.getPredRel() (reach)); // i.e. add dead states that verify f
-      if (dead != its::State::null) {
-	std::cerr << "Computing with stutter on "<< dead.nbStates()  << "  deadlock states " << std::endl ;
+      if (stutter_dead_) {
+	// add deadlocks  
+	its::State reach = model.computeReachable();
+	its::State dead = reach -  (model.getPredRel() (reach)); // i.e. add dead states that verify f
+	if (dead != its::State::null) {
+	  std::cerr << "Computing Next relation with stutter on "<< dead.nbStates()  << "  deadlock states " << std::endl ;
+	}
+	transRel_ = transRel_ +(dead * its::Transition::id);
       }
-      trans = trans +(dead * its::Transition::id);
+
     }
-    return trans ;
+    return transRel_ ;
   }
 
   // Set an observed atomic proposition : the string corresponding to the AP identifier is then related to the bdd var of index
