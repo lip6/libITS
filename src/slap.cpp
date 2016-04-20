@@ -256,6 +256,7 @@ namespace slap
   {
     // We use the same atomic propositions as left.
     copy_ap_of(left);
+    copy_acceptance_of(left);
   }
 
   slap_tgba::~slap_tgba()
