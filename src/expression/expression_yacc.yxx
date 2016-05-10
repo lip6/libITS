@@ -86,7 +86,7 @@ using namespace std;
 %left '('  ')'
 %left '!'
 
-%name-prefix "expression"
+%name-prefix="expression"
 
 /*........................................parse begin......................................... */
 %start liste
