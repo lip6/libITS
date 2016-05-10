@@ -30,19 +30,21 @@ endif
 
 if WITH_GMP_PATH
 GMP_CPP=-I$(GMP_ROOT)/include
-GMP_PATH=-L$(GMP_ROOT)/lib
+GMP_PATH=$(GMP_ROOT)/lib/libgmp.a $(GMP_ROOT)/lib/libgmpxx.a
+else
+GMP_LINK=-lgmp -lgmpxx
 endif
 
 
 AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBITS_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(GMP_CPP)
 AM_CXXFLAGS = -g -O3 -Wall 
 
-LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
+LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) $(GMP_PATH) $(GMP_LINK)
 
 
 its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp
 
-its_reach_LDADD = $(LDADDFLAGS)  $(GMP_PATH) -lgmp -lgmpxx 
+its_reach_LDADD = $(LDADDFLAGS) 
 its_reach_LDFLAGS = -fwhole-program 
 #-static -all-static
 # -export-dynamic
