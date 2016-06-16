@@ -80,7 +80,7 @@ aiger2GAL::collect_variables (its::GAL &gal)
     auto ins_res = _input2var.insert (std::make_pair (l, its::IntExpressionFactory::createVariable (input_var)));
     assert (ins_res.second);
 
-    variables.insert (input_var);
+//    variables.insert (input_var);
   }
 
   // all input and latch variables have been collected
@@ -172,32 +172,85 @@ aiger2GAL::gen_transitions (its::GAL &gal)
   //    query for x and y, the interdependence is now gone, and continue with a regular sequence
 
   // add transitions to set inputs
-  for (unsigned l = 0; l != _aiger->num_inputs; ++l)
-  {
-    its::GuardedAction tmp0 ("");
-    tmp0.getAction ().add (its::Assignment (_input2var.find (l)->second,
-                                           its::IntExpressionFactory::createConstant (0)));
-    gal.addTransition (tmp0);
-
-    its::GuardedAction tmp1 ("");
-    tmp1.getAction ().add (its::Assignment (_input2var.find (l)->second,
-                                            its::IntExpressionFactory::createConstant (1)));
-    gal.addTransition (tmp1);
-  }
+//  for (unsigned l = 0; l != _aiger->num_inputs; ++l)
+//  {
+//    its::GuardedAction tmp0 ("");
+//    tmp0.getAction ().add (its::Assignment (_input2var.find (l)->second,
+//                                           its::IntExpressionFactory::createConstant (0)));
+//    gal.addTransition (tmp0);
+//
+//    its::GuardedAction tmp1 ("");
+//    tmp1.getAction ().add (its::Assignment (_input2var.find (l)->second,
+//                                            its::IntExpressionFactory::createConstant (1)));
+//    gal.addTransition (tmp1);
+//  }
 
   // add a single big synchronous assignment
 
   // build the big synchronous assignment, that depends on inputs
   std::vector<its::SyncAssignment::assign_t> assigns;
+  its::BoolExpression guard;
   for (unsigned l = 0; l != _aiger->num_latches; ++l)
   {
+    its::BoolExpression e = get_value (_aiger->latches[l].next);
+//    if (l < _aiger->num_latches-1) {
     assigns.push_back (std::make_pair (_latch2var.find (l)->second,
-                                       its::IntExpressionFactory::wrapBoolExpr(get_value (_aiger->latches[l].next)).eval ()));
+                                       its::IntExpressionFactory::wrapBoolExpr(e).eval ()));
+    if (l == _aiger->num_latches-1)
+      guard = !e;
+//   }
+//   else
+//   {
+//     assigns.push_back (std::make_pair (_latch2var.find (l)->second,
+//                                        its::IntExpressionFactory::wrapBoolExpr(! get_value (_aiger->latches[l].next)).eval ()));
+//   }
   }
-  its::SyncAssignment sync_assignment (assigns);
-  its::GuardedAction bigsync ("");
-  bigsync.getAction ().add (sync_assignment);
-  gal.addTransition (bigsync);
+
+
+
+  // @debug
+//  for (const auto & ass : assigns)
+//  {
+//    std::cerr << ass.first << " := " << ass.second << std::endl;
+//  }
+  // @debug end
+
+  for (unsigned i = 0; i != _aiger->num_inputs; ++i)
+  {
+    std::vector<its::SyncAssignment::assign_t> new_assigns = assigns;
+    its::BoolExpression new_guard = guard;
+    for (unsigned j = 0; j != _aiger->num_inputs; ++j)
+    {
+      int new_value = i == j;
+      its::Assertion assertion =
+        its::IntExpressionFactory::createAssertion(_input2var[j],
+                                              its::IntExpressionFactory::createConstant(new_value));
+
+      for (auto & ass : new_assigns)
+      {
+        ass.second = ass.second & assertion;
+      }
+      new_guard = new_guard & assertion;
+    }
+
+    std::vector<its::SyncAssignment::assign_t> action_assigns;
+    for (const auto & ass : new_assigns)
+    {
+      if (! ass.second.equals (its::IntExpressionFactory::wrapBoolExpr (ass.first == 1)))
+      {
+        action_assigns.push_back (std::make_pair (ass.first, ass.second));
+      }
+    }
+    its::GuardedAction action (_input2var[i].getName ());
+    action.setGuard (new_guard);
+    action.getAction ().add (its::SyncAssignment (action_assigns));
+    gal.addTransition (action);
+  }
+
+//  its::SyncAssignment sync_assignment (assigns);
+//  its::GuardedAction bigsync ("");
+//  bigsync.getAction ().add (sync_assignment);
+//  gal.addTransition (bigsync);
 }
 
 its::GAL *
