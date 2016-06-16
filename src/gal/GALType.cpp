@@ -59,7 +59,11 @@ labels_t GALType::getTransLabels () const {
       }	else {
 	res =  assignExpr( ass.getVariable(), ass.getExpression(), context.getGalOrder());
       }
-    } 
+    }
+
+    void visitSyncAssign (const class SyncAssignment & ass) {
+  res = syncAssignExpr (ass.getAssignments (), context.getGalOrder ());
+    }
 
     void visitIncrAssign (const class IncrAssignment & ass) {
       if (ass.getVariable().getType() == VAR && ass.getExpression().getType() == CONST) {

@@ -270,7 +270,20 @@ public :
     
     res.insert (v1.getResult ().begin (), v1.getResult ().end ());
     res.insert (v2.getResult ().begin (), v2.getResult ().end ());
-  } 
+  }
+
+  void visitSyncAssign (const class SyncAssignment & sa) {
+    for (auto const& ai : sa.getAssignments ())
+    {
+      GetVariableVisitor v1 (ai.first.getEnv ());
+      ai.first.getExpr ().accept (&v1);
+      GetVariableVisitor v2 (ai.second.getEnv ());
+      ai.second.getExpr ().accept (&v2);
+
+      res.insert (v1.getResult ().begin (), v1.getResult ().end ());
+      res.insert (v2.getResult ().begin (), v2.getResult ().end ());
+    }
+  }
 
   void visitIncrAssign (const class IncrAssignment & ai) {
     GetVariableVisitor v1 (ai.getVariable ().getEnv ());
@@ -646,7 +659,17 @@ public:
       }
     }
     
-  } 
+  }
+
+  void
+  visitSyncAssign (const class SyncAssignment & ass)
+  {
+    // act as if a sequence of assignments
+    for (auto const & ai : ass.getAssignments ())
+    {
+      visitAnyAssign (ai.first, ai.second);
+    }
+  }
   
   void
   visitSequence (const class Sequence & seq)

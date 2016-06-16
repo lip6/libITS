@@ -12,6 +12,7 @@ namespace its {
 
 enum StatementType {
     ASSIGN,
+    SYNCASSIGN,
     SEQ,
     IfThenElse,
     FIXPOINT,
@@ -33,7 +34,8 @@ public :
   virtual void visitFix (const class FixStatement & loop)=0; 
   virtual void visitCall (const class Call & call)=0; 
   virtual void visitAbort ()=0; 
-  virtual void visitIncrAssign (const class IncrAssignment & ass)=0; 
+  virtual void visitIncrAssign (const class IncrAssignment & ass)=0;
+  virtual void visitSyncAssign (const class SyncAssignment & ass)=0;
 };
 
 
@@ -100,6 +102,38 @@ class Assignment : public Statement {
   Statement * clone () const { return new Assignment(*this); }
 
   void acceptVisitor (class StatementVisitor & vis) const {  vis.visitAssign(*this) ; }    
+};
+
+/**
+ * A synchronous assignment of several variables.
+ * Required for circuits synchronous semantics.
+ * E.g.   x := y; y := x;
+ *        After this operation done with two simple assignments chained in sequence, x == y and the value of y has not changed.
+ *        After this operation done with a synchronous assignment, the values of x and y are swapped.
+ */
+class SyncAssignment : public Statement {
+public:
+  using assign_t = std::pair<IntExpression, IntExpression>;
+private:
+  /// Note: the lhs should ultimately resolve to a variable, and the rhs to a constant.
+  std::vector<assign_t> _assignments;
+
+public:
+  explicit SyncAssignment (const std::vector<assign_t> &);
+
+  const std::vector<std::pair<IntExpression, IntExpression>> & getAssignments () const { return _assignments; }
+
+  std::set<Variable> getSupport () const;
+
+  StatementType getType () const { return SYNCASSIGN; }
+
+  Statement * clone () const { return new SyncAssignment(*this); }
+
+  void print (std::ostream &os, int ind) const;
+
+  void acceptVisitor (class StatementVisitor & vis) const { vis.visitSyncAssign (*this); }
+
+  SyncAssignment operator& (const its::Assertion &) const;
 };
 
 /** 

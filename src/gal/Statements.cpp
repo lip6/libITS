@@ -44,6 +44,50 @@ IncrAssignment::getSupport () const
   return result;
 }
 
+SyncAssignment::SyncAssignment (const std::vector<assign_t> &a)
+: _assignments (a)
+{}
 
+std::set<Variable>
+SyncAssignment::getSupport () const
+{
+  std::set<Variable> result;
+  for (auto const & p : _assignments)
+  {
+    std::set<Variable> tmp;
+    tmp = p.first.getSupport ();
+    result.insert (tmp.begin (), tmp.end ());
+    tmp = p.second.getSupport ();
+    result.insert (tmp.begin (), tmp.end ());
+  }
+  return result;
+}
+
+SyncAssignment
+SyncAssignment::operator& (const Assertion &ass) const
+{
+  std::vector<std::pair<IntExpression, IntExpression>> res;
+  for (auto const & assign : _assignments)
+  {
+    res.push_back (std::make_pair (assign.first, (assign.second & ass).eval ()));
+  }
+  return SyncAssignment (res);
+}
+
+void
+SyncAssignment::print (std::ostream &os, int ind) const
+{
+  indent (os, ind);
+  os << "Sync Assignment { " << std::endl;
+  ++ind;
+  for (auto const & ass : _assignments)
+  {
+    indent (os, ind);
+    os << ass.first << " := " << ass.second << std::endl;
+  }
+  --ind;
+  indent (os, ind);
+  os << "}" << std::endl;
+}
 
 }  // namespace its
