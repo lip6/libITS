@@ -329,7 +329,7 @@ public :
   }
 
   PIntExpression eval () const {
-    PBoolExpression bb = b.eval();
+    PBoolExpression bb = b.eval().pushNegations();
     if (bb.getType() == BOOLCONST) {
       if( bb.getValue() ) {
 	return PIntExpressionFactory::createConstant(1);
