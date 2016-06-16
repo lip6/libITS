@@ -409,7 +409,93 @@ namespace its {
     }
   };
 
- 
+// \todo add support of range and skip_variable
+// \todo also improve print and hash
+// \todo improve the evaluation, based on the current variable
+class _SyncAssign : public _GHom {
+  std::vector<std::pair<IntExpression, IntExpression>> _assignments;
+  const GalOrder * vo;
+public:
+
+  _SyncAssign (const std::vector<std::pair<IntExpression, IntExpression>> & ass,
+               const GalOrder *go)
+  : _assignments (ass)
+  , vo (go)
+  {
+    assert (_assignments.size () > 1);
+    std::sort (_assignments.begin (), _assignments.end (),
+               [](const std::pair<IntExpression, IntExpression> &x,
+                  const std::pair<IntExpression, IntExpression> &y)
+                  {
+                    return x.first.less (y.first);
+                  });
+  }
+
+  /* Eval */
+  GDDD
+  eval(const GDDD &d) const
+  {
+    std::set<GDDD> res;
+    // Query for the value of the first lhs
+    IntExpression tores = _assignments.begin()->first;
+    InfoNode lhssolved = query (tores, vo, d);
+    for (auto & node : lhssolved)
+    {
+      Assertion assertion = IntExpressionFactory::createAssertion (tores, node.first);
+      std::vector<std::pair<IntExpression, IntExpression>> new_assignment;
+      for (auto const& ass : _assignments)
+      {
+        new_assignment.emplace_back (ass.first, ass.second & assertion);
+      }
+      res.insert (syncAssignExpr (new_assignment, vo) (node.second));
+    }
+    return DED::add (res);
+  }
+
+  bool
+  operator== (const _GHom & h) const
+  {
+    if (const _SyncAssign * other = dynamic_cast<const _SyncAssign *> (&h))
+    {
+      if (_assignments.size () != other->_assignments.size ())
+        return false;
+
+      for (unsigned i = 0; i != _assignments.size (); ++i)
+      {
+        if (! (_assignments[i].first.equals (other->_assignments[i].first) &&
+               _assignments[i].second.equals (other->_assignments[i].second)))
+          return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  size_t
+  hash () const
+  {
+    size_t res = 0;
+    for (const auto & ass : _assignments)
+    {
+      res += ass.first.hash () ^ ass.second.hash ();
+    }
+    return res;
+  }
+
+  _GHom *
+  clone () const
+  {
+    return new _SyncAssign (*this);
+  }
+
+  // \todo
+  void
+  print (std::ostream &os) const
+  {
+    os << "Synchronous assignment";
+  }
+
+};
 
 class _Predicate:public _GHom {
   BoolExpression expr;
@@ -832,6 +918,95 @@ GHom incrExpr (const IntExpression & var, const IntExpression & expr, const GalO
    return assignExpr(var,expr,vo,true);
 }
 
+GHom syncAssignExpr (const std::vector<std::pair<IntExpression, IntExpression>> & assignments, const GalOrder * vo)
+{
+  if (assignments.size () == 0)
+    return GHom::id;
+  if (assignments.size () == 1)
+    return assignExpr (assignments[0].first, assignments[0].second, vo, false);
+
+  // we have at least two assignments
+
+  // NB: the assignments are synchronous, so in fact their order does not matter.
+
+  // true iff x.first appears in y.second
+  // i.e. x must not be executed before y
+  auto notbefore = [](const std::pair<IntExpression, IntExpression> &x,
+                      const std::pair<IntExpression, IntExpression> &y)
+                    {
+                      return y.second.isSupport (x.first);
+                    };
+
+  // fill the matrix
+  std::vector<std::vector<bool>> matrix (assignments.size (),
+                                         std::vector<bool> (assignments.size (), false));
+  for (unsigned i = 0; i != assignments.size (); ++i)
+  {
+    for (unsigned j = 0; j != assignments.size (); ++j)
+    {
+      if (i == j || notbefore (assignments[i], assignments[j]))
+      {
+        matrix[i][j] = true;
+      }
+    }
+  }
+
+  // take the transition closure of the relation 'notbefore'
+  for (unsigned k = 0; k != assignments.size (); ++k)
+  {
+    for (unsigned i = 0; i != assignments.size (); ++i)
+    {
+      for (unsigned j = 0; j != assignments.size (); ++j)
+      {
+        matrix[i][j] = matrix[i][j] || (matrix[i][k] && matrix[k][j]);
+      }
+    }
+  }
+
+  // now matrix[i][j] iff ai cannot be executed before aj
+
+  // we now gather the SCCs (one SCC = a set of conflicting assignments)
+  std::vector<std::pair<unsigned,std::vector<std::pair<IntExpression,IntExpression>>>> blobs;
+  std::vector<bool> done (assignments.size (), false);
+  for (unsigned i = 0; i != assignments.size (); ++i)
+  {
+    if (! done[i])
+    {
+      std::vector<std::pair<IntExpression, IntExpression>> scc;
+      for (unsigned j = i; j != assignments.size (); ++j)
+      {
+        if (! done[j] && matrix[i][j] && matrix[j][i])
+        {
+          scc.push_back (assignments[j]);
+          done[j] = true;
+        }
+      }
+      // insert the new SCC at its appropriate position
+      auto it =
+      std::find_if (blobs.begin (), blobs.end (),
+                    [&](const std::pair<unsigned, std::vector<std::pair<IntExpression, IntExpression>>> &p)
+                    {
+                      return ! matrix[i][p.first];
+                    });
+      // 'it' is the first position where scc can be executed before *it
+      blobs.insert (it, std::make_pair (i, scc));
+    }
+  }
+
+  // blobs has the following structure:
+  // each element is a non-empty set of conflicting assignments
+  // they are in a correct order of application
+  GHom res = GHom::id;
+  for (auto const & scc : blobs)
+  {
+    assert (!scc.second.empty ());
+    if (scc.second.size () == 1)
+      res = assignExpr (scc.second[0].first, scc.second[0].second, vo, false) & res;
+    else
+      res = _SyncAssign (scc.second, vo) & res;
+  }
+  return res;
+}
 
 
 

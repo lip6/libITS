@@ -14,6 +14,8 @@ GHom assignExpr (const IntExpression & var, const IntExpression & expr, const Ga
 /// Increment value of var by amount.
 GHom incrExpr (const IntExpression & var, const IntExpression & expr, const GalOrder * vo);
 
+/// Synchronous assignments
+GHom syncAssignExpr (const std::vector<std::pair<IntExpression, IntExpression>> &, const GalOrder * vo);
 
 /// Creates a predicate to select paths that verify the expression e.
 /// NB : e should be simplified, e.g. through e.eval()
