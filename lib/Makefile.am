@@ -13,6 +13,7 @@ MYGALSRCDIR = $(MYSRCDIR)/gal
 MYWIBBLESRCDIR = $(MYSRCDIR)/divine/wibble
 MYDVESRCDIR = $(MYSRCDIR)/divine
 MYGALGRAMMARSRCDIR = $(MYGALSRCDIR)/parser
+MYAIGERDIR = $(MYSRCDIR)/aiger
 
 EXTRA_DIST= bringBack/Makefile 
 
@@ -162,7 +163,8 @@ DVEHEADERS = $(MYDVESRCDIR)/blob.h  \
 	$(MYDVESRCDIR)/legacy/system/dve/syntax_analysis/dve_symbol_table.hh \
 	$(MYDVESRCDIR)/legacy/system/dve/syntax_analysis/dve_token_vector.hh
 
-
+AIGERHEADERS = $(MYAIGERDIR)/aiger.h \
+  $(MYAIGERDIR)/aigerModel.h
 
 ITSHEADERS = $(PETRIHEADERS) \
 	$(COMPOSITEHEADERS) \
@@ -172,6 +174,7 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(WIBBLEHEADERS) \
 	$(DVEHEADERS) \
 	$(MYANTLRHEADER) \
+	$(AIGERHEADERS) \
 	$(MYSRCDIR)/ColoaneExport.hh \
 	$(MYSRCDIR)/Instance.hh \
 	$(MYSRCDIR)/ITSModel.hh \
@@ -273,6 +276,9 @@ DVESOURCES =	$(MYDVESRCDIR)/pool.cpp  \
 	$(MYDVESRCDIR)/legacy/system/dve/syntax_analysis/dve_symbol_table.cc \
 	$(MYDVESRCDIR)/legacy/system/dve/syntax_analysis/dve_trans_grammar.cc 
 
+AIGERSOURCES = $(MYAIGERDIR)/aiger.c \
+  $(MYAIGERDIR)/aigerModel.cpp
+
 ITSSOURCES = $(ITSHEADERS) \
 	$(PETRISOURCES) \
 	$(COMPOSITESOURCES) \
@@ -282,6 +288,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(WIBBLESOURCES) \
 	$(DVESOURCES) \
 	$(MYANTLRSOURCES) \
+	$(AIGERSOURCES) \
 	$(MYSRCDIR)/ColoaneExport.cpp \
 	$(MYSRCDIR)/ITSModel.cpp \
 	$(MYSRCDIR)/Observe_Hom.cpp \

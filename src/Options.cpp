@@ -32,6 +32,8 @@
 #include "divine/dveLoader.hh"
 // GAL parser
 #include "gal/parser/GALParser.hh"
+// AIGER parser
+#include "aiger/aigerModel.h"
 
 #include "gal/GALType.hh"
 
@@ -78,7 +80,7 @@ namespace its {
 bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 
   string pathinputff = "";
-  enum InputType {NDEF,CAMI,PROD,ROMEO,UROMEO,ITSXML,ETF,DLL,NDLL,DVE,GAL_T, CGAL_T};
+  enum InputType {NDEF,CAMI,PROD,ROMEO,UROMEO,ITSXML,ETF,DLL,NDLL,DVE,GAL_T, CGAL_T,AIGER};
   InputType parse_t = NDEF;
 
   bool hasOrder=false;
@@ -129,8 +131,10 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
        parse_t = GAL_T;
      } else if ( !strcmp(argv[i],"CGAL") ) {
        parse_t = CGAL_T;
+     } else if ( !strcmp(argv[i],"AIGER") ) {
+       parse_t = AIGER;
      } else {
-       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|UROMEO|ITSXML|ETF|DVE|DLL|NDLL|GAL|CGAL} is expected. " << endl;  showUsageHelp() ;exit(1);
+       cerr << "Unrecognized type "<< argv[i] <<" provided for input file after " << argv[i-1] << " one of {CAMI|PROD|ROMEO|UROMEO|ITSXML|ETF|DVE|DLL|NDLL|GAL|CGAL|AIGER} is expected. " << endl;  showUsageHelp() ;exit(1);
      }
 
      /** ORDER FILE OPTIONS */
@@ -316,6 +320,15 @@ bool handleInputOptions (std::vector<const char *> & argv, ITSModel & model) {
 //       model.setInstance(result->getName(), "main");
 //       model.setInstanceState("init");
 
+      break;
+    }
+  case AIGER :
+    {
+      GAL * result = load_aiger (pathinputff);
+      model.declareType (*result);
+
+      model.setInstance (result->getName (), "main");
+      model.setInstanceState ("init");
       break;
     }
 
