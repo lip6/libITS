@@ -101,6 +101,7 @@ GALHEADERS = $(MYGALSRCDIR)/BoolExpression.hh \
 	$(MYGALSRCDIR)/ExprHom.hpp \
 	$(MYGALSRCDIR)/force.hh \
 	$(MYGALSRCDIR)/GAL.hh \
+	$(MYGALSRCDIR)/GAL2C.hh \
 	$(MYGALSRCDIR)/GALType.hh \
 	$(MYGALSRCDIR)/GALVarOrderHeuristic.hh \
 	$(MYGALSRCDIR)/IntExpression.hh \
@@ -227,6 +228,7 @@ GALSOURCES = $(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/GALType.cpp \
 	$(MYGALSRCDIR)/GALVarOrderHeuristic.cpp \
 	$(MYGALSRCDIR)/GAL.cpp \
+	$(MYGALSRCDIR)/GAL2C.cpp \
 	$(MYGALSRCDIR)/IntExpression.cpp \
 	$(MYGALSRCDIR)/PBoolExpression.cpp \
 	$(MYGALSRCDIR)/PIntExpression.cpp \

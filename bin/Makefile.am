@@ -1,4 +1,4 @@
-noinst_PROGRAMS = its-reach dve2gal
+noinst_PROGRAMS = its-reach dve2gal gal2c
 #gal-test
 
 LIBITS_CPP=-I$(top_srcdir)/src
@@ -54,6 +54,11 @@ dve2gal_SOURCES = dve2galmain.cpp
 dve2gal_LDADD = $(LDADDFLAGS)  
 dve2gal_LDFLAGS = -fwhole-program 
 # -export-dynamic
+
+gal2c_SOURCES = gal2cmain.cpp
+
+gal2c_LDADD = $(LDADDFLAGS)
+gal2c_LDFLAGS = -fwhole-program
 
 #gal_test_SOURCES = test-gal.cpp 
 # philo.hh philo.cpp
