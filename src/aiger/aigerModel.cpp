@@ -4,7 +4,7 @@ extern "C" {
 #include "aiger.h"
 }
 
-#include "gal/GAl.hh"
+#include "gal/GAL.hh"
 
 aiger2GAL::aiger2GAL (aiger * p)
 : _aiger (p)
