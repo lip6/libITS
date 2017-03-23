@@ -28,7 +28,7 @@ matrix:
       addons: &gcc5
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-5', 'gcc-5', 'lib64expat1', 'lib64expat1-dev']
+          packages: ['g++-5', 'gcc-5', 'libexpat']
       env: GCCVER='5' CXX_COMPILER='g++-5' C_COMPILER='gcc-5'
 
     # 4/ OSX GCC5 Builds
