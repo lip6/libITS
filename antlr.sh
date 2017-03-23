@@ -17,6 +17,7 @@ tar -xzf antlr-3.4.tar.gz
 cp antlr-3.4/lib/antlr-3.4-complete.jar ./usr/local/lib/
 tmp=$(pwd)
 cd ./antlr-3.4/runtime/C
+autoreconf -vfi
 ./configure --prefix="$tmp"/usr/local --enable-64bit
 make
 make install
