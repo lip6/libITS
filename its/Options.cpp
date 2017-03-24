@@ -1,4 +1,4 @@
-#include "Options.hh"
+#include "its/Options.hh"
 
 #include <string>
 #include <iostream>
@@ -14,26 +14,26 @@
 
 
 // for wibble string
-#include "divine/wibble/string.h"
+#include "its/divine/wibble/string.h"
 
-#include "SDD.h"
-#include "MemoryManager.h"
+#include "ddd/SDD.h"
+#include "ddd/MemoryManager.h"
 
 #include "its/petri/Modular2ITS.hh"
 // ITSModel parser
-#include "ITSModelXMLLoader.hh"
+#include "its/ITSModelXMLLoader.hh"
 // Cami parser
 #include "its/petri/JSON2ITS.hh"
 // JSon parser
-#include "parser_json/parse_json.hh"
+#include "its/parser_json/parse_json.hh"
 // romeo parser
 #include "its/petri/XMLLoader.hh"
 // Divine interaction
-#include "divine/dveLoader.hh"
+#include "its/divine/dveLoader.hh"
 // GAL parser
 #include "its/gal/parser/GALParser.hh"
 // AIGER parser
-#include "aiger/aigerModel.h"
+#include "its/aiger/aigerModel.h"
 
 #include "its/gal/GALType.hh"
 

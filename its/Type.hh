@@ -5,10 +5,10 @@
 #include <vector>
 #include <list>
 #include "its/Naming.hh"
-#include "Ordering.hh"
+#include "its/Ordering.hh"
 
-#include "SDD.h"
-#include "SHom.h"
+#include "ddd/SDD.h"
+#include "ddd/SHom.h"
 
 namespace its {
 

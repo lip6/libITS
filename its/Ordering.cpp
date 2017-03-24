@@ -4,7 +4,7 @@
  *  Created on: 2 déc. 2008
  *      Author: yann
  */
-#include "Ordering.hh"
+#include "its/Ordering.hh"
 #include <cassert>
 #include <iostream>
 

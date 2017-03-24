@@ -2,7 +2,7 @@
 #define __TYPE_BASICS__HH__
 
 #include "its/Type.hh"
-#include "Ordering.hh"
+#include "its/Ordering.hh"
 
 
 

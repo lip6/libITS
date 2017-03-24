@@ -6,19 +6,17 @@
 
 // The ITS model referential
 #include "its/ITSModel.hh"
-#include "SDD.h"
-#include "MemoryManager.h"
+#include "ddd/SDD.h"
+#include "ddd/MemoryManager.h"
 
 // SDD utilities to output stats and dot graphs
-#include "util/dotExporter.h"
-#include "statistic.hpp"
+#include "ddd/util/dotExporter.h"
+#include "ddd/statistic.hpp"
 
 
 #include "its/TypeCacher.hh"
-#include "gal/GALType.hh"
-#include "divine/dveLoader.hh"
-
-// #include "philo.hh"
+#include "its/gal/GALType.hh"
+#include "its/divine/dveLoader.hh"
 
 
 using namespace its;
