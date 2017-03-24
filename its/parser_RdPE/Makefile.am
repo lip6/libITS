@@ -1,6 +1,6 @@
 AM_YFLAGS = -d 
 AM_LFLAGS = -olex.yy.c
-AM_CPPFLAGS = -O2 -I  $(libddd_prefix)/src
+AM_CPPFLAGS = -O2 -I  $(libddd_prefix)/include
 
 BUILT_SOURCES = RdPMonteur_yacc.h
 

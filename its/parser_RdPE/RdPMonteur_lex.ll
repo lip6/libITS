@@ -25,7 +25,7 @@
 /************* INCLUDES AND EXTERNALS *************************************/
 
 #include <string>
-#include "RdPMonteur_yacc.h"
+#include "its/parser_RdPE/RdPMonteur_yacc.h"
 
 %}
 %option noyywrap
