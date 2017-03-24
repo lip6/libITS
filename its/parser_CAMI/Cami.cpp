@@ -35,8 +35,8 @@
 #include <algorithm>
 using namespace std;
 
-#include "RdPE.h"
-#include "Cami.hpp"
+#include "its/parser_RdPE/RdPE.h"
+#include "its/parser_CAMI/Cami.hpp"
 
 /**************************************************************************************/
 /*                               class  syntaxe_CAMI                                  */

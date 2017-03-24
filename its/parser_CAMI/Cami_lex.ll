@@ -31,9 +31,9 @@
 %{
 /*********************** INCLUDES AND EXTERNALS ****************************************/
 #include <string>
-#include "RdPE.h"
-#include "Cami.hpp"
-#include "Cami_yacc.h"
+#include "its/parser_RdPE/RdPE.h"
+#include "its/parser_CAMI/Cami.hpp"
+#include "its/parser_CAMI/Cami_yacc.h"
 
 %}
 %option noyywrap
