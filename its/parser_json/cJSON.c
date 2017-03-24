@@ -30,7 +30,7 @@
 #include <float.h>
 #include <limits.h>
 #include <ctype.h>
-#include "cJSON.h"
+#include "its/parser_json/cJSON.h"
 
 static const char *ep;
 
