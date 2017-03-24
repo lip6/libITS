@@ -1,7 +1,7 @@
 #ifndef __TYPE__VISITOR__HH__
 #define __TYPE__VISITOR__HH__
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 namespace its {
 

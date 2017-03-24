@@ -1,7 +1,7 @@
 #ifndef __GAL_ANTLRLOADER_HH__
 #define __GAL_ANTLRLOADER_HH__
 
-#include "gal/GAL.hh"
+#include "its/gal/GAL.hh"
 
 
 namespace its {

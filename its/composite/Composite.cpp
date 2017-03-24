@@ -4,7 +4,7 @@
  *  Created on: 3 déc. 2008
  *      Author: yann
  */
-#include "Composite.hh"
+#include "its/composite.hh"
 #include <iostream>
 #include <algorithm>
 

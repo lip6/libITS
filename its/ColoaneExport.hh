@@ -1,7 +1,7 @@
 #ifndef __COLOANE__EXPORT__HH__
 #define __COLOANE__EXPORT__HH__
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 namespace its {
   namespace coloane  {

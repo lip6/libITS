@@ -5,8 +5,8 @@
  *      Author: yann
  */
 
-#include "composite/CompositeType.hh"
-#include "composite/CompositeVarOrderHeuristic.hh"
+#include "its/composite/CompositeType.hh"
+#include "its/composite/CompositeVarOrderHeuristic.hh"
 // exit function
 #include <cstdlib>
 

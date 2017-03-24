@@ -5,7 +5,7 @@
 #include "ExprHom.hpp"
 
 #include "divine/dve2GAL.hh"
-#include "gal/parser/GALParser.hh"
+#include "its/gal/parser/GALParser.hh"
 
 #include <algorithm>
 
@@ -438,6 +438,6 @@ labels_t GALType::getTransLabels () const {
 // GAL parser
 // moved includes here because on MingW some includes derived from antlr dependencies # define as a macro the string CONST
 // This messes with CONST, the enum value in a PIntExpression
-//#include "gal/parser/exprParserLexer.h"
-//#include "gal/parser/exprParserParser.h"
+//#include "its/gal/parser/exprParserLexer.h"
+//#include "its/gal/parser/exprParserParser.h"
 //#include <antlr3.h>

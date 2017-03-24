@@ -1,10 +1,10 @@
 #ifndef __JSONPNET__SET__TYPE__
 #define __JSONPNET__SET__TYPE__
 
-#include "TypeBasics.hh"
+#include "its/TypeBasics.hh"
 #include "PNet.hh"
-#include "TypeVisitor.hh"
-#include "ITSModel.hh"
+#include "its/TypeVisitor.hh"
+#include "its/ITSModel.hh"
 #include "parser_json/hierarchie.hh"
 
 namespace its {

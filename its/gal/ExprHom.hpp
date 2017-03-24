@@ -2,9 +2,9 @@
 #define __EXPRESSION_HOM_HH__
 
 #include "Hom.h"
-#include "gal/IntExpression.hh"
-#include "gal/BoolExpression.hh"
-#include "gal/GALOrder.hh"
+#include "its/gal/IntExpression.hh"
+#include "its/gal/BoolExpression.hh"
+#include "its/gal/GALOrder.hh"
 
 namespace its {
 

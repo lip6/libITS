@@ -6,7 +6,7 @@
 #include <iosfwd>
 #include <map>
 
-#include "Type.hh"
+#include "its/Type.hh"
 #include "Place.hh"
 #include "PTransition.hh"
 #include "Marking.hh"

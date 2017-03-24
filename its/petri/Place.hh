@@ -2,7 +2,7 @@
 #define __PLACE_HH__
 
 #include <iosfwd>
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

@@ -8,7 +8,7 @@
 #ifndef ___INSTANCE__HH__
 #define ___INSTANCE__HH__
 
-#include "Type.hh"
+#include "its/Type.hh"
 #include <iostream>
 
 namespace its {

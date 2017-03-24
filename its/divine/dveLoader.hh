@@ -1,7 +1,7 @@
 #ifndef __DVE_LOADER_GAL__
 #define __DVE_LOADER_GAL__
 
-#include "gal/GAL.hh"
+#include "its/gal/GAL.hh"
 
 
 namespace its {

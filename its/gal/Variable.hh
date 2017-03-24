@@ -2,7 +2,7 @@
 #define __VARIABLE_HH__
 
 #include <string>
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

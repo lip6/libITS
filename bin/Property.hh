@@ -1,7 +1,7 @@
 #ifndef __PROPERTY_HH__
 #define __PROPERTY_HH__
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 namespace its {
 

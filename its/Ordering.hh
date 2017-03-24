@@ -10,7 +10,7 @@
 
 #include <map>
 #include <iosfwd>
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

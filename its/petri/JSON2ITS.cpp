@@ -1,10 +1,10 @@
-#include "petri/JSON2ITS.hh"
-#include "petri/PNet.hh"
-#include "composite/Composite.hh"
+#include "its/petri/JSON2ITS.hh"
+#include "its/petri/PNet.hh"
+#include "its/composite/Composite.hh"
 #include "parser_RdPE/RdPE.h"
 #include "parser_CAMI/Cami.hpp"
 #include "parser_json/parse_json.hh"
-#include "petri/Modular2ITS.hh"
+#include "its/petri/Modular2ITS.hh"
 #include <iostream>
 #include <fstream>
 #include <vector>

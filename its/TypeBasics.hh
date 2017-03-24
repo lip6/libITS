@@ -1,7 +1,7 @@
 #ifndef __TYPE_BASICS__HH__
 #define __TYPE_BASICS__HH__
 
-#include "Type.hh"
+#include "its/Type.hh"
 #include "Ordering.hh"
 
 

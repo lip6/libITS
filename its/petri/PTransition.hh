@@ -2,7 +2,7 @@
 #define __PTRANSITION__HH__
 
 #include <iosfwd>
-#include "Naming.hh"
+#include "its/Naming.hh"
 #include "Arc.hh"
 #include "Hom.h"
 #include "SHom.h"

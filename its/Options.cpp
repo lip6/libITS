@@ -19,23 +19,23 @@
 #include "SDD.h"
 #include "MemoryManager.h"
 
-#include "petri/Modular2ITS.hh"
+#include "its/petri/Modular2ITS.hh"
 // ITSModel parser
 #include "ITSModelXMLLoader.hh"
 // Cami parser
-#include "petri/JSON2ITS.hh"
+#include "its/petri/JSON2ITS.hh"
 // JSon parser
 #include "parser_json/parse_json.hh"
 // romeo parser
-#include "petri/XMLLoader.hh"
+#include "its/petri/XMLLoader.hh"
 // Divine interaction
 #include "divine/dveLoader.hh"
 // GAL parser
-#include "gal/parser/GALParser.hh"
+#include "its/gal/parser/GALParser.hh"
 // AIGER parser
 #include "aiger/aigerModel.h"
 
-#include "gal/GALType.hh"
+#include "its/gal/GALType.hh"
 
 using std::string;
 using std::cerr;

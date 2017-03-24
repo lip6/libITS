@@ -10,9 +10,9 @@ options {
 
 @parser::header {
 
-  #include "gal/GAL.hh"
-  #include "composite/Composite.hh"
-  #include "ITSModel.hh"
+  #include "its/gal/GAL.hh"
+  #include "its/composite/Composite.hh"
+  #include "its/ITSModel.hh"
   #include <iostream>
   #include <cstdlib>
 }

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <list>
-#include "Naming.hh"
+#include "its/Naming.hh"
 #include "Ordering.hh"
 
 #include "SDD.h"

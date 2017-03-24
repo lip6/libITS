@@ -1,7 +1,7 @@
 #ifndef __STATE__CACHER__
 #define __STATE__CACHER__
 
-#include "TypeDecorator.hh"
+#include "its/TypeDecorator.hh"
 
 namespace its {
 

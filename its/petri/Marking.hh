@@ -11,7 +11,7 @@
 #include <map>
 #include <utility>
 #include <iostream>
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

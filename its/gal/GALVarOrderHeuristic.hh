@@ -1,7 +1,7 @@
 #ifndef GAL_VAR_ORDER_HEURISTIC_HH_
 #define GAL_VAR_ORDER_HEURISTIC_HH_
 
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

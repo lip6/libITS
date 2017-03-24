@@ -1,9 +1,9 @@
 #ifndef COMPOSITE_VAR_ORDER_HEURISTIC_HH_
 #define COMPOSITE_VAR_ORDER_HEURISTIC_HH_
 
-#include "Naming.hh"
+#include "its/Naming.hh"
 // grab orderHeuristicType def
-#include "gal/GALVarOrderHeuristic.hh"
+#include "its/gal/GALVarOrderHeuristic.hh"
 
 namespace its {
 

@@ -3,9 +3,9 @@
 #include <iostream>
 #include <fstream>
 
-#include "petri/TPNet.hh"
-#include "composite/Composite.hh"
-#include "TypeVisitor.hh"
+#include "its/petri/TPNet.hh"
+#include "its/composite/Composite.hh"
+#include "its/TypeVisitor.hh"
 
 using namespace its;
 

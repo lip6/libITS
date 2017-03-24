@@ -1,4 +1,4 @@
-#include "CompositeNet.hh"
+#include "its/compositeNet.hh"
 #include "IPN.hh"
 
 #include <set>

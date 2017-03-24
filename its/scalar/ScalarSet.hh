@@ -9,10 +9,10 @@
 #define SCALARSET_HH_
 
 #include "its/ITSModel.hh"
-#include "Type.hh"
-#include "Naming.hh"
-#include "Delegator.hh"
-#include "ScalarState.hh"
+#include "its/Type.hh"
+#include "its/Naming.hh"
+#include "its/scalar/Delegator.hh"
+#include "its/scalar/ScalarState.hh"
 
 namespace its {
 

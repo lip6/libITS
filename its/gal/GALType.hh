@@ -1,10 +1,10 @@
 #ifndef __GAL__TYPE__
 #define __GAL__TYPE__
 
-#include "TypeBasics.hh"
+#include "its/TypeBasics.hh"
 #include "GAL.hh"
 #include "GALOrder.hh"
-#include "TypeVisitor.hh"
+#include "its/TypeVisitor.hh"
 #include "GALVarOrderHeuristic.hh"
 
 // forward declaration

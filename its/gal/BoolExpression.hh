@@ -5,9 +5,9 @@
 #include <iostream>
 #include <string>
 #include <UniqueTable.h>
-#include "gal/IntExpression.hh"
-#include "gal/PBoolExpression.hh"
-#include "Variable.hh"
+#include "its/gal/IntExpression.hh"
+#include "its/gal/PBoolExpression.hh"
+#include "its/gal/Variable.hh"
 
 
 namespace its {

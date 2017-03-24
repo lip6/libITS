@@ -12,7 +12,7 @@
 // For hash maps
 #include "util/configuration.hh"
 
-#include "gal/PIntExprVisitor.hh"
+#include "its/gal/PIntExprVisitor.hh"
 
 
 namespace its {

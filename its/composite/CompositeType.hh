@@ -8,9 +8,9 @@
 #ifndef COMPOSITETYPE_HH_
 #define COMPOSITETYPE_HH_
 
-#include "TypeBasics.hh"
-#include "Composite.hh"
-#include "TypeVisitor.hh"
+#include "its/TypeBasics.hh"
+#include "its/composite.hh"
+#include "its/TypeVisitor.hh"
 
 namespace its {
 

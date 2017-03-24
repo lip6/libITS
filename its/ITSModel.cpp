@@ -1,20 +1,20 @@
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 // For factory role
-#include "petri/PNetType.hh"
-#include "petri/TPNetType.hh"
-#include "composite/Composite.hh"
-#include "composite/TComposite.hh"
-#include "composite/CompositeType.hh"
-#include "TypeCacher.hh"
-#include "scalar/ScalarSetType.hh"
-#include "scalar/CircularSetType.hh"
-#include "etf/ETFType.hh"
-#include "gal/GALType.hh"
-#include "divine/dve2GAL.hh"
+#include "its/petri/PNetType.hh"
+#include "its/petri/TPNetType.hh"
+#include "its/composite/Composite.hh"
+#include "its/composite/TComposite.hh"
+#include "its/composite/CompositeType.hh"
+#include "its/TypeCacher.hh"
+#include "its/scalar/ScalarSetType.hh"
+#include "its/scalar/CircularSetType.hh"
+#include "its/etf/ETFType.hh"
+#include "its/gal/GALType.hh"
+#include "its/divine/dve2GAL.hh"
 
-#include "MemoryManager.h"
-#include "util/dotExporter.h"
+#include "ddd/MemoryManager.h"
+#include "ddd/util/dotExporter.h"
 
 #include <iostream>
 #include <sstream>

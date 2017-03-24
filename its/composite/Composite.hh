@@ -8,9 +8,9 @@
 #ifndef COMPOSITE_HH_
 #define COMPOSITE_HH_
 
-#include "ITSModel.hh"
-#include "Type.hh"
-#include "Naming.hh"
+#include "its/ITSModel.hh"
+#include "its/Type.hh"
+#include "its/Naming.hh"
 #include "Synchronization.hh"
 #include "CState.hh"
 

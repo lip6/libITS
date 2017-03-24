@@ -1,7 +1,7 @@
 #ifndef __TYPE_DECORATOR__
 #define __TYPE_DECORATOR__
 
-#include "Type.hh"
+#include "its/Type.hh"
 
 namespace its {
 

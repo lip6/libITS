@@ -9,12 +9,12 @@
 #define ITSMODEL_HH_
 
 // an include from libddd for hash_map
-#include "util/configuration.hh"
+#include "ddd/util/configuration.hh"
 
-#include "Type.hh"
-#include "Instance.hh"
-#include "Ordering.hh"
-#include "gal/GALVarOrderHeuristic.hh"
+#include "its/Type.hh"
+#include "its/Instance.hh"
+#include "its/Ordering.hh"
+#include "its/gal/GALVarOrderHeuristic.hh"
 
 #include <vector>
 #include <set>

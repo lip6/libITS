@@ -27,7 +27,7 @@
 
 #include <string>
 #include <cstdio>
-#include "petri/PNet.hh"
+#include "its/petri/PNet.hh"
 #include "ProdLoader.hh"
 
 using namespace std;

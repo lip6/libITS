@@ -3,7 +3,7 @@
 
 #include <iosfwd>
 #include <cassert>
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

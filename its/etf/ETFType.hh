@@ -8,8 +8,8 @@
 #ifndef ETFTYPE_HH_
 #define ETFTYPE_HH_
 
-#include "TypeBasics.hh"
-#include "TypeVisitor.hh"
+#include "its/TypeBasics.hh"
+#include "its/TypeVisitor.hh"
 #include <vector>
 
 extern "C" {

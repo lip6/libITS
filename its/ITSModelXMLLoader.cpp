@@ -6,12 +6,12 @@
 
 #include <expat.h>
 
-#include "petri/XMLLoader.hh"
-#include "ITSModelXMLLoader.hh"
-#include "composite/CompositeXMLLoader.hh"
-#include "scalar/ScalarSetXMLLoader.hh"
-#include "scalar/CircularSetXMLLoader.hh"
-#include "gal/parser/GALParser.hh"
+#include "its/petri/XMLLoader.hh"
+#include "its/ITSModelXMLLoader.hh"
+#include "its/composite/CompositeXMLLoader.hh"
+#include "its/scalar/ScalarSetXMLLoader.hh"
+#include "its/scalar/CircularSetXMLLoader.hh"
+#include "its/gal/parser/GALParser.hh"
 
 void ITSModelXMLLoader::loadTypes (void * data, const XML_Char* Elt, const XML_Char** Attr)
 {

@@ -11,7 +11,7 @@
 #include "MemoryManager.h"
 
 
-#include "gal/PIntExprVisitor.hh"
+#include "its/gal/PIntExprVisitor.hh"
 
 namespace its {
 

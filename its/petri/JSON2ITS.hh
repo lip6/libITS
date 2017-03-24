@@ -2,7 +2,7 @@
 #define __JSON_2_ITS__HH__
 
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 
 class JSONLoader

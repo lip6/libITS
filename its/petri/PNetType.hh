@@ -1,10 +1,10 @@
 #ifndef __LABELED_NET_HH__
 #define __LABELED_NET_HH__
 
-#include "TypeBasics.hh"
+#include "its/TypeBasics.hh"
 #include "PNet.hh"
 #include "TPNetSemantics.hpp"
-#include "TypeVisitor.hh"
+#include "its/TypeVisitor.hh"
 #include <iosfwd>
 #include <cstdlib>
 #include <cstdio>

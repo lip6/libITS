@@ -1,8 +1,8 @@
 #include "GALParser.hh"
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
-#include "gal/parser/exprParserLexer.h"
-#include "gal/parser/exprParserParser.h"
+#include "its/gal/parser/exprParserLexer.h"
+#include "its/gal/parser/exprParserParser.h"
 #include <antlr3.h>
 
 using std::cerr;

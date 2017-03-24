@@ -1,5 +1,5 @@
-#include "ITSModel.hh"
-#include "petri/JSONPNetType.hh"
+#include "its/ITSModel.hh"
+#include "its/petri/JSONPNetType.hh"
 	
 	
 namespace its {

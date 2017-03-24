@@ -8,7 +8,7 @@
 #ifndef CSTATE_HH_
 #define CSTATE_HH_
 
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

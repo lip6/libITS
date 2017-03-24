@@ -8,7 +8,7 @@
 #ifndef SYNCHRONIZATION_HH_
 #define SYNCHRONIZATION_HH_
 
-#include "Naming.hh"
+#include "its/Naming.hh"
 #include "Instance.hh"
 
 

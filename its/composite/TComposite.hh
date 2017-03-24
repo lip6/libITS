@@ -1,7 +1,7 @@
 #ifndef __TCOMPOSITE__HH__
 #define __TCOMPOSITE__HH__
 
-#include "Composite.hh"
+#include "its/composite.hh"
 
 namespace its {
 

@@ -1,7 +1,7 @@
-#include "composite/CompositeVarOrderHeuristic.hh"
+#include "its/composite/CompositeVarOrderHeuristic.hh"
 
-#include "gal/force.hh"
-#include "composite/Composite.hh"
+#include "its/gal/force.hh"
+#include "its/composite/Composite.hh"
 
 namespace its {
 

@@ -6,7 +6,7 @@
  *      Author: yann
  */
 #include "Synchronization.hh"
-#include "CompositeType.hh"
+#include "its/compositeType.hh"
 
 namespace its {
 

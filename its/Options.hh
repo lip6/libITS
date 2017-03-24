@@ -1,7 +1,7 @@
 #ifndef __OPTIONS_HH__
 #define __OPTIONS_HH__
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 namespace its {
 

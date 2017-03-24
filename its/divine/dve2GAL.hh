@@ -6,7 +6,7 @@
 #include <vector>
 #include <divine/wibble/string.h>
 
-#include "gal/GAL.hh"
+#include "its/gal/GAL.hh"
 
 
 namespace dve2GAL {

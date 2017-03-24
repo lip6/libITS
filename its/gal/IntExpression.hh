@@ -1,7 +1,7 @@
 #ifndef __INT_EXPRESSION_HH__
 #define __INT_EXPRESSION_HH__
 
-#include "gal/PIntExpression.hh"
+#include "its/gal/PIntExpression.hh"
 #include <map>
 
 namespace its {

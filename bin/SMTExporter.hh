@@ -2,7 +2,7 @@
 #define __SMT__EXPORTER_DDD__
 
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 class SMTExporter {
 private :

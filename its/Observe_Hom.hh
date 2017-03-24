@@ -1,7 +1,7 @@
 #ifndef __OBSERVE__HOM__
 #define __OBSERVE__HOM__
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 namespace its {
 

@@ -4,7 +4,7 @@
 
 #include "Options.hh"
 // The ITS model referential
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 #include "SDD.h"
 #include "MemoryManager.h"
 // romeo parser

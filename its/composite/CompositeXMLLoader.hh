@@ -5,7 +5,7 @@
 
 #include <expat.h>
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 class CompositeXMLLoader 
 {

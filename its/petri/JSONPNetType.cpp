@@ -1,7 +1,7 @@
 #include <typeinfo>
 #include <iostream>
 #include "JSONPNetType.hh"
-#include "composite/Composite.hh"
+#include "its/composite/Composite.hh"
 
 #define trace while(0) std::cerr
 

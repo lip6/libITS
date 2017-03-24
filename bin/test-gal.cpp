@@ -5,7 +5,7 @@
 #include <cstdlib>
 
 // The ITS model referential
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 #include "SDD.h"
 #include "MemoryManager.h"
 
@@ -14,7 +14,7 @@
 #include "statistic.hpp"
 
 
-#include "TypeCacher.hh"
+#include "its/TypeCacher.hh"
 #include "gal/GALType.hh"
 #include "divine/dveLoader.hh"
 
