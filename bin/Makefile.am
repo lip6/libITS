@@ -1,13 +1,13 @@
 noinst_PROGRAMS = its-reach dve2gal gal2c
 #gal-test
 
-LIBITS_CPP=-I$(top_srcdir)/src
+LIBITS_CPP=-I$(top_srcdir)/include
 LIBITS_PATH=$(top_srcdir)/lib/libITS.a 
 
 
 if WITH_LIBDDD_PATH
-LIBDDD_CPP=-I$(LIBDDD_ROOT)
-LIBDDD_PATH=$(LIBDDD_ROOT)/libDDD.a
+LIBDDD_CPP=-I$(LIBDDD_ROOT)/include
+LIBDDD_PATH=$(LIBDDD_ROOT)/lib/libDDD.a
 else
 LIBDDD_LINK=-lddd
 endif

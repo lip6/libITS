@@ -2,7 +2,7 @@ SUBDIRS = bringBack
 lib_LIBRARIES = libITSmain.a libprod.a
 
 
-MYSRCDIR= $(abs_top_srcdir)/src
+MYSRCDIR= $(abs_top_srcdir)/its
 MYPRODSRCDIR= $(MYSRCDIR)/prod
 MYJSONSRCDIR= $(MYSRCDIR)/parser_json
 MYPETRISRCDIR = $(MYSRCDIR)/petri

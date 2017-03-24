@@ -198,13 +198,13 @@ AC_CHECK_TOOL([STRIP],[strip])
 # build these Makefile using the Makefile.in files in each directory
 AC_CONFIG_FILES([
   Makefile
-  src/Makefile
+  its/Makefile
   lib/Makefile
-  src/expression/Makefile
-  src/parser_RdPE/Makefile
-  src/parser_CAMI/Makefile
-  src/gal/Makefile
-  src/gal/parser/Makefile
+  its/expression/Makefile
+  its/parser_RdPE/Makefile
+  its/parser_CAMI/Makefile
+  its/gal/Makefile
+  its/gal/parser/Makefile
   demo/Makefile
   bin/Makefile
   Samples/Makefile

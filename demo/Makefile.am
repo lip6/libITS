@@ -6,8 +6,8 @@ lib_LTLIBRARIES = libtokens.la libphiloSumo.la
 IPNLIBPATH= $(top_builddir)/lib/libITS.a
 
 if WITH_LIBDDD_PATH
-LIBDDD_CPP=-I$(LIBDDD_ROOT)
-LIBDDD_PATH=$(LIBDDD_ROOT)/libDDD.a
+LIBDDD_CPP=-I$(LIBDDD_ROOT)/include
+LIBDDD_PATH=$(LIBDDD_ROOT)/lib/libDDD.a
 else
 LIBDDD_LINK=-lddd
 endif
@@ -20,7 +20,7 @@ ANTLRC_LINK=-lantlr3c
 endif
 
 
-AM_CPPFLAGS = $(LIBDDD_CPP)  $(ANTLRC_CPP) -I $(top_srcdir)/src/
+AM_CPPFLAGS = $(LIBDDD_CPP)  $(ANTLRC_CPP) -I $(top_srcdir)/
 AM_CXXFLAGS = -g -O3 -Wall
 
 LDADDFLAGS = $(IPNLIBPATH)  $(LIBDDD_PATH) $(ANTLRC_PATH) $(ANTLRC_LINK)
