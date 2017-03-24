@@ -1,7 +1,7 @@
 noinst_PROGRAMS = its-reach dve2gal gal2c
 #gal-test
 
-LIBITS_CPP=-I$(top_srcdir)/include
+LIBITS_CPP=-I$(top_srcdir)
 LIBITS_PATH=$(top_srcdir)/lib/libITS.a 
 
 

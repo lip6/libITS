@@ -2,9 +2,9 @@
 #include <fstream>
 
 #include "SMTExporter.hh"
-#include "gal/GALType.hh"
-#include "gal/PIntExprVisitor.hh"
-#include "gal/parser/GALParser.hh"
+#include "its/gal/GALType.hh"
+#include "its/gal/PIntExprVisitor.hh"
+#include "its/gal/parser/GALParser.hh"
 
 using namespace its;
 
