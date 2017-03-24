@@ -20,7 +20,7 @@ matrix:
       addons: &gcc49
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-4.9', 'gcc-4.9', 'expat']
+          packages: ['g++-4.9', 'gcc-4.9', 'expat', 'libgmp-dev']
       env: GCCVER='4.9' CXX_COMPILER='g++-4.9' C_COMPILER='gcc-4.9'
 
 #    - os: linux

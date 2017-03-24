@@ -9,7 +9,7 @@ if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)/include
 LIBDDD_PATH=$(LIBDDD_ROOT)/lib/libDDD.a
 else
-LIBDDD_LINK=-lddd
+LIBDDD_LINK=-lDDD
 endif
 
 if WITH_LIBEXPAT_PATH
@@ -39,7 +39,7 @@ endif
 AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBITS_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(GMP_CPP)
 AM_CXXFLAGS = -g -O3 -Wall 
 
-LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) $(GMP_PATH) $(GMP_LINK)
+LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBDDD_LINK) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) $(GMP_PATH) $(GMP_LINK)
 
 
 its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp
