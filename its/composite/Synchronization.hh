@@ -9,7 +9,7 @@
 #define SYNCHRONIZATION_HH_
 
 #include "its/Naming.hh"
-#include "Instance.hh"
+#include "its/Instance.hh"
 
 
 

@@ -6,9 +6,9 @@
 
 #include <expat.h>
 
-#include "its/composite.hh"
-#include "TComposite.hh"
-#include "its/compositeXMLLoader.hh"
+#include "its/composite/Composite.hh"
+#include "its/composite/TComposite.hh"
+#include "its/composite/CompositeXMLLoader.hh"
 
 // for pretty names
 #include <map>

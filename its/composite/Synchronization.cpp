@@ -5,8 +5,8 @@
  *  Created on: 3 déc. 2008
  *      Author: yann
  */
-#include "Synchronization.hh"
-#include "its/compositeType.hh"
+#include "its/composite/Synchronization.hh"
+#include "its/composite/CompositeType.hh"
 
 namespace its {
 

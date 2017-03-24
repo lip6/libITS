@@ -9,7 +9,7 @@
 #define COMPOSITETYPE_HH_
 
 #include "its/TypeBasics.hh"
-#include "its/composite.hh"
+#include "its/composite/Composite.hh"
 #include "its/TypeVisitor.hh"
 
 namespace its {

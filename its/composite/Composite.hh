@@ -11,8 +11,8 @@
 #include "its/ITSModel.hh"
 #include "its/Type.hh"
 #include "its/Naming.hh"
-#include "Synchronization.hh"
-#include "CState.hh"
+#include "its/composite/Synchronization.hh"
+#include "its/composite/CState.hh"
 
 namespace its {
 
