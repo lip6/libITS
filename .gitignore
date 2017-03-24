@@ -1,0 +1,9 @@
+/antlr-3.4/
+**/*.o
+**/*.a
+**/.deps
+/usr/
+/antlr-3.4.tar.gz
+/._antlr-3.4
+/aclocal.m4
+/ar-lib
