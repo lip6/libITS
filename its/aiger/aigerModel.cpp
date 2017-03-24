@@ -1,7 +1,7 @@
-#include "aigerModel.h"
+#include "its/aiger/aigerModel.h"
 
 extern "C" {
-#include "aiger.h"
+#include "its/aiger/aiger.h"
 }
 
 #include "its/gal/GAL.hh"
