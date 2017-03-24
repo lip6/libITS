@@ -7,3 +7,6 @@
 /._antlr-3.4
 /aclocal.m4
 /ar-lib
+/autom4te.cache/
+/Makefile
+/Makefile.in

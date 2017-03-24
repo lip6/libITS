@@ -5,3 +5,5 @@
 /exprParserParser.c
 /exprParserParser.cpp
 /exprParserParser.h
+/Makefile
+/Makefile.in

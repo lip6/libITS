@@ -1,0 +1,6 @@
+/Makefile
+/Makefile.in
+/RdPMonteur_lex.cc
+/RdPMonteur_yacc.cxx
+/RdPMonteur_yacc.h
+/RdPMonteur_yacc.hxx
