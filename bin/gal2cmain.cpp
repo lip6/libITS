@@ -4,8 +4,8 @@
 
 #include "ddd/MemoryManager.h"
 
-#include "gal/parser/GALParser.hh"
-#include "gal/GAL2C.hh"
+#include "its/gal/parser/GALParser.hh"
+#include "its/gal/GAL2C.hh"
 
 
 
