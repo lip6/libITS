@@ -1,3 +1,7 @@
+#ifndef _BSD_SOURCE
+#define _BSD_SOURCE
+#endif
+
 #include <stdlib.h>
 #include <unistd.h>
 

@@ -3,6 +3,10 @@
 */
 /* First off, code is included that follows the "include" declaration
 ** in the input grammar file. */
+#ifndef _BSD_SOURCE
+#define _BSD_SOURCE
+#endif
+
 #include <stdio.h>
 #line 1 "ltsmin-grammar.lemon"
 
