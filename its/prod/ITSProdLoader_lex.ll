@@ -25,7 +25,7 @@
 /************* INCLUDES AND EXTERNALS *************************************/
 
 #include <string>
-#include "ITSProdLoader_yacc.h"
+#include "its/prod/ITSProdLoader_yacc.h"
 
 %}
 %option noyywrap
