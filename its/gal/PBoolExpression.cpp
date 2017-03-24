@@ -1,10 +1,10 @@
-#include "PBoolExpression.hh"
-#include "hashfunc.hh"
+#include "its/gal/PBoolExpression.hh"
+#include "ddd/hashfunc.hh"
 #include <cassert>
 #include <typeinfo>
 #include <climits>
 
-#include "PIntExprVisitor.hh"
+#include "its/gal/PIntExprVisitor.hh"
 
 #define TOP INT_MAX
 

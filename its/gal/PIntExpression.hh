@@ -1,11 +1,11 @@
 #ifndef __PINT_EXPRESSION_HH__
 #define __PINT_EXPRESSION_HH__
 
-#include "util/set.hh"
+#include "ddd/util/set.hh"
 #include <iostream>
 #include <string>
-#include <UniqueTable.h>
-#include "Variable.hh"
+#include <ddd/UniqueTable.h>
+#include "its/gal/Variable.hh"
 
 namespace its {
   // predeclaration for cross includes

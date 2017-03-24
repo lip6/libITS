@@ -1,7 +1,7 @@
 #ifndef ___GAL2C__H__
 #define ___GAL2C__H__
 
-#include "GAL.hh"
+#include "its/gal/GAL.hh"
 
 namespace its
 {

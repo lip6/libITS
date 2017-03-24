@@ -1,6 +1,6 @@
-#include "Variable.hh"
+#include "its/gal/Variable.hh"
 
-#include "util/hash_support.hh"
+#include "ddd/util/hash_support.hh"
 
 #include <stdio.h>
 

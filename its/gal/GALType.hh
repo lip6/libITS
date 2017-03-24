@@ -2,10 +2,10 @@
 #define __GAL__TYPE__
 
 #include "its/TypeBasics.hh"
-#include "GAL.hh"
-#include "GALOrder.hh"
+#include "its/gal/GAL.hh"
+#include "its/gal/GALOrder.hh"
 #include "its/TypeVisitor.hh"
-#include "GALVarOrderHeuristic.hh"
+#include "its/gal/GALVarOrderHeuristic.hh"
 
 // forward declaration
 namespace dve2GAL {

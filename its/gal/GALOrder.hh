@@ -1,7 +1,7 @@
 #ifndef __GAL__ORDER__HH__
 #define __GAL__ORDER__HH__
 
-#include "Ordering.hh"
+#include "its/Ordering.hh"
 
 namespace its {
 

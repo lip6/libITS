@@ -2,8 +2,8 @@
 #define __STATEMENTS_HH__
 
 
-#include "IntExpression.hh"
-#include "BoolExpression.hh"
+#include "its/gal/IntExpression.hh"
+#include "its/gal/BoolExpression.hh"
 
 
 

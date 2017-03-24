@@ -1,4 +1,4 @@
-#include "GALParser.hh"
+#include "its/gal/parser/GALParser.hh"
 #include "its/ITSModel.hh"
 
 #include "its/gal/parser/exprParserLexer.h"

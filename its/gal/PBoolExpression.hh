@@ -5,8 +5,8 @@
 #include <iostream>
 #include <string>
 #include <UniqueTable.h>
-#include "PIntExpression.hh"
-#include "Variable.hh"
+#include "its/gal/PIntExpression.hh"
+#include "its/gal/Variable.hh"
 
 
 namespace its {

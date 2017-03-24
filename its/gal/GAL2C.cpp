@@ -1,4 +1,4 @@
-#include "GAL2C.hh"
+#include "its/gal/GAL2C.hh"
 
 namespace its
 {

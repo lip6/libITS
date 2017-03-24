@@ -1,10 +1,10 @@
 #include "GALType.hh"
 
-#include "Observe_Hom.hh"
-#include "Hom_Basic.hh"
-#include "ExprHom.hpp"
+#include "its/Observe_Hom.hh"
+#include "ddd/Hom_Basic.hh"
+#include "its/gal/ExprHom.hpp"
 
-#include "divine/dve2GAL.hh"
+#include "its/divine/dve2GAL.hh"
 #include "its/gal/parser/GALParser.hh"
 
 #include <algorithm>

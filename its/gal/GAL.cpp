@@ -1,4 +1,4 @@
-#include "GAL.hh"
+#include "its/gal/GAL.hh"
 
 
 using std::endl;

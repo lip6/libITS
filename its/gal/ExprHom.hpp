@@ -1,7 +1,7 @@
 #ifndef __EXPRESSION_HOM_HH__
 #define __EXPRESSION_HOM_HH__
 
-#include "Hom.h"
+#include "ddd/Hom.h"
 #include "its/gal/IntExpression.hh"
 #include "its/gal/BoolExpression.hh"
 #include "its/gal/GALOrder.hh"

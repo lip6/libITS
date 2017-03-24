@@ -2,15 +2,15 @@
 #include <typeinfo>
 
 
-#include "DDD.h"
-#include "MemoryManager.h"
-#include "DED.h"
-#include "AdditiveMap.hpp"
-#include "IntExpression.hh"
-#include "Hom_Basic.hh"
-#include "ExprHom.hpp"
+#include "ddd/DDD.h"
+#include "ddd/MemoryManager.h"
+#include "ddd/DED.h"
+#include "ddd/AdditiveMap.hpp"
+#include "its/gal/IntExpression.hh"
+#include "ddd/Hom_Basic.hh"
+#include "its/gal/ExprHom.hpp"
 // For hash maps
-#include "util/configuration.hh"
+#include "ddd/util/configuration.hh"
 
 #include "its/gal/PIntExprVisitor.hh"
 

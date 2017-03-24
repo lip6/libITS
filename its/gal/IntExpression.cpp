@@ -1,14 +1,14 @@
-#include "IntExpression.hh"
-#include "BoolExpression.hh"
+#include "its/gal/IntExpression.hh"
+#include "its/gal/BoolExpression.hh"
 
 // utilities for environment manipulation
-#include "Environment.hpp"
+#include "its/gal/Environment.hpp"
 
 #include <cmath>
 #include <cassert>
-#include "hashfunc.hh"
+#include "ddd/hashfunc.hh"
 #include <typeinfo>
-#include "MemoryManager.h"
+#include "ddd/MemoryManager.h"
 
 
 #include "its/gal/PIntExprVisitor.hh"

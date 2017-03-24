@@ -9,11 +9,11 @@
 // hash_map from libddd, for initial state
 #include "util/configuration.hh"
 
-#include "BoolExpression.hh"
-#include "Variable.hh"
-#include "IntExpression.hh"
+#include "its/gal/BoolExpression.hh"
+#include "its/gal/Variable.hh"
+#include "its/gal/IntExpression.hh"
 
-#include "Statements.hh"
+#include "its/gal/Statements.hh"
 
 namespace its {
 

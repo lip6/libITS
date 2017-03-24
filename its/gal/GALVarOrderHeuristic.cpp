@@ -1,8 +1,8 @@
 #include "GALVarOrderHeuristic.hh"
 
-#include "force.hh"
-#include "PIntExprVisitor.hh"
-#include "GALType.hh"
+#include "its/gal/force.hh"
+#include "its/gal/PIntExprVisitor.hh"
+#include "its/gal/GALType.hh"
 
 namespace its {
 
