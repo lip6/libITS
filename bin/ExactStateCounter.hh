@@ -1,8 +1,8 @@
 #ifndef __EXACT_COMPUTER__HH__
 #define __EXACT_COMPUTER__HH__
 
-#include "SDD.h"
-#include "DDD.h"
+#include "ddd/SDD.h"
+#include "ddd/DDD.h"
 
 #include <gmpxx.h>
 

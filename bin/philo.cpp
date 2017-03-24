@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 
-#include "gal/GAL.hh"
+#include "its/gal/GAL.hh"
 
 namespace its
 {

@@ -2,20 +2,20 @@
 #include <fstream>
 #include <cstring>
 
-#include "Options.hh"
+#include "its/Options.hh"
 // The ITS model referential
 #include "its/ITSModel.hh"
-#include "SDD.h"
-#include "MemoryManager.h"
+#include "ddd/SDD.h"
+#include "ddd/MemoryManager.h"
 // romeo parser
-#include "petri/XMLLoader.hh"
+#include "its/petri/XMLLoader.hh"
 // prod parser
-#include "petri/Modular2ITS.hh"
+#include "its/petri/Modular2ITS.hh"
 // ITSModel parser
-#include "ITSModelXMLLoader.hh"
+#include "its/ITSModelXMLLoader.hh"
 // Cami parser
-#include "petri/JSON2ITS.hh"
-#include "parser_json/parse_json.hh"
+#include "its/petri/JSON2ITS.hh"
+#include "its/parser_json/parse_json.hh"
 
 // for stats
 #include "MaxComputer.hh"
@@ -23,8 +23,8 @@
 #include "ToTransRel.hh"
 
 // SDD utilities to output stats and dot graphs
-#include "util/dotExporter.h"
-#include "statistic.hpp"
+#include "ddd/util/dotExporter.h"
+#include "ddd/statistic.hpp"
 
 #include "EarlyBreakObserver.hh"
 #include "Property.hh"
@@ -32,7 +32,7 @@
 
 
 #ifdef HASH_STAT
-#include "gal/ExprHom.hpp"
+#include "its/gal/ExprHom.hpp"
 #endif // HASH_STAT
 
 #define trace if(!beQuiet) std::cerr

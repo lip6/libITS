@@ -2,7 +2,7 @@
 #include <fstream>
 #include <cstring>
 
-#include "MemoryManager.h"
+#include "ddd/MemoryManager.h"
 
 #include "gal/parser/GALParser.hh"
 #include "gal/GAL2C.hh"

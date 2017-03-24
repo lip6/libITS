@@ -2,11 +2,11 @@
 #include <fstream>
 #include <cstring>
 
-#include "Options.hh"
+#include "its/Options.hh"
 // The ITS model referential
 #include "its/ITSModel.hh"
-#include "SDD.h"
-#include "MemoryManager.h"
+#include "ddd/SDD.h"
+#include "ddd/MemoryManager.h"
 
 
 

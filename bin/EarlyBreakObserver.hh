@@ -1,7 +1,7 @@
 #ifndef __EARLY_BREAK_OBS_HH__
 #define __EARLY_BREAK_OBS_HH__
 
-#include "FixObserver.hh"
+#include "ddd/FixObserver.hh"
 
 
 #define trace if(verbose) std::cout
