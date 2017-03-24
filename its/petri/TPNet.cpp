@@ -1,4 +1,4 @@
-#include "TPNet.hh"
+#include "its/petri/TPNet.hh"
 
 
 namespace its {

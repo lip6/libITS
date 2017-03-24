@@ -1,5 +1,5 @@
 #include <iostream>
-#include "PNet.hh"
+#include "its/petri/PNet.hh"
 #include <utility>
 
 namespace its {

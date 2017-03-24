@@ -1,13 +1,13 @@
 #ifndef __PTRANSITION__SEMANTICS__
 #define __PTRANSITION__SEMANTICS__
 
-#include "Hom.h"
-#include "SHom.h"
+#include "ddd/Hom.h"
+#include "ddd/SHom.h"
 
-#include "Hom_Basic.hh"
-#include "Hom_PlaceArcs.hh"
-#include "PTransition.hh"
-#include "Observe_Hom.hh"
+#include "ddd/Hom_Basic.hh"
+#include "its/petri/Hom_PlaceArcs.hh"
+#include "its/petri/PTransition.hh"
+#include "its/Observe_Hom.hh"
 
 #include <algorithm>
 

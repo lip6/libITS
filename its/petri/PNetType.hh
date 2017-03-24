@@ -2,8 +2,8 @@
 #define __LABELED_NET_HH__
 
 #include "its/TypeBasics.hh"
-#include "PNet.hh"
-#include "TPNetSemantics.hpp"
+#include "its/petri/PNet.hh"
+#include "its/petri/TPNetSemantics.hpp"
 #include "its/TypeVisitor.hh"
 #include <iosfwd>
 #include <cstdlib>

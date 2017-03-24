@@ -1,6 +1,8 @@
 #ifndef __TIME_CONSTYRAINT_HH__
 #define __TIME_CONSTYRAINT_HH__
 
+#include <iostream>
+
 namespace its {
 
 /** a struct to store a time constraint for syncs or TPN transitions */

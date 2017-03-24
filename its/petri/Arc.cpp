@@ -1,7 +1,7 @@
 #include "Arc.hh"
 #include <iostream>
-#include "Hom_PlaceArcs.hh"
-#include "Hom_Basic.hh"
+#include "its/petri/Hom_PlaceArcs.hh"
+#include "ddd/Hom_Basic.hh"
 
 namespace its {
 

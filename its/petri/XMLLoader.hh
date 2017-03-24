@@ -5,7 +5,7 @@
 
 #include <expat.h>
 
-#include "TPNet.hh"
+#include "its/petri/TPNet.hh"
 
 class XMLLoader 
 {

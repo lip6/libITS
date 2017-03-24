@@ -1,5 +1,5 @@
-#include "its/compositeNet.hh"
-#include "IPN.hh"
+#include "its/petri/CompositeNet.hh"
+#include "its/petri/IPN.hh"
 
 #include <set>
 

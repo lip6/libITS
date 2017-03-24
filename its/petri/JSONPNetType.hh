@@ -2,10 +2,10 @@
 #define __JSONPNET__SET__TYPE__
 
 #include "its/TypeBasics.hh"
-#include "PNet.hh"
+#include "its/petri/PNet.hh"
 #include "its/TypeVisitor.hh"
 #include "its/ITSModel.hh"
-#include "parser_json/hierarchie.hh"
+#include "its/parser_json/hierarchie.hh"
 
 namespace its {
 

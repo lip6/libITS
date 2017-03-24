@@ -1,7 +1,7 @@
 #include "its/petri/Modular2ITS.hh"
 #include "its/petri/PNet.hh"
 #include "its/composite/Composite.hh"
-#include "parser_RdPE/RdPE.h"
+#include "its/parser_RdPE/RdPE.h"
 #include "its/petri/JSON2ITS.hh"
 #include <iostream>
 #include <fstream>

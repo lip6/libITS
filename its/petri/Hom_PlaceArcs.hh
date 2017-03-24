@@ -29,9 +29,9 @@
  *  CapacityPlace, ResetPlace
 **/
 
-#include "DDD.h"
-#include "Hom.h"
-#include "Hom_Basic.hh"
+#include "ddd/DDD.h"
+#include "ddd/Hom.h"
+#include "ddd/Hom_Basic.hh"
 
 // Construct a Hom for a StrongHom _PostPlace
 inline GHom postPlace(int pl, int post){

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Place.hh"
+#include "its/petri/Place.hh"
 
 using namespace its;
 

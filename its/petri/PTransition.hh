@@ -3,11 +3,11 @@
 
 #include <iosfwd>
 #include "its/Naming.hh"
-#include "Arc.hh"
-#include "Hom.h"
-#include "SHom.h"
-#include "Ordering.hh"
-#include "TimeConstraint.hh"
+#include "its/petri/Arc.hh"
+#include "ddd/Hom.h"
+#include "ddd/SHom.h"
+#include "its/Ordering.hh"
+#include "its/petri/TimeConstraint.hh"
 
 namespace its {
 

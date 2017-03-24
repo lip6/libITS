@@ -7,9 +7,9 @@
 #include <map>
 
 #include "its/Type.hh"
-#include "Place.hh"
-#include "PTransition.hh"
-#include "Marking.hh"
+#include "its/petri/Place.hh"
+#include "its/petri/PTransition.hh"
+#include "its/petri/Marking.hh"
 
 namespace its {
 

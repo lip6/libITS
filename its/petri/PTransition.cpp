@@ -5,9 +5,9 @@
  *      Author: yann
  */
 
-#include "PTransition.hh"
+#include "its/petri/PTransition.hh"
 // for INFINITY constant definition and clockName
-#include "TPNet.hh"
+#include "its/petri/TPNet.hh"
 
 
 #include <iostream>

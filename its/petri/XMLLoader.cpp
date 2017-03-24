@@ -6,9 +6,9 @@
 
 #include <expat.h>
 
-#include "TPNet.hh"
-#include "PTransition.hh"
-#include "XMLLoader.hh"
+#include "its/petri/TPNet.hh"
+#include "its/petri/PTransition.hh"
+#include "its/petri/XMLLoader.hh"
 
 // for pretty names
 #include <map>

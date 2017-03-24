@@ -1,7 +1,7 @@
 #ifndef __PTNET__HH__
 #define __PTNET__HH__
 
-#include "PNet.hh"
+#include "its/petri/PNet.hh"
 
 namespace its {
 

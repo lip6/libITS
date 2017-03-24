@@ -1,8 +1,8 @@
 #ifndef __TPNET_TYPE_HH__
 #define __TPNET_TYPE_HH__
 
-#include "TPNetType.hh"
-#include "TPNet.hh"
+#include "its/petri/TPNetType.hh"
+#include "its/petri/TPNet.hh"
 
 namespace its {
 /** Implement a type by adapting the TPNet interface.
