@@ -4,7 +4,7 @@
 #include <set>
 #include <iostream>
 #include <string>
-#include <UniqueTable.h>
+#include <ddd/UniqueTable.h>
 #include "its/gal/IntExpression.hh"
 #include "its/gal/PBoolExpression.hh"
 #include "its/gal/Variable.hh"
