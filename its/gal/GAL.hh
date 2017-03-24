@@ -7,7 +7,7 @@
 #include <map>
 
 // hash_map from libddd, for initial state
-#include "util/configuration.hh"
+#include "ddd/util/configuration.hh"
 
 #include "its/gal/BoolExpression.hh"
 #include "its/gal/Variable.hh"
