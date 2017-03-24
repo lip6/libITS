@@ -6,8 +6,8 @@
 
 #include <expat.h>
 
-#include "ScalarSet.hh"
-#include "ScalarSetXMLLoader.hh"
+#include "its/scalar/ScalarSet.hh"
+#include "its/scalar/ScalarSetXMLLoader.hh"
 
 // for pretty names
 #include <map>

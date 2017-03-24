@@ -8,7 +8,7 @@
 #ifndef SCALARSET_HH_
 #define SCALARSET_HH_
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 #include "Type.hh"
 #include "Naming.hh"
 #include "Delegator.hh"

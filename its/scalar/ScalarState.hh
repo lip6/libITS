@@ -9,7 +9,7 @@
 #define SCALARSTATE_HH_
 
 #include <map>
-#include "Naming.hh"
+#include "its/Naming.hh"
 
 namespace its {
 

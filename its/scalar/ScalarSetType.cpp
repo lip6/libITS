@@ -3,9 +3,9 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
-#include "ScalarSetType.hh"
-#include "CircularSetType.hh"
-#include "composite/Composite.hh"
+#include "its/scalar/ScalarSetType.hh"
+#include "its/scalar/CircularSetType.hh"
+#include "its/composite/Composite.hh"
 
 #define trace while(0) std::cerr
 

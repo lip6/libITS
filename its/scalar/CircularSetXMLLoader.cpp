@@ -6,8 +6,8 @@
 
 #include <expat.h>
 
-#include "CircularSet.hh"
-#include "CircularSetXMLLoader.hh"
+#include "its/scalar/CircularSet.hh"
+#include "its/scalar/CircularSetXMLLoader.hh"
 
 // for pretty names
 #include <map>

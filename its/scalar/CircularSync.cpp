@@ -1,6 +1,6 @@
 
 
-#include "CircularSync.hh"
+#include "its/scalar/CircularSync.hh"
 
 
 #include <iostream>

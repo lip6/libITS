@@ -1,10 +1,10 @@
 #ifndef __SCALAR__SET__TYPE__
 #define __SCALAR__SET__TYPE__
 
-#include "TypeBasics.hh"
-#include "ScalarSet.hh"
-#include "TypeVisitor.hh"
-#include "ITSModel.hh"
+#include "its/TypeBasics.hh"
+#include "its/scalar/ScalarSet.hh"
+#include "its/TypeVisitor.hh"
+#include "its/ITSModel.hh"
 
 namespace its {
 

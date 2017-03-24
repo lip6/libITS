@@ -1,8 +1,8 @@
 #ifndef __CIRCULAR_SET__HH__
 #define __CIRCULAR_SET__HH__
 
-#include "ScalarSet.hh"
-#include "CircularSync.hh"
+#include "its/scalar/ScalarSet.hh"
+#include "its/scalar/CircularSync.hh"
 
 
 namespace its {

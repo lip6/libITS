@@ -2,10 +2,10 @@
 #define __CIRCULAR__SET__TYPE__
 
 
-#include "CircularSet.hh"
-#include "ScalarSetType.hh"
+#include "its/scalar/CircularSet.hh"
+#include "its/scalar/ScalarSetType.hh"
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 namespace its {
 

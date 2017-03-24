@@ -4,7 +4,7 @@
  *  Created on: jan 2009
  *      Author: yann
  */
-#include "CircularSet.hh"
+#include "its/scalar/CircularSet.hh"
 #include <algorithm>
 #include <iostream>
 

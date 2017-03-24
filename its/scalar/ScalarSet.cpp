@@ -4,7 +4,7 @@
  *  Created on: jan 2009
  *      Author: yann
  */
-#include "ScalarSet.hh"
+#include "its/scalar/ScalarSet.hh"
 #include <iostream>
 #include <algorithm>
 
