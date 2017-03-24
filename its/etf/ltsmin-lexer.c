@@ -15,6 +15,10 @@
 #endif
 
 /* First, we deal with  platform-specific or compiler-specific issues. */
+// strdup
+#ifndef _BSD_SOURCE
+#define _BSD_SOURCE
+#endif
 
 /* begin standard C headers. */
 #include <stdio.h>
