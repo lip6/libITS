@@ -12,9 +12,9 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include "divine/legacy/common/sysinfo.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/sysinfo.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/types.hh"
 
 
 namespace divine {

@@ -7,8 +7,8 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <iostream>
-#include "divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_parser.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_parser.hh"
 
 namespace divine //We want Doxygen not to see namespace `dve'
 {

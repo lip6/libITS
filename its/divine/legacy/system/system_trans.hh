@@ -13,9 +13,9 @@
 #define DIVINE_SYSTEM_TRANS_HH
 
 #ifndef DOXYGEN_PROCESSING
-#include "divine/legacy/system/transition.hh"
-#include "divine/legacy/system/explicit_system.hh"
-#include "divine/legacy/common/array_of_abstract.hh"
+#include "its/divine/legacy/system/transition.hh"
+#include "its/divine/legacy/system/explicit_system.hh"
+#include "its/divine/legacy/common/array_of_abstract.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 using std::cerr; using std::endl;

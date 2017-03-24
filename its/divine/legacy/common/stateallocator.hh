@@ -2,7 +2,7 @@
 #ifndef DIVINE_LEGACY_STATEALLOCATOR_HH
 #define DIVINE_LEGACY_STATEALLOCATOR_HH
 
-#include <divine/stateallocator.h>
+#include <its/divine/stateallocator.h>
 
 namespace divine {
 

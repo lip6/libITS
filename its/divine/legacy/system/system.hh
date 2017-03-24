@@ -7,14 +7,14 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <fstream>
-#include "divine/legacy/common/array.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/system/system_abilities.hh"
-#include "divine/legacy/system/data.hh"
-#include "divine/legacy/system/transition.hh"
-#include "divine/legacy/system/process.hh"
-#include "divine/legacy/system/state.hh"
-#include "divine/legacy/common/stateallocator.hh"
+#include "its/divine/legacy/common/array.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/system/system_abilities.hh"
+#include "its/divine/legacy/system/data.hh"
+#include "its/divine/legacy/system/transition.hh"
+#include "its/divine/legacy/system/process.hh"
+#include "its/divine/legacy/system/state.hh"
+#include "its/divine/legacy/common/stateallocator.hh"
 
 //The main DiVinE namespace - we do not want Doxygen to see it
 namespace divine {

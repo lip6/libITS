@@ -1,4 +1,4 @@
-#include "divine/legacy/system/dve/dve_process_decomposition.hh"
+#include "its/divine/legacy/system/dve/dve_process_decomposition.hh"
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

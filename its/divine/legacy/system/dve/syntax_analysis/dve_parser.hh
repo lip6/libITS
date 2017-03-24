@@ -13,18 +13,18 @@
 #include <stack>
 #include <cstdio>
 #include <string>
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/bit_string.hh"
-#include "divine/legacy/common/array.hh"
-#include "divine/legacy/system/dve/dve_expression.hh"
-#include "divine/legacy/system/dve/dve_transition.hh"
-#include "divine/legacy/system/dve/dve_process.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
-//#include "divine/legacy/system/dve/dve_prob_process.hh"
-#include "divine/legacy/common/array.hh"
-#include "divine/legacy/system/dve/dve_system.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/bit_string.hh"
+#include "its/divine/legacy/common/array.hh"
+#include "its/divine/legacy/system/dve/dve_expression.hh"
+#include "its/divine/legacy/system/dve/dve_transition.hh"
+#include "its/divine/legacy/system/dve/dve_process.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
+//#include "its/divine/legacy/system/dve/dve_prob_process.hh"
+#include "its/divine/legacy/common/array.hh"
+#include "its/divine/legacy/system/dve/dve_system.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 using std::cerr; using std::endl;

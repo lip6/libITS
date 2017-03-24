@@ -8,14 +8,14 @@
 #include <iostream>
 #include <string>
 #include <stack>
-#include "divine/legacy/system/expression.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/types.hh"
-#include "divine/legacy/common/array.hh"
-// #include "divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
-// #include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/system/dve/dve_source_position.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/expression.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/array.hh"
+// #include "its/divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
+// #include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/system/dve/dve_source_position.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 //#define LOCAL_DEB
 
@@ -350,7 +350,7 @@ public:
 
 #ifndef DOXYGEN_PROCESSING  
 } //END of namespace DVE
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

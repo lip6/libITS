@@ -4,9 +4,9 @@
 #define _DIVINE_DVE_PROCESS_DECOMPOSITION_HH_
  
 #ifndef DOXYGEN_PROCESSING
-#include "divine/legacy/common/process_decomposition.hh"
-#include "divine/legacy/system/dve/dve_explicit_system.hh"
-#include "divine/legacy/system/dve/dve_process.hh"
+#include "its/divine/legacy/common/process_decomposition.hh"
+#include "its/divine/legacy/system/dve/dve_explicit_system.hh"
+#include "its/divine/legacy/system/dve/dve_process.hh"
 namespace divine {
 #endif
   

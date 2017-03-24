@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
  */
 
-#include <divine/wibble/sys/macros.h>
-#include <divine/wibble/exception.h>
+#include <its/divine/wibble/sys/macros.h>
+#include <its/divine/wibble/exception.h>
 
 #include <string.h> // strerror_r
 #include <errno.h>

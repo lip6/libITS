@@ -1,6 +1,6 @@
-#include "dveLoader.hh"
-#include "divine/dve2GAL.hh"
-#include "divine/wibble/string.h"
+#include "its/divine/dveLoader.hh"
+#include "its/divine/dve2GAL.hh"
+#include "its/divine/wibble/string.h"
 
 // old  dlopen() style stuff
 // #include <dlfcn.h>

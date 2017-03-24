@@ -12,9 +12,9 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <iostream>
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/types.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 using std::cerr; using std::endl;
@@ -254,7 +254,7 @@ class array_of_abstract_t
 
 #ifndef DOXYGEN_PROCESSING
 } //end of namespace
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

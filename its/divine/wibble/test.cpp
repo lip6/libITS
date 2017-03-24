@@ -1,4 +1,4 @@
-#include <divine/wibble/test.h>
+#include <its/divine/wibble/test.h>
 
 int assertFailure = 0;
 

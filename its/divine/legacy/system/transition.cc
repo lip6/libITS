@@ -1,4 +1,4 @@
-#include "divine/legacy/system/transition.hh"
+#include "its/divine/legacy/system/transition.hh"
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

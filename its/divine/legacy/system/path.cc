@@ -1,4 +1,4 @@
-#include "divine/legacy/system/path.hh"
+#include "its/divine/legacy/system/path.hh"
 
 using namespace divine;
 using namespace std;

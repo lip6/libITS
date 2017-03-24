@@ -5,9 +5,9 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <deque>
-#include "divine/legacy/system/state.hh"
-#include "divine/legacy/system/explicit_system.hh"
-#include "divine/legacy/common/stateallocator.hh"
+#include "its/divine/legacy/system/state.hh"
+#include "its/divine/legacy/system/explicit_system.hh"
+#include "its/divine/legacy/common/stateallocator.hh"
 
 namespace divine {//The main DiVinE namespace - we do not want Doxygen to see it
 #endif //DOXYGEN_PROCESSING

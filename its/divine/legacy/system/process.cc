@@ -1,5 +1,5 @@
-#include "divine/legacy/system/process.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/process.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

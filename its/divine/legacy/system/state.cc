@@ -1,6 +1,6 @@
-#include "divine/legacy/system/state.hh"
+#include "its/divine/legacy/system/state.hh"
 #include <cstring>
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 using namespace divine;
 

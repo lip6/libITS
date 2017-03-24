@@ -1,5 +1,5 @@
-#include "divine/legacy/system/dve/dve_system_trans.hh"
-#include "divine/legacy/system/dve/dve_explicit_system.hh"
+#include "its/divine/legacy/system/dve/dve_system_trans.hh"
+#include "its/divine/legacy/system/dve/dve_explicit_system.hh"
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

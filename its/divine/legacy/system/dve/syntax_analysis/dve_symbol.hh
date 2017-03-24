@@ -7,7 +7,7 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <vector>
-#include "divine/legacy/system/dve/dve_expression.hh"
+#include "its/divine/legacy/system/dve/dve_expression.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 #endif //DOXYGEN_PROCESSING
@@ -263,7 +263,7 @@ class dve_symbol_t
   
 #ifndef DOXYGEN_PROCESSING
 } //end of namespace
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

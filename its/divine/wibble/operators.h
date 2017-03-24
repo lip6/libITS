@@ -1,8 +1,8 @@
 // -*- C++ -*-
 
 #include <set>
-#include <divine/wibble/empty.h>
-#include <divine/wibble/singleton.h>
+#include <its/divine/wibble/empty.h>
+#include <its/divine/wibble/singleton.h>
 #include <algorithm>
 
 #ifndef WIBBLE_OPERATORS_H

@@ -82,6 +82,6 @@ void dve_pperror(const char * msg);
 //!Bison's parser of DVE processes
 int dve_ppparse();
 
-#include "divine/legacy/system/dve/syntax_analysis/dve_gramsymb.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_gramsymb.hh"
 
 #endif

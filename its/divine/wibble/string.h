@@ -22,8 +22,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
  */
 
-#include <divine/wibble/operators.h>
-#include <divine/wibble/sfinae.h>
+#include <its/divine/wibble/operators.h>
+#include <its/divine/wibble/sfinae.h>
 
 #include <cstdarg>
 #include <cstdio>

@@ -4,7 +4,7 @@
 #ifndef DIVINE_TRANSITION_HH
 #define DIVINE_TRANSITION_HH
 
-#include "divine/legacy/system/system.hh"
+#include "its/divine/legacy/system/system.hh"
 
 #ifndef DOXYGEN_PROCESSING
 

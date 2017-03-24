@@ -1,7 +1,7 @@
 
 #ifndef DOXYGEN_PROCESSING
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/common/deb.hh"
 using namespace divine;
 #endif //DOXYGEN_PROCESSING
 

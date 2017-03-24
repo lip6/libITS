@@ -1,4 +1,4 @@
-#include "divine/legacy/system/dve/dve_source_position.hh"
+#include "its/divine/legacy/system/dve/dve_source_position.hh"
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

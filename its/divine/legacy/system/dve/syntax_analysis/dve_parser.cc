@@ -1,12 +1,12 @@
 #include <cstdio>
 #include <cstring>
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_parser.hh"
-#include "divine/legacy/system/dve/dve_expression.hh"
-// #include "divine/legacy/system/dve/dve_prob_system.hh"
-// #include "divine/legacy/system/dve/dve_prob_process.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_parser.hh"
+#include "its/divine/legacy/system/dve/dve_expression.hh"
+// #include "its/divine/legacy/system/dve/dve_prob_system.hh"
+// #include "its/divine/legacy/system/dve/dve_prob_process.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

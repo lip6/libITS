@@ -1,11 +1,11 @@
 #include <limits.h>
 #include <sstream>
-#include "divine/legacy/system/dve/dve_expression.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/dve/dve_expression.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
+#include "its/divine/legacy/common/deb.hh"
 
-#include <divine/wibble/string.h>
+#include <its/divine/wibble/string.h>
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

@@ -8,7 +8,7 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <iostream>
-#include "divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/types.hh"
 
 namespace divine
 {

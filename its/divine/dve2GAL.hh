@@ -1,10 +1,10 @@
 // -*- C++ -*- (c) 2009, 2010 Milan Ceska & Petr Rockai
-#include <divine/legacy/system/dve/dve_explicit_system.hh>
+#include <its/divine/legacy/system/dve/dve_explicit_system.hh>
 #include <string>
 #include <math.h>
 #include <map>
 #include <vector>
-#include <divine/wibble/string.h>
+#include <its/divine/wibble/string.h>
 
 #include "its/gal/GAL.hh"
 

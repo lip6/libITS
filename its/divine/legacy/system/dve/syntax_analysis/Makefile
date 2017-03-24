@@ -43,7 +43,7 @@ dve_proc_grammar.cc: dve_grammar.yy
 	sed -i -e 's,^#line.*,,' $(@)
 dve_lexer.cc: dve_lexer.l
 	$(LEX) $(LEXFLAGS) -o dve_lexer.cc dve_lexer.l;
-	sed -i 's/#include <FlexLexer.h>/#include "divine\/legacy\/system\/dve\/syntax_analysis\/dve_flex_lexer.hh"/' dve_lexer.cc
+	sed -i 's/#include <FlexLexer.h>/#include "its/divine\/legacy\/system\/dve\/syntax_analysis\/dve_flex_lexer.hh"/' dve_lexer.cc
 	sed -i -e 's,^#line.*,,' $(@)
 	cp /usr/include/FlexLexer.h $(IPATH)/dve_flex_lexer.hh
 

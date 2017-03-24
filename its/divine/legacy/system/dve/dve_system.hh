@@ -6,12 +6,12 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <fstream>
-#include "divine/legacy/system/system.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_parser.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/system/dve/dve_expression.hh"
-#include "divine/legacy/common/array.hh"
-#include "divine/legacy/common/error.hh"
+#include "its/divine/legacy/system/system.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_parser.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/system/dve/dve_expression.hh"
+#include "its/divine/legacy/common/array.hh"
+#include "its/divine/legacy/common/error.hh"
 
 //The main DiVinE namespace - we do not want Doxygen to see it
 namespace divine {

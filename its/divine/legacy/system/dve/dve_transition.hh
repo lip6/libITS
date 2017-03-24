@@ -8,13 +8,13 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "divine/legacy/system/transition.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/system/dve/dve_expression.hh"
-#include "divine/legacy/system/dve/dve_source_position.hh"
-#include "divine/legacy/common/array.hh"
-#include "divine/legacy/common/bit_string.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/transition.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/system/dve/dve_expression.hh"
+#include "its/divine/legacy/system/dve/dve_source_position.hh"
+#include "its/divine/legacy/common/array.hh"
+#include "its/divine/legacy/common/bit_string.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 using std::cerr; using std::endl;
@@ -277,7 +277,7 @@ class dve_transition_t: public dve_source_position_t, public virtual transition_
 
 #ifndef DOXYGEN_PROCESSING  
 } //END of namespace DVE
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

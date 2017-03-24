@@ -1,14 +1,14 @@
-#include "divine/legacy/system/dve/dve_explicit_system.hh"
-#include "divine/legacy/system/dve/dve_system.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
-#include "divine/legacy/system/dve/dve_process_decomposition.hh"
-#include "divine/legacy/system/state.hh"
-#include "divine/legacy/common/bit_string.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/dve/dve_explicit_system.hh"
+#include "its/divine/legacy/system/dve/dve_system.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
+#include "its/divine/legacy/system/dve/dve_process_decomposition.hh"
+#include "its/divine/legacy/system/state.hh"
+#include "its/divine/legacy/common/bit_string.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/deb.hh"
 
-//#include <divine/datastruct.h>
+//#include <its/divine/datastruct.h>
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

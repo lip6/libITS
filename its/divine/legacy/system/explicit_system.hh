@@ -12,12 +12,12 @@
 #define DIVINE_EXPLICIT_SYSTEM_HH
 
 #ifndef DOXYGEN_PROCESSING
-#include "divine/legacy/system/system.hh"
-#include "divine/legacy/system/state.hh"
-#include "divine/legacy/system/system_trans.hh"
-#include "divine/legacy/system/expression.hh"
-#include "divine/legacy/common/types.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/system.hh"
+#include "its/divine/legacy/system/state.hh"
+#include "its/divine/legacy/system/system_trans.hh"
+#include "its/divine/legacy/system/expression.hh"
+#include "its/divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 using std::cerr; using std::endl;
@@ -370,7 +370,7 @@ void safe_delete_array( T* &ptr ) {
 
 #ifndef DOXYGEN_PROCESSING  
 } //END of namespace DVE
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

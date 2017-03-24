@@ -6,7 +6,7 @@
 #define DIVINE_DATA_HH
 
 #ifndef DOXYGEN_PROCESSING
-#include "divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/types.hh"
     
 namespace divine { // We don't want Doxygen to see namespace 'dve'
 #endif // DOXYGEN_PROCESSING
@@ -41,7 +41,7 @@ class data_t
 
 #ifndef DOXYGEN_PROCESSING  
 } //END of namespace DVE
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

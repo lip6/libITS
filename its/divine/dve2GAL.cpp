@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include <divine/dve2GAL.hh>
-#include <divine/common.h>
+#include <its/divine/dve2GAL.hh>
+#include <its/divine/common.h>
 
 
 

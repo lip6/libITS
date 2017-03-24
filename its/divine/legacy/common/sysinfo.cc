@@ -1,4 +1,4 @@
-#include "divine/legacy/common/sysinfo.hh"
+#include "its/divine/legacy/common/sysinfo.hh"
 
 // {{{ vminfo 
 

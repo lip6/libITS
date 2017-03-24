@@ -1,7 +1,7 @@
 // -*- C++ -*- (c) 2008 Petr Rockai <me@mornfall.net>
 
-#include <divine/pool.h>
-#include <divine/blob.h>
+#include <its/divine/pool.h>
+#include <its/divine/blob.h>
 
 namespace divine {
 

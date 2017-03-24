@@ -1,8 +1,8 @@
 #include <stack>
 #include <iostream>
-#include "divine/legacy/common/types.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 using namespace divine;
 using namespace std;

@@ -12,8 +12,8 @@
 
 #ifndef DOXYGEN_PROCESSING
 #include <iostream>
-#include "divine/legacy/common/deb.hh"
-#include "divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/deb.hh"
+#include "its/divine/legacy/common/types.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 using std::cerr; using std::endl;
@@ -166,6 +166,6 @@ class bit_string_t
 
 };
 
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif

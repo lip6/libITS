@@ -24,10 +24,10 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "divine/legacy/common/types.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/common/types.hh"
+#include "its/divine/legacy/common/deb.hh"
 
-#include <divine/wibble/string.h>
+#include <its/divine/wibble/string.h>
 
 namespace divine {
 #endif //DOXYGEN_PROCESSING
@@ -457,7 +457,7 @@ extern error_vector_t gerr;
 
 #ifndef DOXYGEN_PROCESSING
 }; // end of namespace
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 #endif //DOXYGEN_PROCESSING
 
 #endif

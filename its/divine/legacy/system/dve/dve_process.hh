@@ -8,11 +8,11 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "divine/legacy/system/process.hh"
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/array.hh"
-#include "divine/legacy/system/dve/dve_transition.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/process.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/array.hh"
+#include "its/divine/legacy/system/dve/dve_transition.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 
 namespace divine { //We want Doxygen not to see namespace `dve'
@@ -287,7 +287,7 @@ class dve_process_t: public virtual process_t
 
 #ifndef DOXYGEN_PROCESSING  
 } //END of namespace DVE
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

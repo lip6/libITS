@@ -1,5 +1,5 @@
 #include <iostream>
-#include "divine/legacy/common/hash_function.hh"
+#include "its/divine/legacy/common/hash_function.hh"
 
 #define mix(a,b,c) \
 { \

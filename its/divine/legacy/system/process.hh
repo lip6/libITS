@@ -6,7 +6,7 @@
 
 #ifndef DOXYGEN_PROCESSING
 
-#include "divine/legacy/system/system.hh"
+#include "its/divine/legacy/system/system.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 

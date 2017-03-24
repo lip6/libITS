@@ -8,9 +8,9 @@
  */
 
 #ifndef DOXYGEN_PROCESSING
-#include "divine/legacy/common/error.hh"
-#include "divine/legacy/common/types.hh"
-#include "divine/legacy/system/state.hh"
+#include "its/divine/legacy/common/error.hh"
+#include "its/divine/legacy/common/types.hh"
+#include "its/divine/legacy/system/state.hh"
 
 namespace divine { //We want Doxygen not to see namespace `divine'
 using std::cerr; using std::endl;

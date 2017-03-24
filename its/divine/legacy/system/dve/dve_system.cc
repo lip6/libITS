@@ -1,10 +1,10 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "divine/legacy/system/dve/dve_system.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
-#include "divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/dve/dve_system.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_symbol_table.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_grammar.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 #ifndef DOXYGEN_PROCESSING
 using namespace divine;

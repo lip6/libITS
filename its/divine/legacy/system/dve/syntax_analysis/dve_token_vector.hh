@@ -10,8 +10,8 @@
 #ifndef DOXYGEN_PROCESSING
 #include <cstdlib>
 #include <vector>
-#include "divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
-#include "divine/legacy/common/deb.hh"
+#include "its/divine/legacy/system/dve/syntax_analysis/dve_commonparse.hh"
+#include "its/divine/legacy/common/deb.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 #endif //DOXYGEN_PROCESSING
@@ -41,7 +41,7 @@ namespace divine { //We want Doxygen not to see namespace `dve'
 #ifndef DOXYGEN_PROCESSING
 } //end of namespace `dve'
 
-#include "divine/legacy/common/undeb.hh"
+#include "its/divine/legacy/common/undeb.hh"
 
 #endif //DOXYGEN_PROCESSING
 

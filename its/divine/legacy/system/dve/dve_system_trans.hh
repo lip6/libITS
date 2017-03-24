@@ -5,11 +5,11 @@
 #define DIVINE_DVE_SYSTEM_TRANS_HH
 
 #ifndef DOXYGEN_PROCESSING
-#include "divine/legacy/system/dve/dve_system_trans.hh"
-#include "divine/legacy/system/dve/dve_explicit_system.hh"
-#include "divine/legacy/system/dve/dve_transition.hh"
-#include "divine/legacy/system/system_trans.hh"
-#include "divine/legacy/common/array.hh"
+#include "its/divine/legacy/system/dve/dve_system_trans.hh"
+#include "its/divine/legacy/system/dve/dve_explicit_system.hh"
+#include "its/divine/legacy/system/dve/dve_transition.hh"
+#include "its/divine/legacy/system/system_trans.hh"
+#include "its/divine/legacy/common/array.hh"
 
 namespace divine { //We want Doxygen not to see namespace `dve'
 using std::cerr; using std::endl;

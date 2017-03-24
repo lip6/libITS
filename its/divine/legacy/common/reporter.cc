@@ -1,5 +1,5 @@
 
-#include "divine/legacy/common/reporter.hh"
+#include "its/divine/legacy/common/reporter.hh"
 #include <iomanip>
 #include <fstream>
 #include <cmath>
