@@ -32,8 +32,8 @@
 #include <map>
 using namespace std;
 
-#include "Word.hpp"
-#include "var_set.hpp"
+#include "its/expression/Word.hpp"
+#include "its/expression/var_set.hpp"
 
 //-------------------------------------------------------
 

@@ -28,7 +28,7 @@
 #define _WORD_
 
 #include <iostream>
-# include <cassert>
+#include <cassert>
 #include <map>
 #include <vector> 
 

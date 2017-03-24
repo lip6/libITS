@@ -29,9 +29,9 @@
 #include <vector>
 using namespace std;
 
-#include "RdPE.h"
-#include "SHom.h"
-#include "expression.hpp"
+#include "its/expression/RdPE.h"
+#include "ddd/SHom.h"
+#include "its/expression/expression.hpp"
 
 // select the states satisfying exp
 GShom selectCond(const Expression& exp,const RdPE & R);

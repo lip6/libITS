@@ -32,10 +32,10 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
-#include "var_set.hpp"
-#include "Word.hpp"
-#include "expression.hpp"
-#include "RdPE.h"
+#include "its/expression/var_set.hpp"
+#include "its/expression/Word.hpp"
+#include "its/expression/expression.hpp"
+#include "its/parser_RdPE/RdPE.h"
 
 /**********************************************************************************************/
 //___________________________Class Vertex_________________________________

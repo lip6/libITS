@@ -27,12 +27,12 @@
 #include <cassert>
 #include <iostream>
 
-#include "SDD.h"
-#include "DDD.h"
+#include "ddd/SDD.h"
+#include "ddd/DDD.h"
 
-#include "var_set.hpp"
-#include "strong.hpp"
-#include "expression.hpp"
+#include "its/expression/var_set.hpp"
+#include "its/expression/strong.hpp"
+#include "its/expression/expression.hpp"
 
 using namespace std;
 

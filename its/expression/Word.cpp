@@ -34,7 +34,7 @@
 #include <cmath>
 
 using namespace std;
-#include "Word.hpp"
+#include "its/expression/Word.hpp"
 
 //************************************Class Word*************************************************
 Word::Word(int val) {

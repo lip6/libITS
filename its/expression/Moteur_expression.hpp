@@ -30,9 +30,9 @@
 #include <vector>
 using namespace std;
 
-#include "Word.hpp"
-#include "expression.hpp"
-#include "RdPE.h"
+#include "its/expression/Word.hpp"
+#include "its/expression/expression.hpp"
+#include "its/parser_RdPE/RdPE.h"
 
 typedef vector<Expression> Exp_map;
 enum Rule_type{ ordinary, word ,number};

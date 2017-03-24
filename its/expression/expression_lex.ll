@@ -31,8 +31,8 @@
 %{
 /************************* INCLUDES AND EXTERNALS *************************************/
 #include <string>
-#include "Moteur_expression.hpp"
-#include "expression_yacc.h"
+#include "its/expression/Moteur_expression.hpp"
+#include "its/expression/expression_yacc.h"
 
 %}
 %option noyywrap
