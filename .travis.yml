@@ -64,7 +64,7 @@ script :
   - wget https://lip6.github.io/libDDD/linux.tgz
   - tar xzf linux.tgz
   - ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log 
-  - make -j
+  - make 
   - make install
   - tar cvzf $TRAVIS_OS_NAME.tgz usr/
   - mv $TRAVIS_OS_NAME.tgz website/
