@@ -30,6 +30,9 @@ IN THE SOFTWARE.
 #ifndef aiger_h_INCLUDED
 #define aiger_h_INCLUDED
 
+// to force popen/pclose to exist
+#define _BSD_SOURCE
+
 #include <stdio.h>
 
 /*------------------------------------------------------------------------*/
