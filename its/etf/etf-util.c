@@ -1,3 +1,4 @@
+#include "etf/runtime.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -5,7 +6,6 @@
 
 #define ETF_BUF 4096
 
-#include "etf/runtime.h"
 #include "etf/etf-util.h"
 #include "etf/dynamic-array.h"
 #include "etf/stringindex.h"

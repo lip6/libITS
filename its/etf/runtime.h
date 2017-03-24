@@ -5,11 +5,16 @@
 #ifndef RUNTIME_H
 #define RUNTIME_H
 
+// ensure that  fileno exists
+#define _POSIX_SOURCE
+// ensure that strdup exists
+#define _BSD_SOURCE
+
+
 /**
 \defgroup runtime Runtime support library.
  */
 ///@{
-#define _POSIX_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
