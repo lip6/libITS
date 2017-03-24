@@ -31,7 +31,9 @@ IN THE SOFTWARE.
 #define aiger_h_INCLUDED
 
 // to force popen/pclose to exist
+#ifndef _BSD_SOURCE
 #define _BSD_SOURCE
+#endif
 
 #include <stdio.h>
 
