@@ -4,10 +4,10 @@ AM_YFLAGS = -d
 AM_LFLAGS = -olex.yy.c
 
 if WITH_LIBDDD_PATH
-LIBDDD_CPP=-I$(LIBDDD_ROOT)
+LIBDDD_CPP=-I$(LIBDDD_ROOT)/include
 endif
 
-libEXPRESS_a_CPPFLAGS = -I$(top_srcdir)/src/parser_RdPE \
+libEXPRESS_a_CPPFLAGS = -I$(top_srcdir) \
                         $(LIBDDD_CPP) 
 
 BUILT_SOURCES = expression_yacc.h
