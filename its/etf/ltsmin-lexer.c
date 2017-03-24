@@ -19,6 +19,10 @@
 #ifndef _BSD_SOURCE
 #define _BSD_SOURCE
 #endif
+// fileno
+#ifndef _POSIX_SOURCE
+#define _POSIX_SOURCE
+#endif
 
 /* begin standard C headers. */
 #include <stdio.h>
