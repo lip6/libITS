@@ -2,7 +2,7 @@ SUBDIRS = bringBack
 noinst_LIBRARIES = libITSmain.a libprod.a
 lib_LIBRARIES = libITS.a
 
-MYSRCDIR= $(abs_top_srcdir)/its
+MYSRCDIR= $(top_srcdir)/its
 MYPRODSRCDIR= $(MYSRCDIR)/prod
 MYJSONSRCDIR= $(MYSRCDIR)/parser_json
 MYPETRISRCDIR = $(MYSRCDIR)/petri
@@ -329,6 +329,8 @@ AM_CXXFLAGS = -g -O3 -Wall
 
 libITSmain_a_SOURCES = $(ITSSOURCES)
 
+otherincludedir = $(includedir)/include
+nobase_otherinclude_HEADERS = $(ITSHEADERS)
 
 libITS.a : libITSmain.a libprod.a libCAMI.a libprod.a libRdP.a
 	mkdir .tmp-libs ; cd .tmp-libs ; $(AR) x ../libITSmain.a ; $(AR) x ../libprod.a ; $(AR) x ../libRdP.a ; $(AR) x ../libCAMI.a ; $(AR) x ../libprod.a ; $(AR) cru ../libITS.a *.o ; cd .. ; $(RANLIB) libITS.a ; \rm -r .tmp-libs ;
