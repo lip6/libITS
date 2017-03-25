@@ -1,9 +1,27 @@
 <h1>Download page for LibITS </h1>
 
 <p>
-Download the latest distribution here :<a href="./its-0.2.DATETIME.tar.gz"> LibITS latest </a>
+This page hosts content built on : DATETIME.
 </p>
 
 <p>
-Download the latest artifacts here (result of make install) : <a href="./linux.tgz"> Linux latest artifacts (lib/libITS.a, include/*.hh, bin/its-reach) </a>
+This page hosts content regularly rebuilt using the continuous integration service Travis.
+Our home page is still hosted at : <a href="http://ddd.lip6.fr"> ITS homepage </a>
+</p>
+
+<p>
+Download the latest executable for linux x64 : <a href="./its-reach"> its-reach for Linux latest</a>. <br/>
+Note that this executable is statically linked and should work without any further installation.
+</p>
+
+<p>
+For developpers, download the latest source distribution here :<a href="./its-0.2.DATETIME.tar.gz"> LibITS latest </a>
+Run ./configure and make to get rolling. See .travis.yml at root of source depot for examples of setting up dependencies (antlr in particular).
+</p>
+
+
+<p>
+Download the latest artifacts here (result of make install) : <a href="./linux.tgz"> Linux latest artifacts (lib/libITS.a, include/*.hh, bin/its-reach) </a>. <br/>
+Note that this artifact embeds our dependencies (libDDD). 
+This artifact is not very portable, the environment is a docker hosted on travis-ci.
 </p>
