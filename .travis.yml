@@ -65,6 +65,7 @@ script :
   - ./configure --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log 
   - make 
   - strip -s bin/its-ctl
+  - cp bin/its-ctl website/
   - make install
   - tar cvzf $TRAVIS_OS_NAME.tgz usr/
   - mv $TRAVIS_OS_NAME.tgz website/
