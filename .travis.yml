@@ -67,7 +67,7 @@ script :
   - make 
 #  - make install
 #  - tar cvzf $TRAVIS_OS_NAME.tgz usr/
-  - cp bin/its-reach website/
+  - strip -s bin/its-reach && cp bin/its-reach website/
 #  - make dist
 #  - mv its*.tar.gz website/ 
   
