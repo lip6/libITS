@@ -11,7 +11,7 @@ SUFFIXES = .h .hxx
 .hxx.h:
 	cp $< $@
 
-lib_LIBRARIES = libCAMI.a
+noinst_LIBRARIES = libCAMI.a
 
 libCAMI_a_SOURCES   =   Cami.cpp \
                         Cami.hpp \

@@ -10,7 +10,7 @@ SUFFIXES = .h .hxx
 .hxx.h:
 	cp $< $@
 
-lib_LIBRARIES = libRdP.a
+noinst_LIBRARIES = libRdP.a
 
 libRdP_a_SOURCES = RdPE.cpp  RdPE.h  RdPMonteur.h  RdPMonteur_lex.ll  RdPMonteur_yacc.yxx
 

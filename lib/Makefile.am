@@ -1,6 +1,6 @@
 SUBDIRS = bringBack
-lib_LIBRARIES = libITSmain.a libprod.a
-
+noinst_LIBRARIES = libITSmain.a libprod.a
+lib_LIBRARIES = libITS.a
 
 MYSRCDIR= $(abs_top_srcdir)/its
 MYPRODSRCDIR= $(MYSRCDIR)/prod
