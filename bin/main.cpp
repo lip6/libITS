@@ -1,12 +1,12 @@
 #include <fstream>
 // The ITS model referential
-#include "ITSModel.hh"
-#include "Options.hh"
-#include "SDD.h"
+#include "its/ITSModel.hh"
+#include "its/Options.hh"
+#include "ddd/SDD.h"
 
 // SDD utilities to output stats and dot graphs
-#include "util/dotExporter.h"
-#include "statistic.hpp"
+#include "ddd/util/dotExporter.h"
+#include "ddd/statistic.hpp"
 
 #include "mc/ctlCheck.hh"
 
