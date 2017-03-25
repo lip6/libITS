@@ -2,7 +2,7 @@
 #define __CTL__CHECK__HH__
 
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 #include "ctlp/ctlp.h"
 
 
