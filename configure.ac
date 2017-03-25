@@ -1,5 +1,5 @@
 AC_PREREQ([2.19])
-AC_INIT([ctlits],
+AC_INIT([itsctl],
         [0.1],
         [Yann.Thierry-Mieg@lip6.fr])
 
