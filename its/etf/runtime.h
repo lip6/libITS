@@ -6,10 +6,13 @@
 #define RUNTIME_H
 
 // ensure that  fileno exists
+#ifndef _POSIX_SOURCE
 #define _POSIX_SOURCE
+#endif
 // ensure that strdup exists
+#ifndef _BSD_SOURCE
 #define _BSD_SOURCE
-
+#endif
 
 /**
 \defgroup runtime Runtime support library.
