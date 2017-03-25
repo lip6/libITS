@@ -17,3 +17,4 @@ check:
 
 distdir :
 
+install :
