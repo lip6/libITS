@@ -65,9 +65,10 @@ script :
   - tar xzf linux.tgz
   - ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log 
   - make 
-#  - make install
+  - make install
 #  - tar cvzf $TRAVIS_OS_NAME.tgz usr/
   - strip -s bin/its-reach && cp bin/its-reach website/
+
 #  - make dist
 #  - mv its*.tar.gz website/ 
   
