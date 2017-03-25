@@ -1,2 +1,6 @@
 /Makefile
 /Makefile.in
+/mutex
+/MutexMefosyloma
+/philo
+/philob
