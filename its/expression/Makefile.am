@@ -1,4 +1,4 @@
-lib_LIBRARIES = libEXPRESS.a
+noinst_LIBRARIES = libEXPRESS.a
 
 AM_YFLAGS = -d 
 AM_LFLAGS = -olex.yy.c
