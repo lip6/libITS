@@ -1,4 +1,5 @@
-noinst_PROGRAMS = its-reach dve2gal gal2c
+bin_PROGRAMS = its-reach
+noinst_PROGRAMS = dve2gal gal2c
 #gal-test
 
 LIBITS_CPP=-I$(top_srcdir)
