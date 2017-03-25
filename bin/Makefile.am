@@ -1,11 +1,11 @@
-noinst_PROGRAMS = its-ctl
+bin_PROGRAMS = its-ctl
 
 
 if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
 LIBDDD_PATH=$(LIBDDD_ROOT)/libDDD.a
 else
-LIBDDD_LINK=-lddd
+LIBDDD_LINK=-lDDD
 endif
 
 
@@ -34,4 +34,4 @@ endif
 AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src $(HAVE_BOOST_FLAG) $(LIBITS_CPP) $(LIBDDD_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP)
 
 its_ctl_SOURCES = main.cpp
-its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH)   $(LIBDDD_PATH) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) -lm
+its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH) $(LIBITS_LINK) $(LIBDDD_PATH) $(LIBDDD_LINK) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) -lm

@@ -1,4 +1,4 @@
-lib_LIBRARIES = libctlp.a
+noinst_LIBRARIES = libctlp.a
 noinst_PROGRAMS = test_ctl
 
 AM_YFLAGS = -pCtlpYy -d -t 

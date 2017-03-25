@@ -1,4 +1,4 @@
-lib_LIBRARIES =  libctlits.a 
+noinst_LIBRARIES =  libctlits.a 
 
 if WITH_LIBDDD_PATH
 LIBDDD_CPP=-I$(LIBDDD_ROOT)
