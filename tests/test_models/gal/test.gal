@@ -1,12 +1,32 @@
-GAL a {
-	int a = -4 ;
-	int b = 10;
+GAL a
+{
+  int a = -4 ;
+  int b = 10;
 
-	array[2] tabf = (1,50);
-	
-	transition t1 [true && false]
-	{
-		a = a-1; 
-		tabf[0] = tabf[0];
-	} 
+  array[2] tabf = (1,50);
+
+  transition t0 [true] label "foo"
+  {
+    a = a+1;
+  }
+  transition t1 [true] label "foo"
+  {
+    a = a+2;
+  }
+
+  transition a [true] label "bar"
+  {
+    b = b+1;
+  }
+  transition b [true] label "bar"
+  {
+    b = b+2;
+  }
+
+  transition t3 [true]
+  {
+    self."foo";
+    tabf[0] = tabf[1];
+    self."bar";
+  }
 }
