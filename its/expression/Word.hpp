@@ -43,7 +43,7 @@ public:
         Word operator&(const Word& w)const;
         bool operator==(const Word& w) const; 
 	size_t as_WordHash()const;
-        int  size()const;
+        size_t  size()const;
 	friend ostream& operator<< (ostream& o, const Word& w);
 private:
         vector<int>  w;

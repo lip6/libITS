@@ -115,7 +115,7 @@ size_t Word::as_WordHash( )const {
 }
 
 //---------------------------size of fifo-----------------------------
- int  Word::size()const{
+size_t  Word::size()const{
       return(w.size());
 }
 
