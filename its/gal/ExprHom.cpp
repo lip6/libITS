@@ -291,9 +291,18 @@ namespace its {
 		// If the RHS is also resolved (to a constant)
 
 //			std::cerr << "solved" << std::endl;
+
 		if (isIncrement) {
-		  res.insert(GDDD(vr, e.getValue() + vl, it->second));		  
+		  DDD::val_t newvalue = e.getValue() + vl;
+		  if (newvalue != e.getValue() + vl) {
+		    throw "Overflow error when processing assignment. Please recompile libDDD with larger DDD::val_t definition.";
+		  }
+		  res.insert(GDDD(vr, newvalue, it->second));		  
 		} else {
+		  DDD::val_t newvalue = e.getValue() ;
+		  if (newvalue != e.getValue()) {
+		    throw "Overflow error when processing assignment. Please recompile libDDD with larger DDD::val_t definition.";
+		  }
 		  res.insert(GDDD(vr, e.getValue(), it->second));
 		}
 	      } else {

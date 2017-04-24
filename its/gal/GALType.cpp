@@ -35,8 +35,8 @@ labels_t GALType::getTransLabels () const {
       Label pname = vo.getLabel(i);
       // retrieve the appropriate place marking
       int mark = gal_->getVarValue(pname);
-      if ( static_cast<DDD::value_t> (mark) != mark ) {
-	throw "Overflow error when converting initial marking. Please recompile libDDD with larger DDD::value_t definition.";
+      if ( static_cast<DDD::val_t> (mark) != mark ) {
+	throw "Overflow error when converting initial marking. Please recompile libDDD with larger DDD::val_t definition.";
       } 
       // left concatenate to M0
       M0 = DDD (i,mark) ^ M0;
