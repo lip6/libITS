@@ -93,13 +93,13 @@ RdPE::RdPE(const char *f){
 bool RdPE::addPlace(const string &place,int marking,int capacity,int m){
   map<string,int>::const_iterator pi=placeName.find(place);
   if(pi==placeName.end()){
-    int pindex = modindex.size();
+    int pindex = static_cast<int> (modindex.size());
     if (modules.find(m) == modules.end()) {
       modules[m] = vector<int> (1,pindex);
       modindex.push_back(make_pair(m,0));
     } else {
       modindex.push_back(make_pair(m,modules[m].size()));
-      modules[m].push_back(places.size());
+      modules[m].push_back(static_cast<int>(places.size()));
     }
     placeName[place]=pindex;
     Place p(place,marking, capacity);
@@ -113,13 +113,13 @@ bool RdPE::addPlace(const string &place,int marking,int capacity,int m){
 bool RdPE::addQueue(const string &place,int capacity,int m){
   map<string,int>::const_iterator pi=placeName.find(place);
   if(pi==placeName.end()){
-    int pindex = places.size();
+    int pindex = static_cast<int> (places.size());
     if (modules.find(m) == modules.end()) {
       modules[m] = vector<int> (1,pindex);
       modindex.push_back(make_pair(m,0));
     } else {
       modindex.push_back(make_pair(m,modules[m].size()));
-      modules[m].push_back(places.size());
+      modules[m].push_back(static_cast<int>(places.size()));
     }
     placeName[place]=pindex; 
     Place p(place,-1, capacity);
@@ -134,13 +134,13 @@ bool RdPE::addLossQueue(const string &place,int capacity,int m){
   map<string,int>::const_iterator pi=placeName.find(place);
 
   if(pi==placeName.end()){
-    int pindex = places.size();
+    int pindex = static_cast<int>(places.size());
     if (modules.find(m) == modules.end()) {
       modules[m] = vector<int> (1,pindex);
       modindex.push_back(make_pair(m,0));
     } else {
       modindex.push_back(make_pair(m,modules[m].size()));
-      modules[m].push_back(places.size());
+      modules[m].push_back(static_cast<int>(places.size()));
     }
     placeName[place]=pindex;
     Place p(place,-2, capacity);
@@ -154,7 +154,7 @@ bool RdPE::addLossQueue(const string &place,int capacity,int m){
 bool RdPE::addTrans(const string &trans){
   map<string,int>::const_iterator ti=transitionName.find(trans);
   if(ti==transitionName.end()){
-    transitionName[trans]=transitions.size();
+    transitionName[trans]= static_cast<int>(transitions.size());
     Transition t(trans);
     transitions.push_back(t);
     return true;

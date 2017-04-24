@@ -127,8 +127,8 @@ public:
   bool addReset(const string &place,const string &transition);
   
   /* Visualisation */
-  int nbPlace() const {return places.size();};
-  int nbTransition() const {return transitions.size();};
+  size_t nbPlace() const {return places.size();};
+  size_t nbTransition() const {return transitions.size();};
   bool isTimePetriNet () const ;
 };
 
