@@ -32,6 +32,8 @@ using namespace std;
 #include <stdio.h>
 #include "its/parser_RdPE/RdPMonteur.h"
 
+#pragma GCC diagnostic ignored "-Wconversion"
+
 static	RdPMonteur *R;
 static  string t;
 

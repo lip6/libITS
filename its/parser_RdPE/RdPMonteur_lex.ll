@@ -27,6 +27,8 @@
 #include <string>
 #include "its/parser_RdPE/RdPMonteur_yacc.h"
 
+
+#pragma GCC diagnostic ignored "-Wconversion"
 %}
 %option noyywrap
 %option yylineno

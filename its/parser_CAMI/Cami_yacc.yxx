@@ -42,6 +42,7 @@ using namespace std;
 #include "its/parser_CAMI/Cami.hpp"
 using namespace cami;
 
+#pragma GCC diagnostic ignored "-Wconversion"
 
  string value;
  static CAMI *R;

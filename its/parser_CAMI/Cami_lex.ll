@@ -35,6 +35,7 @@
 #include "its/parser_CAMI/Cami.hpp"
 #include "its/parser_CAMI/Cami_yacc.h"
 
+#pragma GCC diagnostic ignored "-Wconversion"
 %}
 %option noyywrap
 %option yylineno

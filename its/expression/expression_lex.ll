@@ -34,6 +34,8 @@
 #include "its/expression/Moteur_expression.hpp"
 #include "its/expression/expression_yacc.h"
 
+
+#pragma GCC diagnostic ignored "-Wconversion"
 %}
 %option noyywrap
 %option yylineno

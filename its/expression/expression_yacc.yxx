@@ -37,6 +37,8 @@
 #include <stdlib.h>
 using namespace std;
 
+#pragma GCC diagnostic ignored "-Wconversion"
+
 #include "its/expression/Moteur_expression.hpp"
   string nom;
   static const RdPE *RP;
