@@ -222,7 +222,7 @@ public:
   std::pair<int,int> getVarRange (Label variable, State states) const;
 
   // semi private function used in Scalar sandboxes
-  void cloneType (pType type) { int n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }
+  void cloneType (pType type) { size_t n = types_.size(); types_.push_back(type); dontdelete.insert(n) ; }
   // member pretty print
   void print (std::ostream & os) const ;
 };
