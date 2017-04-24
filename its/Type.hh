@@ -91,7 +91,7 @@ public :
    **/
   virtual void getNamedLocals (namedTrs_t & ntrans) const = 0;
 
-  typedef std::vector<int> varindex_t;
+  typedef std::vector<size_t> varindex_t;
   /** Return the index of a given variable in the representation, actually a vector of indices in SDD case.
    */
   virtual void getVarIndex(varindex_t & index, Label vname) const =0;

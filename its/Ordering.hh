@@ -22,7 +22,7 @@ namespace its {
  * It is initialized by passing a set of strings (=var names).
  */
 class VarOrder {
-	typedef std::map<vLabel,int> map_t;
+	typedef std::map<vLabel,size_t> map_t;
 	map_t indexes_;
 
 	/** helper function to initialize the map */
@@ -33,7 +33,7 @@ public :
 	int getIndex (Label l) const;
 	/** return the label asociated to an index.
 	 * WARNING IF INDEX UNAPPROPRIATE asserts false !*/
-	Label getLabel (int index) const;
+	Label getLabel (size_t index) const;
 	/** checks that vars is a permutation of the current variables, and sets to the new order.
 	 * returns false and aborts if vars is not a permutation.
 	 */

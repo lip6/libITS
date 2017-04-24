@@ -34,12 +34,12 @@ int VarOrder::getIndex (Label l) const {
 	if (it == indexes_.end())
 		return -1;
 	else
-		return it->second;
+	  return static_cast<int>(it->second);
 }
 
 static vLabel empty ="";
 /** return the label asociated to an index */
-Label VarOrder::getLabel (int index) const {
+Label VarOrder::getLabel (size_t index) const {
 	for (map_t::const_iterator it = indexes_.begin() ; it != indexes_.end(); ++it) {
 		if (it->second == index)
 			return it->first;
