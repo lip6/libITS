@@ -103,9 +103,9 @@ public:
   _Place& get_place(int);
   _Transition& get_transition(int);
   /************************* Visualisation************************* */
-  int nbPlace() const {return places.size();};
-  int nbTransition() const {return transitions.size();};
-  int nbArc()const{return Arc.size();};
+  size_t nbPlace() const {return places.size();};
+  size_t nbTransition() const {return transitions.size();};
+  size_t nbArc()const{return Arc.size();};
 };
 
 bool eraseNode(vector<pair< int,int> > &,int);
