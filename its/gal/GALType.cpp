@@ -1,5 +1,7 @@
 #include "GALType.hh"
 
+#pragma GCC diagnostic warning "-Wconversion"
+
 #include "its/Observe_Hom.hh"
 #include "ddd/Hom_Basic.hh"
 #include "its/gal/ExprHom.hpp"
@@ -33,6 +35,9 @@ labels_t GALType::getTransLabels () const {
       Label pname = vo.getLabel(i);
       // retrieve the appropriate place marking
       int mark = gal_->getVarValue(pname);
+      if ( static_cast<DDD::value_t> (mark) != mark ) {
+	throw "Overflow error when converting initial marking. Please recompile libDDD with larger DDD::value_t definition.";
+      } 
       // left concatenate to M0
       M0 = DDD (i,mark) ^ M0;
       // for pretty print
