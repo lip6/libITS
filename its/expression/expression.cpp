@@ -273,7 +273,7 @@ bool Expression::isParam(int var) const {
 bool Expression::isParam_fifo(int var) const {
 	return belongs(fifo, var);
 }
-unsigned int Expression::size() const {
+size_t Expression::size() const {
 	return is.size()+fifo.size();
 }
 

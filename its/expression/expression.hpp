@@ -138,7 +138,7 @@ class Expression {
   friend Expression belongs(const Expression& og, const Expression& od);
   bool isParam(int var) const;
   bool isParam_fifo(int var)const;	
-  unsigned int size() const;
+  size_t size() const;
   int eval(const Assignment &as, const Ass_fifo &at) const;
 
  private:
