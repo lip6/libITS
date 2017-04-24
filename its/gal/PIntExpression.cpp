@@ -723,7 +723,12 @@ public :
   int constEval (int i, int j) const {
     if (i == TOP || j == TOP)
       return TOP;
-    return i+j;
+    int ret ;
+    if (__builtin_add_overflow(i,j,&ret)) {
+      throw "Addition caused an overflow error.";
+    } else {
+      return ret;
+    }
   }
   int getNeutralElement () const {
     return 0;
