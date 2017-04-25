@@ -13,9 +13,11 @@ private:
   typedef ext_hash_map<GDDD, stat_t> cache_t;
   cache_t cache;
 
+  // either Max/sum or Min/max
+  bool isMaxSum;
   bool firstError;
 public : 
-  MaxComputer  () : scache(),cache(),firstError(false) {}
+  MaxComputer  (bool isMaxSum=true) : scache(),cache(), isMaxSum(isMaxSum),firstError(false) {}
   const stat_t & compute (const GSDD & reach) ;
   const stat_t & compute (const GDDD & reach) ;
   const stat_t & compute (const DataSet * ev) ;

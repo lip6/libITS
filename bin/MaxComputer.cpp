@@ -17,8 +17,14 @@ const MaxComputer::stat_t & MaxComputer::compute (const GSDD & d) {
       const stat_t childStat = compute (gi->second);
       const stat_t & edgeStat = compute (gi->first);
 
-      res.first = std::max(res.first, std::max(childStat.first, edgeStat.first));
-      res.second = std::max(res.second, childStat.second + edgeStat.second);
+      if (isMaxSum) {
+	res.first = std::max(res.first, std::max(childStat.first, edgeStat.first));
+	res.second = std::max(res.second, childStat.second + edgeStat.second);
+      } else {
+	// min/max
+	res.first = std::min(res.first, childStat.first + edgeStat.first);
+	res.second = std::max(res.second, childStat.second + edgeStat.second);
+      }
     }
     scache.insert(access,d);
     access->second = res;
@@ -78,5 +84,9 @@ const MaxComputer::stat_t & MaxComputer::compute (const DataSet* g)
 }
 
 void MaxComputer::printStats (const MaxComputer::stat_t & stat, std::ostream & out) const  {
-  out << "Max variable value : " << stat.first << "\nMaximum sum along a path : " << stat.second << std::endl;
+  if (isMaxSum) {
+    out << "Max variable value : " << stat.first << "\nMaximum sum along a path : " << stat.second << std::endl;
+  } else {
+    out << "Min sum of variable value : " << stat.first << "\nMaximum sum along a path : " << stat.second << std::endl;
+  }
 }
