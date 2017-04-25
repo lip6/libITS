@@ -53,6 +53,7 @@ static std::string modelName = "";
 static int BMC = -1;
 static size_t fixobs_passes = 5000;
 
+its::State clearState (its::State in);
 
 State exhibitModel (ITSModel & model) {
 	// pretty print the model for inspection
@@ -386,14 +387,13 @@ int main_noex (int argc, char **argv) {
  }
 
  if (boundsExpr != "") {
-   std::istringstream iss(boundsExpr);
-   vLabel token;
-   while (std::getline(iss, token, ',')) {
-     std::pair<int,int> range = model.getVarRange (token, reachable);
-     std::cout << "Bounds of variable : " << range.first <<  " <= " << token << " <= " << range.second << std::endl;  
-   }
- }
-
+    std::istringstream iss(boundsExpr);
+    vLabel token;
+    while (std::getline(iss, token, ',')) {     
+      props.push_back(Property(token,token,BOUNDS));
+    }
+ } 
+  
  if (props.size() > 0) {
    std::cout << "Verifying " << props.size() << " reachability properties."<< std::endl; 
  }
@@ -406,8 +406,27 @@ int main_noex (int argc, char **argv) {
    bool isVerify = false;
 
    State verify = State::null;
-
-   if (it->getType() == INVARIANT) {
+   
+   if (it->getType() == BOUNDS) {
+     std::istringstream iss(it->getPred());
+     labels_t tokens;
+     vLabel token;
+     while (std::getline(iss, token, '+')) {     
+       tokens.push_back(token);
+     }
+     its::State init = model.getInitialState();
+     its::State clear = clearState(init);
+     // substitutes values not in target set by a potential forced to only : 0
+     its::Transition getter = model.getInstance()->getType()->observe(tokens, clear);
+     // apply it to state space
+     its::State res = getter (reachable);
+     // apply a min/max stats computer to result
+     MaxComputer mc (false);
+     MaxComputer::stat_t stat = mc.compute(reachable);
+     mc.printStats(stat, std::cout);
+     std::cout << "Bounds property "<< it->getName() << " :" << stat.first <<  " <= " << it->getPred() << " <= " << stat.second << std::endl;  
+   
+   } else if (it->getType() == INVARIANT) {
      Transition predicate = model.getPredicate("!(" + it->getPred() + ")");
      //     predicate = ! predicate;
      verify = predicate.has_image(reachable);
@@ -510,4 +529,54 @@ int main (int argc, char **argv) {
     exit(1);
   }
 
+}
+
+
+class ClearHomDDD : public StrongHom {
+public:
+  size_t hash() const {
+    return 419;
+  }
+  _GHom* clone() const {
+    return new ClearHomDDD(*this);
+  }
+
+  GHom phi(int var, int val) const {
+    return GHom(var, 0, this);
+  }
+  GDDD phiOne() const{return GDDD::one;}
+  bool operator==(const StrongHom &h) const { return true; }
+};
+
+DDD clearDDD (const DDD & in) {
+  Hom cl = Hom(ClearHomDDD());
+  return  cl(in);
+}
+
+class SClearHom : public StrongShom {
+public :
+  size_t hash() const {
+    return 31;
+  }
+  _GShom * clone () const {
+    return new SClearHom(*this);
+  }
+
+  GShom phi(int var,const DataSet& val) const {
+    if (typeid(val) == typeid(const GSDD&)) {
+      GSDD v2 = Shom(*this) ((const GSDD &)val);
+      return GShom(var, v2, this);
+    } else {
+      DDD v2 = clearDDD( (const DDD&) val);
+      return GShom(var, v2, this);
+    }
+  }
+  bool operator==(const StrongShom &h) const {
+    return true;
+  }
+};
+
+its::State clearState (its::State in) {
+  its::Transition hom = its::Transition(SClearHom());
+  return hom(in);
 }
