@@ -42,6 +42,8 @@ namespace its {
 			    ptype = REACH;
 			  } else if (! strcmp(type,"[invariant]")) {
 			    ptype = INVARIANT;
+			  } else if (! strcmp(type,"[bounds]")) {
+			    ptype = BOUNDS;
 			  } else {
 			    std::cerr << "Unable to read property type " << type << " (skipping this line): " << line << std::endl;
 			    continue;

@@ -5,7 +5,7 @@
 
 namespace its {
 
-  enum PropType { REACH, INVARIANT, NEVER};
+  enum PropType { REACH, INVARIANT, NEVER, BOUNDS};
 
   class Property {
     vLabel name;
