@@ -323,16 +323,20 @@ int main_noex (int argc, char **argv) {
  }
 
  if (dostats) {
+ // short scopes since these classes cost a cache to maintain.
+  {
    MaxComputer mc ;
    MaxComputer::stat_t stat = mc.compute(reachable);
    mc.printStats(stat, std::cout);
- }
- // short scopes since these classes cost a cache to maintain.
- if (countEdges)  {
+  }
+  {
    ExactStateCounter mc ;
    ExactStateCounter::stat_t stat = mc.compute(reachable);
-   mc.printStats(stat, std::cout);
-   
+   mc.printStats(stat, std::cout);	  
+  }
+ }
+ if (countEdges)  {
+   ExactStateCounter mc ;   
    mpz_class total = 0;
    its::State rel = getTransRel(model);
    total = mc.compute(rel);     
