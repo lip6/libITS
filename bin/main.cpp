@@ -47,7 +47,8 @@ static bool dodotexport=false;
 static bool dodumporder = false;
 static bool dowitness = true; 
 static bool dostats = false;
-static bool with_garbage=true;
+static bool with_garbage = true;
+static bool countEdges = false;
 static std::string modelName = "";
 // if BMC use is wanted, will be >0
 static int BMC = -1;
@@ -142,6 +143,7 @@ void usage() {
   cerr<<  "    -trace XXX : try to replay a trace, XXX is given as a space separated list of transition names, as used in path outputs." << endl;
   cerr<<  "    --quiet : limit output verbosity useful in conjunction with tex output --texline for batch performance runs" <<endl;
   cerr<<  "    --stats : produce stats on max sum of variables (i.e. maximum tokens in a marking for a Petri net), maximum variable value (bound for a Petri net)" <<endl;
+  cerr<<  "    --edgeCount : produce stats on the size of the transition relation, i.e. the number of unique source to target state pairs it contains." <<endl;
   cerr<<  "    -maxbound XXXX,YYYY : return the maximum value for each variable in the list (comma separated)" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
@@ -227,6 +229,8 @@ int main_noex (int argc, char **argv) {
      beQuiet = true;
    } else if (! strcmp(args[i],"--stats")   ) {
      dostats = true;
+   } else if (! strcmp(args[i],"--edgeCount")   ) {
+     countEdges = true;
    } else if (! strcmp(args[i],"--nowitness")   ) {
      dowitness = false;
    } else if (! strcmp(args[i],"-reachable") ) {
@@ -319,72 +323,71 @@ int main_noex (int argc, char **argv) {
  }
 
  if (dostats) {
-   {
-     MaxComputer mc ;
-     MaxComputer::stat_t stat = mc.compute(reachable);
-     mc.printStats(stat, std::cout);
-   }
-   // short scopes since these classes cost a cache to maintain.
-   {
-     ExactStateCounter mc ;
-     ExactStateCounter::stat_t stat = mc.compute(reachable);
-     mc.printStats(stat, std::cout);
-
-     mpz_class total = 0;
-     its::State rel = getTransRel(model);
-     total = mc.compute(rel);     
-
-     // // declarations common to cluster and transition approaches
-     // Type::namedTrs_t namedTrs;
-     // model.getNamedLocals(namedTrs);
-     // size_t tsize = namedTrs.size();
-
-     // // transitions approach
-     // int done = 0;
-     // for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
-     //   its::State succs = (it->second)(model.computeReachable());
-     //   total += mc.compute(succs);
-     //   ++done;
-     //   if (MemoryManager::should_garbage()) {
-     // 	 std::cerr << "Done " << done << "/" << tsize << " transitions." << std::endl;
-     // 	 mc.clear();
-     // 	 MemoryManager::garbage();
-     //   }
-     // }
-
-     // // CLUSTER APPROACH 
-     // std::list<its::Transition> clusters;
-     // for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
-     //   bool added = false;
-     //   for (std::list<its::Transition>::iterator jt = clusters.begin() ; jt != clusters.end() ; ++jt ) {
-     // 	 if ( commutative(*jt, it->second) ) {
-     // 	   *jt = *jt + it->second;
-     // 	   added = true;
-     // 	   break;
-     // 	 }
-     //   }
-     //   if (!added) {
-     // 	 clusters.push_back(it->second);
-     //   }
-     // }
-     // std::cerr << "Built " << clusters.size() << " clusters from "<< tsize << " transitions. " << std::endl;
-     
-
-     // int done = 0;
-     // for (std::list<its::Transition>::iterator jt = clusters.begin() ; jt != clusters.end() ; ++jt ) {
-     //   its::State succs = (*jt)(model.computeReachable());
-     //   total += mc.compute(succs);
-     //   ++done;
-     //   if (MemoryManager::should_garbage()) {
-     // 	 std::cerr << "Done " << done << "/" << clusters.size() << " clusters." << std::endl;
-     // 	 mc.clear();
-     // 	 MemoryManager::garbage();
-     //   }
-     // }
-     
-     std::cout << "Total edges in reachability graph : " << total << std::endl;
-   }
+   MaxComputer mc ;
+   MaxComputer::stat_t stat = mc.compute(reachable);
+   mc.printStats(stat, std::cout);
  }
+ // short scopes since these classes cost a cache to maintain.
+ if (countEdges)  {
+   ExactStateCounter mc ;
+   ExactStateCounter::stat_t stat = mc.compute(reachable);
+   mc.printStats(stat, std::cout);
+   
+   mpz_class total = 0;
+   its::State rel = getTransRel(model);
+   total = mc.compute(rel);     
+   
+   // // declarations common to cluster and transition approaches
+   // Type::namedTrs_t namedTrs;
+   // model.getNamedLocals(namedTrs);
+   // size_t tsize = namedTrs.size();
+   
+   // // transitions approach
+   // int done = 0;
+   // for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+   //   its::State succs = (it->second)(model.computeReachable());
+   //   total += mc.compute(succs);
+   //   ++done;
+   //   if (MemoryManager::should_garbage()) {
+   // 	 std::cerr << "Done " << done << "/" << tsize << " transitions." << std::endl;
+   // 	 mc.clear();
+   // 	 MemoryManager::garbage();
+   //   }
+   // }
+   
+   // // CLUSTER APPROACH 
+   // std::list<its::Transition> clusters;
+   // for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+   //   bool added = false;
+   //   for (std::list<its::Transition>::iterator jt = clusters.begin() ; jt != clusters.end() ; ++jt ) {
+   // 	 if ( commutative(*jt, it->second) ) {
+   // 	   *jt = *jt + it->second;
+   // 	   added = true;
+   // 	   break;
+   // 	 }
+   //   }
+   //   if (!added) {
+   // 	 clusters.push_back(it->second);
+   //   }
+   // }
+   // std::cerr << "Built " << clusters.size() << " clusters from "<< tsize << " transitions. " << std::endl;
+   
+   
+   // int done = 0;
+   // for (std::list<its::Transition>::iterator jt = clusters.begin() ; jt != clusters.end() ; ++jt ) {
+   //   its::State succs = (*jt)(model.computeReachable());
+   //   total += mc.compute(succs);
+   //   ++done;
+   //   if (MemoryManager::should_garbage()) {
+   // 	 std::cerr << "Done " << done << "/" << clusters.size() << " clusters." << std::endl;
+   // 	 mc.clear();
+   // 	 MemoryManager::garbage();
+   //   }
+   // }
+   
+   std::cout << "Total edges in reachability graph : " << total << std::endl;
+ }
+ 
 
  if (boundsExpr != "") {
     std::istringstream iss(boundsExpr);
