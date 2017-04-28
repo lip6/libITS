@@ -429,7 +429,7 @@ int main_noex (int argc, char **argv) {
      its::State res = getter (reachable);
      // apply a min/max stats computer to result
      MaxComputer mc (false);
-     MaxComputer::stat_t stat = mc.compute(reachable);
+     MaxComputer::stat_t stat = mc.compute(res);
      mc.printStats(stat, std::cout);
      std::cout << "Bounds property "<< it->getName() << " :" << stat.first <<  " <= " << it->getPred() << " <= " << stat.second << std::endl;  
    
@@ -577,6 +577,10 @@ public :
       DDD v2 = clearDDD( (const DDD&) val);
       return GShom(var, v2, this);
     }
+  }
+
+  GSDD phiOne() const {
+    return GSDD::one;
   }
   bool operator==(const StrongShom &h) const {
     return true;
