@@ -49,8 +49,14 @@ const MaxComputer::stat_t & MaxComputer::compute (const GDDD & d) {
     for(GDDD::const_iterator gi=d.begin();gi!=d.end();++gi) {
       const stat_t & childStat = compute (gi->second);
       
-      res.first = std::max(res.first, childStat.first > gi->first ? childStat.first : gi->first );
-      res.second = std::max(res.second, childStat.second + gi->first );
+      if (isMaxSum) {
+	res.first = std::max(res.first, std::max(childStat.first,static_cast<long double> (gi->first)));
+	res.second = std::max(res.second, childStat.second + gi->first );
+      } else {
+	// min/max
+	res.first = std::max(res.first, childStat.first + gi->first);
+	res.second = std::max(res.second, childStat.second + gi->first);
+      }
     }
     cache.insert(access,d);
     access->second = res;
