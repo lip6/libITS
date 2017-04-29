@@ -28,10 +28,11 @@ class CTLChecker {
   mutable its::Transition predRel_;
 
   bool isfairtime;
+  bool beQuiet;
   mutable bool scc_;
   mutable bool scc_computed_;
 public :
-  CTLChecker (const its::ITSModel & model) : model(model), isfairtime(false),scc_(false), scc_computed_(false) {}
+  CTLChecker (const its::ITSModel & model, bool beQuiet=false) : model(model), isfairtime(false), beQuiet(beQuiet), scc_(false), scc_computed_(false) {}
 
   void setFairTime(bool befairtime) { isfairtime = befairtime; }
 

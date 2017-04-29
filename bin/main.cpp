@@ -164,7 +164,7 @@ int main (int argc, char ** argv) {
 
 
   // Build CTL context
-  CTLChecker checker (model);
+  CTLChecker checker (model, bequiet);
 
   if (befairtime) {
     checker.setFairTime(befairtime);

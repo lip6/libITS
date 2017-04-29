@@ -713,7 +713,7 @@ bool CTLChecker::hasSCCs () const {
     its::Transition findscc = fixpoint( getNextRel() * Transition::id );
     State sccs = findscc.has_image(getReachable());
     if (sccs == State::null) {	   
-      std::cout << "Fast SCC detection found none." << std::endl;      
+      if (!beQuiet) std::cout << "Fast SCC detection found none." << std::endl;      
 	  scc_ = false;	
     } else {
 	  scc_ = true;
@@ -724,9 +724,11 @@ bool CTLChecker::hasSCCs () const {
 
 its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need_exact) const {
   its::Transition stop = Shom(GSDD::top);
-  std::cout << "Checking (exact) " << need_exact << " :" ;
-  Ctlp_FormulaPrint(vis_stdout,ctlFormula);
-  std::cout << std::endl ;
+  if (! beQuiet) {
+  	std::cout << "Checking (exact) " << need_exact << " :" ;
+  	Ctlp_FormulaPrint(vis_stdout,ctlFormula);
+  	std::cout << std::endl ;
+  }
   if (! need_exact) {
     its::State result ;
 
@@ -1131,7 +1133,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  its::Transition egfix = fixpoint ( getPredRel() * its::Transition::id, true); 
 	  its::State img = egfix.has_image(leftStates);
 	  if (img == State::null) {
-	    std::cout << "Fast SCC detection found none." << std::endl;
+	    if (! beQuiet) std::cout << "Fast SCC detection found none." << std::endl;
 	    result = deadg ;
 	  } else {
 	    result = egfix (leftStates) + deadg; 
@@ -1140,7 +1142,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  its::Transition egfix = fixpoint ( ( leftHom & getPredRel() ), true);
 	  its::State img = egfix.has_image(leftStates);
 	  if (img == State::null) {
-	    std::cout << "Fast SCC detection found none." << std::endl;
+	    if (! beQuiet) std::cout << "Fast SCC detection found none." << std::endl;
 	    result = deadg ;
 	  } else {
 	    result = egfix (leftStates)+ deadg; 
