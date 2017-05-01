@@ -1,7 +1,7 @@
 /*
  * CompositeITS.cpp
  *
- *  Created on: 7 déc. 2008
+ *  Created on: 7 dï¿½c. 2008
  *      Author: yann
  */
 
@@ -311,7 +311,7 @@ State CompositeType::getState(Label stateLabel) const {
     Transition h = Transition::id;
      // each place = one var as indicated by varOrder
     const VarOrder & vo = *getVarOrder();
-    for (size_t i=vo.size()-1 ; i >= 0  ; --i) {
+    for (int i=vo.size()-1 ; i >= 0  ; --i) {
       labels_t & tab = instvars[i];
       // there are some observed vars inside
       Composite::comps_it instance = findName( vo.getLabel(i), comp_.comps_begin() , comp_.comps_end() );
