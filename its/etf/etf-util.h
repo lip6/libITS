@@ -6,9 +6,9 @@
 \brief Enumerated Table Format Utilities.
 */
 
-#include "etf/lts-type.h"
-#include "etf/etf-objects.h"
-#include "etf/chunk_support.h"
+#include "its/etf/lts-type.h"
+#include "its/etf/etf-objects.h"
+#include "its/etf/chunk_support.h"
 
 /**
 Opaque type for ETF models.

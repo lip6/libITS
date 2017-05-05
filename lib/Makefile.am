@@ -83,8 +83,12 @@ COMPOSITEHEADERS = 	$(MYCOMPSRCDIR)/Composite.hh \
 	$(MYCOMPSRCDIR)/TComposite.hh 
 
 ETFHEADERS = $(MYETFSRCDIR)/ETFType.hh \
-	$(MYETFSRCDIR)/etf-util.h
-
+	$(MYETFSRCDIR)/etf-util.h \
+	$(MYETFSRCDIR)/lts-type.h \
+	$(MYETFSRCDIR)/stream.h \
+	$(MYETFSRCDIR)/runtime.h \
+	$(MYETFSRCDIR)/etf-objects.h \
+	$(MYETFSRCDIR)/chunk_support.h 
 
 
 SCALARHEADERS = $(MYSCALARSRCDIR)/CircularSet.hh \

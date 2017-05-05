@@ -1,8 +1,8 @@
 #ifndef LTS_TYPE_H
 #define LTS_TYPE_H
 
-#include "etf/stream.h"
-#include "etf/runtime.h"
+#include "its/etf/stream.h"
+#include "its/etf/runtime.h"
 
 
 
