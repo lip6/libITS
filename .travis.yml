@@ -1,0 +1,43 @@
+
+language : python
+
+addons:
+  apt:
+    sources: ['ubuntu-toolchain-r-test', 'hvr-ghc']
+    packages: ['g++-5', 'gcc-5', 'expat', 'libgmp-dev', 'libpopt-dev', 'asciidoc', 'xmlto', 'doxygen', 'libboost-dev', 'cmake', 'cmake-data' ]
+    
+before_script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - export GCCVER='5'
+  - export CXX=g++-${GCCVER}
+  - export CC=gcc-${GCCVER}
+  - export AR=gcc-ar-${GCCVER}
+  - export RANLIB=gcc-ranlib-${GCCVER}
+  - export NM=gcc-nm-${GCCVER}
+
+# build spot
+script :
+  - /bin/sh ./tag.sh 
+  - wget https://yanntm.github.io/ITS-Tools-Dependencies/spot_linux_64.tar.gz
+  - tar xvzf spot_linux_64.tar.gz
+  - wget https://lip6.github.io/libITS/linux.tgz
+  - tar xzf linux.tgz
+  - autoreconf -vfi   
+#  - mkdir usr && mkdir usr/local
+  - ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log 
+  - make 
+  - strip -s bin/its-ltl
+  - cp bin/its-ltl website/
+  - make install
+  - tar cvzf $TRAVIS_OS_NAME.tgz usr/
+  - mv $TRAVIS_OS_NAME.tgz website/
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  local_dir: website/
+  upload-dir: build/$TRAVIS_BUILD_NUMBER
+  on:
+    branch: master
+  
