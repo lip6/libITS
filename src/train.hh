@@ -1,7 +1,7 @@
 #ifndef __TRAIN_HH__
 #define __TRAIN_HH__
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 
 /** Build a type called "trains" representing the n trains problem. */

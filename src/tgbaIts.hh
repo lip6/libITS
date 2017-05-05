@@ -1,7 +1,7 @@
 #ifndef __TGBA_ITS_HH__
 #define __TGBA_ITS_HH__
 
-#include "TypeBasics.hh"
+#include "its/TypeBasics.hh"
 #include <spot/twa/twa.hh>
 #include <spot/misc/bddlt.hh>
 #include <spot/twaalgos/dot.hh>

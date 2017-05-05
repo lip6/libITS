@@ -2,7 +2,7 @@
 #define __FSLTL__HH__
 
 #include "sogIts.hh"
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 #include <spot/twa/twa.hh>
 #include "tgbaIts.hh"
 

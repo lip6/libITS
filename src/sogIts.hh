@@ -1,9 +1,9 @@
 #ifndef ___SOGITS__HH__
 #define ___SOGITS__HH__
 
-#include "Ordering.hh"
+#include "its/Ordering.hh"
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 // BuDDy package
 #include <bddx.h>
 

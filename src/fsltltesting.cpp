@@ -1,5 +1,5 @@
 #include "fsltltesting.hh"
-#include "statistic.hpp"
+#include "ddd/statistic.hpp"
 
 //#define trace std::cerr
 #define trace while (0) std::cerr

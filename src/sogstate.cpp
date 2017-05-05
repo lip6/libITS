@@ -1,6 +1,6 @@
 #include <cassert>
 #include <algorithm>
-#include <util/configuration.hh>
+#include <ddd/util/configuration.hh>
 
 #include "sogstate.hh"
 

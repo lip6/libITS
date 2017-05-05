@@ -23,7 +23,7 @@
 #include "slaptgta.cpp"
 #include "dsogtgta.hh"
 
-#include "statistic.hpp"
+#include "ddd/statistic.hpp"
 #include <spot/twaalgos/postproc.hh>
 
 // #define trace std::cerr

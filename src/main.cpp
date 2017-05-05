@@ -32,10 +32,10 @@
 
 #include "sogtgbautils.hh"
 #include "train.hh"
-#include "MemoryManager.h"
+#include "ddd/MemoryManager.h"
 
 // prod parser
-#include "Options.hh"
+#include "its/Options.hh"
 
 // fair CTL bricks
 #include "tgbaIts.hh"

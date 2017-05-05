@@ -4,7 +4,7 @@
 #include <spot/tl/print.hh>
 #include <spot/tl/formula.hh>
 #include <spot/misc/escape.hh>
-#include "Hom_Basic.hh"
+#include "ddd/Hom_Basic.hh"
 #include <sstream>
 
 namespace its {

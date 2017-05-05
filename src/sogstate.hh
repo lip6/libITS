@@ -4,7 +4,7 @@
 #include "sogIts.hh"
 #include <spot/twa/twa.hh>
 #include <bddx.h>
-#include "SDD.h"
+#include "ddd/SDD.h"
 
 
 namespace sogits {

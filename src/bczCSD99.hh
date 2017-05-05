@@ -4,7 +4,7 @@
 
 #include <spot/twa/twa.hh>
 #include <bddx.h>
-#include "SDD.h"
+#include "ddd/SDD.h"
 #include "sogIts.hh"
 #include "apiterator.hh"
 

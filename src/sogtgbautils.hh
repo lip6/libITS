@@ -11,7 +11,7 @@
 #include <spot/tl/apcollect.hh>
 #include <spot/twa/bdddict.hh>
 
-#include "ITSModel.hh"
+#include "its/ITSModel.hh"
 
 
 

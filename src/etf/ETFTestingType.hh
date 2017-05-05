@@ -8,13 +8,13 @@
 #ifndef ETFTAType_HH_
 #define ETFTAType_HH_
 
-#include "TypeBasics.hh"
-#include "TypeVisitor.hh"
+#include "its/TypeBasics.hh"
+#include "its/TypeVisitor.hh"
 
 
 #include <spot/tl/apcollect.hh>
 #include <spot/misc/hash.hh>
-#include "etf/ETFType.hh"
+#include "its/etf/ETFType.hh"
 #include <spot/misc/bddlt.hh>
 
 namespace its {
