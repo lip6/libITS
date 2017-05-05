@@ -25,4 +25,10 @@ Makefile
 *.mk
 *.log
 .deps
-
+/usr/
+/compile
+/config.guess
+/config.sub
+/libtool
+/ltmain.sh
+/spot_linux_64.tar.gz
