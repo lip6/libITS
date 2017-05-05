@@ -24,7 +24,7 @@ script :
   - tar xzf linux.tgz
   - autoreconf -vfi   
 #  - mkdir usr && mkdir usr/local
-  - ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/share/spot/ || cat config.log 
+  - ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/share/spot/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ || cat config.log 
   - make 
   - strip -s bin/its-ltl
   - cp bin/its-ltl website/
