@@ -168,7 +168,7 @@ force (const std::vector<const constraint_t *> & c,
        const order_t & io)
 {
   // \debug
-  std::cerr << "(order - FORCE) initial cost " << cost (c, io)  ;
+  // std::cerr << "(order - FORCE) initial cost " << cost (c, io)  ;
   
   // compute the number of edges for each variable
   nb_edge_t n;
@@ -206,7 +206,7 @@ force (const std::vector<const constraint_t *> & c,
   }
   
   // \debug
-  std::cerr << " / final cost " << cost (c, res) << std::endl;
+  // std::cerr << " / final cost " << cost (c, res) << std::endl;
   
   return res;
 }
