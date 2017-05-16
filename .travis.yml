@@ -19,7 +19,7 @@ before_script:
 script :
   - /bin/sh ./tag.sh 
   - wget https://yanntm.github.io/ITS-Tools-Dependencies/spot_linux_64.tar.gz
-  - tar xvzf spot_linux_64.tar.gz
+  - tar xzf spot_linux_64.tar.gz
   - wget https://lip6.github.io/libITS/linux.tgz
   - tar xzf linux.tgz
   - autoreconf -vfi   
