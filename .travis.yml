@@ -84,3 +84,9 @@ deploy:
   upload-dir: build/$TRAVIS_BUILD_NUMBER
   on:
     branch: master
+
+after_deploy:
+  -curl -s -X POST -H "Content-Type:{{ ' ' }}application/json" -H "Accept:{{ ' ' }}application/json"   -H "Travis-API-Version:{{ ' ' }}3" -H "Authorization:{{ ' ' }}{{ token $APITOKEN }}" -d "\\{\\"request\\":\\{\\"message\\":\\"Triggered by libITS build.\\",\\"branch\\":\\"master\\"\\}\\}" https://api.travis-ci.org/repo/lip6%2FITS-CTL/requests
+  -curl -s -X POST -H "Content-Type:{{ ' ' }}application/json" -H "Accept:{{ ' ' }}application/json"   -H "Travis-API-Version:{{ ' ' }}3" -H "Authorization:{{ ' ' }}{{ token $APITOKEN }}" -d "\\{\\"request\\":\\{\\"message\\":\\"Triggered by libITS build.\\",\\"branch\\":\\"master\\"\\}\\}" https://api.travis-ci.org/repo/lip6%2FITS-LTL/requests
+
+    
