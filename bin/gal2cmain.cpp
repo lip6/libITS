@@ -52,9 +52,10 @@ int main_noex (int argc, char **argv) {
  cmd += " -o " + cName;
  // run the command
  int res = system(cmd.c_str());
- if (res)
-   throw std::runtime_error("Execution of '" + cmd + "' returned exit code " + std::to_string(WEXITSTATUS(res)));
-
+ if (res) {
+   std::cerr << "Execution of '" << cmd << "' returned exit code " << res << std::endl;
+   return res;
+ }
  return 0;
 }
 
