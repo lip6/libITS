@@ -1,0 +1,23 @@
+build:
+  verbosity: minimal
+  
+build_script :
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; ./antlr.sh"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; wget https://ci.appveyor.com/api/projects/yanntm/libDDD/artifacts/windows.zip && unzip windows.zip"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; autoreconf -vfi && ./configure --prefix=$APPVEYOR_BUILD_FOLDER/usr/local/ CPPFLAGS=-I$APPVEYOR_BUILD_FOLDER/usr/local/include" LDFLAGS="-L$APPVEYOR_BUILD_FOLDER/usr/local/lib" --with-antlrc=$APPVEYOR_BUILD_FOLDER/usr/local/ --with-antlrjar=$APPVEYOR_BUILD_FOLDER/usr/local/lib/antlr-3.4-complete.jar --enable-nolto --enable-mingw-native && make && make install'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; strip -s bin/its-reach.exe"'
+ 
+environment :
+ MSYSTEM: MINGW64 
+ BASH_PATH: C:\msys64\usr\bin\bash
+
+
+artifacts:
+  - path: bin/its-reach.exe
+    name: its-reach.exe
+    type: zip
+
+  - path: usr
+    name: windows
+    type: zip
+      
