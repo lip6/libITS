@@ -1,6 +1,8 @@
 build:
   verbosity: minimal
-  
+
+clone_depth: 30
+
 build_script :
  - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; ./antlr.sh"'
  - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; wget https://ci.appveyor.com/api/projects/yanntm/libDDD/artifacts/windows.zip"'
