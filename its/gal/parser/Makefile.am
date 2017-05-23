@@ -6,7 +6,7 @@ EXTRA_DIST = exprParser.g
 exprParserLexer.c : exprParserParser.c
 
 exprParserParser.c : exprParser.g
-	/usr/bin/java -jar $(ANTLRJAR_PATH) $<
+	java -jar $(ANTLRJAR_PATH) $<
 
 .c.cpp:
 	cp $*.c $*.cpp
