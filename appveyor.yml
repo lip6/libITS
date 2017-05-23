@@ -4,6 +4,7 @@ build:
 clone_depth: 30
 
 build_script :
+ - C:\MinGW\bin\mingw-get install libgmp
  - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; wget https://ci.appveyor.com/api/projects/yanntm/libDDD/artifacts/windows.zip"'
  - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; 7z x windows.zip"'
  - DIR
