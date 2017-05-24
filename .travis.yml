@@ -4,7 +4,7 @@ language : python
 addons:
   apt:
     sources: ['ubuntu-toolchain-r-test', 'hvr-ghc']
-    packages: ['g++-5', 'gcc-5', 'expat', 'libgmp-dev', 'libpopt-dev', 'asciidoc', 'xmlto', 'doxygen', 'libboost-dev', 'cmake', 'cmake-data' ]
+    packages: ['g++-5', 'gcc-5', 'expat', 'libgmp-dev', 'libpopt-dev' ]
     
 before_script:
   - cd ${TRAVIS_BUILD_DIR}
