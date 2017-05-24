@@ -16,8 +16,8 @@ endif
 
 
 if WITH_LIBSPOT_PATH
-LIBSPOT_CPP=-I$(LIBSPOT_ROOT) -I$(LIBSPOT_ROOT)/..
-LIBSPOT_PATH=$(LIBSPOT_ROOT)/../../lib/libspot.a $(LIBSPOT_ROOT)/../../lib/libbddx.a
+LIBSPOT_CPP=-I$(LIBSPOT_ROOT)/include
+LIBSPOT_PATH=$(LIBSPOT_ROOT)/lib/libspot.a $(LIBSPOT_ROOT)/lib/libbddx.a
 else
 LIBSPOT_LINK=-lspot -lbddx
 endif
