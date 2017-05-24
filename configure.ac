@@ -147,18 +147,7 @@ CXXFLAGS="-std=c++11 $CXXFLAGS"
 #compile in C++
 AC_PROG_CXX
 
-#use bison/flex parsers
-AM_PROG_LEX
-AC_PROG_YACC
-
-# Enable boost if found:
-AX_CHECK_BOOST([1.31], [103100])
-
-# AM_CONDITIONAL([HAVE_BOOST], [test "${BOOST_DETECTED}" = "true"])
-
-
 AC_CHECK_TOOL([STRIP],[strip])
-
 
 # automake :
 # build these Makefile using the Makefile.in files in each directory
