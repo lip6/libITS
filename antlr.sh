@@ -11,7 +11,7 @@ mkdir usr/local/include
 
 
 # install antlr
-wget http://www.antlr3.org/download/antlr-3.4.tar.gz
+wget --progress=dot:mega http://www.antlr3.org/download/antlr-3.4.tar.gz
 tar -xzf antlr-3.4.tar.gz
 
 cp antlr-3.4/lib/antlr-3.4-complete.jar ./usr/local/lib/
