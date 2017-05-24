@@ -60,7 +60,7 @@ script :
   - /bin/sh ./tag.sh
   - autoreconf -vfi   
 #  - mkdir usr && mkdir usr/local
-  - wget https://lip6.github.io/libITS/linux.tgz
+  - wget --progress=dot:mega https://lip6.github.io/libITS/linux.tgz
   - tar xzf linux.tgz
   - ./configure --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log 
   - make 
