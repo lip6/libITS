@@ -91,7 +91,7 @@ AC_ARG_ENABLE([mingw-native],
 				[ case "${enable_mingw_native}" in
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
 					 LDFLAGS="-Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive -Wl,-static,--stack,16777216 $LDFLAGS"
-					 LIBS="-lPSAPI -lpthread $LIBS"
+					 LIBS="-lPSAPI $LIBS"
 					 ;;
 					 no) 
 					 ;;
