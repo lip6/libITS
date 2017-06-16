@@ -20,7 +20,7 @@ before_script:
 # build spot
 script :
   - /bin/sh ./tag.sh 
-  - wget --progress=dot:mega https://yanntm.github.io/ITS-Tools-Dependencies/spot_linux.tar.gz
+  - wget --progress=dot:mega https://yanntm.github.io/Spot-BinaryBuilds/spot_linux.tar.gz
   - tar xzf spot_linux.tar.gz
   - wget --progress=dot:mega https://lip6.github.io/libITS/linux.tgz
   - tar xzf linux.tgz
