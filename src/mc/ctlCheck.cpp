@@ -1383,5 +1383,5 @@ its::State CTLChecker::getInitialState () const {
 }
 
 its::State CTLChecker::getReachableDeadlocks () const {
-  return getReachable() - (getPredRel() ( getReachable()));
+  return getReachable() - ( getNextRel().invert(getReachable()) ( getReachable()));
 }
