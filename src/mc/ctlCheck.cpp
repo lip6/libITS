@@ -1339,7 +1339,7 @@ its::Transition CTLChecker::getPredRel (its::State envelope) const
       if (nextRel == Transition::null) {
 	return Transition::null;
       }
-      Transition inv = nextRel().invert(reach);
+      Transition inv = nextRel.invert(reach);
       bool isExact = ( inv(reach) - reach == State::null );
       if (isExact) {
 	predRel_ = inv;
