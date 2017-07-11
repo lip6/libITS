@@ -180,7 +180,11 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       } else {
 	reach = reach_envelope;
       }
-      Transition rel = getNextRel().invert(reach);
+      Transition nextRel = getNextRel();
+      if (nextRel == Transition::null) {
+	return Transition::null;
+      }
+      Transition rel = nextRel.invert(reach);
 // 	std::cerr << "Was working with reverse transition :\n" << rel << endl;
 // 	std::cerr << "Was working with forward transition :\n" << getNextRel() << endl;
       State border = rel(reach) - reach;
