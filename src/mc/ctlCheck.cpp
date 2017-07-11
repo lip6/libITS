@@ -1335,7 +1335,11 @@ its::Transition CTLChecker::getPredRel (its::State envelope) const
       } else {
 	reach = envelope;
       }
-      Transition inv = getNextRel ().invert(reach);
+      Transition nextRel = getNextRel();
+      if (nextRel == Transition::null) {
+	return Transition::null;
+      }
+      Transition inv = nextRel().invert(reach);
       bool isExact = ( inv(reach) - reach == State::null );
       if (isExact) {
 	predRel_ = inv;
@@ -1383,5 +1387,9 @@ its::State CTLChecker::getInitialState () const {
 }
 
 its::State CTLChecker::getReachableDeadlocks () const {
-  return getReachable() - ( getNextRel().invert(getReachable()) ( getReachable()));
+  Transition nextRel = getNextRel();
+  if (nextRel == Transition::null) {
+    return getReachable();
+  }
+  return getReachable() - ( nextRel.invert(getReachable()) ( getReachable()));
 }
