@@ -51,7 +51,7 @@ namespace its {
 
 			  props.push_back(Property(name, line+n , ptype));
 	
-			  std::cerr << "Read property : " << name << " with value :" << line+n << std::endl;
+			  std::cerr << "Read "<<type<< " property : " << name << " with value :" << line+n << std::endl;
 			} else {
 			  std::cerr << "Unable to read property (skipping this line): " << line << std::endl;
 			}			
