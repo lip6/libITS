@@ -53,6 +53,7 @@ public :
   its::State getInitialState () const;
 
   its::State getReachableDeadlocks () const;
+  its::State getReachableTimelocks () const;
 
   /** Returns a shortest witness trace expressed in transition names leading from a state of init to a state in final. */
   its::path_t findPath (its::State init, its::State toreach, its::State reach, bool precise = false) const { return model.findPath(init,toreach,reach, precise); }

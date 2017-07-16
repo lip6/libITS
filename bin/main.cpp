@@ -30,6 +30,7 @@ void usage () {
   cerr << " CTL specific options for  package " << PACKAGE_STRING << endl;
   cerr<<  "    -ctl [CTL formulas file]  MANDATORY : give path to a file containing CTL formulae \n";
   cerr<<  " Optionally, if the [CTL formulas file] provided is the string DEADLOCK, the tool will compute and return the number of deadlocks.\n";
+  cerr<<  " Optionally, if the [CTL formulas file] provided is the string TIMELOCK, the tool will compute and return the number of timelocks, i.e. states in which time is the only event that can occur.\n";
   cerr<<  "    --witness to ask for a witness/counter-example path to be produced (may be much more difficult than just proving/disproving)\n";
   cerr<<  "    --precise to ask for more precise counter example traces, that include states\n";
   cerr<<  "    --fair-time to disallow infinite loops over elapse. More precisely, with this option, time elapse is applied directly after each discrete transition firing (and on initial state).\n";
@@ -84,6 +85,7 @@ int main (int argc, char ** argv) {
   bool dobwtranslation = false;
 
   bool doDeadlocks = false;
+  bool doTimelocks = false;
 
   bool doWitness = false;
 
@@ -135,6 +137,8 @@ int main (int argc, char ** argv) {
     doDeadlocks = true;
     dofwtranslation = false;
     dobwtranslation = false;
+  } else if ( pathformff == "TIMELOCK" ) {
+    doTimelocks = true;
   } else {
     FILE * fp = fopen(pathformff.c_str(), "r");
     if (fp == NIL(FILE)) {
@@ -182,13 +186,24 @@ int main (int argc, char ** argv) {
   SS3.print_table(std::cout);
   std::cout << "\n\n";
 
-  if (doDeadlocks) {
-    State dead = checker.getReachableDeadlocks();
+  if (doDeadlocks || doTimelocks) {
+    State dead ;
+    if (doDeadlocks) {
+    	dead = checker.getReachableDeadlocks();
+    } else {
+    	dead = checker.getReachableTimelocks();    
+    }
     Statistic SSdead = Statistic(dead, "dead" , CSV);
     SSdead.print_table(std::cout);
     std::cout << "\n";
 
-    std::cout << "System contains "<< dead.nbStates() << " deadlocks (shown below if less than --print-limit option) !" << std::endl;    
+    std::cout << "System contains "<< dead.nbStates() ;
+    if (doDeadlocks) {
+    	std::cout << " deadlocks " ;
+    } else {
+    	std::cout << " timelocks " ;
+    }
+    std::cout << " (shown below if less than --print-limit option) !" << std::endl;    
     checker.printSomeStates(dead, std::cout);
 
     if (doWitness &&dead.nbStates() > 0) {
@@ -198,7 +213,11 @@ int main (int argc, char ** argv) {
       for (labels_it it = path.getPath().begin() ; it != path.getPath().end() ; ++it ) {
 	std::cout << *it << ", ";
       }
+    if (doDeadlocks) {
       std::cout << "DEADLOCK"<< std::endl;
+    } else {
+      std::cout << "TIMELOCK"<< std::endl;
+    }
     }
     return 0;
   }

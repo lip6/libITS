@@ -1393,3 +1393,24 @@ its::State CTLChecker::getReachableDeadlocks () const {
   }
   return getReachable() - ( nextRel.invert(getReachable()) ( getReachable()));
 }
+
+its::State CTLChecker::getReachableTimelocks () const {
+  Transition nextRel = getNextRel();
+  if (nextRel == Transition::null) {
+    return getReachable();
+  }
+  Transition elapse = model.getElapse(); 
+  if (elapse != Transition::id) {
+  	Transition findSCC = fixpoint(elapse * Transition::id, true);
+  	State inSCC = findSCC(getReachable()) ;
+  	// No elapse !
+  	Transition trans = model.getInstance()->getType()->getLocals();
+  	// transition dead states : no successor by normal transitions
+  	State trDead =  getReachable() - ( trans.invert(getReachable()) ( getReachable()));
+  	// remove states with other outputs
+  	return inSCC * trDead;
+  } else {
+  	std::cerr << "No time elapse event found when looking for timelocks."<< std::endl;
+  }
+  return getReachable() - ( nextRel.invert(getReachable()) ( getReachable()));
+}
