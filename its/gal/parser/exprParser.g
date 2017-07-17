@@ -194,7 +194,7 @@ system returns [its::GAL* r]
     )*
     
     // Transitions
-    (transition)+
+    (transition)*
     
     // Transient
     (transient)?
