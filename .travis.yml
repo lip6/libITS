@@ -6,11 +6,11 @@ language : python
 addons:
   apt:
     sources: ['ubuntu-toolchain-r-test', 'hvr-ghc']
-    packages: ['g++-5', 'gcc-5', 'expat', 'libgmp-dev', 'libpopt-dev' ]
+    packages: ['g++-7', 'gcc-7', 'expat', 'libgmp-dev', 'libpopt-dev' ]
     
 before_script:
   - cd ${TRAVIS_BUILD_DIR}
-  - export GCCVER='5'
+  - export GCCVER='7'
   - export CXX=g++-${GCCVER}
   - export CC=gcc-${GCCVER}
   - export AR=gcc-ar-${GCCVER}
