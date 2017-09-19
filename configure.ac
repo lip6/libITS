@@ -141,8 +141,8 @@ AC_LIBTOOL_DLOPEN
 test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
-# we compile C++11
-CXXFLAGS="-std=c++11 $CXXFLAGS"
+# we compile C++14
+CXXFLAGS="-std=c++14 $CXXFLAGS"
 
 #compile in C++
 AC_PROG_CXX
