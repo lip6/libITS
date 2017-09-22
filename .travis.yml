@@ -22,9 +22,10 @@ matrix:
 before_script:
 ## OSX
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rm /usr/local/include/c++         ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc gmp  expat      ; fi  
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc expat      ; fi  
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ; fi    
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
-  - cd ${TRAVIS_BUILD_DIR}
+  - cd ${TRAVIS_BUILD_DIR} 
   - export CXX=${CXX_COMPILER}
   - export CC=${C_COMPILER}
   # linux only
