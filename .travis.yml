@@ -44,9 +44,13 @@ script :
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libDDD/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
   - ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log
   - make
-  - strip -s bin/its-reach
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip bin/its-reach ; fi
+  # linux only
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then strip -s bin/its-reach ; fi
   - cp bin/its-reach website/its-reach
-  - strip -s bin/gal2c
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip bin/gal2c ; fi
+  # linux only
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then strip -s bin/gal2c ; fi
   - cp bin/gal2c website/gal2c
   - make install
   - tar cvzf $TRAVIS_OS_NAME.tgz usr/
