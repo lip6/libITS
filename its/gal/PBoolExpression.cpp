@@ -174,11 +174,12 @@ public :
 	     || (getType() == OR && val) // XXX || true = true
 	     )
 	  return aa;
-	else
+	else {
 	  // XXX && true = XXX
 	  // XXX || false = XXX
 	  isUpd = true;
 	  continue;
+	}
       } else {
 	if (! (aa == *it)) {
 	  isUpd = true;
