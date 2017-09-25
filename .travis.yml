@@ -27,6 +27,7 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rm /usr/local/include/c++         ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc expat      ; fi  
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ; fi    
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://downloads.sourceforge.net/project/expat/expat/2.2.4/expat-2.2.4.tar.bz2 ; tar xjf expat-2.2.4.tar.bz2 ; cd expat-2.2.4/ ; ./configure --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ; fi    
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
   # linux only
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export AR=gcc-ar-${GCCVER} ; fi
@@ -42,7 +43,8 @@ script :
 #  - mkdir usr && mkdir usr/local
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://lip6.github.io/libDDD/linux.tgz ; tar xzf linux.tgz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libDDD/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
-  - ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; fi
   - make
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip bin/its-reach ; fi
   # linux only
