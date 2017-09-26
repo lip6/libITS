@@ -41,6 +41,9 @@ script :
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./configure --with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./configure --with-antlrc=$PWD/usr/local/  --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; fi
   - make
+  - cd tests
+  - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
+  - cd ..
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip bin/its-ctl ; fi
   # linux only
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then strip -s bin/its-ctl ; fi
