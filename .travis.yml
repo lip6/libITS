@@ -25,9 +25,7 @@ before_script:
   - export CXX=${CXX_COMPILER}
   - export CC=${C_COMPILER}
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rm /usr/local/include/c++         ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc expat      ; fi  
-# gmp already built by libITS  
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ; fi    
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc    ; fi  
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
   # linux only
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export AR=gcc-ar-${GCCVER} ; fi
@@ -40,7 +38,8 @@ script :
   - autoreconf -vfi   
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://lip6.github.io/libITS/linux.tgz ; tar xzf linux.tgz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libITS/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
-  - ./configure --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log 
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./configure --with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./configure --with-antlrc=$PWD/usr/local/  --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; fi
   - make
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip bin/its-ctl ; fi
   # linux only
@@ -58,7 +57,6 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   local_dir: website/
-  upload-dir: build/$TRAVIS_BUILD_NUMBER
   target_branch: $TARGETBRANCH
   on:
     branch: master
