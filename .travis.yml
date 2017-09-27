@@ -47,7 +47,7 @@ script :
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; fi
   - make
   - cd tests
-  - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
+  - ( rc=0 ; for TEST in *.data ; do travis_wait ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
   - cd ..
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip bin/its-reach ; fi
   # linux only
