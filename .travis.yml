@@ -1,34 +1,54 @@
+language: cpp
 dist: trusty
 sudo: false
 
-language : python
+matrix:
+  include:
+   # Linux GCC Builds
+    - os: linux
+      compiler: gcc
+      addons: &gcc7
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-7', 'gcc-7', 'expat', 'libgmp-dev', 'libpopt-dev']
+      env: GCCVER='7' CXX_COMPILER='g++-7' C_COMPILER='gcc-7'
 
-addons:
-  apt:
-    sources: ['ubuntu-toolchain-r-test', 'hvr-ghc']
-    packages: ['g++-7', 'gcc-7', 'expat', 'libgmp-dev', 'libpopt-dev' ]
+    # 4/ OSX GCC Builds
+    - os: osx
+      osx_image: xcode8.3
+      compiler: gcc
+      env: GCCVER='7' CXX_COMPILER='g++-7' C_COMPILER='gcc-7'
     
 before_script:
-  - cd ${TRAVIS_BUILD_DIR}
-  - export GCCVER='7'
-  - export CXX=g++-${GCCVER}
-  - export CC=gcc-${GCCVER}
-  - export AR=gcc-ar-${GCCVER}
-  - export RANLIB=gcc-ranlib-${GCCVER}
-  - export NM=gcc-nm-${GCCVER}
+## OSX
+  - cd ${TRAVIS_BUILD_DIR} 
+  - export CXX=${CXX_COMPILER}
+  - export CC=${C_COMPILER}
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rm /usr/local/include/c++         ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc expat popt  ; fi  
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
+  # linux only
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export AR=gcc-ar-${GCCVER} ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export RANLIB=gcc-ranlib-${GCCVER} ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export NM=gcc-nm-${GCCVER} ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export TARGETBRANCH=gh-pages ; fi
 
 # build spot
 script :
-  - /bin/sh ./tag.sh 
-  - wget --progress=dot:mega https://yanntm.github.io/Spot-BinaryBuilds/spot_linux.tar.gz
-  - tar xzf spot_linux.tar.gz
-  - wget --progress=dot:mega https://lip6.github.io/libITS/linux.tgz
-  - tar xzf linux.tgz
+  - /bin/sh ./tag.sh
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://lip6.github.io/libITS/linux.tgz ; tar xzf linux.tgz ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libITS/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://yanntm.github.io/Spot-BinaryBuilds/spot_linux.tar.gz ; tar xzf spot_linux.tar.gz ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/yanntm/Spot-BinaryBuilds/raw/osx/spot_osx.tar.gz ; tar xzf spot_osx.tar.gz ; fi
   - autoreconf -vfi   
-#  - mkdir usr && mkdir usr/local
-  - ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ || cat config.log 
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ || cat config.log ; fi 
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ -with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  || cat config.log ; fi 
   - make 
-  - strip -s src/its-ltl
+  - cd tests
+  - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip src/its-ltl ; fi
+  # linux only
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then strip -s src/its-ltl ; fi
   - cp src/its-ltl website/
   - make install
   - tar cvzf $TRAVIS_OS_NAME.tgz usr/
@@ -39,7 +59,7 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
   local_dir: website/
-  upload-dir: build/$TRAVIS_BUILD_NUMBER
+  target_branch: $TARGETBRANCH
   on:
     branch: master
   
