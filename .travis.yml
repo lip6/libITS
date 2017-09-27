@@ -46,6 +46,7 @@ script :
   - make 
   - cd tests
   - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
+  - cd ..
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip src/its-ltl ; fi
   # linux only
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then strip -s src/its-ltl ; fi
