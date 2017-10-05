@@ -75,6 +75,10 @@ if ( @nominal[1] != @tested[1] ) {
   $returnvalue = 0;
 }
 
+# print STDERR "Test name/Model, property, tool/technique, Time, Memory, Error\n";
+open OUT2,">>test.csv";
+print OUT2 "\"$title\",\"StateSpace\",\"its-reach\",@tested[2],@tested[3],$returnvalue\n";
+close OUT2;    
 
 print "##teamcity[testFinished name='$title']\n";
 
