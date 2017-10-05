@@ -61,7 +61,7 @@ extern char * CtlpYytext;
 }
 
 %type <sf> error stateformula formula
-%type <str> name name_vector name_union name_or macro ax_mult ex_mult comparator
+%type <str> name ax_mult ex_mult comparator
 
 %error_verbose 
 
@@ -215,41 +215,12 @@ stateformula : '(' stateformula ')'
 	 CtlpGlobalFormula= $$; }
      | stateformula TOK_XOR stateformula
        { $$ = Ctlp_FormulaCreate(Ctlp_XOR_c, $1, $3);
-	 CtlpGlobalFormula= $$; }
+	 CtlpGlobalFormula= $$; }    
      | name comparator name
        { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strcat3($2,"",$3));
        FREE($3);
        FREE($2);
-	 CtlpGlobalFormula= $$; }
-     | name comparator name_union
-       { $$ = Ctlp_FormulaCreateOr($1, util_strcat3($2,"",$3));
-	 FREE($1);
-	 FREE($2);
-	 FREE($3);
-	 CtlpGlobalFormula= $$; }
-     | name_vector comparator name
-       { $$ = Ctlp_FormulaCreateVectorAnd($1, util_strcat3($2,"",$3));
-	 if ($$ == NIL(Ctlp_Formula_t)){
-	    CtlpYyerror("** ctl error : Matching ERROR");
-	    (void) fprintf(vis_stderr,"LHS token is not matched to RHS token, line %d.\n\n", CtlpYylineno);
-	    Ctlp_FormulaFree(CtlpGlobalFormula);
-	 }
-	 FREE($1);
-	 FREE($2);
-	 FREE($3);
-	 CtlpGlobalFormula= $$;
-       }
-     | name_vector comparator name_union
-       { $$ = Ctlp_FormulaCreateVectorOr($1, util_strcat3($2,"",$3));
-	 if ($$ == NIL(Ctlp_Formula_t)){
-	    CtlpYyerror("** ctl error : Matching ERROR");
-	    (void) fprintf(vis_stderr,"LHS token is not matched to RHS token, line %d\n\n", CtlpYylineno);
-	    Ctlp_FormulaFree(CtlpGlobalFormula);
-	 }
-	 FREE($1);
-	 FREE($2);
-	 FREE($3);
-	 CtlpGlobalFormula= $$; }
+	 CtlpGlobalFormula= $$; }    
      | name TOK_EQIV name
        { $$ = Ctlp_FormulaCreateEquiv($1, $3);
 	 if ($$ == NIL(Ctlp_Formula_t)){
@@ -260,12 +231,7 @@ stateformula : '(' stateformula ')'
 	 FREE($1);
 	 FREE($3);
 	 CtlpGlobalFormula= $$;
-       }
-     | name_vector TOK_EQIV name_vector
-       { $$ = Ctlp_FormulaCreateVectorEquiv($1, $3);
-	 FREE($1);
-	 FREE($3);
-	 CtlpGlobalFormula= $$; }
+       }    
      | name comparator TOK_FORALL
        { $$ = Ctlp_FormulaCreate(Ctlp_ID_c, $1, util_strcat3($2,"","A"));
 	 FREE($2);
@@ -299,15 +265,13 @@ stateformula : '(' stateformula ')'
      | TOK_FALSE
        { $$ = Ctlp_FormulaCreate(Ctlp_FALSE_c, NIL(Ctlp_Formula_t), NIL(Ctlp_Formula_t));
 	 CtlpGlobalFormula= $$; }
-     | macro
-       { $$ = CtlpFormulaFindInTable($1, CtlpMacroTable);
-	 if ($$ == NIL(Ctlp_Formula_t)){
-	    CtlpYyerror("** ctl error : Macro Error");
-	    (void) fprintf(vis_stderr,"Macro \"%s\" is not defined.\n\n",$1);
-	 }
-	 FREE($1);
+     | name
+       {
+	 // empty var name, just copy whole thing in.
+	 $$ = Ctlp_FormulaCreate(Ctlp_ID_c, util_strsav($1), util_strsav(""));
 	 CtlpGlobalFormula= $$;
-       };
+	 }
+;
 
 name:  TOK_ID
        { $$ = util_strsav(CtlpYytext); }
@@ -329,24 +293,6 @@ comparator : TOK_ASSIGN  { $$ = util_strsav(CtlpYytext); }
 //             | TOK_EQIV { $$ = util_strsav(CtlpYytext); }
              | TOK_NEQ { $$ = util_strsav(CtlpYytext); }
 ;
-
-name_vector: TOK_ID_VECTOR
-       { $$ = util_strsav(CtlpYytext); };
-
-name_union: '{' name_or '}'
-       { $$ = $2; };
-
-name_or: name
-       { $$ = $1; }
-      |  name_or TOK_COMMA name
-       { $$ = util_strcat3($1,",",$3);
-	 FREE($1);
-	 FREE($3);
-       }
-      ;
-
-macro: TOK_MACRO name
-       { $$ = $2; } ;
 
 ax_mult: TOK_FORALL_NEXT_MULT
        { $$ = util_strsav(CtlpYytext); } ;
