@@ -50,6 +50,7 @@ static bool dostats = false;
 static bool with_garbage = true;
 static bool countEdges = false;
 static std::string modelName = "";
+static bool doFrom = false;
 // if BMC use is wanted, will be >0
 static int BMC = -1;
 static size_t fixobs_passes = 5000;
@@ -146,6 +147,7 @@ void usage() {
   cerr<<  "    --edgeCount : produce stats on the size of the transition relation, i.e. the number of unique source to target state pairs it contains." <<endl;
   cerr<<  "    -maxbound XXXX,YYYY : return the maximum value for each variable in the list (comma separated)" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
+  cerr<<  "    -reachable-from XXXX : Consider that initial states are (reachable from initial) states satisfying the given predicate." <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
   cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
@@ -200,6 +202,7 @@ int main_noex (int argc, char **argv) {
  }
 
  vLabel reachExpr="";
+ vLabel fromExpr="";
  vLabel boundsExpr="";
  vLabel reachFile="";
  vLabel traceStr = "";
@@ -237,6 +240,11 @@ int main_noex (int argc, char **argv) {
      if (++i > argc) 
        { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
      reachExpr = args[i];
+   } else if (! strcmp(args[i],"-reachable-from") ) {
+     if (++i > argc) 
+       { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
+     fromExpr = args[i];
+     doFrom = true;
    } else if (! strcmp(args[i],"-maxbound") ) {
      if (++i > argc) 
        { cerr << "give a comma separated list of variables for maxbounds criterion " << args[i-1]<<endl; usage() ; exit(1);}
@@ -294,7 +302,7 @@ int main_noex (int argc, char **argv) {
  }
 
  // Test that we don't have several props to check, otherwise do not set up interrupt.
- if (fixobs_passes != 0 && props.size() == 1 ) {
+ if (fixobs_passes != 0 && props.size() == 1 && !doFrom) {
    Transition predicate = Transition::null; 
    if (props.begin()->getType() == INVARIANT) {
      predicate = model.getPredicate("!(" + props.begin()->getPred() + ")");
@@ -404,7 +412,31 @@ int main_noex (int argc, char **argv) {
  if (props.size() > 0) {
    std::cout << "Verifying " << props.size() << " reachability properties."<< std::endl; 
  }
-
+ 
+ 
+ its::State initialSituation = model.getInitialState();
+ if (doFrom) {
+   Transition predicate = model.getPredicate(fromExpr);
+   //     std::cerr << "built pred :" << predicate << std::endl;
+   State verify = predicate.has_image(reachable);
+   bool isVerify =  ! ( verify == State::null );
+   
+   if (isVerify) {
+     std::cout << "There are reachable states satisfying the *reachable-from* predicate :" << fromExpr << std::endl;
+     initialSituation = predicate (reachable);
+     std::cout << "Starting traces in one of the  " << initialSituation.nbStates() << " reachable states in which your \"from\" predicate is true." <<std::endl;
+     Transition trans = model.getNextRel();
+     // top-level = true for garbage collection
+     Transition transrel = fixpoint(trans+GShom::id,true);
+     reachable = transrel (initialSituation);
+     std::cout << "Considering only states reachable from these situations; total   " << reachable.nbStates() << " reachable states." <<std::endl;
+   } else {
+     std::cout << "reachable-from predicate is not validated in any reachable state : " << fromExpr  << " does not hold." << std::endl;
+     std::cout << "Interrupting computation of witnesses." << std::endl;
+     props.clear();
+   }   
+ }
+ 
  for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
    
    if (MemoryManager::should_garbage()) {
@@ -421,7 +453,7 @@ int main_noex (int argc, char **argv) {
      while (std::getline(iss, token, '+')) {     
        tokens.push_back(token);
      }
-     its::State init = model.getInitialState();
+     its::State init = initialSituation;
      its::State clear = clearState(init);
      // substitutes values not in target set by a potential forced to only : 0
      its::Transition getter = model.getInstance()->getType()->observe(tokens, clear);
@@ -468,7 +500,7 @@ int main_noex (int argc, char **argv) {
      Transition predicate = model.getPredicate(it->getPred());
      //     std::cerr << "built pred :" << predicate << std::endl;
      verify = predicate.has_image(reachable);
-     isVerify =  ! ( verify == State::null )  ;
+     isVerify =  ! ( verify == State::null );
 
      if (isVerify) {
        std::cout << "Reachability property " << it->getName() << " is true." << std::endl;
@@ -486,12 +518,12 @@ int main_noex (int argc, char **argv) {
  
    if (dowitness && verify != State::null) {
      std::cout << "computing trace..." <<endl;
-     path_t path = model.findPath(model.getInitialState(), verify, reachable, false);
+     path_t path = model.findPath(initialSituation, verify, reachable, false);
      model.printPath(path, std::cout,true);
    }
    if (nbwitness >= 1) {
      std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
-     model.printPaths(model.getInitialState(), verify, reachable, nbwitness);
+     model.printPaths(initialSituation, verify, reachable, nbwitness);
    }
    std::cout << std::endl;
    
