@@ -50,6 +50,8 @@ static bool dostats = false;
 static bool with_garbage = true;
 static bool countEdges = false;
 static std::string modelName = "";
+static std::string invariantExpr = "";
+static bool doInvariant = false;
 static bool doFrom = false;
 // if BMC use is wanted, will be >0
 static int BMC = -1;
@@ -75,10 +77,19 @@ State exhibitModel (ITSModel & model) {
   //  std::cout << " Next rel :" << model.getNextRel() << std::endl;
   State reachable;
   if (BMC <0) {
-    // Compute reachable states
+    if (! doInvariant) {
+      // Compute reachable states
       reachable = model.computeReachable(with_garbage);
+    } else {
+      Transition filter = model.getPredicate(invariantExpr);
+      Transition trel = fixpoint ( ( filter & model.getNextRel()) + Transition::id, true );
+      reachable = trel (model.getInitialState());
+    }
   } else {
     Transition hnext = model.getNextRel() + Transition::id;
+    if (doInvariant) {
+      hnext = (model.getPredicate(invariantExpr) & model.getNextRel()) + Transition::id ;
+    }
     reachable = model.getInitialState();
     State previous = reachable;
 //    State layer;
@@ -148,6 +159,7 @@ void usage() {
   cerr<<  "    -maxbound XXXX,YYYY : return the maximum value for each variable in the list (comma separated)" <<endl;
   cerr<<  "    -reachable XXXX : test if there are reachable states that verify the provided boolean expression over variables" <<endl;
   cerr<<  "    -reachable-from XXXX : Consider that initial states are (reachable from initial) states satisfying the given predicate." <<endl;
+  cerr<<  "    -with-invariant XXXX : only states satisfying the provided boolean invariant are considered successors of a state." <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
   cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
@@ -245,6 +257,11 @@ int main_noex (int argc, char **argv) {
        { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
      fromExpr = args[i];
      doFrom = true;
+   } else if (! strcmp(args[i],"-with-invariant") ) {
+     if (++i > argc) 
+       { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
+     invariantExpr = args[i];
+     doInvariant = true;
    } else if (! strcmp(args[i],"-maxbound") ) {
      if (++i > argc) 
        { cerr << "give a comma separated list of variables for maxbounds criterion " << args[i-1]<<endl; usage() ; exit(1);}
@@ -426,6 +443,9 @@ int main_noex (int argc, char **argv) {
      initialSituation = predicate (reachable);
      std::cout << "Starting traces in one of the  " << initialSituation.nbStates() << " reachable states in which your \"from\" predicate is true." <<std::endl;
      Transition trans = model.getNextRel();
+     if (doInvariant) {
+       trans = model.getPredicate(invariantExpr) & trans;
+     }
      // top-level = true for garbage collection
      Transition transrel = fixpoint(trans+GShom::id,true);
      reachable = transrel (initialSituation);
@@ -521,7 +541,7 @@ int main_noex (int argc, char **argv) {
      path_t path = model.findPath(initialSituation, verify, reachable, false);
      model.printPath(path, std::cout,true);
    }
-   if (nbwitness >= 1) {
+   if (nbwitness >= 1 && verify != State::null) {
      std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
      model.printPaths(initialSituation, verify, reachable, nbwitness);
    }
