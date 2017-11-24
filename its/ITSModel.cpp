@@ -290,7 +290,10 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
       State inter = init * toreach;
       if (inter != State::null) {
 	// minimal path is length 0 !
-	return ;
+	cout << "Minimal path length is 0 ; all witnesses found."<< std::endl;
+	labels_t witness; // empty
+	printPath(path_t(witness, inter, inter), std::cout,true);
+	return;
       } 
       
     }
