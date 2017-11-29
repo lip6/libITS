@@ -157,35 +157,6 @@ inline bool endsWith(const std::string& str, const std::string& part)
 	return str.substr(str.size() - part.size()) == part;
 }
 
-#if ! __GNUC__ || __GNUC__ >= 4
-/**
- * Return the substring of 'str' without all leading and trailing characters
- * for which 'classifier' returns true.
- */
-template<typename FUN>
-inline std::string trim(const std::string& str, const FUN& classifier)
-{
-	if (str.empty())
-		return str;
-
-	size_t beg = 0;
-	size_t end = str.size() - 1;
-	while (beg < end && classifier(str[beg]))
-		++beg;
-	while (end >= beg && classifier(str[end]))
-		--end;
-
-	return str.substr(beg, end-beg+1);
-}
-
-/**
- * Return the substring of 'str' without all leading and trailing spaces.
- */
-inline std::string trim(const std::string& str)
-{
-    return trim(str, ::isspace);
-}
-#else
 /// Workaround version for older gcc
 inline std::string trim(const std::string& str)
 {
@@ -201,15 +172,15 @@ inline std::string trim(const std::string& str)
 
 	return str.substr(beg, end-beg+1);
 }
-#endif
+
 
 /// Convert a string to uppercase
 inline std::string toupper(const std::string& str)
 {
 	std::string res;
 	res.reserve(str.size());
-	for (std::string::const_iterator i = str.begin(); i != str.end(); ++i)
-		res += ::toupper(*i);
+	for (auto c : str)
+	  res += (char) ::toupper(c);
 	return res;
 }
 
@@ -219,7 +190,7 @@ inline std::string tolower(const std::string& str)
 	std::string res;
 	res.reserve(str.size());
 	for (std::string::const_iterator i = str.begin(); i != str.end(); ++i)
-		res += ::tolower(*i);
+	  res += (char) ::tolower(*i);
 	return res;
 }
 
@@ -228,7 +199,7 @@ inline std::string ucfirst(const std::string& str)
 {
 	if (str.empty()) return str;
 	std::string res;
-	res += ::toupper(str[0]);
+	res += (char) ::toupper(str[0]);
 	return res + tolower(str.substr(1));
 }
 
