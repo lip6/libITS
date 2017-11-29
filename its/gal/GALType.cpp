@@ -31,15 +31,17 @@ labels_t GALType::getTransLabels () const {
     DDD M0 = DDD::one;
     const VarOrder & vo = *getVarOrder();
     // each place = one var as indicated by getPorder
-    for (size_t i=0 ; i < vo.size() ; ++i) {
+    int size = (int)vo.size();
+    for (int i=0 ; i < size ; ++i) {
       Label pname = vo.getLabel(i);
       // retrieve the appropriate place marking
       int mark = gal_->getVarValue(pname);
       if ( static_cast<DDD::val_t> (mark) != mark ) {
 	throw "Overflow error when converting initial marking. Please recompile libDDD with larger DDD::val_t definition.";
-      } 
+      }
+      DDD::val_t mk = static_cast<DDD::val_t> (mark);
       // left concatenate to M0
-      M0 = DDD (i,mark) ^ M0;
+      M0 = DDD (i,mk) ^ M0;
       // for pretty print
       DDD::varName(i,pname);
     }
@@ -203,7 +205,8 @@ labels_t GALType::getTransLabels () const {
     DDD M0 = DDD::one;
     const DDD * reach = (const DDD * ) reachable.begin()->first ;
     // each place = one var as indicated by getPorder
-    for (size_t i=0 ; i < vo.size() ; ++i) {
+    int size = (int) vo.size();
+    for (int i=0 ; i < size ; ++i) {
       // retrieve the appropriate place marking
       DDD dom = computeDomain (i,*reach);
       // left concatenate to M0
@@ -229,7 +232,7 @@ labels_t GALType::getTransLabels () const {
     its::vars_t obs_index;
     obs_index.reserve(obs.size());
     // each place = one var as indicated by varOrder
-    for (int i=vo.size()-1 ; i >= 0  ; --i) {
+    for (int i= (int)vo.size()-1 ; i >= 0  ; --i) {
       Label varname = vo.getLabel(i);
 
       labels_it it = find(obs.begin(), obs.end(),varname);
@@ -328,8 +331,8 @@ labels_t GALType::getTransLabels () const {
   {
     std::stringstream new_pred;
     
-    size_t i = 0;
-    while (i != predicate.size ())
+    int i = 0;
+    while (i != (int)predicate.size ())
     {
       if (predicate[i] == '.')
       {
@@ -356,7 +359,7 @@ labels_t GALType::getTransLabels () const {
           {
             divine::dve_process_t * current_process = dynamic_cast<divine::dve_process_t*> (dve->get_process (j));
             assert (current_process);
-            for (size_t k = 0 ; k < current_process->get_state_count () ; ++k)
+            for (int k = 0 ; k < (int)current_process->get_state_count () ; ++k)
             {
               size_t sgid = current_process->get_state_gid (k);
               if (! state.compare (current_process->get_symbol_table ()->get_state (sgid)->get_name ()))
@@ -404,7 +407,7 @@ labels_t GALType::getTransLabels () const {
         new_pred << ")";
         
         // increment position
-        i = s_end;
+        i = (int)s_end;
       }
       else
       {
