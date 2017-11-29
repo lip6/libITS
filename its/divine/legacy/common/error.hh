@@ -36,7 +36,7 @@ namespace divine {
 typedef const char * ERR_char_string_t;
 typedef const std::string ERR_std_string_t;
 //!Integer type used for index of an error in an \evector
-typedef unsigned int ERR_nbr_t;
+typedef size_t ERR_nbr_t;
 //!Integer type used for identifiers of errors
 typedef int ERR_id_t;
 //!Integer type used for identifiers of errors
