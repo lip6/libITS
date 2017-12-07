@@ -31,7 +31,7 @@ endif
 
 if WITH_GMP_PATH
 GMP_CPP=-I$(GMP_ROOT)/include
-GMP_PATH=$(GMP_ROOT)/lib/libgmp.a $(GMP_ROOT)/lib/libgmpxx.a
+GMP_PATH=$(GMP_ROOT)/lib/libgmpxx.a $(GMP_ROOT)/lib/libgmp.a 
 else
 GMP_LINK=-lgmpxx -lgmp
 endif
