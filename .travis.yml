@@ -10,7 +10,7 @@ matrix:
       addons: &gcc7
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-7', 'gcc-7', 'expat', 'libgmp-dev', 'libpopt-dev']
+          packages: ['g++-7', 'gcc-7', 'libpopt-dev']
       env: GCCVER='7' CXX_COMPILER='g++-7' C_COMPILER='gcc-7'
 
     # 4/ OSX GCC Builds
@@ -42,8 +42,7 @@ script :
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://yanntm.github.io/Spot-BinaryBuilds/spot_linux.tar.gz ; tar xzf spot_linux.tar.gz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/yanntm/Spot-BinaryBuilds/raw/osx/spot_osx.tar.gz ; tar xzf spot_osx.tar.gz ; fi
   - autoreconf -vfi   
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ || cat config.log ; fi 
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ -with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  || cat config.log ; fi 
+  - ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ -with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  || cat config.log ; 
   - make 
   - cd tests
   - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
