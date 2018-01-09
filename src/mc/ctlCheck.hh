@@ -37,6 +37,7 @@ public :
   void setFairTime(bool befairtime) { isfairtime = befairtime; }
 
   its::Transition getSelectorAP (Label apname, Label value) const;
+  its::Transition getAtomicPredicate (Label ap) const;
 
   its::Transition getHomomorphism (Ctlp_Formula_t *formula) const;
 

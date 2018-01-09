@@ -1,8 +1,11 @@
 #include "mc/ctlCheck.hh"
 #include "ctlp/visfd.h"
 
-using namespace its;
+#ifdef ITS_EXERCISE
+#include "operators.hh"
+#endif
 
+using namespace its;
 
 
 its::Transition  CTLChecker::getHomomorphism (Ctlp_Formula_t *ctlFormula) const {
@@ -970,6 +973,41 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
   its::State result;
   ctl_statecache_it it = ctl_statecache.find(ctlFormula);
   if ( it == ctl_statecache.end() ) {
+#ifdef ITS_EXERCISE
+    Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
+    Ctlp_Formula_t *rightChild = Ctlp_FormulaReadLeftChild(ctlFormula);
+    switch (Ctlp_FormulaReadType(ctlFormula)) {
+    case Ctlp_ID_c:
+      {
+      vLabel ap = vLabel(Ctlp_FormulaReadVariableName(ctlFormula)) + Ctlp_FormulaReadValueName(ctlFormula) ;
+      return ctl::computeAtomicPredicate(ap, *this);
+      }
+    case Ctlp_Init_c:
+      return ctl::computeInitial(*this);
+    case Ctlp_TRUE_c:
+      return ctl::computeTrue(*this); 
+    case Ctlp_FALSE_c:
+      return ctl::computeFalse(*this); 
+    case Ctlp_NOT_c:
+      return ctl::computeNot(leftChild,*this); 
+    case Ctlp_AND_c:
+      return ctl::computeAnd(leftChild,rightChild,*this); 
+    case Ctlp_THEN_c:
+      return ctl::computeImplies(leftChild,rightChild,*this); 
+    case Ctlp_OR_c:
+      return ctl::computeOr(leftChild,rightChild,*this); 
+    case Ctlp_EX_c:
+      return ctl::computeEX(leftChild,*this); 
+    case Ctlp_EU_c: 
+      return ctl::computeEU(leftChild,rightChild,*this);
+    case Ctlp_EG_c: 
+      return ctl::computeEG(leftChild,*this);
+    default :
+      throw "Unexpected case in Exercise mode.";
+    }
+    return result;
+#else    
+
     // A miss 
     // invoke recursive procedures
     its::State leftStates, rightStates;
@@ -1283,11 +1321,19 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
     }
 
     // std::cerr << "Obtained Homomorphism : " << result << std::endl;
+
+#endif // ITS_EXERCISE
     
   } else {
     result = it->second;
   }  
   return result;
+}
+
+its::Transition CTLChecker::getAtomicPredicate (Label ap) const {
+  its::Transition pred = model.getPredicate(ap);
+//  std::cout << pred << std::endl;
+  return pred;
 }
 
   its::Transition CTLChecker::getSelectorAP (Label apname, Label val) const {

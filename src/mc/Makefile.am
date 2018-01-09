@@ -21,7 +21,7 @@ AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src $(HAVE_BOOST_FLAG) $(LIBITS_CPP
 #
 #libmcctl_a_SOURCES = mcCmd.c  mcCover.c  mcDbg.c  mcDnC.c  mcGFP.c  mc.h  mcInt.h  mcMc.c  mcSCC.c  mcUtil.c  mcVacuum.c
 
-libctlits_a_SOURCES = ctlCheck.hh ctlCheck.cpp
+libctlits_a_SOURCES = ctlCheck.hh ctlCheck.cpp operators.hh operators.cpp
 
 
 # LDFLAGS used to have '-rdynamic' for DLL mode
