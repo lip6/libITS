@@ -1002,6 +1002,13 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
       return ctl::computeEU(leftChild,rightChild,*this);
     case Ctlp_EG_c: 
       return ctl::computeEG(leftChild,*this);
+    case Ctlp_Cmp_c: 
+      // Forward CTL specific : compare a formula to false or true
+      // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
+      if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
+ 	return (getStateVerifying(leftChild) == State::null ? State::one : State::null);
+      else
+	return (getStateVerifying(leftChild) == State::null ? State::null : State::one);
     default :
       throw "Unexpected case in Exercise mode.";
     }
