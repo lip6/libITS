@@ -1,5 +1,3 @@
-#ifdef ITS_EXERCISE
-
 #ifndef __OPERATORS__HH__
 #define __OPERATORS__HH__
 
@@ -82,5 +80,4 @@ namespace ctl {
 
 }
 
-#endif
 #endif
