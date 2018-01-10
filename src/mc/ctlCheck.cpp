@@ -726,6 +726,46 @@ bool CTLChecker::hasSCCs () const {
 }
 
 its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need_exact) const {
+#ifdef ITS_EXERCISE
+    Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
+    Ctlp_Formula_t *rightChild = Ctlp_FormulaReadRightChild(ctlFormula);
+    switch (Ctlp_FormulaReadType(ctlFormula)) {
+    case Ctlp_ID_c:
+      {
+      vLabel ap = vLabel(Ctlp_FormulaReadVariableName(ctlFormula)) + Ctlp_FormulaReadValueName(ctlFormula) ;
+      return ctl::computeAtomicPredicate(ap, *this);
+      }
+    case Ctlp_Init_c:
+      return ctl::computeInitial(*this);
+    case Ctlp_TRUE_c:
+      return ctl::computeTrue(*this); 
+    case Ctlp_FALSE_c:
+      return ctl::computeFalse(*this); 
+    case Ctlp_NOT_c:
+      return ctl::computeNot(leftChild,*this); 
+    case Ctlp_AND_c:
+      return ctl::computeAnd(leftChild,rightChild,*this); 
+    case Ctlp_THEN_c:
+      return ctl::computeImplies(leftChild,rightChild,*this); 
+    case Ctlp_OR_c:
+      return ctl::computeOr(leftChild,rightChild,*this); 
+    case Ctlp_EX_c:
+      return ctl::computeEX(leftChild,*this); 
+    case Ctlp_EU_c: 
+      return ctl::computeEU(leftChild,rightChild,*this);
+    case Ctlp_EG_c: 
+      return ctl::computeEG(leftChild,*this);
+    case Ctlp_Cmp_c: 
+      // Forward CTL specific : compare a formula to false or true
+      // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
+      if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
+ 	return (getStateVerifying(leftChild) == State::null ? State::one : State::null);
+      else
+	return (getStateVerifying(leftChild) == State::null ? State::null : State::one);
+    default :
+      throw "Unexpected case in Exercise mode.";
+    }    
+#else    
   its::Transition stop = Shom(GSDD::top);
   if (! beQuiet) {
   	std::cout << "Checking (exact) " << need_exact << " :" ;
@@ -973,48 +1013,6 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
   its::State result;
   ctl_statecache_it it = ctl_statecache.find(ctlFormula);
   if ( it == ctl_statecache.end() ) {
-#ifdef ITS_EXERCISE
-    Ctlp_Formula_t *leftChild = Ctlp_FormulaReadLeftChild(ctlFormula);
-    Ctlp_Formula_t *rightChild = Ctlp_FormulaReadLeftChild(ctlFormula);
-    switch (Ctlp_FormulaReadType(ctlFormula)) {
-    case Ctlp_ID_c:
-      {
-      vLabel ap = vLabel(Ctlp_FormulaReadVariableName(ctlFormula)) + Ctlp_FormulaReadValueName(ctlFormula) ;
-      return ctl::computeAtomicPredicate(ap, *this);
-      }
-    case Ctlp_Init_c:
-      return ctl::computeInitial(*this);
-    case Ctlp_TRUE_c:
-      return ctl::computeTrue(*this); 
-    case Ctlp_FALSE_c:
-      return ctl::computeFalse(*this); 
-    case Ctlp_NOT_c:
-      return ctl::computeNot(leftChild,*this); 
-    case Ctlp_AND_c:
-      return ctl::computeAnd(leftChild,rightChild,*this); 
-    case Ctlp_THEN_c:
-      return ctl::computeImplies(leftChild,rightChild,*this); 
-    case Ctlp_OR_c:
-      return ctl::computeOr(leftChild,rightChild,*this); 
-    case Ctlp_EX_c:
-      return ctl::computeEX(leftChild,*this); 
-    case Ctlp_EU_c: 
-      return ctl::computeEU(leftChild,rightChild,*this);
-    case Ctlp_EG_c: 
-      return ctl::computeEG(leftChild,*this);
-    case Ctlp_Cmp_c: 
-      // Forward CTL specific : compare a formula to false or true
-      // i.e. check whether a set is empty or not. return State::one to indicate truth, and State::null to indicate false.
-      if (Ctlp_FormulaReadCompareValue(ctlFormula) == 0)
- 	return (getStateVerifying(leftChild) == State::null ? State::one : State::null);
-      else
-	return (getStateVerifying(leftChild) == State::null ? State::null : State::one);
-    default :
-      throw "Unexpected case in Exercise mode.";
-    }
-    return result;
-#else    
-
     // A miss 
     // invoke recursive procedures
     its::State leftStates, rightStates;
@@ -1329,12 +1327,12 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 
     // std::cerr << "Obtained Homomorphism : " << result << std::endl;
 
-#endif // ITS_EXERCISE
     
   } else {
     result = it->second;
   }  
   return result;
+#endif // ITS_EXERCISE
 }
 
 its::Transition CTLChecker::getAtomicPredicate (Label ap) const {
