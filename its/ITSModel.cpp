@@ -416,38 +416,32 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	} else {
 	  // show intermediate states
 	  // one more pass, executing witness backward
-	  if (! revcomponents.empty()) {
-	    // copy it
-	    rev_t revcopy = revcomponents;
-	    labels_t::const_reverse_iterator wit = witness.rbegin();
-	    for (rev_rit rit= revcopy.rbegin(); rit != revcopy.rend() ; ++rit, ++wit) {
-	      // We look for a transition :  *rit   - t^-1 -> *pred
-	      rev_rit pred = rit;
-	      ++pred;
-	      if (pred == revcopy.rend()) {
+	  rev_t revcopy = revcomponents;
+	  revcopy.push_front(init);
+	  // one more pass, executing witness (forward/backward) to stabilize witness states
+	  labels_it wit = witness.begin();
+	  for ( rev_it cur= revcopy.begin();cur != revcopy.end(); ++cur, ++wit) {
+	    // we look for appropriate transition from cur to next
+	    rev_it next = cur;
+	    next++;
+	    if (next == revcopy.end()) {
+	      break;
+	    }
+	    
+	    for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
+	      if (it->first == * wit) {
+		// forward step
+		*next = (*next) * it->second(*cur);
+		// backward
+		Transition revt = it->second.invert(reach);
+		*cur = (*cur) *  revt( *next ) ;	    
 		break;
 	      }
-	      
-	      // lookup and build reverse transition
-	      Transition revt ;
-	      for (Type::namedTrs_it it=namedTrs.begin(); it != namedTrs.end() ; ++it) {
-		if (it->first == * wit) {
-		  revt = it->second.invert(reach);
-		  break;
-		}
-	      }
-	      if (revt == Transition::id) {
-		std::cerr << "Unexpectedly did not find transition of witness when performing back-step phase of witness construction." << std::endl;
-		assert(false);
-	      }
-	      
-	      
-	      *pred = (*pred) *  revt( *rit ) ; 
 	    }
-
-	    if (!witness.empty()) {
-	      printPath(path_t(witness, revcopy.begin(), revcopy.end()), std::cout,true);
-	    }
+	  }
+	  
+	  if (!witness.empty()) {
+	    printPath(path_t(witness, revcopy.begin(), revcopy.end()), std::cout,true);
 	  }
 	}
 
