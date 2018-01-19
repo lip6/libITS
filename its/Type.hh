@@ -79,8 +79,10 @@ public :
   virtual std::ostream & print (std::ostream & os) const = 0;
 
   /** Print a set of states, explicitly. 
-   *  Watch out, do not call on large its::State (>10^6). */
-  virtual void printState (State s, std::ostream & os) const = 0;
+   *  The limit argument is used to print at most that many states. 
+   *  Returns the number of states actually printed.
+   */
+  virtual long printState (State s, std::ostream & os, long limit=10) const = 0;
 
 
   typedef std::pair<vLabel,Transition> namedTr_t;
