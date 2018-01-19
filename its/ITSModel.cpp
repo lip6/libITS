@@ -865,14 +865,16 @@ void ITSModel::print (std::ostream & os) const  {
   /** Prints a set of states to a string. The printing invokes the main instance's type's printing mechanism.
    ** The limit is used to avoid excessive sizes of output : only the first "limit" states (or an approximation thereof in SDD context) are shown. **/
   void ITSModel::printSomeStates (State states, std::ostream & out, size_t limit) const {
-    if (states.nbStates() <= limit) {
-      getInstance()->getType()->printState(states, out);
+    size_t nb = states.nbStates();
+    if (nb <= limit) {
+      getInstance()->getType()->printState(states, out, limit);
     } else {
       // (TODO pretty print a single state)" ;
       // we need to select one (or preferably a configurable number of states)
       // a DFS traversal of the is indicated, so this should be part of printState ITS type interface
-      // i.e. print states up to a limit.
-      out << "[ " << states.nbStates() << " states ]" ;
+      // i.e. print states up to a limit.      
+      out << "[ " << nb << " states ]" << " showing " << limit << " first states" << std::endl;
+      getInstance()->getType()->printState(states, out, limit);
     }
   }
   
