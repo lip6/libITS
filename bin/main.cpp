@@ -120,7 +120,7 @@ State exhibitModel (ITSModel & model) {
   }
   if (!beQuiet) {
     std::cout << " Some reachable states : " ;
-    model.printSomeStates(reachable, std::cout, 10);
+    model.printSomeStates(reachable, std::cout);
   }
   // Print some stats : memory size, number of states ....
   Statistic S = Statistic(reachable, modelName , CSV); // can also use LATEX instead of CSV
