@@ -451,8 +451,8 @@ Transition EtfType::getAPredicate (Label predicate) const {
 }  
 
 
-  void EtfType::printState (State s, std::ostream & os) const {
-    TypeBasics::printSDDState(s,os,*getVarOrder());
+  long EtfType::printState (State s, std::ostream & os,long limit) const {
+    return TypeBasics::printSDDState(s,os,limit,*getVarOrder());
   }
 
 
