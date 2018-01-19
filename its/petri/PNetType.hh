@@ -215,8 +215,8 @@ public :
 
   /** Print a set of states, explicitly. 
    *  Watch out, do not call on large its::State (>10^6) */
-  void printState (State s, std::ostream & os) const {
-    Semantics::printState (s, os, *getVarOrder());
+  long printState (State s, std::ostream & os, long limit) const {
+    return Semantics::printState (s, os, limit, *getVarOrder());
   }
 
   /** Allow to visit the underlying type definition */

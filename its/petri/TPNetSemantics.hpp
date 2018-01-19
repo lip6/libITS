@@ -181,7 +181,7 @@ namespace its {
 
     static GShom encapsulate (const HomType & h);
 
-    static void printState (State s, std::ostream & os, const VarOrder & vo) ;
+    static long printState (State s, std::ostream & os, long limit, const VarOrder & vo) ;
     
   };
 
@@ -336,13 +336,13 @@ namespace its {
 
 
   template<>
-  inline void sddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
-    TypeBasics::printSDDState(s,os,vo);
+  inline long sddSemantics::printState (State s, std::ostream & os, long limit, const VarOrder & vo) {
+    return TypeBasics::printSDDState(s,os,limit,vo);
   }
 
   template<>
-  inline void dddSemantics::printState (State s, std::ostream & os, const VarOrder & vo) {
-    TypeBasics::printDDDState(s,os,vo);
+  inline long dddSemantics::printState (State s, std::ostream & os, long limit, const VarOrder & vo) {
+    return TypeBasics::printDDDState(s,os,limit,vo);
   }
 
 

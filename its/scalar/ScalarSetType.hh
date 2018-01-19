@@ -97,7 +97,7 @@ public :
   }  
   Label getName() const { return getComp().getName(); }
 
-  virtual void printState (State s, std::ostream & os) const { getConcrete()->printState(s,os); }
+  virtual long printState (State s, std::ostream & os, long limit) const { return getConcrete()->printState(s,os,limit); }
 
   /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.
    *  Uses the provided "reachable" states to compute the variable domains. */

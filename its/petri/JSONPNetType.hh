@@ -65,7 +65,7 @@ public :
   std::ostream & print (std::ostream & os) const { return net_.print(os); }  
   Label getName() const { return net_.getName(); }
 
-  virtual void printState (State s, std::ostream & os) const { os << "Please implement pretty state print for JsonPNet " << std::endl; }
+  virtual long printState (State s, std::ostream & os, long limit) const { os << "Please implement pretty state print for JsonPNet " << std::endl; }
 
     /** Allow to visit the underlying type definition */
   void visit (class TypeVisitor * visitor) const {

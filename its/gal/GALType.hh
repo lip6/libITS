@@ -96,8 +96,8 @@ public :
   /* delegated */
   std::ostream & print (std::ostream & os) const { os << *gal_ ; return os ; }
 
-  virtual void printState (State s, std::ostream & os) const { 
-    TypeBasics::printDDDState (s,os,*getVarOrder());
+  virtual long printState (State s, std::ostream & os,long limit) const { 
+    return TypeBasics::printDDDState (s,os,limit,*getVarOrder());
   }
 
   /** To obtain the potential state space of a Type : i.e. the cartesian product of variable domains.

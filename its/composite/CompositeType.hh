@@ -27,7 +27,7 @@ class CompositeType : public  TypeBasics {
   Transition skipLocalApply(Transition h, int index) const ;
 
 
-  void recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const;
+  long recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str,long limit, long pathSize) const;
 
   typedef std::pair<vLabel, vLabel> splitvar_t;
   // Returns a pair "instance name" "remains of string" by breaking on "." or resolving as nested variables.
@@ -75,7 +75,7 @@ public :
   /* delegated */
   std::ostream & print (std::ostream & os) const { return comp_.print(os); }  
 
-  void printState (State s, std::ostream & os) const;
+  long printState (State s, std::ostream & os, long limit) const;
 
   Label getName() const { return comp_.getName(); }
 

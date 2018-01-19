@@ -25,7 +25,7 @@ namespace its {
 
     /** Print a set of states, explicitly. 
      *  Watch out, do not call on large its::State (>10^6). str is there for recursion, pass an empty string. */
-    virtual void printState (State s, std::ostream & os) const { return concrete_->printState(s,os); }
+    virtual long printState (State s, std::ostream & os, long limit) const { return concrete_->printState(s,os,limit); }
 
     /** The state predicate function : string p -> SHom.
      *  returns a selector homomorphism that selects states verifying the predicate 'p'.

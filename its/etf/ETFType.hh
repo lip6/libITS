@@ -77,7 +77,7 @@ public :
   /* delegated */
   std::ostream & print (std::ostream & os) const {  return os; /* return comp_.print(os); */  }  
 
-  void printState (State s, std::ostream & os) const;
+  long printState (State s, std::ostream & os,long limit) const;
   /** Return the set of local transitions, with their name, useful for diplaying.*
    * Used in witness trace/counter example construction scenarios.
    **/
