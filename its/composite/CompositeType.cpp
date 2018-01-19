@@ -375,41 +375,49 @@ Transition CompositeType::getAPredicate (Label predicate) const {
   return skipLocalApply( instance->getType()->getPredicate(buff), instindex);
 }
 
-  void CompositeType::recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str) const {
-    if (s == State::one)
+  long CompositeType::recPrintState (State s, std::ostream & os, const VarOrder & vo, vLabel str,long limit, long pathSize) const {
+    if (s == State::one) {
       os << "[ " << str << "]"<<std::endl;
-    else if(s ==  State::top)
+      return pathSize;
+    } else if(s ==  State::top) {
       os << "[ " << str << "T ]"<<std::endl;
-    else if(s == State::null)
+      return pathSize;
+    } else if(s == State::null) {
       os << "[ " << str << "0 ]"<<std::endl;
-    else{
-    	if (comp_.comps_size()==1) {
-    		// Fixme  for pretty print variable names
-    		Label varname = vo.getLabel(0);
-    		os << varname << "={";
-    		const Instance & inst = *comp_.comps_find(varname);
-    		inst.getType()->printState(s,os);
-    		os << "}";
-    	} else {
-    		for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
-    			std::stringstream tmp;
-    			// Fixme  for pretty print variable names
-    			Label varname = vo.getLabel(s.variable());
-    			tmp << varname << "={";
-    			// the variable should correspond to an instance
-    			State val =  (const State &) * vi->first;
-    			const Instance & inst = *comp_.comps_find(varname);
-    			inst.getType()->printState(val,tmp);
-    			tmp << "}";
-    			recPrintState(vi->second, os, vo, str + tmp.str() + " ");
-    		}
-    	}
+      return 0;
+    } else {
+      long printed = 0;
+      if (comp_.comps_size()==1) {
+	// Fixme  for pretty print variable names
+	Label varname = vo.getLabel(0);
+	os << varname << "={";
+	const Instance & inst = *comp_.comps_find(varname);
+	printed += inst.getType()->printState(s,os,limit);
+	os << "}";
+      } else {
+	for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
+	  std::stringstream tmp;
+	  // Fixme  for pretty print variable names
+	  Label varname = vo.getLabel(s.variable());
+	  tmp << varname << "={";
+	  // the variable should correspond to an instance
+	  State val =  (const State &) * vi->first;
+	  const Instance & inst = *comp_.comps_find(varname);
+	  long sub = inst.getType()->printState(val,tmp, limit-printed);
+	  tmp << "}";
+	  printed+=recPrintState(vi->second, os, vo, str + tmp.str() + " ",limit-printed,pathSize*sub);
+	  if (printed >= limit) {
+	    break;
+	  }
+	}
+      }
+      return printed;
     }
   }
-
-  void CompositeType::printState (State s, std::ostream & os) const {
+  
+  long CompositeType::printState (State s, std::ostream & os, long limit) const {
     vLabel str;
-    recPrintState(s,os,*getVarOrder(),str);
+    return recPrintState(s,os,*getVarOrder(),str,limit,1);
   }
 
 
