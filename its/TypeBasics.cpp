@@ -137,45 +137,55 @@ bool TypeBasics::setDefaultState (Label def) {
   }
 
   
-  static void recPrintDDD (const GDDD & d, std::ostream & os, const VarOrder & vo, vLabel str) {
-    if (d == DDD::one)
+  static long recPrintDDD (const GDDD & d, std::ostream & os, const VarOrder & vo, vLabel str, long limit) {
+    if (d == DDD::one) {      
       os << "[ " << str << "]"<<std::endl;
-    else if(d == DDD::top)
+      return 1;
+    } else if(d == DDD::top) {
       os << "[ " << str << "T ]"<<std::endl;
-    else if(d == DDD::null)
+      // kind of 1 state...
+      return 1;
+    } else if(d == DDD::null) {
       os << "[ " << str << "0 ]"<<std::endl;
-    else{
-      
-		for(GDDD::const_iterator vi=d.begin();vi!=d.end();++vi){
-		  if (vi->first == 0) {
-			recPrintDDD(vi->second,os,vo,str);
-		  } else {
-			std::stringstream tmp;
-			tmp << vo.getLabel(d.variable())<<'='<<vi->first<<" ";
-			recPrintDDD(vi->second,os,vo,str+tmp.str());
-		  }
-		}
+      return 0;
+    } else {
+      long printed = 0;
+      for(GDDD::const_iterator vi=d.begin();vi!=d.end();++vi){
+	if (vi->first == 0) {
+	  printed+=recPrintDDD(vi->second,os,vo,str,limit-printed);
+	} else {
+	  std::stringstream tmp;
+	  tmp << vo.getLabel(d.variable())<<'='<<vi->first<<" ";
+	  printed+=recPrintDDD(vi->second,os,vo,str+tmp.str(),limit-printed);
+	}
+	if (printed >= limit) {
+	  break;
+	}
+      }
+      return printed;
     }
   }
 
 
-  static void recPrintSDD (State s, std::ostream & os, const VarOrder & vo, vLabel str) {
-    if (s == State::one)
+  static long recPrintSDD (State s, std::ostream & os, const VarOrder & vo, vLabel str,long limit, long pathSize) {
+    if (s == State::one) {
       os << "[ " << str << "]";
-    else if(s ==  State::top)
+      return pathSize;
+    } else if(s ==  State::top) {
       os << "[ " << str << "T ]";
-    else if(s == State::null)
+      return pathSize;
+    } else if(s == State::null) {
       os << "[ " << str << "0 ]";
-    else{
+      return 0;
+    } else {
+      long printed=0;
       for(State::const_iterator vi=s.begin(); vi!=s.end(); ++vi){
-	
-		
 	// grab the DDD on the arc	
 	DDD val = (const DDD &) * vi->first;
 	
 	if (val.nbsons() == 1 && val.begin()->first == 0) {
 	  // skip {0} values
-	  recPrintSDD(vi->second, os, vo, str);
+	  printed += recPrintSDD(vi->second, os, vo, str,limit-printed,pathSize);
 	} else {
 	  std::stringstream tmp;
 	  // pretty print variable names
@@ -188,28 +198,32 @@ bool TypeBasics::setDefaultState (Label def) {
 	    if (it != val.end()) tmp << ",";
 	  }
 	  tmp << "} ";
-	
-	  recPrintSDD(vi->second, os, vo, str + tmp.str());
+	  
+	  printed += recPrintSDD(vi->second, os, vo, str + tmp.str(),limit-printed,pathSize*val.nbsons());
+	}
+	if (printed >= limit) {
+	  break;
 	}
       }
+      return printed;
     }
   }
 
-  void TypeBasics::printSDDState (State s, std::ostream & os, const VarOrder & vo) {
-    recPrintSDD(s, os, vo, "");
+  long TypeBasics::printSDDState (State s, std::ostream & os, long limit, const VarOrder & vo) {
+    return recPrintSDD(s, os, vo, "",limit,1);
   }
   
-  void TypeBasics::printDDDState (State s, std::ostream & os, const VarOrder & vo) {
+  long TypeBasics::printDDDState (State s, std::ostream & os, long limit, const VarOrder & vo) {
     // should have a single variable, hence a single arc with a DDD label
     if (s==State::null) {
       os << "EmptySet";
-      return;
+      return 0;
     }
     assert(s.begin() != s.end());
     assert(s.begin()->second == State::one);
     DDD state = (const DDD &) * s.begin()->first;
     // for now just invoke DDD print
-    recPrintDDD(state, os, vo, "");
+    return recPrintDDD(state, os, vo, "", limit);
   }
 
   // helper function
