@@ -49,6 +49,8 @@ static bool dowitness = true;
 static bool dostats = false;
 static bool with_garbage = true;
 static bool countEdges = false;
+// Does the main instance use an "init" gadget
+static  bool hasInitializationGadget = false;
 static std::string modelName = "";
 static std::string invariantExpr = "";
 static bool doInvariant = false;
@@ -161,6 +163,7 @@ void usage() {
   cerr<<  "    -reachable-from XXXX : Consider that initial states are (reachable from initial) states satisfying the given predicate." <<endl;
   cerr<<  "    -with-invariant XXXX : only states satisfying the provided boolean invariant are considered successors of a state." <<endl;
   cerr<<  "    -reachable-file XXXX.prop : evaluate reachability properties specified by XXX.prop." <<endl;
+  cerr<<  "    --init-gadget : suppose that the initial state is actually a precursor of initial states, i.e. initial states are successors of the initial state. (prototype flag, only used in manywitness scenario currently, may be replaced by another mechanism in future).)" << endl;
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
   cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
   cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
@@ -248,6 +251,8 @@ int main_noex (int argc, char **argv) {
      countEdges = true;
    } else if (! strcmp(args[i],"--nowitness")   ) {
      dowitness = false;
+   } else if (! strcmp(args[i],"--init-gadget")   ) {
+     hasInitializationGadget = true;
    } else if (! strcmp(args[i],"-reachable") ) {
      if (++i > argc) 
        { cerr << "give a boolean expression over model variables for reachable criterion " << args[i-1]<<endl; usage() ; exit(1);}
@@ -543,7 +548,12 @@ int main_noex (int argc, char **argv) {
    }
    if (nbwitness >= 1 && verify != State::null) {
      std::cout << "computing up to "<< nbwitness<<  " traces..." <<endl;
-     model.printPaths(initialSituation, verify, reachable, nbwitness);
+     // gadget the first time
+     State init = initialSituation;
+     if (hasInitializationGadget) {
+       init = model.getNextRel() (initialSituation);
+     }
+     model.printPaths(init, verify, reachable, nbwitness);
    }
    std::cout << std::endl;
    
