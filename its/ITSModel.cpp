@@ -284,7 +284,8 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
     typedef rev_t::iterator rev_it;
     typedef rev_t::reverse_iterator rev_rit;
     rev_t revcomponents;
-    
+
+    auto initSize = init.nbStates();
     
     {
       State inter = init * toreach;
@@ -296,6 +297,16 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	return;
       } 
       
+    }
+
+    {
+      Transition fix = fixpoint(getNextRel()+ Transition::id, true);
+      State allReach = fix(init);
+      toreach = toreach * allReach;
+      Transition rev = fixpoint(getPredRel(allReach)+Transition::id,true);
+      State allToGoal = rev(toreach);
+      init = init * allToGoal;
+      std::cout << "Starting from " << init.nbStates() << "/" << initSize  << " states, to reach goal" << endl;
     }
     
     State M2,M3;
@@ -449,7 +460,12 @@ its::Transition ITSModel::getPredRel (State reach_envelope) const
 	ok = false;
       } else {
 	if (cur == 0) {
-	  std::cout << "All " << nbwitness << " minimal witness paths have been reported." << std::endl;
+	  std::cout << "All " << nbwitness << " minimal witness paths of length " << revcomponents.size() << " have been reported." << std::endl;
+	  State remain = init - getPredRel() (* revcomponents.begin());
+	  if (nbwitness < limit && remain != State::null) {
+	    // recurse
+	    printPaths(remain,toreach,reach,limit -nbwitness);
+	  }
 	  return;
 	} else {
 //	  std::cout << "Trying next trans at step " << cur-1 << " of path " <<  std::endl;
