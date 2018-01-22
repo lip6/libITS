@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2006, 2009, 2016 Laboratoire
-// d'Informatique de Paris 6 (LIP6), département Systèmes Répartis
-// Coopératifs (SRC), Université Pierre et Marie Curie.
+// d'Informatique de Paris 6 (LIP6), dï¿½partement Systï¿½mes Rï¿½partis
+// Coopï¿½ratifs (SRC), Universitï¿½ Pierre et Marie Curie.
 //
 // This file is part of Spot, a model checking library.
 //
@@ -465,8 +465,7 @@ namespace slap
 //     its::State div = fixpoint( nextRel * its::Transition::id ) (s->right());
 //     bool isDiv = div != its::State::null;
     std::stringstream ss;
-    if ( s->right().nbStates() < 15 )
-      model_.getType()->printState(s->right(), ss) ;
+    model_.getType()->printState(s->right(), ss,15) ;
 
     return (left_->format_state(s->left())
 	    + " * "

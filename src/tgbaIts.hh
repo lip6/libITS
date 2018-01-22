@@ -185,8 +185,9 @@ namespace its {
 
     /** Print a set of states, explicitly.
      *  Watch out, do not call on large its::State (>10^6). */
-    void printState (State s, std::ostream & os) const {
+    long printState (State s, std::ostream & os, long limit) const {
       os << s << std::endl ;
+      return s.nbStates();
     }
 
 
