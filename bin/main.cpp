@@ -324,7 +324,7 @@ int main_noex (int argc, char **argv) {
  }
 
  // Test that we don't have several props to check, otherwise do not set up interrupt.
- if (fixobs_passes != 0 && props.size() == 1 && !doFrom) {
+ if (fixobs_passes != 0 && props.size() == 1 && !doFrom && !dowitness && nbwitness==0  ) {
    Transition predicate = Transition::null; 
    if (props.begin()->getType() == INVARIANT) {
      predicate = model.getPredicate("!(" + props.begin()->getPred() + ")");
