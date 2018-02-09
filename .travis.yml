@@ -25,7 +25,7 @@ before_script:
   - export CXX=${CXX_COMPILER}
   - export CC=${C_COMPILER}
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rm /usr/local/include/c++         ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update    ; fi  
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update    ; fi  
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc    ; fi  
   - wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
   - wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
