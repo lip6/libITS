@@ -205,7 +205,6 @@ AC_CONFIG_FILES([
   its/parser_CAMI/Makefile
   its/gal/Makefile
   its/gal/parser/Makefile
-  demo/Makefile
   bin/Makefile
   Samples/Makefile
   Samples/prod/Makefile
@@ -214,6 +213,9 @@ AC_CONFIG_FILES([
   Samples/prod/Generators/Other/Makefile
   tests/Makefile
 ])
+
+#  demo/Makefile # skipped/unused in releases
+
 
 # Do it !! (mandatory)
 AC_OUTPUT

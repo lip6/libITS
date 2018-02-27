@@ -336,6 +336,8 @@ libITSmain_a_SOURCES = $(ITSSOURCES)
 otherincludedir = $(includedir)/include
 nobase_otherinclude_HEADERS = $(ITSHEADERS)
 
+libITS_a_SOURCES = $(ITSSOURCES)
+
 libITS.a : libITSmain.a libprod.a libCAMI.a libprod.a libRdP.a
 	mkdir .tmp-libs ; cd .tmp-libs ; $(AR) x ../libITSmain.a ; $(AR) x ../libprod.a ; $(AR) x ../libRdP.a ; $(AR) x ../libCAMI.a ; $(AR) x ../libprod.a ; $(AR) cru ../libITS.a *.o ; cd .. ; $(RANLIB) libITS.a ; \rm -r .tmp-libs ;
 
