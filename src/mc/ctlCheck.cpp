@@ -883,7 +883,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	  }
 	}
 	State leftStates = getStateVerifying(leftChild,true);
-	its::State deadf = ( getReachable() -  (getPredRel() (getReachable())) )*leftStates ; // i.e. add dead states that verify f; 
+	its::State deadf = getReachableDeadlocks() *leftStates ; // i.e. add dead states that verify f; 
 	if (deadf != State::null) {
 	  return deadf;
 	} else {
@@ -1160,7 +1160,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
       // start with states satisfying f
       // then remove states that are not a predescessor of a state in the set
       // EG f <->  ( f & pred )^* & f      
-      its::State deadf = ( getReachable() -  (getPredRel() (getReachable())) )*leftStates ; // i.e. add dead states that verify f; 
+	its::State deadf = getReachableDeadlocks()*leftStates ; // i.e. add dead states that verify f; 
       its::State deadg ;// i.e. add  predecessors of dead states satisfying f
       if (leftHom == stop) {
 	deadg =  fixpoint( (leftStates * getPredRel()) + Transition::id ) (deadf)  ; 
@@ -1275,7 +1275,7 @@ its::State  CTLChecker::getStateVerifying (Ctlp_Formula_t *ctlFormula, bool need
 	// FwdGlobal(p,q) = EH ( Reachable (p,q) )
 	its::State reachpq ;
 
-	its::State dead = getReachable() -  (getPredRel() (getReachable()))  ; // i.e. add dead states that verify f
+	its::State dead = getReachableDeadlocks()  ; // i.e. add dead states that verify f
 
 	bool sccs = hasSCCs ();
 	if (! sccs) {
@@ -1438,11 +1438,15 @@ its::State CTLChecker::getInitialState () const {
 }
 
 its::State CTLChecker::getReachableDeadlocks () const {
-  Transition nextRel = getNextRel();
-  if (nextRel == Transition::null) {
-    return getReachable();
+  if (deadlocks_ == its::State::one) {
+  
+    Transition nextRel = getNextRel();
+    if (nextRel == Transition::null) {
+      return getReachable();
+    }
+    deadlocks_ = getReachable() -  getPredRel() ( getReachable());
   }
-  return getReachable() - ( nextRel.invert(getReachable()) ( getReachable()));
+  return deadlocks_;
 }
 
 its::State CTLChecker::getReachableTimelocks () const {

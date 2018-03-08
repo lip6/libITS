@@ -31,8 +31,9 @@ class CTLChecker {
   bool beQuiet;
   mutable bool scc_;
   mutable bool scc_computed_;
-public :
-  CTLChecker (const its::ITSModel & model, bool beQuiet=false) : model(model), isfairtime(false), beQuiet(beQuiet), scc_(false), scc_computed_(false) {}
+  mutable its::State deadlocks_;
+ public :
+  CTLChecker (const its::ITSModel & model, bool beQuiet=false) : model(model), isfairtime(false), beQuiet(beQuiet), scc_(false), scc_computed_(false),deadlocks_(its::State::one) {}
 
   void setFairTime(bool befairtime) { isfairtime = befairtime; }
 
@@ -52,7 +53,7 @@ public :
   bool hasSCCs () const;
 
   its::State getInitialState () const;
-
+  
   its::State getReachableDeadlocks () const;
   its::State getReachableTimelocks () const;
 
