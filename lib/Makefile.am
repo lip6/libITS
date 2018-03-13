@@ -1,6 +1,7 @@
 SUBDIRS = bringBack
 noinst_LIBRARIES = libITSmain.a libprod.a
 lib_LIBRARIES = libITS.a
+lib_LTLIBRARIES = libITS.la
 
 MYSRCDIR= $(top_srcdir)/its
 MYPRODSRCDIR= $(MYSRCDIR)/prod
@@ -337,9 +338,11 @@ otherincludedir = $(includedir)/include
 nobase_otherinclude_HEADERS = $(ITSHEADERS)
 
 libITS_a_SOURCES = $(ITSSOURCES)
+libITS_a_CPPFLAGS = $(AM_CPPFLAGS)
+libITS_la_SOURCES = $(ITSSOURCES)
+libITS_la_CPPFLAGS = $(AM_CPPFLAGS) -fPIC
 
 libITS.a : libITSmain.a libprod.a libCAMI.a libprod.a libRdP.a
 	mkdir .tmp-libs ; cd .tmp-libs ; $(AR) x ../libITSmain.a ; $(AR) x ../libprod.a ; $(AR) x ../libRdP.a ; $(AR) x ../libCAMI.a ; $(AR) x ../libprod.a ; $(AR) cru ../libITS.a *.o ; cd .. ; $(RANLIB) libITS.a ; \rm -r .tmp-libs ;
 
-
-all-local : libITS.a
+all-local : libITS.a libITS.la

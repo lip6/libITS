@@ -147,7 +147,7 @@ AC_PROG_RANLIB
 # we make static libs (use ranlib)
 # we make shared libs (use libtool)
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
-LT_INIT([disable-shared])
+LT_INIT([])
 
 AC_LIBTOOL_DLOPEN
 
@@ -187,7 +187,7 @@ AM_PROG_LEX
 AC_PROG_YACC
 
 CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
-LDFLAGS="-static-libgcc -static-libstdc++ $LDFLAGS"
+#LDFLAGS = -static-libgcc -static-libstdc++ $(LDFLAGS)
 
 # define HAS_STDC_HEADERS
 AC_HEADER_STDC
