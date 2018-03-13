@@ -46,20 +46,20 @@ LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBDDD_LINK) $(LIBEXPAT_PATH) $(L
 its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp
 
 its_reach_LDADD = $(LDADDFLAGS) 
-its_reach_LDFLAGS = -fwhole-program 
+its_reach_LDFLAGS = -static-libgcc -static-libstdc++ $(LDFLAGS) -fwhole-program 
 #-static -all-static
 # -export-dynamic
 
 dve2gal_SOURCES = dve2galmain.cpp
 
 dve2gal_LDADD = $(LDADDFLAGS)  
-dve2gal_LDFLAGS = -fwhole-program 
+dve2gal_LDFLAGS = -static-libgcc -static-libstdc++ $(LDFLAGS) -fwhole-program 
 # -export-dynamic
 
 gal2c_SOURCES = gal2cmain.cpp
 
 gal2c_LDADD = $(LDADDFLAGS)
-gal2c_LDFLAGS = -fwhole-program
+gal2c_LDFLAGS = -static-libgcc -static-libstdc++ $(LDFLAGS) -fwhole-program
 
 #gal_test_SOURCES = test-gal.cpp 
 # philo.hh philo.cpp

@@ -3,6 +3,9 @@ noinst_PROGRAMS = philoITS tokenITS
 # ringIPN robinIPN cliservIPN simpleIPN hanoiIPN kanbanIPN
 lib_LTLIBRARIES = libtokens.la libphiloSumo.la
 
+philoITS_LDFLAGS = -static-libgcc -static-libstdc++ $(LDFLAGS)
+tokenITS_LDFLAGS = -static-libgcc -static-libstdc++ $(LDFLAGS)
+
 IPNLIBPATH= $(top_builddir)/lib/libITS.a
 
 if WITH_LIBDDD_PATH
