@@ -41,25 +41,20 @@ AM_CPPFLAGS = $(LIBDDD_CPP) $(LIBITS_CPP) $(LIBEXPAT_CPP) $(ANTLRC_CPP) $(GMP_CP
 AM_CXXFLAGS = -g -O3 -Wall 
 
 LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBDDD_LINK) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) $(GMP_PATH) $(GMP_LINK)
-
+AM_LDFLAGS = $(LDFLAGS) -fwhole-program 
+AM_LDFLAGS += $(STATICFLAGS)
 
 its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp
 
 its_reach_LDADD = $(LDADDFLAGS) 
-its_reach_LDFLAGS = -fwhole-program 
-#-static -all-static
-# -export-dynamic
 
 dve2gal_SOURCES = dve2galmain.cpp
 
 dve2gal_LDADD = $(LDADDFLAGS)  
-dve2gal_LDFLAGS = -fwhole-program 
-# -export-dynamic
 
 gal2c_SOURCES = gal2cmain.cpp
 
 gal2c_LDADD = $(LDADDFLAGS)
-gal2c_LDFLAGS = -fwhole-program
 
 #gal_test_SOURCES = test-gal.cpp 
 # philo.hh philo.cpp
