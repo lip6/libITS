@@ -147,7 +147,13 @@ AC_PROG_RANLIB
 # we make static libs (use ranlib)
 # we make shared libs (use libtool)
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
-LT_INIT([disable-shared])
+
+LT_INIT
+
+# no dynamic libs unless --enable-shared is passed to configure
+AC_DISABLE_SHARED
+# build static libs by default
+AC_ENABLE_STATIC
 
 AC_LIBTOOL_DLOPEN
 
