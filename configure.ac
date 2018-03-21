@@ -187,7 +187,7 @@ AM_PROG_LEX
 AC_PROG_YACC
 
 CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
-LDFLAGS="-static-libgcc -static-libstdc++ $LDFLAGS"
+AC_SUBST([STATICFLAGS],["-all-static -static-libgcc -static-libstdc++"])
 
 # define HAS_STDC_HEADERS
 AC_HEADER_STDC
