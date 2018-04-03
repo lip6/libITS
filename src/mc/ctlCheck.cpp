@@ -1444,7 +1444,7 @@ its::State CTLChecker::getReachableDeadlocks () const {
     if (nextRel == Transition::null) {
       return getReachable();
     }
-    deadlocks_ = getReachable() -  getPredRel() ( getReachable());
+    deadlocks_ =  getReachable() - ( nextRel.invert(getReachable()) ( getReachable()));
   }
   return deadlocks_;
 }
