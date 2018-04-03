@@ -20,6 +20,9 @@ while (my $line = <IN>) {
   } elsif ($line =~ /^Formula is (\w+) \!/ )  {
     my $verdict = $1;
     push (@refverdicts,$verdict);
+  } elsif ($line =~ /System contains (\d+) deadlocks/) {
+    my $verdict = $1;
+    push (@refverdicts,$verdict);      
   }
 }
 
@@ -43,7 +46,11 @@ while (my $line = <IN>) {
   } elsif ($line =~ /^Formula is (\w+) \!/ )  {
     my $verdict = $1;
     push (@verdicts,$verdict);
+  } elsif ($line =~ /System contains (\d+) deadlocks/) {
+    my $verdict = $1;
+    push (@verdicts,$verdict);      
   }
+
 }
 
 # retrieve the exit value of the test

@@ -1,0 +1,30 @@
+
+gal petri{
+  int P_network_90 = 1;
+  int P_network_135 = 0;
+  int P_masterState_6 = 0;
+  int P_masterState_9 = 1;
+  int P_negotiation_16 = 1;
+  int P_negotiation_22 = 1;
+  transition t277.t5.t4 [ P_masterState_9 >= 1 && P_negotiation_16 >= 1 ] {
+    P_masterState_6 += 1    ;
+    P_masterState_9 -= 1    ;
+    P_negotiation_16 -= 1    ;
+  }
+  transition t304.t5.t4 [ P_masterState_6 >= 1 && P_negotiation_16 >= 1 ] {
+    P_negotiation_16 -= 1    ;
+  }
+  transition t329.t2.t1 [ P_network_135 >= 1 && P_negotiation_22 >= 1 ] {
+    P_network_135 -= 1    ;
+    P_negotiation_22 -= 1    ;
+  }
+  transition t70.t5.t4.t220.t2.t1.t47.t5.t4 [ P_network_90 >= 1 && P_masterState_9 >= 1 ] {
+    P_network_90 -= 1    ;
+    P_network_135 += 1    ;
+  }
+  transition t97.t5.t4.t220.t2.t1.t47.t5.t4 [ P_network_90 >= 1 && P_masterState_6 >= 1 ] {
+    P_network_90 -= 1    ;
+    P_network_135 += 1    ;
+  }
+}
+main petri ;

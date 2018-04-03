@@ -54,3 +54,5 @@ GAL input from pnmcc
 ../bin/its-ctl --quiet  -i  test_models/circ/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl 
 GAL input from pnmcc backward
 ../bin/its-ctl --quiet  -i  test_models/circ/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl --backward
+GAL deadlock test from structural reduction of NeoElection2
+../bin/its-ctl -i test_models/Neo2_SR_RD.gal -t CGAL -ctl DEADLOCK --quiet
