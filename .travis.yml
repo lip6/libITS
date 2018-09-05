@@ -10,8 +10,8 @@ matrix:
       addons: &gcc7
         apt:
           sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-7', 'gcc-7']
-      env: GCCVER='7' CXX_COMPILER='g++-7' C_COMPILER='gcc-7'
+          packages: ['g++-8', 'gcc-8']
+      env: GCCVER='8' CXX_COMPILER='g++-8' C_COMPILER='gcc-8'
 
     # 4/ OSX GCC Builds
     - os: osx
