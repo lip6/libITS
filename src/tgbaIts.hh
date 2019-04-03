@@ -62,7 +62,7 @@ namespace its {
     struct less_than {
       bool operator()(const its::TgbaType::tgba_arc_label_t &g1, const its::TgbaType::tgba_arc_label_t &g2) const{
 	return g1.first.id() < g2.first.id()
-	  || ( (! (g1.first.id() > g2.first.id() )) && g1.second.id < g2.second.id);
+	  || ( (! (g1.first.id() > g2.first.id() )) && g1.second.id() < g2.second.id());
       }
     };
 
