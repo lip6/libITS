@@ -585,10 +585,10 @@ int main (int argc, char **argv) {
   } catch (const char * ex) {
     std::cerr << "An unexpected exception occurred : " << ex << std::endl;
     return 1;
-  } catch (std::string err) {
+  } catch (std::string & err) {
     std::cerr << "An unexpected exception occurred : " << err << std::endl;
     return 1;
-  } catch(std::bad_alloc ex) {
+  } catch(std::bad_alloc & ex) {
     // Delete the reserved memory so we can print an error message before exiting
     delete[] _emergencyMemory;
 
