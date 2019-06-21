@@ -5,5 +5,6 @@
 
 its::State getTransRel (const its::ITSModel & m);
 
+its::State toRelation (const its::State & s, const its::Transition & t);
 
 #endif

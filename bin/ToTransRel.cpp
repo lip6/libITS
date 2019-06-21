@@ -72,3 +72,10 @@ its::State getTransRel (const its::ITSModel & m) {
   reach = next(reach);
   return reach;
 }
+
+its::State toRelation (const its::State & s, const its::Transition & t) {
+	GShom torel = ToTransRel();
+	its::State s2 = torel(s);
+	s2 = t(s2);
+	return s2;
+}
