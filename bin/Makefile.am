@@ -44,7 +44,7 @@ LDADDFLAGS = $(LIBITS_PATH)  $(LIBDDD_PATH)  $(LIBDDD_LINK) $(LIBEXPAT_PATH) $(L
 AM_LDFLAGS = $(LDFLAGS) -fwhole-program 
 AM_LDFLAGS += $(STATICFLAGS)
 
-its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp
+its_reach_SOURCES = main.cpp EarlyBreakObserver.hh Property.hh Property.cpp MaxComputer.hh MaxComputer.cpp SMTExporter.hh SMTExporter.cpp ExactStateCounter.cpp ExactStateCounter.hh ToTransRel.hh ToTransRel.cpp Graph.hh Graph.cpp
 
 its_reach_LDADD = $(LDADDFLAGS) 
 
