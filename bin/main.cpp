@@ -29,7 +29,7 @@
 #include "EarlyBreakObserver.hh"
 #include "Property.hh"
 #include "SMTExporter.hh"
-
+#include "Graph.hh"
 
 #ifdef HASH_STAT
 #include "its/gal/ExprHom.hpp"
@@ -167,6 +167,7 @@ void usage() {
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
   cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
   cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
+  cerr<<  "    --witness-graph : output the state space graph for the region of interest, replaces production of witness traces" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -224,6 +225,7 @@ int main_noex (int argc, char **argv) {
  vLabel smtpath = "";
  bool dosmtexport = false;
 
+ bool dograph = false;
  argc = args.size();
  int nbwitness=0;
  for (int i=0;i < argc; i++) {
@@ -251,6 +253,8 @@ int main_noex (int argc, char **argv) {
      countEdges = true;
    } else if (! strcmp(args[i],"--nowitness")   ) {
      dowitness = false;
+   } else if (! strcmp(args[i],"--witness-graph")   ) {
+     dograph = true;
    } else if (! strcmp(args[i],"--init-gadget")   ) {
      hasInitializationGadget = true;
    } else if (! strcmp(args[i],"-reachable") ) {
@@ -499,7 +503,7 @@ int main_noex (int argc, char **argv) {
        std::cout << "Invariant property " << it->getName() << " is true." << std::endl;
      } else {
        std::cout << "Invariant property " << it->getName() << " does not hold." << std::endl;
-       if (dowitness || nbwitness > 0) {
+       if (dowitness || nbwitness > 0 || dograph) {
 	 std::cout << "Reachable states that do not respect the invariant will be exhibited." << std::endl;
 	 // to build a trace.
 	 verify = predicate (reachable);
@@ -515,7 +519,7 @@ int main_noex (int argc, char **argv) {
        std::cout << "Never property " << it->getName() << " is true." << std::endl;
      } else {
        std::cout << "Never property " << it->getName() << " does not hold." << std::endl;
-       if (dowitness || nbwitness > 0) {
+       if (dowitness || nbwitness > 0 || dograph) {
 	 std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
 	 // to build a trace.
 	 verify = predicate (reachable);
@@ -529,7 +533,7 @@ int main_noex (int argc, char **argv) {
 
      if (isVerify) {
        std::cout << "Reachability property " << it->getName() << " is true." << std::endl;
-       if (dowitness || nbwitness > 0) {
+       if (dowitness || nbwitness > 0 || dograph) {
 	 std::cout << "Reachable states where the predicate is true will be exhibited." << std::endl;
 	 verify = predicate (reachable);
 	 std::cout << "There are " << verify.nbStates() << " reachable states in which your predicate is true." <<std::endl;
@@ -554,6 +558,13 @@ int main_noex (int argc, char **argv) {
        init = model.getNextRel() (initialSituation);
      }
      model.printPaths(init, verify, reachable, nbwitness);
+   }
+   if (dograph && verify != State::null) {
+	   std::cout << "Building graph for states on path" <<endl;
+	   GraphBuilder gb ("test.dot");
+	   Type::namedTrs_t trn;
+	   model.getNamedLocals(trn);
+	   plotGraph (reachable, trn,& gb);
    }
    std::cout << std::endl;
    
