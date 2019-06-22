@@ -373,6 +373,9 @@ namespace its {
     bool
     skip_variable(int vr) const
     {
+    	if (vo->size() <= vr) {
+    		return true;
+    	}
       const IntExpression & curv = vo->getVar(vr);
       bool b =  ! var.isSupport(curv)
 	&& ! expr.isSupport(curv);
@@ -523,6 +526,9 @@ public:
   {
 //   expr.print(std::cerr); 
 //   std::cerr << "Skips " << vo->getVar(var) << " ? " << ! expr.isSupport(vo->getVar(var)) << std::endl;
+   if (vo->size() <= var) {
+	   return true;
+   }
    return ! expr.isSupport(vo->getVar(var)) ;
   }
 
@@ -1082,6 +1088,9 @@ public:
   bool
   skip_variable(int vr) const
   {
+	if (vo->size() <= vr) {
+	   return true;
+	}
     const IntExpression & curv = vo->getVar(vr);
     bool b =  ! var.isSupport(curv)
       && ! expr.isSupport(curv);
