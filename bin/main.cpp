@@ -561,10 +561,16 @@ int main_noex (int argc, char **argv) {
    }
    if (dograph && verify != State::null) {
 	   std::cout << "Building graph for states on path" <<endl;
-	   GraphBuilder gb ("test.dot");
+	   labels_t vars;
+   	   model.getInstance()->getType()->addFlatVarSet(vars,"");
+	   GraphBuilder gb ("test.dot", vars);
 	   Type::namedTrs_t trn;
 	   model.getNamedLocals(trn);
-	   plotGraph (reachable, trn,& gb);
+	   Transition predfp = fixpoint( model.getPredRel(reachable) + Transition::id);
+	   State toplot = predfp (verify);
+	   std::cout << "Graph has " << toplot.nbStates() << " vertices." <<endl;
+
+	   plotGraph (toplot, trn,& gb);
    }
    std::cout << std::endl;
    
