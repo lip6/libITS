@@ -4,7 +4,7 @@
 #include <functional>
 #include "ToTransRel.hh"
 
-GraphBuilder::GraphBuilder(Label file) : out(file),nextID(0) {
+GraphBuilder::GraphBuilder(Label file, const labels_t & vars) : out(file),nextID(0),vars(vars) {
 	out << "digraph G {" << std::endl;
 }
 
@@ -19,6 +19,8 @@ void GraphBuilder::addEdge (const state_t & src, const state_t & dest, Label lab
 	}
 	int sid = caccess->second;
 	int did = caccessd->second;
+
+
 
 	out << "n" << sid << " -> " << "n" << did << " [label=\"" << label << "\"] ;" << std::endl;
 }
@@ -38,13 +40,16 @@ void GraphBuilder::addNode (state_t & s) {
 		access->second = id;
 		out << "n" << id << " [label=\"" ;
 		bool first = true;
-		for (auto & i : s) {
+		for (size_t i=0,e=s.size(); i < e ; i++) {
+			auto v = s[i];
+			if (v==0)
+				continue ; // skip 0 values
 			if (first) {
 				first = false;
 			} else  {
 				out << ",";
 			}
-			out <<  i;
+			out << vars[i] << "=" << v;
 		}
 		out << "\"] ;" << std::endl;
     }

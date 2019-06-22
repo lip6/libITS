@@ -12,8 +12,9 @@ class GraphBuilder  {
 	typedef ext_hash_map<state_t,int> map_t;
 	map_t index;
 	int nextID;
+	labels_t vars;
 public :
-	GraphBuilder(Label file);
+	GraphBuilder(Label file, const labels_t & vars);
 	void addEdge (const state_t & src, const state_t & dest, Label label);
 	void addNode (state_t & s) ;
 	~GraphBuilder() ;
