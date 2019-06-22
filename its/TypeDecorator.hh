@@ -35,7 +35,7 @@ namespace its {
      *  Examples : P1.fork = 1 ; P2.P3.think > 0  etc... */
     virtual Transition getPredicate (char* predicate) const { return concrete_->getPredicate(predicate); }
 
-
+    void addFlatVarSet (labels_t & vars, Label prefix) const { concrete_->addFlatVarSet(vars, prefix); }
     /** order */
     virtual bool setVarOrder (labels_t vars) const { 
       return concrete_->setVarOrder(vars); 

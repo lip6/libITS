@@ -41,6 +41,7 @@ namespace its {
      * NOTE : do not modify order between calls to getLocals or getSuccs or cache mixup could occur !! */
     virtual bool setVarOrder (labels_t vars) const;
     void printVarOrder (std::ostream & os) const { getVarOrder()->print(os); }
+    virtual void addFlatVarSet (labels_t & vars, Label prefix) const ;
 
     /** one initial state can be designated as initial state */
     Label getDefaultState() const;

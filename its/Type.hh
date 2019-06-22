@@ -71,7 +71,10 @@ public :
 	
   // also sets to default if currently unset.
   virtual VarOrder * getVarOrder () const = 0;
-	
+
+  // collect the full list of qualified integer variables, in top to bottom fashion
+  virtual void addFlatVarSet (labels_t & vars, Label prefix="") const =0;
+
   /** Optional, ok to do nothing.
    * prints the variable order used in this type */
   virtual void printVarOrder (std::ostream & os) const = 0;

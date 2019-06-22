@@ -54,6 +54,16 @@ labels_t CompositeType::getVarSet () const {
   return pnames;
  }
 
+void CompositeType::addFlatVarSet (labels_t & vars, Label prefix) const  {
+	auto vo = getVarOrder();
+	for (int v = vo->size()-1 ; v >= 0 ; v--) {
+		auto l = vo->getLabel(v);
+		auto it = comp_.comps_find(l);
+		it->getType()->addFlatVarSet(vars, l);
+	}
+}
+
+
 Transition CompositeType::skipLocalApply(Transition h, int index) const {
 	if (comp_.comps_size()==1) {
 		assert(index == 0);

@@ -38,6 +38,13 @@ VarOrder * TypeBasics::getVarOrder () const {
     return vorder_->updateOrder(vars);
   }
 
+  void TypeBasics::addFlatVarSet (labels_t & vars, Label prefix) const {
+	  getVarOrder();
+	  for (int v = vorder_->size()-1 ; v >= 0 ; v--) {
+		  vars.push_back(prefix + vorder_->getLabel(v));
+	  }
+  }
+
   /** the setter returns false if the label provided is not in InitStates */
 bool TypeBasics::setDefaultState (Label def) {
   labels_t states = getInitStates ();

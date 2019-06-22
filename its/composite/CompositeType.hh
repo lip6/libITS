@@ -1,7 +1,7 @@
 /*
  * CompositeITS.hh
  *
- *  Created on: 7 déc. 2008
+ *  Created on: 7 dï¿½c. 2008
  *      Author: yann
  */
 
@@ -39,6 +39,8 @@ class CompositeType : public  TypeBasics {
 public :
   CompositeType (const Composite & c) : comp_(c){};
 
+
+  void addFlatVarSet (labels_t & vars, Label prefix) const ;
 
 	/** the set InitStates of designated initial states (a copy)*/
 	labels_t getInitStates () const ;
