@@ -168,6 +168,7 @@ void usage() {
   cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
   cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
   cerr<<  "    --witness-graph : output the state space graph for the region of interest, replaces production of witness traces" <<endl;
+  cerr<<  "    -wgo PATHPREFIX : in conjunction with previous flag, decide where to output the witness graphs (default : $CWD/wg)" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -223,6 +224,7 @@ int main_noex (int argc, char **argv) {
  vLabel reachFile="";
  vLabel traceStr = "";
  vLabel smtpath = "";
+ vLabel wgopath = "wg";
  bool dosmtexport = false;
 
  bool dograph = false;
@@ -238,6 +240,10 @@ int main_noex (int argc, char **argv) {
      if (++i > argc) 
        { cerr << "give argument value for BMC depth " << args[i-1]<<endl; usage() ; exit(1);}
      BMC = atoi(args[i]); 
+   } else if (! strcmp(args[i],"-wgo") ) {
+     if (++i > argc)
+       { cerr << "give argument value for witness graph path " << args[i-1]<<endl; usage() ; exit(1);}
+     wgopath = args[i];
    } else if (! strcmp(args[i],"-exportsmt") ) {
      if (++i > argc) 
        { cerr << "give argument value for SMT export file " << args[i-1]<<endl; usage() ; exit(1);}
@@ -465,8 +471,8 @@ int main_noex (int argc, char **argv) {
      props.clear();
    }   
  }
- 
- for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
+ int pindex = 0;
+ for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it, pindex++ ) {
    
    if (MemoryManager::should_garbage()) {
      MemoryManager::garbage();
@@ -563,12 +569,13 @@ int main_noex (int argc, char **argv) {
 	   std::cout << "Building graph for states on path" <<endl;
 	   labels_t vars;
    	   model.getInstance()->getType()->addFlatVarSet(vars,"");
-	   GraphBuilder gb ("test.dot", vars);
+   	   vLabel pwg = wgopath + "_" + to_string(pindex) +".dot";
+	   GraphBuilder gb (pwg, vars);
 	   Type::namedTrs_t trn;
 	   model.getNamedLocals(trn);
 	   Transition predfp = fixpoint( model.getPredRel(reachable) + Transition::id);
 	   State toplot = predfp (verify);
-	   std::cout << "Graph has " << toplot.nbStates() << " vertices." <<endl;
+	   std::cout << "Building witness graph in file : " << pwg << " graph has " << toplot.nbStates() << " vertices." <<endl;
 
 	   plotGraph (toplot, trn,& gb);
    }
