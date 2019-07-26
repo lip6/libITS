@@ -57,7 +57,7 @@ static bool doInvariant = false;
 static bool doFrom = false;
 // if BMC use is wanted, will be >0
 static int BMC = -1;
-static size_t fixobs_passes = 5000;
+static size_t fixobs_passes = 2;
 
 its::State clearState (its::State in);
 
