@@ -60,11 +60,8 @@ public:
       return true;
     if (n > max)
     {
-      if (after != before)
-      {
         interrupted = true;
         return true;
-      }
     }
     else
     {
@@ -80,11 +77,8 @@ public:
       return true;
     if (n > max)
     {
-      if (after != before)
-      {
         interrupted = true;
         return true;
-      }
     }
     else
     {
