@@ -38,7 +38,8 @@ script :
   - autoreconf -vfi   
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://lip6.github.io/libITS/linux.tgz ; tar xzf linux.tgz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libITS/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
-  - ./configure --with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  --enable-nolto --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LTO=--enable-nolto ; fi
+  - ./configure $LTO --with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  --prefix=$PWD/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
   - make
   - cd tests
   - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
