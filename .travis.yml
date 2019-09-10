@@ -40,8 +40,9 @@ script :
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libITS/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://yanntm.github.io/Spot-BinaryBuilds/spot_linux.tar.gz ; tar xzf spot_linux.tar.gz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/yanntm/Spot-BinaryBuilds/raw/osx/spot_osx.tar.gz ; tar xzf spot_osx.tar.gz ; fi
-  - autoreconf -vfi   
-  - ./configure --enable-nolto --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ -with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  || cat config.log ; 
+  - autoreconf -vfi  
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LTO=--enable-nolto ; fi
+  - ./configure $LTO --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ -with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  || cat config.log ; 
   - make 
   - cd tests
   - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
