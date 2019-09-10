@@ -1,5 +1,4 @@
 language: cpp
-dist: trusty
 sudo: false
 
 matrix:
@@ -44,7 +43,8 @@ script :
 #  - mkdir usr && mkdir usr/local
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://lip6.github.io/libDDD/linux.tgz ; tar xzf linux.tgz ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libDDD/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
-  - ./configure --enable-nolto --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LTO=--enable-nolto ; fi
+  - ./configure $LTO --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
   - make
   - cd tests
   - ( rc=0 ; for TEST in *.data ; do travis_wait ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
