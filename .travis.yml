@@ -52,8 +52,8 @@ script :
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then strip -s src/its-ltl ; fi
   - cp src/its-ltl website/
   - make install
-  - tar cvzf $TRAVIS_OS_NAME.tgz usr/
-  - mv $TRAVIS_OS_NAME.tgz website/
+#  - tar cvzf $TRAVIS_OS_NAME.tgz usr/
+#  - mv $TRAVIS_OS_NAME.tgz website/
 
 deploy:
   provider: pages
