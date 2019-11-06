@@ -183,7 +183,11 @@ class array_t
       T * aux_pointer = Alloc(allocated);
       if (field)
        {
-        memcpy(aux_pointer,field,my_size*sizeof(T));
+	 for (size_t i=0; i < my_size ; i++) {
+	   aux_pointer[i] = std::move(field[i]);
+	 }
+	 // illegal for non trivial objects
+	 //  memcpy(aux_pointer,field,my_size*sizeof(T));
         delete [] field;
        }
       field = aux_pointer;
