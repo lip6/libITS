@@ -19,6 +19,7 @@ matrix:
         homebrew:
           packages:
             - gcc
+          update: true
       env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
 
 before_script:
