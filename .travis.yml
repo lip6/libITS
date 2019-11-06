@@ -13,9 +13,12 @@ matrix:
       env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
 
     # 4/ OSX GCC Builds
-    - os: osx
-      osx_image: xcode8.3
+    - os: osx      
       compiler: gcc
+      addons:
+        homebrew:
+          packages:
+            - gcc
       env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
 
 before_script:
@@ -23,9 +26,6 @@ before_script:
   - cd ${TRAVIS_BUILD_DIR} 
   - export CXX=${CXX_COMPILER}
   - export CC=${C_COMPILER}
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then rm -f /usr/local/include/c++         ; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update    ; fi  
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc    ; fi  
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
   # linux only
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export AR=gcc-ar-${GCCVER} ; fi
