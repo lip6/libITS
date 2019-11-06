@@ -84,7 +84,7 @@ extern "C" {
 %type <i> marquage
 %type <i> placelevel
 
-%name-prefix "RdPM"
+%name-prefix="RdPM"
 
 %start reseau
 
