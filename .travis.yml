@@ -14,6 +14,13 @@ matrix:
 
     # 4/ OSX GCC Builds
     - os: osx
+      osx_image: xcode11.2
+        addons:
+          homebrew:
+            packages:
+              - gcc
+              - expat
+              - popt
       compiler: gcc
       env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
     
@@ -22,7 +29,6 @@ before_script:
   - cd ${TRAVIS_BUILD_DIR} 
   - export CXX=${CXX_COMPILER}
   - export CC=${C_COMPILER}
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install gcc expat popt  ; fi  
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
   # linux only
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export AR=gcc-ar-${GCCVER} ; fi
