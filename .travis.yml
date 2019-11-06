@@ -13,13 +13,13 @@ matrix:
       env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
 
     # 4/ OSX GCC Builds
-    - os: osx      
+    - os: osx
+      osx_image: xcode11.2
       compiler: gcc
       addons:
         homebrew:
           packages:
             - gcc
-          update: true
       env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
 
 before_script:
