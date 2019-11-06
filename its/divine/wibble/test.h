@@ -34,7 +34,6 @@ struct Location {
     assert_list_eq_fn( LOCATION( #x " == " #y ), \
                        sizeof( y ) / sizeof( y[0] ), x, y )
 #else
-#define assert(x) ((void)0)
 #define assert_pred(p, x) ((void)0)
 #define assert_eq(x, y) ((void)0)
 #define assert_leq(x, y) ((void)0)
@@ -155,9 +154,8 @@ inline void beginAssertFailure() {
 }
 
 inline void endAssertFailure() {
-    int f = assertFailure;
+    assert( assertFailure > 1 );
     assertFailure = 0;
-    assert( f > 1 );
 }
 
 struct ExpectFailure {
