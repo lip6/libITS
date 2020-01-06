@@ -560,7 +560,6 @@ int main_noex (int argc, char **argv) {
      model.printPaths(init, verify, reachable, nbwitness);
    }
    if (dograph && verify != State::null) {
-	   std::cout << "Building graph for states on path" <<endl;
 	   labels_t vars;
    	   model.getInstance()->getType()->addFlatVarSet(vars,"");
    	   vLabel pwg = wgopath + "_" + to_string(pindex) +".dot";
@@ -569,9 +568,10 @@ int main_noex (int argc, char **argv) {
 	   model.getNamedLocals(trn);
 	   Transition predfp = fixpoint( model.getPredRel(reachable) + Transition::id);
 	   State toplot = predfp (verify);
-	   std::cout << "Building witness graph in file : " << pwg << " graph has " << toplot.nbStates() << " vertices." <<endl;
-
+	   std::cout << "Building witness graph (size=" << toplot.nbStates() << " vertices) for property " << it->getName() << " in file : " << pwg << endl;
 	   plotGraph (toplot, trn,& gb);
+   } else if (dograph) {
+	   std::cout << "No witness graph built for true property " << it->getName() << " produced." <<endl;
    }
    std::cout << std::endl;
    
