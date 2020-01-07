@@ -187,6 +187,7 @@ AM_PROG_LEX
 AC_PROG_YACC
 
 CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
+LDFLAGS="-lDDD -lantlr3c -lgmp -lexpat -lgmpxx -L/home/franck/.local/lib $(LDFLAGS)"
 #LDFLAGS = -static-libgcc -static-libstdc++ $(LDFLAGS)
 
 # define HAS_STDC_HEADERS

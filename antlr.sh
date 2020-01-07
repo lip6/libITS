@@ -26,4 +26,4 @@ cd -
 # ---------------
 # install libits related tools with :
 
-# ./configure   --with-antlrc="$tmp"/usr/local/   --with-antlrjar="$tmp"/usr/local/lib/antlr-3.4-complete.jar
+./configure   --with-antlrc="$tmp"/usr/local/   --with-antlrjar="$tmp"/usr/local/lib/antlr-3.4-complete.jar
