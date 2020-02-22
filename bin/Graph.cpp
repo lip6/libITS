@@ -3,9 +3,13 @@
 #include <fstream>
 #include <functional>
 #include "ToTransRel.hh"
+#include "ddd/util/dotExporter.h"
 
-GraphBuilder::GraphBuilder(Label file, const labels_t & vars) : out(file),nextID(0),vars(vars) {
-	out << "digraph G {" << std::endl;
+GraphBuilder::GraphBuilder(Label file, Label fileDD, bool doO, bool doDD, const labels_t & vars) : nextID(0),vars(vars),wgoDD(fileDD),doO(doO),doDD(doDD) {
+	if (doO) {
+		out = std::ofstream(file);
+		out << "digraph G {" << std::endl;
+	}
 }
 
 void GraphBuilder::addEdge (const state_t & src, const state_t & dest, Label label) {
@@ -26,8 +30,10 @@ void GraphBuilder::addEdge (const state_t & src, const state_t & dest, Label lab
 }
 
 GraphBuilder::~GraphBuilder() {
-	out << "}" << std::endl;
-	out.flush();
+	if (doO) {
+		out << "}" << std::endl;
+		out.flush();
+	}
 }
 
 void GraphBuilder::addNode (state_t & s) {
@@ -70,17 +76,25 @@ void handlePair (state_t & s, GraphBuilder * gb, Label label) {
 };
 
 void plotGraph (its::State toplot, its::Type::namedTrs_t & next, GraphBuilder * gb) {
-
-
-	// step 1 : collect nodes
 	using std::placeholders::_1;
-	callback_t cb = std::bind(& GraphBuilder::addNode, gb, _1);
-	iterate(toplot, &cb);
+	// step 1 : collect nodes
+	if (gb->doO) {
+		callback_t cb = std::bind(& GraphBuilder::addNode, gb, _1);
+		iterate(toplot, &cb);
+	}
+	if (gb->doDD) {
+		exportDot(toplot,gb->wgoDD+"states");
+	}
 	// nodes are loaded, build the transition relation
 	for (auto & tr : next) {
 		its::State pairs = toRelation (toplot, tr.second);
-		callback_t ea = std::bind(& handlePair, _1, gb, tr.first);
-		iterate(pairs, &ea);
+		if (gb->doO) {
+			callback_t ea = std::bind(& handlePair, _1, gb, tr.first);
+			iterate(pairs, &ea);
+		}
+		if (gb->doDD) {
+			exportDot(toplot,gb->wgoDD+tr.first);
+		}
 	}
 
 }

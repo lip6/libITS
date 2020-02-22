@@ -167,8 +167,9 @@ void usage() {
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
   cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
   cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
-  cerr<<  "    --witness-graph : output the state space graph for the region of interest, replaces production of witness traces" <<endl;
-  cerr<<  "    -wgo PATHPREFIX : in conjunction with previous flag, decide where to output the witness graphs (default : $CWD/wg)" <<endl;
+  cerr<<  "    Witness-graph flags : output the state space graph for the region of interest, replaces production of witness traces" <<endl;
+  cerr<<  "    -wgo PATHPREFIX : generate dot output and decide where to output the witness graphs (default : $CWD/wg)" <<endl;
+  cerr<<  "    -wgoDD PATHPREFIX : generate dot output of the witness graph DD, decide where to output the witness graphs DD (default : $CWD/wgDD)" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -225,8 +226,10 @@ int main_noex (int argc, char **argv) {
  vLabel traceStr = "";
  vLabel smtpath = "";
  vLabel wgopath = "wg";
+ vLabel wgoDDpath = "wgDD";
  bool dosmtexport = false;
-
+ bool dographO = false;
+ bool dographDD = false;
  bool dograph = false;
  argc = args.size();
  int nbwitness=0;
@@ -244,10 +247,19 @@ int main_noex (int argc, char **argv) {
      if (++i > argc)
        { cerr << "give argument value for witness graph path " << args[i-1]<<endl; usage() ; exit(1);}
      wgopath = args[i];
+     dograph = true;
+     dographO = true;
+   } else if (! strcmp(args[i],"-wgoDD") ) {
+     if (++i > argc)
+       { cerr << "give argument value for witness graph DD path " << args[i-1]<<endl; usage() ; exit(1);}
+     wgoDDpath = args[i];
+     dograph = true;
+     dographDD = true;
    } else if (! strcmp(args[i],"-exportsmt") ) {
      if (++i > argc) 
        { cerr << "give argument value for SMT export file " << args[i-1]<<endl; usage() ; exit(1);}
      dosmtexport = true;
+     dographDD = true;
      smtpath = args[i]; 
    } else if (! strcmp(args[i],"--help") || ! strcmp(args[i],"-h")  ) {
      usage(); exit(0);
@@ -259,8 +271,6 @@ int main_noex (int argc, char **argv) {
      countEdges = true;
    } else if (! strcmp(args[i],"--nowitness")   ) {
      dowitness = false;
-   } else if (! strcmp(args[i],"--witness-graph")   ) {
-     dograph = true;
    } else if (! strcmp(args[i],"--init-gadget")   ) {
      hasInitializationGadget = true;
    } else if (! strcmp(args[i],"-reachable") ) {
@@ -563,12 +573,18 @@ int main_noex (int argc, char **argv) {
 	   labels_t vars;
    	   model.getInstance()->getType()->addFlatVarSet(vars,"");
    	   vLabel pwg = wgopath + "_" + to_string(pindex) +".dot";
-	   GraphBuilder gb (pwg, vars);
+   	   vLabel pwgDD = wgoDDpath + "_" + to_string(pindex);
+	   GraphBuilder gb (pwg, pwgDD, dographO, dographDD ,vars);
 	   Type::namedTrs_t trn;
 	   model.getNamedLocals(trn);
 	   Transition predfp = fixpoint( model.getPredRel(reachable) + Transition::id);
 	   State toplot = predfp (verify);
-	   std::cout << "Building witness graph (size=" << toplot.nbStates() << " vertices) for property " << it->getName() << " in file : " << pwg << endl;
+	   if (dographO) {
+		   std::cout << "Building witness graph (size=" << toplot.nbStates() << " vertices) for property " << it->getName() << " in file : " << pwg << endl;
+	   }
+	   if (dographDD) {
+		   std::cout << "Building witness graph DD for property " << it->getName() << " in file : " << pwgDD << endl;
+	   }
 	   plotGraph (toplot, trn,& gb);
    } else if (dograph) {
 	   std::cout << "No witness graph built for true property " << it->getName() << " produced." <<endl;
