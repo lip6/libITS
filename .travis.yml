@@ -27,7 +27,7 @@ before_script:
   - cd ${TRAVIS_BUILD_DIR} 
   - export CXX=${CXX_COMPILER}
   - export CC=${C_COMPILER}
-  - wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
+  - wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
   - wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
   # linux only
