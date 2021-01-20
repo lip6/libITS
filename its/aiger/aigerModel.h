@@ -2,6 +2,7 @@
 #define __AIGER_MODEL_H_
 
 #include <map>
+#include <string>
 
 /// forward declaration
 struct aiger;
