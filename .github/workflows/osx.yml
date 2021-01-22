@@ -31,7 +31,7 @@ jobs:
     - name: make 
       run: make -j 4
     - name: run tests
-      run: cd tests ; ( rc=0 ; for TEST in *.data ; do travis_wait ./run_test.pl $TEST || rc=$? ; done; exit $rc) ; cd ..
+      run: cd tests ; ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) ; cd ..
     - name: strip binaries
       run: strip bin/its-reach ; cp bin/its-reach website/its-reach ; strip bin/gal2c ; cp bin/gal2c website/gal2c
     - name: make install
