@@ -7,21 +7,15 @@ on:
     branches: [ master ]
 
 jobs:
-  deps:
-    steps:
-    - name: libGMP
-      run: wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
-    - name: libExpat
-      run: wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
-  
-  
   build:
-    needs: deps
-    
     runs-on: ubuntu-latest
     
     steps:
     - uses: actions/checkout@v2
+    - name: libGMP
+      run: wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
+    - name: libExpat
+      run: wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
     - name: ANTLR
       run: /bin/bash ./antlr.sh
     - name: tag version date
