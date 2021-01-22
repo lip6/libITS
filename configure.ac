@@ -57,8 +57,10 @@ if test "x$nolto" = "xfalse"; then
    CXXFLAGS="-flto $CXXFLAGS"
    test -z "$AR" && AR=gcc-ar
    test -z "$RANLIB" && RANLIB=gcc-ranlib
+else
+   CXXFLAGS="-fno-lto $CXXFLAGS"
+   CFLAGS="-fno-lto $CFLAGS"
 fi
-
 
 
 # AC_CHECK_LIB(tcmalloc, malloc, ,AC_MSG_WARN(google perftool not detected : not using tcmalloc))
