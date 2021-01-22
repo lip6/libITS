@@ -221,11 +221,7 @@ ETFSOURCES = $(MYETFSRCDIR)/ETFType.cpp \
 	$(MYETFSRCDIR)/etf-objects.c \
 	$(MYETFSRCDIR)/runtime.c \
 	$(MYETFSRCDIR)/stream.c \
-	$(MYETFSRCDIR)/treedbs.c \
-	$(MYETFSRCDIR)/stream_buffer.c \
-	$(MYETFSRCDIR)/stream_diff32.c \
-	$(MYETFSRCDIR)/stream_fd.c \
-	$(MYETFSRCDIR)/stream_mem.c
+	$(MYETFSRCDIR)/treedbs.c 
 
 GALSOURCES = $(MYGALSRCDIR)/ExprHom.cpp \
 	$(MYGALSRCDIR)/force.cpp \
