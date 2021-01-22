@@ -84,7 +84,7 @@ extern "C" {
 %type <i> marquage
 %type <i> placelevel
 
-%name-prefix="ITSProd"
+%define api.prefix {ITSProd}
 
 %start reseau
 
