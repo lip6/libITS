@@ -25,7 +25,7 @@ jobs:
     - name: autoreconf
       run: autoreconf -vfi
     - name: Grab libDDD artefacts
-      run: wget --progress=dot:mega https://github.com/lip6/libDDD/raw/Linux/Linux.tgz ; tar xzf Linux.tgz ; fi
+      run: wget --progress=dot:mega https://github.com/lip6/libDDD/raw/${{ runner.os }}/${{ runner.os }}.tgz ; tar xzf ${{ runner.os }}.tgz ; fi
     - name: configure
       run: ./configure --enable-nolto CXX='g++-9' CC='gcc-9' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
     - name: make 
