@@ -38,6 +38,8 @@
 #include <stdlib.h>
 using namespace std;
 
+#define yyalloc Camialloc
+#define yysymbol_kind_t Camisymbol_kind_t
 
 #include "its/parser_CAMI/Cami.hpp"
 using namespace cami;
@@ -89,7 +91,7 @@ using namespace cami;
 %left ':' ',' '.'
 %left '('  ')'
 
-%name-prefix="Cami"
+%define api.prefix {Cami}
 
 /*.................................begin of parse ....................................*/
 %start begin

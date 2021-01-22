@@ -19,6 +19,9 @@
 /*     						                            */
 /****************************************************************************/
 
+%option noyywrap
+%option yylineno
+%option prefix="RdPM"
 
 
 %{
@@ -30,9 +33,7 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 %}
-%option noyywrap
-%option yylineno
-%option prefix="RdPM"
+
 %%
 "("			{ return('('); }
 ")"			{ return(')'); }

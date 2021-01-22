@@ -100,6 +100,8 @@ typedef unsigned int flex_uint32_t;
 #include <cstring>
 /* end standard C++ headers. */
 
+#define yy_buffer_state dve_buffer_state
+
 #ifdef __cplusplus
 
 /* The "const" storage-class-modifier is valid. */

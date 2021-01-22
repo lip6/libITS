@@ -84,7 +84,7 @@ extern "C" {
 %type <i> marquage
 %type <i> placelevel
 
-%name-prefix="RdPM"
+%define api.prefix {RdPM}
 
 %start reseau
 

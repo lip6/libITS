@@ -11,6 +11,7 @@
 /* Necessary to get the definition of EOF: */
 #include <cstdio>
 
+#define yy_buffer_state dve_buffer_state
 
 using namespace divine;
 using std::ostream;

@@ -53,6 +53,9 @@
 #    define FLEX_STD std::
 #  endif
 
+
+#define yy_buffer_state dve_buffer_state
+
 extern "C++" {
 
 struct yy_buffer_state;

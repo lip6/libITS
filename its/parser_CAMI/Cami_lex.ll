@@ -18,7 +18,10 @@
 /*Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
 /*     						                            */
 /****************************************************************************/
- 
+
+%option noyywrap
+%option yylineno
+%option prefix="Cami"
 
 
 /****************************************************************************************
@@ -37,9 +40,7 @@
 
 #pragma GCC diagnostic ignored "-Wconversion"
 %}
-%option noyywrap
-%option yylineno
-%option prefix="Cami"
+
 %%
 "net"                                           {return(NET);}
 "declaration"                                   {return(DECLARATION);}

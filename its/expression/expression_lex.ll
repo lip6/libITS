@@ -26,6 +26,9 @@
 *  created date : 04/2003
 *  subject      : lexical of Expression DDD
 ****************************************************************************************/
+%option noyywrap
+%option yylineno
+%option prefix="expression"
 
 
 %{
@@ -36,10 +39,8 @@
 
 
 #pragma GCC diagnostic ignored "-Wconversion"
+
 %}
-%option noyywrap
-%option yylineno
-%option prefix="expression"
 %%
 "!"					                            {return('!');}
 "!="                                    {return(DIFF);}
