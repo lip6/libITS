@@ -38,7 +38,8 @@ const char *cJSON_GetErrorPtr() {return ep;}
 
 static int cJSON_strcasecmp(const char *s1,const char *s2)
 {
-	if (!s1) return (s1==s2)?0:1;if (!s2) return 1;
+	if (!s1) return (s1==s2)?0:1;
+	if (!s2) return 1;
 	for(; tolower(*(const unsigned char *)s1) == tolower(*(const unsigned char *)s2); ++s1, ++s2)	if(*s1 == 0)	return 0;
 	return tolower(*(const unsigned char *)s1) - tolower(*(const unsigned char *)s2);
 }
@@ -459,7 +460,8 @@ static char *print_object(cJSON *item,int depth,int fmt)
 		*ptr++=':';if (fmt) *ptr++='\t';
 		strcpy(ptr,entries[i]);ptr+=strlen(entries[i]);
 		if (i!=numentries-1) *ptr++=',';
-		if (fmt) *ptr++='\n';*ptr=0;
+		if (fmt) *ptr++='\n';
+		*ptr=0;
 		cJSON_free(names[i]);cJSON_free(entries[i]);
 	}
 	
@@ -481,7 +483,11 @@ static cJSON *create_reference(cJSON *item) {cJSON *ref=cJSON_New_Item();if (!re
 
 /* Add item to array/object. */
 void   cJSON_AddItemToArray(cJSON *array, cJSON *item)						{cJSON *c=array->child;if (!item) return; if (!c) {array->child=item;} else {while (c && c->next) c=c->next; suffix_object(c,item);}}
-void   cJSON_AddItemToObject(cJSON *object,const char *string,cJSON *item)	{if (!item) return; if (item->string) cJSON_free(item->string);item->string=cJSON_strdup(string);cJSON_AddItemToArray(object,item);}
+void   cJSON_AddItemToObject(cJSON *object,const char *string,cJSON *item)	{
+	if (!item) return;
+	if (item->string) cJSON_free(item->string);
+	item->string=cJSON_strdup(string);cJSON_AddItemToArray(object,item);
+}
 void	cJSON_AddItemReferenceToArray(cJSON *array, cJSON *item)						{cJSON_AddItemToArray(array,create_reference(item));}
 void	cJSON_AddItemReferenceToObject(cJSON *object,const char *string,cJSON *item)	{cJSON_AddItemToObject(object,string,create_reference(item));}
 
