@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install packages
-      run: brew install gcc autoconf automake libtool binutils ;    
+      run: brew install gcc autoconf automake libtool binutils bison flex ;    
     - name: libGMP
       run: wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure CXX='g++-10' CC='gcc-10' AR='gcc-ar-10' NM='gcc-nm-10' RANLIB='gcc-ranlib-10' --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
     - name: libExpat
