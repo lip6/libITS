@@ -37,7 +37,7 @@ jobs:
     - name: run tests
       run: cd tests ; ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) ; cd ..
     - name: strip binaries
-      run: strip -S -x bin/its-reach ; cp bin/its-reach website/its-reach ; strip -S -x bin/gal2c ; cp bin/gal2c website/gal2c
+      run: strip -s -x bin/its-reach ; cp bin/its-reach website/its-reach ; strip -s -x bin/gal2c ; cp bin/gal2c website/gal2c
     - name: make install
       run: make install
     - name: prepare artefact      
