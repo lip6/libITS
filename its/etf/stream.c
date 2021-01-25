@@ -419,9 +419,9 @@ stream_t stream_add_code(stream_t s,char* code){
 		s=stream_add_code(s,tail+1);
 	}
 	if(strlen(code)==0 || !strcmp(code,"none")) return s;
-	if(!strncmp(code,"diff32",6)){
+	/*	if(!strncmp(code,"diff32",6)){
 		return stream_diff32(s);
-	}
+		}*/
 	if(!strncmp(code,"native",6)){
 		DSsetSwap(s,SWAP_NONE);
 		return s;
@@ -441,7 +441,9 @@ stream_t stream_add_code(stream_t s,char* code){
 }
 
 stream_t stream_setup(stream_t s,char* code){
-	int detect=!strcmp(code,"auto");
+
+  return NULL;
+  /*        int detect=!strcmp(code,"auto");
 	if(stream_writable(s)) {
 		if(!detect) DSwriteS(s,code);
 	}
@@ -451,6 +453,6 @@ stream_t stream_setup(stream_t s,char* code){
 		return stream_buffer(stream_add_code(s,code),4096);
 	} else {
 		return stream_buffer(stream_add_code(s,code),4096);
-	}
+		}*/
 }
 
