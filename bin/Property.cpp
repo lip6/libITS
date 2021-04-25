@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-#DEFINE TRACE 0
+#define TRACE 0
 namespace its {
 
 
