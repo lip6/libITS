@@ -89,6 +89,7 @@ public:
 
   void update (const GSDD & after, const GSDD & before)
   {
+    int progress = 0;
 	  for (int i=props.size()-1 ; i>= 0 ; i--) {
 		  auto & pred = preds[i];
 		  bool verify = pred.has_image(after) != State::null;
@@ -103,15 +104,18 @@ public:
 			  }
 			  props.erase(props.begin()+i);
 			  preds.erase(preds.begin()+i);
+			  progress++;
 		  }
 	  }
 	  if (props.size() == 0) {
 		  trace << "Found states matching all" << props.size()  << " target predicate "  << "\nWill report total states built up to this point. Computation was interrupted after " << n << " fixpoint passes" << std::endl;
 	  } else {
       n = 0;
-      max += max;
+      if (progress == 0)
+	max += max;
       interrupted = false;
-      trace << "SDD proceeding with computation, new max is " << max << std::endl;
+      trace << "SDD proceeding with computation,"<< props.size()<< " properties remain." <<" new max is " << max << std::endl;
+      trace << "SDD size :" << before.nbStates() << " after " << after.nbStates() << std::endl;
     }
   }
   void update (const GDDD & after, const GDDD & before)
