@@ -7,6 +7,8 @@ namespace its {
 
 /********** lexicographical heuristic *************/
 
+#define TRACE 0
+
 labels_t
 lex_heuristic (const Composite & comp)
 {
@@ -321,7 +323,7 @@ force_heuristic (const Composite & comp, orderHeuristicType strat)
     int_to_var[it->second] = it->first;
   }
 
-  std::cerr << "built " << constraints.size() << " ordering constraints for composite." << std::endl;
+  if (TRACE) std::cerr << "built " << constraints.size() << " ordering constraints for composite." << std::endl;
   // call the FORCE algorithm
   order_t new_order = force (constraints, init_order);
   
