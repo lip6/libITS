@@ -64,8 +64,8 @@ public:
         return true;
     }
     else
-    {
-      ++n;
+    { if (after != before)
+    	++n;
     }
     return false;
   }
@@ -81,8 +81,8 @@ public:
         return true;
     }
     else
-    {
-      ++n;
+    { if (after != before)
+         ++n;
     }
     return false;
   }
