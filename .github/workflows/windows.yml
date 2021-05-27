@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2.3.4
     - name: install packages
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman -S libgmpxx"
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman -S gmp-devel"
     - name: get libDDD
       run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS ; wget --progress=dot:mega  https://github.com/lip6/libDDD/raw/Windows/windows.zip ; 7z x windows.zip"
     - name: configure and make
