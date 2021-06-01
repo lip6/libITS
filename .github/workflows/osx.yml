@@ -28,8 +28,6 @@ jobs:
       run: make -j 4
     - name: strip binaries
       run: strip bin/its-ctl ; cp bin/its-ctl website/ 
-    - name: prepare artefact      
-      run: tar cvzf osx.tgz usr/ ; mv osx.tgz website/
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@4.1.3
       with:
