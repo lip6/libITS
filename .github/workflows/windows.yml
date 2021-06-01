@@ -15,12 +15,17 @@ jobs:
     
     steps:
     - uses: actions/checkout@v2.3.4
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        check-latest: true    
     - name: install packages
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S gmp-devel ; pacman --noconfirm -S  p7zip"
     - name: get libDDD
       run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS ; wget --progress=dot:mega  https://github.com/lip6/libDDD/raw/Windows/windows.zip ; 7z x windows.zip ; rm windows.zip"
     - name: configure and make
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; PATH+=:JAVA_HOME_13_X64/bin ; JAVA_HOME=JAVA_HOME_13_X64 ; cd /D/a/libITS/libITS  ; ./antlr.sh ; (autoreconf -vfi && ./configure --prefix=/D/a/libITS/libITS/usr/local/ CPPFLAGS=-I/D/a/libITS/libITS/usr/local/include LDFLAGS=-L/D/a/libITS/libITS/usr/local/lib --with-antlrc=/D/a/libITS/libITS/usr/local/ --with-antlrjar=/D/a/libITS/libITS/usr/local/lib/antlr-3.4-complete.jar --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ; ./antlr.sh ; (autoreconf -vfi && ./configure --prefix=/D/a/libITS/libITS/usr/local/ CPPFLAGS=-I/D/a/libITS/libITS/usr/local/include LDFLAGS=-L/D/a/libITS/libITS/usr/local/lib --with-antlrc=/D/a/libITS/libITS/usr/local/ --with-antlrjar=/D/a/libITS/libITS/usr/local/lib/antlr-3.4-complete.jar --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
     - name: package zip
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ;  strip -s bin/its-reach.exe ; 7z a -tzip windows.zip usr/ ; mkdir site ; mv windows.zip site/"
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
