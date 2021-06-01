@@ -120,10 +120,6 @@ if test "x${with_antlrc}" != x; then
 fi
 
 
-
-# M4 macros location
-AC_CONFIG_MACRO_DIR([m4])
-
 # programs used to build
 # we make static libs (use ranlib)
 # we make shared libs (use libtool)
