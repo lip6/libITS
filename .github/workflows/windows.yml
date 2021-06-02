@@ -27,7 +27,7 @@ jobs:
     - name: configure and make
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL  ; (autoreconf -vfi && ./configure --prefix=/D/a/ITS-CTL/ITS-CTL/usr/local/ CPPFLAGS=-I/D/a/ITS-CTL/ITS-CTL/usr/local/include LDFLAGS=-L/D/a/ITS-CTL/ITS-CTL/usr/local/lib --with-antlrc=/D/a/ITS-CTL/ITS-CTL/usr/local/  --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
     - name: package zip
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL  ;  strip -s bin/its-ctl.exe ; cp bin/its-ctl.exe website/ ; "
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL  ;  strip -s bin/its-ctl.exe ; mkdir site ; cp bin/its-ctl.exe site/ ; "
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
       uses: actions/upload-artifact@v2.2.3
       with:
