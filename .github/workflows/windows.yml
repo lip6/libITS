@@ -31,7 +31,7 @@ jobs:
     - name: configure and make
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ; (autoreconf -vfi && ./configure --prefix=/D/a/libITS/libITS/usr/local/ CPPFLAGS=-I/D/a/libITS/libITS/usr/local/include LDFLAGS=-L/D/a/libITS/libITS/usr/local/lib --with-antlrc=/D/a/libITS/libITS/usr/local/ --with-antlrjar=/D/a/libITS/libITS/usr/local/lib/antlr-3.4-complete.jar --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
     - name: package zip
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ;  strip -s bin/its-reach.exe ; 7z a -tzip windows.zip usr/ ; mkdir site ; mv windows.zip site/"
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ;  mkdir site ; strip -s bin/its-reach.exe ; cp bin/its-reach.exe site/; 7z a -tzip windows.zip usr/ ; mv windows.zip site/"
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
       uses: actions/upload-artifact@v2.2.3
       with:
@@ -54,7 +54,7 @@ jobs:
           name: site
 
       - name: move to website
-        run: ls -lah ; mkdir -p windows ; cp windows.zip windows/ ; ls -lah windows/
+        run: ls -lah ; mkdir -p windows ; cp windows.zip windows/ ; cp its-reach.exe windows ; ls -lah windows/
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
