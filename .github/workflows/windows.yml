@@ -33,7 +33,7 @@ jobs:
     - name: package zip
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ;  mkdir site ; strip -s bin/its-reach.exe ; cp bin/its-reach.exe site/; 7z a -tzip windows.zip usr/ ; mv windows.zip site/"
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
-      uses: actions/upload-artifact@v2.2.3
+      uses: actions/upload-artifact@v2.2.4
       with:
         name: site
         path: site/
