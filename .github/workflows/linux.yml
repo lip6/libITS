@@ -41,7 +41,7 @@ jobs:
     - name: make dist
       run: make dist ;  mv its*.tar.gz website/ ;
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.8
+      uses: JamesIves/github-pages-deploy-action@v4.2.2
       with:
           branch: gh-pages # The branch the action should deploy to.
           folder: website/ # The folder the action should deploy.
