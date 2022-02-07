@@ -420,7 +420,7 @@ namespace slap
     } else if ( fsType_==sogits::FSA ) {
 
       // Compute in slAcc the set of acceptance conditions labeling self-loops
-      spot::acc_cond::mark_t slAcc = 0U;
+      spot::acc_cond::mark_t slAcc = {};
 
       for ( it->first(); !it->done() ; it->next() ) {
 	if ( isSelfLoop(it,source) ) {

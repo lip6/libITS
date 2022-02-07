@@ -129,7 +129,7 @@ bdd sog_succ_iterator::cond() const {
 
 spot::acc_cond::mark_t sog_succ_iterator::acc() const {
   assert(!done());
-  return 0U;
+  return {};
 } //
 
  std::ostream & sog_succ_iterator::print (std::ostream & os) const {
