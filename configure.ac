@@ -172,6 +172,10 @@ test -z "$CXXFLAGS" && CXXFLAGS=
 CFLAGS="-std=c11 $CFLAGS"
 CXXFLAGS="-std=c++11 $CXXFLAGS"
 
+# to be compatible with Spot
+CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden $CXXFLAGS"
+
+
 # Option to enable hash stats
 AC_ARG_ENABLE([hash-stat],
 				[AC_HELP_STRING([--enable-hash-stat],[collect stats on hash])],
