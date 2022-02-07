@@ -62,6 +62,7 @@ sog_tgba::~sog_tgba() {
     } else {
       // Definitely a problem here !
       assert(false);
+      return nullptr; // for compiler warning
     }
   }
   spot::state* sog_tgba::get_init_state() const {
@@ -89,8 +90,7 @@ sog_tgba::~sog_tgba() {
 
     // no conjunction of AP is verified by m0 ???
     assert (false);
-    // for compiler happiness
-    return NULL;
+    return nullptr; // for compiler warning
   }
 
 spot::twa_succ_iterator* sog_tgba::succ_iter(const spot::state* local_state) const {
@@ -106,6 +106,7 @@ spot::twa_succ_iterator* sog_tgba::succ_iter(const spot::state* local_state) con
     return new bcz_succ_iterator(model , *s);
   } else {
     assert(false);
+    return nullptr; // for compiler warning
   }
 } //
 
@@ -126,6 +127,7 @@ std::string sog_tgba::format_state(const spot::state* state) const {
     return ss.str();
   } else {
     assert(false);
+    return nullptr; // for compiler warning
   }
 } //
 
