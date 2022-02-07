@@ -144,6 +144,10 @@ test -z "$CXXFLAGS" && CXXFLAGS=
 # we compile C++17
 CXXFLAGS="-std=c++17 $CXXFLAGS"
 
+
+# to be compatible with Spot
+CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden $CXXFLAGS"
+
 #compile in C++
 AC_PROG_CXX
 
