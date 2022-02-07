@@ -275,6 +275,7 @@ int main (int argc, char ** argv) {
       }
       if (doWitness) {
 	its::State explained = checker.explain(checker.getInitialState(),formula,std::cout);
+	std::cout << std::endl;
 	Statistic SS4 = Statistic(explained, "witness stats ", CSV); // can also use LATEX instead of CSV
 	SS4.print_line(std::cout);
       }
@@ -300,6 +301,7 @@ int main (int argc, char ** argv) {
       }
       if (doWitness) {
 	its::State explained = checker.explain(checker.getInitialState(),formula,std::cout);
+	std::cout << std::endl;
 	Statistic SS4 = Statistic(explained, "witness stats ", CSV); // can also use LATEX instead of CSV
 	SS4.print_line(std::cout);
       }
