@@ -29,6 +29,7 @@
 
 #include <bddx.h>
 #include <spot/tl/parse.hh>
+#include <spot/parseaut/public.hh>
 
 #include "sogtgbautils.hh"
 #include "train.hh"
@@ -64,6 +65,8 @@ void usage() {
 			<< "  -LTL formula_file  formula read from formula_file, one per line, lines starting with # are ignored."
 			<< std::endl
 			<< "  -ltl formula       specify the ltl formula as a string. Must be stuttering invariant for SOG and SOP variants."
+			<< std::endl
+			<< "  -hoa automaton_file       specify the formula as a HOA automaton representing the negation of the property."
 			<< std::endl << "Actions:" << std::endl
 			<< "  -aALGO          apply the emptiness check algoritm ALGO"
 			<< std::endl
@@ -123,6 +126,9 @@ int main(int argc, const char *argv[]) {
 		std::vector < std::string > ltlprops;
 		std::string algo_string = "Cou99";
 
+		std::string aut_file;
+		bool load_hoaf = false;
+
 		sog_product_type sogtype = SLAP_FST;
 
 		bool isPlaceSyntax = false;
@@ -162,6 +168,15 @@ int main(int argc, const char *argv[]) {
 					exit(1);
 				}
 				ltlprops.emplace_back(args[i]);
+			} else if (!strncmp(args[i], "-hoa", 4)) {
+				if (++i > argc) {
+					cerr << "give argument value for HOA please after "
+							<< args[i - 1] << endl;
+					usage();
+					exit(1);
+				}
+				load_hoaf = true;
+				aut_file = args[i];
 			} else if (!strncmp(args[i], "-dR3", 4)) {
 				scc_optim = false;
 			} else if (!strncmp(args[i], "-R3f", 4)) {
