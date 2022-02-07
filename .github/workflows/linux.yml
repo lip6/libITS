@@ -29,7 +29,7 @@ jobs:
     - name: run tests
       run: cd tests ; ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) ; cd ..
     - name: strip binaries
-      run: strip -s src/its-ltl ; cp bin/its-ltl website/ ; 
+      run: strip -s src/its-ltl ; cp src/its-ltl website/ ; 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.2.2
       with:
