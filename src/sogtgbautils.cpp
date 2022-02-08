@@ -87,7 +87,7 @@ namespace sogits
       prod = std::make_shared<slap::slap_tgba>(a_, *sogModel_, FSA);
       break;
     case SOP:
-      prod = std::make_shared<dsog::dsog_tgba>(a_, *sogModel_);
+      prod = std::make_shared<dsog::dsog_tgba>(ag_, *sogModel_);
       break;
     case SOG_TGTA:
       prod = std::make_shared<spot::tgta_product>
@@ -100,7 +100,7 @@ namespace sogits
       break;
     case SOP_TGTA:
     case SOP_DTGTA:
-      prod = std::make_shared<dsog::dsog_tgta>(a_, *sogModel_);
+      prod = std::make_shared<dsog::dsog_tgta>(ag_, *sogModel_);
       break;
     case FS_OWCTY:
     case FS_EL:
@@ -156,6 +156,13 @@ namespace sogits
       }
   } //
 
+  void LTLChecker::setAutomaton (spot::twa_graph_ptr  aut, spot::bdd_dict_ptr   dict) {
+     	ag_ = aut;
+     	a_ = ag_;
+     	dict_ = dict;
+  }
+
+
   LTLChecker::~LTLChecker()
   {
     delete sogModel_;
@@ -190,67 +197,80 @@ namespace sogits
     return  (res != its::State::null);
   }
 
+  bool LTLChecker::initializeAP (sog_product_type sogtype) {
+	  sogModel_ = new sogIts(*model_);
+	  sogModel_->setStutterDeadlock(stutter_dead_);
+	  sogModel_->setPlaceSyntax(isPlaceSyntax);
+
+
+	  systgba_ = std::make_shared<sog_tgba>(*sogModel_, dict_, sogtype);
+	  if (sap_)
+	  {
+		  APIterator::varset_t vars;
+
+		  for (auto a: *sap_)
+		  {
+			  // declare them in a spot dictionary
+			  int varnum = systgba_->register_ap(a);
+
+			  vars.push_back(varnum);
+			  // Load into model m !  + check existence
+			  // varnum will be used in subsequent interactions with the ITS model
+			  bool ret = sogModel_->setObservedAP(a.ap_name(), varnum);
+
+			  if (!ret)
+			  {
+				  delete sap_;
+				  sap_ = 0;
+				  std::cout << "the atomic proposition '" << a.ap_name()
+	                    		<< "' does not correspond to any known proposition"
+								<< std::endl;
+				  return false;
+			  }
+
+			  its::fsltlTestingModel * testingModel =
+					  dynamic_cast<its::fsltlTestingModel*> (model_);
+			  if (testingModel)
+			  {
+				  testingModel->getTestingModel()->setObservedAP(a.ap_name(),
+						  varnum);
+			  }
+
+		  }
+		  APIteratorFactory::setAPVarSet(vars);
+	  }
+	  return true;
+  }
+
   bool
   LTLChecker::buildTgbaFromformula(sog_product_type sogtype)
   {
-    // find all AP in the formula
-    sap_ = spot::atomic_prop_collect(f_);
+    if (f_) {
+    	// find all AP in the formula
+    	sap_ = spot::atomic_prop_collect(f_);
+    } else {
+     	sap_ = new spot::atomic_prop_set(a_->ap().begin(), a_->ap().end());
+    }
 
-    sogModel_ = new sogIts(*model_);
-    sogModel_->setStutterDeadlock(stutter_dead_);
-    sogModel_->setPlaceSyntax(isPlaceSyntax);
+    if (! initializeAP(sogtype)) {
+    	return false;
+    }
     
-    systgba_ = std::make_shared<sog_tgba>(*sogModel_, dict_, sogtype);
-
-    if (sap_)
-      {
-        APIterator::varset_t vars;
-
-        for (auto a: *sap_)
-          {
-            // declare them in a spot dictionary
-	    int varnum = systgba_->register_ap(a);
-
-            vars.push_back(varnum);
-            // Load into model m !  + check existence
-            // varnum will be used in subsequent interactions with the ITS model
-            bool ret = sogModel_->setObservedAP(a.ap_name(), varnum);
-
-            if (!ret)
-              {
-                delete sap_;
-                sap_ = 0;
-                std::cout << "the atomic proposition '" << a.ap_name()
-                    << "' does not correspond to any known proposition"
-                    << std::endl;
-                return false;
-              }
-
-            its::fsltlTestingModel * testingModel =
-                dynamic_cast<its::fsltlTestingModel*> (model_);
-            if (testingModel)
-              {
-                testingModel->getTestingModel()->setObservedAP(a.ap_name(),
-							       varnum);
-              }
-
-          }
-        APIteratorFactory::setAPVarSet(vars);
-      }
-
-    timers.start("construction");
-    ag_ = spot::ltl_to_tgba_fm(f_, dict_, fm_exprop_opt_, fm_symb_merge_opt_,
-			       post_branching_, fair_loop_approx_);
+    if (f_) {
+    	timers.start("construction");
+    	ag_ = spot::ltl_to_tgba_fm(f_, dict_, fm_exprop_opt_, fm_symb_merge_opt_,
+    			post_branching_, fair_loop_approx_);
 
 
-   // TGBA post processing (minimization of TGBA using simulation(bi-simulation), cosimulation, iterated_simulations,...)
-    spot::postprocessor post;
-    ag_ = post.run(ag_, f_);
+    	// TGBA post processing (minimization of TGBA using simulation(bi-simulation), cosimulation, iterated_simulations,...)
+    	spot::postprocessor post;
+    	ag_ = post.run(ag_, f_);
 
-    if (scc_optim_)
-      ag_ = spot::scc_filter(ag_, scc_optim_full_);
+    	if (scc_optim_)
+    		ag_ = spot::scc_filter(ag_, scc_optim_full_);
 
-    a_ = ag_;
+    	a_ = ag_;
+    }
 
     spot::tgta_explicit_ptr tgta = nullptr;
     if (sogtype == FS_OWCTY_TGTA || sogtype == SOG_TGTA || sogtype == SLAP_TGTA
