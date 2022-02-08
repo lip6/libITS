@@ -317,40 +317,82 @@ int main(int argc, const char *argv[]) {
 //   // The only state defined in the type "trains" is "init"
 //   // This sets the initial state of the main instance
 //   model.setInstanceState("init");
+
+
 		int idform = 0;
-		for (const auto &ltl_string : ltlprops) {
-			// Initialize spot
-			spot::parsed_formula pf = spot::parse_infix_psl(ltl_string);
-			if (pf.format_errors(std::cerr))
-				return 1;
+		if (! load_hoaf ) {
+			for (const auto &ltl_string : ltlprops) {
+				// Initialize spot
+				spot::parsed_formula pf = spot::parse_infix_psl(ltl_string);
+				if (pf.format_errors(std::cerr))
+					return 1;
 
-			if (check) {
-				std::cout << "Checking formula " << idform << " : "
-						<< ltl_string << std::endl;
-				std::cout << "Formula " << idform << " simplified : " << pf.f
-						<< std::endl;
+				if (check) {
+					std::cout << "Checking formula " << idform << " : "
+							<< ltl_string << std::endl;
+					std::cout << "Formula " << idform << " simplified : " << pf.f
+							<< std::endl;
 
-				LTLChecker checker;
-				checker.setFormula(pf.f);
-				checker.setModel(model);
-				checker.setOptions(algo_string, ce_expected, fm_exprop_opt,
-						fm_symb_merge_opt, post_branching, fair_loop_approx,
-						"STATS", print_rg, scc_optim, scc_optim_full,
-						print_formula_tgba, stutter_dead);
-				if (isPlaceSyntax) {
-					checker.setPlaceSyntax(true);
+					LTLChecker checker;
+					checker.setFormula(pf.f);
+					checker.setModel(model);
+					checker.setOptions(algo_string, ce_expected, fm_exprop_opt,
+							fm_symb_merge_opt, post_branching, fair_loop_approx,
+							"STATS", print_rg, scc_optim, scc_optim_full,
+							print_formula_tgba, stutter_dead);
+					if (isPlaceSyntax) {
+						checker.setPlaceSyntax(true);
+					}
+					bool res = checker.model_check(sogtype);
+					std::cout << "Formula " << idform << " is ";
+					if (res) {
+						std::cout << "FALSE ";
+					} else {
+						std::cout << "TRUE no ";
+					}
+					std::cout << "accepting run found." << std::endl;
 				}
-				bool res = checker.model_check(sogtype);
-				std::cout << "Formula " << idform << " is ";
-				if (res) {
-					std::cout << "FALSE ";
-				} else {
-					std::cout << "TRUE no ";
-				}
-				std::cout << "accepting run found." << std::endl;
+				idform++;
 			}
-			idform++;
+		} else {
+			// load HOAF
+			spot::bdd_dict_ptr dict = spot::make_bdd_dict();
+			spot::parsed_aut_ptr pa = spot::parse_aut(aut_file, dict);
+
+			if (pa->format_errors(std::cerr))
+				return 1;
+			// This cannot occur when reading a never claim, but
+			// it could while reading a HOA file.
+			if (pa->aborted)
+			{
+				std::cerr << "--ABORT-- read\n";
+				return 1;
+			}
+
+			std::cout << "Checking formula " << idform << " provided in automaton : "
+										<< aut_file << std::endl;
+
+			LTLChecker checker;
+			checker.setAutomaton(pa->aut,dict);
+			checker.setModel(model);
+			checker.setOptions(algo_string, ce_expected, fm_exprop_opt,
+					fm_symb_merge_opt, post_branching, fair_loop_approx,
+					"STATS", print_rg, scc_optim, scc_optim_full,
+					print_formula_tgba, stutter_dead);
+
+			bool res = checker.model_check(sogtype);
+			std::cout << "Formula " << idform << " is ";
+			if (res) {
+				std::cout << "FALSE ";
+			} else {
+				std::cout << "TRUE no ";
+			}
+			std::cout << "accepting run found." << std::endl;
 		}
+
+
+
+
 		delete model;
 		// external block for full garbage
 	}
