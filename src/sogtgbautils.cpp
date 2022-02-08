@@ -87,7 +87,7 @@ namespace sogits
       prod = std::make_shared<slap::slap_tgba>(a_, *sogModel_, FSA);
       break;
     case SOP:
-      prod = std::make_shared<dsog::dsog_tgba>(ag_, *sogModel_);
+      prod = std::make_shared<dsog::dsog_tgba>(a_, *sogModel_);
       break;
     case SOG_TGTA:
       prod = std::make_shared<spot::tgta_product>
@@ -100,7 +100,7 @@ namespace sogits
       break;
     case SOP_TGTA:
     case SOP_DTGTA:
-      prod = std::make_shared<dsog::dsog_tgta>(ag_, *sogModel_);
+      prod = std::make_shared<dsog::dsog_tgta>(a_, *sogModel_);
       break;
     case FS_OWCTY:
     case FS_EL:
