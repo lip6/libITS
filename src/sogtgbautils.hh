@@ -90,6 +90,9 @@ namespace sogits {
       f_ = f;
     }
 
+    void setAutomaton (spot::twa_graph_ptr  aut, spot::bdd_dict_ptr  dict);
+    bool initializeAP (sog_product_type sogtype);
+
     void setModel (its::ITSModel * model) {
       model_ = model;
     }
