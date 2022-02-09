@@ -154,7 +154,7 @@ namespace slap
     // Test if this TGBA arc is a self-loop without acceptance conditions, if the TGBA has acceptance conds
     if (aut_->num_sets() > 0)
       {
-	if (left_->acc() == 0U) {
+	if (! left_->acc()) {
 	  const state * q2 = left_->dst();
 	  if (q2->compare(aut_state_) == 0)
 	    dest_ = its::State::null;
@@ -276,7 +276,7 @@ namespace slap
       if ( isSelfLoop(it, init_tgba) ) {
 	// Test ac=0 (empty acceptance cond arcs)
 	auto ac = it->acc();
-	if (ac == 0U && left_->num_sets() > 0)
+	if (!ac && left_->num_sets() > 0)
 	  F |= it->cond();
       }
 

@@ -108,7 +108,7 @@ namespace slap
                 if (dest->compare(init_tgta) == 0)
                   {
                     // Test ac=0 (empty acceptance cond arcs)
-                    if (it->acc() == 0U && aut_->num_sets() > 0)
+                    if (!it->acc() && aut_->num_sets() > 0)
 		      selfLoopsTrans = selfLoopsTrans
 			+ model_labled_by_changesets_->getLocalsByChangeSet(it->cond());
                   }
@@ -132,7 +132,7 @@ namespace slap
         if (aut_->num_sets() > 0)
           {
 	    spot::acc_cond::mark_t curacc = left_->acc();
-            if (curacc == 0U)
+            if (! curacc)
               {
                 const state * q2 = left_->dst();
                 if (q2->compare(aut_state_) == 0)
