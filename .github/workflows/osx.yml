@@ -13,7 +13,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-    - uses: actions/checkout@v2.4.0
+    - uses: actions/checkout@v3
     - name: Install packages
       run: brew install gcc@9 autoconf automake libtool binutils bison flex ;    
     - name: Check Version
