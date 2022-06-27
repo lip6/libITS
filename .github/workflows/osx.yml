@@ -19,9 +19,9 @@ jobs:
     - name: Check Version
       run: bison -y --version ; flex --version ; /usr/local/opt/bison/bin/bison --version ;/usr/local/opt/flex/bin/flex --version
     - name: libGMP
-      run: wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure CXX='g++-9' CC='gcc-9' AR='gcc-ar-9' NM='gcc-nm-9' RANLIB='gcc-ranlib-9' --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
+      run: wget --progress=dot:mega https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2 ; tar xjf gmp-6.1.2.tar.bz2 ; cd gmp-6.1.2 ; ./configure CXX='g++-11' CC='gcc-11' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
     - name: libExpat
-      run: wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure CXX='g++-9' CC='gcc-9' AR='gcc-ar-9' NM='gcc-nm-9' RANLIB='gcc-ranlib-9' --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
+      run: wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure CXX='g++-11' CC='gcc-11' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
     - name: ANTLR
       run: /bin/bash ./antlr.sh
     - name: tag version date
@@ -31,7 +31,7 @@ jobs:
     - name: Grab libDDD artefacts
       run: wget --progress=dot:mega https://github.com/lip6/libDDD/raw/osx/osx.tgz ; tar xzf osx.tgz ; rm osx.tgz
     - name: configure
-      run: ./configure --enable-nolto YACC='/usr/local/opt/bison/bin/bison -y' AR='gcc-ar-9' NM='gcc-nm-9' RANLIB='gcc-ranlib-9' CXX='g++-9' CC='gcc-9' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
+      run: ./configure --enable-nolto YACC='/usr/local/opt/bison/bin/bison -y' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' CXX='g++-11' CC='gcc-11' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
     - name: make 
       run: make -j 4
 #    - name: run tests
