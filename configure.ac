@@ -87,6 +87,9 @@ if test "x$stdhash" = "xtrue"; then
     AC_DEFINE([USE_STD_HASH],1,[Define if you want to use std hash instead of google sparse hash.])
 fi
 
+CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
+AC_SUBST([STATICFLAGS],["-all-static -static-libgcc -static-libstdc++"])
+LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
 
 AC_ARG_ENABLE([mingw-native],
 				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
@@ -189,10 +192,6 @@ AC_ARG_ENABLE([hash-stat],
 					 ;;
 				esac])
 
-
-CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
-AC_SUBST([STATICFLAGS],["-all-static -static-libgcc -static-libstdc++"])
-LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
 
 
 #compile in C++
