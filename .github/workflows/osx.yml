@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Install packages
-      run: brew install gcc@9 autoconf automake libtool binutils bison flex ;    
+      run: brew install gcc@11 autoconf automake libtool binutils bison flex ;    
     - name: Check Version
       run: bison -y --version ; flex --version ; /usr/local/opt/bison/bin/bison --version ;/usr/local/opt/flex/bin/flex --version
     - name: libGMP
