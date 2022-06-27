@@ -21,7 +21,7 @@ jobs:
         java-version: '11'
         check-latest: true    
     - name: install packages
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S base-devel gcc autoconf automake libtool gmp-devel p7zip"
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S base-devel gcc autoconf automake libtool gmp-devel p7zip expat"
     - name: get libITS
       run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL ; wget --progress=dot:mega  https://github.com/lip6/libITS/raw/Windows/windows.zip ; 7z x windows.zip ; rm windows.zip"
     - name: configure and make
