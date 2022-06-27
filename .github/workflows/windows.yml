@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     
-    runs-on: windows-latest
+    runs-on: windows-2019
     
     steps:
     - uses: actions/checkout@v3
@@ -21,7 +21,7 @@ jobs:
         java-version: '11'
         check-latest: true    
     - name: install packages
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S base-devel gcc autoconf automake libtool gmp-devel p7zip expat"
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S base-devel gcc autoconf automake libtool gmp-devel p7zip libexpat-devel"
     - name: get libDDD
       run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS ; wget --progress=dot:mega  https://github.com/lip6/libDDD/raw/Windows/windows.zip ; 7z x windows.zip ; rm windows.zip"
     - name: handle ANTLR
