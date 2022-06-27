@@ -25,7 +25,7 @@ jobs:
     - name: get libITS
       run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL ; wget --progress=dot:mega  https://github.com/lip6/libITS/raw/Windows/windows.zip ; 7z x windows.zip ; rm windows.zip"
     - name: configure and make
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL  ; (autoreconf -vfi && ./configure --prefix=/D/a/ITS-CTL/ITS-CTL/usr/local/ CPPFLAGS=-I/D/a/ITS-CTL/ITS-CTL/usr/local/include LDFLAGS=-L/D/a/ITS-CTL/ITS-CTL/usr/local/lib --with-antlrc=/D/a/ITS-CTL/ITS-CTL/usr/local/  --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL  ; (autoreconf -vfi && ./configure --prefix=/D/a/ITS-CTL/ITS-CTL/usr/local/ CPPFLAGS=-I/D/a/ITS-CTL/ITS-CTL/usr/local/include LDFLAGS=-L/D/a/ITS-CTL/ITS-CTL/usr/local/lib --with-antlrc=/D/a/ITS-CTL/ITS-CTL/usr/local/  --enable-nolto --enable-mingw-native && make && make install) || cat config.log ; cat config.log"
     - name: package zip
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-CTL/ITS-CTL  ;  strip -s bin/its-ctl.exe ; mkdir site ; cp bin/its-ctl.exe site/ ; "
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
