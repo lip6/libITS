@@ -20,8 +20,6 @@ jobs:
         distribution: 'adopt'
         java-version: '11'
         check-latest: true    
-    - name: view repos
-      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cat /etc/pacman.conf"
     - name: install packages
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S base-devel mingw-w64-x86_64-gcc mingw-w64-x86_64-autotools mingw-w64-x86_64-gmp p7zip mingw-w64-x86_64-expat"
     - name: get libDDD
