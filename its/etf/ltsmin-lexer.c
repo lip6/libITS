@@ -16,8 +16,8 @@
 
 /* First, we deal with  platform-specific or compiler-specific issues. */
 // strdup
-#ifndef _BSD_SOURCE
-#define _BSD_SOURCE
+#ifndef _DEFAULT_SOURCE
+#define _DEFAULT_SOURCE
 #endif
 // fileno
 #ifndef _POSIX_SOURCE
