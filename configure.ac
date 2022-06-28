@@ -89,7 +89,6 @@ fi
 
 CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
 AC_SUBST([STATICFLAGS],["-all-static -static-libgcc -static-libstdc++"])
-LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
 
 AC_ARG_ENABLE([mingw-native],
 				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
