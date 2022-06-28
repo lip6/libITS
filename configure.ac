@@ -1,4 +1,4 @@
-AC_PREREQ([2.19])
+AC_PREREQ([2.69])
 AC_INIT([ITSREACH],[0.2],[Yann.Thierry-mieg@lip6.fr])
 # We use automake to build makefiles
 
@@ -6,8 +6,7 @@ AM_INIT_AUTOMAKE([-Wall foreign])
 
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
-            [AC_HELP_STRING([--with-libddd=/root/of/libddd],
-                            [specify the path of libddd])])
+            [AS_HELP_STRING([--with-libddd=/root/of/libddd],[specify the path of libddd])])
 
 AM_CONDITIONAL([WITH_LIBDDD_PATH], [test "x${with_libddd}" != x])
 if test "x${with_libddd}" != x; then
@@ -16,8 +15,7 @@ fi
 
 # option to indicate the path to the antlr jar
 AC_ARG_WITH([antlrjar],
-            [AC_HELP_STRING([--with-antlrjar=/root/of/antlrjar],
-                            [specify the path of antlr jar])])
+            [AS_HELP_STRING([--with-antlrjar=/root/of/antlrjar],[specify the path of antlr jar])])
 
 AM_CONDITIONAL([WITH_ANTLRJAR_PATH], [test "x${with_antlrjar}" != x])
 if test "x${with_antlrjar}" != x; then
@@ -27,8 +25,7 @@ fi
 
 # option to indicate the path to the antlr C runtime
 AC_ARG_WITH([antlrc],
-            [AC_HELP_STRING([--with-antlrc=/root/of/antlrc],
-                            [specify the path of antlr C runtime])])
+            [AS_HELP_STRING([--with-antlrc=/root/of/antlrc],[specify the path of antlr C runtime])])
 
 AM_CONDITIONAL([WITH_ANTLRC_PATH], [test "x${with_antlrc}" != x])
 if test "x${with_antlrc}" != x; then
@@ -42,7 +39,7 @@ fi
 nolto=false
 
 AC_ARG_ENABLE(	[nolto],
-        [AC_HELP_STRING([--enable-nolto],[avoid using LTO flags, mostly for Darwin])],
+        [AS_HELP_STRING([--enable-nolto],[avoid using LTO flags, mostly for Darwin])],
         [  case "${enable_nolto}" in
             yes) nolto=true
                 ;;
@@ -73,7 +70,7 @@ stdhash=false
 
 
 AC_ARG_ENABLE(	[stdhash],
-        [AC_HELP_STRING([--enable-stdhash],[revert std lib hash map(default uses google sparse hash)])],
+        [AS_HELP_STRING([--enable-stdhash],[revert std lib hash map(default uses google sparse hash)])],
         [  case "${enable_stdhash}" in
             yes) stdhash=true
                 ;;
@@ -91,7 +88,7 @@ CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
 AC_SUBST([STATICFLAGS],["-all-static -static-libgcc -static-libstdc++"])
 
 AC_ARG_ENABLE([mingw-native],
-				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
+				[AS_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
 				[ case "${enable_mingw_native}" in
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
 					 LDFLAGS="-Wl,-static,--stack,16777216 $LDFLAGS"
@@ -105,7 +102,7 @@ AC_ARG_ENABLE([mingw-native],
 
 
 AC_ARG_ENABLE([dll],
-				[AC_HELP_STRING([--enable-dll],[Activate dynamic library loading input options -t DLL and -t NDLL (not available on Win)])],
+				[AS_HELP_STRING([--enable-dll],[Activate dynamic library loading input options -t DLL and -t NDLL (not available on Win)])],
 				[ case "${enable_dll}" in
 					 yes) CXXFLAGS="-DENABLE_DLL=1  $CXXFLAGS"
 					 AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. This is a real problem.))
@@ -120,8 +117,7 @@ AC_ARG_ENABLE([dll],
 
 # option to indicate libexpat folder
 AC_ARG_WITH([libexpat],
-            [AC_HELP_STRING([--with-libexpat=/root/of/libexpat],
-                            [specify the path of libexpat])])
+            [AS_HELP_STRING([--with-libexpat=/root/of/libexpat],[specify the path of libexpat])])
 
 
 AM_CONDITIONAL([WITH_LIBEXPAT_PATH], [test "x${with_libexpat}" != x])
@@ -132,8 +128,7 @@ fi
 
 # option to indicate GNU multi-precision library folder
 AC_ARG_WITH([gmp],
-            [AC_HELP_STRING([--with-gmp=/root/of/gmp],
-                            [specify the path of gmp])])
+            [AS_HELP_STRING([--with-gmp=/root/of/gmp],[specify the path of gmp])])
 
 AM_CONDITIONAL([WITH_GMP_PATH], [test "x${with_gmp}" != x])
 if test "x${with_gmp}" != x; then
@@ -152,14 +147,12 @@ AC_PROG_RANLIB
 # we make shared libs (use libtool)
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
 
-LT_INIT
+LT_INIT([dlopen])
 
 # no dynamic libs unless --enable-shared is passed to configure
 AC_DISABLE_SHARED
 # build static libs by default
 AC_ENABLE_STATIC
-
-AC_LIBTOOL_DLOPEN
 
 
 # we compile C++
@@ -180,7 +173,7 @@ CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden $CXXFLAGS"
 
 # Option to enable hash stats
 AC_ARG_ENABLE([hash-stat],
-				[AC_HELP_STRING([--enable-hash-stat],[collect stats on hash])],
+				[AS_HELP_STRING([--enable-hash-stat],[collect stats on hash])],
 				[ case "${enable_hash_stat}" in
 					 yes) CFLAGS="-DHASH_STAT $CFLAGS"
 					 CXXFLAGS="-DHASH_STAT $CXXFLAGS"
