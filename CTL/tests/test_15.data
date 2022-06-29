@@ -1,0 +1,41 @@
+ETF format, basic formulae
+../bin/its-ctl -i test_models/peterson.4.dve.etf -t ETF --quiet -ctl  test_models/basic.ctl
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/peterson.4.dve.etf  -t  ETF  --quiet  -ctl  test_models/basic.ctl  
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,1.11956e+06,3.13,107136,2556,21,241055,115,25,299197,1,764,0
+
+
+Converting to forward existential form...Done !
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,3.14,107060,1,0,241055,115,68,299197,28,764,102
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,3.14,107068,1,0,241055,115,68,299197,28,764,102
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,3.14,107068,1,0,241055,115,68,299197,28,764,102
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+(forward)formula 3,1,3.14,107068,1,0,241055,115,69,299197,28,764,102
+Formula is TRUE !
+
+ *************************************** 
+

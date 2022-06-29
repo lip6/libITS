@@ -1,0 +1,41 @@
+COLOANE format for ITS (scalar depth rec), basic formulae
+cd test_models; ../../bin/its-ctl -i votersMain.xml -t ITSXML --quiet -ssDR 5 -ctl  ./basic.ctl ; cd ..
+
+its-ctl command run as :
+
+../../bin/its-ctl  -i  votersMain.xml  -t  ITSXML  --quiet  -ssDR  5  -ctl  ./basic.ctl  
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,1.07151e+301,0,1952,51,3,82,6,37,12,6,5,0
+
+
+Converting to forward existential form...Done !
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,0,1968,1,0,82,6,51,12,8,5,66
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,0,2048,1,0,82,6,51,12,8,5,66
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,0,2048,1,0,82,6,51,12,8,5,66
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+(forward)formula 3,0,0,2048,1,0,163,8,132,43,10,8,258
+Formula is FALSE !
+
+ *************************************** 
+

@@ -1,0 +1,125 @@
+GAL input from pnmcc
+../bin/its-ctl --quiet  -i  test_models/circ/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl 
+
+its-ctl command run as :
+
+../bin/its-ctl  --quiet  -i  test_models/circ/CTLFireabilitySimple.gal  -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl  
+No direction supplied, using forward translation only.
+Parsed 16 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,128,0.00442,2300,2,22,5,269,6,0,77,194,0
+
+
+Converting to forward existential form...Done !
+original formula: E(ma>=1 U (a>=1 * dr>=1))
+=> equivalent forward existential formula: [(FwdU(Init,ma>=1) * (a>=1 * dr>=1))] != FALSE
+(forward)formula 0,0,0.004931,2580,1,0,9,269,14,2,79,194,6
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(((a>=1 * r>=1) * c_cap>=1))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(((a>=1 * r>=1) * c_cap>=1)))] = FALSE
+(forward)formula 1,0,0.005294,2616,1,0,14,269,16,6,80,194,8
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EF((ma>=1 * a_cap>=1))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * (ma>=1 * a_cap>=1))] != FALSE
+(forward)formula 2,1,0.005509,2620,1,0,16,269,17,8,81,194,9
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AX((c>=1 * r_cap>=1))
+=> equivalent forward existential formula: [(EY(Init) * !((c>=1 * r_cap>=1)))] = FALSE
+(forward)formula 3,0,0.005914,2620,1,0,21,269,19,11,95,194,12
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((da_a>=1 * ma_cap>=1) U (da_a>=1 * ma_cap>=1))
+=> equivalent forward existential formula: [((Init * !(EG(!((da_a>=1 * ma_cap>=1))))) * !(E(!((da_a>=1 * ma_cap>=1)) U (!((da_a>=1 * ma_cap>=1)) * !((da_a>=1 * ma_cap>=1))))))] != FALSE
+(forward)formula 4,0,0.008159,2620,1,0,28,804,29,19,263,653,23
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EF((da_a>=1 * a_cap>=1))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * (da_a>=1 * a_cap>=1))] != FALSE
+(forward)formula 5,1,0.008369,2688,1,0,29,804,29,21,263,685,23
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EG(ma>=1)
+=> equivalent forward existential formula: [FwdG(Init,ma>=1)] != FALSE
+(forward)formula 6,0,0.008766,2688,1,0,29,836,34,22,272,763,26
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX((da>=1 * ma_cap>=1))
+=> equivalent forward existential formula: [(EY(Init) * (da>=1 * ma_cap>=1))] != FALSE
+(forward)formula 7,1,0.008991,2688,1,0,32,846,35,24,272,790,27
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AF((mr>=1 * r_cap>=1))
+=> equivalent forward existential formula: [FwdG(Init,!((mr>=1 * r_cap>=1)))] = FALSE
+(forward)formula 8,0,0.010164,2704,1,0,50,1115,41,44,272,1226,47
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG((ma>=1 * a_cap>=1))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !((ma>=1 * a_cap>=1)))] = FALSE
+(forward)formula 9,0,0.010396,2708,1,0,51,1125,41,46,272,1251,47
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(r>=1)
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(r>=1))] = FALSE
+(forward)formula 10,0,0.010517,2772,1,0,51,1125,41,48,272,1261,47
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E(((a>=1 * r>=1) * c_cap>=1) U (dr>=1 * mr_cap>=1))
+=> equivalent forward existential formula: [(FwdU(Init,((a>=1 * r>=1) * c_cap>=1)) * (dr>=1 * mr_cap>=1))] != FALSE
+(forward)formula 11,1,0.010965,2772,1,0,53,1125,46,50,273,1285,51
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AF((dr>=1 * mr_cap>=1))
+=> equivalent forward existential formula: [FwdG(Init,!((dr>=1 * mr_cap>=1)))] = FALSE
+(forward)formula 12,1,0.011185,2772,1,0,54,1126,49,52,273,1307,51
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF((mr>=1 * r_cap>=1))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * (mr>=1 * r_cap>=1))] != FALSE
+(forward)formula 13,1,0.011364,2772,1,0,54,1126,49,53,273,1307,51
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: A((da>=1 * ma_cap>=1) U r>=1)
+=> equivalent forward existential formula: [((Init * !(EG(!(r>=1)))) * !(E(!(r>=1) U (!((da>=1 * ma_cap>=1)) * !(r>=1)))))] != FALSE
+(forward)formula 14,0,0.012374,2772,1,0,59,1355,52,61,273,1542,60
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF((da_a>=1 * a_cap>=1))
+=> equivalent forward existential formula: [FwdG(Init,!((da_a>=1 * a_cap>=1)))] = FALSE
+(forward)formula 15,0,0.014703,2780,1,0,80,1934,57,88,273,2464,87
+Formula is FALSE !
+
+ *************************************** 
+

@@ -1,0 +1,123 @@
+GAL input from pnmcc backward
+../bin/its-ctl --quiet  -i  test_models/circ/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl --backward
+
+its-ctl command run as :
+
+../bin/its-ctl  --quiet  -i  test_models/circ/CTLFireabilitySimple.gal  -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl  --backward  
+Parsed 16 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,128,0.004342,2300,2,22,5,269,6,0,77,194,0
+
+
+original formula: E(ma>=1 U (a>=1 * dr>=1))
+=> equivalent existential formula: E(ma>=1 U (a>=1 * dr>=1))
+(state)formula 0,80,0.007429,2580,2,28,19,1142,16,11,256,938,15
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(((a>=1 * r>=1) * c_cap>=1))
+=> equivalent existential formula: !(E(TRUE U !(((a>=1 * r>=1) * c_cap>=1))))
+(state)formula 1,0,0.008355,2632,1,0,25,1327,21,18,257,1228,23
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EF((ma>=1 * a_cap>=1))
+=> equivalent existential formula: E(TRUE U (ma>=1 * a_cap>=1))
+(state)formula 2,128,0.009272,2980,2,22,30,1615,22,24,257,1545,31
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AX((c>=1 * r_cap>=1))
+=> equivalent existential formula: !(EX(!((c>=1 * r_cap>=1))))
+(state)formula 3,0,0.009681,2988,1,0,35,1699,24,28,257,1623,35
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((da_a>=1 * ma_cap>=1) U (da_a>=1 * ma_cap>=1))
+=> equivalent existential formula: !((E(!((da_a>=1 * ma_cap>=1)) U (!((da_a>=1 * ma_cap>=1)) * !((da_a>=1 * ma_cap>=1)))) + EG(!((da_a>=1 * ma_cap>=1)))))
+(state)formula 4,32,0.011278,2988,2,20,40,1927,31,33,258,1852,43
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EF((da_a>=1 * a_cap>=1))
+=> equivalent existential formula: E(TRUE U (da_a>=1 * a_cap>=1))
+(state)formula 5,128,0.012831,2988,2,22,46,2537,31,43,258,2538,53
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EG(ma>=1)
+=> equivalent existential formula: EG(ma>=1)
+(state)formula 6,64,0.01319,2996,2,21,47,2652,31,44,258,2635,57
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX((da>=1 * ma_cap>=1))
+=> equivalent existential formula: EX((da>=1 * ma_cap>=1))
+(state)formula 7,80,0.013724,2996,2,27,51,2813,32,47,258,2782,60
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AF((mr>=1 * r_cap>=1))
+=> equivalent existential formula: !(EG(!((mr>=1 * r_cap>=1))))
+(state)formula 8,32,0.014056,2996,2,20,55,2847,33,53,258,2829,65
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG((ma>=1 * a_cap>=1))
+=> equivalent existential formula: !(E(TRUE U !((ma>=1 * a_cap>=1))))
+(state)formula 9,0,0.014707,2996,1,0,57,3028,33,57,258,3045,69
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(r>=1)
+=> equivalent existential formula: !(E(TRUE U !(r>=1)))
+(state)formula 10,0,0.014963,2996,1,0,58,3071,33,60,258,3096,73
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E(((a>=1 * r>=1) * c_cap>=1) U (dr>=1 * mr_cap>=1))
+=> equivalent existential formula: E(((a>=1 * r>=1) * c_cap>=1) U (dr>=1 * mr_cap>=1))
+(state)formula 11,36,0.016342,3024,2,34,66,3278,37,67,259,3327,81
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AF((dr>=1 * mr_cap>=1))
+=> equivalent existential formula: !(EG(!((dr>=1 * mr_cap>=1))))
+(state)formula 12,32,0.017341,3036,2,20,68,3426,37,72,259,3505,85
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF((mr>=1 * r_cap>=1))
+=> equivalent existential formula: E(TRUE U (mr>=1 * r_cap>=1))
+(state)formula 13,128,0.017677,3072,2,22,71,3445,37,78,259,3541,92
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: A((da>=1 * ma_cap>=1) U r>=1)
+=> equivalent existential formula: !((E(!(r>=1) U (!((da>=1 * ma_cap>=1)) * !(r>=1))) + EG(!(r>=1))))
+(state)formula 14,64,0.018705,3096,2,21,75,3630,40,85,259,3730,99
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF((da_a>=1 * a_cap>=1))
+=> equivalent existential formula: !(EG(!((da_a>=1 * a_cap>=1))))
+(state)formula 15,32,0.019583,3128,2,20,77,3868,40,90,259,3995,103
+Formula is FALSE !
+
+ *************************************** 
+

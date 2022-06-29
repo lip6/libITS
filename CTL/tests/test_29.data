@@ -1,0 +1,128 @@
+CGAL pnmcc FMS 005 stress rewriting
+../bin/its-ctl --quiet  -i  test_models/FMS-PT-005/CTLCardinality.gal -t  CGAL  -ctl  test_models/FMS-PT-005/CTLCardinality.ctl
+
+its-ctl command run as :
+
+../bin/its-ctl  --quiet  -i  test_models/FMS-PT-005/CTLCardinality.gal  -t  CGAL  -ctl  test_models/FMS-PT-005/CTLCardinality.ctl  
+No direction supplied, using forward translation only.
+Parsed 16 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,2.89502e+06,0.012028,4892,2,303,5,2644,6,0,155,2478,0
+
+
+Converting to forward existential form...Done !
+original formula: AF(EF(!(P1wP2<=P2)))
+=> equivalent forward existential formula: [FwdG(Init,!(E(TRUE U !(P1wP2<=P2))))] = FALSE
+(forward)formula 0,1,0.031546,5608,1,0,6,7698,20,0,480,4233,5
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EX(((M1>=2 + (P2s<=P3M2 + P1M1<=P12wM3)) * AG(P12wM3<=P2wP1)))
+=> equivalent forward existential formula: [((EY(Init) * (M1>=2 + (P2s<=P3M2 + P1M1<=P12wM3))) * !(E(TRUE U !(P12wM3<=P2wP1))))] != FALSE
+(forward)formula 1,0,0.03648,5944,1,0,7,9289,22,0,492,5531,8
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(((!(P3M2<=M3) + (P12M3<=M1 + P2s>=1)) * (P3M2>=1 + (P12<=P2wP1 + P1wM1>=2))))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(((!(P3M2<=M3) + (P12M3<=M1 + P2s>=1)) * (P3M2>=1 + (P12<=P2wP1 + P1wM1>=2)))))] = FALSE
+(forward)formula 2,0,0.04205,6204,1,0,9,10662,35,2,520,7827,9
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: !(EF(((P1s<=P2M2 * P1wP2>=1) * P12M3>=3)))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * ((P1s<=P2M2 * P1wP2>=1) * P12M3>=3))] = FALSE
+(forward)formula 3,1,0.042272,6208,1,0,9,10662,36,2,521,7827,10
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG((EG(P2d<=P1M1) + EF(P12M3<=M3)))
+=> equivalent forward existential formula: [((FwdU(Init,TRUE) * !(E(TRUE U P12M3<=M3))) * !(EG(P2d<=P1M1)))] = FALSE
+(forward)formula 4,1,0.070832,7632,1,0,50,18941,40,23,537,14674,55
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: ((AG(P12<=P12) * E(P2<=P2wM2 U P1s<=P2)) * AF(AF(P12s<=P12M3)))
+=> equivalent forward existential formula: (([(FwdU(Init,TRUE) * !(P12<=P12))] = FALSE * [(Init * !(E(P2<=P2wM2 U P1s<=P2)))] = FALSE) * [FwdG(Init,!(!(EG(!(P12s<=P12M3)))))] = FALSE)
+Hit Full ! 16/0/4
+(forward)formula 5,1,0.085383,8172,1,0,57,24160,53,29,600,19920,63
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG((((P12wM3<=M3 + P12<=M1) + P12>=2) + !((P1wP2<=M1 + M3<=P2))))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !((((P12wM3<=M3 + P12<=M1) + P12>=2) + !((P1wP2<=M1 + M3<=P2)))))] = FALSE
+(forward)formula 6,1,0.087042,8324,1,0,57,24643,63,29,637,20378,64
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG(EF(!(P12s<=P1wP2)))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(E(TRUE U !(P12s<=P1wP2))))] = FALSE
+(forward)formula 7,1,0.100817,8848,1,0,58,28009,65,29,649,23566,67
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(!(EX(P12<=P1)))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(P12<=P1)))] != FALSE
+(forward)formula 8,1,0.11249,9108,1,0,61,30912,66,31,660,26711,69
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: E(!(P12wM3>=2) U AG(M3<=P2wP1))
+=> equivalent forward existential formula: [(FwdU(Init,!(P12wM3>=2)) * !(E(TRUE U !(M3<=P2wP1))))] != FALSE
+(forward)formula 9,0,0.11492,9596,1,0,62,31531,68,31,665,27191,72
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EF(AF((P1d>=3 * P2>=3)))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EG(!((P1d>=3 * P2>=3)))))] != FALSE
+(forward)formula 10,1,0.119765,9976,1,0,65,33181,73,34,672,28916,76
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AG(AX(!(M3>=3)))
+=> equivalent forward existential formula: [(EY(FwdU(Init,TRUE)) * M3>=3)] = FALSE
+(forward)formula 11,1,0.119871,9976,1,0,65,33181,74,34,673,28916,77
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EF(P12wM3>=3))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * P12wM3>=3)] = FALSE
+(forward)formula 12,0,0.120112,9996,1,0,66,33218,75,35,674,28971,78
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E(AX(P3s<=P3M2) U (P2M2>=3 * P12s<=P12s))
+=> equivalent forward existential formula: [(FwdU(Init,!(EX(!(P3s<=P3M2)))) * (P2M2>=3 * P12s<=P12s))] != FALSE
+(forward)formula 13,0,0.120329,10128,1,0,66,33218,76,35,675,28971,79
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AX(AG((M3>=1 + M1>=1)))
+=> equivalent forward existential formula: [(FwdU(EY(Init),TRUE) * !((M3>=1 + M1>=1)))] = FALSE
+(forward)formula 14,0,0.131719,10140,1,0,69,34357,80,37,730,30719,83
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E(((P1wM1<=P12M3 * M2>=3) + P12<=P3) U EG(P1wP2>=3))
+=> equivalent forward existential formula: [FwdG(FwdU(Init,((P1wM1<=P12M3 * M2>=3) + P12<=P3)),P1wP2>=3)] != FALSE
+Hit Full ! 9/0/11
+Hit Full ! 18/0/2
+(forward)formula 15,1,0.416801,20772,1,0,74,92237,99,39,824,71995,92
+Formula is TRUE !
+
+ *************************************** 
+

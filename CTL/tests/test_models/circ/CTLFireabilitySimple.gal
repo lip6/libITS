@@ -1,0 +1,126 @@
+
+gal CircadianClock_PT_000001_flat{
+  /**a*/
+  int a = 0;
+  /**c*/
+  int c = 0;
+  /**da*/
+  int da = 1;
+  /**da_a*/
+  int da_a = 0;
+  /**dr*/
+  int dr = 1;
+  /**dr_a*/
+  int dr_a = 0;
+  /**ma*/
+  int ma = 0;
+  /**mr*/
+  int mr = 0;
+  /**r*/
+  int r = 0;
+  /**r_cap*/
+  int r_cap = 1;
+  /**mr_cap*/
+  int mr_cap = 1;
+  /**ma_cap*/
+  int ma_cap = 1;
+  /**c_cap*/
+  int c_cap = 1;
+  /**a_cap*/
+  int a_cap = 1;
+  /**bind_a*/
+  transition bind_a [ da >= 1 && a >= 1 ] {
+    a_cap += 1    ;
+    da_a += 1    ;
+    da -= 1    ;
+    a -= 1    ;
+  }
+  /**bind_r*/
+  transition bind_r [ a >= 1 && dr >= 1 ] {
+    dr -= 1    ;
+    a_cap += 1    ;
+    dr_a += 1    ;
+    a -= 1    ;
+  }
+  /**deactive*/
+  transition deactive [ a >= 1 && r >= 1 && c_cap >= 1 ] {
+    c_cap -= 1    ;
+    a_cap += 1    ;
+    r -= 1    ;
+    r_cap += 1    ;
+    a -= 1    ;
+    c += 1    ;
+  }
+  /**deg_a*/
+  transition deg_a [ a >= 1 ] {
+    a_cap += 1    ;
+    a -= 1    ;
+  }
+  /**deg_c*/
+  transition deg_c [ c >= 1 && r_cap >= 1 ] {
+    c_cap += 1    ;
+    r += 1    ;
+    r_cap -= 1    ;
+    c -= 1    ;
+  }
+  /**deg_ma*/
+  transition deg_ma [ ma >= 1 ] {
+    ma_cap += 1    ;
+    ma -= 1    ;
+  }
+  /**deg_mr*/
+  transition deg_mr [ mr >= 1 ] {
+    mr -= 1    ;
+    mr_cap += 1    ;
+  }
+  /**deg_r*/
+  transition deg_r [ r >= 1 ] {
+    r -= 1    ;
+    r_cap += 1    ;
+  }
+  /**rel_a*/
+  transition rel_a [ da_a >= 1 && a_cap >= 1 ] {
+    a_cap -= 1    ;
+    da += 1    ;
+    da_a -= 1    ;
+    a += 1    ;
+  }
+  /**rel_r*/
+  transition rel_r [ dr_a >= 1 && a_cap >= 1 ] {
+    dr += 1    ;
+    a_cap -= 1    ;
+    dr_a -= 1    ;
+    a += 1    ;
+  }
+  /**transc_da*/
+  transition transc_da [ da >= 1 && ma_cap >= 1 ] {
+    ma_cap -= 1    ;
+    ma += 1    ;
+  }
+  /**transc_da_a*/
+  transition transc_da_a [ da_a >= 1 && ma_cap >= 1 ] {
+    ma_cap -= 1    ;
+    ma += 1    ;
+  }
+  /**transc_dr*/
+  transition transc_dr [ dr >= 1 && mr_cap >= 1 ] {
+    mr += 1    ;
+    mr_cap -= 1    ;
+  }
+  /**transc_dr_a*/
+  transition transc_dr_a [ dr_a >= 1 && mr_cap >= 1 ] {
+    mr += 1    ;
+    mr_cap -= 1    ;
+  }
+  /**transl_a*/
+  transition transl_a [ ma >= 1 && a_cap >= 1 ] {
+    a_cap -= 1    ;
+    a += 1    ;
+  }
+  /**transl_r*/
+  transition transl_r [ mr >= 1 && r_cap >= 1 ] {
+    r += 1    ;
+    r_cap -= 1    ;
+  }
+}
+main CircadianClock_PT_000001_flat ;

@@ -1,0 +1,156 @@
+
+gal FMS_PT_005_flat{
+  /**P1d*/
+  int P1d = 0;
+  /**P1s*/
+  int P1s = 0;
+  /**P1wP2*/
+  int P1wP2 = 0;
+  /**P12*/
+  int P12 = 0;
+  /**P1*/
+  int P1 = 5;
+  /**P1wM1*/
+  int P1wM1 = 0;
+  /**P1M1*/
+  int P1M1 = 0;
+  /**M1*/
+  int M1 = 3;
+  /**P2wM2*/
+  int P2wM2 = 0;
+  /**P2*/
+  int P2 = 5;
+  /**M2*/
+  int M2 = 1;
+  /**P2M2*/
+  int P2M2 = 0;
+  /**P12M3*/
+  int P12M3 = 0;
+  /**P12wM3*/
+  int P12wM3 = 0;
+  /**P12s*/
+  int P12s = 0;
+  /**M3*/
+  int M3 = 2;
+  /**P3s*/
+  int P3s = 0;
+  /**P3M2*/
+  int P3M2 = 0;
+  /**P2wP1*/
+  int P2wP1 = 0;
+  /**P2d*/
+  int P2d = 0;
+  /**P3*/
+  int P3 = 5;
+  /**P2s*/
+  int P2s = 0;
+  /**tM1*/
+  transition tM1 [ M1 >= 1 && P1wM1 >= 1 && P1M1 >= 0 ] {
+    P1M1 += 1    ;
+    M1 -= 1    ;
+    P1wM1 -= 1    ;
+  }
+  /**tP1*/
+  transition tP1 [ P1 >= 1 && P1wM1 >= 0 ] {
+    P1 -= 1    ;
+    P1wM1 += 1    ;
+  }
+  /**tM3*/
+  transition tM3 [ P12wM3 >= 1 && M3 >= 1 && P12M3 >= 0 ] {
+    P12M3 += 1    ;
+    P12wM3 -= 1    ;
+    M3 -= 1    ;
+  }
+  /**tP12M3*/
+  transition tP12M3 [ P12M3 >= 1 && P12s >= 0 && M3 >= 0 ] {
+    P12M3 -= 1    ;
+    P12s += 1    ;
+    M3 += 1    ;
+  }
+  /**tx*/
+  transition tx [ P2wP1 >= 1 && P1wP2 >= 1 && P12 >= 0 ] {
+    P12 += 1    ;
+    P1wP2 -= 1    ;
+    P2wP1 -= 1    ;
+  }
+  /**tP12*/
+  transition tP12 [ P12 >= 1 && P12wM3 >= 0 ] {
+    P12 -= 1    ;
+    P12wM3 += 1    ;
+  }
+  /**tP1s*/
+  transition tP1s [ P1s >= 1 && P1 >= 0 ] {
+    P1s -= 1    ;
+    P1 += 1    ;
+  }
+  /**tP1j*/
+  transition tP1j [ P1d >= 1 && P1wP2 >= 0 ] {
+    P1d -= 1    ;
+    P1wP2 += 1    ;
+  }
+  /**tP1M1*/
+  transition tP1M1 [ P1M1 >= 1 && P1d >= 0 && M1 >= 0 ] {
+    P1d += 1    ;
+    P1M1 -= 1    ;
+    M1 += 1    ;
+  }
+  /**tP1e*/
+  transition tP1e [ P1d >= 1 && P1s >= 0 ] {
+    P1d -= 1    ;
+    P1s += 1    ;
+  }
+  /**tP2s*/
+  transition tP2s [ P2s >= 1 && P2 >= 0 ] {
+    P2s -= 1    ;
+    P2 += 1    ;
+  }
+  /**tP3*/
+  transition tP3 [ P3 >= 1 && P3M2 >= 0 ] {
+    P3 -= 1    ;
+    P3M2 += 1    ;
+  }
+  /**tP2j*/
+  transition tP2j [ P2d >= 1 && P2wP1 >= 0 ] {
+    P2d -= 1    ;
+    P2wP1 += 1    ;
+  }
+  /**tP2e*/
+  transition tP2e [ P2d >= 1 && P2s >= 0 ] {
+    P2s += 1    ;
+    P2d -= 1    ;
+  }
+  /**tM2*/
+  transition tM2 [ P2wM2 >= 1 && M2 >= 1 && P2M2 >= 0 ] {
+    P2M2 += 1    ;
+    M2 -= 1    ;
+    P2wM2 -= 1    ;
+  }
+  /**tP2M2*/
+  transition tP2M2 [ P2M2 >= 1 && P2d >= 0 && M2 >= 0 ] {
+    P2M2 -= 1    ;
+    M2 += 1    ;
+    P2d += 1    ;
+  }
+  /**tP12s*/
+  transition tP12s [ P12s >= 1 && P2 >= 0 && P1 >= 0 ] {
+    P1 += 1    ;
+    P12s -= 1    ;
+    P2 += 1    ;
+  }
+  /**tP2*/
+  transition tP2 [ P2 >= 1 && P2wM2 >= 0 ] {
+    P2 -= 1    ;
+    P2wM2 += 1    ;
+  }
+  /**tP3s*/
+  transition tP3s [ P3s >= 1 && P3 >= 0 ] {
+    P3s -= 1    ;
+    P3 += 1    ;
+  }
+  /**tP3M2*/
+  transition tP3M2 [ P3M2 >= 1 && M2 >= 1 && M2 >= 0 && P3s >= 0 ] {
+    P3s += 1    ;
+    P3M2 -= 1    ;
+  }
+}
+main FMS_PT_005_flat ;

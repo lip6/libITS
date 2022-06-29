@@ -1,0 +1,191 @@
+DVE input, Lamport model, backward CTL, with witness construction
+../bin/its-ctl -i test_models/lamport.2.dve -t DVE -ctl test_models/lamport.ctl --quiet --backward --witness
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/lamport.2.dve  -t  DVE  -ctl  test_models/lamport.ctl  --quiet  --backward  --witness  
+Parsed 7 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,110920,2.25,51836,2,1088,5,235572,6,0,164,235829,0
+
+
+original formula: EF(y=0)
+=> equivalent existential formula: E(TRUE U y=0)
+(state)formula 0,109644,2.92,51928,2,1130,72,235572,14,66,481,235829,70
+Formula is TRUE !
+Subformula :E(TRUE U y=0) is true in the single input state :
+[ y=255 x=255 ]
+E a U b is true Because there are paths through states verifying a to states verifying b. 
+Such a minimal path of length 4 is:
+From initial states :
+[ y=255 x=255 P_0.state=2 b[0]=1 ]
+This shortest transition sequence of length 4 :
+t0, t2, t4, t6
+Leads to final states :
+[ P_0.state=6 b[0]=1 ]
+Justification follows for subformulas.
+Subformula :TRUE is true in the single input state :
+[ y=255 x=255 P_0.state=2 b[0]=1 ]
+Because TRUE holds true in any state.
+Subformula :y=0 is true in the single input state :
+[ P_0.state=6 b[0]=1 ]
+witness stats ,1,2.95,52048,2,12,89,235572,60,90,490,235829,96
+
+ *************************************** 
+
+original formula: EF(y=1)
+=> equivalent existential formula: E(TRUE U y=1)
+(state)formula 1,109576,3.43,53596,2,1146,154,283672,61,155,491,282452,164
+Formula is TRUE !
+Subformula :E(TRUE U y=1) is true in the single input state :
+[ y=255 x=255 ]
+E a U b is true Because there are paths through states verifying a to states verifying b. 
+Such a minimal path of length 4 is:
+From initial states :
+[ y=255 x=255 P_1.state=2 b[1]=1 ]
+This shortest transition sequence of length 4 :
+t14, t16, t18, t20
+Leads to final states :
+[ y=1 x=1 P_1.state=6 b[1]=1 ]
+Justification follows for subformulas.
+Subformula :TRUE is true in the single input state :
+[ y=255 x=255 P_1.state=2 b[1]=1 ]
+Because TRUE holds true in any state.
+Subformula :y=1 is true in the single input state :
+[ y=1 x=1 P_1.state=6 b[1]=1 ]
+witness stats ,1,3.46,55132,2,12,174,291230,65,183,491,289703,245
+
+ *************************************** 
+
+original formula: EF(y=2)
+=> equivalent existential formula: E(TRUE U y=2)
+(state)formula 2,109524,3.76,63644,2,1150,239,343200,66,248,491,337299,313
+Formula is TRUE !
+Subformula :E(TRUE U y=2) is true in the single input state :
+[ y=255 x=255 ]
+E a U b is true Because there are paths through states verifying a to states verifying b. 
+Such a minimal path of length 4 is:
+From initial states :
+[ b[2]=1 P_2.state=2 y=255 x=255 ]
+This shortest transition sequence of length 4 :
+t28, t30, t32, t34
+Leads to final states :
+[ b[2]=1 P_2.state=6 y=2 x=2 ]
+Justification follows for subformulas.
+Subformula :TRUE is true in the single input state :
+[ b[2]=1 P_2.state=2 y=255 x=255 ]
+Because TRUE holds true in any state.
+Subformula :y=2 is true in the single input state :
+[ b[2]=1 P_2.state=6 y=2 x=2 ]
+witness stats ,1,3.77,63996,2,12,262,344464,70,280,491,338511,436
+
+ *************************************** 
+
+original formula: EF(y=3)
+=> equivalent existential formula: E(TRUE U y=3)
+(state)formula 3,0,3.77,64148,1,0,262,344464,71,280,492,338511,437
+Formula is FALSE !
+Subformula :E(TRUE U y=3) is false in all 1 input state(s).
+E a U b is false because no reachable states satisfy b. 
+Subformula :y=3 is false in all 1 input state(s).
+Because atomic predicate y=3 is false in all 1 input states. 
+
+For instance predicate is false in this state :
+[ y=255 x=255 ]
+witness stats ,1,3.77,64252,2,12,262,344464,71,281,492,338515,437
+
+ *************************************** 
+
+original formula: !(EF(y=0))
+=> equivalent existential formula: !(E(TRUE U y=0))
+(state)formula 4,1276,3.77,64252,2,89,263,344529,71,282,492,338670,437
+Formula is FALSE !
+Subformula :!(E(TRUE U y=0)) is false in all 1 input state(s).
+Because for some input states, there exist some future behaviors that satisfy E(TRUE U y=0)
+Subformula :E(TRUE U y=0) is true in the single input state :
+[ y=255 x=255 ]
+E a U b is true Because there are paths through states verifying a to states verifying b. 
+Such a minimal path of length 4 is:
+From initial states :
+[ y=255 x=255 P_0.state=2 b[0]=1 ]
+This shortest transition sequence of length 4 :
+t0, t2, t4, t6
+Leads to final states :
+[ P_0.state=6 b[0]=1 ]
+Justification follows for subformulas.
+Subformula :TRUE is true in the single input state :
+[ y=255 x=255 P_0.state=2 b[0]=1 ]
+Because TRUE holds true in any state.
+Subformula :y=0 is true in the single input state :
+[ P_0.state=6 b[0]=1 ]
+witness stats ,1,3.77,64252,2,12,263,344529,71,283,492,338674,437
+
+ *************************************** 
+
+original formula: AG((((EF(y=0) * EF(y=1)) * EF(y=2)) * EF(y=3)))
+=> equivalent existential formula: !(E(TRUE U !((((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3)))))
+(state)formula 5,0,3.77,64252,1,0,265,344544,71,288,492,338737,440
+Formula is FALSE !
+Subformula :!(E(TRUE U !((((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3))))) is false in all 1 input state(s).
+Because for some input states, there exist some future behaviors that satisfy E(TRUE U !((((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3))))
+Subformula :E(TRUE U !((((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3)))) is true in the single input state :
+[ y=255 x=255 ]
+E a U b is true because some input states immediately satisfy b. 
+Subformula :!((((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3))) is true in the single input state :
+[ y=255 x=255 ]
+Because for some input states all future behaviors satisfy NOT((((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3)))
+Subformula :(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3)) is false in all 1 input state(s).
+Because no input states satisfy both ((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) and E(TRUE U y=3) simultaneously.
+Second conjunct  E(TRUE U y=3) is not satisfied in any input states. So AND conjunction is false.
+Subformula :E(TRUE U y=3) is false in all 1 input state(s).
+E a U b is false because no reachable states satisfy b. 
+Subformula :y=3 is false in all 1 input state(s).
+Because atomic predicate y=3 is false in all 1 input states. 
+
+For instance predicate is false in this state :
+[ y=255 x=255 ]
+witness stats ,1,3.77,64252,2,12,265,344544,71,289,492,338740,440
+
+ *************************************** 
+
+original formula: AG(((EF(y=0) * EF(y=1)) * EF(y=2)))
+=> equivalent existential formula: !(E(TRUE U !(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)))))
+(state)formula 6,0,5.05,97524,1,0,345,532485,71,370,492,523759,522
+Formula is FALSE !
+Subformula :!(E(TRUE U !(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2))))) is false in all 1 input state(s).
+Because for some input states, there exist some future behaviors that satisfy E(TRUE U !(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2))))
+Subformula :E(TRUE U !(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)))) is true in the single input state :
+[ y=255 x=255 ]
+E a U b is true Because there are paths through states verifying a to states verifying b. 
+Such a minimal path of length 8 is:
+From initial states :
+[ y=255 x=255 P_0.state=2 b[0]=1 ]
+This shortest transition sequence of length 8 :
+t0, t2, t4, t6, t14, t16, t28, t30
+Leads to final states :
+[ b[2]=1 P_2.state=3 x=2 P_1.state=3 b[1]=1 P_0.state=6 b[0]=1 ]
+Justification follows for subformulas.
+Subformula :TRUE is true in the single input state :
+[ y=255 x=255 P_0.state=2 b[0]=1 ]
+Because TRUE holds true in any state.
+Subformula :!(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2))) is true in the single input state :
+[ b[2]=1 P_2.state=3 x=2 P_1.state=3 b[1]=1 P_0.state=6 b[0]=1 ]
+Because for some input states all future behaviors satisfy NOT(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)))
+Subformula :((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) is false in all 1 input state(s).
+Because no input states satisfy both (E(TRUE U y=0) * E(TRUE U y=1)) and E(TRUE U y=2) simultaneously.
+Even formula (E(TRUE U y=0) * E(TRUE U y=1)) OR E(TRUE U y=2) is false in all input states.
+ For instance (E(TRUE U y=0) * E(TRUE U y=1)) is not satisfied in input states.
+Subformula :(E(TRUE U y=0) * E(TRUE U y=1)) is false in all 1 input state(s).
+Because no input states satisfy both E(TRUE U y=0) and E(TRUE U y=1) simultaneously.
+Second conjunct  E(TRUE U y=1) is not satisfied in any input states. So AND conjunction is false.
+Subformula :E(TRUE U y=1) is false in all 1 input state(s).
+E a U b is false; 
+Although there are no cycles of the form EGa on your input states. 
+E a U b is false because all paths satisfying a are finite (potential deadlocks !) and never traverse states satisfying b. 
+Subformula :TRUE is true in the single input state :
+[ b[2]=1 P_2.state=3 x=2 P_1.state=3 b[1]=1 P_0.state=6 b[0]=1 ]
+Because TRUE holds true in any state.
+witness stats ,1,5.16,101252,2,12,392,550774,76,439,498,542795,653
+
+ *************************************** 
+

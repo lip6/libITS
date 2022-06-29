@@ -1,0 +1,118 @@
+GAL input, test from pnmcc
+../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/CTLFireabilitySimple.gal  -t  CGAL  -ctl  test_models/CTLFireabilitySimple.ctl  --quiet  
+No direction supplied, using forward translation only.
+Parsed 15 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,243,0.006936,2408,2,112,5,520,6,0,128,298,0
+
+
+Converting to forward existential form...Done !
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 0,0,0.022077,2952,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 1,0,0.022563,3124,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 2,0,0.022948,3384,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 3,0,0.023315,3384,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 4,0,0.023695,3384,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 5,0,0.024061,3384,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 6,0,0.02444,3384,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AF(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [FwdG(Init,!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)))] = FALSE
+(forward)formula 7,0,0.0248,3384,1,0,39,4963,22,32,513,4452,42
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: E((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)) U (((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+=> equivalent forward existential formula: [(FwdU(Init,(((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1))) * (((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))] != FALSE
+(forward)formula 8,1,0.02771,3644,1,0,58,5572,37,42,514,5425,56
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: E(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1) U (((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1)))
+=> equivalent forward existential formula: [(FwdU(Init,((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)) * (((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1)))] != FALSE
+(forward)formula 9,0,0.030086,3376,1,0,72,5937,46,52,515,6039,64
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EG((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+=> equivalent forward existential formula: [FwdG(Init,(((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))] != FALSE
+(forward)formula 10,1,0.035128,3544,1,0,77,6457,51,62,515,7380,77
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: AF((((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1)))
+=> equivalent forward existential formula: [FwdG(Init,!((((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1))))] = FALSE
+(forward)formula 11,0,0.04132,3560,1,0,105,7789,61,87,519,9871,98
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((((((Think_2>=1 * Fork_2>=1) + (Fork_3>=1 * Think_3>=1)) + (Think_1>=1 * Fork_1>=1)) + (Fork_4>=1 * Think_4>=1)) + (Fork_5>=1 * Think_5>=1)) U ((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))
+=> equivalent forward existential formula: [((Init * !(EG(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))) * !(E(!(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1)) U (!((((((Think_2>=1 * Fork_2>=1) + (Fork_3>=1 * Think_3>=1)) + (Think_1>=1 * Fork_1>=1)) + (Fork_4>=1 * Think_4>=1)) + (Fork_5>=1 * Think_5>=1))) * !(((((Eat_4>=1 + Eat_3>=1) + Eat_2>=1) + Eat_1>=1) + Eat_5>=1))))))] != FALSE
+(forward)formula 12,0,0.063386,4816,1,0,141,16408,67,124,519,17331,126
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: A((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)) U (((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))
+=> equivalent forward existential formula: [((Init * !(EG(!((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))))) * !(E(!((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1))) U (!((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1))) * !((((((Fork_1>=1 * Think_2>=1) + (Fork_5>=1 * Think_1>=1)) + (Think_4>=1 * Fork_3>=1)) + (Fork_2>=1 * Think_3>=1)) + (Fork_4>=1 * Think_5>=1)))))))] != FALSE
+(forward)formula 13,1,0.075401,5520,1,0,159,21285,70,142,519,21165,145
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: E((((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1)) U (((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1)))
+=> equivalent forward existential formula: [(FwdU(Init,(((((Catch1_1>=1 * Fork_1>=1) + (Catch1_2>=1 * Fork_2>=1)) + (Fork_5>=1 * Catch1_5>=1)) + (Catch1_3>=1 * Fork_3>=1)) + (Catch1_4>=1 * Fork_4>=1))) * (((((Fork_5>=1 * Catch2_1>=1) + (Catch2_4>=1 * Fork_3>=1)) + (Fork_4>=1 * Catch2_5>=1)) + (Fork_1>=1 * Catch2_2>=1)) + (Fork_2>=1 * Catch2_3>=1)))] != FALSE
+(forward)formula 14,0,0.076925,5756,1,0,159,21285,74,143,519,21181,148
+Formula is FALSE !
+
+ *************************************** 
+

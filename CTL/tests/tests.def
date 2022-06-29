@@ -1,0 +1,58 @@
+PROD input, no options, FMS 10, basic formulae
+../bin/its-ctl -i test_models/fms10.net --quiet -t PROD -ctl  test_models/basic.ctl 
+PROD input, DDD option, basic formulae
+../bin/its-ctl -i test_models/fms10.net --quiet -t PROD --ddd -ctl  test_models/basic.ctl 
+PROD input, --no-garbage, basic formulae
+../bin/its-ctl -i test_models/fms10.net --quiet -t PROD --no-garbage -ctl  test_models/basic.ctl 
+CAMI input, no JSON, basic formulae
+../bin/its-ctl -i test_models/election_2.cami -t CAMI --quiet -ctl  test_models/basic.ctl 
+CAMI input, with JSON, basic formulae
+../bin/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/basic.ctl 
+PROD input, philo 100, basic formulae
+../bin/its-ctl -i test_models/philo100.net -t PROD --quiet -ctl  test_models/basic.ctl 
+ROMEO input, no order, basic formulae
+../bin/its-ctl -i test_models/train4.xml -t ROMEO --quiet -ctl  test_models/basic.ctl 
+ROMEO input, no order, basic formulae
+../bin/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord -ctl  test_models/basic.ctl 
+ROMEO using BFS, basic formulae
+../bin/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint BFS -ctl  test_models/basic.ctl 
+ROMEO using DFS, basic formulae
+../bin/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint DFS -ctl  test_models/basic.ctl 
+COLOANE format for ITS (flat scalar), basic formulae
+cd test_models; ../../bin/its-ctl -i votersMain.xml -t ITSXML --quiet -ctl  ./basic.ctl  ; cd ..
+COLOANE format for ITS (scalar depth2), basic formulae
+cd test_models; ../../bin/its-ctl -i votersMain.xml -t ITSXML --quiet -ssD2 5 -ctl  ./basic.ctl ; cd ..
+COLOANE format for ITS (scalar depth rec), basic formulae
+cd test_models; ../../bin/its-ctl -i votersMain.xml -t ITSXML --quiet -ssDR 5 -ctl  ./basic.ctl ; cd ..
+COLOANE format for ITS (scalar depth shallow), basic formulae
+cd test_models; ../../bin/its-ctl -i votersMain.xml -t ITSXML --quiet -ssDS 5 -ctl  ./basic.ctl ; cd ..
+ETF format, basic formulae
+../bin/its-ctl -i test_models/peterson.4.dve.etf -t ETF --quiet -ctl  test_models/basic.ctl
+CAMI input, with JSON, advanced formulae
+../bin/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/election2.ctl 
+CAMI input, with JSON, advanced formulae, --backward
+../bin/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/election2.ctl --backward
+CAMI input, with deep JSON, advanced formulae
+../bin/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.h11.json -ctl  test_models/election2.ctl 
+PROD input, with deep JSON hierarchy, basic formulae
+../bin/its-ctl -i test_models/fms5.net -t PROD --quiet --json-order test_models/fms5.json -ctl  test_models/basic.ctl 
+PROD input, with deep JSON hierarchy, other formulae
+../bin/its-ctl -i test_models/fms5.net -t PROD --quiet --json-order test_models/fms5.json -ctl  test_models/fms.ctl 
+DVE input, Lamport model, forward CTL
+../bin/its-ctl -i test_models/lamport.2.dve -t DVE -ctl test_models/lamport.ctl --quiet
+DVE input, Lamport model, backward CTL
+../bin/its-ctl -i test_models/lamport.2.dve -t DVE -ctl test_models/lamport.ctl --quiet --backward
+DVE input, Lamport model, backward CTL, with witness construction
+../bin/its-ctl -i test_models/lamport.2.dve -t DVE -ctl test_models/lamport.ctl --quiet --backward --witness
+GAL input, using quoted variables to access arrays
+../bin/its-ctl -i test_models/gal/hanoi.gal -t GAL -ctl test_models/gal/hanoi.ctl --quiet
+GAL input, test from pnmcc
+../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet
+GAL input, test from pnmcc (backward)
+../bin/its-ctl -i test_models/CTLFireabilitySimple.gal -t CGAL -ctl test_models/CTLFireabilitySimple.ctl --quiet --backward
+GAL input from pnmcc
+../bin/its-ctl --quiet  -i  test_models/circ/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl 
+GAL input from pnmcc backward
+../bin/its-ctl --quiet  -i  test_models/circ/CTLFireabilitySimple.gal -t  CGAL  -ctl  test_models/circ/CTLFireabilitySimple.ctl --backward
+GAL deadlock test from structural reduction of NeoElection2
+../bin/its-ctl -i test_models/Neo2_SR_RD.gal -t CGAL -ctl DEADLOCK --quiet

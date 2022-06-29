@@ -1,0 +1,16 @@
+GAL deadlock test from structural reduction of NeoElection2
+../bin/its-ctl -i test_models/Neo2_SR_RD.gal -t CGAL -ctl DEADLOCK --quiet
+
+its-ctl command run as :
+
+/home/ythierry/git/ITSTools/itstools/fr.lip6.move.gal.itstools.binaries/bin/its-ctl-linux64  -i  test_models/Neo2_SR_RD.gal  -t  CGAL  -ctl  DEADLOCK  --quiet  
+No direction supplied, using forward translation only.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,6,0.001188,4396,2,11,5,43,6,0,26,27,0
+
+
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+dead,1,0.001421,4396,2,7,7,78,9,1,99,52,2
+
+System contains 1 deadlocks  (shown below if less than --print-limit option) !
+[ P_masterState_6=1 ]

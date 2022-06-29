@@ -1,0 +1,41 @@
+ROMEO input, no order, basic formulae
+../bin/its-ctl -i test_models/train4.xml -t ROMEO --quiet -ctl  test_models/basic.ctl 
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/train4.xml  -t  ROMEO  --quiet  -ctl  test_models/basic.ctl  
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,28895,0.98,44208,2693,10,75354,31,243,65186,42,180,0
+
+
+Converting to forward existential form...Done !
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,0.98,44220,1,0,75354,31,496,65186,48,180,1081
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,0.98,44300,1,0,75354,31,496,65186,48,180,1081
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,0.98,44300,1,0,75354,31,496,65186,48,180,1081
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+(forward)formula 3,1,1.09,44300,1,0,75354,40,1284,65186,91,223,88775
+Formula is TRUE !
+
+ *************************************** 
+

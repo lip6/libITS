@@ -1,0 +1,41 @@
+PROD input, --no-garbage, basic formulae
+../bin/its-ctl -i test_models/fms10.net --quiet -t PROD --no-garbage -ctl  test_models/basic.ctl 
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/fms10.net  --quiet  -t  PROD  --no-garbage  -ctl  test_models/basic.ctl  
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,2.50141e+09,0.04,4092,580,12,5986,15,70,3305,8,77,0
+
+
+Converting to forward existential form...Done !
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,0.04,4124,1,0,5986,15,120,3305,17,77,127
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,0.04,4196,1,0,5986,15,120,3305,17,77,127
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,0.04,4196,1,0,5986,15,120,3305,17,77,127
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+(forward)formula 3,1,0.06,4196,1,0,5986,334,244,3305,23,1044,9776
+Formula is TRUE !
+
+ *************************************** 
+

@@ -1,0 +1,60 @@
+DVE input, Lamport model, backward CTL
+../bin/its-ctl -i test_models/lamport.2.dve -t DVE -ctl test_models/lamport.ctl --quiet --backward
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/lamport.2.dve  -t  DVE  -ctl  test_models/lamport.ctl  --quiet  --backward  
+Parsed 7 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,110920,2.31,51884,2,1088,5,235572,6,0,164,235829,0
+
+
+original formula: EF(y=0)
+=> equivalent existential formula: E(TRUE U y=0)
+(state)formula 0,109644,3.01,51980,2,1130,72,235572,14,66,481,235829,70
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(y=1)
+=> equivalent existential formula: E(TRUE U y=1)
+(state)formula 1,109576,3.5,52308,2,1146,137,275884,15,132,482,272265,138
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(y=2)
+=> equivalent existential formula: E(TRUE U y=2)
+(state)formula 2,109524,3.76,60856,2,1150,202,327994,16,198,482,320073,206
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(y=3)
+=> equivalent existential formula: E(TRUE U y=3)
+(state)formula 3,0,3.76,61120,1,0,202,327994,17,199,483,320077,207
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: !(EF(y=0))
+=> equivalent existential formula: !(E(TRUE U y=0))
+(state)formula 4,1276,3.76,61240,2,89,203,328059,17,200,483,320232,207
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG((((EF(y=0) * EF(y=1)) * EF(y=2)) * EF(y=3)))
+=> equivalent existential formula: !(E(TRUE U !((((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)) * E(TRUE U y=3)))))
+(state)formula 5,0,3.77,61384,1,0,205,328074,17,206,483,320299,210
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(((EF(y=0) * EF(y=1)) * EF(y=2)))
+=> equivalent existential formula: !(E(TRUE U !(((E(TRUE U y=0) * E(TRUE U y=1)) * E(TRUE U y=2)))))
+(state)formula 6,0,5.02,94652,1,0,285,516535,17,287,483,505911,292
+Formula is FALSE !
+
+ *************************************** 
+

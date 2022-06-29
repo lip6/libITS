@@ -1,0 +1,41 @@
+PROD input, with deep JSON hierarchy, basic formulae
+../bin/its-ctl -i test_models/fms5.net -t PROD --quiet --json-order test_models/fms5.json -ctl  test_models/basic.ctl 
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/fms5.net  -t  PROD  --quiet  --json-order  test_models/fms5.json  -ctl  test_models/basic.ctl  
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,2.89502e+06,0.01,2596,229,7,1653,30,70,1893,8,71,0
+
+
+Converting to forward existential form...Done !
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,0.01,2624,1,0,1653,30,103,1893,16,71,135
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,0.01,2700,1,0,1653,30,103,1893,16,71,135
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,0.01,2700,1,0,1653,30,103,1893,16,71,135
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+(forward)formula 3,1,0.02,2700,1,0,1905,57,197,3162,18,224,2486
+Formula is TRUE !
+
+ *************************************** 
+

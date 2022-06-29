@@ -1,0 +1,42 @@
+ROMEO using DFS, basic formulae
+../bin/its-ctl -i test_models/train4.xml -t ROMEO --quiet --load-order test_models/train4.ord --fixpoint DFS -ctl  test_models/basic.ctl 
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/train4.xml  -t  ROMEO  --quiet  --load-order  test_models/train4.ord  --fixpoint  DFS  -ctl  test_models/basic.ctl  
+Successfully loaded order from file test_models/train4.ord
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,28895,1.17,52188,2693,10,104061,66,243,83803,42,1299,0
+
+
+Converting to forward existential form...Done !
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,1.17,50704,1,0,104061,66,496,83803,48,1299,1081
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,1.17,50704,1,0,104061,66,496,83803,48,1299,1081
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,1.17,50704,1,0,104061,66,496,83803,48,1299,1081
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+(forward)formula 3,1,1.28,50704,1,0,104061,66,1284,83803,91,1299,88775
+Formula is TRUE !
+
+ *************************************** 
+

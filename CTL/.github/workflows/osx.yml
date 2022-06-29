@@ -1,0 +1,37 @@
+name: OSX Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  repository_dispatch:
+    types: [macOS]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install packages
+      run: brew install gcc@9 autoconf automake libtool binutils bison flex ;    
+    - name: tag version date
+      run: /bin/sh ./tag.sh
+    - name: autoreconf
+      run: autoreconf -vfi
+    - name: Grab libDDD artefacts
+      run: wget --progress=dot:mega https://github.com/lip6/libITS/raw/osx/osx.tgz ; tar xzf osx.tgz ; rm osx.tgz
+    - name: configure
+      run: ./configure --enable-nolto YACC='/usr/local/opt/bison/bin/bison -y' AR='gcc-ar-9' NM='gcc-nm-9' RANLIB='gcc-ranlib-9' CXX='g++-9' CC='gcc-9' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
+    - name: make 
+      run: make -j 4
+    - name: strip binaries
+      run: strip bin/its-ctl ; cp bin/its-ctl website/ 
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
+      with:
+          branch: osx  # The branch the action should deploy to.
+          folder: website/  # The folder the action should deploy.
+          clean: true # Automatically remove deleted files from the deploy branch
+          single-commit: true 

@@ -1,0 +1,37 @@
+name: Linux Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  repository_dispatch:
+    types: [Linux]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: tag version date
+      run: /bin/sh ./tag.sh
+    - name: autoreconf
+      run: autoreconf -vfi
+    - name: Grab libDDD/libITS artefacts
+      run: wget --progress=dot:mega https://github.com/lip6/libITS/raw/gh-pages/linux.tgz ; tar xzf linux.tgz ; rm linux.tgz 
+    - name: configure
+      run: ./configure --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
+    - name: make 
+      run: make 
+    - name: run tests
+      run: cd tests ; ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) ; cd ..
+    - name: strip binaries
+      run: strip -s bin/its-ctl ; cp bin/its-ctl website/ ; 
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
+      with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: website/ # The folder the action should deploy.
+          clean: true # Automatically remove deleted files from the deploy branch 
+          single-commit: true

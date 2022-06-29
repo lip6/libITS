@@ -1,0 +1,31 @@
+build:
+  verbosity: minimal
+
+clone_depth: 30
+
+build_script :
+ - C:\MinGW\bin\mingw-get install libgmpxx
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; wget --progress=dot:mega https://ci.appveyor.com/api/projects/yanntm/libITS/artifacts/windows.zip"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; 7z x windows.zip"'
+ - DIR
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; autoreconf -vfi && ./configure --prefix=$(pwd)/usr/local/ CPPFLAGS=-I$(pwd)/usr/local/include LDFLAGS=-L$(pwd)/usr/local/lib --with-antlrc=$(pwd)/usr/local/ --enable-nolto --enable-mingw-native && make && make install"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; strip -s bin/its-ctl.exe"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; 7z a -tzip windows.zip usr/ "'
+ 
+ # SHELL=%BASH_PATH%
+ 
+ 
+environment :
+ MSYSTEM: MINGW64 
+ BASH_PATH: C:\msys64\usr\bin\bash
+
+ 
+artifacts:
+  - path: bin/its-ctl.exe
+    name: its-ctl.exe
+    type: zip
+
+  - path: windows.zip
+    name: windows.zip
+
+      

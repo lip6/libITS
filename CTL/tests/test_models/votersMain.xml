@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<model xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='http://coloane.lip6.fr/resources/schemas/model.xsd'>
+<types>
+<type name='Voter.model' formalism='Time Petri Net' format='Romeo' path='./Voter.model.xml' />
+<type name='voters.model' formalism='Scalar Set Composite' format='Composite' path='./voters.model.xml' />
+</types>
+<main type='voters.model' state='' />
+</model>
+

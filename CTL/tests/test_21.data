@@ -1,0 +1,62 @@
+DVE input, Lamport model, forward CTL
+../bin/its-ctl -i test_models/lamport.2.dve -t DVE -ctl test_models/lamport.ctl --quiet
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/lamport.2.dve  -t  DVE  -ctl  test_models/lamport.ctl  --quiet  
+No direction supplied, using forward translation only.
+Parsed 7 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,110920,2.28,51884,2,1088,5,235572,6,0,164,235829,0
+
+
+Converting to forward existential form...Done !
+original formula: EF(y=0)
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * y=0)] != FALSE
+(forward)formula 0,1,2.29,51976,1,0,6,235572,7,1,166,235829,1
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(y=1)
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * y=1)] != FALSE
+(forward)formula 1,1,2.29,52088,1,0,7,235572,8,2,167,235829,2
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(y=2)
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * y=2)] != FALSE
+(forward)formula 2,1,2.29,52088,1,0,8,235572,9,3,168,235829,3
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: EF(y=3)
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * y=3)] != FALSE
+(forward)formula 3,0,2.29,52088,1,0,8,235572,10,3,169,235829,4
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: !(EF(y=0))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * y=0)] = FALSE
+(forward)formula 4,0,2.29,52088,1,0,8,235572,10,3,169,235829,4
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG((((EF(y=0) * EF(y=1)) * EF(y=2)) * EF(y=3)))
+=> equivalent forward existential formula: ((([(FwdU(Init,TRUE) * !(E(TRUE U y=0)))] = FALSE * [(FwdU(Init,TRUE) * !(E(TRUE U y=1)))] = FALSE) * [(FwdU(Init,TRUE) * !(E(TRUE U y=2)))] = FALSE) * [(FwdU(Init,TRUE) * !(E(TRUE U y=3)))] = FALSE)
+(forward)formula 5,0,3.73,61020,1,0,205,328096,17,205,483,320670,207
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(((EF(y=0) * EF(y=1)) * EF(y=2)))
+=> equivalent forward existential formula: (([(FwdU(Init,TRUE) * !(E(TRUE U y=0)))] = FALSE * [(FwdU(Init,TRUE) * !(E(TRUE U y=1)))] = FALSE) * [(FwdU(Init,TRUE) * !(E(TRUE U y=2)))] = FALSE)
+(forward)formula 6,0,3.73,61212,1,0,205,328096,17,205,483,320670,207
+Formula is FALSE !
+
+ *************************************** 
+

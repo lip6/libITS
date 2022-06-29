@@ -1,0 +1,41 @@
+CAMI input, with JSON, basic formulae
+../bin/its-ctl -i test_models/election_2.cami -t CAMI --quiet --json-order test_models/election_2.json -ctl  test_models/basic.ctl 
+
+its-ctl command run as :
+
+../bin/its-ctl  -i  test_models/election_2.cami  -t  CAMI  --quiet  --json-order  test_models/election_2.json  -ctl  test_models/basic.ctl  
+No direction supplied, using forward translation only.
+Parsed 4 CTL formulae.
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+reachable,11257,0.29,16996,5963,3,34811,6,409,27142,8,5,0
+
+
+Converting to forward existential form...Done !
+original formula: EX(TRUE)
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] != FALSE
+(forward)formula 0,1,0.3,17012,1,0,34811,6,896,27142,11,5,1086
+Formula is TRUE !
+
+ *************************************** 
+
+original formula: !(EX(TRUE))
+=> equivalent forward existential formula: [(EY(Init) * TRUE)] = FALSE
+(forward)formula 1,0,0.3,17088,1,0,34811,6,896,27142,11,5,1086
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: EX(FALSE)
+=> equivalent forward existential formula: [(EY(Init) * FALSE)] != FALSE
+(forward)formula 2,0,0.3,17088,1,0,34811,6,896,27142,11,5,1086
+Formula is FALSE !
+
+ *************************************** 
+
+original formula: AG(EX(TRUE))
+=> equivalent forward existential formula: [(FwdU(Init,TRUE) * !(EX(TRUE)))] = FALSE
+(forward)formula 3,0,0.79,29228,1,0,37065,8,2685,29153,14,11,432772
+Formula is FALSE !
+
+ *************************************** 
+
