@@ -41,9 +41,15 @@ jobs:
     - name: make install
       run: make install
     - name: prepare artefact      
-      run: tar cvzf osx.tgz usr/ ; mv osx.tgz website/
-    - name: make dist
-      run: make dist ;  mv its*.tar.gz website/ ;
+      run: tar cvzf osx.tgz usr/ ; mv osx.tgz website/	
+    - name: autoreconf CTL
+      run: cd CTL ; autoreconf -vfi
+    - name: configure
+      run: ./configure --enable-nolto YACC='/usr/local/opt/bison/bin/bison -y' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' CXX='g++-11' CC='gcc-11' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-gmp=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/   CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
+    - name: make 
+      run: make -j 4
+    - name: strip binaries
+      run: strip bin/its-ctl ; cp bin/its-ctl ../website/ 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.3.4
       with:
@@ -51,11 +57,3 @@ jobs:
           folder: website/  # The folder the action should deploy.
           clean: true # Automatically remove deleted files from the deploy branch
           single-commit: true 
-    - name: Trigger ITS-CTL
-      uses: mvasigh/dispatch-action@main
-      with:
-          # You should create a personal access token and store it in your repository
-          token: ${{ secrets.NOTIF_PAT }}
-          repo: ITS-CTL
-          owner: lip6
-          event_type: ${{ runner.os }}
