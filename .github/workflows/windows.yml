@@ -32,6 +32,10 @@ jobs:
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ; (autoreconf -vfi && ./configure --prefix=/D/a/libITS/libITS/usr/local/ CPPFLAGS=-I/D/a/libITS/libITS/usr/local/include LDFLAGS=-L/D/a/libITS/libITS/usr/local/lib --with-antlrc=/D/a/libITS/libITS/usr/local/ --with-antlrjar=/D/a/libITS/libITS/usr/local/lib/antlr-3.4-complete.jar --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
     - name: package zip
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS  ;  mkdir site ; strip -s bin/its-reach.exe ; cp bin/its-reach.exe site/; 7z a -tzip windows.zip usr/ ; mv windows.zip site/"
+    - name: configure and make
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS/CTL  ; (autoreconf -vfi && ./configure --prefix=/D/a/libITS/libITS/usr/local/ CPPFLAGS=-I/D/a/libITS/libITS/usr/local/include LDFLAGS=-L/D/a/libITS/libITS/usr/local/lib --with-antlrc=/D/a/libITS/libITS/usr/local/  --enable-nolto --enable-mingw-native && make && make install) || cat config.log ; cat config.log"
+    - name: package zip
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS/CTL  ;  strip -s bin/its-ctl.exe ; cp bin/its-ctl.exe ../site/ ; "
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
       uses: actions/upload-artifact@v3
       with:
@@ -43,30 +47,22 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout 
         uses: actions/checkout@v3
         with:
           persist-credentials: false
 
-      - name: Download Artifacts 🔻 # The built project is downloaded into the 'site' folder.
+      - name: Download Artifacts  # The built project is downloaded into the 'site' folder.
         uses: actions/download-artifact@v3
         with:
           name: site
 
       - name: move to website
-        run: ls -lah ; mkdir -p windows ; cp windows.zip windows/ ; cp its-reach.exe windows ; ls -lah windows/
-      - name: Deploy 🚀
+        run: ls -lah ; mkdir -p windows ; cp windows.zip windows/ ; cp its-reach.exe windows ; cp its-ctl.exe windows/ ; ls -lah windows/
+      - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.4
         with:
           branch: Windows
           folder: windows/ # The deployment folder should match the name of the artifact. Even though our project builds into the 'build' folder the artifact name of 'site' must be placed here.
           clean: true # Automatically remove deleted files from the deploy branch
           single-commit: true 
-      - name: Trigger libITS
-        uses: mvasigh/dispatch-action@main
-        with:
-          # You should create a personal access token and store it in your repository
-          token: ${{ secrets.NOTIF_PAT }}
-          repo: ITS-CTL
-          owner: lip6
-          event_type: Windows
