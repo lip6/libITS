@@ -51,7 +51,7 @@ jobs:
     - name: strip binaries
       run: cd CTL ; strip -s bin/its-ctl ; cp bin/its-ctl ../website/ ; 
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.3.4
+      uses: JamesIves/github-pages-deploy-action@v4.4.0
       with:
           branch: gh-pages # The branch the action should deploy to.
           folder: website/ # The folder the action should deploy.
