@@ -20,6 +20,8 @@
 #include "util.h"
 #include "st.h"
 
+#include <stdint.h> /* for uintptr_t */
+
 /*---------------------------------------------------------------------------*/
 /* Constant declarations                                                     */
 /*---------------------------------------------------------------------------*/
@@ -46,7 +48,7 @@ static char rcsid[] UNUSED = " $Id: st.c,v 1.8 2005/04/13 05:02:20 fabio Exp $";
 
 #define ST_NUMCMP(x,y) ((x) != (y))
 
-#define ST_NUMHASH(x,size) (ABS((long)x)%(size))
+#define ST_NUMHASH(x,size) (ABS((intptr_t)x)%(size))
 
 #if SIZEOF_VOID_P == 8
 #define st_shift 3
@@ -54,7 +56,7 @@ static char rcsid[] UNUSED = " $Id: st.c,v 1.8 2005/04/13 05:02:20 fabio Exp $";
 #define st_shift 2
 #endif
 
-#define ST_PTRHASH(x,size) ((unsigned int)((unsigned long)(x)>>st_shift)%size)
+#define ST_PTRHASH(x,size) ((unsigned int)((uintptr_t)(x)>>st_shift)%size)
 
 #define EQUAL(func, x, y) \
     ((((func) == st_numcmp) || ((func) == st_ptrcmp)) ?\

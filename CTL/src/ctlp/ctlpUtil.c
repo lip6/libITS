@@ -55,6 +55,8 @@
 #include "ctlpInt.h"
 #include "errno.h"
 
+#include <stdint.h>
+
 static char rcsid[] UNUSED = "$Id: ctlpUtil.c,v 1.71 2009/04/11 18:25:53 fabio Exp $";
 
 
@@ -3245,8 +3247,8 @@ FormulaHash(
     FREE(hashString);
     return hashValue;
   }
-  return (int) ((((unsigned long) formula->left >>2) +
-		 ((unsigned long) formula->right >>2)) % modulus);
+  return (int) ((((uintptr_t) formula->left >>2) +
+		 ((uintptr_t) formula->right >>2)) % modulus);
 }
 
 /**Function********************************************************************
