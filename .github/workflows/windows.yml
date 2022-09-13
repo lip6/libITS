@@ -64,7 +64,7 @@ jobs:
           name: site
 
       - name: move to website
-        run: ls -lah ; mkdir -p windows ; cp windows.zip windows/ ; cp its-reach.exe windows ; cp its-ctl.exe windows/ ; ls -lah windows/
+        run: ls -lah ; mkdir -p windows ; cp windows.zip windows/ ; cp its-reach.exe windows ; cp its-ctl.exe windows/ ; cp its-ltl.exe windows/ ; ls -lah windows/
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.4.0
         with:
