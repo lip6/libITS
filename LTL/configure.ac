@@ -8,8 +8,7 @@ AC_CONFIG_MACRO_DIR([m4])
 
 # option to indicate libddd folder
 AC_ARG_WITH([libddd],
-            [AC_HELP_STRING([--with-libddd=/root/of/libddd],
-                            [specify the path of libddd])])
+            [AS_HELP_STRING([--with-libddd=/root/of/libddd],[specify the path of libddd])])
 
 
 AM_CONDITIONAL([WITH_LIBDDD_PATH], [test "x${with_libddd}" != x])
@@ -22,7 +21,7 @@ fi
 nolto=false
 
 AC_ARG_ENABLE(	[nolto],
-        [AC_HELP_STRING([--enable-nolto],[avoid using LTO flags, mostly for Darwin])],
+        [AS_HELP_STRING([--enable-nolto],[avoid using LTO flags, mostly for Darwin])],
         [  case "${enable_nolto}" in
             yes) nolto=true
                 ;;
@@ -41,8 +40,7 @@ fi
 
 # option to indicate libspot folder
 AC_ARG_WITH([libspot],
-            [AC_HELP_STRING([--with-libspot=/root/of/libspot],
-                            [specify the path of Spot])])
+            [AS_HELP_STRING([--with-libspot=/root/of/libspot],[specify the path of Spot])])
 
 
 AM_CONDITIONAL([WITH_LIBSPOT_PATH], [test "x${with_libspot}" != x])
@@ -52,8 +50,7 @@ fi
 
 # option to indicate libits folder
 AC_ARG_WITH([libits],
-            [AC_HELP_STRING([--with-libits=/root/of/libits],
-                            [specify the path of libits])])
+            [AS_HELP_STRING([--with-libits=/root/of/libits],[specify the path of libits])])
 
 
 AM_CONDITIONAL([WITH_LIBITS_PATH], [test "x${with_libits}" != x])
@@ -64,8 +61,7 @@ fi
 
 # option to indicate libexpat folder
 AC_ARG_WITH([libexpat],
-            [AC_HELP_STRING([--with-libexpat=/root/of/libexpat],
-                            [specify the path of libexpat])])
+            [AS_HELP_STRING([--with-libexpat=/root/of/libexpat],[specify the path of libexpat])])
 
 
 AM_CONDITIONAL([WITH_LIBEXPAT_PATH], [test "x${with_libexpat}" != x])
@@ -75,8 +71,7 @@ fi
 
 # option to indicate the path to the antlr C runtime
 AC_ARG_WITH([antlrc],
-            [AC_HELP_STRING([--with-antlrc=/root/of/antlrc],
-                            [specify the path of antlr C runtime])])
+            [AS_HELP_STRING([--with-antlrc=/root/of/antlrc],[specify the path of antlr C runtime])])
 
 AM_CONDITIONAL([WITH_ANTLRC_PATH], [test "x${with_antlrc}" != x])
 if test "x${with_antlrc}" != x; then
@@ -91,7 +86,7 @@ AC_CHECK_LIB(dl, dlopen, ,AC_MSG_WARN(No operational dynamic link libdl found. T
 stdhash=false
 
 AC_ARG_ENABLE(	[stdhash],
-        [AC_HELP_STRING([--enable-stdhash],[revert std lib hash map(default uses google sparse hash)])],
+        [AS_HELP_STRING([--enable-stdhash],[revert std lib hash map(default uses google sparse hash)])],
         [  case "${enable_stdhash}" in
             yes) stdhash=true
                 ;;
@@ -109,7 +104,7 @@ CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
 LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
 
 AC_ARG_ENABLE([mingw-native],
-				[AC_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
+				[AS_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
 				[ case "${enable_mingw_native}" in
 					 yes) CXXFLAGS="-DPSAPI_VERSION=1  $CXXFLAGS"
 					 LDFLAGS=" -Wl,-static,--stack,16777216 $LDFLAGS"
