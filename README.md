@@ -9,6 +9,8 @@ summary: A C++ library for efficient Symbolic Model Checking.
 
 # libITS C++ library 
 
+## NOTE : Since Sep 2022, we have merged the ITS-CTL and ITS-LTL projects into this one. See their subfolders for details.
+
 ## What is libITS 
 
 **libITS** is a C++ library for symbolic model-checking of various formalisms using the efficient 
