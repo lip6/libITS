@@ -41,7 +41,7 @@ jobs:
     - name: make install
       run: make install
     - name: prepare artefact      
-      run: tar cvzf osx.tgz usr/ ; mv osx.tgz website/	
+      run: tar cvzf osx.tgz usr/ ; mv osx.tgz website/
     - name: autoreconf CTL
       run: cd CTL ; autoreconf -vfi
     - name: configure
@@ -50,6 +50,16 @@ jobs:
       run: cd CTL ; make -j 4
     - name: strip binaries
       run: cd CTL ; strip bin/its-ctl ; cp bin/its-ctl ../website/ 
+    - name: autoreconf LTL
+      run: cd LTL ; autoreconf -vfi    
+    - name: Grab Spot artefacts
+      run: wget --progress=dot:mega https://github.com/yanntm/Spot-BinaryBuilds/raw/osx/spot_osx.tar.gz ; tar xzf spot_osx.tar.gz ;
+    - name: configure
+      run: cd LTL ; ./configure --enable-nolto AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' CXX='g++-11' CC='gcc-11' --prefix=$PWD/../usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-gmp=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/  --with-libspot=$(pwd)/../usr/local/ --with-libits=$(pwd)/../usr/local/ CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
+    - name: make 
+      run: cd LTL ; make -j 4
+    - name: strip binaries
+      run: cd LTL ; strip src/its-ltl ; cp src/its-ltl ../website/ 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.4.0
       with:

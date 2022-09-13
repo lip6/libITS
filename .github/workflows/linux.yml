@@ -40,7 +40,7 @@ jobs:
       run: tar cvzf linux.tgz usr/ ; mv linux.tgz website/
     - name: make dist
       run: make dist ;  mv its*.tar.gz website/ ;
-    - name: autoreconf
+    - name: CTL First step autoreconf
       run: cd CTL ; autoreconf -vfi
     - name: configure
       run: cd CTL ; ./configure --prefix=$PWD/../usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-gmp=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/   CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
@@ -50,6 +50,19 @@ jobs:
       run: cd CTL ; cd tests ; ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) ; cd ..
     - name: strip binaries
       run: cd CTL ; strip -s bin/its-ctl ; cp bin/its-ctl ../website/ ; 
+    - name: LTL start Grab Spot artefacts
+      run: wget --progress=dot:mega https://yanntm.github.io/Spot-BinaryBuilds/spot_linux.tar.gz ; tar xzf spot_linux.tar.gz ; 
+    - name: autoreconf
+      run: cd LTL ; autoreconf -vfi
+    - name: configure
+      run: cd LTL ; ./configure --prefix=$PWD/../usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/  --with-libspot=$(pwd)/../usr/local/ --with-libits=$(pwd)/../usr/local/ CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
+    - name: make 
+      run: cd LTL ; make 
+    - name: run tests
+      run: cd LTL ; cd tests ; ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) ; cd ..
+    - name: strip binaries
+      run: cd LTL ; strip -s src/its-ltl ; cp src/its-ltl ../website/ ; 
+    
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.4.0
       with:
