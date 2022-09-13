@@ -37,12 +37,11 @@ jobs:
     - name: package zip
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS/CTL  ;  strip -s bin/its-ctl.exe ; cp bin/its-ctl.exe ../site/ ; "
     - name: get Spot
-      run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS ; wget --progress=dot:mega  https://github.com/yanntm/Spot-BinaryBuilds/raw/Windows/spot_windows.tar.gz ; tar xzf spot_windows.tar.gz ; rm spot_windows.tar.gz"
+      run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS ; wget --progress=dot:mega  https://github.com/yanntm/Spot-BinaryBuilds/raw/Windows/spot_windows.tar.gz ; tar xzf spot_windows.tar.gz ; cd usr/local/lib ; sed -i 's#Spot-BinaryBuilds/Spot-BinaryBuilds/install_dir#libITS/libITS#g' *.la pkgconfig/* ; cd ../../.. ; rm spot_windows.tar.gz"
     - name: configure and make
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS/LTL  ; (autoreconf -vfi && ./configure --prefix=/D/a/libITS/libITS/usr/local/ CPPFLAGS=-I/D/a/libITS/libITS/usr/local/include LDFLAGS=-L/D/a/libITS/libITS/usr/local/lib --with-antlrc=/D/a/libITS/libITS/usr/local/  --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
     - name: package zip
       run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/libITS/libITS/LTL  ;  strip -s src/its-ltl.exe ; cp src/its-ltl.exe ../site/ ; "
-
     - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
       uses: actions/upload-artifact@v3
       with:
