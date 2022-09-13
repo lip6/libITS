@@ -334,7 +334,7 @@ st_lookup_int(st_table *table, void *key, int *value)
 	return 0;
     } else {
 	if (value != NIL(int)) {
-	    *value = (int) (long) ptr->record;
+	    *value = (int) (intptr_t) ptr->record;
 	}
 	return 1;
     }
@@ -689,7 +689,7 @@ st_delete_int(st_table *table, void *keyp, int *value)
     }
 
     *last = ptr->next;
-    if (value != NIL(int)) *value = (int) (long) ptr->record;
+    if (value != NIL(int)) *value = (int) (intptr_t) ptr->record;
     *(char **)keyp = ptr->key;
     FREE(ptr);
     table->num_entries--;
@@ -971,7 +971,7 @@ st_gen_int(st_generator *gen, void *key_p, int *value_p)
     }
     *(char **)key_p = gen->entry->key;
     if (value_p != NIL(int)) {
-   	*value_p = (int) (long) gen->entry->record;
+   	*value_p = (int) (intptr_t) gen->entry->record;
     }
     gen->entry = gen->entry->next;
     return 1;
