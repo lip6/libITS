@@ -1,0 +1,14 @@
+ ETF format, basic formulae :  GF (P_0=CS)
+../src/its-ltl -i test_models/peterson.4.dve.etf -t ETF -c -ltl  'GF ("P_0=CS")'
+
+its-ltl command run as :
+
+../src/its-ltl  -i  test_models/peterson.4.dve.etf  -t  ETF  -c  -ltl  GF ("P_0=CS")  
+2 unique states visited
+2 strongly connected components in search stack
+2 transitions explored
+2 items max in DFS search stack
+1896 ticks for the emptiness check
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,0,19.02,181668,1,0,542357,115,683,731001,70,827,962043
+an accepting run exists (use option '-e' to print it)

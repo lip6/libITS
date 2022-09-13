@@ -1,0 +1,10 @@
+G(!"Fork11" & !WaitRight25) & !WaitLeft16
+(!Idle12 & (!WaitLeft10 R HasLeft7)) | (Idle12 & (WaitLeft10 U !HasLeft7)) | IsEating19
+((!WaitLeft9 & GWaitLeft27) | (F!WaitLeft27 & WaitLeft9)) U Idle19
+(!WaitRight17 R Idle13) R F!WaitRight6
+(F!"Fork18" & (IsEating10 U ((!IsEating14 & IsEating6) | (!IsEating6 & IsEating14)))) | (G"Fork18" & (!IsEating10 R ((!IsEating14 | IsEating6) & (!IsEating6 | IsEating14))))
+(((!HasLeft25 & ("Fork11" R !WaitLeft0)) | ((!"Fork11" U WaitLeft0) & HasLeft25)) & WaitRight8) | ((!HasLeft25 | ("Fork11" R !WaitLeft0)) & ((!"Fork11" U WaitLeft0) | HasLeft25) & !WaitRight8)
+(!HasRight3 | G!WaitRight1) & GWaitRight3
+F((((F!HasLeft12 & FWaitRight19) | (GHasLeft12 & G!WaitRight19)) & WaitLeft9) | (!WaitLeft9 & (F!HasLeft12 | FWaitRight19) & (GHasLeft12 | G!WaitRight19)))
+(!"Fork6" U !HasRight13) | F(("Fork2" & !WaitLeft26) | (!"Fork2" & WaitLeft26))
+(FHasLeft19 | FHasLeft3) & FIsEating11

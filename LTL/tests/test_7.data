@@ -1,0 +1,9 @@
+ PROD input, no options, FMS 10, basic formulae, : EL
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SFSEL -R3f -c
+
+its-ltl command run as :
+
+../src/its-ltl  -i  test_models/fms10.net  -t  PROD  -ltl  GF (TRUE)  -SFSEL  -R3f  -c  
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,2.50141e+09,4.19,55380,583,12,128967,157,209,144599,22,219,122091
+an accepting run exists

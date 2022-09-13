@@ -1,0 +1,14 @@
+ PROD input, no options, FMS 10, basic formulae, : BCZ99
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SBCZ99 -R3f -c
+
+its-ltl command run as :
+
+../src/its-ltl  -i  test_models/fms10.net  -t  PROD  -ltl  GF (TRUE)  -SBCZ99  -R3f  -c  
+149 unique states visited
+149 strongly connected components in search stack
+149 transitions explored
+149 items max in DFS search stack
+357 ticks for the emptiness check
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,0,3.59,55036,1,0,138141,15,202,98952,21,77,151276
+an accepting run exists (use option '-e' to print it)

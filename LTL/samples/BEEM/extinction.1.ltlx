@@ -1,0 +1,5 @@
+("leaders_num=1" & XX!"leaders_num=1") | (XX"leaders_num=1" & !"leaders_num=1")
+F(!"leaders_num=1" R X!"leaders_num=1")
+X(XG!"leaders_num=1" W "leaders_num=1")
+("leaders_num=1" | XG!"leaders_num=1") & (XF"leaders_num=1" | !"leaders_num=1")
+!"leaders_num=1" | X!"leaders_num=1"

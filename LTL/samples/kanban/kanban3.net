@@ -1,0 +1,80 @@
+#place P4 mk(3*<..>)
+#place Pm4
+#place Pback4
+#place Pout4
+#place P3 mk(3*<..>)
+#place Pm3
+#place Pback3
+#place Pout3
+#place P2 mk(3*<..>)
+#place Pm2
+#place Pback2
+#place Pout2
+#place P1 mk(3*<..>)
+#place Pm1
+#place Pback1
+#place Pout1
+#trans tin4
+in {P4:<..>;}
+out {Pm4:<..>;}
+#endtr
+#trans tredo4
+in {Pm4:<..>;}
+out {Pback4:<..>;}
+#endtr
+#trans tback4
+in {Pback4:<..>;}
+out {Pm4:<..>;}
+#endtr
+#trans tok4
+in {Pm4:<..>;}
+out {Pout4:<..>;}
+#endtr
+#trans tredo3
+in {Pm3:<..>;}
+out {Pback3:<..>;}
+#endtr
+#trans tback3
+in {Pback3:<..>;}
+out {Pm3:<..>;}
+#endtr
+#trans tok3
+in {Pm3:<..>;}
+out {Pout3:<..>;}
+#endtr
+#trans tredo2
+in {Pm2:<..>;}
+out {Pback2:<..>;}
+#endtr
+#trans tback2
+in {Pback2:<..>;}
+out {Pm2:<..>;}
+#endtr
+#trans tok2
+in {Pm2:<..>;}
+out {Pout2:<..>;}
+#endtr
+#trans tredo1
+in {Pm1:<..>;}
+out {Pback1:<..>;}
+#endtr
+#trans tback1
+in {Pback1:<..>;}
+out {Pm1:<..>;}
+#endtr
+#trans tok1
+in {Pm1:<..>;}
+out {Pout1:<..>;}
+#endtr
+#trans tsynch4_23
+in {Pout4:<..>;P2:<..>;P3:<..>;}
+out {P4:<..>;Pm2:<..>;Pm3:<..>;}
+#endtr
+#trans tsynch1_23
+in {Pout3:<..>;Pout2:<..>;P1:<..>;}
+out {P3:<..>;P2:<..>;Pm1:<..>;}
+#endtr
+#trans tout1
+in {Pout1:<..>;}
+out {P1:<..>;}
+#endtr

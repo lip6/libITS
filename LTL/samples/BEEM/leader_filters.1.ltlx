@@ -1,0 +1,5 @@
+G!"P_1=elected" & X(((XG"P_0=elected" W ("P_0=elected" | X"P_1=elected")) & !"P_2=elected") | ("P_2=elected" & (XF!"P_0=elected" M (!"P_0=elected" & X!"P_1=elected"))))
+"P_1=elected" & (F"P_0=elected" | !"P_2=elected")
+X(XG(!"P_1=elected" & !"P_2=elected") W "P_2=elected")
+(G!"P_0=elected" M F"P_1=elected") U X("P_0=elected" R !"P_1=elected")
+((!"P_2=elected" W "P_0=elected") & XF!"P_1=elected") | (("P_2=elected" M !"P_0=elected") & XG"P_1=elected")

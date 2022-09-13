@@ -1,0 +1,8 @@
+G ( ( "sleeping=0" && "sleep_op=0" ) -> ((! "sleep_op=0") R ("sleeping=0" || (! "sleep_op=0"))) )
+!(G ( ( "sleeping=0" && "sleep_op=0" ) -> ((! "sleep_op=0") R ("sleeping=0" || (! "sleep_op=0"))) ))
+G ( "IOP=active" -> ( "IOP=stand_by" R ( (! "IOP=noise") || "IOP=stand_by" )))
+!(G ( "IOP=active" -> ( "IOP=stand_by" R ( (! "IOP=noise") || "IOP=stand_by" ))))
+G ( ("sleeping=0" && ("lsl_interrupt=1" | "ap_interrupt=1" ) ) -> ((! ("lsl_interrupt=1" | "ap_interrupt=1" )) R ("sleeping=0" || (! ("lsl_interrupt=1" | "ap_interrupt=1" )))) )
+!(G ( ("sleeping=0" && ("lsl_interrupt=1" | "ap_interrupt=1" ) ) -> ((! ("lsl_interrupt=1" | "ap_interrupt=1" )) R ("sleeping=0" || (! ("lsl_interrupt=1" | "ap_interrupt=1" )))) ))
+G ("IOP=stand_by" -> (("IOP=now_wait" || "IOP=back_to_active")  R ( (! "IOP=active") || ("IOP=now_wait" || "IOP=back_to_active"))))
+!(G ("IOP=stand_by" -> (("IOP=now_wait" || "IOP=back_to_active")  R ( (! "IOP=active") || ("IOP=now_wait" || "IOP=back_to_active")))))

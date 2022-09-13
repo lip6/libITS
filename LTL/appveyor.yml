@@ -1,0 +1,27 @@
+build:
+  verbosity: minimal
+
+clone_depth: 30
+
+build_script :
+ - C:\MinGW\bin\mingw-get install libgmpxx
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; wget --progress=dot:mega https://ci.appveyor.com/api/projects/yanntm/libITS/artifacts/windows.zip"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; 7z x windows.zip"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; wget --progress=dot:mega https://ci.appveyor.com/api/projects/yanntm/Spot-BinaryBuilds/artifacts/website/spot_windows.tar.gz"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; tar xzf spot_windows.tar.gz"'
+ - DIR
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; autoreconf -vfi && ./configure --prefix=$(pwd)/usr/local/ CPPFLAGS=-I$(pwd)/usr/local/include LDFLAGS=-L$(pwd)/usr/local/lib --with-antlrc=$(pwd)/usr/local/ --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ --enable-nolto --enable-mingw-native && make && make install"'
+ - '%BASH_PATH% -lc "cd $APPVEYOR_BUILD_FOLDER; strip -s src/its-ltl.exe"'
+
+
+environment :
+ MSYSTEM: MINGW64 
+ BASH_PATH: C:\msys64\usr\bin\bash
+
+ 
+artifacts:
+  - path: src/its-ltl.exe
+    name: its-ltl.exe
+    type: zip
+
+      

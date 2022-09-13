@@ -1,0 +1,87 @@
+\documentclass{report}
+
+\usepackage{epsfig}
+\usepackage{lscape}
+
+
+\title{Compared performances of LTL algorithms}
+
+\begin{document}
+
+\begin{landscape}
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{cc}
+\epsfig{file=sog-dsog-mem.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=sog-slap-mem.eps,width=0.5\linewidth,clip=} \\
+\epsfig{file=sog-fsltl-mem.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slap-dsog-mem.eps,width=0.5\linewidth,clip=} \\
+\end{tabular}
+\caption{Compared performance in memory : focus on SOG comparison + SLAP/DSOG}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{cc}
+\epsfig{file=sog-dsog-time.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=sog-slap-time.eps,width=0.5\linewidth,clip=} \\
+\epsfig{file=sog-fsltl-time.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slap-dsog-time.eps,width=0.5\linewidth,clip=} \\
+\end{tabular}
+\caption{Compared performance in time : focus on SOG comparison + SLAP/DSOG}
+\end{figure}
+
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{cc}
+\epsfig{file=sog-fsltl-mem.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=dsog-fsltl-mem.eps,width=0.5\linewidth,clip=} \\
+\epsfig{file=slap-fsltl-mem.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slap-dsog-mem.eps,width=0.5\linewidth,clip=} \\
+\end{tabular}
+\caption{Compared performance in memory : focus on FSLTL comparison + SLAP/DSOG}
+\end{figure}
+
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{cc}
+\epsfig{file=sog-fsltl-time.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=dsog-fsltl-time.eps,width=0.5\linewidth,clip=} \\
+\epsfig{file=slap-fsltl-time.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slap-dsog-time.eps,width=0.5\linewidth,clip=} \\
+\end{tabular}
+\caption{Compared performance in time : focus on FSLTL comparison + SLAP/DSOG}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{cc}
+\epsfig{file=slap-fsltl-time.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slap-slapfst-time.eps,width=0.5\linewidth,clip=} \\
+\epsfig{file=slap-slapfsa-time.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slapfst-slapfsa-time.eps,width=0.5\linewidth,clip=} \\
+\end{tabular}
+\caption{Compared performance in time : focus on SLAP variants + FSLTL}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{tabular}{cc}
+\epsfig{file=slap-fsltl-mem.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slap-slapfst-mem.eps,width=0.5\linewidth,clip=} \\
+\epsfig{file=slap-slapfsa-mem.eps,width=0.5\linewidth,clip=} &
+\epsfig{file=slapfst-slapfsa-mem.eps,width=0.5\linewidth,clip=} \\
+\end{tabular}
+\caption{Compared performance in mem : focus on SLAP variants + FSLTL}
+\end{figure}
+
+
+
+
+
+\end{landscape}
+
+\end{document}

@@ -1,0 +1,72 @@
+language: cpp
+sudo: false
+
+matrix:
+  include:
+   # Linux GCC Builds
+    - os: linux
+      compiler: gcc
+      addons: &gcc9
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-9', 'gcc-9', 'libpopt-dev']
+      env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
+
+    # 4/ OSX GCC Builds
+    - os: osx
+      osx_image: xcode11.2
+      addons:
+        homebrew:
+          packages:
+            - gcc
+            - expat
+            - popt
+      compiler: gcc
+      env: GCCVER='9' CXX_COMPILER='g++-9' C_COMPILER='gcc-9'
+    
+before_script:
+## OSX
+  - cd ${TRAVIS_BUILD_DIR} 
+  - export CXX=${CXX_COMPILER}
+  - export CC=${C_COMPILER}
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export TARGETBRANCH=osx ; fi
+  # linux only
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export AR=gcc-ar-${GCCVER} ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export RANLIB=gcc-ranlib-${GCCVER} ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export NM=gcc-nm-${GCCVER} ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export TARGETBRANCH=gh-pages ; fi
+
+# build spot
+script :
+  - /bin/sh ./tag.sh
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://lip6.github.io/libITS/linux.tgz ; tar xzf linux.tgz ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/lip6/libITS/raw/osx/osx.tgz ; tar xzf osx.tgz ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget --progress=dot:mega https://yanntm.github.io/Spot-BinaryBuilds/spot_linux.tar.gz ; tar xzf spot_linux.tar.gz ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget --progress=dot:mega https://github.com/yanntm/Spot-BinaryBuilds/raw/osx/spot_osx.tar.gz ; tar xzf spot_osx.tar.gz ; fi
+  - autoreconf -vfi  
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LTO=--enable-nolto ; fi
+  - ./configure $LTO --prefix=$(pwd)/usr/local/  CPPFLAGS="-I$(pwd)/usr/local/include" LDFLAGS="-L$(pwd)/usr/local/lib" --with-libspot=$(pwd)/usr/local/ --with-libits=$(pwd)/usr/local/ --with-libddd=$(pwd)/usr/local/ -with-libexpat=$PWD/usr/local/  --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/  || cat config.log ; 
+  - make 
+  - cd tests
+  - ( rc=0 ; for TEST in *.data ; do ./run_test.pl $TEST || rc=$? ; done; exit $rc) 
+  - cd ..
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then strip src/its-ltl ; fi
+  # linux only
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then strip -s src/its-ltl ; fi
+  - cp src/its-ltl website/
+  - make install
+#  - tar cvzf $TRAVIS_OS_NAME.tgz usr/
+#  - mv $TRAVIS_OS_NAME.tgz website/
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  local_dir: website/
+  target_branch: $TARGETBRANCH
+  on:
+    branch: master
+  
+
+after_deploy:
+  - curl -s -X POST -H "Content-Type:application/json" -H "Accept:application/json"   -H "Travis-API-Version:3" -H "Authorization:token $APITOKEN" -d '{"request":{"message":"Triggered by ITS-LTL build.","branch":"master"}}' https://api.travis-ci.org/repo/lip6%2FITSTools/requests

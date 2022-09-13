@@ -1,0 +1,47 @@
+## PROD input, no options, FMS 10, basic formulae,
+#SLAP
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SSLAP -R3f -c
+#SLAP-FST
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SSLAP-FST -R3f -c
+#SLAP-FST, -ddd
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SSLAP-FST -R3f -c --ddd
+#SOG
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SSOG -R3f -c
+#SOP
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SSOP -R3f -c
+#BCZ99
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SBCZ99 -R3f -c
+#EL
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SFSEL -R3f -c
+#OWCTY
+../src/its-ltl -i test_models/fms10.net  -t PROD -ltl 'GF (TRUE)' -SFSOWCTY -R3f -c
+## CAMI input, no JSON, basic formulae
+# SLAP
+../src/its-ltl -i test_models/election_2.cami -t CAMI -ltl 'GF (TRUE)' -c -SSLAP
+# SLAP-FST
+../src/its-ltl -i test_models/election_2.cami -t CAMI -ltl 'GF (TRUE)' -c -SSLAP-FST
+# SOP
+../src/its-ltl -i test_models/election_2.cami -t CAMI -ltl 'GF (TRUE)' -c -SSOP
+## CAMI input, with JSON, basic formulae
+# SLAP
+../src/its-ltl -i test_models/election_2.cami -t CAMI -ltl 'GF (TRUE)' -c -SSLAP --json-order test_models/election_2.json
+# SLAP-FST
+../src/its-ltl -i test_models/election_2.cami -t CAMI -ltl 'GF (TRUE)' -c -SSLAP-FST --json-order test_models/election_2.json
+# SOP
+../src/its-ltl -i test_models/election_2.cami -t CAMI -ltl 'GF (TRUE)' -c -SSOP --json-order test_models/election_2.json
+## ETF format, basic formulae
+# GF (TRUE)
+../src/its-ltl -i test_models/peterson.4.dve.etf -t ETF -c -ltl  'GF (TRUE)'
+# ! GF (TRUE)
+../src/its-ltl -i test_models/peterson.4.dve.etf -t ETF -c -ltl  '! (GF (TRUE))'
+# GF (P_0.k=1)
+../src/its-ltl -i test_models/peterson.4.dve.etf -t ETF -c -ltl  'GF ("P_0.k=1")'
+# GF (P_0=CS)
+../src/its-ltl -i test_models/peterson.4.dve.etf -t ETF -c -ltl  'GF ("P_0=CS")'
+## COLOANE format for ITS, basic formulae : GF (TRUE)
+# flat
+cd test_models; ../../src/its-ltl -i votersMain.xml -t ITSXML -c -ltl 'GF (TRUE)'  ; cd ..
+# (scalar depth2)
+cd test_models; ../../src/its-ltl -i votersMain.xml -t ITSXML -c -ssD2 5 -ltl 'GF (TRUE)' ; cd ..
+# (scalar depth rec)
+cd test_models; ../../src/its-ltl -i votersMain.xml -t ITSXML -c  -ssDR 5 -ltl  'GF (TRUE)' ; cd ..

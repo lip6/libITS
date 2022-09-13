@@ -1,0 +1,60 @@
+name: windows build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  repository_dispatch:
+    types: [Windows]
+
+jobs:
+  build:
+    
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: '11'
+        check-latest: true    
+    - name: install packages
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; pacman --noconfirm -S gmp-devel base-devel gcc autoconf automake libtool p7zip"
+    - name: get libITS
+      run: C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-LTL/ITS-LTL ; wget --progress=dot:mega  https://github.com/lip6/libITS/raw/Windows/windows.zip ; 7z x windows.zip ; rm windows.zip"
+    - name: configure and make
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-LTL/ITS-LTL  ; (autoreconf -vfi && ./configure --prefix=/D/a/ITS-LTL/ITS-LTL/usr/local/ CPPFLAGS=-I/D/a/ITS-LTL/ITS-LTL/usr/local/include LDFLAGS=-L/D/a/ITS-LTL/ITS-LTL/usr/local/lib --with-antlrc=/D/a/ITS-LTL/ITS-LTL/usr/local/  --enable-nolto --enable-mingw-native && make && make install) || cat config.log"
+    - name: package zip
+      run:  C:\msys64\usr\bin\bash -lc "PATH+=:/mingw64/bin ; cd /D/a/ITS-LTL/ITS-LTL  ;  strip -s src/its-ltl.exe ; mkdir site ; cp src/its-ltl.exe site/ ; "
+    - name: Upload Artifacts 🔺 # The project is then uploaded as an artifact named 'site'.
+      uses: actions/upload-artifact@v3
+      with:
+        name: site
+        path: site/
+    
+  deploy:
+    needs: [build] # The second job must depend on the first one to complete before running, and uses ubuntu-latest instead of windows.
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: Download Artifacts 🔻 # The built project is downloaded into the 'site' folder.
+        uses: actions/download-artifact@v3
+        with:
+          name: site
+
+      - name: move to website
+        run: ls -lah ; mkdir -p windows ; cp its-ltl.exe windows/ ; ls -lah windows/
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.0
+        with:
+          branch: Windows
+          folder: windows/ # The deployment folder should match the name of the artifact. Even though our project builds into the 'build' folder the artifact name of 'site' must be placed here.
+          clean: true # Automatically remove deleted files from the deploy branch
+          single-commit: true 

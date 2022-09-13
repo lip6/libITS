@@ -1,0 +1,6 @@
+GF ( "phil_0=eat" )
+!(GF ( "phil_0=eat" ))
+GF ( "phil_0=one" -> F "phil_0=eat" )
+!(GF ( "phil_0=one" -> F "phil_0=eat" ))
+GF ( "phil_0=eat" | "phil_1=eat" | "phil_2=eat" | "phil_3=eat" | "phil_4=eat" )
+!(GF ( "phil_0=eat" | "phil_1=eat" | "phil_2=eat" | "phil_3=eat" | "phil_4=eat" ))

@@ -1,0 +1,4 @@
+G ( "Person_0=waiting" -> (F "Person_0=in_elevator") )
+!(G ( "Person_0=waiting" -> (F "Person_0=in_elevator") ))
+G ( "Person_0=in_elevator" -> F "Person_0=out" )
+!(G ( "Person_0=in_elevator" -> F "Person_0=out" ))

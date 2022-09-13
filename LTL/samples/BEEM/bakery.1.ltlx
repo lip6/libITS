@@ -1,0 +1,5 @@
+G!"P_0=wait" & X(((XG"P_0=choose" W ("P_0=for_loop" | X"P_0=CS")) & !"P_1=CS") | ("P_1=CS" & (XF!"P_0=choose" M (!"P_0=for_loop" & X!"P_0=CS"))))
+X(((("P_1=CS" & XG!"P_0=for_loop") | GF"P_0=choose") & (!"P_1=CS" | XF"P_0=for_loop" | FG!"P_0=choose")) W X"P_0=CS")
+X(X((!"P_0=wait" & XF!"P_0=choose") | ("P_0=wait" & XG"P_0=choose")) W "P_1=CS")
+(!"P_0=for_loop" M F"P_0=wait") U X("P_0=choose" R !"P_0=for_loop")
+("P_1=CS" M !"P_0=for_loop") | ((F"P_1=CS" | XF!"P_0=for_loop") M "P_0=for_loop")

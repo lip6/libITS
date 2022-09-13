@@ -1,0 +1,5 @@
+("acquiring[0]=-1" & XX!"acquiring[0]=-1") | (XX"acquiring[0]=-1" & !"acquiring[0]=-1")
+F(!"acquiring[0]=-1" R X!"acquiring[0]=-1")
+X(XG!"acquiring[0]=-1" W "acquiring[0]=-1")
+("acquiring[0]=-1" | XG!"acquiring[0]=-1") & (XF"acquiring[0]=-1" | !"acquiring[0]=-1")
+!"acquiring[0]=-1" | X!"acquiring[0]=-1"

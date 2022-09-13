@@ -1,0 +1,5 @@
+G(X(G!"Environment=pressed_up_0" | G!"Wheels=moving_up") U !"Environment=pressed_up_0")
+X((("Wheels=moving_up" & XG!"Environment=pressed_up_0") | GF"Environment=pressed_up_0") W X"Wheels=moving_up")
+X(XG(!"Environment=pressed_up_0" & !"Wheels=moving_up") W "Wheels=moving_up")
+GF"Environment=pressed_up_0" | G!"Environment=pressed_up_0"
+(("Wheels=moving_up" & X"Wheels=moving_up") | (!"Wheels=moving_up" & X!"Wheels=moving_up")) M ((X"Wheels=moving_up" & ("Environment=pressed_up_0" M "Wheels=moving_up")) | (X!"Wheels=moving_up" & (!"Environment=pressed_up_0" W !"Wheels=moving_up")))

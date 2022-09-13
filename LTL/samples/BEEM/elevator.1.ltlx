@@ -1,0 +1,5 @@
+G!"Person_0=in_elevator" & X(((XG"Person_0=waiting" W ("Person_0=waiting" | X"Person_0=in_elevator")) & !"Person_0=out") | ("Person_0=out" & (XF!"Person_0=waiting" M (!"Person_0=waiting" & X!"Person_0=in_elevator"))))
+"Person_0=in_elevator" & (F"Person_0=waiting" | !"Person_0=out")
+X(XG(!"Person_0=in_elevator" & !"Person_0=out") W "Person_0=out")
+(G!"Person_0=waiting" M F"Person_0=in_elevator") U X("Person_0=waiting" R !"Person_0=in_elevator")
+(("Person_0=out" M !"Person_0=waiting") & XG"Person_0=in_elevator") | ((!"Person_0=out" W "Person_0=waiting") & XF!"Person_0=in_elevator")

@@ -1,0 +1,100 @@
+F(P1 R XP2wM2)
+X(GP2s M P12s)
+(P2wM2 R P1s) M P1s
+GP2s U !P12s
+((M3 M P3) & !P2s) | (P2s & (!M3 W !P3))
+P2M2 | ((P1M1 | !M3) & (M3 | !P1M1))
+X(M2 U !P1wP2)
+F(GP12s | !P12)
+G(!P3s M !P2d)
+!P2d U !M1
+G((!P12s & !P2d) | (P12s & P2d))
+(FP1s & !P3) | (P3 & G!P1s)
+((P12M3 | !P2s) & !P3M2) | (P2s & P3M2 & !P12M3)
+(FP12M3 & XP1wM1) | (X!P1wM1 & G!P12M3)
+X((M2 & XP1) | (!M2 & X!P1))
+F(!P1s | !P1wP2)
+P2wP1 | (!P3M2 & !P1wP2) | (P1wP2 & P3M2)
+GP2 M FP12wM3
+M1 W FGP3
+((!P2wP1 & !M1) | (M1 & P2wP1)) R M1
+GP12 | G!P12M3
+(P12M3 & ((!P12s & !P1wM1) | (P1wM1 & P12s))) | (!P12M3 & (P1wM1 | P12s) & (!P12s | !P1wM1))
+M1 W (P2wP1 | !P1wP2)
+X!P1wP2 R !P1wP2
+P1d M X!P12
+P12s M XXP12wM3
+XGM1 U P12M3
+((P3 R P2wM2) & !P12) | (P12 & (!P3 U !P2wM2))
+(P12wM3 & !P1wM1) | (P1wM1 & !P12wM3) | !P2d
+F(!P12wM3 W !P12M3)
+(M3 & !P1d) | (P1d & !M3)
+X(!P1s M !M2)
+P1s & ((P3M2 & !P3) | (P3 & !P3M2))
+G!P12s M M2
+FP1M1 U XM1
+((P2d U P2) & !P1M1) | (P1M1 & (!P2d R !P2))
+P1M1 | XG!P12wM3
+X(P3s & F!P3s)
+(((!P2d & !P12s) | (P12s & P2d)) & !P1s) | (P1s & (P12s | P2d) & (!P2d | !P12s))
+!P1M1 & G!P1s
+P2 & ((!P1d & !M1) | (M1 & P1d))
+XM3 W !P1wM1
+P12 U (P1s U P12M3)
+(!P12 & G!M2) | (P12 & FM2)
+(P1M1 & (P12M3 W P2d)) | (!P1M1 & (!P12M3 M !P2d))
+(FP1s & !P12) | (P12 & G!P1s)
+FM2 W FP1d
+(!P12M3 & XM1) | (P12M3 & X!M1)
+(GP1s & !M2) | (M2 & F!P1s)
+((P1wM1 R P2d) & !P3) | (P3 & (!P1wM1 U !P2d))
+F(!P12M3 U !P1)
+(P12wM3 & !P1wM1) | (P1wM1 & !P12wM3) | !P3
+(GP3s & XP3) | (X!P3 & F!P3s)
+XG((!P2M2 & !P1M1) | (P1M1 & P2M2))
+(P2d W P1d) U P3s
+((P1s U P2) & !P2wP1) | (P2wP1 & (!P1s R !P2))
+F(!P1 | !P1M1)
+FP12M3 U XP3
+P12 | (!P1wM1 M !M3)
+P2d | !P2M2 | !P1
+X(P1wP2 W FP3s)
+P2wM2 W ((!M2 & !P12wM3) | (P12wM3 & M2))
+X((P2wM2 & !M2) | (M2 & !P2wM2))
+(M1 & FM2) | (!M1 & G!M2)
+XP2wP1 M !P2wP1
+P2d U (P12wM3 M P1)
+((P12wM3 M P1) & !P1wM1) | (P1wM1 & (!P12wM3 W !P1))
+FP2wP1 | G!P2M2
+X((P1s & XM2) | (!P1s & X!M2))
+XG(M1 M P12s)
+XXXFP1
+F(P12s W !P12wM3)
+P2d W X!P2
+(M2 W P12wM3) R P12
+(XP3s & G!M2) | (FM2 & X!P3s)
+(P2wM2 & GFP1d) | (!P2wM2 & FG!P1d)
+G(!P1s & !P12M3)
+X((P1M1 & !M2) | (M2 & !P1M1))
+F(XP12s M P12)
+P1M1 M G!P1wM1
+(P1wM1 U M2) W P2
+((P2M2 & !P1M1) | (P1M1 & !P2M2)) W P12
+M2 | !P3s | !P1wP2
+(P3s & (P3M2 R P2)) | (!P3s & (!P3M2 U !P2))
+G(!P1d U P2)
+(P2 | FP2s) & (!P2 | G!P2s)
+P2wP1 | (!P2 & !P12M3) | (P12M3 & P2)
+((P12wM3 & !P1wM1) | (P1wM1 & !P12wM3)) M P2s
+!M2 U XP12s
+P2M2 R (P12 R P1d)
+P1s | ((P1s | !P3M2) & (P3M2 | !P1s))
+(((P12s & !P12M3) | (P12M3 & !P12s)) & !P2) | (P2 & (P12M3 | !P12s) & (P12s | !P12M3))
+XG(P1d M P3)
+XF((P2s & !P1d) | (P1d & !P2s))
+(P12M3 W P2) | !P12s
+(P3M2 | FP12M3) & (!P3M2 | G!P12M3)
+P3s U (P2M2 W P2d)
+((P1wP2 | !P2wM2) & !M3) | (M3 & P2wM2 & !P1wP2)
+FG((P3 & !M1) | (M1 & !P3))
+(P1wM1 | P2wP1) & (!P2wP1 | !P1wM1)
