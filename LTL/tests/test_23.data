@@ -1,0 +1,19 @@
+ COLOANE format for ITS, basic formulae : GF (TRUE) :  (HOA with ordinary GAL)
+cd test_models; ../../src/its-ltl  -i ASLink-PT-04b-01.gal -t CGAL -hoa ASLink00.hoa -atoms ASLink01.prop -c ; cd ..
+
+its-ltl command run as :
+
+../../src/its-ltl  -i  ASLink-PT-04b-01.gal  -t  CGAL  -hoa  ASLink00.hoa  -atoms  ASLink01.prop  -c  
+Loading property file ASLink01.prop.
+Loaded 1 atomic propositions.
+Checking formula 0 provided in automaton : ASLink00.hoa
+Hit Full ! (commute/partial/dont) 930/0/2
+1 unique states visited
+0 strongly connected components in search stack
+0 transitions explored
+1 items max in DFS search stack
+55 ticks for the emptiness check
+Model ,|S| ,Time ,Mem(kb) ,fin. SDD ,fin. DDD ,peak SDD ,peak DDD ,SDD Hom ,SDD cache peak ,DDD Hom ,DDD cachepeak ,SHom cache
+STATS,0,0.621037,24860,1,0,5,8349,14,0,11784,3061,3
+no accepting run found
+Formula 0 is TRUE no accepting run found.

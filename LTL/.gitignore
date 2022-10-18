@@ -2,7 +2,6 @@
 *.log
 *~
 *.a
-*.data
 *.eps
 *.gnuplot
 *.tmp
