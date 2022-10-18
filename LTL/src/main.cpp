@@ -37,6 +37,7 @@
 
 // prod parser
 #include "its/Options.hh"
+#include "its/Property.hh"
 
 // fair CTL bricks
 #include "tgbaIts.hh"
@@ -61,12 +62,14 @@ void usage() {
 	cerr << "This tool performs LTL verification on state-space of ITS" << endl;
 	cerr << " LTL specific options for  package " << PACKAGE_STRING << endl;
 
-	std::cerr << "  MANDATORY : specify a formula to check " << std::endl
+	std::cerr << "  MANDATORY : specify a formula file, command line formula or automaton (HOA + atoms) to check " << std::endl
 			<< "  -LTL formula_file  formula read from formula_file, one per line, lines starting with # are ignored."
 			<< std::endl
 			<< "  -ltl formula       specify the ltl formula as a string. Must be stuttering invariant for SOG and SOP variants."
 			<< std::endl
 			<< "  -hoa automaton_file       specify the formula as a HOA automaton representing the negation of the property."
+			<< std::endl
+			<< "  -atoms atoms_file       specify the atomic propositions of HOA or formula using a file."
 			<< std::endl << "Actions:" << std::endl
 			<< "  -aALGO          apply the emptiness check algoritm ALGO"
 			<< std::endl
@@ -107,7 +110,6 @@ int main(int argc, const char *argv[]) {
 
 	// external block for full garbage
 	{
-
 		bool check = false;
 		bool print_rg = false;
 		bool print_pn = false;
@@ -128,6 +130,9 @@ int main(int argc, const char *argv[]) {
 
 		std::string aut_file;
 		bool load_hoaf = false;
+
+		std::string atom_file;
+		bool has_atoms = false;
 
 		sog_product_type sogtype = SLAP_FST;
 
@@ -150,17 +155,7 @@ int main(int argc, const char *argv[]) {
 		argc = args.size();
 
 		for (int i = 0; i < argc; i++) {
-			if (!strncmp(args[i], "-a", 2)) {
-				algo_string = args[i] + 2;
-			} else if (!strcmp(args[i], "-b")) {
-				post_branching = true;
-			} else if (!strcmp(args[i], "-c")) {
-				check = true;
-			} else if (!strcmp(args[i], "-e")) {
-				ce_expected = true;
-			} else if (!strcmp(args[i], "-s")) {
-				print_formula_tgba = true;
-			} else if (!strncmp(args[i], "-ltl", 4)) {
+			if (!strncmp(args[i], "-ltl", 4)) {
 				if (++i > argc) {
 					cerr << "give argument value for ltl formula please after "
 							<< args[i - 1] << endl;
@@ -177,6 +172,15 @@ int main(int argc, const char *argv[]) {
 				}
 				load_hoaf = true;
 				aut_file = args[i];
+			} else if (!strncmp(args[i], "-atoms", 6)) {
+				if (++i > argc) {
+					cerr << "give argument value for atomic propositons file please after "
+							<< args[i - 1] << endl;
+					usage();
+					exit(1);
+				}
+				has_atoms = true;
+				atom_file = args[i];
 			} else if (!strncmp(args[i], "-dR3", 4)) {
 				scc_optim = false;
 			} else if (!strncmp(args[i], "-R3f", 4)) {
@@ -214,12 +218,6 @@ int main(int argc, const char *argv[]) {
 					std::cout << "Read " << nbprop << " LTL properties "
 							<< std::endl;
 				}
-			} else if (!strcmp(args[i], "-g")) {
-				print_rg = true;
-			} else if (!strcmp(args[i], "-l")) {
-				fair_loop_approx = true;
-			} else if (!strcmp(args[i], "-p")) {
-				print_pn = true;
 			} else if (!strcmp(args[i], "-stutter-deadlock")) {
 				stutter_dead = true;
 			} else if (!strcmp(args[i], "-SSOG")) {
@@ -250,6 +248,22 @@ int main(int argc, const char *argv[]) {
 				sogtype = SLAP_DTGTA;
 			} else if (!strcmp(args[i], "-SSOP-DTGTA")) {
 				sogtype = SOP_DTGTA;
+			} else if (!strncmp(args[i], "-a", 2)) {
+				algo_string = args[i] + 2;
+			} else if (!strcmp(args[i], "-b")) {
+				post_branching = true;
+			} else if (!strcmp(args[i], "-c")) {
+				check = true;
+			} else if (!strcmp(args[i], "-e")) {
+				ce_expected = true;
+			} else if (!strcmp(args[i], "-s")) {
+				print_formula_tgba = true;
+			} else if (!strcmp(args[i], "-g")) {
+				print_rg = true;
+			} else if (!strcmp(args[i], "-l")) {
+				fair_loop_approx = true;
+			} else if (!strcmp(args[i], "-p")) {
+				print_pn = true;
 			} else if (!strcmp(args[i], "-x")) {
 				fm_exprop_opt = true;
 			} else if (!strcmp(args[i], "-y")) {
@@ -274,6 +288,13 @@ int main(int argc, const char *argv[]) {
 		if (!handleInputOptions(args, *model)) {
 			usage();
 			return 1;
+		}
+
+		std::vector<Property> atoms;
+		if (has_atoms) {
+			std::cout << "Loading property file " << atom_file << "."<< std::endl;
+			loadProps(atom_file,atoms);
+			std::cout << "Loaded " << atoms.size()<< " atomic propositions." << std::endl;
 		}
 
 		if (sogtype == FS_OWCTY_TGTA || sogtype == SLAP_TGTA
@@ -340,6 +361,7 @@ int main(int argc, const char *argv[]) {
 							fm_symb_merge_opt, post_branching, fair_loop_approx,
 							"STATS", print_rg, scc_optim, scc_optim_full,
 							print_formula_tgba, stutter_dead);
+					checker.setAtoms(atoms);
 					if (isPlaceSyntax) {
 						checker.setPlaceSyntax(true);
 					}
@@ -374,6 +396,7 @@ int main(int argc, const char *argv[]) {
 
 			LTLChecker checker;
 			checker.setAutomaton(pa->aut,dict);
+			checker.setAtoms(atoms);
 			checker.setModel(model);
 			checker.setOptions(algo_string, ce_expected, fm_exprop_opt,
 					fm_symb_merge_opt, post_branching, fair_loop_approx,
