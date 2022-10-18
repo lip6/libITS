@@ -45,3 +45,7 @@ cd test_models; ../../src/its-ltl -i votersMain.xml -t ITSXML -c -ltl 'GF (TRUE)
 cd test_models; ../../src/its-ltl -i votersMain.xml -t ITSXML -c -ssD2 5 -ltl 'GF (TRUE)' ; cd ..
 # (scalar depth rec)
 cd test_models; ../../src/its-ltl -i votersMain.xml -t ITSXML -c  -ssDR 5 -ltl  'GF (TRUE)' ; cd ..
+# (HOA with composite GAL)
+cd test_models; ../../src/its-ltl  -i ASLink-PT-04b-00.gal -t CGAL -hoa ASLink00.hoa -atoms ASLink00.prop -c ; cd ..
+# (HOA with ordinary GAL)
+cd test_models; ../../src/its-ltl  -i ASLink-PT-04b-01.gal -t CGAL -hoa ASLink00.hoa -atoms ASLink01.prop -c ; cd ..
