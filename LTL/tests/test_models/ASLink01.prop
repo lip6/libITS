@@ -1,0 +1,2 @@
+import  "/tmp/LTL15354541799537684553.gal";
+property p1 [atom] : (p1630==1)

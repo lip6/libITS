@@ -1,0 +1,12 @@
+HOA: v1
+name: "ASLink-PT-04b-LTLFireability-06"
+States: 1
+Start: 0
+AP: 1 "p1"
+acc-name: Buchi
+Acceptance: 1 Inf(0)
+properties: trans-labels explicit-labels trans-acc colored deterministic no-univ-branch unambiguous semi-deterministic stutter-invariant very-weak weak inherently-weak
+--BODY--
+State: 0
+[!(0)] 0 {0}
+--END--

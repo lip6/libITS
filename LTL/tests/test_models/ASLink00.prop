@@ -1,0 +1,2 @@
+import  "/tmp/LTL6737156371859353741.gal";
+property p1 [atom] : (i8.u82.p1630==1)
