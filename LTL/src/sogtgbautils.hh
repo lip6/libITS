@@ -12,7 +12,7 @@
 #include <spot/twa/bdddict.hh>
 
 #include "its/ITSModel.hh"
-
+#include "its/Property.hh"
 
 
 
@@ -61,6 +61,8 @@ namespace sogits {
 
     spot::timer_map timers;
 
+    std::vector<its::Property> atoms;
+
     bool buildTgbaFromformula (sog_product_type sogtype);
 
     bool fs_model_check(bool isOWCTY);
@@ -90,6 +92,7 @@ namespace sogits {
       f_ = f;
     }
 
+    void setAtoms(const std::vector<its::Property> & aps) { atoms = aps; }
     void setAutomaton (spot::twa_graph_ptr  aut, spot::bdd_dict_ptr  dict);
     bool initializeAP (sog_product_type sogtype);
 

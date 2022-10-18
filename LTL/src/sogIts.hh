@@ -4,6 +4,7 @@
 #include "its/Ordering.hh"
 
 #include "its/ITSModel.hh"
+#include "its/Property.hh"
 // BuDDy package
 #include <bddx.h>
 
@@ -42,6 +43,7 @@ class sogIts {
    // Defines a mapping from atomic property name to bdd variable index
   its::VarOrder apOrder_;
 
+  std::vector<its::Property> atoms;
   // True if for ascending compatibility issues, atomic properties should be reinterpreted
   // as if they were just the names of places, instead of comparisons.
   // e.g. reinterpret AP  "Idle0" as "Idle0 = 1"
@@ -54,6 +56,8 @@ public :
   // as if they were just the names of places, instead of comparisons.
   // e.g. reinterpret AP  "Idle0" as "Idle0 = 1"
   void setPlaceSyntax (bool val) { isPlaceSyntax = val; }
+
+  void setAtoms(const std::vector<its::Property> & atoms) { this->atoms = atoms; }
   void setStutterDeadlock (bool val) { stutter_dead_ = val; }
   // Atomic properties handling primitives
   // return a selector corresponding to the boolean formula over AP encoded as a bdd.

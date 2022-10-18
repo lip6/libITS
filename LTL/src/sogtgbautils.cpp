@@ -201,7 +201,7 @@ namespace sogits
 	  sogModel_ = new sogIts(*model_);
 	  sogModel_->setStutterDeadlock(stutter_dead_);
 	  sogModel_->setPlaceSyntax(isPlaceSyntax);
-
+	  sogModel_->setAtoms(atoms);
 
 	  systgba_ = std::make_shared<sog_tgba>(*sogModel_, dict_, sogtype);
 	  if (sap_)

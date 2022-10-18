@@ -35,7 +35,24 @@ its::Transition sogIts::getSelector(bdd aps, its::pType type) const {
 
     Transition hcond ;
 //    int len =type->getName().size();
-    if (! isPlaceSyntax ) {
+    if (atoms.size() > 0) {
+    	bool seen = false;
+    	for (const auto & ap : atoms) {
+    		if (ap.getName() == prop) {
+    			const std::string & body = ap.getPred();
+    	        char buff [body.size()+1];
+    	        strcpy(buff,body.c_str());
+    	        hcond = type->getPredicate(buff);
+    	        seen = true;
+    			break;
+    		}
+    	}
+    	if (!seen) {
+    		std::cerr << "Unknown atomic proposition " << prop << std::endl;
+    		exit(1);
+    	}
+
+    } else if (! isPlaceSyntax ) {
       char buff [prop.size()+1];
       strcpy(buff,prop.c_str());
       hcond = type->getPredicate(buff);
