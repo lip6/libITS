@@ -1,8 +1,8 @@
 #ifndef __EARLY_BREAK_OBS_HH__
 #define __EARLY_BREAK_OBS_HH__
 
+#include "../its/Property.hh"
 #include "ddd/FixObserver.hh"
-#include "Property.hh"
 
 
 #define trace if(verbose) std::cout
@@ -28,6 +28,7 @@ public:
 	  for (const Property & p : oriprops) {
 		  switch (p.getType()) {
 		  case BOUNDS :
+		  case ATOM:
 			  continue;
 		  case INVARIANT:
 		  {

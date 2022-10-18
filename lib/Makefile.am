@@ -187,6 +187,7 @@ ITSHEADERS = $(PETRIHEADERS) \
 	$(MYSRCDIR)/Observe_Hom.hh \
 	$(MYSRCDIR)/Ordering.hh \
 	$(MYSRCDIR)/Options.hh \
+	$(MYSRCDIR)/Property.hh \
 	$(MYSRCDIR)/Type.hh \
 	$(MYSRCDIR)/TypeBasics.hh \
 	$(MYSRCDIR)/TypeCacher.hh \
@@ -296,6 +297,7 @@ ITSSOURCES = $(ITSHEADERS) \
 	$(MYSRCDIR)/Observe_Hom.cpp \
 	$(MYSRCDIR)/Ordering.cpp \
 	$(MYSRCDIR)/Options.cpp \
+	$(MYSRCDIR)/Property.cpp \
 	$(MYSRCDIR)/TypeBasics.cpp \
 	$(MYSRCDIR)/TypeCacher.cpp \
 	$(JSONSTUFF) \

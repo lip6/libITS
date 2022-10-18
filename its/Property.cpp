@@ -1,4 +1,4 @@
-#include "Property.hh"
+#include "../its/Property.hh"
 
 #include <cstdio>
 #include <iostream>
@@ -45,6 +45,8 @@ namespace its {
 			    ptype = INVARIANT;
 			  } else if (! strcmp(type,"[bounds]")) {
 			    ptype = BOUNDS;
+			  } else if (! strcmp(type,"[atom]")) {
+			    ptype = ATOM;
 			  } else {
 			    std::cerr << "Unable to read property type " << type << " (skipping this line): " << line << std::endl;
 			    continue;

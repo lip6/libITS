@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstring>
 
+#include "its/Property.hh"
 #include "its/Options.hh"
 // The ITS model referential
 #include "its/ITSModel.hh"
@@ -27,7 +28,6 @@
 #include "ddd/statistic.hpp"
 
 #include "EarlyBreakObserver.hh"
-#include "Property.hh"
 #include "SMTExporter.hh"
 #include "Graph.hh"
 
