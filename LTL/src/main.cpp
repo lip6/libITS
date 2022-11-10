@@ -29,6 +29,7 @@
 
 #include <bddx.h>
 #include <spot/tl/parse.hh>
+#include <spot/tl/simplify.hh>
 #include <spot/parseaut/public.hh>
 
 #include "sogtgbautils.hh"
@@ -351,6 +352,8 @@ int main(int argc, const char *argv[]) {
 				if (check) {
 					std::cout << "Checking formula " << idform << " : "
 							<< ltl_string << std::endl;
+					spot::tl_simplifier simplifier;
+					pf.f = simplifier.simplify(pf.f);
 					std::cout << "Formula " << idform << " simplified : " << pf.f
 							<< std::endl;
 
