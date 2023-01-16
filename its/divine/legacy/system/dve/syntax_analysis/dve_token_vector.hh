@@ -32,7 +32,7 @@ namespace divine { //We want Doxygen not to see namespace `dve'
   const char * save_token(const char * const token)
    {
     char * aux = new char[ MAXLEN ];
-    strncpy(aux,token,MAXLEN);
+    strncpy(aux,token,MAXLEN-1);
     this->push_back(aux);
     return aux;
    }
