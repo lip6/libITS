@@ -1039,7 +1039,8 @@ public:
           negtype = GT;
           break;
         default :
-          assert(false);
+          negtype = EQ;
+          throw "unknown comparison type when negating";
       }
       res = PBoolExpressionFactory::createComparison(negtype, l , r);
     }
