@@ -85,6 +85,7 @@ its_ltl_SOURCES = $(MYSRC) $(MYHEADER)
 
 its_ltl_LDADD = $(LDADDFLAGS)
 # its_ltl_LDFLAGS =
+its_ltl_LDFLAGS = -all-static -static-libgcc -static-libstdc++ -flto -fwhole-program $LDFLAGS
 
 testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
 testite_LDADD =  $(LDADDFLAGS)

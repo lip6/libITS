@@ -35,3 +35,4 @@ AM_CPPFLAGS =  -Wall -g -O2 -I $(top_srcdir)/src $(HAVE_BOOST_FLAG) $(LIBITS_CPP
 
 its_ctl_SOURCES = main.cpp
 its_ctl_LDADD =  $(top_srcdir)/src/ctlp/libctlp.a $(top_srcdir)/src/mc/libctlits.a   $(LIBITS_PATH) $(LIBITS_LINK) $(LIBDDD_PATH) $(LIBDDD_LINK) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK) -lm
+its_ctl_LDFLAGS = -all-static -static-libgcc -static-libstdc++ -flto -fwhole-program $LDFLAGS
