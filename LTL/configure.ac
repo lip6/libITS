@@ -11,10 +11,6 @@ AC_ARG_WITH([libddd],
             [AS_HELP_STRING([--with-libddd=/root/of/libddd],[specify the path of libddd])])
 
 
-AM_CONDITIONAL([WITH_LIBDDD_PATH], [test "x${with_libddd}" != x])
-if test "x${with_libddd}" != x; then
-    AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
-fi
 
 # link time opt, set AR and RANLIB before LT_INIT call, unless configure overrides them.
 # also Options for disabling LTO on Darwin since binutils sucks big time on that platform.
@@ -32,11 +28,19 @@ AC_ARG_ENABLE(	[nolto],
             esac])
 
 if test "x$nolto" = "xfalse"; then
+   CFLAGS="-flto $CFLAGS"
    CXXFLAGS="-flto $CXXFLAGS"
    test -z "$AR" && AR=gcc-ar
    test -z "$RANLIB" && RANLIB=gcc-ranlib
+else
+   CXXFLAGS="-fno-lto $CXXFLAGS"
+   CFLAGS="-fno-lto $CFLAGS"
 fi
 
+AM_CONDITIONAL([WITH_LIBDDD_PATH], [test "x${with_libddd}" != x])
+if test "x${with_libddd}" != x; then
+    AC_SUBST([LIBDDD_ROOT],[${with_libddd}])
+fi
 
 # option to indicate libspot folder
 AC_ARG_WITH([libspot],
@@ -101,7 +105,7 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
-LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
+AC_SUBST([STATICFLAGS],["-all-static -static-libgcc -static-libstdc++"])
 
 AC_ARG_ENABLE([mingw-native],
 				[AS_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],

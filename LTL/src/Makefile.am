@@ -40,7 +40,8 @@ endif
 
 
 AM_CPPFLAGS = $(LIBSPOT_CPP) $(LIBITS_CPP) $(LIBDDD_CPP)  -g -O2 -Wall $(BOOST_CPPFLAGS) $(LIBEXPAT_CPP) $(ANTLRC_CPP)
-AM_CXXFLAGS = -g -O2 -Wall
+AM_LDFLAGS = $(LDFLAGS) -fwhole-program 
+AM_LDFLAGS += $(STATICFLAGS)
 
 LDADDFLAGS = $(LIBITS_PATH) $(LIBITS_LINK) $(LIBSPOT_PATH) $(LIBSPOT_LINK) $(LIBDDD_PATH) $(LIBDDD_LINK) $(LIBEXPAT_PATH) $(LIBEXPAT_LINK) $(ANTLRC_PATH) $(ANTLRC_LINK)
 
@@ -84,8 +85,6 @@ MYSRC = apiterator.cpp \
 its_ltl_SOURCES = $(MYSRC) $(MYHEADER)
 
 its_ltl_LDADD = $(LDADDFLAGS)
-# its_ltl_LDFLAGS =
-its_ltl_LDFLAGS = -all-static -static-libgcc -static-libstdc++ -flto -fwhole-program $(LDFLAGS)
 
 testite_SOURCES = testIterator.cpp apiterator.hh apiterator.cpp
 testite_LDADD =  $(LDADDFLAGS)
