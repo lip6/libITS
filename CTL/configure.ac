@@ -21,9 +21,13 @@ AC_ARG_ENABLE(	[nolto],
             esac])
 
 if test "x$nolto" = "xfalse"; then
+   CFLAGS="-flto $CFLAGS"
    CXXFLAGS="-flto $CXXFLAGS"
    test -z "$AR" && AR=gcc-ar
    test -z "$RANLIB" && RANLIB=gcc-ranlib
+else
+   CXXFLAGS="-fno-lto $CXXFLAGS"
+   CFLAGS="-fno-lto $CFLAGS"
 fi
 
 
@@ -63,7 +67,7 @@ if test "x$stdhash" = "xtrue"; then
 fi
 
 CPPFLAGS="-Wno-unused-local-typedefs $CPPFLAGS"
-LDFLAGS="-all-static -static-libgcc -static-libstdc++ $LDFLAGS"
+AC_SUBST([STATICFLAGS],["-all-static -static-libgcc -static-libstdc++"])
 
 AC_ARG_ENABLE([mingw-native],
 				[AS_HELP_STRING([--enable-mingw-native],[build native win32 binaries for redistribution])],
@@ -114,6 +118,9 @@ if test "x${with_antlrc}" != x; then
 fi
 
 
+# programs used to build
+# we make static libs (use ranlib)
+AC_PROG_RANLIB
 # programs used to build
 # we make static libs (use ranlib)
 # we make shared libs (use libtool)
