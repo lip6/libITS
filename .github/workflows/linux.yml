@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: libGMP
       run: wget --progress=dot:mega https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz ; tar xf gmp-6.3.0.tar.xz ; cd gmp-6.3.0 ; ./configure --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local  --build=westmere-pc-linux-gnu ; make -j ; make install ; cd .. ;    
     - name: libExpat
@@ -64,7 +64,7 @@ jobs:
       run: cd LTL ; strip -s src/its-ltl ; cp src/its-ltl ../website/ ; 
     
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.4.2
+      uses: JamesIves/github-pages-deploy-action@v4.4.3
       with:
           branch: gh-pages # The branch the action should deploy to.
           folder: website/ # The folder the action should deploy.

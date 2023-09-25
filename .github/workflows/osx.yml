@@ -13,7 +13,7 @@ jobs:
     runs-on: macos-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install packages
       run: brew install gcc@11 autoconf automake libtool binutils bison flex ;    
     - name: Check Version
@@ -61,7 +61,7 @@ jobs:
     - name: strip binaries
       run: cd LTL ; strip src/its-ltl ; cp src/its-ltl ../website/ 
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.4.2
+      uses: JamesIves/github-pages-deploy-action@v4.4.3
       with:
           branch: osx  # The branch the action should deploy to.
           folder: website/  # The folder the action should deploy.
