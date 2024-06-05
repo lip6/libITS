@@ -361,8 +361,8 @@ int main_noex (int argc, char **argv) {
      for (std::vector<Property>::const_iterator it = props.begin() ; it != props.end() ; ++it ) {
        smtexp.exportPredicate(it->getName(), model, it->getPred());
      }
-     smtexp.close();
    }
+   smtexp.close();
    return 0;
  }
 
