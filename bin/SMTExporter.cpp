@@ -29,9 +29,8 @@ Label exportDDrec (const VarOrder * vo, const GDDD & states, std::ostream & out,
     if (states == GDDD::one) {
       res = "true";
     } else {
-      res = "node" + to_string(nextIndex++) ;
+      res = "n" + to_string(nextIndex++) ;
       std::stringstream tmpout ;
-
       tmpout << "(define-fun " 
 	  << res  // name
 	  << " () "  // empty param list
@@ -49,7 +48,7 @@ Label exportDDrec (const VarOrder * vo, const GDDD & states, std::ostream & out,
       if (states.nbsons() == 1) {
 	tmpout << clauses.str() ;
       } else {
-	tmpout << "(or " << clauses.str() << " )" ;
+	tmpout << "(or " << clauses.str() << ")" ;
       }
       tmpout << ")";
       out << tmpout.str() <<  std::endl;
@@ -64,15 +63,21 @@ Label exportDDrec (const VarOrder * vo, const GDDD & states, std::ostream & out,
 }
 
 void exportDD (const VarOrder * vo, const GDDD & states, std::ostream & out, cache_t & cache) {
-  for (size_t i = 0 ; i < vo->size() ; ++i ) {
-    Label var = vo->getLabel(i);
-    declareIntVar(var, out);
-  }
+//  for (size_t i = 0 ; i < vo->size() ; ++i ) {
+//    Label var = vo->getLabel(i);
+//    declareIntVar(var, out);
+//  }
 
   exportDDrec(vo, states, out, cache);
 
-  out << "(assert node0)" << std::endl;
-  out << "(check-sat)" << std::endl;
+  out << "(define-fun "
+      << "unreachable"  // name
+      << " () "  // empty param list
+      << " Bool "  //return type
+      << " (not n0))" << std::endl;
+
+ // out << "(assert n0)" << std::endl;
+ // out << "(check-sat)" << std::endl;
 
 }
 
