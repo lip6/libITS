@@ -10,18 +10,18 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-13
     
     steps:
     - uses: actions/checkout@v4
     - name: Install packages
-      run: brew install gcc@11 autoconf automake libtool binutils bison flex ;    
+      run: brew install gcc@13 autoconf automake libtool binutils bison flex ;    
     - name: Check Version
-      run: bison -y --version ; flex --version ; /usr/local/opt/bison/bin/bison --version ;/usr/local/opt/flex/bin/flex --version
+      run: bison -y --version ; flex --version ; /opt/homebrew/opt/bison/bin/bison --version ;/opt/homebrew/opt/flex/bin/flex --version
     - name: libGMP
-      run: wget --progress=dot:mega https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz ; tar xf gmp-6.3.0.tar.xz ; cd gmp-6.3.0 ; ./configure CXX='g++-11' CC='gcc-11' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
+      run: wget --progress=dot:mega https://ftp.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz ; tar xf gmp-6.3.0.tar.xz ; cd gmp-6.3.0 ; ./configure CXX='g++-13' CC='gcc-13' AR='gcc-ar-13' NM='gcc-nm-13' RANLIB='gcc-ranlib-13' --enable-cxx --enable-fat --prefix=$(pwd)/../usr/local ; make -j ; make install ; cd .. ;    
     - name: libExpat
-      run: wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure CXX='g++-11' CC='gcc-11' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
+      run: wget --progress=dot:mega https://github.com/libexpat/libexpat/archive/R_2_2_4.tar.gz ; tar xzf R_2_2_4.tar.gz ; cd libexpat-R_2_2_4/expat/ ; ./buildconf.sh ; ./configure CXX='g++-13' CC='gcc-13' AR='gcc-ar-13' NM='gcc-nm-13' RANLIB='gcc-ranlib-13' --prefix=$(pwd)/../../usr/local --without-xmlwf ; make -j ; make install ; cd ../.. ;     
     - name: ANTLR
       run: /bin/bash ./antlr.sh
     - name: tag version date
@@ -31,7 +31,7 @@ jobs:
     - name: Grab libDDD artefacts
       run: wget --progress=dot:mega https://github.com/lip6/libDDD/raw/osx/osx.tgz ; tar xzf osx.tgz ; rm osx.tgz
     - name: configure
-      run: ./configure --enable-nolto YACC='/usr/local/opt/bison/bin/bison -y' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' CXX='g++-11' CC='gcc-11' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
+      run: ./configure --enable-nolto YACC='/opt/homebrew/opt/bison/bin/bison -y' AR='gcc-ar-13' NM='gcc-nm-13' RANLIB='gcc-ranlib-13' CXX='g++-13' CC='gcc-13' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/usr/local/ --with-libddd=$PWD/usr/local/ --with-gmp=$PWD/usr/local/ --with-antlrc=$PWD/usr/local/   --with-antlrjar=$PWD/usr/local/lib/antlr-3.4-complete.jar CPPFLAGS="-I$(pwd)/usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/usr/local/lib" || cat config.log ; 
     - name: make 
       run: make -j 4
 #    - name: run tests
@@ -45,7 +45,7 @@ jobs:
     - name: autoreconf CTL
       run: cd CTL ; autoreconf -vfi
     - name: configure
-      run: cd CTL ; ./configure --enable-nolto YACC='/usr/local/opt/bison/bin/bison -y' AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' CXX='g++-11' CC='gcc-11' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-gmp=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/   CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
+      run: cd CTL ; ./configure --enable-nolto YACC='/opt/homebrew/opt/bison/bin/bison -y' AR='gcc-ar-13' NM='gcc-nm-13' RANLIB='gcc-ranlib-13' CXX='g++-13' CC='gcc-13' --prefix=$PWD/usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-gmp=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/   CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
     - name: make 
       run: cd CTL ; make -j 4
     - name: strip binaries
@@ -55,13 +55,13 @@ jobs:
     - name: Grab Spot artefacts
       run: wget --progress=dot:mega https://github.com/yanntm/Spot-BinaryBuilds/raw/osx/spot_osx.tar.gz ; tar xzf spot_osx.tar.gz ;
     - name: configure
-      run: cd LTL ; ./configure --enable-nolto AR='gcc-ar-11' NM='gcc-nm-11' RANLIB='gcc-ranlib-11' CXX='g++-11' CC='gcc-11' --prefix=$PWD/../usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-gmp=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/  --with-libspot=$(pwd)/../usr/local/ --with-libits=$(pwd)/../usr/local/ CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
+      run: cd LTL ; ./configure --enable-nolto AR='gcc-ar-13' NM='gcc-nm-13' RANLIB='gcc-ranlib-13' CXX='g++-13' CC='gcc-13' --prefix=$PWD/../usr/local/  --with-libexpat=$PWD/../usr/local/ --with-libddd=$PWD/../usr/local/ --with-gmp=$PWD/../usr/local/ --with-antlrc=$PWD/../usr/local/  --with-libspot=$(pwd)/../usr/local/ --with-libits=$(pwd)/../usr/local/ CPPFLAGS="-I$(pwd)/../usr/local/include -DNDEBUG" LDFLAGS="-L$(pwd)/../usr/local/lib" || cat config.log ; 
     - name: make 
       run: cd LTL ; make -j 4
     - name: strip binaries
       run: cd LTL ; strip src/its-ltl ; cp src/its-ltl ../website/ 
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.5.0
+      uses: JamesIves/github-pages-deploy-action@v4.6.0
       with:
           branch: osx  # The branch the action should deploy to.
           folder: website/  # The folder the action should deploy.
