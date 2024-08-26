@@ -170,6 +170,9 @@ CXXFLAGS="-std=c++11 $CXXFLAGS"
 # to be compatible with Spot
 CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden $CXXFLAGS"
 
+# to be nice to DLL users
+CFLAGS="-fPIC $CFLAGS"
+CXXFLAGS="-fPIC $CXXFLAGS"
 
 # Option to enable hash stats
 AC_ARG_ENABLE([hash-stat],
