@@ -31,6 +31,8 @@
 #include "SMTExporter.hh"
 #include "Graph.hh"
 
+#include "Projector.hh"
+
 #ifdef HASH_STAT
 #include "its/gal/ExprHom.hpp"
 #endif // HASH_STAT
@@ -166,6 +168,7 @@ void usage() {
   cerr<<  "    --init-gadget : suppose that the initial state is actually a precursor of initial states, i.e. initial states are successors of the initial state. (prototype flag, only used in manywitness scenario currently, may be replaced by another mechanism in future).)" << endl;
   cerr<<  "    --nowitness : disable trace computation and just return a yes/no answer (faster)." <<endl;
   cerr<<  "    -manywitness XXX : compute several traces (up to integer XXX) and print them." <<endl;
+  cerr<<  "    --shortestAttacks PATH : suppose model is an AHG, export the shortest attacks." <<endl;
   cerr<<  "    --fixpass XXX : test for reachable states after XXX passes of fixpoint (default: 5000), use 0 to build full state space before testing" <<endl;
   cerr<<  "    Witness-graph flags : output the state space graph for the region of interest, replaces production of witness traces" <<endl;
   cerr<<  "    -wgo PATHPREFIX : generate dot output and decide where to output the witness graphs (default : $CWD/wg)" <<endl;
@@ -227,10 +230,12 @@ int main_noex (int argc, char **argv) {
  vLabel smtpath = "";
  vLabel wgopath = "wg";
  vLabel wgoDDpath = "wgDD";
+ vLabel ahgpath = "";
  bool dosmtexport = false;
  bool dographO = false;
  bool dographDD = false;
  bool dograph = false;
+ bool doAHG = false;
  argc = args.size();
  int nbwitness=0;
  for (int i=0;i < argc; i++) {
@@ -249,6 +254,11 @@ int main_noex (int argc, char **argv) {
      wgopath = args[i];
      dograph = true;
      dographO = true;
+   } else if (! strcmp(args[i],"--shortestAttacks") ) {
+     if (++i > argc)
+       { cerr << "give argument value for shortest attacks path " << args[i-1]<<endl; usage() ; exit(1);}
+     ahgpath = args[i];
+     doAHG = true;
    } else if (! strcmp(args[i],"-wgoDD") ) {
      if (++i > argc)
        { cerr << "give argument value for witness graph DD path " << args[i-1]<<endl; usage() ; exit(1);}
@@ -344,7 +354,7 @@ int main_noex (int argc, char **argv) {
  }
 
  // Test that we don't have several props to check, otherwise do not set up interrupt.
- if (fixobs_passes != 0 && !doFrom && !dowitness && nbwitness==0 && std::find_if(props.begin(),props.end(),[](Property & p){ return p.getType() == BOUNDS ;}) == props.end() ) {
+ if (fixobs_passes != 0 && !doFrom && !dowitness && nbwitness==0 && std::find_if(props.begin(),props.end(),[](Property & p){ return p.getType() == BOUNDS ;}) == props.end() && !doAHG) {
    // This observer interrupts computation if the predicate is found
    fobs::set_fixobserver (new EarlyBreakObserver (fixobs_passes, props, model, true )); // !beQuiet
  }
@@ -548,6 +558,20 @@ int main_noex (int argc, char **argv) {
 	 verify = predicate (reachable);
 	 std::cout << "There are " << verify.nbStates() << " reachable states in which your predicate is true." <<std::endl;
        }
+       if (doAHG) {
+         std::cout << "Analyzing result for shortest paths." << std::endl;
+         auto vo = model.getInstance()->getType()->getVarOrder();
+         Projector proj (vo);
+         verify = predicate (reachable);
+         State edgesOnly = localApply(proj,0) (verify);
+         model.printSomeStates(edgesOnly, std::cout);
+         ofstream of (ahgpath.c_str());
+         GDDD d = * ((DDD*) edgesOnly.begin()->first);
+         size_t nbattacks = printShortestAttacks("", d, vo, of);
+         of.close();
+         std::cout << "Found " << nbattacks << " shortest attacks." << std::endl;
+       }
+
      } else {
        std::cout << "Reachability property " << it->getName() << " does not hold." << std::endl;
        std::cout << "No reachable states exhibit your property : " << it->getName() <<std::endl;
