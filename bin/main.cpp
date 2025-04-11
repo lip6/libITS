@@ -567,7 +567,8 @@ int main_noex (int argc, char **argv) {
          model.printSomeStates(edgesOnly, std::cout);
          ofstream of (ahgpath.c_str());
          GDDD d = * ((DDD*) edgesOnly.begin()->first);
-         size_t nbattacks = printShortestAttacks("", d, vo, of);
+         std::stringstream ss;
+         size_t nbattacks = printShortestAttacks(ss, d, vo, of);
          of.close();
          std::cout << "Found " << nbattacks << " shortest attacks." << std::endl;
        }
@@ -575,6 +576,11 @@ int main_noex (int argc, char **argv) {
      } else {
        std::cout << "Reachability property " << it->getName() << " does not hold." << std::endl;
        std::cout << "No reachable states exhibit your property : " << it->getName() <<std::endl;
+       if (doAHG) {
+         std::cout << "Found 0 shortest attacks." << std::endl;
+         ofstream of (ahgpath.c_str());
+         of.close();
+       }
      }
    }
    
