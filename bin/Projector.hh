@@ -45,7 +45,7 @@ public :
   }
 };
 
-size_t printShortestAttacks (Label prefix, const GDDD & d, const VarOrder *varOrder, std::ostream & os) {
+size_t printShortestAttacks (std::stringstream & prefix, const GDDD & d, const VarOrder *varOrder, std::ostream & os) {
   if (d == GDDD::one) {
     os << prefix << "\n";
     return 1;
@@ -58,18 +58,23 @@ size_t printShortestAttacks (Label prefix, const GDDD & d, const VarOrder *varOr
     if (pair.first == 0) {
       without = pair.second;
       // attack not using this attack vector
+      std::streampos pos = prefix.tellp();
       count += printShortestAttacks(prefix, pair.second, varOrder, os);
+      prefix.seekp(pos);
     } else {
       // should be 1
       assert (pair.first == 1);
       // drop "Edge_" from start of name
       vLabel vname = varOrder->getLabel(d.variable()).substr(5);
 
-      if (prefix == "") {
-        count += printShortestAttacks(vname, pair.second - without, varOrder, os);
+      if (prefix.tellp() == 0) {
+        prefix << vname;
       } else {
-        count += printShortestAttacks(prefix + ", " + vname, pair.second - without, varOrder, os);
+        prefix << ", " << vname;
       }
+      std::streampos pos = prefix.tellp();
+      count += printShortestAttacks(prefix, pair.second - without, varOrder, os);
+      prefix.seekp(pos);
     }
   }
   return count;
