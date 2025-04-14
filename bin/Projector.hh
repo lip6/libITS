@@ -45,12 +45,12 @@ public :
   }
 };
 
-size_t printShortestAttacks (std::stringstream & prefix, const GDDD & d, const VarOrder *varOrder, std::ostream & os) {
+std::pair<bool,size_t> printShortestAttacks (std::stringstream & prefix, const GDDD & d, const VarOrder *varOrder, std::ostream & os, bool onEmptyPath = true) {
   if (d == GDDD::one) {
-    os << prefix << "\n";
-    return 1;
+    os << prefix.str() << "\n";
+    return {onEmptyPath,1};
   } else if (d == GDDD::null || d==GDDD::top) {
-    return 0;
+    return {false,0};
   }
   size_t count = 0;
   GDDD without = GDDD::null;
@@ -59,8 +59,12 @@ size_t printShortestAttacks (std::stringstream & prefix, const GDDD & d, const V
       without = pair.second;
       // attack not using this attack vector
       std::streampos pos = prefix.tellp();
-      count += printShortestAttacks(prefix, pair.second, varOrder, os);
+      auto [leftEmpty,lcount] = printShortestAttacks(prefix, pair.second, varOrder, os, onEmptyPath);
       prefix.seekp(pos);
+      count += lcount;
+      if (leftEmpty) {
+        return {true,count};
+      }
     } else {
       // should be 1
       assert (pair.first == 1);
@@ -73,11 +77,12 @@ size_t printShortestAttacks (std::stringstream & prefix, const GDDD & d, const V
         prefix << ", " << vname;
       }
       std::streampos pos = prefix.tellp();
-      count += printShortestAttacks(prefix, pair.second - without, varOrder, os);
+      auto [rightEmpty,rcount] = printShortestAttacks(prefix, pair.second - without, varOrder, os, false);
       prefix.seekp(pos);
+      count += rcount;
     }
   }
-  return count;
+  return {false,count};
 }
 
 } // namespace its
