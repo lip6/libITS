@@ -163,9 +163,9 @@ AC_ENABLE_STATIC
 test -z "$CFLAGS" && CFLAGS=
 test -z "$CXXFLAGS" && CXXFLAGS=
 
-# we compile C++11
+# we compile C++17
 CFLAGS="-std=c11 $CFLAGS"
-CXXFLAGS="-std=c++11 $CXXFLAGS"
+CXXFLAGS="-std=c++17 $CXXFLAGS"
 
 # to be compatible with Spot
 CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden $CXXFLAGS"
