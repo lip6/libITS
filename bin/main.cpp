@@ -568,7 +568,7 @@ int main_noex (int argc, char **argv) {
          ofstream of (ahgpath.c_str());
          GDDD d = * ((DDD*) edgesOnly.begin()->first);
          std::string s;
-         auto [ _ , nbattacks ] = printShortestAttacks(s, d, vo, of);
+         auto nbattacks = printShortestAttacks(s, d, vo, of);
          of.close();
          std::cout << "Found " << nbattacks << " shortest attacks." << std::endl;
        }

@@ -45,44 +45,85 @@ public :
   }
 };
 
-std::pair<bool,size_t> printShortestAttacks (std::string & prefix, const GDDD & d, const VarOrder *varOrder, std::ostream & os, bool onEmptyPath = true) {
-  if (d == GDDD::one) {
-    os << prefix << "\n";
-    return {onEmptyPath,1};
-  } else if (d == GDDD::null || d==GDDD::top) {
-    return {false,0};
-  }
-  size_t count = 0;
-  GDDD without = GDDD::null;
-  for (const auto & pair : d) {
-    if (pair.first == 0) {
-      without = pair.second;
-      // attack not using this attack vector
-      std::streampos pos = prefix.size();
-      auto [leftEmpty,lcount] = printShortestAttacks(prefix, pair.second, varOrder, os, true);
-      prefix.resize(pos);
-      count += lcount;
-      if (leftEmpty) {
-        return {true,count};
-      }
-    } else {
-      // should be 1
-      assert (pair.first == 1);
-      // drop "Edge_" from start of name
-      vLabel vname = varOrder->getLabel(d.variable()).substr(5);
+class Extend : public StrongHom {
+public:
+  Extend() {}
 
-      if (prefix.size() == 0) {
-        prefix += vname;
-      } else {
-        prefix += ", " + vname;
-      }
-      std::streampos pos = prefix.size();
-      auto [rightEmpty,rcount] = printShortestAttacks(prefix, pair.second - without, varOrder, os, false);
-      prefix.resize(pos);
-      count += rcount;
+  GDDD phiOne() const { return GDDD::one; }
+
+  GHom phi(int var, int val) const {
+    if (val == 0) {
+      return GHom(var, 0, this) + GHom(var, 1, this);
+    } else { // val == 1
+      return GHom(var, 1, this);
     }
   }
-  return {false,count};
+
+  bool operator==(const StrongHom &s) const {
+    return true; // Framework ensures s is of the same class
+  }
+
+  size_t hash() const {
+    return 17; // Static prime constant for context-free homomorphism
+  }
+
+  _GHom * clone() const { return new Extend(*this); }
+
+  void print(std::ostream &os) const {
+    os << "Extend";
+  }
+};
+
+// Static instance of Extend wrapped as a Hom
+static Hom extend = GHom(Extend());
+
+
+size_t printShortestAttacks(std::string &prefix, const GDDD &d, const VarOrder *varOrder, std::ostream &os) {
+  if (d == GDDD::one) {
+    // Found a minimal attack
+    os << prefix << "\n";
+    return 1;
+  } else if (d == GDDD::null || d == GDDD::top) {
+    return 0;
+  }
+
+  size_t count = 0;
+  GDDD without = GDDD::null;
+  int var = d.variable();
+
+  for (const auto &pair : d) {
+    if (pair.first == 0) {
+      without = pair.second;
+      // Recurse on attacks not using this variable
+      std::streampos pos = prefix.size();
+      count += printShortestAttacks(prefix, pair.second, varOrder, os);
+      prefix.resize(pos);
+    } else {
+      assert(pair.first == 1);
+
+      // Compute all attacks >= some attack in without
+      GDDD extend_without = extend(without);
+
+      // Remove from true branch attacks that are >= some in without
+      GDDD to_explore = pair.second - extend_without;
+
+      if (to_explore != GDDD::null) {
+        // Get variable name, drop "Edge_"
+        std::string vname = varOrder->getLabel(var).substr(5);
+        // Append to prefix
+        if (prefix.empty()) {
+          prefix += vname;
+        } else {
+          prefix += ", " + vname;
+        }
+        std::streampos pos = prefix.size();
+        count += printShortestAttacks(prefix, to_explore, varOrder, os);
+        // Restore prefix
+        prefix.resize(pos);
+      }
+    }
+  }
+  return count;
 }
 
 } // namespace its
