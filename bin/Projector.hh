@@ -126,5 +126,37 @@ size_t printShortestAttacks(std::string &prefix, const GDDD &d, const VarOrder *
   return count;
 }
 
+GDDD extractShortestAttacks(const GDDD &d) {
+  // Base cases : terminals
+  if (d == GDDD::one || d == GDDD::null || d == GDDD::top) {
+    return d;
+  }
+
+  int var = d.variable();
+  GDDD false_child = GDDD::null;
+  GDDD true_child = GDDD::null;
+
+  // Extract false and true children
+  for (const auto &pair : d) {
+    if (pair.first == 0) {
+      false_child = pair.second;
+    } else if (pair.first == 1) {
+      true_child = pair.second;
+    }
+  }
+
+  // Compute minimal attacks not using the variable
+  GDDD minimal_false = extractShortestAttacks(false_child);
+  // Compute all attacks >= some attack in false_child
+  GDDD extend_false = extend(false_child);
+  // Remove non-minimal attacks from true branch
+  GDDD to_explore = true_child - extend_false;
+  // Compute minimal attacks using the variable
+  GDDD minimal_true = extractShortestAttacks(to_explore);
+
+  return GDDD(var,0,minimal_false) + GDDD(var,1,minimal_true);
+}
+
+
 } // namespace its
 #endif

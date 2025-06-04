@@ -173,6 +173,7 @@ void usage() {
   cerr<<  "    Witness-graph flags : output the state space graph for the region of interest, replaces production of witness traces" <<endl;
   cerr<<  "    -wgo PATHPREFIX : generate dot output and decide where to output the witness graphs (default : $CWD/wg)" <<endl;
   cerr<<  "    -wgoDD PATHPREFIX : generate dot output of the witness graph DD, decide where to output the witness graphs DD (default : $CWD/wgDD)" <<endl;
+  cerr<<  "    -ahgDD PATHPREFIX : generate dot output of the DD of shortest attacks, decide where to output the witness graphs DD" <<endl;
   cerr<<  "    --help,-h : display this (very helpful) helping help text"<<endl;
   cerr<<  "Problems ? Comments ? contact " << PACKAGE_BUGREPORT <<endl;
 }
@@ -230,12 +231,14 @@ int main_noex (int argc, char **argv) {
  vLabel smtpath = "";
  vLabel wgopath = "wg";
  vLabel wgoDDpath = "wgDD";
+ vLabel ahgDDpath = "";
  vLabel ahgpath = "";
  bool dosmtexport = false;
  bool dographO = false;
  bool dographDD = false;
  bool dograph = false;
  bool doAHG = false;
+ bool doAHGDD = false;
  argc = args.size();
  int nbwitness=0;
  for (int i=0;i < argc; i++) {
@@ -265,6 +268,11 @@ int main_noex (int argc, char **argv) {
      wgoDDpath = args[i];
      dograph = true;
      dographDD = true;
+   } else if (! strcmp(args[i],"-ahgDD") ) {
+     if (++i > argc)
+       { cerr << "give argument value for shortest attack graph DD path " << args[i-1]<<endl; usage() ; exit(1);}
+     ahgDDpath = args[i];
+     doAHGDD = true;
    } else if (! strcmp(args[i],"-exportsmt") ) {
      if (++i > argc) 
        { cerr << "give argument value for SMT export file " << args[i-1]<<endl; usage() ; exit(1);}
@@ -571,6 +579,14 @@ int main_noex (int argc, char **argv) {
          auto nbattacks = printShortestAttacks(s, d, vo, of);
          of.close();
          std::cout << "Found " << nbattacks << " shortest attacks." << std::endl;
+         if (doAHGDD) {
+           DDD shortest = extractShortestAttacks(d);
+           exportDot(GSDD(0,shortest), ahgDDpath);
+           std::cout << "Exported a graph with " << shortest.nbStates() << " shortest attacks\n" ;
+           Statistic Scheck (shortest, it->getName() , CSV); // can also use LATEX instead of CSV
+           cout.precision(6);
+           Scheck.print_table(std::cout);
+         }
        }
 
      } else {
